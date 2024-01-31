@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Probabilistische Datenwissenschaft für die Psychologie - 9&nbsp; Wahrscheinlichkeitsräume</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./Referenzen.html" rel="next">
+<link href="./200-Wahrscheinlichkeitstheorie.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "Keine Treffer",
+    "search-matching-documents-text": "Treffer",
+    "search-copy-link-title": "Link in die Suche kopieren",
+    "search-hide-matches-text": "Zusätzliche Treffer verbergen",
+    "search-more-match-text": "weitere Treffer in diesem Dokument",
+    "search-more-matches-text": "weitere Treffer in diesem Dokument",
+    "search-clear-button-title": "Zurücksetzen",
+    "search-detached-cancel-button-title": "Abbrechen",
+    "search-submit-button-title": "Abschicken",
+    "search-label": "Suchen"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./200-Wahrscheinlichkeitstheorie.html">Wahrscheinlichkeitstheorie</a></li><li class="breadcrumb-item"><a href="./201-Wahrscheinlichkeitsräume.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Wahrscheinlichkeitsräume</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Probabilistische Datenwissenschaft für die Psychologie</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="./Probabilistische-Datenwissenschaft-für-die-Psychologie.pdf" rel="" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Suchen"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Willkommen</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Vorwort.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Vorwort</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Mathematische Grundlagen</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./101-Sprache-und-Logik.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Sprache und Logik</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./102-Mengen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Mengen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./103-Summen-Produkte-Potenzen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Summen, Produkte, Potenzen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./104-Funktionen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Funktionen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./105-Differentialrechnung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Differentialrechnung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./106-Folgen-Grenzwerte-Stetigkeit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Folgen, Grenzwerte, Stetigkeit</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./107-Integralrechnung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Integralrechnung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./108-Vektoren.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Vektoren</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./200-Wahrscheinlichkeitstheorie.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Wahrscheinlichkeitstheorie</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./201-Wahrscheinlichkeitsräume.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Wahrscheinlichkeitsräume</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Referenzen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Referenzen</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Inhaltsverzeichnis</h2>
+   
+  <ul>
+  <li><a href="#sec-definition-und-erste-eigenschaften" id="toc-sec-definition-und-erste-eigenschaften" class="nav-link active" data-scroll-target="#sec-definition-und-erste-eigenschaften"><span class="header-section-number">9.1</span> Definition und erste Eigenschaften</a>
+  <ul class="collapse">
+  <li><a href="#ergebnismenge-und-mechanik" id="toc-ergebnismenge-und-mechanik" class="nav-link" data-scroll-target="#ergebnismenge-und-mechanik">Ergebnismenge und Mechanik</a></li>
+  <li><a href="#ereignisse-und-ereignissystem" id="toc-ereignisse-und-ereignissystem" class="nav-link" data-scroll-target="#ereignisse-und-ereignissystem">Ereignisse und Ereignissystem</a></li>
+  <li><a href="#wahrscheinlichkeitsmaß-mathbbp" id="toc-wahrscheinlichkeitsmaß-mathbbp" class="nav-link" data-scroll-target="#wahrscheinlichkeitsmaß-mathbbp">Wahrscheinlichkeitsmaß <span class="math inline">\(\mathbb{P}\)</span></a></li>
+  </ul></li>
+  <li><a href="#sec-wahrscheinlichkeitsfunktionen" id="toc-sec-wahrscheinlichkeitsfunktionen" class="nav-link" data-scroll-target="#sec-wahrscheinlichkeitsfunktionen"><span class="header-section-number">9.2</span> Wahrscheinlichkeitsfunktionen</a></li>
+  <li><a href="#sec-beispiele-bei-endlichem-ergebnisraum" id="toc-sec-beispiele-bei-endlichem-ergebnisraum" class="nav-link" data-scroll-target="#sec-beispiele-bei-endlichem-ergebnisraum"><span class="header-section-number">9.3</span> Beispiele bei endlichem Ergebnisraum</a>
+  <ul class="collapse">
+  <li><a href="#würfeln-mit-einem-würfel" id="toc-würfeln-mit-einem-würfel" class="nav-link" data-scroll-target="#würfeln-mit-einem-würfel">Würfeln mit einem Würfel</a></li>
+  <li><a href="#gleichzeitiges-würfeln-mit-einem-blauem-und-einem-roten-würfel" id="toc-gleichzeitiges-würfeln-mit-einem-blauem-und-einem-roten-würfel" class="nav-link" data-scroll-target="#gleichzeitiges-würfeln-mit-einem-blauem-und-einem-roten-würfel">Gleichzeitiges Würfeln mit einem blauem und einem roten Würfel</a></li>
+  <li><a href="#werfen-einer-münze" id="toc-werfen-einer-münze" class="nav-link" data-scroll-target="#werfen-einer-münze">Werfen einer Münze</a></li>
+  <li><a href="#zweifaches-werfen-einer-münze" id="toc-zweifaches-werfen-einer-münze" class="nav-link" data-scroll-target="#zweifaches-werfen-einer-münze">Zweifaches Werfen einer Münze</a></li>
+  </ul></li>
+  <li><a href="#literaturhinweise" id="toc-literaturhinweise" class="nav-link" data-scroll-target="#literaturhinweise"><span class="header-section-number">9.4</span> Literaturhinweise</a></li>
+  <li><a href="#selbstkontrollfragen" id="toc-selbstkontrollfragen" class="nav-link" data-scroll-target="#selbstkontrollfragen"><span class="header-section-number">9.5</span> Selbstkontrollfragen</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/201-Wahrscheinlichkeitsräume.qmd" class="toc-action">Seite editieren</a></p></div></div></nav>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-wahrscheinlichkeitsraeume" class="quarto-section-identifier"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Wahrscheinlichkeitsräume</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>Ein <em>Wahrscheinlichkeitsraum</em> ist ein sehr allgemein gehaltenes formal-mathematisches Modell eines Zufallsvorgangs. Die zentrale Bedeutung dieses Modells für die Wahrscheinlichkeitstheorie und probabilistische Inferenz ergibt sich daraus, dass das Wahrscheinlichkeitsraummodell eine Anleitung dafür gibt, wie man beliebige Zufallsvorgänge über die man quantitativ schlussfolgern möchte, in das formal-mathematische System der Wahrscheinlichkeitstheorie übersetzen kann. Gleichzeitig garantiert das Wahrscheinlichkeitsraummodell und die auf ihm aufgebauten Konzepte, dass die Mechanik der Wahrscheinlichkeitsrechnung zu logisch sinnvollen quantitativen Schlüssen über Zufallsvorgänge der Wirklichkeit führen. In diesem Kapitel führen den Begriff des Wahrscheinlichkeitsraums ein (<a href="#sec-definition-und-erste-eigenschaften"><span>Kapitel&nbsp;9.1</span></a>) und geben dann mithilfe von Wahrscheinlichkeitsfunktionen (<a href="#sec-wahrscheinlichkeitsfunktionen"><span>Kapitel&nbsp;9.2</span></a>) erste Beispiele für die Modellierung von Zufallsvorgängen durch Wahrscheinlichkeitsräume (<a href="#sec-beispiele-bei-endlichem-ergebnisraum"><span>Kapitel&nbsp;9.3</span></a>).</p>
+<section id="sec-definition-und-erste-eigenschaften" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="sec-definition-und-erste-eigenschaften"><span class="header-section-number">9.1</span> Definition und erste Eigenschaften</h2>
+<p>Wir beginnen mit der Definition des Wahrscheinlichkeitsraummodells nach <span class="citation" data-cites="kolmogoroff1933">Kolmogoroff (<a href="#ref-kolmogoroff1933" role="doc-biblioref">1933</a>)</span>, das wir dann nachfolgend in seinen Einzelteilen aus Frequentistischer Perspektive erläutern wollen.</p>
+<div id="def-wahrscheinlichkeitsraum" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 9.1 (Wahrscheinlichkeitsraum) </strong></span>Ein <em>Wahrscheinlichkeitsraum</em> ist ein Triple <span class="math inline">\((\Omega, \mathcal{A}, \mathbb{P})\)</span>, wobei</p>
+<ul>
+<li><span class="math inline">\(\Omega\)</span> eine beliebige nichtleere Menge von <em>Ergebnissen</em> <span class="math inline">\(\omega\)</span> ist und <em>Ergebnismenge</em> heißt,</li>
+<li><span class="math inline">\(\mathcal{A}\)</span> eine Menge von Teilmengen von <span class="math inline">\(\Omega\)</span> mit den Eigenschaften
+<ul>
+<li><span class="math inline">\(\Omega \in \mathcal{A}\)</span>,</li>
+<li>für alle <span class="math inline">\(A\in \mathcal{A}\)</span> gilt, dass auch <span class="math inline">\(A^c := \Omega \setminus A \in \mathcal{A}\)</span> ist,</li>
+<li>aus <span class="math inline">\(A_1,A_2,... \in \mathcal{A}\)</span> folgt, dass auch <span class="math inline">\(\cup_{i=1}^\infty A_i \in \mathcal{A}\)</span> ist,ist, <em><span class="math inline">\(\sigma\)</span>-Algebra auf <span class="math inline">\(\Omega\)</span></em> genannt wird und <em>Ereignissystem</em> heißt,</li>
+</ul></li>
+<li><span class="math inline">\(\mathbb{P}\)</span> eine Abbildung der Form <span class="math inline">\(\mathbb{P}:\mathcal{A} \to [0,1]\)</span> mit den Eigenschaften
+<ul>
+<li><span class="math inline">\(\mathbb{P}(A) \ge 0\)</span> für alle <span class="math inline">\(A \in \mathcal{A}\)</span> (),</li>
+<li><span class="math inline">\(\mathbb{P}(\Omega) = 1\)</span> () und</li>
+<li><span class="math inline">\(\mathbb{P}(\cup_{i=1}^\infty A_i) = \sum\limits_{i=1}^\infty \mathbb{P}(A_i)\)</span> für paarweise disjunkte <span class="math inline">\(A_i \in \mathcal{A}\)</span> (<em><span class="math inline">\(\sigma\)</span>-Additivität</em>) ist und <em>Wahrscheinlichkeitsmaß</em> heißt.</li>
+</ul></li>
+</ul>
+</div>
+<section id="ergebnismenge-und-mechanik" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="ergebnismenge-und-mechanik">Ergebnismenge und Mechanik</h3>
+<p>Wir beginnen mit Erläuterungen zum Begriff der <em>Ergebnismenge <span class="math inline">\(\Omega\)</span></em> und der impliziten Mechanik des Wahrscheinlichkeitsraummodells. Um den Einstieg zu erleichtern betrachten wir im Folgenden zunächst vor allem <em>endliche Wahrscheinlichkeitsräume</em>, bei denen die Kardinalität von <span class="math inline">\(\Omega\)</span> nicht unendlich groß ist. Es sei also <span class="math inline">\(|\Omega|&lt;\infty\)</span>, <span class="math inline">\(\Omega\)</span> habe also nur endlich viele Elemente. Zum Modellieren des Werfen eines Würfels könnte man zum Beispiel <span class="math inline">\(\Omega := \{1,2,3,4,5,6\}\)</span> definieren.</p>
+<p>Hinter der formalen Definition des Wahrscheinlichkeitsraummodells stehen folgende Frequentistisch-geprägten Annahmen über seine Mechanik als Modell eines Zufallsvorgangs. Wir stellen uns zunächst sequentielle Durchgänge eines Zufallsvorgangs vor, also zum Beispiel das wiederholte Werfen eines Würfels. Nach Annahme des Wahrscheinlichkeitsraummodells wird in jedem dieser Durchgänge genau ein <span class="math inline">\(\omega\)</span> aus <span class="math inline">\(\Omega\)</span> <em>realisiert</em>, also als tatsächlich vorliegend ausgewählt. Wirft man zum Beispiel einen Würfel und fällt eine Zwei, so sagt man, dass eine Zwei realisiert wurde. Die Wahrscheinlichkeit, mit der ein <span class="math inline">\(\omega\)</span> aus <span class="math inline">\(\Omega\)</span> in einem Durchgang realisiert wird, wird durch den Wert <span class="math inline">\(\mathbb{P}(\{\omega\}) \in [0,1]\)</span> beschrieben. Ist zum Beispiel <span class="math inline">\(\mathbb{P}(\{\omega\}) = 1\)</span>, so wird dieses <span class="math inline">\(\omega\)</span> in jedem Durchgang des Zufallsvorgangs realisiert; ist <span class="math inline">\(\mathbb{P}(\{\omega\}) = 0\)</span>, so wird dieses <span class="math inline">\(\omega\)</span> in keinem Durchgang des Zufallsvorgangs realisiert; und ist <span class="math inline">\(\mathbb{P}(\{\omega\}) = 1/2\)</span>, so wird <span class="math inline">\(\omega\)</span> in etwa der Hälfte der Durchgänge des Zufallsvorgangs realisiert. Beim Modell des Werfens eines fairen Würfels nimmt man üblicherweise <span class="math inline">\(\mathbb{P}(\{\omega\}) = 1/6\)</span> für alle <span class="math inline">\(\omega \in \Omega\)</span> an. Hier könnte zum Beispiel im ersten Durchgang eine Vier realisiert werden, im zweiten Durchgang eine Eins, im dritten Durchgang eine Fünf, dann vielleicht wieder eine Vier und so weiter.</p>
+</section>
+<section id="ereignisse-und-ereignissystem" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="ereignisse-und-ereignissystem">Ereignisse und Ereignissystem</h3>
+<p>Den Begriff des <em>Ereignisses</em> <span class="math inline">\(A \in \mathcal{A}\)</span> stellt man sich am besten als konzeptionelle Zusammenfassung ein oder mehrerer Ergebnisse vor. Beim Werfen eines Würfels sind mögliche Ereignisse zum Beispiel “Es fällt eine gerade Augenzahl”, das heißt <span class="math inline">\(\omega \in \{2,4,6\}\)</span>; “Es fällt eine Augenzahl größer als Zwei”, das heißt <span class="math inline">\(\omega \in \{3,4,5,6\}\)</span>; oder etwa “Es fällt eine Eins oder eine Fünf”, das heißt <span class="math inline">\(\omega \in \{1,5\}\)</span>. Man beachte, dass zum Beispiel das Ereignis “Es fällt eine gerade Augenzahl” vor dem Hintergrund der Mechanik des Wahrscheinlichkeitsraums genau dann eintritt, wenn in einem Durchgang des Zufallsvorgangs das realisierte <span class="math inline">\(\omega\)</span> ein Element der Menge <span class="math inline">\(\{2,4,6\}\)</span> ist, wenn also zum Beispiel eine Vier fällt. Man mag das Eintreten des Ereignisses “Es fällt eine Augenzahl größer als Zwei” also auch lesen als “In einem Durchgang des Zufallsvorgangs wird ein Element von <span class="math inline">\(\{3,4,5,6\}\)</span> realisiert”, d.h. konkret fällt entweder eine Drei, eine Vier, eine Fünf oder eine Sechs. Natürlich sind auch die Ergebnisse <span class="math inline">\(\omega \in \Omega\)</span> selbt mögliche Ereignisse, so dass zum Beispiel folgende Interpretationen gelten: Das Ereignis “Es fällt eine Eins” entspricht der Realisation <span class="math inline">\(\omega \in \{1\}\)</span> und das Ereignis “Es fällt eine Sechs” entspricht der Realisation <span class="math inline">\(\omega \in \{6\}\)</span>. Betrachtet man in diesem Zusammenhang ein Ergebnis <span class="math inline">\(\omega \in \Omega\)</span> als Ereignis, so nennt man es <em>Elementarereignis</em> und schreibt es als einelementige Menge <span class="math inline">\(\{\omega\}\)</span>.</p>
+<p>Insgesamt entspricht dieses Vorgehen zur Beschreibung zufälliger Ereignisse dem inhärenten Ziel der Definition des Wahrscheinlichkeitsraums. <span class="citation" data-cites="kolmogoroff1933">Kolmogoroff (<a href="#ref-kolmogoroff1933" role="doc-biblioref">1933</a>)</span> schreibt dazu “Wir haben die eigentlichen Objekte unserer weiteren Betrachtungen - die zufälligen Ereignisse - als Mengen definiert.” Dies hat den Vorteil, dass Mengen mathematische Objekte sind, mit denen mathematisch gearbeitet werden kann und damit ein Aspekt der Wirklichkeit, ein “zufälliges Ereignis”, in den Modellbereich der Mathematik übersetzt wurde.</p>
+<p>Alleiniger Sinn des <em>Ereignissystems <span class="math inline">\(\mathcal{A}\)</span></em> ist es nun, alle Ereignisse, die sich basierend auf einer gegebenen Ergebnismenge bei Auswahl eines <span class="math inline">\(\omega \in \Omega\)</span> ergeben können, mathematisch zu repräsentieren. Es soll also keine Ereignisse in der Wirklichkeit geben, die nicht im Vorhinein im Wahrscheinlichkeitsraummodells des Zufallsvorgangs mitgedacht wurden. Wäre dies der Fall, so wäre das Modell defizitär, da es für bestimmte, in der Wirklichkeit eintretende Ergeignisse keine Wahrscheinlichkeiten angeben könnte. Das Ereignissystem <span class="math inline">\(\mathcal{A}\)</span> soll also die vollständige Menge aller möglichen Ereignisse bei vorgegebenem <span class="math inline">\(\Omega\)</span> sein. Die Forderung, dass <span class="math inline">\(\mathcal{A}\)</span> zu diesem Zweck die sogenannten <span class="math inline">\(\sigma\)</span>-Algebra Kriterien erfüllen soll, begründet sich dabei intuitiv wie folgt.</p>
+<ul>
+<li>Es soll zunächst einmal sichergestellt sein, dass <span class="math inline">\(\omega \in \Omega\)</span> für ein beliebiges <span class="math inline">\(\omega\)</span>, dass also irgendein Ergebnis realisiert wird, eines der möglichen Ereignisse ist. Dies entspricht der Eigenschaft <span class="math inline">\(\Omega \in \mathcal{A}\)</span>.</li>
+<li>Zu jedem Ereignis soll es weiterhin auch möglich sein, dass dieses Ereignis gerade nicht eintritt. Dies entspricht der Eigenschaft, dass aus <span class="math inline">\(A \in \mathcal{A}\)</span> folgen soll, dass <span class="math inline">\(A^c := \Omega \setminus A\)</span> auch in <span class="math inline">\(\mathcal{A}\)</span> ist. Dies impliziert insbesondere auch, dass <span class="math inline">\(\emptyset = \Omega \setminus \Omega \in \mathcal{A}\)</span>. Ein Ereignis ist also, dass kein Elementarereignis eintritt, allerdings passiert dies nur mit Wahrscheinlichkeit Null, <span class="math inline">\(\mathbb{P}(\emptyset) = 0\)</span>. Es tritt also sicher immer zumindest ein Elementarereignis ein.</li>
+<li>Schließlich soll die Kombination von Ereignissen auch immer ein Ereignis sein. Bei der Modellierung des Werfen eines Würfels soll also zum Beispiel neben den Ereignissen “Es fällt eine gerade Zahl” und “Es fällt eine Zahl größer Zwei” auch das Ereignis “Es fällt eine gerade Zahl und/oder diese Zahl ist größer als Zwei” ein Ereignis sein. Dies entspricht, in allgemeinster Form, dass aus <span class="math inline">\(A_1,A_2,... \in \mathcal{A}\)</span> folgen soll, dass auch <span class="math inline">\(\cup_{i=1}^\infty A_i \in \mathcal{A}\)</span> ist.</li>
+</ul>
+<p>Wenn auch die Begriffe des Ereignissystems und der <span class="math inline">\(\sigma\)</span>-Algebra etwas abstrakt anmuten mögen, so stellt ihre Definition in der praktischen Modellierung von Zufallsvorgängen meist keine großen Herausforderung dar, da sowohl für endliche Ergebnismengen als auch für unendliche (abzählbare und überabzählbare) Ergebnismengen passende Ereignissysteme schon lange bekannt sind. So erfüllt bei Ergebnismengen mit endlicher Kardinalität die Potenzmenge der Ergebnismenge immer die Anforderungen eines Ereignissystems und kann immer zur Modellformulierung eines Zufallsvorgangs mit endlicher Ergebnismenge genutzt werden. Dies ist die Aussage folgenden Theorems.</p>
+<div id="thm-ereignissystem-bei-endlicher-ergebnismenge" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 9.1 (Ereignissystem bei endlicher Ergebnismenge) </strong></span><span class="math inline">\(\Omega := \{\omega_1,\omega_2,...,\omega_n\}\)</span> mit <span class="math inline">\(n \in \mathbb{N}\)</span> sei eine endliche Menge. Dann ist die Potenzmenge <span class="math inline">\(\mathcal{P}(\Omega)\)</span> von <span class="math inline">\(\Omega\)</span> eine <span class="math inline">\(\sigma\)</span>-Algebra auf <span class="math inline">\(\Omega\)</span> und damit ein geeignetes Ereignisssytem im Wahrscheinlichkeitsraummodell.</p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Beweis</em>. </span>Die Potenzmenge von <span class="math inline">\(\Omega\)</span> ist die Menge aller Teilmengen von <span class="math inline">\(\Omega\)</span>. Wir überprüfen die <span class="math inline">\(\sigma\)</span>-Algebra Eigenschaften. Zunächst gilt, dass <span class="math inline">\(\Omega\)</span> selbst eine der Teilmengen von <span class="math inline">\(\Omega\)</span> ist, also ist die erste <span class="math inline">\(\sigma\)</span>-Algebra Eigenschaft erfüllt. Sei nun <span class="math inline">\(A\)</span> eine Teilmenge von <span class="math inline">\(\Omega\)</span>. Dann ist auch <span class="math inline">\(A^c = \Omega \setminus A\)</span> eine Teilmenge von <span class="math inline">\(\Omega\)</span> und somit ist auch die zweite <span class="math inline">\(\sigma\)</span>-Algebra Eigenschaft erfüllt. Schließlich betrachten wir die Vereinigung von <span class="math inline">\(n\)</span> Teilmengen <span class="math inline">\(A_1, A_2, ...,A_n \subseteq \Omega\)</span>. Dann ist <span class="math inline">\(\cup_{i=1}^n A_i\)</span> die Menge der <span class="math inline">\(\omega \in \Omega\)</span> für die gilt, dass <span class="math inline">\(\omega \in A_1\)</span> und/oder <span class="math inline">\(\omega \in A_2\)</span> … und/oder <span class="math inline">\(\omega \in A_n\)</span>. Da für alle diese <span class="math inline">\(\omega\)</span> gilt, dass <span class="math inline">\(\omega \in \Omega\)</span> ist also auch <span class="math inline">\(\cup_{i=1}^n A_i\)</span> eine Teilmenge von <span class="math inline">\(\Omega\)</span> und damit auch die dritte <span class="math inline">\(\sigma\)</span>-Algebra Eigenschaft erfüllt. Die Potenzmenge erfüllt also die geforderten Eigenschaften an ein Ereignissystem.</p>
+</div>
+<p>Bei überabzählbaren Ergebnismengen wie den reellen Zahlen <span class="math inline">\(\mathbb{R}\)</span> oder dem <span class="math inline">\(n\)</span>-dimensionalen reellen Raum <span class="math inline">\(\mathbb{R}^n\)</span> ist die Konstruktion eines geeigneten Ereignissystems komplexer, so dass wir in dieser Hinsicht für formale Entwicklungen auf die weiterführende Literatur verweisen wollen (z.B. <span class="citation" data-cites="meintrup2005">Meintrup &amp; Schäffler (<a href="#ref-meintrup2005" role="doc-biblioref">2005</a>)</span>, <span class="citation" data-cites="schmidt2009">Schmidt (<a href="#ref-schmidt2009" role="doc-biblioref">2009</a>)</span>). Mit der auf <span class="citation" data-cites="borel1898">Borel (<a href="#ref-borel1898" role="doc-biblioref">1898</a>)</span> zurückgehenden sogenannten <em>Borelschen <span class="math inline">\(\sigma\)</span>-Algebra</em> ist jedoch ein Mengensystem bekannt, das den Anforderungen einer <span class="math inline">\(\sigma\)</span>-Algebra auf überabzähbaren Ergebnismengen genügt. Wir bezeichnen die Borelsche <span class="math inline">\(\sigma\)</span>-Algebra auf <span class="math inline">\(\mathbb{R}^n\)</span> mit <span class="math inline">\(\mathcal{B}(\mathbb{R})\)</span> und die Borelsche <span class="math inline">\(\sigma\)</span>-Algebra auf <span class="math inline">\(\mathbb{R}^n\)</span> mit <span class="math inline">\(\mathcal{B}(\mathbb{R}^n)\)</span>. Als Menge von Teilmengen von <span class="math inline">\(\mathbb{R}\)</span> bzw. <span class="math inline">\(\mathbb{R}^n\)</span> enthalten <span class="math inline">\(\mathcal{B}(\mathbb{R})\)</span> bzw. <span class="math inline">\(\mathcal{B}(\mathbb{R}^n)\)</span> alle Mengen, an denen man hinsichtlich ihrer durch <span class="math inline">\(\mathbb{P}\)</span> zugeordneten Wahrscheinlichkeit interessiert sein mag. Intuitiv mag man sich die Borelschen <span class="math inline">\(\sigma\)</span>-Algebren <span class="math inline">\(\mathcal{B}(\mathbb{R})\)</span> und <span class="math inline">\(\mathcal{B}(\mathbb{R}^n)\)</span> also als die Potenzmengen von <span class="math inline">\(\mathbb{R}\)</span> bzw. <span class="math inline">\(\mathbb{R}^n\)</span> denken, auch wenn dies formal falsch ist. Tatsächlich enthält die Borelsche <span class="math inline">\(\sigma\)</span>-Algebra nur Teilmengen, die durch abzählbare Mengenoperationen generiert werden, nicht aber durch überabzählbare.</p>
+<p>Insgesamt ergibt sich also folgendes Vorgehen zur Auswahl von Ereignissystemen in Abhängigkeit von der Ergebnismenge <span class="math inline">\(\Omega\)</span>. Ist <span class="math inline">\(\Omega\)</span> endlich, so wählt man als Ereignissystem <span class="math inline">\(\mathcal{A}\)</span> die Potenzmenge <span class="math inline">\(\mathcal{P}(\Omega)\)</span> von <span class="math inline">\(\Omega\)</span>. Ist <span class="math inline">\(\Omega\)</span> gegeben durch <span class="math inline">\(\mathbb{R}\)</span>, so wählt man als Ereignissystem <span class="math inline">\(\mathcal{A}\)</span> die Borelsche <span class="math inline">\(\sigma\)</span>-Algebra <span class="math inline">\(\mathcal{B}(\mathbb{R})\)</span>. Ist <span class="math inline">\(\Omega\)</span> schließlich gegeben durch <span class="math inline">\(\mathbb{R}^n\)</span>, so wählt man für <span class="math inline">\(\mathcal{A}\)</span> die Borelsche <span class="math inline">\(\sigma\)</span>-Algebra <span class="math inline">\(\mathcal{B}(\mathbb{R}^n)\)</span>. In Spezialfällen und für sehr spezielle Ergebnismengen <span class="math inline">\(\Omega\)</span> mag man von diesem Vorgehen abweichen wollen, allgemein decken die drei betrachteten Fälle jedoch die meisten Anwendungen ab.</p>
+</section>
+<section id="wahrscheinlichkeitsmaß-mathbbp" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="wahrscheinlichkeitsmaß-mathbbp">Wahrscheinlichkeitsmaß <span class="math inline">\(\mathbb{P}\)</span></h3>
+<p>Mit <span class="math inline">\(\Omega\)</span> und <span class="math inline">\(\mathcal{A}\)</span>, die in Tupleform <span class="math inline">\((\Omega,\mathcal{A})\)</span> auch als <em>Messraum</em> bezeichnet werden, haben wir bisher die <em>strukturelle Basis</em> eines Wahrscheinlichkeitsraummodells genauer betrachtet. Viele Wahrscheinlichkeitsräume, zum Beispiel für Zufallsvorgänge die reellen Zahlen betreffend, sind hinsichtlich ihres Messraums identisch. Das <em>Wahrscheinlichkeitsmaß</em> <span class="math inline">\(\mathbb{P}\)</span> nun repräsentiert die probabilistischen Charakteristika eines Wahrscheinlichkeitsraummodells und formt damit die <em>funktionelle Basis</em> eines Wahrscheinlichkeitsraummmodells. Wir werden im Folgenden, insbesondere nach Einführung der Begriffe der Zufallsvariablen und Zufallsvektoren, sehr viele verschiedene Wahrscheinlichkeitsmaße kennenlernen. An dieser Stelle wollen wir zunächst nur allgemeine Eigenschaften von Wahrscheinlichkeitsmaßen betrachten.</p>
+<p>Mit der Definition <span class="math display">\[\begin{equation}
+\mathbb{P}: \mathcal{A} \to [0,1], A \mapsto \mathbb{P}(A)
+\end{equation}\]</span> gilt zunächst einmal, dass ein Wahrscheinlichkeitsmaß auf einer Menge von Mengen definiert ist und den Elementen dieser Menge, also den Mengen <span class="math inline">\(A \in \mathcal{A}\)</span>, Wahrscheinlichkeiten, also Werte im Intervall <span class="math inline">\([0,1]\)</span>, zuordnet. Natürlich gilt mit <span class="math inline">\(\{\omega\} \in \mathcal{A}\)</span> für alle <span class="math inline">\(\omega \in \Omega\)</span>, dass <span class="math inline">\(\mathbb{P}\)</span> auch den Elementareignissen Wahrscheinlichkeiten zuordnet, aber eben nicht nur. Wir betonen auch, dass nach Definition die Wahrscheinlichkeit <span class="math inline">\(\mathbb{P}(A)\)</span> eines Ereignisses <span class="math inline">\(A \in \mathcal{A}\)</span> eine Zahl im Intervall <span class="math inline">\([0,1]\)</span> ist und nicht etwa eine Prozentzahl oder ein Verhältnis. Wir wollen nachfolgend die definierenden Eigenschaften der <em>Nicht-Negativität</em>, der <em>Normiertheit</em> und der <em><span class="math inline">\(\sigma\)</span>-Additivität</em> von <span class="math inline">\(\mathbb{P}\)</span> näher beleuchten.</p>
+<p>Die <em>Nicht-Negativität</em> <span class="math inline">\(\mathbb{P}(A) \ge 0\)</span> für alle <span class="math inline">\(A \in \mathcal{A}\)</span> ist natürlich in der Definition <span class="math inline">\([0,1]\)</span> der Zielmenge von <span class="math inline">\(\mathbb{P}\)</span> implizit. Tatsächlich ist die Abbildungsform von <span class="math inline">\(\mathbb{P}\)</span> eine von uns vorgenommene Ergänzung der Formulierung von <span class="citation" data-cites="kolmogoroff1933">Kolmogoroff (<a href="#ref-kolmogoroff1933" role="doc-biblioref">1933</a>)</span>, die der Klarheit dienen soll. Formal folgt die Form der Zielmenge von <span class="math inline">\(\mathbb{P}\)</span> eigentlich aus den definierenden Eigenschaften der Nicht-Negativität, Normiertheit, und <span class="math inline">\(\sigma\)</span>-Additivität von <span class="math inline">\(\mathbb{P}\)</span>.</p>
+<p>Die <em>Normiertheit</em> <span class="math inline">\(\mathbb{P}(\Omega) = 1\)</span> entspricht der Tatsache, dass in jedem Durchgang eines Zufallsvorgangs sicher gilt, dass ein realisiertes <span class="math inline">\(\omega\)</span> ein Element von <span class="math inline">\(\Omega\)</span> ist. In jedem Durchgang eines Zufallsvorgangs tritt also ein Elementarereignis ein und, je nach Beschaffenheit des Messraums, noch viele weitere. Beim Modell des Werfen eines Würfels gilt also, dass das in einem Durchgang des Zufallsvorgangs realisierte Ergebnis/Elementarereignis mit Wahrscheinlichkeit <span class="math inline">\(1\)</span> ein Element von <span class="math inline">\(\Omega := \{1,2,3,4,5,6\}\)</span> ist. Ist das realisierte Ergebnis zum Beispiel eine Eins, so treten neben dem Ereignis “Es fällt eine Eins” auch noch die Ereignisse “Eine ungerade Zahl fällt”, “Eine Zahl kleiner als Drei fällt”, “Eine ungerade Zahl kleiner als Drei fällt” und viele weitere ein.</p>
+<p>Die <em><span class="math inline">\(\sigma\)</span>-Additivität des Wahrscheinlichkeitsmaßes <span class="math inline">\(\mathbb{P}\)</span></em> schließlich bildet das Fundament der <em>Wahrscheinlichkeitsrechnung</em>, also die Grundlage für das Rechnen mit Wahrscheinlichkeiten. Die <span class="math inline">\(\sigma\)</span>-Additivität von <span class="math inline">\(\mathbb{P}\)</span> erlaubt es nämlich, aus bereits bekannten Ereigniswahrscheinlichkeiten die Wahrscheinlichkeiten anderer Ereignisse zu berechnen. Man kann damit basierend auf einer Definition von <span class="math inline">\(\Omega, \mathcal{A}\)</span> und <span class="math inline">\(\mathbb{P}\)</span> also Wahrscheinlichkeiten für alle möglichen Ereignisse eines Wahrscheinlichkeitsraummodells berechnen. Ob diese Wahrscheinlichkeiten nun aber tatsächlich etwas mit den realen Ereignissen bezüglich eines Zufallsvorgangs der Wirklichkeit zu tun haben, kommt darauf an, ob die Modellierung einigermaßen gelungen ist oder nicht. Dabei werden berechnete Wahrscheinlichkeiten aber zumindest rational, also nach den Regeln der Vernunft, d.h. der Logik und der Mathematik, bestimmt. Insgesamt erlaubt das Wahrscheinlichkeitsmodell damit das schlussfolgernde Nachdenken über mit Unsicherheit behaftete Phänomene.</p>
+<p>Wir wollen abschließend das auf der <span class="math inline">\(\sigma\)</span>-Addivitität von <span class="math inline">\(\mathbb{P}\)</span> beruhende Rechnen mit Wahrscheinlichkeiten noch an zwei grundlegenden Beispielen verdeutlichen.</p>
+<p>Das erste Beispiel besagt, dass die Wahrscheinlichkeit dafür, dass das in einem Durchgang eines Zufallsvorgangs realisierte <span class="math inline">\(\omega\)</span> kein Element der Ergebnismenge ist, gleich Null ist.</p>
+<div id="thm-wahrscheinlichkeit-des-unmöglichen-ereignisses" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 9.2 (Wahrscheinlichkeit des unmöglichen Ereignisses) </strong></span><span class="math inline">\((\Omega, \mathcal{A}, \mathbb{P})\)</span> sei ein Wahrscheinlichkeitsraum. Dann gilt <span class="math display">\[\begin{equation}
+\mathbb{P}(\emptyset) = 0.
+\end{equation}\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Beweis</em>. </span>Für <span class="math inline">\(i = 1,2,...\)</span> sei <span class="math inline">\(A_i := \emptyset\)</span>. Dann ist <span class="math inline">\(A_1,A_2,...\)</span> eine Folge disjunkter Ereignisse, weil gilt, dass <span class="math inline">\(\emptyset \cap \emptyset = \emptyset\)</span> und es ist <span class="math inline">\(\cup_{i=1}^\infty A_i = \emptyset\)</span>. Mit der <span class="math inline">\(\sigma\)</span>-Additivität von <span class="math inline">\(\mathbb{P}\)</span> folgt dann, dass <span class="math display">\[\begin{equation}
+\mathbb{P}(\emptyset)
+= \mathbb{P}\left(\cup_{i=1}^\infty A_i\right)
+= \sum_{i=1}^\infty \mathbb{P}\left(A_i\right)
+= \sum_{i=1}^\infty \mathbb{P}\left(\emptyset\right).
+\end{equation}\]</span> Das unendliche Aufaddieren der Zahl <span class="math inline">\(\mathbb{P}(\emptyset) \in [0,1]\)</span> soll also wieder <span class="math inline">\(\mathbb{P}(\emptyset)\)</span> ergeben. Dies ist aber nur möglich, wenn <span class="math inline">\(\mathbb{P}(\emptyset) = 0\)</span>.</p>
+</div>
+<p>Man beachte, dass hier intuitiv natürlich eine mögliche Unzulänglichkeit des Wahrscheinlichkeitsraums als Modell für Zufallsvorgänge in der Wirklichkeit auftritt: Fällt beim Würfelspiel der Würfel zum Beispiel unerreichbar unter das Sofa, so ist ein Elementarereignis <span class="math inline">\(\omega \notin \Omega\)</span> eingetreten, obwohl seine modellierte Wahrscheinlichkeit gleich Null ist.</p>
+<p>Als zweites Beispiel wollen wir zeigen, dass die <span class="math inline">\(\sigma\)</span>-Additivät, die in der Definition des Wahrscheinlichkeitsraums (nur) für die Vereinigung unendlich vieler disjunkter Ereignisse definiert ist, die <span class="math inline">\(\sigma\)</span>-Additivät endlich vieler disjunkter Ereignisse, wie sie in in der Anwendung oft vorkommen, impliziert.</p>
+<div id="thm-sigma-additivität-bei-endlichen-folgen-disjunkter-ereignisse" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 9.3 (<span class="math inline">\(\sigma\)</span>-Additivität bei endlichen Folgen disjunkter Ereignisse) </strong></span><span class="math inline">\((\Omega, \mathcal{A}, \mathbb{P})\)</span> sei ein Wahrscheinlichkeitsraum und <span class="math inline">\(A_1,...,A_n\)</span> sei eine endliche Folge paarweise disjunkter Ereignisse. Dann gilt <span class="math display">\[\begin{equation}
+\mathbb{P}(\cup_{i=1}^n A_i) = \sum_{i=1}^n \mathbb{P}(A_i).
+\end{equation}\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Beweis</em>. </span>Wir betrachten eine unendliche Folge von paarweise disjunkten Ereignissen <span class="math inline">\(A_1, A_2, ...\)</span> wobei für ein <span class="math inline">\(n\in \mathbb{N}\)</span> gelten soll, dass <span class="math inline">\(A_i := \emptyset\)</span> für <span class="math inline">\(i&gt;n\)</span>. Dann gilt mit der <span class="math inline">\(\sigma\)</span>-Additivität von <span class="math inline">\(\mathbb{P}\)</span> zunächst, dass <span class="math display">\[\begin{equation}
+\mathbb{P}\left(\cup_{i=1}^n A_i\right)
+= \mathbb{P}\left(\cup_{i=1}^\infty A_i\right)
+= \sum_{i=1}^\infty \mathbb{P}\left(A_i\right)
+= \sum_{i=1}^n \mathbb{P}\left(A_i\right) + \sum_{i=n+1}^\infty \mathbb{P}\left(A_i\right).
+\end{equation}\]</span> Mit <span class="math inline">\(\mathbb{P}\left(A_i\right) = \mathbb{P}(\emptyset) = 0\)</span> für <span class="math inline">\(i = n+1, n+2,...\)</span> folgt dann direkt <span class="math display">\[\begin{equation}
+\mathbb{P}\left(\cup_{i=1}^n A_i\right)
+= \sum_{i=1}^n \mathbb{P}\left(A_i\right) + 0
+= \sum_{i=1}^n \mathbb{P}\left(A_i\right).
+\end{equation}\]</span></p>
+</div>
+</section>
+</section>
+<section id="sec-wahrscheinlichkeitsfunktionen" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="sec-wahrscheinlichkeitsfunktionen"><span class="header-section-number">9.2</span> Wahrscheinlichkeitsfunktionen</h2>
+<p>In diesem Abschnitt wollen wir mit den <em>Wahrscheinlichkeitsfunktionen</em> eine erste Möglichkeit kennenlernen, für Wahrscheinlichkeitsräume mit endlicher Ergebnismenge Wahrscheinlichkeitsmaße festzulegen. In <a href="#sec-beispiele-bei-endlichem-ergebnisraum"><span>Kapitel&nbsp;9.3</span></a> nutzen wir dieses Hilfsmittel intensiv, um erste Beispiele für die Modellierung von Zufallsvorgängen mithilfe von Wahrscheinlichkeitsräumen geben zu können. Wir definieren den Begriff der Wahrscheinlichkeitsfunktion wie folgt.</p>
+<div id="def-wahrscheinlichkeitsfunktion" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 9.2 (Wahrscheinlichkeitsfunktion) </strong></span><span class="math inline">\(\Omega\)</span> sei eine endliche Menge. Dann heißt eine Funktion <span class="math inline">\(\pi:\Omega \to [0,1]\)</span> <em>Wahrscheinlichkeitsfunktion</em>, wenn gilt, dass <span class="math display">\[\begin{equation}
+\sum_{\omega \in \Omega} \pi(\omega) = 1.
+\end{equation}\]</span> Sei weiterhin <span class="math inline">\(\mathbb{P}\)</span> ein Wahrscheinlichkeitsmaß. Dann heißt die durch <span class="math display">\[\begin{equation}
+\pi : \Omega \to [0,1], \omega \mapsto \pi(\omega) := \mathbb{P}(\{\omega\})
+\end{equation}\]</span> definierte Funktion <em>Wahrscheinlichkeitsfunktion</em> von <span class="math inline">\(\mathbb{P}\)</span> auf <span class="math inline">\(\Omega\)</span>.</p>
+</div>
+<p>Wir merken an, dass weil <span class="math inline">\(\mathbb{P}\)</span> per Definition <span class="math inline">\(\sigma\)</span>-additiv ist, insbesondere auch gilt, dass <span class="math display">\[\begin{equation}
+\mathbb{P}(\Omega)
+= \mathbb{P}(\cup_{\omega \in \Omega}\{\omega\})
+= \sum_{\omega \in \Omega}\mathbb{P}(\{\omega\})
+= \sum_{\omega \in \Omega}\pi(\omega)
+= 1.
+\end{equation}\]</span> Zur Konstruktion von Wahrscheinlichkeitsmaßen durch Wahrscheinlichkeitsfunktionen stellt folgendes Theorem die formale Basis bereit. Es besagt insbesondere, dass bei endlichem <span class="math inline">\(\Omega\)</span> die Wahrscheinlichkeiten <em>aller</em> möglichen Ereignisse aus den Wahrscheinlichkeiten der Elementarereignisse <span class="math inline">\(\pi(\omega)\)</span> berechnet werden können.</p>
+<div id="thm-definition-eines-w-maßes-durch-eine-wahrscheinlichkeitsfunktion" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 9.4 </strong></span><span class="math inline">\((\Omega, \mathcal{A}, \mathbb{P})\)</span> sei ein Wahrscheinlichkeitsraum mit endlicher Ergebnismenge und <span class="math inline">\(\pi: \Omega \to [0,1]\)</span> sei eine Wahrscheinlichkeitsfunktion. Dann existiert ein Wahrscheinlichkeitsmaß <span class="math inline">\(\mathbb{P}\)</span> auf <span class="math inline">\(\Omega\)</span> mit <span class="math inline">\(\pi\)</span> als Wahrscheinlichkeitsfunktion von <span class="math inline">\(\mathbb{P}\)</span>. Dieses Wahrscheinlichkeitsmaß ist definiert als <span class="math display">\[\begin{equation}
+\mathbb{P} : \mathcal{A} \to [0,1], A \mapsto \mathbb{P}(A) := \sum_{\omega \in A} \pi(\omega).
+\end{equation}\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Beweis</em>. </span>Wir überprüfen zunächst die Wahrscheinlichkeitsmaßeigenschaften von <span class="math inline">\(\mathbb{P}\)</span>. Weil <span class="math inline">\(\pi(\omega) \in [0,1]\)</span> für alle <span class="math inline">\(\omega \in \Omega\)</span>, gilt auch immer <span class="math inline">\(\sum_{\omega \in A} \pi(\omega) \ge 0\)</span> und damit die Nicht-Negativität von <span class="math inline">\(\mathbb{P}\)</span>. Ferner folgt wie oben gesehen mit der Normiertheit von <span class="math inline">\(\pi\)</span> direkt die Normiertheit von <span class="math inline">\(\mathbb{P}\)</span>. Seien nun <span class="math inline">\(A_1, A_2,... \in \mathcal{A}\)</span>. Dann gilt <span class="math display">\[\begin{equation}
+\mathbb{P}\left(\cup_{i=1}^\infty A_i \right)
+= \sum_{\omega \in \cup_{i=1}^\infty A_i} \pi(\omega)
+= \sum_{i = 1}^\infty \sum_{\omega \in A_i} \pi(\omega)
+= \sum_{i = 1}^\infty \mathbb{P}(A_i).
+\end{equation}\]</span> und damit die <span class="math inline">\(\sigma\)</span>-Addivität von <span class="math inline">\(\mathbb{P}\)</span>.</p>
+</div>
+<p>Definiert man also für eine gegebene Ergebnismenge <span class="math inline">\(\Omega\)</span> eine Funktion <span class="math inline">\(\pi : \Omega \to [0,1]\)</span> und stellt sicher, dass sich die Funktionswerte <span class="math inline">\(\pi(\omega)\)</span> über alle <span class="math inline">\(\omega \in \Omega\)</span> hinweg zu 1 summieren und interpretiert den einzelnen Funktionswert <span class="math inline">\(\pi(\omega)\)</span> dann als die Wahrscheinlichkeit <span class="math inline">\(\mathbb{P}(\{\omega\})\)</span> des Elementarereignisses <span class="math inline">\(\{\omega\} \in \mathcal{A}\)</span>, so hat man ein Wahrscheinlichkeitsmaß konstruiert.</p>
+</section>
+<section id="sec-beispiele-bei-endlichem-ergebnisraum" class="level2" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="sec-beispiele-bei-endlichem-ergebnisraum"><span class="header-section-number">9.3</span> Beispiele bei endlichem Ergebnisraum</h2>
+<p>Aus dem bis hierin Gesagtem lässt sich nun zusammenfassend folgendes Vorgehen zur Modellierung eines Zufallsvorganges mithilfe eines Wahrscheinlichkeitsraums <span class="math inline">\((\Omega, \mathcal{A}, \mathbb{P})\)</span> festhalten:</p>
+<ol type="1">
+<li><p>In einem ersten Schritt überlegt man sich eine sinnvolle Definition der Ergebnismenge <span class="math inline">\(\Omega\)</span>, also der Ergebnisse bzw. Elementarereignisse, die in jedem Durchgang des Zufallsvorgangs realisiert werden sollen.</p></li>
+<li><p>In einem zweiten Schritt wählt man dann ein geignetes Ereignissystem; im Falle einer endlichen Ergebnismenge bietet sich die Potenzmenge <span class="math inline">\(\mathcal{P}(\Omega)\)</span> an, im Falle der überabzählbaren Ergebnismenge <span class="math inline">\(\Omega := \mathbb{R}\)</span> bietet sich die Borelsche <span class="math inline">\(\sigma\)</span>-Algebra <span class="math inline">\(\mathcal{B}(\mathbb{R})\)</span> an.</p></li>
+<li><p>Schließlich definiert man ein Wahrscheinlichkeitsmaß <span class="math inline">\(\mathbb{P}\)</span>, das die Wahrscheinlichkeiten für das Auftreten aller möglichen Ereignisse repräsentiert. Im Falle einer endlichen Ergebnismenge gelingt dies inbesondere durch Definition der Wahrscheinlichkeiten der Elementarereignisse. In der Folge verdeutlichen wir dieses Vorgehen anhand von Beispielen. Im Falle der überabzählbaren Ergebnismenge <span class="math inline">\(\Omega := \mathbb{R}\)</span> bietet sich die Definition von <span class="math inline">\(\mathbb{P}\)</span> mithilfe von Wahrscheinlichkeitsdichtefunktionen an, wie wir später sehen werden.</p></li>
+</ol>
+<section id="würfeln-mit-einem-würfel" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="würfeln-mit-einem-würfel">Würfeln mit einem Würfel</h3>
+<p>Wir modellieren das Würfeln mit einem Würfel. Es ist sicherlich sinnvoll, die Ergebnismenge als <span class="math inline">\(\Omega := \{1,2,3,4,5,6\}\)</span> zu definieren. Allerdings wäre auch die Definition von <span class="math inline">\(\Omega := \{ \cdot, \cdot\cdot, \cdot\cdot\cdot, \cdot\cdot\cdot\cdot, \cdot\cdot\cdot\cdot\cdot, \cdot\cdot\cdot\cdot\cdot\cdot \}\)</span> in äquivalenter Weise möglich.</p>
+<p>Da es sich um eine endliche Ergebnismenge handelt, wählen wir als <span class="math inline">\(\sigma\)</span>-Algebra <span class="math inline">\(\mathcal{A}\)</span> die Potenzmenge <span class="math inline">\(\mathcal{P}(\Omega)\)</span>. <span class="math inline">\(\mathcal{A}\)</span> enthält dann automatisch alle möglichen Ereignisse. Die Kardinalität von <span class="math inline">\(\mathcal{A} := \mathcal{P}(\Omega)\)</span> ist <span class="math inline">\(|\mathcal{P}(\Omega)| = 2^{|\Omega|} = 2^6 = 64\)</span>. In untenstehender Tabelle listen wir sechs dieser 64 Ereignisse in ihrer verbalen Beschreibung und als Teilmenge <span class="math inline">\(A\)</span> von <span class="math inline">\(\Omega\)</span> auf.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>Ausgewählte Ereignisse beim Modell des Werfen eines Würfels.</caption>
+<colgroup>
+<col style="width: 61%">
+<col style="width: 38%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Beschreibung</th>
+<th style="text-align: left;">Mengenform</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Es fällt eine beliebige Augenzahl</td>
+<td style="text-align: left;"><span class="math inline">\(\omega \in A = \Omega\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Keine Augenzahl fällt</td>
+<td style="text-align: left;"><span class="math inline">\(\omega \in A = \emptyset\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Es fällt eine Augenzahl größer als 4</td>
+<td style="text-align: left;"><span class="math inline">\(\omega \in A = \{5,6\}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Es fällt eine gerade Augenzahl</td>
+<td style="text-align: left;"><span class="math inline">\(\omega \in A = \{2,4,6\}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Es fällt eine Sechs</td>
+<td style="text-align: left;"><span class="math inline">\(\omega \in A = \{6\}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Eine Eins, eine Drei oder eine Sechs fällt</td>
+<td style="text-align: left;"><span class="math inline">\(\omega \in A = \{1,3,6\}\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Damit ist die Definition des Messraum <span class="math inline">\((\Omega, \mathcal{A})\)</span> in der Modellierung des Werfens eines Würfels abgeschlossen.</p>
+<p>Wie in <a href="#sec-wahrscheinlichkeitsfunktionen"><span>Kapitel&nbsp;9.2</span></a> beschrieben kann das Wahrscheinlichkeitsmaß <span class="math inline">\(\mathbb{P}\)</span> durch Festlegung von <span class="math inline">\(\mathbb{P}(\{\omega\})\)</span> für alle <span class="math inline">\(\omega \in \Omega\)</span> festgelegt werden. Für das Modell eines unverfälschten Würfels würde man <span class="math display">\[\begin{equation}
+\mathbb{P}(\{\omega\}) := \frac{1}{|\Omega|} := 1/6 \mbox{ für alle } \omega \in \Omega
+\end{equation}\]</span> wählen. Für ein Modell eines verfälschten Würfels, der das Werfen einer Sechs bevorzugt, könnte man zum Beispiel definieren, dass <span class="math display">\[\begin{equation}
+\mathbb{P}(\{\omega\}) := \frac{1}{8} \mbox{ für } \omega \in \{1,2,3,4,5\}
+\mbox{ und }
+\mathbb{P}(\{6\}) := \frac{3}{8}.
+\end{equation}\]</span> Im Fall des unverfälschten Würfel ergibt sich beispielsweise die Wahrscheinlichkeit für das Ereignis “Es fällt eine gerade Augenzahl” mit der <span class="math inline">\(\sigma\)</span>-Additivät von <span class="math inline">\(\mathbb{P}\)</span> dann zu <span class="math display">\[\begin{equation}
+\mathbb{P}(\{2,4,6\})
+= \mathbb{P}(\{2\} \cup \{4\} \cup \{6\} )
+= \mathbb{P}(\{2\}) + \mathbb{P}(\{4\}) + \mathbb{P}(\{6\})
+= \frac{1}{6} + \frac{1}{6} +  \frac{1}{6}
+= \frac{3}{6}.
+\end{equation}\]</span> Im Fall des obigen Modells eines verfälschten Würfels ergibt sich für das gleiche Ereignis die Wahrscheinlichkeit zu <span class="math display">\[\begin{equation}
+\mathbb{P}(\{2,4,6\})
+= \mathbb{P}(\{2\} \cup \{4\} \cup \{6\} )
+= \mathbb{P}(\{2\}) + \mathbb{P}(\{4\}) + \mathbb{P}(\{6\})
+= \frac{1}{8} + \frac{1}{8} +  \frac{3}{8}
+= \frac{5}{8}.
+\end{equation}\]</span> Das betrachtete Ereignis hat im Modell des verfälschten Würfels eine höhere Wahrscheinlichkeit als im Modell des unverfälschten Würfels, was intuitiv sinnvoll ist, da die Sechs eine gerade Zahl ist.</p>
+</section>
+<section id="gleichzeitiges-würfeln-mit-einem-blauem-und-einem-roten-würfel" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="gleichzeitiges-würfeln-mit-einem-blauem-und-einem-roten-würfel">Gleichzeitiges Würfeln mit einem blauem und einem roten Würfel</h3>
+<p>Wir wollen nun das gleichzeitige Werfen eines blauen und eines roten Würfels modellieren. Dazu ist es sinnvoll, die Ergebnismenge als <span class="math display">\[\begin{equation}
+\Omega := \{(r,b)| r \in \{1,2,3,4,5,6\}, b \in \{1,2,3,4,5,6\}\}
+\end{equation}\]</span> mit Kardinalität <span class="math inline">\(|\Omega| = 36\)</span> zu definieren, wobei <span class="math inline">\(r\)</span> die Augenzahl des blauen Würfels und <span class="math inline">\(b\)</span> die Augenzahl des roten Würfels repräsentieren soll.</p>
+<p>Wiederum bietet sich die Wahl der Potenzmenge von <span class="math inline">\(\Omega\)</span> als <span class="math inline">\(\sigma\)</span>-Algebra an, wir definieren also wieder <span class="math inline">\(\mathcal{A} := \mathcal{P}(\Omega)\)</span>. Die Anzahl der in diesem Modell möglichen Ereignisse ergibt sich zu <span class="math inline">\(|\mathcal{A}| = 2^{|\Omega|} = 2^{36} = 68.719.476.736\)</span>. In untenstehender Tabelle listen wir sechs dieser Ereignisse in ihrer verbalen Beschreibung und als Teilmenge <span class="math inline">\(A\)</span> von <span class="math inline">\(\Omega\)</span> auf.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>Ausgewählte Ereignisse beim Modell des Werfens eines roten und eines blauen Würfels.</caption>
+<colgroup>
+<col style="width: 41%">
+<col style="width: 58%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Beschreibung</th>
+<th style="text-align: left;">Mengenform</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Auf dem roten Würfel fällt eine Drei</td>
+<td style="text-align: left;"><span class="math inline">\(\omega \in A = \{(3,1),(3,2),(3,3),(3,4),(3,5),(3,6)\}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Auf dem blauen Würfel fällt eine Drei</td>
+<td style="text-align: left;"><span class="math inline">\(\omega \in A = \{(1,3),(2,3),(3,3),(4,3),(5,3),(6,3)\}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Auf beiden Würfeln fällt eine Drei</td>
+<td style="text-align: left;"><span class="math inline">\(\omega \in A = \{(3,3)\}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Es fällt eine Pasch</td>
+<td style="text-align: left;"><span class="math inline">\(\omega \in A = \{(1,1),(2,2),(3,3),(4,4),(5,5),(6,6)\}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Die Summe der gefallenen Zahlen ist Vier</td>
+<td style="text-align: left;"><span class="math inline">\(\omega \in A = \{(1,3),(3,1),(2,2)\}\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Die Definition des Messraum <span class="math inline">\((\Omega, \mathcal{A})\)</span> ist damit abgeschlossen. Ein Wahrscheinlichkeitsmaß <span class="math inline">\(\mathbb{P}\)</span> kann wiederum durch Definition von <span class="math inline">\(\mathbb{P}(\{\omega\})\)</span> für alle <span class="math inline">\(\omega \in \Omega\)</span> festgelegt werden. Für das Modell zweier unverfälschter Würfel würde man <span class="math display">\[\begin{equation}
+\mathbb{P}(\{\omega\}) := \frac{1}{|\Omega|} = \frac{1}{36} \mbox{ für alle } \omega \in \Omega
+\end{equation}\]</span> wählen. Unter diesem Wahrscheinlichkeitsmaß ergibt sich dann beispielsweise die Wahrscheinlichkeit für das Ereignis “Die Summe der gefallenen Zahlen ist Vier” mit der <span class="math inline">\(\sigma\)</span>-Additivät von <span class="math inline">\(\mathbb{P}\)</span> zu <span class="math display">\[\begin{align*}
+\begin{split}
+\mathbb{P}\left(\{(1,3),(3,1),(2,2)\}\right)
+&amp; = \mathbb{P}\left(\{(1,3)\}\cup \{(3,1)\} \cup \{(2,2)\}\right) \\
+&amp; = \mathbb{P}\left(\{(1,3)\}\right)
+  + \mathbb{P}\left(\{(3,1)\}\right)
+  + \mathbb{P}\left(\{(2,2)\}\right) \\
+&amp; = 1/36 + 1/36 + 1/36                  \\
+&amp; = 1/12.
+\end{split}
+\end{align*}\]</span></p>
+</section>
+<section id="werfen-einer-münze" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="werfen-einer-münze">Werfen einer Münze</h3>
+<p>Wir modellieren das Werfen einer Münze, deren eine Seite Kopf (Heads) und deren andere Seite Zahl (Tails) zeigt. Es ist sinnvoll, die Ergebnismenge als <span class="math inline">\(\Omega := \{H,T\}\)</span> zu definieren, wobei <span class="math inline">\(H\)</span> “Heads” und <span class="math inline">\(T\)</span> “Tails” repräsentiert. Allerdings wäre auch jede andere binäre Definition von <span class="math inline">\(\Omega\)</span> möglich, z.B. <span class="math inline">\(\Omega := \{0,1\}, \Omega := \{-1,1\}\)</span>, oder <span class="math inline">\(\Omega := \{1,2\}\)</span>.</p>
+<p>Die Potenzmenge <span class="math inline">\(\mathcal{A} := \mathcal{P}(\Omega)\)</span> enthält alle möglichen Ereignisse. In diesem Fall können wir das gesamte Mengensystem <span class="math inline">\(\mathcal{A}\)</span> leicht, wie in untenstehender Tabelle gezeigt, komplett auflisten.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>Ereignissystem <span class="math inline">\(\mathcal{A}\)</span> beim Modell des Werfens einer Münze.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Beschreibung</th>
+<th style="text-align: left;">Mengenform</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Weder Kopf noch Zahl fällt</td>
+<td style="text-align: left;"><span class="math inline">\(\omega \in A = \emptyset\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Kopf fällt</td>
+<td style="text-align: left;"><span class="math inline">\(\omega \in A = \{H\}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Zahl fällt</td>
+<td style="text-align: left;"><span class="math inline">\(\omega \in A = \{T\}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Kopf oder Zahl fällt</td>
+<td style="text-align: left;"><span class="math inline">\(\omega \in A = \{H,T\}\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Die Definition des Messraums <span class="math inline">\((\Omega, \mathcal{A})\)</span> ist damit abgeschlossen.</p>
+<p>Ein Wahrscheinlichkeitsmaß <span class="math inline">\(\mathbb{P}\)</span> kann wiederum durch Definition von <span class="math inline">\(\mathbb{P}(\{\omega\})\)</span> für alle <span class="math inline">\(\omega \in \Omega\)</span> festgelegt werden. Die Normiertheit von <span class="math inline">\(\Omega\)</span> bedingt hier insbesondere, dass <span class="math display">\[\begin{equation}
+\mathbb{P}(\Omega) = 1
+\Leftrightarrow
+\mathbb{P}(\{H\}) + \mathbb{P}(\{T\})  = 1
+\Leftrightarrow
+\mathbb{P}(\{T\}) = 1 - \mathbb{P}(\{H\}).
+\end{equation}\]</span> Bei Festlegung der Wahrscheinlichkeit des Elementarereignisses <span class="math inline">\(\{H\}\)</span> wird also die Wahrscheinlichkeit des Elementarereignis <span class="math inline">\(\{T\}\)</span> sofort mit festgelegt, andersherum gilt dies natürlich ebenso. Für das Modell einer fairen Münze würde man <span class="math inline">\(\mathbb{P}(\{H\}) = \mathbb{P}(\{T\}) := 1/2\)</span> wählen. Die Wahrscheinlichkeiten aller möglichen Ereignisse ergeben sich in diesem Fall zu <span class="math display">\[\begin{equation}
+\mathbb{P}(\emptyset) = 0,
+\mathbb{P}(\{H\}) = 1/2,
+\mathbb{P}(\{T\}) = 1/2 \mbox{ und }
+\mathbb{P}(\{H,T\}) = 1.
+\end{equation}\]</span></p>
+</section>
+<section id="zweifaches-werfen-einer-münze" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="zweifaches-werfen-einer-münze">Zweifaches Werfen einer Münze</h3>
+<p>Wir modellieren das zweifache Werfen einer Münzen. Basierend auf dem Modell des einfachen Münzwurfs ist es sinnvoll, die Ergebnismenge als <span class="math inline">\(\Omega := \{HH,HT,TH,TT\}\)</span> zu definieren. Die Potenzmenge <span class="math inline">\(\mathcal{A} := \mathcal{P}(\Omega)\)</span> enthält wiederum alle <span class="math inline">\(2^{|\Omega|} = 2^4 = 16\)</span> möglichen Ereignisse. In untenstehender Tabelle listen wir vier davon.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>Ausgewählte Ereignisse beim Modell des zweifachen Werfens einer Münze.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Beschreibung</th>
+<th style="text-align: left;">Mengenform</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Kopf fällt im ersten Wurf</td>
+<td style="text-align: left;"><span class="math inline">\(\omega \in A = \{HH,HT\}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Kopf fällt im zweiten Wurf</td>
+<td style="text-align: left;"><span class="math inline">\(\omega \in A = \{HH,TH\}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Kopf fällt nicht</td>
+<td style="text-align: left;"><span class="math inline">\(\omega \in A = \{TT\}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Zahl fällt mindestens einmal</td>
+<td style="text-align: left;"><span class="math inline">\(\omega \in A = \{HT, TH, TT\}\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Die Definition des Messraum <span class="math inline">\((\Omega, \mathcal{A})\)</span> ist damit abgeschlossen. Ein Wahrscheinlichkeitsmaß <span class="math inline">\(\mathbb{P}\)</span> kann wiederum durch Definition von <span class="math inline">\(\mathbb{P}(\{\omega\})\)</span> für alle <span class="math inline">\(\omega \in \Omega\)</span> festgelegt werden. Für das Modell des zweifachen Werfens einer fairen Münze würde man <span class="math display">\[\begin{equation}
+\mathbb{P}(\{HH\}) = \mathbb{P}(\{HT\}) = \mathbb{P}(\{TH\})= \mathbb{P}(\{TT\}) := \frac{1}{4}
+\end{equation}\]</span> definieren.</p>
+</section>
+</section>
+<section id="literaturhinweise" class="level2" data-number="9.4">
+<h2 data-number="9.4" class="anchored" data-anchor-id="literaturhinweise"><span class="header-section-number">9.4</span> Literaturhinweise</h2>
+<p>Die Monographie “Grundbegriffe der Wahrscheinlichkeitsrechnung” von Andrey Kolmogorov (<span class="citation" data-cites="kolmogoroff1933">Kolmogoroff (<a href="#ref-kolmogoroff1933" role="doc-biblioref">1933</a>)</span>) symbolisiert die Grundlage der modernen Wahrscheinlichkeitsrechnung. Neben der hier diskutierten axiomatischen Einführung des Wahrscheinlichkeitsraummodells betrachtet <span class="citation" data-cites="kolmogoroff1933">Kolmogoroff (<a href="#ref-kolmogoroff1933" role="doc-biblioref">1933</a>)</span> noch viele weitere Aspekte der Wahrscheinlichkeitrechnung und bietet so einen gut lesbaren Einstieg in das gesamte Gebiet der Wahrscheinlichkeitstheorie. Natürlich ist der von <span class="citation" data-cites="kolmogoroff1933">Kolmogoroff (<a href="#ref-kolmogoroff1933" role="doc-biblioref">1933</a>)</span> formulierte Zugang nur ein vorläufiges Endprodukt der langen geschichtlichen Entwicklung der Wahrscheinlichkeitstheorie. Schließlich ist die Entwicklung der mathematischen Modellierung von Zufallvorgängen auch mit <span class="citation" data-cites="kolmogoroff1933">Kolmogoroff (<a href="#ref-kolmogoroff1933" role="doc-biblioref">1933</a>)</span> keinesfalls an einem Ende angelangt. Spätere Arbeiten im 20. Jahrhundert betrafen insbesondere die Interpretation des Wahrscheinlichkeitsbegriffs (vgl. <span class="citation" data-cites="definetti1975">De Finetti (<a href="#ref-definetti1975" role="doc-biblioref">1975</a>)</span>) oder führen verallgemeinerte quantitative Maße subjektiver Unsicherheit ein (vgl. <span class="citation" data-cites="walley1991">Walley (<a href="#ref-walley1991" role="doc-biblioref">1991</a>)</span>). Einen aktuellen Überblick zur Interpretation des Wahrscheinlichkeitsbegriffs und seiner formalen Grundlagen gibt <span class="citation" data-cites="hajek2019">Hájek (<a href="#ref-hajek2019" role="doc-biblioref">2019</a>)</span>.</p>
+</section>
+<section id="selbstkontrollfragen" class="level2" data-number="9.5">
+<h2 data-number="9.5" class="anchored" data-anchor-id="selbstkontrollfragen"><span class="header-section-number">9.5</span> Selbstkontrollfragen</h2>
+<ol type="1">
+<li>Geben Sie die Definition des Begriffs der <span class="math inline">\(\sigma\)</span>-Algebra wieder.</li>
+<li>Geben Sie die Definition des Begriffs des Wahrscheinlichkeitsmaßes wieder.</li>
+<li>Geben Sie die Definition des Begriffs des Wahrscheinlichkeitsraums wieder.</li>
+<li>Erläutern Sie den Begriff der Ergebnismenge <span class="math inline">\(\Omega\)</span>.</li>
+<li>Erläutern Sie die stillschweigende Mechanik des Wahrscheinlichkeitsraummodells.</li>
+<li>Erläutern Sie den Begriff eines Ereignisses <span class="math inline">\(A \in \mathcal{A}\)</span>.</li>
+<li>Erläutern Sie den Begriff des Ereignissystems <span class="math inline">\(\mathcal{A}\)</span>.</li>
+<li>Welche <span class="math inline">\(\sigma\)</span>-Algebra wählt man sinnvoller Weise für einen Wahrscheinlichkeitsraum mit endlicher Ergebnismenge?</li>
+<li>Erläutern Sie den Begriff des Wahrscheinlichkeitsmaßes <span class="math inline">\(\mathbb{P}\)</span>.</li>
+<li>Geben Sie die Definition des Begriffs der Wahrscheinlichkeitsfunktion wieder.</li>
+<li>Warum ist der Begriff der Wahrscheinlichkeitsfunktion bei der Modellierung eines Zufallsvorgans durch einen Wahrscheinlichkeitsraums mit endlicher Ergebnismenge hilfreich?</li>
+<li>Erläutern Sie die Modellierung des Werfens eines Würfels mithilfe eines Wahrscheinlichkeitsraums.</li>
+<li>Erläutern Sie die Modellierung des gleichzeitigen Werfens eines roten und eines blauen Würfels mithilfe eines Wahrscheinlichkeitsraums. </li>
+</ol>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list">
+<div id="ref-borel1898" class="csl-entry" role="listitem">
+Borel, É. (1898). <em>Le<span>ç</span>ons Sur La Th<span>é</span>orie Des Fonctions</em>. <span>Paris: Gauthier Villars</span>.
+</div>
+<div id="ref-definetti1975" class="csl-entry" role="listitem">
+De Finetti, B. (1975). <em>Theory of Probability</em>. <span>John Wiley &amp; Sons</span>.
+</div>
+<div id="ref-hajek2019" class="csl-entry" role="listitem">
+Hájek, A. (2019). Interpretations of Probability. In E. N. Zalta (Hrsg.), <em>The <span>Stanford</span> Encyclopedia of Philosophy</em> (Fall 2019). <span>Metaphysics Research Lab, Stanford University</span>.
+</div>
+<div id="ref-kolmogoroff1933" class="csl-entry" role="listitem">
+Kolmogoroff, A. (1933). <em><span>Grundbegriffe der Wahrscheinlichkeitsrechnung</span></em>. <span>Springer Berlin Heidelberg</span>. <a href="https://doi.org/10.1007/978-3-642-49888-6">https://doi.org/10.1007/978-3-642-49888-6</a>
+</div>
+<div id="ref-meintrup2005" class="csl-entry" role="listitem">
+Meintrup, D., &amp; Schäffler, S. (2005). <em><span>Stochastik: Theorie und Anwendungen</span></em>. <span>Springer</span>.
+</div>
+<div id="ref-schmidt2009" class="csl-entry" role="listitem">
+Schmidt, K. D. (2009). <em><span>Ma<span>ß</span> und Wahrscheinlichkeit</span></em>. <span>Springer</span>.
+</div>
+<div id="ref-walley1991" class="csl-entry" role="listitem">
+Walley, P. (1991). <em>Statistical Reasoning with Imprecise Probabilities</em> (1st ed). <span>Chapman and Hall</span>.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Kopiert");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Kopiert");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./200-Wahrscheinlichkeitstheorie.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Wahrscheinlichkeitstheorie</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./Referenzen.html" class="pagination-link">
+        <span class="nav-page-text">Referenzen</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>
