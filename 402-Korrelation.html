@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Probabilistische Datenwissenschaft für die Psychologie - 26&nbsp; Korrelation</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./Referenzen.html" rel="next">
+<link href="./401-Regression.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "Keine Treffer",
+    "search-matching-documents-text": "Treffer",
+    "search-copy-link-title": "Link in die Suche kopieren",
+    "search-hide-matches-text": "Zusätzliche Treffer verbergen",
+    "search-more-match-text": "weitere Treffer in diesem Dokument",
+    "search-more-matches-text": "weitere Treffer in diesem Dokument",
+    "search-clear-button-title": "Zurücksetzen",
+    "search-detached-cancel-button-title": "Abbrechen",
+    "search-submit-button-title": "Abschicken",
+    "search-label": "Suchen"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./401-Regression.html">Das Allgemeine Lineare Modell</a></li><li class="breadcrumb-item"><a href="./402-Korrelation.html"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Korrelation</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Probabilistische Datenwissenschaft für die Psychologie</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="./Probabilistische-Datenwissenschaft-für-die-Psychologie.pdf" rel="" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Suchen"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Willkommen</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Vorwort.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Vorwort</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Mathematische Grundlagen</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./101-Sprache-und-Logik.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Sprache und Logik</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./102-Mengen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Mengen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./103-Summen-Produkte-Potenzen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Summen, Produkte, Potenzen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./104-Funktionen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Funktionen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./105-Differentialrechnung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Differentialrechnung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./106-Folgen-Grenzwerte-Stetigkeit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Folgen, Grenzwerte, Stetigkeit</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./107-Integralrechnung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Integralrechnung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./108-Vektoren.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Vektoren</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./109-Matrizen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Matrizen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./110-Eigenanalyse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Eigenanalyse</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./200-Wahrscheinlichkeitstheorie.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Wahrscheinlichkeitstheorie</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./201-Wahrscheinlichkeitsräume.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Wahrscheinlichkeitsräume</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./202-Elementare-Wahrscheinlichkeiten.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Elementare Wahrscheinlichkeiten</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./203-Zufallsvariablen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Zufallsvariablen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./204-Zufallsvektoren.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Zufallsvektoren</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./205-Erwartungswerte.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Erwartungswerte</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./206-Ungleichungen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Ungleichungen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./207-Grenzwerte.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Grenzwerte</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./208-Transformationstheoreme.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Transformationstheoreme</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./209-Normalverteilungstransformationen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Normalverteilungstransformationen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./210-Multivariate-Normalverteilungen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Multivariate Normalverteilungen</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Frequentistische Inferenz</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./301-Grundbegriffe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Grundbegriffe</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./302-Punktschätzung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Punktschätzung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./303-Konfidenzintervalle.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Konfidenzintervalle</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./304-Hypothesentests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Hypothesentests</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Das Allgemeine Lineare Modell</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./401-Regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Regression</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./402-Korrelation.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Korrelation</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Referenzen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Referenzen</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Inhaltsverzeichnis</h2>
+   
+  <ul>
+  <li><a href="#sec-grundlagen" id="toc-sec-grundlagen" class="nav-link active" data-scroll-target="#sec-grundlagen"><span class="header-section-number">26.1</span> Grundlagen</a></li>
+  <li><a href="#sec-korrelation-und-bestimmtheitsmass" id="toc-sec-korrelation-und-bestimmtheitsmass" class="nav-link" data-scroll-target="#sec-korrelation-und-bestimmtheitsmass"><span class="header-section-number">26.2</span> Korrelation und Bestimmheitsmaß</a></li>
+  <li><a href="#sec-korrelation-und-linear-affine-abhaengigkeit" id="toc-sec-korrelation-und-linear-affine-abhaengigkeit" class="nav-link" data-scroll-target="#sec-korrelation-und-linear-affine-abhaengigkeit"><span class="header-section-number">26.3</span> Korrelation und linear-affine Abhängigkeit</a></li>
+  <li><a href="#literaturhinweise" id="toc-literaturhinweise" class="nav-link" data-scroll-target="#literaturhinweise"><span class="header-section-number">26.4</span> Literaturhinweise</a></li>
+  <li><a href="#selbstkontrollfragen" id="toc-selbstkontrollfragen" class="nav-link" data-scroll-target="#selbstkontrollfragen"><span class="header-section-number">26.5</span> Selbstkontrollfragen</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/402-Korrelation.qmd" class="toc-action">Seite editieren</a></p></div></div></nav>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-korrelation" class="quarto-section-identifier"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Korrelation</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>Die Konzepte der Regression und der Korrelation sind eng miteinander verwoben und dienen letztlich der Quantifizierung linear-affiner Abhängigkeiten zwischen unabhängigen und abhängigen Variablen. Ein zentrales Thema dieses Abschnittes sind damit die Äquivalenzen zwischen beiden Konzepten. Im Gegensatz zur Regression werden bei der Korrelation sowohl die abhängige als auch die unabhängige Variable als Zufallsvariablen modelliert, die probabilistische Komplexität der Korrelation ist also etwas höher als die der Regression und des Allgemeinen Linearen Modells. Um uns den Zusammenhängen von Regression und Korrelation zu nähern, erinnern wir <a href="#sec-grundlagen"><span>Kapitel&nbsp;26.1</span></a> zunächst an den Begriff und die Mechanik der Stichprobenkorrelation. In Kapitel <a href="#sec-korrelation-und-bestimmtheitsmass"><span>Kapitel&nbsp;26.2</span></a> widmen wir uns anhand der <span class="math inline">\(\mathrm{R}^2\)</span> Statistik dem Zusammenhang zwischen Stichprobenkorrelation und Ausgleichsgerade und geben ein erstes Beispiel für die Idee einer Varianzzerlegung. In Kapitel <a href="#sec-korrelation-und-linear-affine-abhaengigkeit"><span>Kapitel&nbsp;26.3</span></a> schließlich diskutieren wir erste Aspekte zum Verständnis der Stichprobenkorrelation im probabilistischen Kontext. Als Anwendungsbeispiel betrachten wir durchgängig den in <a href="401-Regression.html"><span>Kapitel&nbsp;25</span></a> eingeführten Beispieldatensatz zum Zusammenhang von Psychotherapiedauer und Symptomreduktion.</p>
+<section id="sec-grundlagen" class="level2" data-number="26.1">
+<h2 data-number="26.1" class="anchored" data-anchor-id="sec-grundlagen"><span class="header-section-number">26.1</span> Grundlagen</h2>
+<p>Wir erinnern zunächst an den Begriff der Korrelation zweier Zufallsvariablen.</p>
+<div id="def-korrelation" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 26.1 (Korrelation) </strong></span>Die Korrelation zweier Zufallsvariablen <span class="math inline">\(\xi\)</span> und <span class="math inline">\(\upsilon\)</span> ist definiert als <span class="math display">\[\begin{equation}
+\rho(\xi, \upsilon):=\frac{\mathbb{C}(\xi, \upsilon)}{\mathbb{S}(\xi) \mathbb{S}(\upsilon)}
+\end{equation}\]</span> wobei <span class="math inline">\(\mathbb{C}(\xi, \upsilon)\)</span> die Kovarianz von <span class="math inline">\(\xi\)</span> und <span class="math inline">\(\upsilon\)</span> und <span class="math inline">\(\mathbb{S}(\xi)\)</span> und <span class="math inline">\(\mathbb{S}(\upsilon)\)</span> die Standardabweichungen von <span class="math inline">\(\xi\)</span> und <span class="math inline">\(\upsilon\)</span>, respektive, bezeichnen.</p>
+</div>
+<p>Die Zahl <span class="math inline">\(\rho(\xi, \upsilon)\)</span> wird auch Korrelationskoeffizient von <span class="math inline">\(\xi\)</span> und <span class="math inline">\(\upsilon\)</span> genannt. Wir haben bereits gesehen, dass <span class="math inline">\(-1 \leq \rho(\xi, \upsilon) \leq 1\)</span> gilt und dass <span class="math inline">\(\xi\)</span> und <span class="math inline">\(\upsilon\)</span> unkorreliert genannt werden, wenn <span class="math inline">\(\rho(\xi, \upsilon)=0\)</span> ist. Weiterhin haben wir bereits gesehen, dass aus der Unabhängigkeit der Zufallsvariablen <span class="math inline">\(\xi\)</span> und <span class="math inline">\(\upsilon\)</span> immer die Unkorreliertheit von <span class="math inline">\(\xi\)</span> und <span class="math inline">\(\upsilon\)</span> folgt, dass aber im Allgemeinen aus der Unkorreliertheit von <span class="math inline">\(\xi\)</span> und <span class="math inline">\(\upsilon\)</span> nicht die Unabhängigkeit von <span class="math inline">\(\xi\)</span> und <span class="math inline">\(\upsilon\)</span> folgt.</p>
+<p>Liegen von zwei Zufallsvariablen Realisationen als ein bivariater Datensatz vor, so kann man anhand folgender Definition die realisationsspezifische Stichprobenkorrelation bestimmen.</p>
+<div id="def-stichprobenkorrelation" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 26.2 (Stichprobenkorrelation) </strong></span><span class="math inline">\(\left\{\left(x_{1}, y_{1}\right), \ldots,\left(x_{n}, y_{n}\right)\right\} \subset \mathbb{R}^{2}\)</span> sei ein Datensatz. Weiterhin seien:</p>
+<ul>
+<li>Die Stichprobenmittel der <span class="math inline">\(x_{i}\)</span> und <span class="math inline">\(y_{i}\)</span> definiert als <span class="math display">\[\begin{equation}
+\bar{x}:=\frac{1}{n} \sum_{i=1}^{n} x_{i} \mbox{ und } \bar{y}:=\frac{1}{n} \sum_{i=1}^{n} y_{i}
+\end{equation}\]</span></li>
+<li>Die Stichprobenstandardabweichungen <span class="math inline">\(x_{i}\)</span> und <span class="math inline">\(y_{i}\)</span> definiert als <span class="math display">\[\begin{equation}
+s_{x}:=\sqrt{\frac{1}{n-1} \sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)^{2}} \mbox{ und } s_{y}:=\sqrt{\frac{1}{n-1} \sum_{i=1}^{n}\left(y_{i}-\bar{y}\right)^{2}} .
+\end{equation}\]</span></li>
+<li>Die Stichprobenkovarianz der <span class="math inline">\(\left(x_{1}, y_{1}\right), \ldots,\left(x_{n}, y_{n}\right)\)</span> definiert als <span class="math display">\[\begin{equation}
+c_{x y}:=\frac{1}{n-1} \sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)\left(y_{i}-\bar{y}\right)
+\end{equation}\]</span></li>
+</ul>
+<p>Dann ist die <em>Stichprobenkorrelation</em> der <span class="math inline">\(\left(x_{1}, y_{1}\right), \ldots,\left(x_{n}, y_{n}\right)\)</span> definiert als <span class="math display">\[\begin{equation}
+r_{x y}:=\frac{c_{x y}}{s_{x} s_{y}}
+\end{equation}\]</span> und wird auch <em>Pearson’s Stichprobenkorrelationskoeffizient</em> genannt.</p>
+</div>
+<p>Folgender <strong>R</strong> Code wertet die Stichprobenkorrelation des Beispieldatensatzes aus.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># Laden des Beispieldatensatzes</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a>fname <span class="ot">=</span> <span class="st">"./_data/402-korrelation.csv"</span>                                           <span class="co"># Dateipfad</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a>D     <span class="ot">=</span> <span class="fu">read.table</span>(fname, <span class="at">sep =</span> <span class="st">","</span>, <span class="at">header =</span> <span class="cn">TRUE</span>)                             <span class="co"># Laden als Dataframe</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a>x_i   <span class="ot">=</span> D<span class="sc">$</span>x_i                                                                   <span class="co"># x_i Werte</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a>y_i   <span class="ot">=</span> D<span class="sc">$</span>y_i                                                                   <span class="co"># y_i Werte</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a>n     <span class="ot">=</span> <span class="fu">length</span>(x_i)                                                             <span class="co"># n</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a></span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="co"># "Manuelle" Berechnung der Stichprobenkorrelation</span></span>
+<span id="cb1-9"><a href="#cb1-9"></a>x_bar <span class="ot">=</span> (<span class="dv">1</span><span class="sc">/</span>n)<span class="sc">*</span><span class="fu">sum</span>(x_i)                                                          <span class="co"># \bar{x}</span></span>
+<span id="cb1-10"><a href="#cb1-10"></a>y_bar <span class="ot">=</span> (<span class="dv">1</span><span class="sc">/</span>n)<span class="sc">*</span><span class="fu">sum</span>(y_i)                                                          <span class="co"># \bar{y}</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a>s_x   <span class="ot">=</span> <span class="fu">sqrt</span>(<span class="dv">1</span><span class="sc">/</span>(n<span class="dv">-1</span>)<span class="sc">*</span><span class="fu">sum</span>((x_i <span class="sc">-</span> x_bar)<span class="sc">^</span><span class="dv">2</span>))                                      <span class="co"># s_x</span></span>
+<span id="cb1-12"><a href="#cb1-12"></a>s_y   <span class="ot">=</span> <span class="fu">sqrt</span>(<span class="dv">1</span><span class="sc">/</span>(n<span class="dv">-1</span>)<span class="sc">*</span><span class="fu">sum</span>((y_i <span class="sc">-</span> y_bar)<span class="sc">^</span><span class="dv">2</span>))                                      <span class="co"># s_y</span></span>
+<span id="cb1-13"><a href="#cb1-13"></a>c_xy  <span class="ot">=</span> <span class="dv">1</span><span class="sc">/</span>(n<span class="dv">-1</span>) <span class="sc">*</span> <span class="fu">sum</span>((x_i <span class="sc">-</span> x_bar) <span class="sc">*</span> (y_i <span class="sc">-</span> y_bar))                            <span class="co"># c_{xy}</span></span>
+<span id="cb1-14"><a href="#cb1-14"></a>r_xy  <span class="ot">=</span> c_xy<span class="sc">/</span>(s_x <span class="sc">*</span> s_y)                                                        <span class="co"># r_{xy}</span></span>
+<span id="cb1-15"><a href="#cb1-15"></a><span class="fu">print</span>(r_xy)                                                                     <span class="co"># Ausgabe</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9378162</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># Automatische Berechnung mit cor()</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>r_xy  <span class="ot">=</span> <span class="fu">cor</span>(x_i,y_i)                                                             <span class="co"># r_{xy}</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="fu">print</span>(r_xy)                                                                      <span class="co"># Ausgabe</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9378162</code></pre>
+</div>
+</div>
+<p>Im Beispieldatensatz sind die Anzahl der Therapiestunden und die Symptomreduktion also mit <span class="math inline">\(r_{x y}=0.93\)</span> hoch korreliert. Allgemein spricht man bei absoluten Werten von <span class="math inline">\(r_{x y}\)</span> größer als etwa 0.70 von hoher Korrelation, bei absoluten Werten von <span class="math inline">\(r_{x y}\)</span> zwischen etwa 0.30 und 0.70 von mittlerer Korrelation und bei absoluten Werten von <span class="math inline">\(r_{x y}\)</span> zwischen 0.00 und 0.30 von niedriger Korrelation. Eine niedrige Korrelation zweier Variablen bedeutet aber nicht zwangsläufig, dass diese Korrelation irrelevant ist (man denke an Gesundheitsrisikofaktoren), genauso wenig wie eine hohe Korrelation zweier Variablen trivial sein kann (man denke an die Korrelation von Körpergröße und Schuhgröße).</p>
+<div id="fig-korrelationsterme" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="./_figures/402-korrelationsterme.png" class="img-fluid figure-img" style="width:70.0%"></p>
+<figcaption class="figure-caption">Abbildung&nbsp;26.1: Mechanik der Stichprobenkorrelationssummenterme.</figcaption>
+</figure>
+</div>
+<p>Da die Stichprobenkorrelation lediglich die auf das Intervall <span class="math inline">\([-1,1]\)</span> normalisierte Stichprobenkovarianz <span class="math inline">\(c_{x y}\)</span> ist, wird die Höhe der Stichprobenkorrelation und insbesondere ihr Vorzeichen entscheidend durch die Werte Stichprobenkovarianzsummenterme <span class="math inline">\(\left(x_{i}-\bar{x}\right)\left(y_{i}-\bar{y}\right)\)</span> bestimmt. Dabei ist es entscheidend, wie häufig über die Datenpaare <span class="math inline">\(\left(x_{i}, y_{i}\right)\)</span> hinweg die <span class="math inline">\(x_{i}\)</span> und <span class="math inline">\(y_{i}\)</span> gleichartig oder entgegengesetzt von ihren jeweiligen Stichprobenmitteln abweichen. Dies ist schematisch in <a href="#fig-korrelationsterme">Abbildung&nbsp;<span>26.1</span></a> dargestellt. Bei häufiger richtungsgleicher Abweichung von ihren jeweiligen Mittelwerten, sowohl in positiver als auch in negativer Richtung, ergibt das Produkt <span class="math inline">\(\left(x_{i}-\bar{x}\right)\left(y_{i}-\bar{y}\right)\)</span> eine positive Zahl, trägt also zu einer positiven Stichprobenkovarianz bei. Bei häufiger entgegengesetzter Abweichung von ihren jeweiligen Mittelwerten ergibt das Produkt <span class="math inline">\(\left(x_{i}-\bar{x}\right)\left(y_{i}-\bar{y}\right)\)</span> häufig eine negative Zahl, trägt also zu einer negativen Stichprobenkovarianz bei. Kommen sowohl richtungsgleiche als auch entgegengesetzte Abweichungen der <span class="math inline">\(x_{i}\)</span> und <span class="math inline">\(y_{i}\)</span> häufig vor, so gleichen sich positive und negative Beiträge zur Stichprobenkovarianzsumme eher aus und es resultiert eine geringe Stichprobenkovarianz bzw. ein Stichprobenkorrelationskoeffizient nahe Null. Abbildung 2.2 zeigt bivariate Datensätze von jeweils <span class="math inline">\(n=30\)</span> Datenpunkten zusammen mit ihren jeweiligen Stichprobenkorrelationskoeffizienten.</p>
+<p>Der Vorteil des Stichprobenkorrelationskoeffizienten gegenüber der Stichprobenkovarianz als Zusammenhangsmaß ist es, dass der absolute Wert des Stichprobenkorrelationskoeffizienten bei linear-affiner Transformation der zugrundeliegende Wertemenge gleich bleibt, wohingegen die Stichprobenkovarianz ihren Wert je nach gewähltem Maßstab ändert. Man sagt deshalb auch, dass der Stichprobenkorrelationkoeffizient maßstabsunabhängig ist. Dies ist die zentrale Aussage folgenden Theorems.</p>
+<div id="thm-stichprobenkorrelation-bei-linear-affiner-transformation" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 26.1 (Stichprobenkorrelation bei linear affiner Transformation) </strong></span>Für einen Datensatz <span class="math inline">\(\left\{\left(x_{i}, y_{i}\right)\right\}_{i=1, \ldots n} \subset \mathbb{R}^{2}\)</span> sei <span class="math inline">\(\left\{\left(\tilde{x}_{i}, \tilde{y}_{i}\right)\right\}_{i=1, \ldots n} \subset \mathbb{R}^{2}\)</span> der linear-affin transformierte Datensatz mit <span class="math display">\[\begin{equation}
+\left(\tilde{x}_{i}, \tilde{y}_{i}\right)=\left(a_{x} x_{i}+b_{x}, a_{y} y_{i}+b_{y}\right), a_{x}, a_{y} \neq 0 .
+\end{equation}\]</span> gegeben. Dann gilt <span class="math display">\[\begin{equation}
+\left|r_{\tilde{x} \tilde{y}}\right|=\left|r_{x y}\right| .
+\end{equation}\]</span></p>
+</div>
+<div id="fig-korrelationsbeispiele" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="./_figures/402-korrelationsbeispiele.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption class="figure-caption">Abbildung&nbsp;26.2: Beispiele bivariater Datensätze und ihrer Stichprobenkorrelationen.</figcaption>
+</figure>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Beweis</em>. </span><span class="math display">\[\begin{equation}
+\begin{aligned}
+r_{\tilde{x} \tilde{y}}
+&amp; :=\frac{\frac{1}{n-1} \sum_{i=1}^{n}\left(\tilde{x}_{i}-\bar{\tilde{x}}\right)\left(\tilde{y}_{i}-\bar{\tilde{y}}\right)}{\sqrt{\frac{1}{n-1}\left(\sum_{i=1}^{n} \tilde{x}_{i}-\bar{\tilde{x}}\right)^{2}} \sqrt{\frac{1}{n-1}\left(\sum_{i=1}^{n} \tilde{y}_{i}-\bar{\tilde{y}}\right)^{2}}} \\
+&amp; =\frac{\sum_{i=1}^{n}\left(a_{x} x_{i}+b_{x}-\left(a_{x} \bar{x}+b_{x}\right)\right)\left(a_{y} y_{i}+b_{y}-\left(a_{y} \bar{y}+b_{y}\right)\right)}{\sqrt{\sum_{i=1}^{n}\left(a_{x} x_{i}+b_{x}-\left(a_{x} \bar{x}+b_{x}\right)\right)^{2}} \sqrt{\sum_{i=1}^{n}\left(a_{y} y_{i}+b_{y}-\left(a_{y} \bar{y}+b_{y}\right)\right)^{2}}} \\
+&amp; =\frac{a_{x} a_{y} \sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)\left(y_{i}-\bar{y}\right)}{\sqrt{a_{x}^{2} \sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)^{2}} \sqrt{a_{y}^{2} \sum_{i=1}^{n}\left(y_{i}-\bar{y}\right)^{2}}} \\
+&amp; =\frac{a_{x} a_{y}}{\left|a_{x}\right|\left|a_{y}\right|} \frac{\sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)\left(y_{i}-\bar{y}\right)}{\sqrt{\sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)^{2}} \sqrt{\sum_{i=1}^{n}\left(y_{i}-\bar{y}\right)^{2}}} \\
+&amp; =\frac{a_{x} a_{y}}{\left|a_{x}\right|\left|a_{y}\right|} \frac{c_{x y}}{s_{x} s_{y}} \\
+&amp; =\frac{a_{x} a_{y}}{\left|a_{x}\right|\left|a_{y}\right|} r_{x y} .
+\end{aligned}
+\end{equation}\]</span> Also folgt, durch Durchspielen aller möglichen Vorzeichenfälle, dass <span class="math display">\[\begin{equation}
+\left|r_{\tilde{x} \tilde{y}}\right|=\left|r_{x y}\right| .
+\end{equation}\]</span></p>
+</div>
+</section>
+<section id="sec-korrelation-und-bestimmtheitsmass" class="level2" data-number="26.2">
+<h2 data-number="26.2" class="anchored" data-anchor-id="sec-korrelation-und-bestimmtheitsmass"><span class="header-section-number">26.2</span> Korrelation und Bestimmheitsmaß</h2>
+<p>Das sogenannte Bestimmtheitsmaß <span class="math inline">\(\mathrm{R}^{2}\)</span> ist eine beliebte, häufig reportierte Statistik zur Beschreibung der Zusammenhangsstärke der Werte einer unabhängigen und einer abhängigen Variable. Numerisch handelt es sich bei <span class="math inline">\(\mathrm{R}^{2}\)</span> lediglich um den quadrierten Stichprobenkorrelationskoeffizienten. Ist die seStichprobenkorrelation zum Beispiel <span class="math inline">\(r_{x y}=0.5\)</span>, dann ist <span class="math inline">\(\mathrm{R}^{2}=0.5^{2}=0.25\)</span>, ist die Stichprobenkorrelation dagegen <span class="math inline">\(r_{x y}=-0.5\)</span>, dann gilt analog <span class="math inline">\(\mathrm{R}^{2}=(-0.5)^{2}=0.25\)</span>. An diesen Beispielen erkennt man, dass <span class="math inline">\(\mathrm{R}^{2}\)</span> weniger Information über die Rohdaten enthält als <span class="math inline">\(r_{x y}\)</span>, da das Vorzeichen und damit die Richtung des Zusammenhangs wegfällt. Per se ist die Angabe von <span class="math inline">\(\mathrm{R}^{2}\)</span> anstelle von <span class="math inline">\(r_{x y}\)</span> als Deskriptivstatistik zur Beschreibung der Zusammenhangsstärke der Werte von unabhängiger und abhängiger Variable ohne Vorteil. Wir wollen hier trotzdem etwas genauer auf <span class="math inline">\(\mathrm{R}^{2}\)</span> eingehen, da ein tieferes Verständnis von <span class="math inline">\(\mathrm{R}^{2}\)</span> einerseits den Einstieg in das Konzept der Varianzzerlegungen erlaubt und andererseits die Zusammenhänge zwischen den Konzepten der Ausgleichsgerade und der Stichprobenkorrelation weiter verdeutlicht. Wir erweitern dazu zunächst die Beschreibung der Ausgleichsgerade aus <a href="401-Regression.html#sec-methode-der-kleinsten-quadrate"><span>Kapitel&nbsp;25.1</span></a> durch die Begriffe der erklärten Werte und der Residuen.</p>
+<div id="def-erklaerte-werte-und-residuen-einer-ausgleichsgerade" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 26.3 (Erklärte Werte und Residuen einer Ausgleichsgerade.) </strong></span>Gegeben sei ein Datensatz <span class="math inline">\(\left\{\left(x_{1}, y_{1}\right), \ldots,\left(x_{n}, y_{n}\right)\right\} \subset \mathbb{R}^{2}\)</span> und die zu diesem Datensatz gehörende Ausgleichsgerade <span class="math display">\[\begin{equation}
+f_{\hat{\beta}}: \mathbb{R} \rightarrow \mathbb{R}, x \mapsto f_{\hat{\beta}}(x):=\hat{\beta}_{0}+\hat{\beta}_{1} x
+\end{equation}\]</span> Dann werden für <span class="math inline">\(i=1, \ldots, n\)</span> <span class="math display">\[\begin{equation}
+\widehat{y}_{i}:=\hat{\beta}_{0}+\hat{\beta}_{1} x_{i}
+\end{equation}\]</span> die durch die Ausgleichsgerade <em>erklärten Werte</em> genannt und <span class="math display">\[\begin{equation}
+\hat{\varepsilon}_{i}:=y_{i}-\hat{y}_{i}
+\end{equation}\]</span> werden die <em>Residuen</em> der Ausgleichsgerade genannt.</p>
+</div>
+<p>Etwas allgemeiner formuliert sind die <em>erklärten Werte</em> damit die Datenvorhersage des Modells basierend auf den geschätzten Parameterwerten, während die Residuen die Differenzen zwischen den geschätzten Datenvorhersagen und den beobachteten Datenwerten bezeichnen. <a href="#fig-erklaerte-werte-und-residuen">Abbildung&nbsp;<span>26.3</span></a> verdeutlicht diese Begriffe am Beispiel der Ausgleichsgerade des Beispieldatensatzes.</p>
+<div id="fig-erklaerte-werte-und-residuen" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="./_figures/402-erklaerte-werte-und-residuen.png" class="img-fluid figure-img" style="width:60.0%"></p>
+<figcaption class="figure-caption">Abbildung&nbsp;26.3: Ausgleichsgerade, erklärte Werte und Residuen für den Beispieldatensatz..</figcaption>
+</figure>
+</div>
+<p>Mithilfe der Begriffe der erklärten Werte und Residuen lässt sich nun folgende Quadratsummenzerlegung beim Vorliegen einer Ausgleichsgerade eines Datensatzes angeben.</p>
+<div id="thm-quadratsummenzerlegung-bei-ausgleichsgerade" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 26.2 (Quadratsummenzerlegung bei Ausgleichsgerade) </strong></span>Für einen Datensatz <span class="math inline">\(\left\{\left(x_{1}, y_{1}\right), \ldots,\left(x_{n}, y_{n}\right)\right\} \subset \mathbb{R}^{2}\)</span> und seine zugehörige Ausgleichsgerade <span class="math inline">\(f_{\hat{\beta}}\)</span> seien für <span class="math display">\[\begin{equation}
+\bar{y}:=\frac{1}{n} \sum_{i=1}^{n} y_{i} \mbox{ und } \hat{y}_{i}:=\hat{\beta}_{0}+\hat{\beta}_{1} x_{i} \text {, für } i=1, \ldots, n
+\end{equation}\]</span> das Stichprobenmittel der <span class="math inline">\(y_{i}\)</span>-Werte und die durch die Ausgleichsgerade erklärten Werte, respektive. Weiterhin seien</p>
+<ul>
+<li>die Total Sum of Squares definiert als <span class="math display">\[\begin{equation}
+\mbox{SQT} := \sum_{i=1}^{n}\left(y_{i}-\bar{y}\right)^{2}
+\end{equation}\]</span></li>
+<li>die Explained Sum of Squares definiert als <span class="math display">\[\begin{equation}
+\mbox{SQE} := \sum_{i=1}^{n}\left(\widehat{y}_{i}-\bar{y}\right)^{2}
+\end{equation}\]</span></li>
+<li>die Residual Sum of Squares definiert als <span class="math display">\[\begin{equation}
+\mbox{SQR}  := \sum_{i=1}^{n}\left(y_{i}-\hat{y}_{i}\right)^{2}
+\end{equation}\]</span></li>
+</ul>
+<p>Dann gilt <span class="math display">\[\begin{equation}
+\mbox{SQT} = \mbox{SQE} + \mbox{SQR}
+\end{equation}\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Beweis</em>. </span><span class="math display">\[\begin{equation}
+\begin{aligned}
+\mathrm{SQT} &amp; =\sum_{i=1}^{n}\left(y_{i}-\bar{y}\right)^{2} \\
+&amp; =\sum_{i=1}^{n}\left(y_{i}-\hat{y}_{i}+\hat{y}_{i}-\bar{y}\right)^{2} \\
+&amp; =\sum_{i=1}^{n}\left(\left(y_{i}-\hat{y}_{i}\right)+\left(\hat{y}_{i}-\bar{y}\right)\right)^{2} \\
+&amp; =\sum_{i=1}^{n}\left(\left(y_{i}-\hat{y}_{i}\right)^{2}+2\left(y_{i}-\hat{y}_{i}\right)\left(\hat{y}_{i}-\bar{y}\right)+\left(\hat{y}_{i}-\bar{y}\right)^{2}\right) \\
+&amp; =\sum_{i=1}^{n}\left(\hat{y}_{i}-\bar{y}\right)^{2}+2 \sum_{i=1}^{n}\left(y_{i}-\hat{y}_{i}\right)\left(\hat{y}_{i}-\bar{y}\right)+\sum_{i=1}^{n}\left(y_{i}-\hat{y}_{i}\right)^{2} \\
+&amp; =\mathrm{SQE}+2 \sum_{i=1}^{n}\left(y_{i}-\hat{y}_{i}\right)\left(\hat{y}_{i}-\bar{y}\right)+\mathrm{SQR} \\
+&amp; =\mathrm{SQE}+\mathrm{SQR}
+\end{aligned}
+\end{equation}\]</span> Dabei ergibt sich die letzte Gleichung mit <span class="math display">\[\begin{equation}
+\bar{\hat{y}}:=\frac{1}{n} \sum_{i=1}^{n} \hat{y}_{i}=\frac{1}{n} \sum_{i=1}^{n}\left(\hat{\beta}_{0}+\hat{\beta}_{1} x_{i}\right)=\hat{\beta}_{0}+\hat{\beta}_{1} \bar{x}=\bar{y}-\hat{\beta}_{1} \bar{x}+\hat{\beta}_{1} \bar{x}=\bar{y}
+\end{equation}\]</span> und damit auch <span class="math display">\[\begin{equation}
+\bar{\hat{y}}=\bar{y} \Leftrightarrow \frac{1}{n} \sum_{i=1}^{n} \hat{y}_{i}=\frac{1}{n} \sum_{i=1}^{n} y_{i} \Leftrightarrow \sum_{i=1}^{n} \hat{y}_{i}=\sum_{i=1}^{n} y_{i} \Leftrightarrow \bar{y} \sum_{i=1}^{n} \hat{y}_{i}=\bar{y} \sum_{i=1}^{n} y_{i}
+\end{equation}\]</span> sowie <span class="math display">\[\begin{equation}
+\bar{\hat{y}}=\bar{y} \Leftrightarrow \frac{1}{n} \sum_{i=1}^{n} \hat{y}_{i}=\frac{1}{n} \sum_{i=1}^{n} y_{i} \Leftrightarrow \sum_{i=1}^{n} y_{i}=\sum_{i=1}^{n} \hat{y}_{i} \Leftrightarrow \sum_{i=1}^{n} y_{i} \hat{y}_{i}=\sum_{i=1}^{n} \hat{y}_{i} \hat{y}_{i}
+\end{equation}\]</span> aus <span class="math display">\[\begin{equation}
+\begin{aligned}
+\sum_{i=1}^{n}\left(y_{i}-\hat{y}_{i}\right)\left(\hat{y}_{i}-\bar{y}\right) &amp; =\sum_{i=1}^{n}\left(y_{i} \hat{y}_{i}-y_{i} \bar{y}-\hat{y}_{i} \hat{y}_{i}+\hat{y}_{i} \bar{y}\right) \\
+&amp; =\sum_{i=1}^{n} y_{i} \hat{y}_{i}-\sum_{i=1}^{n} y_{i} \bar{y}-\sum_{i=1}^{n} \hat{y}_{i} \hat{y}_{i}+\sum_{i=1}^{n} \hat{y}_{i} \bar{y} \\
+&amp; =\sum_{i=1}^{n} y_{i} \hat{y}_{i}-\sum_{i=1}^{n} \hat{y}_{i} \hat{y}_{i}+\bar{y} \sum_{i=1}^{n} \hat{y}_{i}-\bar{y} \sum_{i=1}^{n} y_{i} \\
+&amp; =0+0 \\
+&amp; =0
+\end{aligned}
+\end{equation}\]</span></p>
+</div>
+<p>Die Begriffsbildungen von <a href="#thm-quadratsummenzerlegung-bei-ausgleichsgerade">Theorem&nbsp;<span>26.2</span></a> erklären sich intuitiv wie folgt:</p>
+<ul>
+<li>SQT repräsentiert die Gesamtvariabilität der <span class="math inline">\(y_{i}\)</span>-Werte um ihren Mittelwert <span class="math inline">\(\bar{y}\)</span>.</li>
+<li>SQE repräsentiert die Variabilität der erklärten Werte <span class="math inline">\(\hat{y}_{i}\)</span> um ihren Mittelwert. Große Werte von SQE repräsentieren damit eine große absolute Steigung der <span class="math inline">\(y_{i}\)</span> mit den <span class="math inline">\(x_{i}\)</span> und kleine Werte von SQE repräsentieren eine kleine absolute Steigung der <span class="math inline">\(y_{i}\)</span> mit den <span class="math inline">\(x_{i}\)</span>. SQE ist somit ein Maß für die Stärke des linearen Zusammenhangs der <span class="math inline">\(x_{i^{-}}\)</span> und <span class="math inline">\(y_{i}\)</span>-Werte</li>
+<li>SQR ist die Summe der quadrierten Residuen, denn es gilt <span class="math display">\[\begin{equation}
+\mathrm{SQR}:=\sum_{i=1}^{n}\left(y_{i}-\hat{y}_{i}\right)^{2}:=\sum_{i=1}^{n} \hat{\varepsilon}_{i}^{2}
+\end{equation}\]</span></li>
+</ul>
+<p>Große Werte von SQR repräsentieren damit große Abweichungen der erklärten von den beobachteten <span class="math inline">\(y_{i}\)</span>-Werten und kleine Werte von SQR repräsentieren geringe Abweichungen der erklärten von den beobachteten <span class="math inline">\(y_{i}\)</span>-Werten. SQR ist also ein Maß für die Güte der Beschreibung der Datenmenge durch die Ausgleichsgerade.</p>
+<p>Die zentrale Aussage des Theorem 2.1 ist nun, dass sich die Gesamtstreung der <span class="math inline">\(y_{i}\)</span>-Werte um ihren Mittelwert <span class="math inline">\(\bar{y}\)</span> gerade aus der Summe der Stärke des linearen Zusammenhangs der <span class="math inline">\(x_{i^{-}}\)</span>und <span class="math inline">\(y_{i}\)</span>-Werte (also des “deterministischen Einflusses” der <span class="math inline">\(x_{i}\)</span> auf die <span class="math inline">\(y_{i}\)</span> ) sowie den den Abweichungen von diesem linearen Zusammenhang (also dem “Rauschen”) zusammensetzt. Obwohl es sich bei SQT formal nicht um ein Varianzmaß handelt, spricht man in diesem Zusammenhang auch oft von einer Varianzzerlegung in erklärte Varianz und Residualvarianz. Dieses Motiv ist ein zentraler Aspekt des Allgemeinen Linearen Modells und wird in späteren Kapiteln erneut aufgegriffen werden. Für den Moment erlaubt Theorem 2.1 nun folgende Defintion des Bestimmtheitsmaßes <span class="math inline">\(\mathrm{R}^{2}\)</span>.</p>
+<div id="def-bestimmtheitsmass-r2" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 26.4 (Bestimmtheitsmaß <span class="math inline">\(\mathrm{R}^{2}\)</span>) </strong></span>Für einen Datensatz <span class="math inline">\(\left\{\left(x_{1}, y_{1}\right), \ldots,\left(x_{n}, y_{n}\right)\right\} \subset \mathbb{R}^{2}\)</span> und seine zugehörige Ausgleichsgerade <span class="math inline">\(f_{\hat{\beta}}\)</span> sowie die zugehörigen Explained Sum of Squares SQE und Total Sum of Squares SQT heißt <span class="math display">\[\begin{equation}
+\mathrm{R}^{2}:=\frac{\mathrm{SQE}}{\mathrm{SQT}}
+\end{equation}\]</span> das <em>Bestimmtheitsmaß</em> oder der <em>Determinationskoeffizient</em>.</p>
+</div>
+<p>Folgendes Theorem liefert nun den oben erwähnten Zusammenhang zwischen dem Bestimmtheitsmaß und der Stichprobenkorrelation.</p>
+<div id="thm-stichprobenkorrelation-und-bestimmtheitsmass" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 26.3 (Stichprobenkorrelation und Bestimmtheitsmaß) </strong></span>Für einen Datensatz <span class="math inline">\(\left\{\left(x_{1}, y_{1}\right), \ldots,\left(x_{n}, y_{n}\right)\right\} \subset \mathbb{R}^{2}\)</span> sei <span class="math inline">\(\mathrm{R}^{2}\)</span> das Bestimmtheitsmaß und <span class="math inline">\(r_{x y}\)</span> sei die Stichprobenkorrelation. Dann gilt <span class="math display">\[\begin{equation}
+\mathrm{R}^{2} = r_{x y}^{2}
+\end{equation}\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Beweis</em>. </span>Wir halten zunächst fest, dass mit <span class="math display">\[\begin{equation}
+\bar{\hat{y}}
+:=\frac{1}{n} \sum_{i=1}^{n} \hat{y}_{i}
+=\frac{1}{n} \sum_{i=1}^{n}\left(\hat{\beta}_{0}+\hat{\beta}_{1} x_{i}\right)
+=\hat{\beta}_{0}+\hat{\beta}_{1} \bar{x}
+=\bar{y}-\hat{\beta}_{1} \bar{x}+\hat{\beta}_{1} \bar{x}=\bar{y}
+\end{equation}\]</span> folgt, dass <span class="math display">\[\begin{equation}
+\begin{aligned}
+\mathrm{SQE} &amp; =\sum_{i=1}^{n}\left(\hat{y}_{i}-\bar{y}\right)^{2} \\
+&amp; =\sum_{i=1}^{n}\left(\hat{y}_{i}-\bar{\bar{y}}\right)^{2} \\
+&amp; =\sum_{i=1}^{n}\left(\hat{\beta}_{0}+\hat{\beta}_{1} x_{i}-\hat{\beta}_{0}-\hat{\beta}_{1} \bar{x}\right)^{2} \\
+&amp; =\sum_{i=1}^{n}\left(\hat{\beta}_{1}\left(x_{i}-\bar{x}\right)\right)^{2} \\
+&amp; =\hat{\beta}_{1}^{2} \sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)^{2}
+\end{aligned}
+\end{equation}\]</span> Damit ergibt sich dann <span class="math display">\[\begin{equation}
+\begin{aligned}
+\mathrm{R}^{2} &amp; =\frac{\mathrm{SQE}}{\mathrm{SQT}} \\
+&amp; =\frac{\sum_{i=1}^{n}\left(\hat{y}_{i}-\bar{y}\right)^{2}}{\sum_{i=1}^{n}\left(y_{i}-\bar{y}\right)^{2}} \\
+&amp; =\hat{\beta}_{1}^{2} \frac{\sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)^{2}}{\sum_{i=1}^{n}\left(y_{i}-\bar{y}\right)^{2}} \\
+&amp; =\frac{c_{x y}^{2}}{s_{x}^{4}} \frac{\frac{1}{n-1} \sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)^{2}}{\frac{1}{n-1} \sum_{i=1}^{n}\left(y_{i}-\bar{y}\right)^{2}} \\
+&amp; =\frac{c_{x y}^{2}}{s_{x}^{4}} \frac{s_{x}^{2}}{s_{y}^{2}} \\
+&amp; =\frac{c_{x y}^{2}}{s_{x}^{2} s_{y}^{2}} \\
+&amp; =\left(\frac{c_{x y}}{s_{x} s_{y}}\right)^{2} \\
+&amp; =r_{x y}^{2} .
+\end{aligned}
+\end{equation}\]</span></p>
+</div>
+<p>Man beachte, dass mit <span class="math inline">\(-1 \leq r_{x y} \leq 1\)</span> aus <a href="#thm-stichprobenkorrelation-und-bestimmtheitsmass">Theorem&nbsp;<span>26.3</span></a> direkt folgt, dass <span class="math inline">\(0 \leq \mathrm{R}^{2} \leq 1\)</span>. Nach <a href="#def-bestimmtheitsmass-r2">Definition&nbsp;<span>26.4</span></a> gilt <span class="math inline">\(\mathrm{R}^{2}=0\)</span> genau dann, wenn <span class="math inline">\(\mathrm{SQE}=0\)</span> ist. <span class="math inline">\(\mathrm{R}^{2}=0\)</span> bedeutet also, dass die erklärte Datenvariabilität durch die Ausgleichsgerade gleich Null ist und beschreibt damit den Fall einer denkbar schlechten Datenerklärung durch die Ausgleichsgerade. Andererseits gilt <span class="math inline">\(\mathrm{R}^{2}=1\)</span> genau dann, wenn <span class="math inline">\(\mathrm{SQE}=\mathrm{SQT}\)</span> ist. <span class="math inline">\(\mathrm{R}^{2}=1\)</span> bedeutet also, dass die Gesamtstreuung gleich der durch die Ausgleichsgerade erklärten Streuung ist und beschreibt den Fall, dass sämtliche Datenvariabilität durch die Ausgleichsgerade erklärt werden kann. Man sagt deshalb auch oft etwas ungenau, dass <span class="math inline">\(\mathrm{R}^{2}\)</span> die durch die Ausgleichsgerade erklärte Varianz an der Gesamtvarianz der Daten repräsentiert. Neben der jeweiligen Stichprobenkorrelation ist in <a href="#fig-korrelationsbeispiele">Abbildung&nbsp;<span>26.2</span></a> auch jeweils das Bestimmtheitsmaß für die bivariaten Beispieldatensätze aufgeführt.</p>
+</section>
+<section id="sec-korrelation-und-linear-affine-abhaengigkeit" class="level2" data-number="26.3">
+<h2 data-number="26.3" class="anchored" data-anchor-id="sec-korrelation-und-linear-affine-abhaengigkeit"><span class="header-section-number">26.3</span> Korrelation und linear-affine Abhängigkeit</h2>
+<p>Die Tatsache, dass stochastische Unabhängigkeit zwar Unkorreliertheit impliziert, dass umgekehrt die Unkorreliertheit zweier Zufallsvariablen aber nicht ihre stochatische Unabhängigkeit impliziert, deutet daraufhin, dass die Korrelation zweier Zufallsvariablen nur bestimmte Formen der Abhängigkeit zwischen Variablen misst. Abbildung 2.4 verdeutlicht dies anhand dreier Simulationsbeispiele.</p>
+<div id="fig-rlinearitaet" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="./_figures/402-rlinearitaet.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption class="figure-caption">Abbildung&nbsp;26.4: Korrelation und Abhängigkeit.</figcaption>
+</figure>
+</div>
+<p><a href="#fig-rlinearitaet">Abbildung&nbsp;<span>26.4</span></a> A zeigt eine Realisation des Modells <span class="math display">\[\begin{equation}
+\upsilon_i=x_{i}+\varepsilon_{i} \mbox{ mit } \varepsilon_{i} \sim N(0,1) \mbox{ für } i=1,...,n.
+\end{equation}\]</span> Die Stichprobenkorrelationen des Datensatzes <span class="math inline">\(\left\{\left(x_{i}, y_{i}\right)\right\}_{i=1}^{n}\)</span> ergibt sich hier zu <span class="math inline">\(r_{x y}=0.90\)</span>. Es besteht eine klare Abhängigkeit des Wertes der <span class="math inline">\(\upsilon_i\)</span> Realisation <span class="math inline">\(y_{i}\)</span> vom Wert <span class="math inline">\(x_{i}\)</span>: je höher der Wert von <span class="math inline">\(x_{i}\)</span>, desto höher der Erwartungswert für den Wert von <span class="math inline">\(\upsilon_i\)</span>. <a href="#fig-rlinearitaet">Abbildung&nbsp;<span>26.4</span></a> B zeigt eine Realisation des Modells <span class="math display">\[\begin{equation}
+\upsilon_i=x_{i}^{2}+\varepsilon_{i} \mbox{ mit } \varepsilon_{i} \sim N(0,1) \mbox{ für } i=1,...,n.
+\end{equation}\]</span> Die Stichprobenkorrelationen des Datensatzes <span class="math inline">\(\left\{\left(x_{i}, y_{i}\right)\right\}_{i=1}^{n}\)</span> ergibt sich hier zu <span class="math inline">\(r_{x y} = -0.01\)</span>. Die Stichprobenkorrelation ist also minimal. Es besteht aber auch hier eine klare Abhängigkeit des Wertes der <span class="math inline">\(\upsilon_i\)</span> Realisation <span class="math inline">\(y_{i}\)</span> vom Wert <span class="math inline">\(x_{i}\)</span> : je höher oder je niedriger der Wert von <span class="math inline">\(x_{i}\)</span>, desto höher der Erwartungswert für den Wert von <span class="math inline">\(\upsilon_i\)</span>, es besteht ein quadratischer Zusammenhang. Ein ähnliches Bild ergibt sich beim Betrachten von <a href="#fig-rlinearitaet">Abbildung&nbsp;<span>26.4</span></a> C einer Realisation des Modells <span class="math display">\[\begin{equation}
+\upsilon_i
+= 8 \cos \left(2 x_{i}\right)+\varepsilon_{i} \mbox{ mit } \varepsilon_{i} \sim N(0,1) \mbox{ für } i=1,...,n.
+\end{equation}\]</span> Auch hier ergibt sich das Bild einer Abhängigkeit des Wertes der <span class="math inline">\(\upsilon_i\)</span> Realisation <span class="math inline">\(y_{i}\)</span> vom Wert <span class="math inline">\(x_{i}\)</span>, in diesem Fall im Sinne einer zyklischen Abhängigkeit, die Stichprobenkorrelation ist aber mit <span class="math inline">\(r_{x y}=-0.01\)</span> wiederum minimal. Diese Simulationsbeispiele belegen also intuitiv, dass die Stichprobenkorrelation verschwindend gering sein kann, auch wenn klare Abhängigkeiten zwischen zwei Variablen bestehen. Als allgemeines Maß für die Abhängigkeit zweier Variablen ist die Korrelation also ungeeignet. Diesen Umstand zugrunde liegt die Tatsache, dass die Korrelation lediglich ein Maß für den linear-affinen Zusammenhang zweier Zufallsvariablen, nicht aber für ihre stochastische Abhängigkeit ist. Wir formalisieren und präzisieren diese Aussage in folgenden Theorem.</p>
+<div id="thm-korrelation-und-linear-affine-abhaengigkeit" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 26.4 (Korrelation und linear-affine Abhängigkeit) </strong></span><span class="math inline">\(\xi\)</span> und <span class="math inline">\(\upsilon\)</span> seien zwei Zufallsvariablen mit positiver Varianz. Dann besteht genau dann eine lineare-affine Abhängigkeit der Form <span class="math display">\[\begin{equation}
+\upsilon=\beta_{0}+\beta_{1} \xi \mbox{ mit } \beta_{0}, \beta_{1} \in \mathbb{R}
+\end{equation}\]</span> zwischen <span class="math inline">\(\xi\)</span> und <span class="math inline">\(\upsilon\)</span>, wenn <span class="math display">\[\begin{equation}
+\rho(\xi, \upsilon)=1 \mbox{ oder } \rho(\xi, \upsilon)=-1
+\end{equation}\]</span> gilt.</p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Beweis</em>. </span>Wir beschränken uns auf den Beweis der Aussage, dass aus <span class="math inline">\(\upsilon=\beta_{0}+\beta_{1} \xi\)</span> folgt, dass <span class="math inline">\(\rho(\xi, \upsilon)= \pm 1\)</span> ist. Dazu halten wir zunächst fest, dass mit den Theoremen zu den Eigenschaften von Erwartungswert und Varianz gilt, dass <span class="math display">\[\begin{equation}
+\mathbb{E}(\upsilon) = \beta_{0}+\beta_{1} \mathbb{E}(\xi)
+\mbox{ und }
+\mathbb{V}(\upsilon) = \beta_{1}^{2} \mathbb{V}(\xi)
+\end{equation}\]</span> Wegen <span class="math inline">\(\mathbb{V}(\xi)&gt;0\)</span> und <span class="math inline">\(\mathbb{V}(\upsilon)&gt;0\)</span> gilt damit <span class="math inline">\(\beta_{1} \neq 0\)</span>. Es folgt dann <span class="math display">\[\begin{equation}
+\beta_{1} &gt; 0
+\Rightarrow
+\mathbb{S}(\upsilon)=\beta_{1} \mathbb{S}(\xi) &gt; 0
+\mbox{ und }
+\beta_{1} &lt; 0
+\Rightarrow
+\mathbb{S}(\upsilon) = -\beta_{1} \mathbb{S}(\xi) &gt; 0.
+\end{equation}\]</span> Weiterhin gilt <span class="math display">\[\begin{equation}
+\begin{aligned}
+\upsilon -\mathbb{E}(\upsilon)
+&amp; = \beta_{0}+\beta_{1} \xi-\mathbb{E}(\upsilon) \\
+&amp; = \beta_{0}+\beta_{1} \xi-\beta_{0}-\beta_{1} \mathbb{E}(\xi) \\
+&amp; = \beta_{1} \xi-\beta_{1} \mathbb{E}(\xi) \\
+&amp; = \beta_{1}(\xi-\mathbb{E}(\xi)) .
+\end{aligned}
+\end{equation}\]</span> Für die Kovarianz von <span class="math inline">\(\xi\)</span> und <span class="math inline">\(\upsilon\)</span> ergibt sich also <span class="math display">\[\begin{equation}
+\begin{aligned}
+\mathbb{C}(\xi,\upsilon)
+&amp; = \mathbb{E}((\upsilon-\mathbb{E}(\upsilon))(\xi-\mathbb{E}(\xi))) \\
+&amp; = \mathbb{E}\left(\beta_{1}(\xi-\mathbb{E}(\xi))(\xi-\mathbb{E}(\xi))\right) \\
+&amp; = \beta_{1} \mathbb{E}\left((\xi-\mathbb{E}(\xi))^{2}\right) \\
+&amp; = \beta_{1} \mathbb{V}(\xi) .
+\end{aligned}
+\end{equation}\]</span> Damit ergibt für die Korrelation von <span class="math inline">\(\xi\)</span> und <span class="math inline">\(\upsilon\)</span> <span class="math display">\[\begin{equation}
+\rho(\xi, \upsilon)
+= \frac{\mathbb{C}(\xi,\upsilon)}{\mathbb{S}(\xi) \mathbb{S}(\upsilon)}
+= \pm \frac{\beta_{1} \mathbb{V}(\xi)}{\mathbb{S}(\xi) \beta_{1} \mathbb{S}(\xi)}
+= \pm \frac{\beta_{1} \mathbb{V}(\xi)}{\beta_{1} \mathbb{V}(\xi)}
+= \pm 1
+\end{equation}\]</span></p>
+</div>
+<p>Die Korrelation zweier Zufallsvariablen wird also genau dann maximal, wenn zwischen den beiden Zufallsvariablen ein linear-affiner Zusammenhang besteht. Dabei impliziert die linear-affine Abhängigkeit von <span class="math inline">\(\upsilon\)</span> von <span class="math inline">\(\xi\)</span> auch immer die linear-affine Abhängigkeit von <span class="math inline">\(\xi\)</span> von <span class="math inline">\(\upsilon\)</span>, denn <span class="math display">\[\begin{equation}
+\upsilon = \beta_{0} + \beta_{1} \xi
+\Leftrightarrow
+-\beta_{0} + \upsilon = \beta_{1} \xi
+\Leftrightarrow
+\xi = -\frac{\beta_{0}}{\beta_{1}}+\frac{1}{\beta_{1}} \upsilon
+\Leftrightarrow
+\xi = \tilde{\beta}_{0}+\tilde{\beta}_{1} \upsilon
+\end{equation}\]</span> mit <span class="math display">\[\begin{equation}
+\tilde{\beta}_{0} = -\frac{\beta_{0}}{\beta_{1}} \mbox{ und } \tilde{\beta}_{1} = \frac{1}{\beta_{1}}.
+\end{equation}\]</span></p>
+</section>
+<section id="literaturhinweise" class="level2" data-number="26.4">
+<h2 data-number="26.4" class="anchored" data-anchor-id="literaturhinweise"><span class="header-section-number">26.4</span> Literaturhinweise</h2>
+<p>Der Begriff der Korrelation erscheint, allerdings basierend auf früheren Arbeiten zum Beispiel von <span class="citation" data-cites="bravais1844">Bravais (<a href="#ref-bravais1844" role="doc-biblioref">1844</a>)</span>, zunächst bei <span class="citation" data-cites="galton1890">Galton (<a href="#ref-galton1890" role="doc-biblioref">1890</a>)</span> (vgl. <span class="citation" data-cites="stigler1986">Stigler (<a href="#ref-stigler1986" role="doc-biblioref">1986</a>)</span>) und wird unter anderem durch die Arbeiten von <span class="citation" data-cites="pearson1895">Pearson (<a href="#ref-pearson1895" role="doc-biblioref">1895</a>)</span>, <span class="citation" data-cites="pearson1896">Pearson (<a href="#ref-pearson1896" role="doc-biblioref">1896</a>)</span>, <span class="citation" data-cites="pearson1900">Pearson (<a href="#ref-pearson1900" role="doc-biblioref">1900</a>)</span>, <span class="citation" data-cites="pearson1901">Pearson (<a href="#ref-pearson1901" role="doc-biblioref">1901</a>)</span> im Kontext multivariater Normalverteilungen weiter ausgearbeitet. Eine frühe Studie zum Verhältnis von Korrelation und Kausalität ist <span class="citation" data-cites="wright1921">Wright (<a href="#ref-wright1921" role="doc-biblioref">1921</a>)</span>.</p>
+</section>
+<section id="selbstkontrollfragen" class="level2" data-number="26.5">
+<h2 data-number="26.5" class="anchored" data-anchor-id="selbstkontrollfragen"><span class="header-section-number">26.5</span> Selbstkontrollfragen</h2>
+<ol type="1">
+<li>Geben Sie die Definition der Korrelation zweier Zufallsvariablen wieder.</li>
+<li>Geben Sie die Definitionen von Stichprobenmittel, Stichprobenstandardabweichung, Stichprobenkovarianz und Stichprobenkorrelation wieder.</li>
+<li>Erläutern Sie anhand der Mechanik der Kovariationsterme, wann eine Stichprobenkorrelation einen hohen absoluten Wert annimmt, einen hohen positiven Wert annimmt, einen hohen negativen Wert annimmt und einen niedrigen Wert annimmt.</li>
+<li>Geben Sie das Theorem zur Stichprobenkorrelation bei linear-affinen Transformationen wieder.</li>
+<li>Erläutern Sie das Theorem zur Stichprobenkorrelation bei linear-affinen Transformationen.</li>
+<li>Geben Sie die Definitionen von erklärten Werten und Residuen einer Ausgleichsgerade wieder.</li>
+<li>Geben Sie das Theorem zur Quadratsummenzerlegung bei einer Ausgleichsgerade wieder.</li>
+<li>Erläutern Sie die intuitiven Bedeutungen von SQT, SQE und SQR.</li>
+<li>Geben Sie die Definition des Bestimmtheitsmaßes <span class="math inline">\(\mathrm{R}^{2}\)</span> wieder.</li>
+<li>Geben Sie das Theorem zum Zusammenhang von Stichprobenkorrelation und Bestimmtheitsmaß wieder.</li>
+<li>Erläutern Sie die Bedeutung von hohen und niedrigen <span class="math inline">\(\mathrm{R}^{2}\)</span> Werten im Lichte der Ausgleichsgerade.</li>
+<li>Geben Sie das Theorem zum Zusammenhang von Korrelation und linear-affiner Abhängigkeit wieder.</li>
+</ol>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list">
+<div id="ref-bravais1844" class="csl-entry" role="listitem">
+Bravais, A. (1844). <em>Analyse Math<span>é</span>matique : <span>Sur</span> Les Probabilit<span>é</span>s Des Erreurs de Situation d’un Point</em>.
+</div>
+<div id="ref-galton1890" class="csl-entry" role="listitem">
+Galton, F. (1890). Kinship and <span>Correlation</span>. <em>Statistical Science</em>, <em>4</em>(2). <a href="https://doi.org/10.1214/ss/1177012581">https://doi.org/10.1214/ss/1177012581</a>
+</div>
+<div id="ref-pearson1895" class="csl-entry" role="listitem">
+Pearson, K. (1895). Note on <span>Regression</span> and <span>Inheritance</span> in the <span>Case</span> of <span>Two Parents</span>. <em>Proceedings of the Royal Society of London</em>, <em>5</em>, 240–242. <a href="https://www.jstor.org/stable/115794">https://www.jstor.org/stable/115794</a>
+</div>
+<div id="ref-pearson1896" class="csl-entry" role="listitem">
+Pearson, K. (1896). Mathematical <span>Contributions</span> to the <span>Theory</span> of <span>Evolution</span>. <span>III</span>. <span>Regression</span>, <span>Heredity</span>, and <span>Panmixia</span>. <em>Philosophical Transactions of the Royal Society of London. Series A, Containing Papers of a Mathematical or Physical Character</em>, <em>18</em>, 253–318. <a href="https://www.jstor.org/stable/90707">https://www.jstor.org/stable/90707</a>
+</div>
+<div id="ref-pearson1900" class="csl-entry" role="listitem">
+Pearson, K. (1900). On the Criterion That a given System of Deviations from the Probable in the Case of a Correlated System of Variables Is Such That It Can Be Reasonably Supposed to Have Arisen from Random Sampling. <em>The London, Edinburgh, and Dublin Philosophical Magazine and Journal of Science</em>, <em>50</em>(302), 157–175. <a href="https://doi.org/10.1080/14786440009463897">https://doi.org/10.1080/14786440009463897</a>
+</div>
+<div id="ref-pearson1901" class="csl-entry" role="listitem">
+Pearson, K. (1901). On Lines and Planes of Closest Fit to Systems of Points in Space. <em>The London, Edinburgh, and Dublin Philosophical Magazine and Journal of Science</em>, <em>2</em>(11), 559–572. <a href="https://doi.org/10.1080/14786440109462720">https://doi.org/10.1080/14786440109462720</a>
+</div>
+<div id="ref-stigler1986" class="csl-entry" role="listitem">
+Stigler, S. M. (1986). <em>The History of Statistics: The Measurement of Uncertainty before 1900</em>. <span>Belknap Press of Harvard University Press</span>.
+</div>
+<div id="ref-wright1921" class="csl-entry" role="listitem">
+Wright, S. (1921). Correlation and Causation. <em>Journal of Agriculture Research</em>, <em>20</em>(7), 557–585.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Kopiert");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Kopiert");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./401-Regression.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Regression</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./Referenzen.html" class="pagination-link">
+        <span class="nav-page-text">Referenzen</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>
