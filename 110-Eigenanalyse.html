@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.549">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -58,6 +58,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -100,7 +101,13 @@ div.csl-indent {
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "Keine Treffer",
     "search-matching-documents-text": "Treffer",
@@ -109,6 +116,7 @@ div.csl-indent {
     "search-more-match-text": "weitere Treffer in diesem Dokument",
     "search-more-matches-text": "weitere Treffer in diesem Dokument",
     "search-clear-button-title": "Zurücksetzen",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Abbrechen",
     "search-submit-button-title": "Abschicken",
     "search-label": "Suchen"
@@ -118,6 +126,33 @@ div.csl-indent {
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
 </head>
 
 <body class="nav-sidebar floating">
@@ -126,12 +161,12 @@ div.csl-indent {
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./101-Sprache-und-Logik.html">Mathematische Grundlagen</a></li><li class="breadcrumb-item"><a href="./110-Eigenanalyse.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Eigenanalyse</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./101-Sprache-und-Logik.html">Mathematische Grundlagen</a></li><li class="breadcrumb-item"><a href="./110-Eigenanalyse.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Eigenanalyse</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
@@ -141,13 +176,13 @@ div.csl-indent {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Probabilistische Datenwissenschaft für die Psychologie</a> 
         <div class="sidebar-tools-main">
-    <a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-    <a href="./Probabilistische-Datenwissenschaft-für-die-Psychologie.pdf" rel="" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+    <a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages" title="Quellcode" class="quarto-navigation-tool px-1" aria-label="Quellcode"><i class="bi bi-github"></i></a>
+    <a href="./Probabilistische-Datenwissenschaft-für-die-Psychologie.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
 </div>
     </div>
       </div>
@@ -380,6 +415,12 @@ div.csl-indent {
  <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">T-Statistiken</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./406-F-Statistiken.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">F-Statistiken</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item">
@@ -408,16 +449,16 @@ div.csl-indent {
   <li><a href="#literaturhinweise" id="toc-literaturhinweise" class="nav-link" data-scroll-target="#literaturhinweise"><span class="header-section-number">10.4</span> Literaturhinweise</a></li>
   <li><a href="#selbstkontrollfragen" id="toc-selbstkontrollfragen" class="nav-link" data-scroll-target="#selbstkontrollfragen"><span class="header-section-number">10.5</span> Selbstkontrollfragen</a></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/110-Eigenanalyse.qmd" class="toc-action">Seite editieren</a></p></div></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/110-Eigenanalyse.qmd" class="toc-action"><i class="bi bi-github"></i>Seite editieren</a></li></ul></div></nav>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./101-Sprache-und-Logik.html">Mathematische Grundlagen</a></li><li class="breadcrumb-item"><a href="./110-Eigenanalyse.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Eigenanalyse</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span id="sec-eigenanalyse" class="quarto-section-identifier"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Eigenanalyse</span></span></h1>
 </div>
@@ -432,20 +473,22 @@ div.csl-indent {
   </div>
   
 
+
 </header>
+
 
 <p>Mit der <em>Eigenanalyse einer quadratischen Matrix</em>, der <em>Orthonormalzerlegung einer symmetrischen Matrix</em> und der <em>Singulärwertzerlegung einer beliebigen Matrix</em> behandeln wir in diesem Abschnitt drei eng zusammenhängende Konzepte der Matrixtheorie, die in vielen Gebieten der datenanalytischen Anwendung zentrale Rollen spielen. Allerdings erschließt sich die Bedeutung dieser Konzepte dann vor allem im jeweiligen Anwendungskontext, so dass dieser Abschnitt notwendigerweise etwas abstrakt anmuten mag.</p>
 <section id="eigenvektoren-und-eigenwerte" class="level2" data-number="10.1">
 <h2 data-number="10.1" class="anchored" data-anchor-id="eigenvektoren-und-eigenwerte"><span class="header-section-number">10.1</span> Eigenvektoren und Eigenwerte</h2>
 <p>Unter der <em>Eigenanalyse</em> einer quadratischen Matrix versteht man das bestimmen ihrer <em>Eigenvektoren</em> und <em>Eigenwerte</em>. Diese sind für eine quadratische Matrix wie folgt definiert.</p>
 <div id="def-eigenvektor-und-eigenwert" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 10.1 (Eigenvektor und Eigenwert) </strong></span><span class="math inline">\(A \in \mathbb{R}^{m \times m}\)</span> sei eine quadratische Matrix. Dann heißt jeder vom Nullvektor <span class="math inline">\(0_m\)</span> verschiedene Vektor <span class="math inline">\(v \in \mathbb{R}^m\)</span>, für den mit einem Skalar <span class="math inline">\(\lambda \in \mathbb{R}\)</span> gilt, dass <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 10.1 (Eigenvektor und Eigenwert)</strong></span> <span class="math inline">\(A \in \mathbb{R}^{m \times m}\)</span> sei eine quadratische Matrix. Dann heißt jeder vom Nullvektor <span class="math inline">\(0_m\)</span> verschiedene Vektor <span class="math inline">\(v \in \mathbb{R}^m\)</span>, für den mit einem Skalar <span class="math inline">\(\lambda \in \mathbb{R}\)</span> gilt, dass <span class="math display">\[\begin{equation}
 Av = \lambda v
 \end{equation}\]</span> ist, ein <em>Eigenvektor von <span class="math inline">\(A\)</span></em> und <span class="math inline">\(\lambda\)</span> heißt dann ein <em>Eigenwert von <span class="math inline">\(A\)</span></em>.</p>
 </div>
 <p>Nach Definition hat also jeder Eigenvektor einen zugehörigen Eigenwert, allerdings können die Eigenwerte verschiedener Eigenvektoren durchaus identisch sein. Intuitiv bedeutet die Definition von Eigenvektor und Eigenwert, dass ein Eigenvektor einer Matrix durch Multiplikation mit eben dieser Matrix in seiner Länge, nicht aber in seiner Richtung, verändert wird. Der zugehörige Eigenwert des Eigenvektors entspricht dem Faktor der Längenänderung. Allerdings ist die Zuordnung von Eigenvektoren und Eigenwerten nicht eindeutig, wie folgendes Theorem zeigt.</p>
 <div id="thm-multiplikativität-von-eigenvektoren" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 10.1 (Multiplikativität von Eigenvektoren) </strong></span><span class="math inline">\(A \in \mathbb{R}^{m \times m}\)</span> sei eine quadratische Matrix. Wenn <span class="math inline">\(v \in \mathbb{R}^m\)</span> Eigenvektor von <span class="math inline">\(A\)</span> mit Eigenwert <span class="math inline">\(\lambda \in \mathbb{R}\)</span> ist, dann ist für <span class="math inline">\(c \in \mathbb{R}\)</span> auch <span class="math inline">\(cv \in \mathbb{R}^m\)</span> Eigenvektor von <span class="math inline">\(A\)</span> und zwar wiederum mit Eigenwert <span class="math inline">\(\lambda \in \mathbb{R}\)</span>.</p>
+<p><span class="theorem-title"><strong>Theorem 10.1 (Multiplikativität von Eigenvektoren)</strong></span> <span class="math inline">\(A \in \mathbb{R}^{m \times m}\)</span> sei eine quadratische Matrix. Wenn <span class="math inline">\(v \in \mathbb{R}^m\)</span> Eigenvektor von <span class="math inline">\(A\)</span> mit Eigenwert <span class="math inline">\(\lambda \in \mathbb{R}\)</span> ist, dann ist für <span class="math inline">\(c \in \mathbb{R}\)</span> auch <span class="math inline">\(cv \in \mathbb{R}^m\)</span> Eigenvektor von <span class="math inline">\(A\)</span> und zwar wiederum mit Eigenwert <span class="math inline">\(\lambda \in \mathbb{R}\)</span>.</p>
 </div>
 <div class="proof">
 <p><span class="proof-title"><em>Beweis</em>. </span>Es gilt <span class="math display">\[\begin{equation}
@@ -456,7 +499,7 @@ A(cv) = \lambda(cv).
 </div>
 <p>Um nun die Uneindeutigkeit in der Definition des zu einem Eigenwert zugeordneten Eigenvektors aufzulösen, nutzen wir die Konvention, nur diejenigen Vektoren also Eigenvektoren zu einem Eigenwert <span class="math inline">\(\lambda\)</span> zu betrachten, die die Länge 1 haben, für die also gilt, dass <span class="math display">\[\begin{equation}
 \Vert v \Vert = 1.
-\end{equation}\]</span> Sollten wir also einen Eigenvektor <span class="math inline">\(v\)</span> zu einem Eigenwert <span class="math inline">\(\lambda\)</span> einer Matrix <span class="math inline">\(A\)</span> finden, der nicht von der Länge 1 ist, so können wir ihn immer mit <span class="math inline">\(\Vert v \Vert^{-1}\)</span> multiplizieren. Der resultierende Vektor <span class="math inline">\(v' = v/\Vert v \Vert\)</span> hat dann die Länge 1 und ist nach <a href="#thm-multiplikativität-von-eigenvektoren">Theorem&nbsp;<span>10.1</span></a> ebenso ein Eigenvektor von <span class="math inline">\(A\)</span> zum Eigenwert <span class="math inline">\(\lambda\)</span>. Bevor wir uns der Bestimmung von Eigenwerten und Eigenvektoren widmen, wollen wir die Konzepte von Eigenwert und Eigenvektor für den Fall einer <span class="math inline">\(2 \times 2\)</span> Matrix an einem Beispiel veranschaulichen</p>
+\end{equation}\]</span> Sollten wir also einen Eigenvektor <span class="math inline">\(v\)</span> zu einem Eigenwert <span class="math inline">\(\lambda\)</span> einer Matrix <span class="math inline">\(A\)</span> finden, der nicht von der Länge 1 ist, so können wir ihn immer mit <span class="math inline">\(\Vert v \Vert^{-1}\)</span> multiplizieren. Der resultierende Vektor <span class="math inline">\(v' = v/\Vert v \Vert\)</span> hat dann die Länge 1 und ist nach <a href="#thm-multiplikativität-von-eigenvektoren" class="quarto-xref">Theorem&nbsp;<span>10.1</span></a> ebenso ein Eigenvektor von <span class="math inline">\(A\)</span> zum Eigenwert <span class="math inline">\(\lambda\)</span>. Bevor wir uns der Bestimmung von Eigenwerten und Eigenvektoren widmen, wollen wir die Konzepte von Eigenwert und Eigenvektor für den Fall einer <span class="math inline">\(2 \times 2\)</span> Matrix an einem Beispiel veranschaulichen</p>
 <section id="beispiel" class="level3 unnumbered">
 <h3 class="unnumbered anchored" data-anchor-id="beispiel">Beispiel</h3>
 <p>Es sei <span class="math display">\[\begin{equation}
@@ -509,7 +552,7 @@ Av
 &amp; =
 \lambda v.
 \end{split}
-\end{align}\]</span> Inspektion von <a href="#fig-eigenvektor">Abbildung&nbsp;<span>10.1</span></a> zeigt dementsprechend, dass für die hier definierte Matrix <span class="math inline">\(A\)</span> die Vektoren <span class="math inline">\(v\)</span> und <span class="math inline">\(Av\)</span> in die gleiche Richtung zeigen, dass aber <span class="math inline">\(Av\)</span> um den Faktor <span class="math inline">\(\lambda\)</span> länger ist als <span class="math inline">\(v\)</span>.</p>
+\end{align}\]</span> Inspektion von <a href="#fig-eigenvektor" class="quarto-xref">Abbildung&nbsp;<span>10.1</span></a> zeigt dementsprechend, dass für die hier definierte Matrix <span class="math inline">\(A\)</span> die Vektoren <span class="math inline">\(v\)</span> und <span class="math inline">\(Av\)</span> in die gleiche Richtung zeigen, dass aber <span class="math inline">\(Av\)</span> um den Faktor <span class="math inline">\(\lambda\)</span> länger ist als <span class="math inline">\(v\)</span>.</p>
 <p>Der Vektor <span class="math display">\[\begin{equation}
 w := \begin{pmatrix} 1 \\ 0 \end{pmatrix}
 \end{equation}\]</span> dagegen hat zwar die Länge 1, ist aber im Gegensatz zu <span class="math inline">\(v\)</span> kein Eigenvektor von <span class="math inline">\(A\)</span>, da es im Falle von <span class="math display">\[\begin{equation}
@@ -521,16 +564,20 @@ Aw =
 \begin{pmatrix} 1 \\ 0 \end{pmatrix}
 =
 \begin{pmatrix} 2 \\ 1 \end{pmatrix}
-\end{equation}\]</span> keinen Skalar <span class="math inline">\(\lambda\)</span> geben kann, der mit Null, dem zweiten Eintrag von <span class="math inline">\(w\)</span>, multipliziert einen Wert ungleich Null ergeben kann. Inspektion von <a href="#fig-eigenvektor">Abbildung&nbsp;<span>10.1</span></a> zeigt dementsprechend, dass der aus der Multiplikation von <span class="math inline">\(w\)</span> mit <span class="math inline">\(A\)</span> resultierende Vektor in eine andere Richtung zeigt als <span class="math inline">\(w\)</span>.</p>
-<div id="fig-eigenvektor" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./_figures/110-eigenvektor.png" class="img-fluid figure-img" style="width:80.0%"></p>
-<figcaption class="figure-caption">Abbildung&nbsp;10.1: Eigenvektor einer <span class="math inline">\(2 \times 2\)</span> Matrix. Für die Matrix <span class="math display">\[\begin{equation}
+\end{equation}\]</span> keinen Skalar <span class="math inline">\(\lambda\)</span> geben kann, der mit Null, dem zweiten Eintrag von <span class="math inline">\(w\)</span>, multipliziert einen Wert ungleich Null ergeben kann. Inspektion von <a href="#fig-eigenvektor" class="quarto-xref">Abbildung&nbsp;<span>10.1</span></a> zeigt dementsprechend, dass der aus der Multiplikation von <span class="math inline">\(w\)</span> mit <span class="math inline">\(A\)</span> resultierende Vektor in eine andere Richtung zeigt als <span class="math inline">\(w\)</span>.</p>
+<div id="fig-eigenvektor" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-eigenvektor-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/110-eigenvektor.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-eigenvektor-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;10.1: Eigenvektor einer <span class="math inline">\(2 \times 2\)</span> Matrix. Für die Matrix <span class="math display">\[\begin{equation}
 \begin{pmatrix}
 2 &amp; 1 \\
 1 &amp; 2
 \end{pmatrix}
-\end{equation}\]</span> ist <span class="math inline">\(v\)</span> ein Eigenvektor, <span class="math inline">\(w\)</span> jedoch nicht</figcaption>
+\end{equation}\]</span> ist <span class="math inline">\(v\)</span> ein Eigenvektor, <span class="math inline">\(w\)</span> jedoch nicht
+</figcaption>
 </figure>
 </div>
 </section>
@@ -538,7 +585,7 @@ Aw =
 <h3 class="unnumbered anchored" data-anchor-id="bestimmung-von-eigenwerten-und-eigenvektoren">Bestimmung von Eigenwerten und Eigenvektoren</h3>
 <p>Folgendes Theorem besagt, wie die Eigenwerte und Eigenvektoren einer quadratischen Matrix berechnet werden können.</p>
 <div id="thm-bestimmung-von-eigenwerten-und-eigenvektoren" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 10.2 (Bestimmung von Eigenwerten und Eigenvektoren) </strong></span><span class="math inline">\(A \in \mathbb{R}^{m \times m}\)</span> sei eine quadratische Matrix. Dann ergeben sich die Eigenwerte von <span class="math inline">\(A\)</span> als die Nullstellen des <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Theorem 10.2 (Bestimmung von Eigenwerten und Eigenvektoren)</strong></span> <span class="math inline">\(A \in \mathbb{R}^{m \times m}\)</span> sei eine quadratische Matrix. Dann ergeben sich die Eigenwerte von <span class="math inline">\(A\)</span> als die Nullstellen des <span class="math display">\[\begin{equation}
 \chi_A(\lambda) := |A - \lambda I_m|
 \end{equation}\]</span> von <span class="math inline">\(A\)</span>. Weiterhin seien <span class="math inline">\(\lambda_i^*, i = 1,2,...\)</span> die auf diese Weise bestimmten Eigenwerte von <span class="math inline">\(A\)</span>. Die entsprechenden Eigenvektoren <span class="math inline">\(v_i, i = 1,2,...\)</span> von <span class="math inline">\(A\)</span> können dann durch Lösen der linearen Gleichungssysteme <span class="math display">\[\begin{equation}
 (A - \lambda_i^* I_m)v_i = 0_m \mbox{ für } i = 1,2,...
@@ -560,7 +607,7 @@ f : \mathbb{R}^m \to \mathbb{R}^m, x \mapsto (A - \lambda I_m)x
 (A - \lambda_i^* I_m)v_i^* = 0_m
 \end{equation}\]</span> nach <span class="math inline">\(v_i^*\)</span> einen Eigenvektor zum Eigenwert <span class="math inline">\(\lambda^*\)</span> ergibt.</p>
 </div>
-<p>Allgemein müssen zur Bestimmung von Eigenwerten und Eigenvektoren also Polynomnullstellen bestimmt und lineare Gleichungssysteme gelöst werden. Dies kann für kleine Matrizen mit <span class="math inline">\(m \le 4\)</span> durchaus manuell geschehen. Die in der Anwendung auftretetenden Matrizen sind jedoch meist weitaus größer, so dass zur Eigenananalyse numerische Verfahren der Nullstellenbestimmung und des Lösens linearer Gleichungssysteme eingesetzt werden, die zum Beispiel in Funktionen wie <strong>R</strong>’s <code>eigen()</code>, <strong>SciPy’s</strong> <code>linalg.eig()</code> oder <strong>Julia</strong>’s <code>eigvals()</code> und <code>eigvecs()</code> genutzt werden. Für Details zu diesen Verfahren verweisen wir auf die weiterführende Literatur, zum Beispiel <span class="citation" data-cites="burden2016">Burden et al. (<a href="#ref-burden2016" role="doc-biblioref">2016</a>)</span> und <span class="citation" data-cites="richter2017">Richter &amp; Wick (<a href="#ref-richter2017" role="doc-biblioref">2017</a>)</span>. Wir wollen <a href="#thm-bestimmung-von-eigenwerten-und-eigenvektoren">Theorem&nbsp;<span>10.2</span></a> hier lediglich anhand eines Beispiels illustrieren.</p>
+<p>Allgemein müssen zur Bestimmung von Eigenwerten und Eigenvektoren also Polynomnullstellen bestimmt und lineare Gleichungssysteme gelöst werden. Dies kann für kleine Matrizen mit <span class="math inline">\(m \le 4\)</span> durchaus manuell geschehen. Die in der Anwendung auftretetenden Matrizen sind jedoch meist weitaus größer, so dass zur Eigenananalyse numerische Verfahren der Nullstellenbestimmung und des Lösens linearer Gleichungssysteme eingesetzt werden, die zum Beispiel in Funktionen wie <strong>R</strong>’s <code>eigen()</code>, <strong>SciPy’s</strong> <code>linalg.eig()</code> oder <strong>Julia</strong>’s <code>eigvals()</code> und <code>eigvecs()</code> genutzt werden. Für Details zu diesen Verfahren verweisen wir auf die weiterführende Literatur, zum Beispiel <span class="citation" data-cites="burden2016">Burden et al. (<a href="#ref-burden2016" role="doc-biblioref">2016</a>)</span> und <span class="citation" data-cites="richter2017">Richter &amp; Wick (<a href="#ref-richter2017" role="doc-biblioref">2017</a>)</span>. Wir wollen <a href="#thm-bestimmung-von-eigenwerten-und-eigenvektoren" class="quarto-xref">Theorem&nbsp;<span>10.2</span></a> hier lediglich anhand eines Beispiels illustrieren.</p>
 </section>
 <section id="beispiel-1" class="level3 unnumbered">
 <h3 class="unnumbered anchored" data-anchor-id="beispiel-1">Beispiel</h3>
@@ -569,7 +616,7 @@ A :=
 \begin{pmatrix*}[r]
 2 &amp; 1 \\
 1 &amp; 2\end{pmatrix*}
-\end{equation}\]</span> Wir wollen zunächst die Eigenwerte von <span class="math inline">\(A\)</span> berechnen. Nach <a href="#thm-bestimmung-von-eigenwerten-und-eigenvektoren">Theorem&nbsp;<span>10.2</span></a> sind dies die Nullstellen des charakteristischen Polynoms von <span class="math inline">\(A\)</span>. Wir berechnen also zunächst das charakteristische Polynom von <span class="math inline">\(A\)</span> durch <span class="math display">\[\begin{equation}
+\end{equation}\]</span> Wir wollen zunächst die Eigenwerte von <span class="math inline">\(A\)</span> berechnen. Nach <a href="#thm-bestimmung-von-eigenwerten-und-eigenvektoren" class="quarto-xref">Theorem&nbsp;<span>10.2</span></a> sind dies die Nullstellen des charakteristischen Polynoms von <span class="math inline">\(A\)</span>. Wir berechnen also zunächst das charakteristische Polynom von <span class="math inline">\(A\)</span> durch <span class="math display">\[\begin{equation}
 \chi_A(\lambda)
 =
 \left\vert
@@ -666,7 +713,7 @@ $vectors
 </div>
 <p>Zum Abschluss dieses Abschnittes betrachten wir zwei technische Theoreme, die Aussagen zum Zusammenhang spezieller Matrixprodukte und ihrer Eigenwerte und Eigenvektoren machen. Wir benötigen dieses Theoreme im Kontext der Kanonischen Korrelationsanalyse (<span class="quarto-unresolved-ref">?sec-kanonische-korrelationsanalyse</span>).</p>
 <div id="thm-eigenwerte-und-eigenvektoren-von-matrixprodukten" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 10.3 (Eigenwerte und Eigenvektoren von Matrixprodukten) </strong></span>Für <span class="math inline">\(A \in \mathbb{R}^{n \times m}\)</span> und <span class="math inline">\(B \in \mathbb{R}^{m \times n}\)</span> sind die Eigenwerte von <span class="math inline">\(AB \in \mathbb{R}^{n \times n}\)</span> und <span class="math inline">\(BA \in \mathbb{R}^{m \times m}\)</span> gleich. Weiterhin gilt, dass für einen Eigenvektor <span class="math inline">\(v\)</span> zu einem von Null verschiedenen Eigenwert <span class="math inline">\(\lambda\)</span> von <span class="math inline">\(AB\)</span> <span class="math inline">\(w := Bv\)</span> ein Eigenvektor von <span class="math inline">\(BA\)</span> zum Eigenwert <span class="math inline">\(\lambda\)</span> ist.</p>
+<p><span class="theorem-title"><strong>Theorem 10.3 (Eigenwerte und Eigenvektoren von Matrixprodukten)</strong></span> Für <span class="math inline">\(A \in \mathbb{R}^{n \times m}\)</span> und <span class="math inline">\(B \in \mathbb{R}^{m \times n}\)</span> sind die Eigenwerte von <span class="math inline">\(AB \in \mathbb{R}^{n \times n}\)</span> und <span class="math inline">\(BA \in \mathbb{R}^{m \times m}\)</span> gleich. Weiterhin gilt, dass für einen Eigenvektor <span class="math inline">\(v\)</span> zu einem von Null verschiedenen Eigenwert <span class="math inline">\(\lambda\)</span> von <span class="math inline">\(AB\)</span> <span class="math inline">\(w := Bv\)</span> ein Eigenvektor von <span class="math inline">\(BA\)</span> zum Eigenwert <span class="math inline">\(\lambda\)</span> ist.</p>
 </div>
 <p>Für einen Beweis verweisen wir auf <span class="citation" data-cites="mardia1979">Mardia et al. (<a href="#ref-mardia1979" role="doc-biblioref">1979</a>)</span>, S. 468. Wir demonstrieren die Aussage dieses Theorems anhand untenstehenden <strong>R</strong> Codes.</p>
 <div class="cell">
@@ -687,7 +734,7 @@ lw mit w = Bv     : -191.1333 -416.7586 -642.3839</code></pre>
 </div>
 </div>
 <div id="thm-eigenwert-und-eigenvektor-eines-matrixvektorprodukts" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 10.4 </strong></span>Für <span class="math inline">\(A \in \mathbb{R}^{n \times m}, B \in \mathbb{R}^{p \times n}, a \in \mathbb{R}^m\)</span> und <span class="math inline">\(b \in \mathbb{R}^p\)</span> gilt, dass der einzige von Null verschiedene Eigenwert von <span class="math inline">\(Aab^TB \in \mathbb{R}^{n \times n}\)</span> gleich <span class="math inline">\(b^T BAa\)</span> mit zugehörigem Eigenvektor <span class="math inline">\(Aa\)</span> ist.</p>
+<p><span class="theorem-title"><strong>Theorem 10.4</strong></span> Für <span class="math inline">\(A \in \mathbb{R}^{n \times m}, B \in \mathbb{R}^{p \times n}, a \in \mathbb{R}^m\)</span> und <span class="math inline">\(b \in \mathbb{R}^p\)</span> gilt, dass der einzige von Null verschiedene Eigenwert von <span class="math inline">\(Aab^TB \in \mathbb{R}^{n \times n}\)</span> gleich <span class="math inline">\(b^T BAa\)</span> mit zugehörigem Eigenvektor <span class="math inline">\(Aa\)</span> ist.</p>
 </div>
 <p>Für einen Beweis verweisen wir auf <span class="citation" data-cites="mardia1979">Mardia et al. (<a href="#ref-mardia1979" role="doc-biblioref">1979</a>)</span>, S. 468. Wir demonstrieren die Aussage dieses Theorems anhand untenstehenden <strong>R</strong> Codes.</p>
 <div class="cell">
@@ -715,7 +762,7 @@ Aa                   : 14 32
 <h2 data-number="10.2" class="anchored" data-anchor-id="sec-orthonormalzerlegung"><span class="header-section-number">10.2</span> Orthonormalzerlegung</h2>
 <p>Mit dem Begriff der <em>Zerlegung</em> einer Matrix wird das Aufspalten einer gegebenen Matrix in das Matrixprodukt mehrerer Matrizen bezeichnet. Verschiedenste Matrixzerlegungen spielen in vielen mathematischen Anwendungen eine wichtige Rolle, für einen Überblick siehe beispielsweise <span class="citation" data-cites="golub2013">Golub &amp; Van Loan (<a href="#ref-golub2013" role="doc-biblioref">2013</a>)</span>. In diesem Abschnitt führen wir mit der <em>Orthonormalzerlegung einer symmetrischen Matrix</em> eine spezielle Matrixzerlegung ein, die direkt auf der Eigenanalyse aufbaut. Wir halten zunächst folgendes grundlegendes Theorem zu den Eigenwerten und Eigenvektoren symmetrischer Matrizen fest.</p>
 <div id="thm-eigenwerte-und-eigenvektoren-symmetrischer-matrizen" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 10.5 (Eigenwerte und Eigenvektoren symmetrischer Matrizen) </strong></span>&nbsp;</p>
+<p><span class="theorem-title"><strong>Theorem 10.5 (Eigenwerte und Eigenvektoren symmetrischer Matrizen)</strong></span> &nbsp;</p>
 <span class="math inline">\(S \in \mathbb{R}^{m \times m}\)</span> sei eine symmetrische Matrix. Dann gelten
 </div>
 <div class="proof">
@@ -739,9 +786,9 @@ ac = bc.
 \Leftrightarrow q_i^T S q_j     =  \lambda_j q_i^Tq_j
 \end{equation}\]</span> gelten. Sowohl <span class="math inline">\(\lambda_i q_i^Tq_j\)</span> als auch <span class="math inline">\(\lambda_j q_i^Tq_j\)</span> sind also mit <span class="math inline">\(q_i^T Sq_j\)</span> und damit auch miteinander identisch.</p>
 </div>
-<p>Offenbar haben wir nur Aussage (2) von <a href="#thm-eigenwerte-und-eigenvektoren-symmetrischer-matrizen">Theorem&nbsp;<span>10.5</span></a> bewiesen. Ein vollständiger Beweis des Theorems findet sich zum Beispiel bei <span class="citation" data-cites="strang2009">Strang (<a href="#ref-strang2009" role="doc-biblioref">2009</a>)</span>. Wir merken außerdem an, dass, weil wir nach Konvention Eigenvektoren der Länge 1 betrachten, die in <a href="#thm-eigenwerte-und-eigenvektoren-symmetrischer-matrizen">Theorem&nbsp;<span>10.5</span></a> angesprochenen orthogonalen Eigenvektoren insbesondere auch orthonormal sind. Mithilfe von <a href="#thm-eigenwerte-und-eigenvektoren-symmetrischer-matrizen">Theorem&nbsp;<span>10.5</span></a> können wir nun die Orthonormalzerlegung einer symmetrischen Matrix formulieren und ihre Existenz beweisen.</p>
+<p>Offenbar haben wir nur Aussage (2) von <a href="#thm-eigenwerte-und-eigenvektoren-symmetrischer-matrizen" class="quarto-xref">Theorem&nbsp;<span>10.5</span></a> bewiesen. Ein vollständiger Beweis des Theorems findet sich zum Beispiel bei <span class="citation" data-cites="strang2009">Strang (<a href="#ref-strang2009" role="doc-biblioref">2009</a>)</span>. Wir merken außerdem an, dass, weil wir nach Konvention Eigenvektoren der Länge 1 betrachten, die in <a href="#thm-eigenwerte-und-eigenvektoren-symmetrischer-matrizen" class="quarto-xref">Theorem&nbsp;<span>10.5</span></a> angesprochenen orthogonalen Eigenvektoren insbesondere auch orthonormal sind. Mithilfe von <a href="#thm-eigenwerte-und-eigenvektoren-symmetrischer-matrizen" class="quarto-xref">Theorem&nbsp;<span>10.5</span></a> können wir nun die Orthonormalzerlegung einer symmetrischen Matrix formulieren und ihre Existenz beweisen.</p>
 <div id="thm-orthonormale-zerlegung-einer-symmetrischen-matrix" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 10.6 (Orthonormalzerlegung einer symmetrischen Matrix) </strong></span><span class="math inline">\(S \in \mathbb{R}^{m \times m}\)</span> sei eine symmetrische Matrix mit <span class="math inline">\(m\)</span> verschiedenen Eigenwerten. Dann kannn <span class="math inline">\(S\)</span> geschrieben werden als <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Theorem 10.6 (Orthonormalzerlegung einer symmetrischen Matrix)</strong></span> <span class="math inline">\(S \in \mathbb{R}^{m \times m}\)</span> sei eine symmetrische Matrix mit <span class="math inline">\(m\)</span> verschiedenen Eigenwerten. Dann kannn <span class="math inline">\(S\)</span> geschrieben werden als <span class="math display">\[\begin{equation}
 S = Q \Lambda Q^T,
 \end{equation}\]</span> wobei <span class="math inline">\(Q \in \mathbb{R}^{m \times m}\)</span> eine orthogonale Matrix ist und <span class="math inline">\(\Lambda \in \mathbb{R}^{m\times m}\)</span> eine Diagonalmatrix ist.</p>
 </div>
@@ -847,18 +894,18 @@ v_1 &amp; v_2
 1 &amp; 2
 \end{pmatrix*} \\
 &amp; = A
-\end{align*}\]</span> und wir haben <a href="#thm-orthonormale-zerlegung-einer-symmetrischen-matrix">Theorem&nbsp;<span>10.6</span></a> für dieses Beispiel verifiziert.</p>
+\end{align*}\]</span> und wir haben <a href="#thm-orthonormale-zerlegung-einer-symmetrischen-matrix" class="quarto-xref">Theorem&nbsp;<span>10.6</span></a> für dieses Beispiel verifiziert.</p>
 <section id="symmetrische-quadratwurzel-einer-matrix" class="level3 unnumbered">
 <h3 class="unnumbered anchored" data-anchor-id="symmetrische-quadratwurzel-einer-matrix">Symmetrische Quadratwurzel einer Matrix</h3>
 <p>Die Definition der Orthonormalzerlegung einer symmetrischen Matrix erlaubt es, den Begriff der <em>symmetrischen Quadratwurzel einer Matrix</em> einzuführen.</p>
 <div id="def-symmetrische-quadratwurzel-einer-matrix" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 10.2 (Symmetrische Quadratwurzel einer Matrix) </strong></span><span class="math inline">\(S \in \mathbb{R}^{m \times m}\)</span> sei eine invertierbare symmetrische Matrix mit positiven Eigenwerten. Dann sind für <span class="math inline">\(r \in \mathbb{N}^0\)</span> und <span class="math inline">\(s \in \mathbb{N}\)</span> die rationalen Potenzen von <span class="math inline">\(S\)</span> mit der orthonormalen Matrix <span class="math inline">\(Q \in \mathbb{R}^{m \times m}\)</span> der Eigenvektoren von <span class="math inline">\(S\)</span> und der Diagonalmatrix <span class="math inline">\(\Lambda = \mbox{diag}(\lambda_i) \in \mathbb{R}^{m \times m}\)</span> der zugehörigen Eigenwerte <span class="math inline">\(\lambda_1,...,\lambda_m\)</span> von <span class="math inline">\(S\)</span> definiert als <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 10.2 (Symmetrische Quadratwurzel einer Matrix)</strong></span> <span class="math inline">\(S \in \mathbb{R}^{m \times m}\)</span> sei eine invertierbare symmetrische Matrix mit positiven Eigenwerten. Dann sind für <span class="math inline">\(r \in \mathbb{N}^0\)</span> und <span class="math inline">\(s \in \mathbb{N}\)</span> die rationalen Potenzen von <span class="math inline">\(S\)</span> mit der orthonormalen Matrix <span class="math inline">\(Q \in \mathbb{R}^{m \times m}\)</span> der Eigenvektoren von <span class="math inline">\(S\)</span> und der Diagonalmatrix <span class="math inline">\(\Lambda = \mbox{diag}(\lambda_i) \in \mathbb{R}^{m \times m}\)</span> der zugehörigen Eigenwerte <span class="math inline">\(\lambda_1,...,\lambda_m\)</span> von <span class="math inline">\(S\)</span> definiert als <span class="math display">\[\begin{equation}
 S^{r/s} = Q \Lambda^{r/s} Q^T \mbox{ mit } \Lambda^{r/s} = \mbox{diag}\left(\lambda_i^{r/s}\right).
 \end{equation}\]</span> Der Spezialfall <span class="math inline">\(r:= 1, s := 2\)</span> wird als <em>symmetrische Quadratwurzel von <span class="math inline">\(S\)</span></em> bezeichnet und hat die Form <span class="math display">\[\begin{equation}
 S^{1/2} = Q\Lambda^{1/2}Q^T \mbox{ mit } \Lambda^{1/2} = \mbox{diag}\left(\lambda_i^{1/2}\right).
 \end{equation}\]</span></p>
 </div>
-<p>Wir halten fest, dass mit <a href="#def-symmetrische-quadratwurzel-einer-matrix">Definition&nbsp;<span>10.2</span></a> offenbar gilt, dass <span class="math display">\[\begin{equation}
+<p>Wir halten fest, dass mit <a href="#def-symmetrische-quadratwurzel-einer-matrix" class="quarto-xref">Definition&nbsp;<span>10.2</span></a> offenbar gilt, dass <span class="math display">\[\begin{equation}
 \left(S^{1/2} \right)^2
 = Q\Lambda^{1/2}Q^TQ\Lambda^{1/2}Q^T
 = Q\Lambda^{1/2}\Lambda^{1/2}Q^T
@@ -885,13 +932,13 @@ S^{-1/2}SS^{-1/2}
 <h2 data-number="10.3" class="anchored" data-anchor-id="sec-singulärwertzerlegung"><span class="header-section-number">10.3</span> Singulärwertzerlegung</h2>
 <p>Eine vielseitig einsetzbare Matrixzerlegung einer beliebigen Matrix ist die <em>Singulärwertzerlegung</em>. Wir sind an dieser Stelle lediglich an dem Zusammenhang von Singulärwertzerlegung und Eigenanalyse interessiert und verweisen für eine ausführliche Diskussion der Singulärwertzerlegung auf die weiterführende Literatur, beispielsweise <span class="citation" data-cites="strang2009">Strang (<a href="#ref-strang2009" role="doc-biblioref">2009</a>)</span>. Der Begriff der Singulärwertzerlegung ist wie folgt definiert.</p>
 <div id="def-singulärwertzerlegung" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 10.3 (Singulärwertzerlegung) </strong></span><span class="math inline">\(Y \in \mathbb{R}^{m \times n}\)</span> sei eine Matrix. Dann heißt die Zerlegung <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 10.3 (Singulärwertzerlegung)</strong></span> <span class="math inline">\(Y \in \mathbb{R}^{m \times n}\)</span> sei eine Matrix. Dann heißt die Zerlegung <span class="math display">\[\begin{equation}
 Y = USV^T,
 \end{equation}\]</span> wobei <span class="math inline">\(U \in \mathbb{R}^{m \times m}\)</span> eine orthogonale Matrix ist, <span class="math inline">\(S \in \mathbb{R}^{m \times n}\)</span> eine Diagonalmatrix ist und <span class="math inline">\(V \in \mathbb{R}^{n \times n}\)</span> eine orthogonale Matrix ist, <em>Singulärwertzerlegung</em> von <span class="math inline">\(Y\)</span>. Die Diagonalelemente von <span class="math inline">\(S\)</span> heißen die <em>Singulärwerte</em> von <span class="math inline">\(Y\)</span>.</p>
 </div>
 <p>Singulärwertzerlegungen werden auf Englisch <em>singular value decompositions</em> genannt und entsprechend mit <em>SVD</em> abgekürzt. Wir verzichten auf eine Diskussion der Berechnung einer Singulärwertzerlegung und weisen lediglich daraufhin, dass Singulärwertzerlegungen zum Beispiel in <strong>R</strong> mit der Funktion <code>svd()</code>, in <strong>SciyPy</strong> mit <code>scipy.linalg.svd()</code> und in <strong>Julia</strong> mit <code>svd()</code> berechnet werden können. Folgendes Theorem beschreibt den Zusammenhang zwischen Singulärwertzerlegung und Eigenanalyse und wird an vielen Stellen eingesetzt.</p>
 <div id="thm-singulärwertzerlegung-und-eigenanalyse" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 10.7 (Singulärwertzerlegung und Eigenanalyse) </strong></span>&nbsp;</p>
+<p><span class="theorem-title"><strong>Theorem 10.7 (Singulärwertzerlegung und Eigenanalyse)</strong></span> &nbsp;</p>
 <span class="math inline">\(Y \in \mathbb{R}^{m \times n}\)</span> sei eine Matrix und <span class="math display">\[\begin{equation}
 Y = USV^T
 \end{equation}\]</span> sei ihre Singulärwertzerlegung. Dann gilt:
@@ -933,7 +980,7 @@ YY^T = U \Lambda U^T  \mbox{ und } Y^TY = V \Lambda V^T
 </ol>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
 <div id="ref-burden2016" class="csl-entry" role="listitem">
 Burden, R. L., Faires, J. D., &amp; Burden, A. M. (2016). <em>Numerical Analysis</em> (Tenth edition). <span>Cengage Learning</span>.
 </div>
@@ -1038,10 +1085,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1051,8 +1097,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1065,6 +1120,125 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1108,6 +1282,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1133,6 +1308,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1194,12 +1395,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./109-Matrizen.html" class="pagination-link">
+      <a href="./109-Matrizen.html" class="pagination-link  aria-label=" &lt;span="">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Matrizen</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./200-Wahrscheinlichkeitstheorie.html" class="pagination-link">
+      <a href="./200-Wahrscheinlichkeitstheorie.html" class="pagination-link" aria-label="Wahrscheinlichkeitstheorie">
         <span class="nav-page-text">Wahrscheinlichkeitstheorie</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
@@ -1208,4 +1409,5 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-</body></html>
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/110-Eigenanalyse.qmd" class="toc-action"><i class="bi bi-github"></i>Seite editieren</a></li></ul></div></div></div></footer></body></html>

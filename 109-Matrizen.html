@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.549">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -58,6 +58,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -100,7 +101,13 @@ div.csl-indent {
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "Keine Treffer",
     "search-matching-documents-text": "Treffer",
@@ -109,6 +116,7 @@ div.csl-indent {
     "search-more-match-text": "weitere Treffer in diesem Dokument",
     "search-more-matches-text": "weitere Treffer in diesem Dokument",
     "search-clear-button-title": "Zurücksetzen",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Abbrechen",
     "search-submit-button-title": "Abschicken",
     "search-label": "Suchen"
@@ -118,6 +126,33 @@ div.csl-indent {
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
 </head>
 
 <body class="nav-sidebar floating">
@@ -126,12 +161,12 @@ div.csl-indent {
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./101-Sprache-und-Logik.html">Mathematische Grundlagen</a></li><li class="breadcrumb-item"><a href="./109-Matrizen.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Matrizen</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./101-Sprache-und-Logik.html">Mathematische Grundlagen</a></li><li class="breadcrumb-item"><a href="./109-Matrizen.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Matrizen</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
@@ -141,13 +176,13 @@ div.csl-indent {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Probabilistische Datenwissenschaft für die Psychologie</a> 
         <div class="sidebar-tools-main">
-    <a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-    <a href="./Probabilistische-Datenwissenschaft-für-die-Psychologie.pdf" rel="" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+    <a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages" title="Quellcode" class="quarto-navigation-tool px-1" aria-label="Quellcode"><i class="bi bi-github"></i></a>
+    <a href="./Probabilistische-Datenwissenschaft-für-die-Psychologie.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
 </div>
     </div>
       </div>
@@ -380,6 +415,12 @@ div.csl-indent {
  <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">T-Statistiken</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./406-F-Statistiken.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">F-Statistiken</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item">
@@ -420,16 +461,16 @@ div.csl-indent {
   <li><a href="#literaturhinweise" id="toc-literaturhinweise" class="nav-link" data-scroll-target="#literaturhinweise"><span class="header-section-number">9.7</span> Literaturhinweise</a></li>
   <li><a href="#selbstkontrollfragen" id="toc-selbstkontrollfragen" class="nav-link" data-scroll-target="#selbstkontrollfragen"><span class="header-section-number">9.8</span> Selbstkontrollfragen</a></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/109-Matrizen.qmd" class="toc-action">Seite editieren</a></p></div></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/109-Matrizen.qmd" class="toc-action"><i class="bi bi-github"></i>Seite editieren</a></li></ul></div></nav>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./101-Sprache-und-Logik.html">Mathematische Grundlagen</a></li><li class="breadcrumb-item"><a href="./109-Matrizen.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Matrizen</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span id="sec-matrizen" class="quarto-section-identifier"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Matrizen</span></span></h1>
 </div>
@@ -444,15 +485,17 @@ div.csl-indent {
   </div>
   
 
+
 </header>
 
+
 <p>Matrizen sind die Worte der Sprache der modernen Datenanalyse. Ein Verständnis moderner datenanalytischer Verfahren und ihrer Implementation ist ohne ein Grundverständnis des Matrixbegriffs und ein Wissen um die grundlegenden Matrixoperationen nicht möglich. Matrizen können dabei sehr unterschiedliche Rollen spielen. So können Matrizen zum Beispiel Daten, experimentelle Designs und Modellparameter repräsentieren. Im Kontext der Linearen Algebra dienen Matrizen zur Repräsentation linearer Abbildungen und von Vektorräumen, hier werden Vektoren dann als spezielle Matrizen aufgefasst.</p>
-<p>In diesem Kapitel geben wir eine Einführung zum Umgang mit Matrizen, wobei wir auf abstrakte Begrifflichkeiten der Linearen Algebra im Wesentlichen verzichten. Wir führen zunächst den Matrixbegriff ein und diskutieren dann mit der Matrixaddition, Matrixsubtraktion, Skalarmultiplikation und der Matrixtransposition erste grundlegende Matrixoperationen (<a href="#sec-matrix-definition"><span>Kapitel&nbsp;9.1</span></a> und <a href="#sec-grundlegende-matrixoperationen"><span>Kapitel&nbsp;9.2</span></a>). Wir führen dann die zentralen Begriffe der Matrixmultiplikation und der Matrixinversion ein (<a href="#sec-matrixmultiplikation"><span>Kapitel&nbsp;9.3</span></a> und <a href="#sec-matrixinversion"><span>Kapitel&nbsp;9.4</span></a>). Mit der Matrixdeterminante diskutieren wir dann in <a href="#sec-determinanten"><span>Kapitel&nbsp;9.5</span></a> eine erste Maßzahl zur Beschreibung von Matrizen. Wir schließen in <a href="#sec-spezielle-matrizen"><span>Kapitel&nbsp;9.6</span></a> mit einer Übersicht zu besonders häufig auftretenden Matrizen.</p>
+<p>In diesem Kapitel geben wir eine Einführung zum Umgang mit Matrizen, wobei wir auf abstrakte Begrifflichkeiten der Linearen Algebra im Wesentlichen verzichten. Wir führen zunächst den Matrixbegriff ein und diskutieren dann mit der Matrixaddition, Matrixsubtraktion, Skalarmultiplikation und der Matrixtransposition erste grundlegende Matrixoperationen (<a href="#sec-matrix-definition" class="quarto-xref"><span>Kapitel 9.1</span></a> und <a href="#sec-grundlegende-matrixoperationen" class="quarto-xref"><span>Kapitel 9.2</span></a>). Wir führen dann die zentralen Begriffe der Matrixmultiplikation und der Matrixinversion ein (<a href="#sec-matrixmultiplikation" class="quarto-xref"><span>Kapitel 9.3</span></a> und <a href="#sec-matrixinversion" class="quarto-xref"><span>Kapitel 9.4</span></a>). Mit der Matrixdeterminante diskutieren wir dann in <a href="#sec-determinanten" class="quarto-xref"><span>Kapitel 9.5</span></a> eine erste Maßzahl zur Beschreibung von Matrizen. Wir schließen in <a href="#sec-spezielle-matrizen" class="quarto-xref"><span>Kapitel 9.6</span></a> mit einer Übersicht zu besonders häufig auftretenden Matrizen.</p>
 <section id="sec-matrix-definition" class="level2" data-number="9.1">
 <h2 data-number="9.1" class="anchored" data-anchor-id="sec-matrix-definition"><span class="header-section-number">9.1</span> Definition</h2>
 <p>Wir beginnen mit der Definition einer Matrix.</p>
 <div id="def-matrix" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 9.1 </strong></span>Eine Matrix ist eine rechteckige Anordnung von Zahlen, die wie folgt bezeichnet wird <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 9.1</strong></span> Eine Matrix ist eine rechteckige Anordnung von Zahlen, die wie folgt bezeichnet wird <span class="math display">\[\begin{equation}
 A := \begin{pmatrix}
 a_{11} &amp; a_{12} &amp; \cdots &amp; a_{1m} \\
 a_{21} &amp; a_{22} &amp; \cdots &amp; a_{2m} \\
@@ -532,7 +575,7 @@ A :=
 <section id="matrixaddition" class="level3" data-number="9.2.1">
 <h3 data-number="9.2.1" class="anchored" data-anchor-id="matrixaddition"><span class="header-section-number">9.2.1</span> Matrixaddition</h3>
 <div id="def-Matrixaddition" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 9.2 </strong></span>Es seien <span class="math inline">\(A,B\in \mathbb{R}^{n\times m}\)</span>. Dann ist die <em>Addition</em> von <span class="math inline">\(A\)</span> und <span class="math inline">\(B\)</span> definiert als die Abbildung <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 9.2</strong></span> Es seien <span class="math inline">\(A,B\in \mathbb{R}^{n\times m}\)</span>. Dann ist die <em>Addition</em> von <span class="math inline">\(A\)</span> und <span class="math inline">\(B\)</span> definiert als die Abbildung <span class="math display">\[\begin{equation}
 + : \mathbb{R}^{n\times m} \times \mathbb{R}^{n\times m} \to \mathbb{R}^{n \times m}, \,
 (A,B) \mapsto +(A,B) := A + B
 \end{equation}\]</span> mit <span class="math display">\[\begin{align}
@@ -628,7 +671,7 @@ C
 <h3 data-number="9.2.2" class="anchored" data-anchor-id="matrixsubtraktion"><span class="header-section-number">9.2.2</span> Matrixsubtraktion</h3>
 <p>Die Subtraktion von Matrizen gleicher Größe ist analog zur Addition definiert.</p>
 <div id="def-matrixsubtraktion" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 9.3 (Matrixsubtraktion) </strong></span>Es seien <span class="math inline">\(A,B\in \mathbb{R}^{n\times m}\)</span>. Dann ist die <em>Subtraktion</em> von <span class="math inline">\(A\)</span> und <span class="math inline">\(B\)</span> definiert als die Abbildung <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 9.3 (Matrixsubtraktion)</strong></span> Es seien <span class="math inline">\(A,B\in \mathbb{R}^{n\times m}\)</span>. Dann ist die <em>Subtraktion</em> von <span class="math inline">\(A\)</span> und <span class="math inline">\(B\)</span> definiert als die Abbildung <span class="math display">\[\begin{equation}
 - : \mathbb{R}^{n\times m} \times \mathbb{R}^{n\times m} \to \mathbb{R}^{n\times m}, \,
 (A,B) \mapsto -(A,B) := A - B
 \end{equation}\]</span> mit <span class="math display">\[\begin{align}
@@ -704,7 +747,7 @@ D
 <h3 data-number="9.2.3" class="anchored" data-anchor-id="skalarmultiplikation"><span class="header-section-number">9.2.3</span> Skalarmultiplikation</h3>
 <p>Die <em>Skalarmultiplikation</em> einer Matrix bezeichnet die Multiplikation eines Skalars mit einer Matrix.</p>
 <div id="def-skalarmultiplikation" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 9.4 (Skalarmultiplikation) </strong></span>Es sei <span class="math inline">\(c \in \mathbb{R}\)</span> ein Skalar und <span class="math inline">\(A \in \mathbb{R}^{n\times m}\)</span>. Dann ist die <em>Skalarmultiplikation</em> von <span class="math inline">\(c\)</span> und <span class="math inline">\(A\)</span> definiert als die Abbildung <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 9.4 (Skalarmultiplikation)</strong></span> Es sei <span class="math inline">\(c \in \mathbb{R}\)</span> ein Skalar und <span class="math inline">\(A \in \mathbb{R}^{n\times m}\)</span>. Dann ist die <em>Skalarmultiplikation</em> von <span class="math inline">\(c\)</span> und <span class="math inline">\(A\)</span> definiert als die Abbildung <span class="math display">\[\begin{equation}
 \cdot : \mathbb{R} \times \mathbb{R}^{n\times m} \to \mathbb{R}^{n\times m}, \,
 (c,A) \mapsto \cdot (c,A) := cA
 \end{equation}\]</span> mit <span class="math display">\[\begin{align}
@@ -786,7 +829,7 @@ cA
 </div>
 <p>Mithilfe der Definition von Matrixaddition und Skalarmultiplikation ist es möglich, einen Vektorraum zu definieren, dessen Elemente die reellen Matrizen sind. Insbesondere legt diese Definition auch die Rechenregeln beim Umgang mit Matrixaddition und Skalarmultiplikation fest.</p>
 <div id="thm-vektorraum-der-reellwertigen-Matrizen" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 9.1 (Vektorraum der reellwertigen Matrizen) </strong></span>Das Tripel <span class="math inline">\((\mathbb{R}^{n \times m}, +, \cdot)\)</span> mit der oben definierten Matrixaddition und Skalarmultiplikation ist ein Vektorraum. Insbesondere gelten damit für <span class="math inline">\(A,B,C\in \mathbb{R}^{n \times m}\)</span> und <span class="math inline">\(r,s,t\in \mathbb{R}\)</span> folgende Rechenregeln:</p>
+<p><span class="theorem-title"><strong>Theorem 9.1 (Vektorraum der reellwertigen Matrizen)</strong></span> Das Tripel <span class="math inline">\((\mathbb{R}^{n \times m}, +, \cdot)\)</span> mit der oben definierten Matrixaddition und Skalarmultiplikation ist ein Vektorraum. Insbesondere gelten damit für <span class="math inline">\(A,B,C\in \mathbb{R}^{n \times m}\)</span> und <span class="math inline">\(r,s,t\in \mathbb{R}\)</span> folgende Rechenregeln:</p>
 <ol type="1">
 <li>Kommutativität der Addition: <span class="math inline">\(A + B = B + A\)</span>.</li>
 <li>Assoziativität der Addition: <span class="math inline">\((A + B) + C = A + (B + C)\)</span>.</li>
@@ -806,7 +849,7 @@ cA
 <h3 data-number="9.2.4" class="anchored" data-anchor-id="matrixtransposition"><span class="header-section-number">9.2.4</span> Matrixtransposition</h3>
 <p>Eine weitere häufig auftretende grundlegende Matrixoperation ist das Vertauschen der Zeilen- und Spaltenanordnung einer Matrix, genannt <em>Matrixtransposition</em>.</p>
 <div id="def-matrixtransposition" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 9.5 (Matrixtransposition) </strong></span>Es sei <span class="math inline">\(A \in \mathbb{R}^{n\times m}\)</span>. Dann ist die <em>Transposition</em> von <span class="math inline">\(A\)</span> definiert als die Abbildung <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 9.5 (Matrixtransposition)</strong></span> Es sei <span class="math inline">\(A \in \mathbb{R}^{n\times m}\)</span>. Dann ist die <em>Transposition</em> von <span class="math inline">\(A\)</span> definiert als die Abbildung <span class="math display">\[\begin{equation}
 \cdot^{T} : \mathbb{R}^{n\times m} \to \mathbb{R}^{m \times n}, \,
 A \mapsto \cdot^{T}(A) := A^T
 \end{equation}\]</span> mit <span class="math display">\[\begin{align}
@@ -900,7 +943,7 @@ A^{T} :=
 <h2 data-number="9.3" class="anchored" data-anchor-id="sec-matrixmultiplikation"><span class="header-section-number">9.3</span> Matrixmultiplikation</h2>
 <p>Die Matrixmultiplikation ist die zentrale Operation beim Rechnen mit Matrizen. Sie ist definiert wie folgt.</p>
 <div id="def-matrixmultiplikation" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 9.6 (Matrixmultiplikation) </strong></span>Es seien <span class="math inline">\(A\in \mathbb{R}^{n \times m}\)</span> und <span class="math inline">\(B \in \mathbb{R}^{m \times k}\)</span>. Dann ist die <em>Matrixmultiplikation</em> von <span class="math inline">\(A\)</span> und <span class="math inline">\(B\)</span> definiert als die Abbildung <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 9.6 (Matrixmultiplikation)</strong></span> Es seien <span class="math inline">\(A\in \mathbb{R}^{n \times m}\)</span> und <span class="math inline">\(B \in \mathbb{R}^{m \times k}\)</span>. Dann ist die <em>Matrixmultiplikation</em> von <span class="math inline">\(A\)</span> und <span class="math inline">\(B\)</span> definiert als die Abbildung <span class="math display">\[\begin{equation}
 \cdot : \mathbb{R}^{n\times m} \times \mathbb{R}^{m\times k} \to \mathbb{R}^{n \times k}, \,
 (A,B) \mapsto \cdot(A,B) := AB
 \end{equation}\]</span> mit <span class="math display">\[\begin{align}
@@ -1111,7 +1154,7 @@ D
 </div>
 <p>Folgendes Theorem, das wir nicht beweisen wollen, stellt den Bezug zwischen dem Skalarprodukt zweier Vektoren und der Multiplikation zweier Matrizen her. Dieser ergibt sich im Wesentlichen durch die Identifikation von <span class="math inline">\(\mathbb{R}^{n}\)</span> und <span class="math inline">\(\mathbb{R}^{n \times 1}\)</span> und der Tatsache, dass nach Definition der Eintrag <span class="math inline">\((AB)_{ij}\)</span> im Produkt von <span class="math inline">\(A \in \mathbb{R}^{n \times m}\)</span> und <span class="math inline">\(B \in \mathbb{R}^{m \times k}\)</span> dem Vektorskalarprodukt der <span class="math inline">\(i\)</span>ten Spalte von <span class="math inline">\(A^T\)</span> und der <span class="math inline">\(j\)</span>ten Spalte von <span class="math inline">\(B\)</span> entspricht.</p>
 <div id="thm-matrixmultiplikation-skalarprodukt" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 9.2 (Matrixmultiplikation und Vektorskalarprodukt) </strong></span>Es seien <span class="math inline">\(x,y \in \mathbb{R}^n\)</span>. Dann gilt <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Theorem 9.2 (Matrixmultiplikation und Vektorskalarprodukt)</strong></span> Es seien <span class="math inline">\(x,y \in \mathbb{R}^n\)</span>. Dann gilt <span class="math display">\[\begin{equation}
 \langle x,y \rangle = x^Ty.
 \end{equation}\]</span> Weiterhin seien für <span class="math inline">\(A \in \mathbb{R}^{n\times m}\)</span> für <span class="math inline">\(i = 1,...,n\)</span> <span class="math display">\[\begin{equation}
 \bar{a}_i := (a_{ji})_{1 \le j \le m} \in \mathbb{R}^m
@@ -1138,7 +1181,7 @@ AB = \left(\langle \bar{a}_i,\bar{b}_j \rangle \right)_{1 \le i \le n, 1 \le j \
 <p>Im Folgenden stellen wir einige grundlegende Rechenregeln der Matrixmultiplikation, insbesondere auch in Kombination mit anderen Matrixoperationen zusammen.</p>
 <p>Für Beweise der folgenden zwei Theoreme zur Assoziativität und Distributivität, die sich im Wesentlichen mit den entsprechenden Rechenregeln für Summen und Produkte der reellen Zahlen ergeben, verweisen wir auf die weiterführende Literatur.</p>
 <div id="thm-assoziativität" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 9.3 (Assoziativität) </strong></span>Es seien <span class="math inline">\(A \in \mathbb{R}^{n \times m}\)</span>, <span class="math inline">\(B \in \mathbb{R}^{m \times k}\)</span>, <span class="math inline">\(C \in \mathbb{R}^{k \times p}\)</span> und <span class="math inline">\(c \in \mathbb{R}\)</span>. Dann gelten</p>
+<p><span class="theorem-title"><strong>Theorem 9.3 (Assoziativität)</strong></span> Es seien <span class="math inline">\(A \in \mathbb{R}^{n \times m}\)</span>, <span class="math inline">\(B \in \mathbb{R}^{m \times k}\)</span>, <span class="math inline">\(C \in \mathbb{R}^{k \times p}\)</span> und <span class="math inline">\(c \in \mathbb{R}\)</span>. Dann gelten</p>
 <ol type="1">
 <li>Die Multiplikation von Matrizen ist assoziativ, es gilt <span class="math display">\[\begin{equation}
 A(BC) = (AB)C.
@@ -1154,7 +1197,7 @@ c\left(\sum_{i = 1}^m a_{ji}b_{il}\right)
 = \sum_{i = 1}^m a_{ji}\left(c b_{il}\right).
 \end{equation}\]</span></p>
 <div id="thm-distributivität" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 9.4 (Distributivität) </strong></span>Es seien <span class="math inline">\(A \in \mathbb{R}^{n \times m}\)</span>, <span class="math inline">\(B \in \mathbb{R}^{n \times m}\)</span>, <span class="math inline">\(C \in \mathbb{R}^{m \times p}\)</span>. Dann gelten <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Theorem 9.4 (Distributivität)</strong></span> Es seien <span class="math inline">\(A \in \mathbb{R}^{n \times m}\)</span>, <span class="math inline">\(B \in \mathbb{R}^{n \times m}\)</span>, <span class="math inline">\(C \in \mathbb{R}^{m \times p}\)</span>. Dann gelten <span class="math display">\[\begin{equation}
 (A + B)C = AC + BC
 \end{equation}\]</span> und <span class="math display">\[\begin{equation}
 C^T(A + B) = C^TA + C^TB
@@ -1162,7 +1205,7 @@ C^T(A + B) = C^TA + C^TB
 </div>
 <p>Im Gegensatz zur Kommutativität der Multiplikation reeller Zahlen ist die Matrixmultiplikation im Allgemeinen nicht kommutativ.</p>
 <div id="thm-nichtkommutativität" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 9.5 (Nichtkommutativität) </strong></span>Es seien <span class="math inline">\(A \in \mathbb{R}^{n \times m}\)</span> und <span class="math inline">\(B \in \mathbb{R}^{m \times p}\)</span>. Dann gilt im Allgemeinen <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Theorem 9.5 (Nichtkommutativität)</strong></span> Es seien <span class="math inline">\(A \in \mathbb{R}^{n \times m}\)</span> und <span class="math inline">\(B \in \mathbb{R}^{m \times p}\)</span>. Dann gilt im Allgemeinen <span class="math display">\[\begin{equation}
 AB \neq BA.
 \end{equation}\]</span></p>
 </div>
@@ -1188,7 +1231,7 @@ BA.
 \end{equation}\]</span></p>
 </div>
 <div id="thm-matrixmultiplikation-transposition" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 9.6 (Kombination von Matrixmultiplikation und Transposition) </strong></span>Es seien <span class="math inline">\(A \in \mathbb{R}^{m \times n}\)</span> und <span class="math inline">\(B \in \mathbb{R}^{n \times k}\)</span>. Dann gilt <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Theorem 9.6 (Kombination von Matrixmultiplikation und Transposition)</strong></span> Es seien <span class="math inline">\(A \in \mathbb{R}^{m \times n}\)</span> und <span class="math inline">\(B \in \mathbb{R}^{n \times k}\)</span>. Dann gilt <span class="math display">\[\begin{equation}
 (AB)^T = B^TA^T.
 \end{equation}\]</span></p>
 </div>
@@ -1247,7 +1290,7 @@ A^{-1}A = "1".
 Ax = b \Leftrightarrow A^{-1}Ax = A^{-1}b \Leftrightarrow x = A^{-1}b.
 \end{equation}\]</span> Diese intuitive Idee des multiplikativen Inversen einer Matrix <span class="math inline">\(A\)</span> wird im Folgenden unter dem Begriff der <em>inversen Matrix</em> formalisiert. Dazu benötigen wir zunächst den Begriff der <em>Einheitsmatrix</em>.</p>
 <div id="def-einheitsmatrix" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 9.7 (Einheitsmatrix) </strong></span>Die Matrix <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 9.7 (Einheitsmatrix)</strong></span> Die Matrix <span class="math display">\[\begin{equation}
 I_n
 := (a_{ij})_{1\le i \le n, 1 \le j \le n}  \in \mathbb{R}^{n \times n}
 :=
@@ -1261,7 +1304,7 @@ I_n
 </div>
 <p>In <strong>R</strong> wird <span class="math inline">\(I_n\)</span> mit dem Befehl <code>diag(n)</code> erzeugt. Die Einheitsmatrix ist für die Matrixmultiplikation das Analog zur 1 bei der Multiplikation reeller Zahlen. Das ist die Aussage folgenden Theorems.</p>
 <div id="thm-neutrales-element-der-matrixmultiplikation" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 9.7 (Neutrales Element der Matrixmultiplikation) </strong></span><span class="math inline">\(I_n\)</span> ist das neutrale Element der Matrixmultiplikation, das heißt es gilt für <span class="math inline">\(A \in \mathbb{R}^{n \times m}\)</span>, dass <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Theorem 9.7 (Neutrales Element der Matrixmultiplikation)</strong></span> <span class="math inline">\(I_n\)</span> ist das neutrale Element der Matrixmultiplikation, das heißt es gilt für <span class="math inline">\(A \in \mathbb{R}^{n \times m}\)</span>, dass <span class="math display">\[\begin{equation}
 I_nA = A \mbox{ und } AI_m = A.
 \end{equation}\]</span></p>
 </div>
@@ -1281,11 +1324,11 @@ d_{ij}
 </div>
 <p>Mit dem Begriff der Einheitsmatrix können wir jetzt die Begriffe der inversen Matrix und der invertierbaren Matrix definieren:</p>
 <div id="def-invertierbare-matrix-und-inverse-matrix" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 9.8 (Invertierbare Matrix und inverse Matrix) </strong></span>Eine quadratische Matrix <span class="math inline">\(A \in \mathbb{R}^{n \times n}\)</span> heißt <em>invertierbar</em>, wenn es eine quadratische Matrix <span class="math inline">\(A^{-1} \in \mathbb{R}^{n \times n}\)</span> gibt, so dass <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 9.8 (Invertierbare Matrix und inverse Matrix)</strong></span> Eine quadratische Matrix <span class="math inline">\(A \in \mathbb{R}^{n \times n}\)</span> heißt <em>invertierbar</em>, wenn es eine quadratische Matrix <span class="math inline">\(A^{-1} \in \mathbb{R}^{n \times n}\)</span> gibt, so dass <span class="math display">\[\begin{equation}
 A^{-1}A = AA^{-1} = I_n
 \end{equation}\]</span> ist. Die Matrix <span class="math inline">\(A^{-1}\)</span> heißt die <em>inverse Matrix von <span class="math inline">\(A\)</span></em>.</p>
 </div>
-<p>Man beachte, dass sich die Begriffe der inversen Matrix und der Invertierbarkeit <em>nur</em> auf quadratische Matrizen beziehen. Insbesondere können quadratische Matrizen invertierbar sein, müssen es aber nicht sein (lineare Gleichungssysteme können also Lösungen haben, müssen es aber nicht). Nicht invertierbare Matrizen nennt man auch <em>singuläre</em> Matrizen, invertierbare Matrizen manchmal auch <em>nicht-singuläre</em> Matrizen. Schließlich beachte man, dass <a href="#def-invertierbare-matrix-und-inverse-matrix">Definition&nbsp;<span>9.8</span></a> lediglich aussagt, was eine inverse Matrix ist, aber nicht wie man sie berechnet.</p>
+<p>Man beachte, dass sich die Begriffe der inversen Matrix und der Invertierbarkeit <em>nur</em> auf quadratische Matrizen beziehen. Insbesondere können quadratische Matrizen invertierbar sein, müssen es aber nicht sein (lineare Gleichungssysteme können also Lösungen haben, müssen es aber nicht). Nicht invertierbare Matrizen nennt man auch <em>singuläre</em> Matrizen, invertierbare Matrizen manchmal auch <em>nicht-singuläre</em> Matrizen. Schließlich beachte man, dass <a href="#def-invertierbare-matrix-und-inverse-matrix" class="quarto-xref">Definition&nbsp;<span>9.8</span></a> lediglich aussagt, was eine inverse Matrix ist, aber nicht wie man sie berechnet.</p>
 <p><strong>Beispiel für eine invertierbare Matrix</strong></p>
 <p>Die Matrix <span class="math display">\[\begin{equation}
 A := \begin{pmatrix} 2.0 &amp; 1.0 \\ 3.0 &amp; 4.0 \end{pmatrix}
@@ -1363,7 +1406,7 @@ B := \begin{pmatrix} 1 &amp; 0 \\ 0 &amp; 0 \end{pmatrix}
 \lvert \cdot \rvert: \mathbb{R}^{n \times n} \to \mathbb{R}, A \mapsto \lvert A \rvert,
 \end{equation}\]</span> das heißt, eine Determinante ordnet einer quadratischen Matrix <span class="math inline">\(A\)</span> die reelle Zahl <span class="math inline">\(\lvert A \rvert\)</span> zu. Die Zahl <span class="math inline">\(\lvert A \rvert\)</span> wird dabei rekursiv anhand folgender Definition bestimmt.</p>
 <div id="def-Determinante" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 9.9 (Determinante) </strong></span>Für <span class="math inline">\(A = (a_{ij})_{1 \le i,j \le n} \in \mathbb{R}^{n \times n}\)</span> mit <span class="math inline">\(n&gt;1\)</span> sei <span class="math inline">\(A_{ij} \in \mathbb{R}^{n-1 \times n-1}\)</span> die Matrix, die aus <span class="math inline">\(A\)</span> durch Entfernen der <span class="math inline">\(i\)</span>ten Zeile und der <span class="math inline">\(j\)</span>ten Spalte entsteht. Dann heißt die Zahl <span class="math display">\[\begin{align}
+<p><span class="theorem-title"><strong>Definition 9.9 (Determinante)</strong></span> Für <span class="math inline">\(A = (a_{ij})_{1 \le i,j \le n} \in \mathbb{R}^{n \times n}\)</span> mit <span class="math inline">\(n&gt;1\)</span> sei <span class="math inline">\(A_{ij} \in \mathbb{R}^{n-1 \times n-1}\)</span> die Matrix, die aus <span class="math inline">\(A\)</span> durch Entfernen der <span class="math inline">\(i\)</span>ten Zeile und der <span class="math inline">\(j\)</span>ten Spalte entsteht. Dann heißt die Zahl <span class="math display">\[\begin{align}
 \lvert A \rvert &amp; := a_{11} \quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad   \mbox{ für } n = 1\\
 \lvert A \rvert &amp; := \sum_{j = 1}^n a_{1j}(-1)^{1+j} \det\left(A_{1j}\right)               \mbox{ für } n &gt; 1
 \end{align}\]</span> die <em>Determinante von <span class="math inline">\(A\)</span></em>.</p>
@@ -1404,7 +1447,7 @@ A_{22}
 \end{equation}\]</span></p>
 <p>Für die Berechnung der Determinanten von zwei- und dreidimensionalen quadratischen Matrizen gibt es direkte, nicht-rekursive Rechenregeln, die in folgendem Theorem festgehalten sind.</p>
 <div id="thm-determinanten-von-zwei-und-dreidimensionalen-matrizen" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 9.8 (Determinanten von zwei- und dreidimensionalen Matrizen) </strong></span><span class="math inline">\(\quad\)</span></p>
+<p><span class="theorem-title"><strong>Theorem 9.8 (Determinanten von zwei- und dreidimensionalen Matrizen)</strong></span> <span class="math inline">\(\quad\)</span></p>
 <p>Es sei <span class="math inline">\(A = (a_{ij})_{1 \le i,j \le 2} \in \mathbb{R}^{2 \times 2}\)</span>. Dann gilt <span class="math display">\[\begin{equation}
 \lvert A \rvert = a_{11}a_{22} - a_{12}a_{21}.
 \end{equation}\]</span> Es sei <span class="math inline">\(A = (a_{ij})_{1 \le i,j \le 3} \in \mathbb{R}^{3 \times 3}\)</span>. Dann gilt <span class="math display">\[\begin{equation}
@@ -1513,7 +1556,7 @@ C :=
 </div>
 <p>Für Determinanten bestehen zahlreiche Rechenregeln im Zusammenspiel mit Matrixmultiplikation und Matrixinversion. Ohne Beweis stellen wir diese in folgendem Theorem zusammen.</p>
 <div id="thm-rechenregeln-für-determinanten" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 9.9 (Rechenregeln für Determinanten) </strong></span><span class="math inline">\(\quad\)</span></p>
+<p><span class="theorem-title"><strong>Theorem 9.9 (Rechenregeln für Determinanten)</strong></span> <span class="math inline">\(\quad\)</span></p>
 <p>(Determinantenmultiplikationssatz). Für <span class="math inline">\(A,B \in \mathbb{R}^{n \times n}\)</span> gilt <span class="math display">\[\begin{equation}
 |AB| = \lvert A \rvert\lvert B \rvert.
 \end{equation}\]</span> (Transposition). Für <span class="math inline">\(A \in \mathbb{R}^{n \times n}\)</span> gilt <span class="math display">\[\begin{equation}
@@ -1526,7 +1569,7 @@ C :=
 </div>
 <p>Folgendes sehr tiefgehendes Theorem, welches wir nicht vollständig beweisen wollen, gibt eine Möglichkeit an, anhand der Determinante einer quadratischen Matrix zu bestimmen, ob sie invertierbar ist.</p>
 <div id="thm-invertierbarkeit-und-determinante" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 9.10 </strong></span><span class="math inline">\(A \in \mathbb{R}^{n \times n}\)</span> ist dann und nur dann invertierbar, wenn gilt, dass <span class="math inline">\(\lvert A \rvert \neq 0\)</span>. Es gilt also <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Theorem 9.10</strong></span> <span class="math inline">\(A \in \mathbb{R}^{n \times n}\)</span> ist dann und nur dann invertierbar, wenn gilt, dass <span class="math inline">\(\lvert A \rvert \neq 0\)</span>. Es gilt also <span class="math display">\[\begin{equation}
 A \mbox{ ist invertierbar} \Leftrightarrow \lvert A \rvert \neq 0
 \mbox{ und }
 A \mbox{ ist nicht invertierbar} \Leftrightarrow \lvert A \rvert = 0.
@@ -1559,11 +1602,15 @@ A_3 =
 \lvert A_2 \rvert= 2\cdot 2 - 0 \cdot 0 = 4, \quad
 \lvert A_3 \rvert = 2\cdot 2 - 2 \cdot 2 = 0.
 \end{equation}\]</span></p>
-<p><a href="#fig-determinanten">Abbildung&nbsp;<span>9.1</span></a> visualisiert die entsprechende Intuition.</p>
-<div id="fig-determinanten" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./_figures/109-determinanten.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption class="figure-caption">Abbildung&nbsp;9.1: Determinanten als Parallelotopvolumina.</figcaption>
+<p><a href="#fig-determinanten" class="quarto-xref">Abbildung&nbsp;<span>9.1</span></a> visualisiert die entsprechende Intuition.</p>
+<div id="fig-determinanten" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-determinanten-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/109-determinanten.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-determinanten-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;9.1: Determinanten als Parallelotopvolumina.
+</figcaption>
 </figure>
 </div>
 </section>
@@ -1574,7 +1621,7 @@ A_3 =
 <h3 data-number="9.6.1" class="anchored" data-anchor-id="einheitsmatrizen"><span class="header-section-number">9.6.1</span> Einheitsmatrizen</h3>
 <p>Die Einheitsmatrix und die Einheitsvektoren haben wir bereits kennengelernt. Wir fassen sie hier noch einmal in einer gemeinsamen Definition zusammen.</p>
 <div id="def-einheitsmatrizen-und-einheitsvektoren" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 9.10 (Einheitsmatrix und Einheitsvektoren) </strong></span>Wir bezeichnen die <em>Einheitsmatrix</em> mit <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 9.10 (Einheitsmatrix und Einheitsvektoren)</strong></span> Wir bezeichnen die <em>Einheitsmatrix</em> mit <span class="math display">\[\begin{equation}
 I_{n} := (i_{jk})_{1 \le j \le n, 1 \le k \le n} \in \mathbb{R}^{n \times n} \mbox{ mit } i_{jk} = 1 \mbox{ für } j = k \mbox{ und } i_{jk} = 0 \mbox{ für } j \neq k.
 \end{equation}\]</span> Wir bezeichnen die <em>Einheitsvektoren</em> <span class="math inline">\(e_i, i = 1,...,n\)</span> mit <span class="math display">\[\begin{equation}
 e_{i} := (e_{{i}_j})_{1 \le j \le n} \in \mathbb{R}^{n} \mbox{ mit } e_{{i}_j} = 1 \mbox{ für } i = j \mbox{ und } e_{{i}_j} = 0 \mbox{ für } i \neq j.
@@ -1601,7 +1648,7 @@ e^T_ie_j = 0 \mbox{ für } i \neq j,  e^T_ie_i = 1 \mbox{ und } e^T_iv = v^Te_i 
 <section id="einsmatrizen-und-nullmatrizen" class="level3" data-number="9.6.2">
 <h3 data-number="9.6.2" class="anchored" data-anchor-id="einsmatrizen-und-nullmatrizen"><span class="header-section-number">9.6.2</span> Einsmatrizen und Nullmatrizen</h3>
 <div id="def-nullmatrizen-nullvektoren-einsmatrizen-einsvektoren" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 9.11 (Nullmatrizen, Nullvektoren, Einsmatrizen, Einsvektoren) </strong></span>Wir bezeichnen <em>Nullmatrizen</em> und <em>Nullvektoren</em> mit <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 9.11 (Nullmatrizen, Nullvektoren, Einsmatrizen, Einsvektoren)</strong></span> Wir bezeichnen <em>Nullmatrizen</em> und <em>Nullvektoren</em> mit <span class="math display">\[\begin{equation}
 0_{nm} := (0)_{1 \le i \le m, 1 \le j \le n} \in \mathbb{R}^{n \times m}
 \mbox{ und }
 0_{n} := (0)_{1 \le i \le n} \in \mathbb{R}^{n}.
@@ -1623,7 +1670,7 @@ e^T_ie_j = 0 \mbox{ für } i \neq j,  e^T_ie_i = 1 \mbox{ und } e^T_iv = v^Te_i 
 <section id="diagonalmatrizen" class="level3" data-number="9.6.3">
 <h3 data-number="9.6.3" class="anchored" data-anchor-id="diagonalmatrizen"><span class="header-section-number">9.6.3</span> Diagonalmatrizen</h3>
 <div id="def-diagonalmatrix" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 9.12 (Diagonalmatrix) </strong></span>Eine Matrix <span class="math inline">\(D \in \mathbb{R}^{n \times m}\)</span> heißt <em>Diagonalmatrix</em>, wenn <span class="math inline">\(d_{ij} = 0\)</span> für <span class="math inline">\(1 \le i \le n, 1 \le j \le m\)</span> mit <span class="math inline">\(i \neq j\)</span>.</p>
+<p><span class="theorem-title"><strong>Definition 9.12 (Diagonalmatrix)</strong></span> Eine Matrix <span class="math inline">\(D \in \mathbb{R}^{n \times m}\)</span> heißt <em>Diagonalmatrix</em>, wenn <span class="math inline">\(d_{ij} = 0\)</span> für <span class="math inline">\(1 \le i \le n, 1 \le j \le m\)</span> mit <span class="math inline">\(i \neq j\)</span>.</p>
 </div>
 <p>Eine quadratische Diagonalmatrix <span class="math inline">\(D\in \mathbb{R}^{n \times n}\)</span> mit den Diagonalelementen <span class="math inline">\(d_1,...,d_n \in \mathbb{R}\)</span> schreibt man auch als <span class="math display">\[\begin{equation}
 D = \mbox{diag}(d_1,...,d_n).
@@ -1647,7 +1694,7 @@ D
 \end{equation}\]</span></p>
 <p>In folgendem Theorem stellen wir einige wichtige Eigenschaften von quadratischen Diagonalmatrizen zusammen.</p>
 <div id="thm-diagonalmatrix" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 9.11 (Eigenschaften quadratischer Diagonalmatrizen) </strong></span><span class="math inline">\(\quad\)</span></p>
+<p><span class="theorem-title"><strong>Theorem 9.11 (Eigenschaften quadratischer Diagonalmatrizen)</strong></span> <span class="math inline">\(\quad\)</span></p>
 <p>(Determinante.) <span class="math inline">\(D := \mbox{diag}(d_1,...,d_n) \in \mathbb{R}^{n \times n}\)</span> sei eine quadratische Diagonalmatrix. Dann gilt <span class="math display">\[\begin{equation}
 |D| = \prod_{i=1}^n d_i.
 \end{equation}\]</span></p>
@@ -1657,7 +1704,7 @@ D
 <h3 data-number="9.6.4" class="anchored" data-anchor-id="symmetrische-matrizen"><span class="header-section-number">9.6.4</span> Symmetrische Matrizen</h3>
 <p>Symmetrische Matrizen sind quadratische Matrizen, die bei Transposition unverändert bleiben:</p>
 <div id="def-symmetrische-matrix" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 9.13 </strong></span>Eine Matrix <span class="math inline">\(S \in \mathbb{R}^{n \times n}\)</span> heißt <em>symmetrisch</em>, wenn <span class="math inline">\(S^T = S\)</span>.</p>
+<p><span class="theorem-title"><strong>Definition 9.13</strong></span> Eine Matrix <span class="math inline">\(S \in \mathbb{R}^{n \times n}\)</span> heißt <em>symmetrisch</em>, wenn <span class="math inline">\(S^T = S\)</span>.</p>
 </div>
 <p>Ein Beispiel für eine symmetrische Matrix ist <span class="math display">\[\begin{equation}
 S :=
@@ -1669,7 +1716,7 @@ S :=
 \end{equation}\]</span></p>
 <p>In folgendem Theorem stellen wir einige wichtige Eigenschaften symmetrischer Matrizen zusammen.</p>
 <div id="thm-symmetrische-matrix" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 9.12 (Eigenschaften symmetrischer Matrizen) </strong></span><span class="math inline">\(\quad\)</span></p>
+<p><span class="theorem-title"><strong>Theorem 9.12 (Eigenschaften symmetrischer Matrizen)</strong></span> <span class="math inline">\(\quad\)</span></p>
 <p>(Summation.) <span class="math inline">\(S_1 \in \mathbb{R}^{n \times n}\)</span> und <span class="math inline">\(S_2 \in \mathbb{R}^{n \times n}\)</span> seien symmetrische Matrizen. Dann gilt <span class="math display">\[\begin{equation}
 S_1 + S_2 = (S_1 + S_2)^T.
 \end{equation}\]</span> (Inverse.) <span class="math inline">\(S\)</span> sei eine invertierbare symmetrische Matrix und <span class="math inline">\(S^{-1}\)</span> ihre Inverse. Dann ist auch <span class="math inline">\(S^{-1}\)</span> eine symmetrische Matrix, das heißt es gilt <span class="math display">\[\begin{equation}
@@ -1680,7 +1727,7 @@ S_1 + S_2 = (S_1 + S_2)^T.
 <section id="orthogonale-matrizen" class="level3" data-number="9.6.5">
 <h3 data-number="9.6.5" class="anchored" data-anchor-id="orthogonale-matrizen"><span class="header-section-number">9.6.5</span> Orthogonale Matrizen</h3>
 <div id="def-orthogonale-matrix" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 9.14 </strong></span>Eine Matrix <span class="math inline">\(Q \in \mathbb{R}^{n \times n}\)</span> heißt <em>orthogonal</em>, wenn <span class="math inline">\(Q^TQ = I_n\)</span>.</p>
+<p><span class="theorem-title"><strong>Definition 9.14</strong></span> Eine Matrix <span class="math inline">\(Q \in \mathbb{R}^{n \times n}\)</span> heißt <em>orthogonal</em>, wenn <span class="math inline">\(Q^TQ = I_n\)</span>.</p>
 </div>
 <p>Die Spalten einer orthogonalen Matrix sind also paarweise orthogonal, es gilt für <span class="math display">\[\begin{equation}
 Q = \begin{pmatrix} q_1 &amp; \cdots &amp; q_n \end{pmatrix} \mbox{ mit } q_i \in \mathbb{R}^n \mbox{ für } 1 \le i \le n,
@@ -1688,7 +1735,7 @@ Q = \begin{pmatrix} q_1 &amp; \cdots &amp; q_n \end{pmatrix} \mbox{ mit } q_i \i
 q_i^Tq_j = 0 \mbox{ für } i \neq j \mbox{ und }  q_i^Tq_j = 1 \mbox{ für } i = j \mbox{ mit } 1 \le i,j \le n.
 \end{equation}\]</span></p>
 <div id="thm-orthogonale-matrizen" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 9.13 (Eigenschaften orthogonaler Matrizen) </strong></span><span class="math inline">\(Q \in \mathbb{R}^{n \times n}\)</span> sei eine orthogonale Matrix. Dann gelten folgende Eigenschaften von <span class="math inline">\(Q\)</span>. <span class="math inline">\(\quad\)</span></p>
+<p><span class="theorem-title"><strong>Theorem 9.13 (Eigenschaften orthogonaler Matrizen)</strong></span> <span class="math inline">\(Q \in \mathbb{R}^{n \times n}\)</span> sei eine orthogonale Matrix. Dann gelten folgende Eigenschaften von <span class="math inline">\(Q\)</span>. <span class="math inline">\(\quad\)</span></p>
 <p>(Inverse.) Die Inverse von <span class="math inline">\(Q\)</span> ist <span class="math inline">\(Q^T\)</span>, es gilt<br>
 <span class="math display">\[\begin{equation}
 Q^{-1} = Q^T.
@@ -1708,7 +1755,7 @@ Q^TQ = I_n \Leftrightarrow QQ^TQ = QI_n \Leftrightarrow  QQ^TQQ^T = QQ^T \Leftri
 <h3 data-number="9.6.6" class="anchored" data-anchor-id="positiv-definite-matrizen"><span class="header-section-number">9.6.6</span> Positiv-definite Matrizen</h3>
 <p>Positiv-definite Matrizen sind für die probabilistiche Modellbildung unter Verwendung multivariater Normalverteilungen zentral.</p>
 <div id="def-positiv-definite-matrix" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 9.15 </strong></span>Eine quadratische Matrix <span class="math inline">\(C \in \mathbb{R}^{n \times n}\)</span> heißt positiv-definit (<span class="math inline">\(\mbox{p.d.}\)</span>), wenn</p>
+<p><span class="theorem-title"><strong>Definition 9.15</strong></span> Eine quadratische Matrix <span class="math inline">\(C \in \mathbb{R}^{n \times n}\)</span> heißt positiv-definit (<span class="math inline">\(\mbox{p.d.}\)</span>), wenn</p>
 <ul>
 <li><span class="math inline">\(C\)</span> eine symmetrische Matrix ist und</li>
 <li>für alle <span class="math inline">\(x \in \mathbb{R}^n, x \neq 0_n\)</span> gilt, dass <span class="math inline">\(x^TCx &gt; 0\)</span> ist.</li>
@@ -1716,7 +1763,7 @@ Q^TQ = I_n \Leftrightarrow QQ^TQ = QI_n \Leftrightarrow  QQ^TQQ^T = QQ^T \Leftri
 </div>
 <p>In folgendem Theorem stellen wir einige wichtige Eigenschaften positiv-definiter Matrizen zusammen.</p>
 <div id="thm-positiv-definite-matrix" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 9.14 (Eigenschaften positiv-definiter Matrizen) </strong></span><span class="math inline">\(\quad\)</span></p>
+<p><span class="theorem-title"><strong>Theorem 9.14 (Eigenschaften positiv-definiter Matrizen)</strong></span> <span class="math inline">\(\quad\)</span></p>
 <p>(Inverse.) <span class="math inline">\(C \in \mathbb{R}^{n \times n}\)</span> sei eine positiv-definite Matrix. Dann gilt, dass <span class="math inline">\(C^{-1}\)</span> existiert und ebenfalls positiv-definit ist.</p>
 </div>
 </section>
@@ -1795,7 +1842,7 @@ C := \mbox{diag}(1,2,3).
 </ol>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
 <div id="ref-caley1858" class="csl-entry" role="listitem">
 Caley, A. (1858). A Memoir on the Theory of Matrices. <em>Philosophical Transactions of the Royal Society of London</em>, <em>148</em>, 17–37. <a href="https://doi.org/10.1098/rstl.1858.0002">https://doi.org/10.1098/rstl.1858.0002</a>
 </div>
@@ -1888,10 +1935,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1901,8 +1947,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1915,6 +1970,125 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1958,6 +2132,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1983,6 +2158,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -2044,12 +2245,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./108-Vektoren.html" class="pagination-link">
+      <a href="./108-Vektoren.html" class="pagination-link  aria-label=" &lt;span="">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Vektoren</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./110-Eigenanalyse.html" class="pagination-link">
+      <a href="./110-Eigenanalyse.html" class="pagination-link" aria-label="<span class='chapter-number'>10</span>&nbsp; <span class='chapter-title'>Eigenanalyse</span>">
         <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Eigenanalyse</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
@@ -2058,4 +2259,5 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-</body></html>
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/109-Matrizen.qmd" class="toc-action"><i class="bi bi-github"></i>Seite editieren</a></li></ul></div></div></div></footer></body></html>

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.549">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -58,6 +58,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -100,7 +101,13 @@ div.csl-indent {
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "Keine Treffer",
     "search-matching-documents-text": "Treffer",
@@ -109,6 +116,7 @@ div.csl-indent {
     "search-more-match-text": "weitere Treffer in diesem Dokument",
     "search-more-matches-text": "weitere Treffer in diesem Dokument",
     "search-clear-button-title": "Zurücksetzen",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Abbrechen",
     "search-submit-button-title": "Abschicken",
     "search-label": "Suchen"
@@ -118,6 +126,33 @@ div.csl-indent {
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
 </head>
 
 <body class="nav-sidebar floating">
@@ -126,12 +161,12 @@ div.csl-indent {
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./401-Regression.html">Das Allgemeine Lineare Modell</a></li><li class="breadcrumb-item"><a href="./401-Regression.html"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Regression</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./401-Regression.html">Das Allgemeine Lineare Modell</a></li><li class="breadcrumb-item"><a href="./401-Regression.html"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Regression</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
@@ -141,13 +176,13 @@ div.csl-indent {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Probabilistische Datenwissenschaft für die Psychologie</a> 
         <div class="sidebar-tools-main">
-    <a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-    <a href="./Probabilistische-Datenwissenschaft-für-die-Psychologie.pdf" rel="" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+    <a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages" title="Quellcode" class="quarto-navigation-tool px-1" aria-label="Quellcode"><i class="bi bi-github"></i></a>
+    <a href="./Probabilistische-Datenwissenschaft-für-die-Psychologie.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
 </div>
     </div>
       </div>
@@ -380,6 +415,12 @@ div.csl-indent {
  <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">T-Statistiken</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./406-F-Statistiken.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">F-Statistiken</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item">
@@ -399,16 +440,16 @@ div.csl-indent {
   <li><a href="#literaturhinweise" id="toc-literaturhinweise" class="nav-link" data-scroll-target="#literaturhinweise"><span class="header-section-number">25.3</span> Literaturhinweise</a></li>
   <li><a href="#selbstkontrollfragen" id="toc-selbstkontrollfragen" class="nav-link" data-scroll-target="#selbstkontrollfragen"><span class="header-section-number">25.4</span> Selbstkontrollfragen</a></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/401-Regression.qmd" class="toc-action">Seite editieren</a></p></div></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/401-Regression.qmd" class="toc-action"><i class="bi bi-github"></i>Seite editieren</a></li></ul></div></nav>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./401-Regression.html">Das Allgemeine Lineare Modell</a></li><li class="breadcrumb-item"><a href="./401-Regression.html"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Regression</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span id="sec-regression" class="quarto-section-identifier"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Regression</span></span></h1>
 </div>
@@ -423,21 +464,27 @@ div.csl-indent {
   </div>
   
 
+
 </header>
 
+
 <p>Fundamentales Ziel von Regressionsanalysen ist es, Beziehungen zwischen unabhängigen und abhängigen Variablen zu modellieren. Ein zentrales Thema dabei ist die Anpassung von Funktionen an beobachtete Datensätze. Mit dem Begriff der Ausgleichsgerade im Rahmen der Methode der kleinsten Quadrate und dem Begriff der einfachen linearen Regression wollen wir uns in diesem Abschnitt diesen zentralen Themen der probabilistischen Datenmodellierung schrittweise nähern. Dabei unterscheiden sich die Konzepte von Ausgleichsgerade und einfacher lineare Regression in einem zentralem Aspekt: bei der Ausgleichsgerade werden unabhängige und abhängige Variable nicht als Zufallsvariablen modelliert, im Rahmen der einfachen linearen Regression nimmt die abhängige Variable dann die Form einer Zufallsvariablen an. Im Kontext der Korrelation schließlich werden sowohl abhängige als auch unabhängige Variable als Zufallsvariablen modelliert.</p>
-<p>Um die Konzepte dieses Abschnittes zu verdeutlichen, betrachten wir einen Beispieldatensatz in dem die Anzahl an Psychotherapiestunden als unabhängige Variable <span class="math inline">\(x\)</span> der Symptomreduktion einer Gruppe von <span class="math inline">\(n=20\)</span> Patient:innen als abhängige Variable <span class="math inline">\(y\)</span> gegenüber gestellt wird (<a href="#fig-beispieldatensatz">Abbildung&nbsp;<span>25.1</span></a>). Die visuelle Inspektion dieses Datensatzes legt nahe, dass ein Mehr an Therapiestunden ein Mehr an Symptomreduktion impliziert. Ziel der Methode der kleinsten Quadrate und der einfachen linearen Regression ist es, diesen intuitiven funktionalen Zusammenhang zwischen unabhängiger und abhängiger Variable auf eine quantitative Basis zu stellen.</p>
-<div id="fig-beispieldatensatz" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./_figures/401-beispieldatensatz.png" class="img-fluid figure-img" style="width:50.0%"></p>
-<figcaption class="figure-caption">Abbildung&nbsp;25.1: Beispieldatensatz.</figcaption>
+<p>Um die Konzepte dieses Abschnittes zu verdeutlichen, betrachten wir einen Beispieldatensatz in dem die Anzahl an Psychotherapiestunden als unabhängige Variable <span class="math inline">\(x\)</span> der Symptomreduktion einer Gruppe von <span class="math inline">\(n=20\)</span> Patient:innen als abhängige Variable <span class="math inline">\(y\)</span> gegenüber gestellt wird (<a href="#fig-beispieldatensatz" class="quarto-xref">Abbildung&nbsp;<span>25.1</span></a>). Die visuelle Inspektion dieses Datensatzes legt nahe, dass ein Mehr an Therapiestunden ein Mehr an Symptomreduktion impliziert. Ziel der Methode der kleinsten Quadrate und der einfachen linearen Regression ist es, diesen intuitiven funktionalen Zusammenhang zwischen unabhängiger und abhängiger Variable auf eine quantitative Basis zu stellen.</p>
+<div id="fig-beispieldatensatz" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-beispieldatensatz-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/401-beispieldatensatz.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:50.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-beispieldatensatz-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;25.1: Beispieldatensatz.
+</figcaption>
 </figure>
 </div>
 <section id="sec-methode-der-kleinsten-quadrate" class="level2" data-number="25.1">
 <h2 data-number="25.1" class="anchored" data-anchor-id="sec-methode-der-kleinsten-quadrate"><span class="header-section-number">25.1</span> Methode der kleinsten Quadrate</h2>
 <p>Wir definieren zunächst den Begriff der <em>Ausgleichsgerade</em>.</p>
 <div id="def-Ausgleichsgerade" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 25.1 (Ausgleichsgerade) </strong></span>Für <span class="math inline">\(\beta:=\left(\beta_{0}, \beta_{1}\right)^{T} \in \mathbb{R}^{2}\)</span> heißt die linear-affine Funktion <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 25.1 (Ausgleichsgerade)</strong></span> Für <span class="math inline">\(\beta:=\left(\beta_{0}, \beta_{1}\right)^{T} \in \mathbb{R}^{2}\)</span> heißt die linear-affine Funktion <span class="math display">\[\begin{equation}
 f_{\beta}: \mathbb{R} \rightarrow \mathbb{R}, x \mapsto f_{\beta}(x):=\beta_{0}+\beta_{1} x
 \end{equation}\]</span> für die für einen Datensatz <span class="math inline">\(\left\{\left(x_{1}, y_{1}\right), \ldots,\left(x_{n}, y_{n}\right)\right\} \subset \mathbb{R}^{2}\)</span> die Funktion <span class="math display">\[\begin{equation}
 q: \mathbb{R}^{2} \rightarrow \mathbb{R}_{\geq 0}, \beta \mapsto q(\beta):=\sum_{i=1}^{n}\left(y_{i}-f_{\beta}\left(x_{i}\right)\right)^{2}=\sum_{i=1}^{n}\left(y_{i}-\left(\beta_{0}+\beta_{1} x_{i}\right)\right)^{2}
@@ -445,7 +492,7 @@ q: \mathbb{R}^{2} \rightarrow \mathbb{R}_{\geq 0}, \beta \mapsto q(\beta):=\sum_
 </div>
 <p>Bei der Ausgleichsgerade handelt es sich also um eine linear-affine Funktion der Form <span class="math display">\[\begin{equation}
 f_{\beta}: \mathbb{R} \rightarrow \mathbb{R}, x \mapsto f_{\beta}(x):=\beta_{0}+\beta_{1} x
-\end{equation}\]</span> <a href="#fig-ausgleichsgerade-1">Abbildung&nbsp;<span>25.2</span></a> zeigt drei durch jeweils andere Werte von <span class="math inline">\(\beta_{0}\)</span> und <span class="math inline">\(\beta_{1}\)</span> parameterisierte linearaffine Funktionen zusammen mit der Wertemenge des Beispieldatensatzes.</p>
+\end{equation}\]</span> <a href="#fig-ausgleichsgerade-1" class="quarto-xref">Abbildung&nbsp;<span>25.2</span></a> zeigt drei durch jeweils andere Werte von <span class="math inline">\(\beta_{0}\)</span> und <span class="math inline">\(\beta_{1}\)</span> parameterisierte linearaffine Funktionen zusammen mit der Wertemenge des Beispieldatensatzes.</p>
 <p>Wie bei allen linear-affinen Funktionen entspricht bei <span class="math inline">\(f_{\beta}\)</span> der Wert von <span class="math inline">\(\beta_{0}\)</span> dem Wert, den <span class="math inline">\(f_{\beta}\)</span> für <span class="math inline">\(x=0\)</span> annimmt, <span class="math display">\[\begin{equation}
 f_{\beta}(0)=\beta_{0}+\beta_{1} \cdot 0=\beta_{0}
 \end{equation}\]</span> und damit graphisch dem Schnittpunkt des Funktionsgraphen mit der <span class="math inline">\(y\)</span>-Achse. Da <span class="math inline">\(\beta_{0}\)</span> damit dem Versatz (engl. <em>offset</em>) des Funktionsgraphen von <span class="math inline">\(y=0\)</span> an der Stelle <span class="math inline">\(x=0\)</span> entspricht, nennt man <span class="math inline">\(\beta_{0}\)</span> auch häufig den <em>Offsetparameter</em>. Analog entspricht wie bei allen linear-affinen Funktionen der Wert von <span class="math inline">\(\beta_{1}\)</span> dem Wert der Funktionswertdifferenz pro Argumenteinheitsdifferenz. Beispielsweise gilt etwa für <span class="math inline">\(\beta_{0}=5\)</span> und <span class="math inline">\(\beta_{1}=0.5\)</span>, dass <span class="math display">\[\begin{equation}
@@ -457,22 +504,30 @@ f_{\beta}(0)=\beta_{0}+\beta_{1} \cdot 0=\beta_{0}
 <p>Nach Definition ist die Ausgleichsgerade nun allerdings nicht eine beliebige linearaffine Funktion der Form <span class="math inline">\(f_{\beta}\)</span>, sondern eben jene, die für einen gegebenen Datensatze <span class="math inline">\(\left\{\left(x_{1}, y_{1}\right), \ldots,\left(x_{n}, y_{n}\right)\right\}\)</span> die Summe der quadrierten vertikalen Abweichnungen <span class="math display">\[\begin{equation}
 q(\beta):=\sum_{i=1}^{n}\left(y_{i}-\left(\beta_{0}+\beta_{1} x_{i}\right)\right)^{2}
 \end{equation}\]</span> minimiert. Für eine fest vorgegebenen Datensatz von <span class="math inline">\(\left(x_{i}, y_{i}\right)\)</span> Paaren ist der Wert dieser Summe abhängig von den Werten von <span class="math inline">\(\beta_{0}\)</span> und <span class="math inline">\(\beta_{1}\)</span> und kann deshalb durch Wahl geeigneter</p>
-<div id="fig-ausgleichsgerade-1" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./_figures/401-ausgleichsgerade-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption class="figure-caption">Abbildung&nbsp;25.2: Linear-affine Funktionen mit unterschiedlichen Parameterwerten vor dem Hintegrund des Beispieldatensatzes.</figcaption>
+<div id="fig-ausgleichsgerade-1" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ausgleichsgerade-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/401-ausgleichsgerade-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ausgleichsgerade-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;25.2: Linear-affine Funktionen mit unterschiedlichen Parameterwerten vor dem Hintegrund des Beispieldatensatzes.
+</figcaption>
 </figure>
 </div>
-<p>Werte von <span class="math inline">\(\beta_{0}\)</span> und <span class="math inline">\(\beta_{1}\)</span> minimiert werden. Da hierbei eine Summe von quadrierten Abweichungen zwischen Datenpunkten und Werten der Ausgleichsgerade minimiert wird, spricht man auch oft etwas ungenau von der <em>Methode der kleinsten Quadrate</em> (engl. <em>method of least squares</em>). Abbildung 1.3 zeigt die vertikalen Abweichungen zwischen <span class="math inline">\(y_{i}\)</span> und <span class="math inline">\(\beta_{0}+\beta_{1} x_{i}\)</span> für <span class="math inline">\(i=1, \ldots, n\)</span> des Beispieldatensatzes als orange Linien sowie die Summe ihrer Quadrate <span class="math inline">\(q(\beta)\)</span> im Titel. Für die Parameterwerte <span class="math inline">\(\beta_{0}=-6.2\)</span> und <span class="math inline">\(\beta_{1}=1.7\)</span> (vgl. <a href="#fig-ausgleichsgerade-1">Abbildung&nbsp;<span>25.2</span></a>) immt diese Summe ihren kleinsten Wert an.</p>
-<div id="fig-ausgleichsgerade-2" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./_figures/401-ausgleichsgerade-2.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption class="figure-caption">Abbildung&nbsp;25.3: Vertikale Abweichungen und Quadratsummen bei unterschiedlichen Parameterwerten.</figcaption>
+<p>Werte von <span class="math inline">\(\beta_{0}\)</span> und <span class="math inline">\(\beta_{1}\)</span> minimiert werden. Da hierbei eine Summe von quadrierten Abweichungen zwischen Datenpunkten und Werten der Ausgleichsgerade minimiert wird, spricht man auch oft etwas ungenau von der <em>Methode der kleinsten Quadrate</em> (engl. <em>method of least squares</em>). Abbildung 1.3 zeigt die vertikalen Abweichungen zwischen <span class="math inline">\(y_{i}\)</span> und <span class="math inline">\(\beta_{0}+\beta_{1} x_{i}\)</span> für <span class="math inline">\(i=1, \ldots, n\)</span> des Beispieldatensatzes als orange Linien sowie die Summe ihrer Quadrate <span class="math inline">\(q(\beta)\)</span> im Titel. Für die Parameterwerte <span class="math inline">\(\beta_{0}=-6.2\)</span> und <span class="math inline">\(\beta_{1}=1.7\)</span> (vgl. <a href="#fig-ausgleichsgerade-1" class="quarto-xref">Abbildung&nbsp;<span>25.2</span></a>) immt diese Summe ihren kleinsten Wert an.</p>
+<div id="fig-ausgleichsgerade-2" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ausgleichsgerade-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/401-ausgleichsgerade-2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ausgleichsgerade-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;25.3: Vertikale Abweichungen und Quadratsummen bei unterschiedlichen Parameterwerten.
+</figcaption>
 </figure>
 </div>
-<p>Konkrete Formeln zur Bestimmung der Parameterwerte der Ausgleichsgerade stellt <a href="#thm-ausgleichsgerade">Theorem&nbsp;<span>25.1</span></a> bereit.</p>
+<p>Konkrete Formeln zur Bestimmung der Parameterwerte der Ausgleichsgerade stellt <a href="#thm-ausgleichsgerade" class="quarto-xref">Theorem&nbsp;<span>25.1</span></a> bereit.</p>
 <div id="thm-ausgleichsgerade" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 25.1 (Ausgleichsgerade) </strong></span>Für einen Datensatz <span class="math inline">\(\left\{\left(x_{1}, y_{1}\right), \ldots,\left(x_{n}, y_{n}\right)\right\} \subset \mathbb{R}^{2}\)</span> hat die Ausgleichsgerade die Form <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Theorem 25.1 (Ausgleichsgerade)</strong></span> Für einen Datensatz <span class="math inline">\(\left\{\left(x_{1}, y_{1}\right), \ldots,\left(x_{n}, y_{n}\right)\right\} \subset \mathbb{R}^{2}\)</span> hat die Ausgleichsgerade die Form <span class="math display">\[\begin{equation}
 f_{\beta}: \mathbb{R} \rightarrow \mathbb{R}, x \mapsto f_{\beta}(x):=\hat{\beta}_{0}+\hat{\beta}_{1} x
 \end{equation}\]</span> wobei mit der Stichprobenkovarianz <span class="math inline">\(c_{x y}\)</span> der <span class="math inline">\(\left(x_{i}, y_{i}\right)\)</span>-Werte, der Stichprobenvarianz <span class="math inline">\(s_{x}^{2}\)</span> der <span class="math inline">\(x_{i}\)</span>-Werte und den Stichprobenmitteln <span class="math inline">\(\bar{x}\)</span> und <span class="math inline">\(\bar{y}\)</span> der <span class="math inline">\(x_{i}\)</span> - und <span class="math inline">\(y_{i}\)</span>-Werte, respektive, gilt, dass <span class="math display">\[\begin{equation}
 \hat{\beta}_{1}=\frac{c_{x y}}{s_{x}^{2}} \text { und } \hat{\beta}_{0}=\bar{y}-\hat{\beta}_{1} \bar{x} \text {. }
@@ -546,7 +601,7 @@ n \hat{\beta}_{0}+\hat{\beta}_{1} \sum_{i=1}^{n} x_{i}=\sum_{i=1}^{n} y_{i} \Lef
 \end{aligned}
 \end{equation}\]</span></p>
 </div>
-<p><a href="#thm-ausgleichsgerade">Theorem&nbsp;<span>25.1</span></a> besagt, dass die Parameterwerte, die für einen gegebenen Datensatz <span class="math inline">\(\left\{\left(x_{1}, y_{1}\right), \ldots,\left(x_{n}, y_{n}\right)\right\}\)</span> die Summe der quadrierten vertikalen Abweichungen für eine linear-affine Funktion minimieren mithilfe der Stichprobenmittel der <span class="math inline">\(x_{i^{-}}\)</span>und <span class="math inline">\(y_{i}\)</span>-Werte, der Stichprobenvarianz der <span class="math inline">\(x_{i}\)</span>-Werte und der Stichprobenkovarianz der <span class="math inline">\(x_{i}\)</span> - und <span class="math inline">\(y_{i}\)</span>-Werte berechnet werden können. Die Terminologie orientiert sich hier an den Begrifflichkeiten der deskriptiven Statistik, insbesondere werden die <span class="math inline">\(x_{i}\)</span>-Werte häufig nicht als Realisationen von Zufallsvariablen verstanden, der Begriff der Stichprobe wird jedoch trotzdem verwendet. Aus der Anwendungsperspektive können nach <a href="#thm-ausgleichsgerade">Theorem&nbsp;<span>25.1</span></a> die Parameter der Ausgleichsgerade also mithilfe der bekannten Funktionen für die Auswertung deskriptiver Statistiken bestimmt werden. Folgender <strong>R</strong> Code demonstriert dies.</p>
+<p><a href="#thm-ausgleichsgerade" class="quarto-xref">Theorem&nbsp;<span>25.1</span></a> besagt, dass die Parameterwerte, die für einen gegebenen Datensatz <span class="math inline">\(\left\{\left(x_{1}, y_{1}\right), \ldots,\left(x_{n}, y_{n}\right)\right\}\)</span> die Summe der quadrierten vertikalen Abweichungen für eine linear-affine Funktion minimieren mithilfe der Stichprobenmittel der <span class="math inline">\(x_{i^{-}}\)</span>und <span class="math inline">\(y_{i}\)</span>-Werte, der Stichprobenvarianz der <span class="math inline">\(x_{i}\)</span>-Werte und der Stichprobenkovarianz der <span class="math inline">\(x_{i}\)</span> - und <span class="math inline">\(y_{i}\)</span>-Werte berechnet werden können. Die Terminologie orientiert sich hier an den Begrifflichkeiten der deskriptiven Statistik, insbesondere werden die <span class="math inline">\(x_{i}\)</span>-Werte häufig nicht als Realisationen von Zufallsvariablen verstanden, der Begriff der Stichprobe wird jedoch trotzdem verwendet. Aus der Anwendungsperspektive können nach <a href="#thm-ausgleichsgerade" class="quarto-xref">Theorem&nbsp;<span>25.1</span></a> die Parameter der Ausgleichsgerade also mithilfe der bekannten Funktionen für die Auswertung deskriptiver Statistiken bestimmt werden. Folgender <strong>R</strong> Code demonstriert dies.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># Einlesen des Beispieldatensatzes</span></span>
 <span id="cb1-2"><a href="#cb1-2"></a>fname       <span class="ot">=</span> <span class="fu">file.path</span>(<span class="fu">getwd</span>(), <span class="st">"_data"</span>, <span class="st">"401-Regression.csv"</span>)</span>
@@ -570,7 +625,7 @@ n \hat{\beta}_{0}+\hat{\beta}_{1} \sum_{i=1}^{n} x_{i}=\sum_{i=1}^{n} y_{i} \Lef
 beta_1_hat: 1.657055</code></pre>
 </div>
 </div>
-<p>Eine typische Visualisierung der Ausgleichsgerade eines Datensatzes wie in <a href="#fig-ausgleichsgerade-3">Abbildung&nbsp;<span>25.4</span></a> implementiert folgender <span class="math inline">\(\mathbf{R}\)</span> Code.</p>
+<p>Eine typische Visualisierung der Ausgleichsgerade eines Datensatzes wie in <a href="#fig-ausgleichsgerade-3" class="quarto-xref">Abbildung&nbsp;<span>25.4</span></a> implementiert folgender <span class="math inline">\(\mathbf{R}\)</span> Code.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># Datenwerte</span></span>
 <span id="cb3-2"><a href="#cb3-2"></a><span class="fu">plot</span>(</span>
@@ -598,24 +653,32 @@ beta_1_hat: 1.657055</code></pre>
 <span id="cb3-24"><a href="#cb3-24"></a><span class="at">bty        =</span> <span class="st">"n"</span>)</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Die Idee, bei einem gegebenen Datensatz von <span class="math inline">\(\left(x_{i}, y_{i}\right)\)</span> Paaren die Summe der quadrierten vertikalen Abweichungen zwischen einer Funktion der <span class="math inline">\(x_{i}\)</span>-Werte und den <span class="math inline">\(y_{i}\)</span>-Werten zu minimieren und so eine Funktion möglichst gut an eine Wertemenge anzupassen, ist nicht auf linear-affine Funktionen beschränkt. Folgende Definition verallgemeinert die Definition der Ausgleichsgerade auf Polynomfunktionen beliebigen Grades.</p>
-<div id="fig-ausgleichsgerade-3" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./_figures/401-ausgleichsgerade-3.png" class="img-fluid figure-img" style="width:50.0%"></p>
-<figcaption class="figure-caption">Abbildung&nbsp;25.4: Ausgleichsgerade für den Beispieldatensatz.</figcaption>
+<div id="fig-ausgleichsgerade-3" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ausgleichsgerade-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/401-ausgleichsgerade-3.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:50.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ausgleichsgerade-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;25.4: Ausgleichsgerade für den Beispieldatensatz.
+</figcaption>
 </figure>
 </div>
 <div id="def-ausgleichspolynom" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 25.2 (Ausgleichspolynom) </strong></span>Für <span class="math inline">\(\beta:=\left(\beta_{0}, \ldots, \beta_{k}\right)^{T} \in \mathbb{R}^{k+1}\)</span> heißt die Polynomfunktion <span class="math inline">\(k\)</span> ten Grades <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 25.2 (Ausgleichspolynom)</strong></span> Für <span class="math inline">\(\beta:=\left(\beta_{0}, \ldots, \beta_{k}\right)^{T} \in \mathbb{R}^{k+1}\)</span> heißt die Polynomfunktion <span class="math inline">\(k\)</span> ten Grades <span class="math display">\[\begin{equation}
 f_{\beta}: \mathbb{R} \rightarrow \mathbb{R}, x \mapsto f_{\beta}(x):=\sum_{i=0}^{k} \beta_{i} x^{i}
 \end{equation}\]</span> für die für einen Datensatz <span class="math inline">\(\left\{\left(x_{1}, y_{1}\right), \ldots,\left(x_{n}, y_{n}\right)\right\} \subset \mathbb{R}^{2}\)</span> die Funktion <span class="math display">\[\begin{equation}
 q: \mathbb{R}^{k+1} \rightarrow \mathbb{R}_{\geq 0}, \beta \mapsto q(\beta):=\sum_{i=1}^{n}\left(y_{i}-f_{\beta}\left(x_{i}\right)\right)^{2}=\sum_{i=1}^{n}\left(y_{i}-\sum_{i=0}^{k} \beta_{i} x^{i}\right)^{2}
 \end{equation}\]</span> der quadrierten vertikalen Abweichungen der <span class="math inline">\(y_{i}\)</span> von den Funktionswerten <span class="math inline">\(f_{\beta}\left(x_{i}\right)\)</span> ihr Minimum annimt, das <em>Ausgleichspolynom kten Grades für den Datensatz <span class="math inline">\(\left\{\left(x_{1}, y_{1}\right), \ldots,\left(x_{n}, y_{n}\right)\right\}\)</span></em>.</p>
 </div>
-<p>Die Ausgleichsgerade ist damit das Ausgleichspolynom ersten Grades. Wir wollen den Begriff des Ausgleichspolynoms hier nicht weiter vertiefen und werden insbesondere die Parameterwerte <span class="math inline">\(\hat{\beta}_{0}, \ldots, \hat{\beta}_{k}\)</span>, für die die Funktion <span class="math inline">\(q\)</span> ihr Minimum annimt an späterer Stelle im Rahmen der Theorie des Allgemeinen Linearen Modells allgemein bestimmen. In <a href="#fig-ausgleichspolynom">Abbildung&nbsp;<span>25.5</span></a> visualisieren beispielhaft die Ausgleichspolynome ersten bis vierten Grades für den Beispieldatensatz wobei der Wert der Funktion <span class="math inline">\(q\)</span> an der Minimumsstelle jeweils im Titel vermerkt ist.</p>
-<div id="fig-ausgleichspolynom" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./_figures/401-ausgleichspolynom.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption class="figure-caption">Abbildung&nbsp;25.5: Ausgleichspolynome ersten bis vierten Grades für den Beispieldatensatz.</figcaption>
+<p>Die Ausgleichsgerade ist damit das Ausgleichspolynom ersten Grades. Wir wollen den Begriff des Ausgleichspolynoms hier nicht weiter vertiefen und werden insbesondere die Parameterwerte <span class="math inline">\(\hat{\beta}_{0}, \ldots, \hat{\beta}_{k}\)</span>, für die die Funktion <span class="math inline">\(q\)</span> ihr Minimum annimt an späterer Stelle im Rahmen der Theorie des Allgemeinen Linearen Modells allgemein bestimmen. In <a href="#fig-ausgleichspolynom" class="quarto-xref">Abbildung&nbsp;<span>25.5</span></a> visualisieren beispielhaft die Ausgleichspolynome ersten bis vierten Grades für den Beispieldatensatz wobei der Wert der Funktion <span class="math inline">\(q\)</span> an der Minimumsstelle jeweils im Titel vermerkt ist.</p>
+<div id="fig-ausgleichspolynom" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ausgleichspolynom-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/401-ausgleichspolynom.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ausgleichspolynom-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;25.5: Ausgleichspolynome ersten bis vierten Grades für den Beispieldatensatz.
+</figcaption>
 </figure>
 </div>
 </section>
@@ -624,7 +687,7 @@ q: \mathbb{R}^{k+1} \rightarrow \mathbb{R}_{\geq 0}, \beta \mapsto q(\beta):=\su
 <p>Eine Ausgleichsgerade erlaubt Aussagen über unbeobachtete der abhängigen Variable. Allerdings erlaubt eine Ausgleichsgerade nur implizite Aussagen über die mit der Anpassung einer linear-affinen Funktion an einen Datensatz verbundene Unsicherheit. In der einfachen linearen Regression wird die Idee einer Ausgleichsgerade um eine probabilistische Komponente erweitert. Die einfache lineare Regression erlaubt damit insbesondere im Sinne der Frequentistischen Inferenz Konfidenzintervalle für die Ausgleichsgeradenparameter anzugeben und Hypothesentests bezüglich der Ausgleichsgeradenparameter durchzuführen. Wir wollen hier zunächst nur das Modell der einfachen linearen Regression und die auf ihm basierende Maximum-Likelihood Schätzung der Ausgleichsgeradenparameter betrachten.</p>
 <p>Die Bewertung der mit dieser Schätzung verbundenen Unsicherheit sowie parameterzentrierte Hypothesentests behandeln wir dann an späterer Stelle zunächst im Kontext des Allgemeinen Linearen Modells. Wir beginnen mit folgender Definition.</p>
 <div id="def-modell-der-einfachen-linearen-regression" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 25.3 (Modell der einfachen linearen Regression) </strong></span>Es sei <span id="eq-modell-der-einfache-linearen-regression"><span class="math display">\[
+<p><span class="theorem-title"><strong>Definition 25.3 (Modell der einfachen linearen Regression)</strong></span> Es sei <span id="eq-modell-der-einfache-linearen-regression"><span class="math display">\[
 \upsilon_{i}=\beta_{0}+\beta_{1} x_{i}+\varepsilon_{i} \text { mit } \varepsilon_{i} \sim N\left(0, \sigma^{2}\right) \text { u.i.v. für } i=1, \ldots, n
 \tag{25.1}\]</span></span> wobei</p>
 <ul>
@@ -633,11 +696,11 @@ q: \mathbb{R}^{k+1} \rightarrow \mathbb{R}_{\geq 0}, \beta \mapsto q(\beta):=\su
 <li><span class="math inline">\(\beta_{0}, \beta_{1} \in \mathbb{R}\)</span> wahre, aber unbekannte, Offset- und Steigungsparameterwerte sind und</li>
 <li><span class="math inline">\(\varepsilon_{i}\)</span> unabhängig und identisch normalverteilte nicht-beobachtbare Zufallsvariablen mit wahrem, aber unbekanntem, Varianzparameter <span class="math inline">\(\sigma^{2}&gt;0\)</span> sind, die Fehler-oder Störvariablen modellieren.</li>
 </ul>
-<p>Dann heißt <a href="#eq-modell-der-einfache-linearen-regression">Gleichung&nbsp;<span>25.1</span></a> <em>Modell der einfachen linearen Regression</em>.</p>
+<p>Dann heißt <a href="#eq-modell-der-einfache-linearen-regression" class="quarto-xref">Gleichung&nbsp;<span>25.1</span></a> <em>Modell der einfachen linearen Regression</em>.</p>
 </div>
 <p>Im Gegensatz zur Ausgleichsgerade treten im Modell der einfachen linearen Regression also explizit Zufallsvariablen auf. Speziell definiert das Modell der einfachen linearen Regression wie <span class="math inline">\(n\)</span> beobachtbare (abhängige) Zufallsvariablen <span class="math inline">\(\upsilon_{i}\)</span> anhand der Werte <span class="math inline">\(x_{i}\)</span> einer unabhängigen Variable, der Parameterwerte <span class="math inline">\(\beta_{0}\)</span> und <span class="math inline">\(\beta_{1}\)</span> sowie durch Addition der normalverteilten Fehlervariablen <span class="math inline">\(\varepsilon_{i}\)</span> generiert wird. Das Modell hat dabei drei Parameter, den Offsetparameter <span class="math inline">\(\beta_{0}\)</span>, den Steigungsparameter <span class="math inline">\(\beta_{1}\)</span> und den Varianzparameter <span class="math inline">\(\sigma^{2}\)</span> der normalverteilten Fehlervariablen. Addition der festen Werte <span class="math inline">\(\beta_{0}\)</span> und <span class="math inline">\(\beta_{1} x_{i}\)</span> zu der normalverteilten Zufallsvariable <span class="math inline">\(\varepsilon_{i}\)</span> impliziert dabei eine Normalverteilung von <span class="math inline">\(\upsilon_{i}\)</span>. Dies ist die Aussage folgenden Theorems.</p>
 <div id="thm-datenverteilung-der-einfachen-linearen-regression" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 25.2 (Datenverteilung der einfachen linearen Regression) </strong></span>Das Modell der einfachen linearen Regression <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Theorem 25.2 (Datenverteilung der einfachen linearen Regression)</strong></span> Das Modell der einfachen linearen Regression <span class="math display">\[\begin{equation}
 \upsilon_{i}=\beta_{0}+\beta_{1} x_{i}+\varepsilon_{i} \text { mit } \varepsilon_{i} \sim N\left(0, \sigma^{2}\right) \text { u.i.v. für } i=1, \ldots, n
 \end{equation}\]</span> lässt sich mit <span class="math inline">\(\mu_{i}:=\beta_{0}+\beta_{1} x_{i}\)</span> äquivalent in der Form <span class="math display">\[\begin{equation}
 \upsilon_{i} \sim N\left(\mu_{i}, \sigma^{2}\right) \text { u.v. für } i=1, \ldots, n
@@ -656,16 +719,20 @@ p_{\upsilon_{i}}\left(y_{i}\right) &amp; =\frac{1}{|1|} p_{\varepsilon_{i}}\left
 \end{aligned}
 \end{equation}\]</span> Definition von <span class="math inline">\(\mu_{i}:=\beta_{0}+\beta_{1} x_{i}\)</span> ergibt dann die Aussage des Theorems.</p>
 </div>
-<p><a href="#thm-datenverteilung-der-einfachen-linearen-regression">Theorem&nbsp;<span>25.2</span></a> besagt insbesondere, dass die Datenvariablen <span class="math inline">\(\upsilon_{i}\)</span> univariat normalverteilte Zufallsvariablen sind, deren Erwartungswertparameter jeweils vom Wert der unabhängigen Variable <span class="math inline">\(x_{i}\)</span> abhängen. Abbildung 1.6 visualisiert das Modell und eine Realisation der einfachen linearen Regression für wahre, aber unbekannte, Parameterwerte <span class="math inline">\(\beta_{0}:=0, \beta_{1}:=1\)</span> und <span class="math inline">\(\sigma^{2}:=1\)</span>.</p>
-<div id="fig-modell-elr" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./_figures/401-modell-elr.png" class="img-fluid figure-img" style="width:70.0%"></p>
-<figcaption class="figure-caption">Abbildung&nbsp;25.6: Modell der einfachen linearen Regression für <span class="math inline">\(\beta_{0}:=0, \beta_{1}:=1\)</span> und <span class="math inline">\(\sigma^{2}:=1\)</span>.</figcaption>
+<p><a href="#thm-datenverteilung-der-einfachen-linearen-regression" class="quarto-xref">Theorem&nbsp;<span>25.2</span></a> besagt insbesondere, dass die Datenvariablen <span class="math inline">\(\upsilon_{i}\)</span> univariat normalverteilte Zufallsvariablen sind, deren Erwartungswertparameter jeweils vom Wert der unabhängigen Variable <span class="math inline">\(x_{i}\)</span> abhängen. Abbildung 1.6 visualisiert das Modell und eine Realisation der einfachen linearen Regression für wahre, aber unbekannte, Parameterwerte <span class="math inline">\(\beta_{0}:=0, \beta_{1}:=1\)</span> und <span class="math inline">\(\sigma^{2}:=1\)</span>.</p>
+<div id="fig-modell-elr" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-modell-elr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/401-modell-elr.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-modell-elr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;25.6: Modell der einfachen linearen Regression für <span class="math inline">\(\beta_{0}:=0, \beta_{1}:=1\)</span> und <span class="math inline">\(\sigma^{2}:=1\)</span>.
+</figcaption>
 </figure>
 </div>
 <p>Da es sich bei dem Modell der einfachen linearen Regression um ein parametrisches Frequentistisches Modell handelt, können Schätzer für die Modellparameter mithilfe des MaximumLikelihood Prinzips gewonnen werden. Insbesondere stellt sich dabei heraus, dass die Maximum-Likelihood Schätzer des Offset- und des Steigungsparameter mit den Werten der Ausgleichsgeradenparameter identisch sind. Dies ist eine der Aussagen folgenden Theorems. Wir verzichten hier bei den Schätzern aus Gründen der notationstechnischen Übersichtlichkeit auf <span class="math inline">\({ }^{\mathrm{ML}}\)</span> Superskripte.</p>
 <div id="thm-maximum-likelihood-schaetzung-der-einfachen-linearen-regression" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 25.3 (Maximum-Likelihood Schätzung der einfachen linearen Regression) </strong></span><span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Theorem 25.3 (Maximum-Likelihood Schätzung der einfachen linearen Regression)</strong></span> <span class="math display">\[\begin{equation}
 \upsilon_{i}=\beta_{0}+\beta_{1} x_{i}+\varepsilon_{i} \text { mit } \varepsilon_{i} \sim N\left(0, \sigma^{2}\right) \text { u.i.v. für } i=1, \ldots, n
 \end{equation}\]</span> das Modell der einfachen linearen Regression. Dann sind Maximum Likelihood Schätzer der Modellparameter <span class="math inline">\(\beta_{0}, \beta_{1}\)</span> und <span class="math inline">\(\sigma^{2}\)</span> gegeben durch <span class="math display">\[\begin{equation}
 \hat{\beta}_{1}:=\frac{c_{x y}}{s_{x}^{2}}, \quad \hat{\beta}_{0}:=\bar{y}-\hat{\beta}_{1} \bar{x} \quad \text { und } \hat{\sigma}^{2}:=\frac{1}{n} \sum_{i=1}^{n}\left(y_{i}-\left(\hat{\beta}_{0}+\hat{\beta}_{1} x_{i}\right)\right)^{2}
@@ -743,7 +810,7 @@ sigsqr_hat: 3.536795</code></pre>
 </ol>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
 <div id="ref-galton1886" class="csl-entry" role="listitem">
 Galton, F. (1886). Regression <span>Towards Mediocrity</span> in <span>Hereditary Stature</span>. <em>The Journal of the Anthropological Institute of Great Britain and Ireland</em>, <em>15</em>, 246. <a href="https://doi.org/10.2307/2841583">https://doi.org/10.2307/2841583</a>
 </div>
@@ -842,10 +909,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -855,8 +921,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -869,6 +944,125 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -912,6 +1106,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -937,6 +1132,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -998,12 +1219,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./304-Hypothesentests.html" class="pagination-link">
+      <a href="./304-Hypothesentests.html" class="pagination-link  aria-label=" &lt;span="">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Hypothesentests</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./402-Korrelation.html" class="pagination-link">
+      <a href="./402-Korrelation.html" class="pagination-link" aria-label="<span class='chapter-number'>26</span>&nbsp; <span class='chapter-title'>Korrelation</span>">
         <span class="nav-page-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Korrelation</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
@@ -1012,4 +1233,5 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-</body></html>
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/401-Regression.qmd" class="toc-action"><i class="bi bi-github"></i>Seite editieren</a></li></ul></div></div></div></footer></body></html>

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.549">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -81,7 +81,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "Keine Treffer",
     "search-matching-documents-text": "Treffer",
@@ -90,6 +96,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "weitere Treffer in diesem Dokument",
     "search-more-matches-text": "weitere Treffer in diesem Dokument",
     "search-clear-button-title": "Zurücksetzen",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Abbrechen",
     "search-submit-button-title": "Abschicken",
     "search-label": "Suchen"
@@ -99,6 +106,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
 </head>
 
 <body class="nav-sidebar floating">
@@ -107,12 +141,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./101-Sprache-und-Logik.html">Mathematische Grundlagen</a></li><li class="breadcrumb-item"><a href="./108-Vektoren.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Vektoren</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./101-Sprache-und-Logik.html">Mathematische Grundlagen</a></li><li class="breadcrumb-item"><a href="./108-Vektoren.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Vektoren</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
@@ -122,13 +156,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Probabilistische Datenwissenschaft für die Psychologie</a> 
         <div class="sidebar-tools-main">
-    <a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-    <a href="./Probabilistische-Datenwissenschaft-für-die-Psychologie.pdf" rel="" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+    <a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages" title="Quellcode" class="quarto-navigation-tool px-1" aria-label="Quellcode"><i class="bi bi-github"></i></a>
+    <a href="./Probabilistische-Datenwissenschaft-für-die-Psychologie.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
 </div>
     </div>
       </div>
@@ -361,6 +395,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">T-Statistiken</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./406-F-Statistiken.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">F-Statistiken</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item">
@@ -381,16 +421,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#sec-vektorraumbasen" id="toc-sec-vektorraumbasen" class="nav-link" data-scroll-target="#sec-vektorraumbasen"><span class="header-section-number">8.4</span> Vektorraumbasen</a></li>
   <li><a href="#sec-selbstkontrollfragen-vektoren" id="toc-sec-selbstkontrollfragen-vektoren" class="nav-link" data-scroll-target="#sec-selbstkontrollfragen-vektoren"><span class="header-section-number">8.5</span> Selbstkontrollfragen</a></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/108-Vektoren.qmd" class="toc-action">Seite editieren</a></p></div></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/108-Vektoren.qmd" class="toc-action"><i class="bi bi-github"></i>Seite editieren</a></li></ul></div></nav>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./101-Sprache-und-Logik.html">Mathematische Grundlagen</a></li><li class="breadcrumb-item"><a href="./108-Vektoren.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Vektoren</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span id="sec-vektoren" class="quarto-section-identifier"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Vektoren</span></span></h1>
 </div>
@@ -405,14 +445,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
+
 </header>
 
-<p>In der naturwissenschaftlichen Modellbildung betrachtet man häufig Phänomene, die sich durch das Vorliegen mehrerer quantitativer Merkmale auszeichnen. So ist zum Beispiel die Position eines Objektes im dreidimensionalen Raum durch drei Koordinaten hinsichtlich der drei Achsen eines Kartesischen Koordinatensystems festgelegt. Analog mag der Gesundheitszustand einer Person durch das Vorliegen dreier Messwerte, z.B. einen Selbstauskunftscore, einen Biomarker und eine Expert:inneneinschätzung charakterisiert sein. Zum modellieren und analysieren solcher mehrdimensionalen quantitativen Phänomene stellt die Mathematik mit dem reellen Vektorraum ein vielseitig einsetzbares Hilfsmittel bereit. In diesem Kapitel wollen wir zunächst den Begriff des reellen Vektorraums und das grundlegende Rechnen mit Vektoren einführen (<a href="#sec-reeller-vektorraum"><span>Kapitel&nbsp;8.1</span></a>). Eine Vektorraumstruktur, die sich stark an der dreidimensionalen räumlichen Intuition orientiert bietet dann der Euklidische Vektorraum (<a href="#sec-euklidischer-vektorraum"><span>Kapitel&nbsp;8.2</span></a>). Mithilfe der Vektorrechnung können alle Vektoren eines Vektorraums aus einer kleinen Schar ausgezeichneter Vektoren gebildet werden. Die diesem Prinzip zugrundeliegenden Konzepte diskutieren wir in (<a href="#sec-lineare-unabhängigkeit"><span>Kapitel&nbsp;8.3</span></a> und <a href="#sec-vektorraumbasen"><span>Kapitel&nbsp;8.4</span></a>).</p>
+
+<p>In der naturwissenschaftlichen Modellbildung betrachtet man häufig Phänomene, die sich durch das Vorliegen mehrerer quantitativer Merkmale auszeichnen. So ist zum Beispiel die Position eines Objektes im dreidimensionalen Raum durch drei Koordinaten hinsichtlich der drei Achsen eines Kartesischen Koordinatensystems festgelegt. Analog mag der Gesundheitszustand einer Person durch das Vorliegen dreier Messwerte, z.B. einen Selbstauskunftscore, einen Biomarker und eine Expert:inneneinschätzung charakterisiert sein. Zum modellieren und analysieren solcher mehrdimensionalen quantitativen Phänomene stellt die Mathematik mit dem reellen Vektorraum ein vielseitig einsetzbares Hilfsmittel bereit. In diesem Kapitel wollen wir zunächst den Begriff des reellen Vektorraums und das grundlegende Rechnen mit Vektoren einführen (<a href="#sec-reeller-vektorraum" class="quarto-xref"><span>Kapitel 8.1</span></a>). Eine Vektorraumstruktur, die sich stark an der dreidimensionalen räumlichen Intuition orientiert bietet dann der Euklidische Vektorraum (<a href="#sec-euklidischer-vektorraum" class="quarto-xref"><span>Kapitel 8.2</span></a>). Mithilfe der Vektorrechnung können alle Vektoren eines Vektorraums aus einer kleinen Schar ausgezeichneter Vektoren gebildet werden. Die diesem Prinzip zugrundeliegenden Konzepte diskutieren wir in (<a href="#sec-lineare-unabhängigkeit" class="quarto-xref"><span>Kapitel 8.3</span></a> und <a href="#sec-vektorraumbasen" class="quarto-xref"><span>Kapitel 8.4</span></a>).</p>
 <section id="sec-reeller-vektorraum" class="level2" data-number="8.1">
 <h2 data-number="8.1" class="anchored" data-anchor-id="sec-reeller-vektorraum"><span class="header-section-number">8.1</span> Reeller Vektorraum</h2>
 <p>Wir beginnen mit der allgemeinen Definition eines Vektorraums, die grundlegende Regeln zum Rechnen mit Vektoren festlegt.</p>
 <div id="def-vektorraum" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 8.1 (Vektorraum) </strong></span>Es seien <span class="math inline">\(V\)</span> eine nichtleere Menge und <span class="math inline">\(S\)</span> eine Menge von Skalaren. Weiterhin sei eine Abbildung <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 8.1 (Vektorraum)</strong></span> Es seien <span class="math inline">\(V\)</span> eine nichtleere Menge und <span class="math inline">\(S\)</span> eine Menge von Skalaren. Weiterhin sei eine Abbildung <span class="math display">\[\begin{equation}
 + : V \times V \to V, (v_1,v_2) \mapsto +(v_1, v_2) =: v_1 + v_2,
 \end{equation}\]</span> genannt <em>Vektoraddition</em>, definiert. Schließlich sei eine Abbildung <span class="math display">\[\begin{equation}
 \cdot : S \times V \to V, (s,v) \mapsto \cdot(s,v) =: sv,
@@ -435,12 +477,12 @@ a\cdot (v + w) = a\cdot v + a \cdot w.
 (a + b)\cdot v = a\cdot v + b\cdot v.
 \]</span></p>
 </div>
-<p>Es fällt auf, dass <a href="#def-vektorraum">Definition&nbsp;<span>8.1</span></a> zwar festlegt, wie mit Vektoren gerechnet werden soll, jedoch keine Aussage darüber macht, was ein Vektor, über ein ein Element einer Menge hinaus, eigentlich ist. Dies ist der Tatsache geschuldet, dass es verschiedenste mathematische Objekte gibt, für die Vektorraumstrukturen definiert werden können. Beispiele dafür sind die Menge der reellen <span class="math inline">\(m\)</span>-Tupel, die Menge der Matrizen, die Menge der Polynome, die Menge der Lösungen eines linearen Gleichungssystems, die Menge der reellen Folgen, die Menge der stetigen Funktionen u.v.a.m.</p>
+<p>Es fällt auf, dass <a href="#def-vektorraum" class="quarto-xref">Definition&nbsp;<span>8.1</span></a> zwar festlegt, wie mit Vektoren gerechnet werden soll, jedoch keine Aussage darüber macht, was ein Vektor, über ein ein Element einer Menge hinaus, eigentlich ist. Dies ist der Tatsache geschuldet, dass es verschiedenste mathematische Objekte gibt, für die Vektorraumstrukturen definiert werden können. Beispiele dafür sind die Menge der reellen <span class="math inline">\(m\)</span>-Tupel, die Menge der Matrizen, die Menge der Polynome, die Menge der Lösungen eines linearen Gleichungssystems, die Menge der reellen Folgen, die Menge der stetigen Funktionen u.v.a.m.</p>
 <p>Wir sind hier zunächst nur am Vektorraum der Menge reellen <span class="math inline">\(m\)</span>-Tupel interessiert. Wir erinnern dazu daran, dass wir die reellen <span class="math inline">\(m\)</span>-Tupel mit <span class="math display">\[\begin{equation}
 \mathbb{R}^m := \left\lbrace \begin{pmatrix} x_1 \\ \vdots \\ x_m \end{pmatrix} | x_i \in \mathbb{R} \mbox{ für alle } 1 \le i \le m \right\rbrace
 \end{equation}\]</span> bezeichnen und <span class="math inline">\(\mathbb{R}^m\)</span> als “<span class="math inline">\(\mathbb{R}\)</span> hoch m” aussprechen. Die Elemente <span class="math inline">\(x \in \mathbb{R}^m\)</span> nennen wir <em>reelle Vektoren</em> oder auch einfach <em>Vektoren</em>. Wir wollen nun der Definition eines Vektorraums die Menge <span class="math inline">\(\mathbb{R}^m\)</span> zugrunde legen. Dazu definieren wir zunächst die Vektoraddition für Elemente von <span class="math inline">\(\mathbb{R}^m\)</span> und die Skalarmultiplikation für Elemente von <span class="math inline">\(\mathbb{R}\)</span> und <span class="math inline">\(\mathbb{R}^m\)</span></p>
 <div id="def-reelle-vektoraddition-skalarmultiplikation" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 8.2 (Vektoraddition und Skalarmultiplikation in <span class="math inline">\(\mathbb{R}^m\)</span>) </strong></span>Für alle <span class="math inline">\(x,y \in \mathbb{R}^m\)</span> und <span class="math inline">\(a \in \mathbb{R}\)</span> sei die <em>Vektoraddition</em> durch <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 8.2 (Vektoraddition und Skalarmultiplikation in <span class="math inline">\(\mathbb{R}^m\)</span>)</strong></span> Für alle <span class="math inline">\(x,y \in \mathbb{R}^m\)</span> und <span class="math inline">\(a \in \mathbb{R}\)</span> sei die <em>Vektoraddition</em> durch <span class="math display">\[\begin{equation}
 + : \mathbb{R}^m \times \mathbb{R}^m \to \mathbb{R}^m, (x,y) \mapsto x + y =
 \begin{pmatrix}
 x_1 \\ \vdots \\ x_m
@@ -468,13 +510,13 @@ ax_1  \\ \vdots \\a x_m
 </div>
 <p>Es ergibt sich dann folgendes Resultat.</p>
 <div id="thm-reeller-vektorraum" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 8.1 (Reeller Vektorraum) </strong></span><span class="math inline">\((\mathbb{R}^m,+,\cdot)\)</span> mit den Rechenregeln der Addition und Multiplikation in <span class="math inline">\(\mathbb{R}\)</span> einen Vektorraum.</p>
+<p><span class="theorem-title"><strong>Theorem 8.1 (Reeller Vektorraum)</strong></span> <span class="math inline">\((\mathbb{R}^m,+,\cdot)\)</span> mit den Rechenregeln der Addition und Multiplikation in <span class="math inline">\(\mathbb{R}\)</span> einen Vektorraum.</p>
 </div>
-<p>Für einen Beweis, auf den wir hier verzichten wollen, muss man die Bedingungen (1) bis (8) aus <a href="#def-vektorraum">Definition&nbsp;<span>8.1</span></a> für die hier betrachtete Menge und die hier festgelegten Formen der Vektoraddition und der Skalarmultiplikation nachweisen. Diese ergeben sich aber leicht aus den Rechenregeln von Addition und Multiplikation in <span class="math inline">\(\mathbb{R}\)</span> und der Tatsache, dass Vektoraddition und Skalarmultiplikation für Elemente von <span class="math inline">\(\mathbb{R}^m\)</span> in <a href="#def-reelle-vektoraddition-skalarmultiplikation">Definition&nbsp;<span>8.2</span></a> komponentenweise definiert wurden. Wir definieren damit den Begriff des <em>reellen Vektorraums</em>.</p>
+<p>Für einen Beweis, auf den wir hier verzichten wollen, muss man die Bedingungen (1) bis (8) aus <a href="#def-vektorraum" class="quarto-xref">Definition&nbsp;<span>8.1</span></a> für die hier betrachtete Menge und die hier festgelegten Formen der Vektoraddition und der Skalarmultiplikation nachweisen. Diese ergeben sich aber leicht aus den Rechenregeln von Addition und Multiplikation in <span class="math inline">\(\mathbb{R}\)</span> und der Tatsache, dass Vektoraddition und Skalarmultiplikation für Elemente von <span class="math inline">\(\mathbb{R}^m\)</span> in <a href="#def-reelle-vektoraddition-skalarmultiplikation" class="quarto-xref">Definition&nbsp;<span>8.2</span></a> komponentenweise definiert wurden. Wir definieren damit den Begriff des <em>reellen Vektorraums</em>.</p>
 <div id="def-reeller-vektorraum" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 8.3 (Reeller Vektorraum) </strong></span>Für <span class="math inline">\(\mathbb{R}^m\)</span> seien <span class="math inline">\(+\)</span> und <span class="math inline">\(\cdot\)</span> die in <a href="#def-reelle-vektoraddition-skalarmultiplikation">Definition&nbsp;<span>8.2</span></a> definierte Vektoraddition und Skalarmultiplikation. Dann nennen wir auf Grundlage von <a href="#thm-reeller-vektorraum">Theorem&nbsp;<span>8.1</span></a> den Vektorraum <span class="math inline">\((\mathbb{R}^m,+,\cdot)\)</span> den <em>reellen Vektorraum</em></p>
+<p><span class="theorem-title"><strong>Definition 8.3 (Reeller Vektorraum)</strong></span> Für <span class="math inline">\(\mathbb{R}^m\)</span> seien <span class="math inline">\(+\)</span> und <span class="math inline">\(\cdot\)</span> die in <a href="#def-reelle-vektoraddition-skalarmultiplikation" class="quarto-xref">Definition&nbsp;<span>8.2</span></a> definierte Vektoraddition und Skalarmultiplikation. Dann nennen wir auf Grundlage von <a href="#thm-reeller-vektorraum" class="quarto-xref">Theorem&nbsp;<span>8.1</span></a> den Vektorraum <span class="math inline">\((\mathbb{R}^m,+,\cdot)\)</span> den <em>reellen Vektorraum</em></p>
 </div>
-<p>Auf Grundlage von <a href="#def-reeller-vektorraum">Definition&nbsp;<span>8.3</span></a> wollen wir uns nun das Rechnen mit reellen Vektoren anhand einiger Beispiele verdeutlichen.</p>
+<p>Auf Grundlage von <a href="#def-reeller-vektorraum" class="quarto-xref">Definition&nbsp;<span>8.3</span></a> wollen wir uns nun das Rechnen mit reellen Vektoren anhand einiger Beispiele verdeutlichen.</p>
 <p><strong>Beispiele</strong></p>
 <p>(1) Für</p>
 <p><span class="math display">\[
@@ -599,14 +641,18 @@ ax
 [3,]    9</code></pre>
 </div>
 </div>
-<p>Für <span class="math inline">\(m \in \{1,2,3\}\)</span> kann man sich reelle Vektoren und das Rechnen mit ihnen visuell veranschaulichen. Für <span class="math inline">\(m &gt; 3\)</span>, wenn also zum Beispiel für eine Person mehr als drei quantitative Merkmale zu ihrem Gesundheitszustand vorliegen, was in der Anwendung regelmäßig der Fall ist, ist dies nicht möglich. Trotzdem mag die visuelle Intuition für <span class="math inline">\(m \le 3\)</span> einen Einstieg in das Verständnis von Vektorräumen erleichtern. Wir fokussieren hier auf den Fall <span class="math inline">\(m := 2\)</span>. In diesem Fall liegen die betrachteten reellen Vektoren in der zweidimensionalen Ebene und werden üblicherweise als Punkte oder Pfeile visualisiert (<a href="#fig-vektoren-R2">Abbildung&nbsp;<span>8.1</span></a>).</p>
-<div id="fig-vektoren-R2" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./_figures/108-vektoren-R2.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Abbildung&nbsp;8.1: Visualisierung von Vektoren in <span class="math inline">\(\mathbb{R}^2\)</span></figcaption>
+<p>Für <span class="math inline">\(m \in \{1,2,3\}\)</span> kann man sich reelle Vektoren und das Rechnen mit ihnen visuell veranschaulichen. Für <span class="math inline">\(m &gt; 3\)</span>, wenn also zum Beispiel für eine Person mehr als drei quantitative Merkmale zu ihrem Gesundheitszustand vorliegen, was in der Anwendung regelmäßig der Fall ist, ist dies nicht möglich. Trotzdem mag die visuelle Intuition für <span class="math inline">\(m \le 3\)</span> einen Einstieg in das Verständnis von Vektorräumen erleichtern. Wir fokussieren hier auf den Fall <span class="math inline">\(m := 2\)</span>. In diesem Fall liegen die betrachteten reellen Vektoren in der zweidimensionalen Ebene und werden üblicherweise als Punkte oder Pfeile visualisiert (<a href="#fig-vektoren-R2" class="quarto-xref">Abbildung&nbsp;<span>8.1</span></a>).</p>
+<div id="fig-vektoren-R2" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-vektoren-R2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/108-vektoren-R2.png" class="img-fluid quarto-figure quarto-figure-center figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-vektoren-R2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;8.1: Visualisierung von Vektoren in <span class="math inline">\(\mathbb{R}^2\)</span>
+</figcaption>
 </figure>
 </div>
-<p><a href="#fig-vektoraddition-R2">Abbildung&nbsp;<span>8.2</span></a> visualisiert die Vektoraddition <span class="math display">\[\begin{equation}
+<p><a href="#fig-vektoraddition-R2" class="quarto-xref">Abbildung&nbsp;<span>8.2</span></a> visualisiert die Vektoraddition <span class="math display">\[\begin{equation}
 \begin{pmatrix}
 1 \\ 2
 \end{pmatrix}
@@ -619,13 +665,17 @@ ax
 4 \\ 3
 \end{pmatrix}.
 \end{equation}\]</span> Der Summenvektor entspricht dabei der Diagonale des von den beiden Summanden aufgespannten Parallelogramms.</p>
-<div id="fig-vektoraddition-R2" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./_figures/108-vektoraddition-R2.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Abbildung&nbsp;8.2: Vektoraddition in <span class="math inline">\(\mathbb{R}^2\)</span></figcaption>
+<div id="fig-vektoraddition-R2" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-vektoraddition-R2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/108-vektoraddition-R2.png" class="img-fluid quarto-figure quarto-figure-center figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-vektoraddition-R2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;8.2: Vektoraddition in <span class="math inline">\(\mathbb{R}^2\)</span>
+</figcaption>
 </figure>
 </div>
-<p><a href="#fig-vektorsubtraktion-R2">Abbildung&nbsp;<span>8.3</span></a> visualisiert die Vektorsubtraktion <span class="math display">\[\begin{equation}
+<p><a href="#fig-vektorsubtraktion-R2" class="quarto-xref">Abbildung&nbsp;<span>8.3</span></a> visualisiert die Vektorsubtraktion <span class="math display">\[\begin{equation}
 \begin{pmatrix}
 1 \\ 2
 \end{pmatrix}
@@ -646,13 +696,17 @@ ax
 -2 \\ \,\, 1
 \end{pmatrix}
 \end{equation}\]</span> Der resultierende Vektor entspricht dabei der Diagonale des von dem ersten Vektors und dem entgegensetzten Vektor des zweiten Vektors aufgespannten Parallelogramms.</p>
-<div id="fig-vektorsubtraktion-R2" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./_figures/108-vektorsubtraktion-R2.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Abbildung&nbsp;8.3: Vektorsubtraktion in <span class="math inline">\(\mathbb{R}^2\)</span></figcaption>
+<div id="fig-vektorsubtraktion-R2" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-vektorsubtraktion-R2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/108-vektorsubtraktion-R2.png" class="img-fluid quarto-figure quarto-figure-center figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-vektorsubtraktion-R2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;8.3: Vektorsubtraktion in <span class="math inline">\(\mathbb{R}^2\)</span>
+</figcaption>
 </figure>
 </div>
-<p><a href="#fig-skalarmultiplikation-R2">Abbildung&nbsp;<span>8.4</span></a> schließlich visualisiert die Skalarmultiplikation <span class="math display">\[\begin{equation}
+<p><a href="#fig-skalarmultiplikation-R2" class="quarto-xref">Abbildung&nbsp;<span>8.4</span></a> schließlich visualisiert die Skalarmultiplikation <span class="math display">\[\begin{equation}
 3
 \begin{pmatrix}
 1 \\ 1
@@ -662,10 +716,14 @@ ax
 3 \\ 3
 \end{pmatrix}
 \end{equation}\]</span> Die Multiplikation eines Vektors mit einem Skalar ändert dabei immer nur seine Länge, nicht jedoch seine Richtung.</p>
-<div id="fig-skalarmultiplikation-R2" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./_figures/108-skalarmultiplikation-R2.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Abbildung&nbsp;8.4: Skalarmultiplikation in <span class="math inline">\(\mathbb{R}^2\)</span></figcaption>
+<div id="fig-skalarmultiplikation-R2" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-skalarmultiplikation-R2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/108-skalarmultiplikation-R2.png" class="img-fluid quarto-figure quarto-figure-center figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-skalarmultiplikation-R2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;8.4: Skalarmultiplikation in <span class="math inline">\(\mathbb{R}^2\)</span>
+</figcaption>
 </figure>
 </div>
 </section>
@@ -673,7 +731,7 @@ ax
 <h2 data-number="8.2" class="anchored" data-anchor-id="sec-euklidischer-vektorraum"><span class="header-section-number">8.2</span> Euklidischer Vektorraum</h2>
 <p>Der reelle Vektorraum kann durch Definition des <em>Skalarprodukts</em> im Sinne eines <em>Euklidischen Vektorraums</em> mit räumlich-geometrischer Intuition versehen werden. Diese ermöglicht es insbesondere, Begriffe wie die <em>Länge eines Vektors</em>, den <em>Abstand zwischen zwei Vektoren</em>, und nicht zuletzt den <em>Winkel zwischen zwei Vektoren</em> zu definieren und zu berechnen. Wir führen zunächst das <em>Skalarprodukt</em> ein.</p>
 <div id="def-skalarprodukt" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 8.4 (Skalarprodukt auf <span class="math inline">\(\mathbb{R}^m\)</span>) </strong></span>Das <em>Skalarprodukt auf <span class="math inline">\(\mathbb{R}^m\)</span></em> ist definiert als die Abbildung <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 8.4 (Skalarprodukt auf <span class="math inline">\(\mathbb{R}^m\)</span>)</strong></span> Das <em>Skalarprodukt auf <span class="math inline">\(\mathbb{R}^m\)</span></em> ist definiert als die Abbildung <span class="math display">\[\begin{equation}
 \langle \rangle : \mathbb{R}^m \times \mathbb{R}^m \to \mathbb{R},
 (x,y) \mapsto \langle (x,y) \rangle := \langle x,y \rangle := \sum_{i=1}^m x_i y_i.
 \end{equation}\]</span></p>
@@ -717,11 +775,11 @@ y :=
 </div>
 <p>Mithilfe des Skalarprodukts kann der Begriff des reellen Vektorraums zum Begriff des <em>reellen kanonischen Euklidischen Vektorraums</em> erweiter werden.</p>
 <div id="def-euklidischer-vektorraum" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 8.5 (Euklidischer Vektorraum) </strong></span>Das Tupel <span class="math inline">\(\left((\mathbb{R}^m, +, \cdot), \langle \rangle \right)\)</span> aus dem reellen Vektorraum <span class="math inline">\((\mathbb{R}^m, +, \cdot)\)</span> und dem Skalarprodukt <span class="math inline">\(\langle \rangle\)</span> auf <span class="math inline">\(\mathbb{R}^m\)</span> heißt <em>reeller kanonischer Euklidischer Vektorraum</em>.</p>
+<p><span class="theorem-title"><strong>Definition 8.5 (Euklidischer Vektorraum)</strong></span> Das Tupel <span class="math inline">\(\left((\mathbb{R}^m, +, \cdot), \langle \rangle \right)\)</span> aus dem reellen Vektorraum <span class="math inline">\((\mathbb{R}^m, +, \cdot)\)</span> und dem Skalarprodukt <span class="math inline">\(\langle \rangle\)</span> auf <span class="math inline">\(\mathbb{R}^m\)</span> heißt <em>reeller kanonischer Euklidischer Vektorraum</em>.</p>
 </div>
 <p>Generell heißt jedes Tupel aus einem Vektorraum und einem Skalarprodukt “Euklidischer Vektorraum”. Informell sprechen wir aber oft auch einfach von <span class="math inline">\(\mathbb{R}^m\)</span> als “Euklidischer Vektorraum” und insbesondere bei <span class="math inline">\(\left((\mathbb{R}^m, +, \cdot), \langle \rangle \right)\)</span> vom “Euklidischen Vektorraum”. Ein Euklidischer Vektorraum ist ein Vektorraum mit geometrischer Struktur, die durch das Skalarprodukt induziert wird. Insbesondere bekommen im Euklidischen Vektorraum nun die geometrischen Begriffe von <em>Länge</em>, <em>Abstand</em> und <em>Winkel</em> eine Bedeutung. Wir definieren sie wie folgt.</p>
 <div id="def-länge-abstand-winkel" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 8.6 </strong></span><span class="math inline">\(\left((\mathbb{R}^m, +, \cdot), \langle \rangle \right)\)</span> sei der Euklidische Vektorraum.</p>
+<p><span class="theorem-title"><strong>Definition 8.6</strong></span> <span class="math inline">\(\left((\mathbb{R}^m, +, \cdot), \langle \rangle \right)\)</span> sei der Euklidische Vektorraum.</p>
 <p>(1) Die <em>Länge</em> eines Vektors <span class="math inline">\(x \in \mathbb{R}^m\)</span> ist definiert als <span class="math display">\[\begin{equation}
 \Vert x \Vert := \sqrt{\langle x, x \rangle}.
 \end{equation}\]</span> (2) Der <em>Abstand</em> zweier Vektoren <span class="math inline">\(x,y \in \mathbb{R}^m\)</span> ist definiert als <span class="math display">\[\begin{equation}
@@ -731,7 +789,7 @@ d(x,y) := \Vert x - y \Vert.
 := \frac{\langle x, y \rangle}{\Vert x \Vert \Vert y \Vert}
 \end{equation}\]</span></p>
 </div>
-<p>Die Länge <span class="math inline">\(\Vert x \Vert\)</span> eines Vektors <span class="math inline">\(x \in \mathbb{R}^m\)</span> heißt auch <em>Euklidische Norm von <span class="math inline">\(x\)</span></em> oder <em><span class="math inline">\(\ell_2\)</span>-Norm von <span class="math inline">\(x\)</span></em> oder einfach <em>Norm von <span class="math inline">\(x\)</span></em>. Sie wird häufig auch mit <span class="math inline">\(\Vert x \Vert_2\)</span> bezeichnet. Wir betrachten drei Beispiele für die Bestimmung der Länge eines Vektors und ihre entsprechende <strong>R</strong> Implementation. Wir veranschaulichen diese Beispiele in <a href="#fig-länge-R2">Abbildung&nbsp;<span>8.5</span></a>.</p>
+<p>Die Länge <span class="math inline">\(\Vert x \Vert\)</span> eines Vektors <span class="math inline">\(x \in \mathbb{R}^m\)</span> heißt auch <em>Euklidische Norm von <span class="math inline">\(x\)</span></em> oder <em><span class="math inline">\(\ell_2\)</span>-Norm von <span class="math inline">\(x\)</span></em> oder einfach <em>Norm von <span class="math inline">\(x\)</span></em>. Sie wird häufig auch mit <span class="math inline">\(\Vert x \Vert_2\)</span> bezeichnet. Wir betrachten drei Beispiele für die Bestimmung der Länge eines Vektors und ihre entsprechende <strong>R</strong> Implementation. Wir veranschaulichen diese Beispiele in <a href="#fig-länge-R2" class="quarto-xref">Abbildung&nbsp;<span>8.5</span></a>.</p>
 <p><strong>Beispiel (1)</strong></p>
 <p><span class="math display">\[\begin{equation}
 \left\lVert \begin{pmatrix} 2 \\ 0 \end{pmatrix} \right\rVert
@@ -774,17 +832,21 @@ d(x,y) := \Vert x - y \Vert.
 <pre><code>[1] 4.472136</code></pre>
 </div>
 </div>
-<div id="fig-länge-R2" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./_figures/108-länge-R2.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Abbildung&nbsp;8.5: Vektorlänge in <span class="math inline">\(\mathbb{R}^2\)</span></figcaption>
+<div id="fig-länge-R2" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-länge-R2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/108-länge-R2.png" class="img-fluid quarto-figure quarto-figure-center figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-länge-R2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;8.5: Vektorlänge in <span class="math inline">\(\mathbb{R}^2\)</span>
+</figcaption>
 </figure>
 </div>
 <p>Für den Abstand <span class="math inline">\(d(x,y)\)</span> zweier Vektoren <span class="math inline">\(x,y\in\mathbb{R}^m\)</span> halten wir ohne Beweis fest, dass er zum einen nicht-negativ und symmetrisch ist, also dass <span class="math display">\[\begin{equation}
 d(x,y) \ge 0, d(x,x) = 0 \mbox{ und } d(x,y) = d(y,x)
 \end{equation}\]</span> gelten. Zudem erfüllt <span class="math inline">\(d(x,y)\)</span> die sogenannte <em>Dreiecksungleichung</em>, die besagt, dass die direkte Wegstrecke zwischen zwei Punkten im Raum immer kürzer ist als eine indirekte Wegstrecke über einen dritten Punkt, <span class="math display">\[\begin{equation}
 d(x,y) \le d(x,z) + d(z,y).
-\end{equation}\]</span> Damit erfüllt <span class="math inline">\(d(x,y)\)</span> wichtige Aspekte der räumlichen Anschauung. Wir geben zwei Beispiele für die Bestimmung von Abständen von Vektoren in <span class="math inline">\(\mathbb{R}^2\)</span>, die wir in <a href="#fig-abstand-R2">Abbildung&nbsp;<span>8.6</span></a> visualisieren.</p>
+\end{equation}\]</span> Damit erfüllt <span class="math inline">\(d(x,y)\)</span> wichtige Aspekte der räumlichen Anschauung. Wir geben zwei Beispiele für die Bestimmung von Abständen von Vektoren in <span class="math inline">\(\mathbb{R}^2\)</span>, die wir in <a href="#fig-abstand-R2" class="quarto-xref">Abbildung&nbsp;<span>8.6</span></a> visualisieren.</p>
 <p><strong>Beispiel (1)</strong></p>
 <p><span class="math display">\[\begin{equation}
 d\left(\begin{pmatrix} 1 \\ 1 \end{pmatrix}, \begin{pmatrix} 2 \\ 2 \end{pmatrix}\right)
@@ -815,13 +877,17 @@ d\left(\begin{pmatrix} 1 \\ 1 \end{pmatrix}, \begin{pmatrix} 4 \\ 1 \end{pmatrix
 <pre><code>[1] 3</code></pre>
 </div>
 </div>
-<div id="fig-abstand-R2" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./_figures/108-abstand-R2.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Abbildung&nbsp;8.6: Vektorabstände in <span class="math inline">\(\mathbb{R}^2\)</span></figcaption>
+<div id="fig-abstand-R2" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-abstand-R2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/108-abstand-R2.png" class="img-fluid quarto-figure quarto-figure-center figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-abstand-R2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;8.6: Vektorabstände in <span class="math inline">\(\mathbb{R}^2\)</span>
+</figcaption>
 </figure>
 </div>
-<p>Schließlich halten wir fest, dass für die Berechnung des Winkels zwischen zwei Vektoren anhand obiger Definition gilt, dass die Kosinusfunktion <span class="math inline">\(\cos\)</span> auf <span class="math inline">\([0,\pi]\)</span> bijektiv, also invertierbar mit der Umkehrfunktion <span class="math inline">\(acos\)</span>, der Arkuskosinusfunktion, ist. Auch für den Begriff des Winkels wollen wir zwei Beispiele betrachten. Man beachte dabei insbesondere, dass die <a href="#def-länge-abstand-winkel">Definition&nbsp;<span>8.6</span></a> den Winkel in Radians angibt. Für eine Angabe in Grad ist eine entsprechende Umrechnung erforderlich.</p>
+<p>Schließlich halten wir fest, dass für die Berechnung des Winkels zwischen zwei Vektoren anhand obiger Definition gilt, dass die Kosinusfunktion <span class="math inline">\(\cos\)</span> auf <span class="math inline">\([0,\pi]\)</span> bijektiv, also invertierbar mit der Umkehrfunktion <span class="math inline">\(acos\)</span>, der Arkuskosinusfunktion, ist. Auch für den Begriff des Winkels wollen wir zwei Beispiele betrachten. Man beachte dabei insbesondere, dass die <a href="#def-länge-abstand-winkel" class="quarto-xref">Definition&nbsp;<span>8.6</span></a> den Winkel in Radians angibt. Für eine Angabe in Grad ist eine entsprechende Umrechnung erforderlich.</p>
 <p><strong>Beispiel (1)</strong></p>
 <p><span class="math display">\[\begin{equation}
 \mbox{acos}
@@ -880,15 +946,19 @@ d\left(\begin{pmatrix} 1 \\ 1 \end{pmatrix}, \begin{pmatrix} 4 \\ 1 \end{pmatrix
 <pre><code>[1] 90</code></pre>
 </div>
 </div>
-<div id="fig-winkel-R2" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./_figures/108-winkel-R2.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Abbildung&nbsp;8.7: Winkel in <span class="math inline">\(\mathbb{R}^2\)</span></figcaption>
+<div id="fig-winkel-R2" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-winkel-R2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/108-winkel-R2.png" class="img-fluid quarto-figure quarto-figure-center figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-winkel-R2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;8.7: Winkel in <span class="math inline">\(\mathbb{R}^2\)</span>
+</figcaption>
 </figure>
 </div>
 <p>Die Tatsache, dass zwei Vektoren einen rechten Winkel bilden können, also gewissermaßen maximal nicht-parallel sein können, ist ein wichtiges geometrisches Prinzip und wird deshalb mit folgender Definition speziell ausgezeichnet.</p>
 <div id="def-orthogonalität-und-orthonormalität-von-vektoren" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 8.7 (Orthogonalität und Orthonormalität von Vektoren) </strong></span><span class="math inline">\(\left((\mathbb{R}^m, +, \cdot), \langle \rangle \right)\)</span> sei der Euklidische Vektorraum.</p>
+<p><span class="theorem-title"><strong>Definition 8.7 (Orthogonalität und Orthonormalität von Vektoren)</strong></span> <span class="math inline">\(\left((\mathbb{R}^m, +, \cdot), \langle \rangle \right)\)</span> sei der Euklidische Vektorraum.</p>
 <p>(1) Zwei Vektoren <span class="math inline">\(x,y \in \mathbb{R}^m\)</span> heißen <em>orthogonal</em>, wenn gilt, dass <span class="math display">\[\begin{equation}
 \langle x, y \rangle = 0
 \end{equation}\]</span> (2) Zwei Vektoren <span class="math inline">\(x,y \in \mathbb{R}^m\)</span> heißen <em>orthonormal</em>, wenn gilt, dass <span class="math display">\[\begin{equation}
@@ -908,7 +978,7 @@ d\left(\begin{pmatrix} 1 \\ 1 \end{pmatrix}, \begin{pmatrix} 4 \\ 1 \end{pmatrix
 <h2 data-number="8.3" class="anchored" data-anchor-id="sec-lineare-unabhängigkeit"><span class="header-section-number">8.3</span> Lineare Unabhängigkeit</h2>
 <p>In diesem Abschnitt führen wir den Begriff der <em>linearen Unabhängigkeit</em> von Vektoren ein. Wir definieren dazu zunächst den Begriff der <em>Linearkombination</em> von Vektoren.</p>
 <div id="def-linearkombination" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 8.8 (Linearkombination) </strong></span><span class="math inline">\(\{v_1, v_2, ..., v_k\}\)</span> sei eine Menge von <span class="math inline">\(k\)</span> Vektoren eines Vektorraums <span class="math inline">\(V\)</span> und <span class="math inline">\(a_1, a_2,...,a_k\)</span> seien Skalare. Dann ist die <em>Linearkombination</em> der Vektoren in <span class="math inline">\(\{v_1, v_2, ..., v_k\}\)</span> mit den <em>Koeffizienten</em> <span class="math inline">\(a_1, a_2,...,a_k\)</span> definiert als der Vektor <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 8.8 (Linearkombination)</strong></span> <span class="math inline">\(\{v_1, v_2, ..., v_k\}\)</span> sei eine Menge von <span class="math inline">\(k\)</span> Vektoren eines Vektorraums <span class="math inline">\(V\)</span> und <span class="math inline">\(a_1, a_2,...,a_k\)</span> seien Skalare. Dann ist die <em>Linearkombination</em> der Vektoren in <span class="math inline">\(\{v_1, v_2, ..., v_k\}\)</span> mit den <em>Koeffizienten</em> <span class="math inline">\(a_1, a_2,...,a_k\)</span> definiert als der Vektor <span class="math display">\[\begin{equation}
 w := \sum_{i=1}^k a_i v_i \in V.
 \end{equation}\]</span></p>
 </div>
@@ -934,13 +1004,13 @@ w
 \end{align}\]</span></p>
 <p>Basierend auf dem Begriff der Linearkombination kann man nun den Begriff der <em>Linearen Unabhängigkeit</em> von Vektoren definieren.</p>
 <div id="def-lineare-unabhängigkeit" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 8.9 (Lineare Unabhängigkeit) </strong></span><span class="math inline">\(V\)</span> sei ein Vektorraum. Eine Menge <span class="math inline">\(W := \{w_1, w_2, ...,w_k\}\)</span> von Vektoren in <span class="math inline">\(V\)</span> heißt <em>linear unabhängig</em>, wenn die einzige Repräsentation des Nullelements <span class="math inline">\(0 \in V\)</span> durch eine Linearkombination der <span class="math inline">\(w \in W\)</span> die sogenannte <em>triviale Repräsentation</em> <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 8.9 (Lineare Unabhängigkeit)</strong></span> <span class="math inline">\(V\)</span> sei ein Vektorraum. Eine Menge <span class="math inline">\(W := \{w_1, w_2, ...,w_k\}\)</span> von Vektoren in <span class="math inline">\(V\)</span> heißt <em>linear unabhängig</em>, wenn die einzige Repräsentation des Nullelements <span class="math inline">\(0 \in V\)</span> durch eine Linearkombination der <span class="math inline">\(w \in W\)</span> die sogenannte <em>triviale Repräsentation</em> <span class="math display">\[\begin{equation}
 0 = a_1 w_1 + a_2 w_2 + \cdots + a_k w_k \mbox{ mit } a_1 = a_2 =  \cdots = a_k = 0
 \end{equation}\]</span> ist. Wenn die Menge <span class="math inline">\(W\)</span> nicht linear unabhängig ist, dann heißt sie <em>linear abhängig</em>.</p>
 </div>
-<p>Um zu prüfen, ob eine gegeben Menge von Vektoren linear abhängig oder unabhängig ist muss man prinzipiell für jede mögliche Linearkombination der gegebenen Vektoren, ob sie Null ist. <a href="#thm-lineare-abhängigkeit-von-zwei-vektoren">Theorem&nbsp;<span>8.2</span></a> und <a href="#thm-lineare-abhängigkeit-einer-menge-von-vektoren">Theorem&nbsp;<span>8.3</span></a> zeigen, wie dies für zwei bzw. endliche viele Vektoren auch mit weniger Aufwand gelingen kann.</p>
+<p>Um zu prüfen, ob eine gegeben Menge von Vektoren linear abhängig oder unabhängig ist muss man prinzipiell für jede mögliche Linearkombination der gegebenen Vektoren, ob sie Null ist. <a href="#thm-lineare-abhängigkeit-von-zwei-vektoren" class="quarto-xref">Theorem&nbsp;<span>8.2</span></a> und <a href="#thm-lineare-abhängigkeit-einer-menge-von-vektoren" class="quarto-xref">Theorem&nbsp;<span>8.3</span></a> zeigen, wie dies für zwei bzw. endliche viele Vektoren auch mit weniger Aufwand gelingen kann.</p>
 <div id="thm-lineare-abhängigkeit-von-zwei-vektoren" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 8.2 (Lineare Abhängigkeit von zwei Vektoren) </strong></span><span class="math inline">\(V\)</span> sei ein Vektorraum. Zwei Vektoren <span class="math inline">\(v_1, v_2 \in V\)</span> sind linear abhängig, wenn einer der Vektoren ein skalares Vielfaches des anderen Vektors ist.</p>
+<p><span class="theorem-title"><strong>Theorem 8.2 (Lineare Abhängigkeit von zwei Vektoren)</strong></span> <span class="math inline">\(V\)</span> sei ein Vektorraum. Zwei Vektoren <span class="math inline">\(v_1, v_2 \in V\)</span> sind linear abhängig, wenn einer der Vektoren ein skalares Vielfaches des anderen Vektors ist.</p>
 </div>
 <div class="proof">
 <p><span class="proof-title"><em>Beweis</em>. </span><span class="math inline">\(v_1\)</span> sei ein skalares Vielfaches von <span class="math inline">\(v_2\)</span>, also <span class="math display">\[\begin{equation}
@@ -952,7 +1022,7 @@ a_1v_1 + a_2v_2 = 0
 \end{equation}\]</span> mit <span class="math inline">\(a_1 = 1 \neq 0\)</span> und <span class="math inline">\(a_2 = -\lambda \neq 0\)</span>. Es gibt also eine Linearkombination des Nullelementes, die nicht die triviale Repräsentation ist, und damit sind <span class="math inline">\(v_1\)</span> und <span class="math inline">\(v_2\)</span> nicht linear unabhängig.</p>
 </div>
 <div id="thm-lineare-abhängigkeit-einer-menge-von-vektoren" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 8.3 (Lineare Abhängigkeit einer Menge von Vektoren) </strong></span><span class="math inline">\(V\)</span> sei ein Vektorraum und <span class="math inline">\(w_1,...,w_k \in V\)</span> sei eine Menge von Vektoren in <span class="math inline">\(V\)</span>. Wenn einer der Vektoren <span class="math inline">\(w_i\)</span> mit <span class="math inline">\(i = 1,...,k\)</span> eine Linearkombination der anderen Vektoren ist, dann ist die Menge der Vektoren linear abhängig.</p>
+<p><span class="theorem-title"><strong>Theorem 8.3 (Lineare Abhängigkeit einer Menge von Vektoren)</strong></span> <span class="math inline">\(V\)</span> sei ein Vektorraum und <span class="math inline">\(w_1,...,w_k \in V\)</span> sei eine Menge von Vektoren in <span class="math inline">\(V\)</span>. Wenn einer der Vektoren <span class="math inline">\(w_i\)</span> mit <span class="math inline">\(i = 1,...,k\)</span> eine Linearkombination der anderen Vektoren ist, dann ist die Menge der Vektoren linear abhängig.</p>
 </div>
 <div class="proof">
 <p><span class="proof-title"><em>Beweis</em>. </span>Die Vektoren <span class="math inline">\(w_1,...,w_k\)</span> sind genau dann linear abhängig, wenn gilt, dass <span class="math inline">\(\sum_{i=1}^k a_i w_i = 0\)</span> mit mindestens einem <span class="math inline">\(a_i \neq 0\)</span> . Es sei also zum Beispiel <span class="math inline">\(a_j \neq 0\)</span>. Dann gilt <span class="math display">\[\begin{equation}
@@ -968,13 +1038,13 @@ w_j  = - a_j^{-1}\sum_{i=1, i \neq j}^k a_i w_i = - \sum_{i=1, i \neq j}^k (a_j^
 <h2 data-number="8.4" class="anchored" data-anchor-id="sec-vektorraumbasen"><span class="header-section-number">8.4</span> Vektorraumbasen</h2>
 <p>In diesem Abschnitt wollen wir den Begriff der <em>Vektorraumbasis</em> einführen. Eine Basis eines Vektorraums ist eine Untermenge von Vektoren des Vektorraums, die zur Darstellung aller Vektoren des Vektorraums genutzt werden kann. Im Sinne der linearen Kombination von Vektoren enthält also eine Vektorraumbasis alle nötige Information zur Konstruktion des entsprechenden Vektorraums. Allerdings ist eine Vektorraumbasis in der Regel nicht eindeutig und die viele Vektorräume haben in der Tat unendlich viele Basen. Die folgenden Definition sagt zunächst aus, wie aus einer beschränkten Anzahl von Vektoren mithilfe von Linearkombinationen unendlich viele Vektoren gebildet werden können.</p>
 <div id="def-lineare-hülle-und-aufspannen" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 8.10 (Lineare Hülle und Aufspannen) </strong></span><span class="math inline">\(V\)</span> sei ein Vektorraum und es sei <span class="math inline">\(W := \{w_1,...,w_k\} \subset V\)</span>. Dann ist die <em>lineare Hülle</em> von <span class="math inline">\(W\)</span> definiert als die Menge aller Linearkombinationen der Elemente von <span class="math inline">\(W\)</span>, <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 8.10 (Lineare Hülle und Aufspannen)</strong></span> <span class="math inline">\(V\)</span> sei ein Vektorraum und es sei <span class="math inline">\(W := \{w_1,...,w_k\} \subset V\)</span>. Dann ist die <em>lineare Hülle</em> von <span class="math inline">\(W\)</span> definiert als die Menge aller Linearkombinationen der Elemente von <span class="math inline">\(W\)</span>, <span class="math display">\[\begin{equation}
 \mbox{Span}(W) := \left\lbrace \sum_{i=1}^k a_iw_i \vert a_1,...,a_k \mbox{ sind skalare Koeffizienten } \right\rbrace
 \end{equation}\]</span> Man sagt, dass eine Menge von Vektoren <span class="math inline">\(W \subseteq V\)</span> <em>einen Vektorraum <span class="math inline">\(V\)</span> aufspannt</em>, wenn jedes <span class="math inline">\(v \in V\)</span> als eine Linearkombination von Vektoren in <span class="math inline">\(W\)</span> geschrieben werden kann.</p>
 </div>
 <p>Wir definieren nun den Begriff der <em>Basis</em> eines Vektorraums.</p>
 <div id="def-basis" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 8.11 (Basis) </strong></span><span class="math inline">\(V\)</span> sei ein Vektorraum und es sei <span class="math inline">\(B \subseteq V\)</span>. <span class="math inline">\(B\)</span> heißt eine <em>Basis von <span class="math inline">\(V\)</span></em>, wenn</p>
+<p><span class="theorem-title"><strong>Definition 8.11 (Basis)</strong></span> <span class="math inline">\(V\)</span> sei ein Vektorraum und es sei <span class="math inline">\(B \subseteq V\)</span>. <span class="math inline">\(B\)</span> heißt eine <em>Basis von <span class="math inline">\(V\)</span></em>, wenn</p>
 <ol type="1">
 <li>die Vektoren in <span class="math inline">\(B\)</span> linear unabhängig sind und</li>
 <li>die Vektoren in <span class="math inline">\(B\)</span> den Vektorraum <span class="math inline">\(V\)</span> aufspannen.</li>
@@ -982,7 +1052,7 @@ w_j  = - a_j^{-1}\sum_{i=1, i \neq j}^k a_i w_i = - \sum_{i=1, i \neq j}^k (a_j^
 </div>
 <p>Basen von Vektorräumen haben folgende wichtige Eigenschaften.</p>
 <div id="thm-eigenschaften-von-basen" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 8.4 (Eigenschaften von Basen) </strong></span>&nbsp;</p>
+<p><span class="theorem-title"><strong>Theorem 8.4 (Eigenschaften von Basen)</strong></span> &nbsp;</p>
 <ol type="1">
 <li>Alle Basen eines Vektorraums beinhalten die gleiche Anzahl von Vektoren.</li>
 <li>Jede Menge von <span class="math inline">\(m\)</span> linear unabhängigen Vektoren ist Basis eines <span class="math inline">\(m\)</span>-dimensionalen Vektorraums.</li>
@@ -991,13 +1061,13 @@ w_j  = - a_j^{-1}\sum_{i=1, i \neq j}^k a_i w_i = - \sum_{i=1, i \neq j}^k (a_j^
 <p>Für einen Beweis dieses sehr tiefen Theorems verweisen wir auf die weiterführende Literatur. Die mit obigem Theorem benannte eindeutige Anzahl der Vektoren einer Basis eines Vektorraums heißt die <em>Dimension des Vektorraums</em>. Da es in der Regel unendliche viele Mengen von <em>m</em> linear unabhängigen Vektoren in einem Vektorraum gibt haben Vektorräume in der Regel unendlich viele Basen.</p>
 <p>Betrachtet man nun einen einzelnen Vektor in einem Vektorraum, so kann man sich fragen, wie man diesen mithilfe einer Vektorraumbasis darstellen kann. Dies führt auf folgende Begriffsbildungen.</p>
 <div id="def-basisdarstellung-und-koordinaten" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 8.12 (Basisdarstellung und Koordinaten) </strong></span><span class="math inline">\(B := \{b_1,...,b_m\}\)</span> sei eine Basis eines <span class="math inline">\(m\)</span>-dimensionalen Vektorraumes <span class="math inline">\(V\)</span> und es sei <span class="math inline">\(v \in V\)</span>. Dann heißt die Linearkombination <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 8.12 (Basisdarstellung und Koordinaten)</strong></span> <span class="math inline">\(B := \{b_1,...,b_m\}\)</span> sei eine Basis eines <span class="math inline">\(m\)</span>-dimensionalen Vektorraumes <span class="math inline">\(V\)</span> und es sei <span class="math inline">\(v \in V\)</span>. Dann heißt die Linearkombination <span class="math display">\[\begin{equation}
 v = \sum_{i = 1}^m c_i b_i
 \end{equation}\]</span> die <em>Darstellung von <span class="math inline">\(v\)</span> bezüglich der Basis <span class="math inline">\(B\)</span></em> und die Koeffizienten <span class="math inline">\(c_1,...,c_m\)</span> heißen die <em>Koordinaten von <span class="math inline">\(v\)</span> bezüglich der Basis <span class="math inline">\(B\)</span></em>.</p>
 </div>
 <p>Bei fester Basis sind auch die Koordinaten eines Vektors bezüglich dieser Basis fest und eindeutig. Dies ist die Aussage folgenden Theorems.</p>
 <div id="thm-eindeutigkeit-der-basisdarstellung" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 8.5 (Eindeutigkeit der Basisdarstellung) </strong></span>Die Basisdarstellung eines <span class="math inline">\(v \in V\)</span> bezüglich einer Basis <span class="math inline">\(B\)</span> ist eindeutig.</p>
+<p><span class="theorem-title"><strong>Theorem 8.5 (Eindeutigkeit der Basisdarstellung)</strong></span> Die Basisdarstellung eines <span class="math inline">\(v \in V\)</span> bezüglich einer Basis <span class="math inline">\(B\)</span> ist eindeutig.</p>
 </div>
 <div class="proof">
 <p><span class="proof-title"><em>Beweis</em>. </span>Ohne Beschränkung der Allgemeinheit nehmen wir an, dass der Vektorraum von Dimension <span class="math inline">\(m\)</span> ist. Nehmen wir an, dass zwei Darstellungen von <span class="math inline">\(v\)</span> bezüglich der Basis <span class="math inline">\(B\)</span> existieren, also dass <span class="math display">\[\begin{align}
@@ -1011,7 +1081,7 @@ v &amp; = c_1 b_1 + \cdots + c_m b_m
 </div>
 <p>Zum Abschluss dieses Abschnitts wollen wir eine spezielle Basis des reellen Vektorraums betrachten.</p>
 <div id="def-orthonormalbasis-von-Rm" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 8.13 (Orthonormalbasis von <span class="math inline">\(\mathbb{R}^m\)</span>) </strong></span>Eine Menge von <span class="math inline">\(m\)</span> Vektoren <span class="math inline">\(v_1,...,v_m \in \mathbb{R}^m\)</span> heißt <em>Orthonormalbasis</em> von <span class="math inline">\(\mathbb{R}^m\)</span>, wenn <span class="math inline">\(v_1,...,v_m\)</span> jeweils die Länge 1 haben und wechselseitig orthogonal sind, also wenn <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 8.13 (Orthonormalbasis von <span class="math inline">\(\mathbb{R}^m\)</span>)</strong></span> Eine Menge von <span class="math inline">\(m\)</span> Vektoren <span class="math inline">\(v_1,...,v_m \in \mathbb{R}^m\)</span> heißt <em>Orthonormalbasis</em> von <span class="math inline">\(\mathbb{R}^m\)</span>, wenn <span class="math inline">\(v_1,...,v_m\)</span> jeweils die Länge 1 haben und wechselseitig orthogonal sind, also wenn <span class="math display">\[\begin{equation}
 \langle v_i, v_j \rangle =
 \begin{cases}
 1   &amp; \mbox{ für } i = j    \\
@@ -1070,7 +1140,7 @@ B_1 :=
 \end{equation}\]</span></p>
 <p>Für allgemeine reelle Vektorräume werden Basen der Form von <span class="math inline">\(B_1\)</span> mit dem Begriff der <em>kanonischen Basis</em> speziell ausgezeichnet.</p>
 <div id="def-kanonische-basis-und-kanonische-einheitsvektoren" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 8.14 (Kanonische Basis und kanonische Einheitsvektoren) </strong></span>Die Orthonormalbasis <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 8.14 (Kanonische Basis und kanonische Einheitsvektoren)</strong></span> Die Orthonormalbasis <span class="math display">\[\begin{equation}
 B :=
 \left\lbrace
 e_1,...,e_m
@@ -1140,11 +1210,15 @@ B_2 :=
 = - \frac{1}{2} + \frac{1}{2}
 = 0
 \end{equation}\]</span></p>
-<p>Wir visualisieren die beiden Orthonormalbasen <span class="math inline">\(B_1\)</span> und <span class="math inline">\(B_2\)</span> von <span class="math inline">\(\mathbb{R}^2\)</span> in <a href="#fig-basen-R2">Abbildung&nbsp;<span>8.8</span></a>.</p>
-<div id="fig-basen-R2" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./_figures/108-basen-R2.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Abbildung&nbsp;8.8: Zwei Basen von <span class="math inline">\(\mathbb{R}^2\)</span></figcaption>
+<p>Wir visualisieren die beiden Orthonormalbasen <span class="math inline">\(B_1\)</span> und <span class="math inline">\(B_2\)</span> von <span class="math inline">\(\mathbb{R}^2\)</span> in <a href="#fig-basen-R2" class="quarto-xref">Abbildung&nbsp;<span>8.8</span></a>.</p>
+<div id="fig-basen-R2" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-basen-R2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/108-basen-R2.png" class="img-fluid quarto-figure quarto-figure-center figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-basen-R2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;8.8: Zwei Basen von <span class="math inline">\(\mathbb{R}^2\)</span>
+</figcaption>
 </figure>
 </div>
 </section>
@@ -1171,11 +1245,11 @@ z := \begin{pmatrix} 3 \\ 1 \\ 0 \end{pmatrix}
 \end{equation}\]</span></li>
 <li>Geben Sie die Definition des Euklidischen Vektorraums wieder.</li>
 <li>Geben Sie die Definition der Länge eines Vektors im Euklidischen Vektorraum wieder,</li>
-<li>Berechnen Sie die Längen der Vektoren <span class="math inline">\(x,y,z\)</span> aus <a href="#eq-xyz">Gleichung&nbsp;<span>8.1</span></a>.</li>
+<li>Berechnen Sie die Längen der Vektoren <span class="math inline">\(x,y,z\)</span> aus <a href="#eq-xyz" class="quarto-xref">Gleichung&nbsp;<span>8.1</span></a>.</li>
 <li>Geben Sie Definition des Abstands zweier Vektoren im Euklidischen Vektorraum wieder.</li>
-<li>Berechnen Sie <span class="math inline">\(d(x,y), d(x,z)\)</span> und <span class="math inline">\(d(y,z)\)</span> für <span class="math inline">\(x,y,z\)</span> aus <a href="#eq-xyz">Gleichung&nbsp;<span>8.1</span></a>.</li>
+<li>Berechnen Sie <span class="math inline">\(d(x,y), d(x,z)\)</span> und <span class="math inline">\(d(y,z)\)</span> für <span class="math inline">\(x,y,z\)</span> aus <a href="#eq-xyz" class="quarto-xref">Gleichung&nbsp;<span>8.1</span></a>.</li>
 <li>Geben Sie die Definition des Winkels zwischen zwei Vektoren im Euklidischen Vektorraum wieder.</li>
-<li>Berechnen Sie die Winkel zwischen den Vektoren <span class="math inline">\(x\)</span> und <span class="math inline">\(y\)</span>, <span class="math inline">\(x\)</span> und <span class="math inline">\(z\)</span>, sowie <span class="math inline">\(y\)</span> und <span class="math inline">\(z\)</span> aus <a href="#eq-xyz">Gleichung&nbsp;<span>8.1</span></a>.</li>
+<li>Berechnen Sie die Winkel zwischen den Vektoren <span class="math inline">\(x\)</span> und <span class="math inline">\(y\)</span>, <span class="math inline">\(x\)</span> und <span class="math inline">\(z\)</span>, sowie <span class="math inline">\(y\)</span> und <span class="math inline">\(z\)</span> aus <a href="#eq-xyz" class="quarto-xref">Gleichung&nbsp;<span>8.1</span></a>.</li>
 <li>Geben Sie die Definitionen der Orthogonalität und Orthonormalität von Vektoren wieder.</li>
 <li>Geben Sie die Definition der Linearkombination von Vektoren wieder.</li>
 <li>Geben Sie die Definition der linearen Unabhängigkeit von Vektoren wieder.</li>
@@ -1272,10 +1346,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1285,8 +1358,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1299,6 +1381,125 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1342,6 +1543,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1367,6 +1569,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1428,12 +1656,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./107-Integralrechnung.html" class="pagination-link">
+      <a href="./107-Integralrechnung.html" class="pagination-link  aria-label=" &lt;span="">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Integralrechnung</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./109-Matrizen.html" class="pagination-link">
+      <a href="./109-Matrizen.html" class="pagination-link" aria-label="<span class='chapter-number'>9</span>&nbsp; <span class='chapter-title'>Matrizen</span>">
         <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Matrizen</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
@@ -1442,4 +1670,5 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-</body></html>
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/108-Vektoren.qmd" class="toc-action"><i class="bi bi-github"></i>Seite editieren</a></li></ul></div></div></div></footer></body></html>

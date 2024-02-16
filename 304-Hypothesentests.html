@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.549">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -58,6 +58,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -100,7 +101,13 @@ div.csl-indent {
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "Keine Treffer",
     "search-matching-documents-text": "Treffer",
@@ -109,6 +116,7 @@ div.csl-indent {
     "search-more-match-text": "weitere Treffer in diesem Dokument",
     "search-more-matches-text": "weitere Treffer in diesem Dokument",
     "search-clear-button-title": "Zurücksetzen",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Abbrechen",
     "search-submit-button-title": "Abschicken",
     "search-label": "Suchen"
@@ -118,6 +126,33 @@ div.csl-indent {
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
 </head>
 
 <body class="nav-sidebar floating">
@@ -126,12 +161,12 @@ div.csl-indent {
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./301-Grundbegriffe.html">Frequentistische Inferenz</a></li><li class="breadcrumb-item"><a href="./304-Hypothesentests.html"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Hypothesentests</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./301-Grundbegriffe.html">Frequentistische Inferenz</a></li><li class="breadcrumb-item"><a href="./304-Hypothesentests.html"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Hypothesentests</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
@@ -141,13 +176,13 @@ div.csl-indent {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Probabilistische Datenwissenschaft für die Psychologie</a> 
         <div class="sidebar-tools-main">
-    <a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-    <a href="./Probabilistische-Datenwissenschaft-für-die-Psychologie.pdf" rel="" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+    <a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages" title="Quellcode" class="quarto-navigation-tool px-1" aria-label="Quellcode"><i class="bi bi-github"></i></a>
+    <a href="./Probabilistische-Datenwissenschaft-für-die-Psychologie.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
 </div>
     </div>
       </div>
@@ -380,6 +415,12 @@ div.csl-indent {
  <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">T-Statistiken</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./406-F-Statistiken.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">F-Statistiken</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item">
@@ -409,16 +450,16 @@ div.csl-indent {
   <li><a href="#literaturhinweise" id="toc-literaturhinweise" class="nav-link" data-scroll-target="#literaturhinweise"><span class="header-section-number">24.5</span> Literaturhinweise</a></li>
   <li><a href="#selbstkontrollfragen" id="toc-selbstkontrollfragen" class="nav-link" data-scroll-target="#selbstkontrollfragen"><span class="header-section-number">24.6</span> Selbstkontrollfragen</a></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/304-Hypothesentests.qmd" class="toc-action">Seite editieren</a></p></div></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/304-Hypothesentests.qmd" class="toc-action"><i class="bi bi-github"></i>Seite editieren</a></li></ul></div></nav>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./301-Grundbegriffe.html">Frequentistische Inferenz</a></li><li class="breadcrumb-item"><a href="./304-Hypothesentests.html"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Hypothesentests</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span id="sec-hypothesentests" class="quarto-section-identifier"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Hypothesentests</span></span></h1>
 </div>
@@ -433,7 +474,9 @@ div.csl-indent {
   </div>
   
 
+
 </header>
+
 
 <p>Die grundlegende Logik Frequentistischer Hypothesentests kann am Beispiel eines Normalverteilungsmodells für einen beobachteten univariaten Datensatz <span class="math inline">\(y_1,...,y_n\)</span> grob wie folgt umrissen werden. Man unterstellt zunächst, dass der beobachtete Datensatz eine Realisierung der Stichprobe <span class="math inline">\(\upsilon_1,...,\upsilon_n \sim N(\mu,\sigma^2)\)</span> ist und berechnet dann basierend auf dem Datensatz eine <em>Teststatistik</em>, zum Beispiel das anhand der Stichprobenstandardabweichung und der Stichprobengröße normalisierte Stichprobenmittel <span class="math inline">\(\sqrt{n}\frac{\bar{y}}{s}\)</span></p>
 <p>Man fragt sich dann, wie wahrscheinlich es wohl wäre, den beobachteten oder einen extremeren Wert der Teststatistik unter der Annahme eines <em>Nullmodels</em> zu observieren. Dabei versteht man unter einem <em>Nullmodell</em> intuitiv ein Wahrscheinlichkeitsverteilungsmodell bei dem kein “interessanter Effekt” vorliegt, also im Sinne des Normalverteilungsmodells zum Beispiel <span class="math inline">\(\mu = 0\)</span> gilt. Dabei ist der Begriff der Wahrscheinlichkeit natürlich Frequentistisch zu verstehen, also als idealisierte relative Häufigkeit, wenn man viele Stichprobenrealisationen des Nullmodels generieren würde. Je nach Beschaffenheit des zugrundliegenden Frequentistischen Inferenzmodells und der betrachteten Teststatistik kann es dabei durchaus möglich sein, diese Wahrscheinlichkeit exakt zu bestimmen.</p>
@@ -442,9 +485,9 @@ div.csl-indent {
 <p>In den folgenden Abschnitten wollen wir diese intuitiven Gedanken formalisieren. Dabei ist es wichtig, immer zwischen “Hypothesen” im Sinne der Frequentistischen Inferenz und dem generellen Begriff der wissenschaftlichen Hypothese zu unterscheiden. Das Aufstellen einer wissenschaftlichen Hypothese bedingt keinesfalls, dass ein Frequentistischer Hypothesentest anzuwenden ist, sondern lediglich, so man denn quantitativ arbeiten möchte, dass es Sinn macht seine Unsicherheit im Lichte beobachteter Daten, die potentiell über die (wissenschaftliche) Hypothese aussagekräftig sind, zu quantifizieren und zu kommunizieren. Frequentistische Hypothesentests sind nur eine der vielen Möglichkeiten, dies zu tun, wenn auch eine sehr populäre. Es sei trotzdem schon an dieser Stelle erwähnt, dass das “Nullhypothesen-Signifikanz-Testen”, wie im folgenden dargelegt, im wissenschaftlichen Kontext durchaus nicht unumstritten ist (vgl. zum Beispiel <span class="citation" data-cites="amrhein2018">Amrhein &amp; Greenland (<a href="#ref-amrhein2018" role="doc-biblioref">2018</a>)</span> und <span class="citation" data-cites="mcshane2019">McShane et al. (<a href="#ref-mcshane2019" role="doc-biblioref">2019</a>)</span>).</p>
 <section id="sec-testhypothesen-und-tests" class="level2" data-number="24.1">
 <h2 data-number="24.1" class="anchored" data-anchor-id="sec-testhypothesen-und-tests"><span class="header-section-number">24.1</span> Testhypothesen und Tests</h2>
-<p>Im Kontext von Frequentistischen Hypothesentests wird der Begriff des Frequentistischen Inferenzmodells (vgl. <a href="301-Grundbegriffe.html#def-frequentistisches-inferenzmodell">Definition&nbsp;<span>21.1</span></a>) zunächt durch die sogenannten <em>Testhypothesen</em> zu einem <em>Testszenario</em> erweitert. Wir nutzen folgende Definition.</p>
+<p>Im Kontext von Frequentistischen Hypothesentests wird der Begriff des Frequentistischen Inferenzmodells (vgl. <a href="301-Grundbegriffe.html#def-frequentistisches-inferenzmodell" class="quarto-xref">Definition&nbsp;<span>21.1</span></a>) zunächt durch die sogenannten <em>Testhypothesen</em> zu einem <em>Testszenario</em> erweitert. Wir nutzen folgende Definition.</p>
 <div id="def-statistische-hypothesen-und-testszenario" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 24.1 (Testhypothesen und Testszenario) </strong></span>Gegeben sei ein Frequentistisches Inferenzmodell mit Stichprobe <span class="math inline">\(\upsilon\)</span>, Ergebnisraum <span class="math inline">\(\mathcal{Y}\)</span> und Parameterraum <span class="math inline">\(\Theta\)</span>. Weiterhin sei <span class="math inline">\(\{\Theta_0,\Theta_1\}\)</span> eine Partition des Parameterraums, so dass <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 24.1 (Testhypothesen und Testszenario)</strong></span> Gegeben sei ein Frequentistisches Inferenzmodell mit Stichprobe <span class="math inline">\(\upsilon\)</span>, Ergebnisraum <span class="math inline">\(\mathcal{Y}\)</span> und Parameterraum <span class="math inline">\(\Theta\)</span>. Weiterhin sei <span class="math inline">\(\{\Theta_0,\Theta_1\}\)</span> eine Partition des Parameterraums, so dass <span class="math display">\[\begin{equation}
 \Theta = \Theta_0 \cup \Theta_1 \mbox{ und } \Theta_0 \cap \Theta_1 = \emptyset.
 \end{equation}\]</span> Dann ist eine <em>Testhypothese</em> eine Aussage über den wahren, aber unbekannten, Parameterwert <span class="math inline">\(\theta\)</span> in Hinblick auf die Untermengen <span class="math inline">\(\Theta_0\)</span> und <span class="math inline">\(\Theta_1\)</span> des Parameterraums. Speziell werden die Aussagen</p>
 <ul>
@@ -455,7 +498,7 @@ div.csl-indent {
 </div>
 <p>Je nach Beschaffenheit von <span class="math inline">\(\Theta_0\)</span> und <span class="math inline">\(\Theta_1\)</span> unterscheidet man einerseits <em>einfache</em> und <em>zusammengesetzte</em> und andererseits <em>einseitige</em> und <em>zweiseitige</em> Testhypothesen.</p>
 <div id="def-einfache-und-zusammengesetzte-testhypothesen" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 24.2 (Einfache und zusammengesetzte Testhypothesen) </strong></span>Für die Testhypothesen <span class="math inline">\(\Theta_i\)</span> mit <span class="math inline">\(i = 0,1\)</span> gilt:</p>
+<p><span class="theorem-title"><strong>Definition 24.2 (Einfache und zusammengesetzte Testhypothesen)</strong></span> Für die Testhypothesen <span class="math inline">\(\Theta_i\)</span> mit <span class="math inline">\(i = 0,1\)</span> gilt:</p>
 <ul>
 <li>Enthält <span class="math inline">\(\Theta_i\)</span> nur ein einziges Element, so heißt <span class="math inline">\(\Theta_i\)</span> <em>einfach</em>.</li>
 <li>Enthält <span class="math inline">\(\Theta_i\)</span> mehr als ein Element, so heißt <span class="math inline">\(\Theta_i\)</span> <em>zusammengesetzt</em>.</li>
@@ -468,11 +511,11 @@ div.csl-indent {
 \end{equation}\]</span> Die Nullhypothese, also die Aussage “<span class="math inline">\(\theta \in \Theta_0\)</span>” entspricht dann der Aussage “<span class="math inline">\(\theta = 0\)</span>”, da <span class="math inline">\(\Theta_0\)</span> nur eben dieses eine Element enthält.</p>
 <p>Ist wie in diesem Beispiel der Parameterraum eindimensional, so unterscheidet man weiterhin einseitige und zweiseitige Null- und Alternativhypothesen.</p>
 <div id="def-einseitige-und-zweiseitige-testhypothesen" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 24.3 (Einseitige und zweiseitige Testhypothesen) </strong></span>Gegeben sei ein Testszenario mit eindimensionalem Parameteraum <span class="math inline">\(\Theta := \mathbb{R}\)</span> und es sei <span class="math inline">\(\theta_0 \in \Theta\)</span>. Dann werden zusammengesetzte Nullhypothesen der Form <span class="math inline">\(\Theta_0 := ]-\infty,\theta_0]\)</span> oder <span class="math inline">\(\Theta_0 := [\theta_0,\infty[\)</span> <em>einseitige Nullhypothesen</em> genannt und auch in der Form <span class="math inline">\(H_0:\theta \le \theta_0\)</span> bzw. <span class="math inline">\(H_0 : \theta \ge \theta_0\)</span> geschrieben. Die entsprechenden Alternativhypothesen haben dabei die Form <span class="math inline">\(\Theta_1 := ]\theta_0,\infty[\)</span> bzw. <span class="math inline">\(\Theta_1:= ]-\infty, \theta_0[\)</span>, auch geschrieben als <span class="math inline">\(H_1:\theta&gt;\theta_0\)</span> bzw. <span class="math inline">\(H_1:\theta &lt; \theta_0\)</span>. Bei einer einfachen Nullhypothese der Form <span class="math inline">\(\Theta_0 := \{\theta_0\}\)</span>, auch geschrieben als <span class="math inline">\(H_0:\theta = \theta_0\)</span>, wird die Alternativhypothese <span class="math inline">\(\Theta_1 := \Theta \setminus \{\theta_0\}\)</span>, auch geschrieben als <span class="math inline">\(H_1:\theta \neq \theta_0\)</span>, <em>zweiseitige Alternativhypothese</em> genannt.</p>
+<p><span class="theorem-title"><strong>Definition 24.3 (Einseitige und zweiseitige Testhypothesen)</strong></span> Gegeben sei ein Testszenario mit eindimensionalem Parameteraum <span class="math inline">\(\Theta := \mathbb{R}\)</span> und es sei <span class="math inline">\(\theta_0 \in \Theta\)</span>. Dann werden zusammengesetzte Nullhypothesen der Form <span class="math inline">\(\Theta_0 := ]-\infty,\theta_0]\)</span> oder <span class="math inline">\(\Theta_0 := [\theta_0,\infty[\)</span> <em>einseitige Nullhypothesen</em> genannt und auch in der Form <span class="math inline">\(H_0:\theta \le \theta_0\)</span> bzw. <span class="math inline">\(H_0 : \theta \ge \theta_0\)</span> geschrieben. Die entsprechenden Alternativhypothesen haben dabei die Form <span class="math inline">\(\Theta_1 := ]\theta_0,\infty[\)</span> bzw. <span class="math inline">\(\Theta_1:= ]-\infty, \theta_0[\)</span>, auch geschrieben als <span class="math inline">\(H_1:\theta&gt;\theta_0\)</span> bzw. <span class="math inline">\(H_1:\theta &lt; \theta_0\)</span>. Bei einer einfachen Nullhypothese der Form <span class="math inline">\(\Theta_0 := \{\theta_0\}\)</span>, auch geschrieben als <span class="math inline">\(H_0:\theta = \theta_0\)</span>, wird die Alternativhypothese <span class="math inline">\(\Theta_1 := \Theta \setminus \{\theta_0\}\)</span>, auch geschrieben als <span class="math inline">\(H_1:\theta \neq \theta_0\)</span>, <em>zweiseitige Alternativhypothese</em> genannt.</p>
 </div>
 <p>Vor dem Hintergrund eines Testszenarios definieren wir nun den Begriff des <em>Hypothesentests</em>, den wir kurz einfach als <em>Test</em> bezeichnen wollen.</p>
 <div id="def-test" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 24.4 (Test) </strong></span>Gegeben sei ein Testszenario. Dann ist ein <em>Test</em> eine Abbildung <span class="math inline">\(\phi\)</span> aus dem Ergebnisraum der Stichprobe <span class="math inline">\(\mathcal{Y}\)</span> in die Menge <span class="math inline">\(\{0,1\}\)</span>, also <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 24.4 (Test)</strong></span> Gegeben sei ein Testszenario. Dann ist ein <em>Test</em> eine Abbildung <span class="math inline">\(\phi\)</span> aus dem Ergebnisraum der Stichprobe <span class="math inline">\(\mathcal{Y}\)</span> in die Menge <span class="math inline">\(\{0,1\}\)</span>, also <span class="math display">\[\begin{equation}
 \phi : \mathcal{Y} \to \{0,1\}, y \mapsto \phi(y),
 \end{equation}\]</span> wobei</p>
 <ul>
@@ -481,10 +524,10 @@ div.csl-indent {
 </ul>
 <p>repräsentieren.</p>
 </div>
-<p>Die Formalisierung des Testbegriffs ist nicht trivial, da Tests, wie Schätzer und Konfidenzintervalle, Funktionen von Zufallsvariablen, nämlich gerade den Stichprobenvariablen sind. Eigentlich sind Tests damit auf Zufallsvektorräumen definiert. Der Einfachheit halber betrachten wir in <a href="#def-test">Definition&nbsp;<span>24.4</span></a> eine konkrete Realisierung <span class="math inline">\(y \in \mathcal{Y}\)</span> der Stichprobe <span class="math inline">\(\upsilon\)</span>, die durch <span class="math inline">\(\phi\)</span> in die Menge <span class="math inline">\(\{0,1\}\)</span> abgebildet wird. Der Funktionswert <span class="math inline">\(\phi(y)\)</span> von <span class="math inline">\(\phi\)</span> ist vor diesem Hintergrund also eine Realisierung der Zufallsvariable <span class="math inline">\(\phi(\upsilon)\)</span>.</p>
+<p>Die Formalisierung des Testbegriffs ist nicht trivial, da Tests, wie Schätzer und Konfidenzintervalle, Funktionen von Zufallsvariablen, nämlich gerade den Stichprobenvariablen sind. Eigentlich sind Tests damit auf Zufallsvektorräumen definiert. Der Einfachheit halber betrachten wir in <a href="#def-test" class="quarto-xref">Definition&nbsp;<span>24.4</span></a> eine konkrete Realisierung <span class="math inline">\(y \in \mathcal{Y}\)</span> der Stichprobe <span class="math inline">\(\upsilon\)</span>, die durch <span class="math inline">\(\phi\)</span> in die Menge <span class="math inline">\(\{0,1\}\)</span> abgebildet wird. Der Funktionswert <span class="math inline">\(\phi(y)\)</span> von <span class="math inline">\(\phi\)</span> ist vor diesem Hintergrund also eine Realisierung der Zufallsvariable <span class="math inline">\(\phi(\upsilon)\)</span>.</p>
 <p>In der Anwendung ist man oft an Tests interessiert, die eine bestimmte Struktur haben, wir formalisieren diese unter dem Begriff der <em>Standardtests</em>.</p>
 <div id="def-standardtest" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 24.5 (Standardtest) </strong></span>Gegeben sei ein Testszenario. Dann ist ein <em>Standardtest</em> <span class="math inline">\(\phi\)</span> definiert als die Verkettung einer <em>Teststatistik</em> <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 24.5 (Standardtest)</strong></span> Gegeben sei ein Testszenario. Dann ist ein <em>Standardtest</em> <span class="math inline">\(\phi\)</span> definiert als die Verkettung einer <em>Teststatistik</em> <span class="math display">\[\begin{equation}
 \gamma : \mathcal{Y} \to \Gamma
 \end{equation}\]</span> und einer <em>Entscheidungsregel</em> <span class="math display">\[\begin{equation}
 \delta : \Gamma \to \{0,1\}
@@ -492,20 +535,20 @@ div.csl-indent {
 \phi := \delta \circ \gamma : \mathcal{Y} \to \{0,1\}.
 \end{equation}\]</span></p>
 </div>
-<p>Wie oben angemerkt gibt es auch bei <a href="#def-standardtest">Definition&nbsp;<span>24.5</span></a> zu beachten, dass die Teststatistik eigentlich eine Funktion der Stichprobenvariablen, also von Zufallsvariablen ist, die wir hier als Funktion der Werte dieser Zufallsvariablen in <span class="math inline">\(\mathcal{Y}\)</span> definiert haben. Ebenso gibt es zu beachten, dass die Entscheidungsregel eine Funktion der somit zufälligen Teststatistik ist, die wir hier gleichfalls als Funktion der Werte dieser Zufallsvariable mit Ergebnisraum <span class="math inline">\(\Gamma\)</span> geschrieben haben. Sowohl Teststatistik und Entscheidungsregel sind in einem Testszenario also Zufallsvariablen. Entsprechend ist, wenn <span class="math inline">\(y\)</span> eine Realisierung der Stichprobe <span class="math inline">\(\upsilon\)</span> ist, <span class="math inline">\(\gamma(y) \in \Gamma\)</span> eine Realisierung von <span class="math inline">\(\gamma(\upsilon)\)</span> und <span class="math inline">\((\delta \circ \gamma)(y)\)</span> eine Realisierung von <span class="math inline">\((\delta \circ \gamma)(\upsilon)\)</span>.</p>
+<p>Wie oben angemerkt gibt es auch bei <a href="#def-standardtest" class="quarto-xref">Definition&nbsp;<span>24.5</span></a> zu beachten, dass die Teststatistik eigentlich eine Funktion der Stichprobenvariablen, also von Zufallsvariablen ist, die wir hier als Funktion der Werte dieser Zufallsvariablen in <span class="math inline">\(\mathcal{Y}\)</span> definiert haben. Ebenso gibt es zu beachten, dass die Entscheidungsregel eine Funktion der somit zufälligen Teststatistik ist, die wir hier gleichfalls als Funktion der Werte dieser Zufallsvariable mit Ergebnisraum <span class="math inline">\(\Gamma\)</span> geschrieben haben. Sowohl Teststatistik und Entscheidungsregel sind in einem Testszenario also Zufallsvariablen. Entsprechend ist, wenn <span class="math inline">\(y\)</span> eine Realisierung der Stichprobe <span class="math inline">\(\upsilon\)</span> ist, <span class="math inline">\(\gamma(y) \in \Gamma\)</span> eine Realisierung von <span class="math inline">\(\gamma(\upsilon)\)</span> und <span class="math inline">\((\delta \circ \gamma)(y)\)</span> eine Realisierung von <span class="math inline">\((\delta \circ \gamma)(\upsilon)\)</span>.</p>
 <p>Die verteilungstheoretischen Eigenschaften eines Tests ergeben sich aus den ihnen zugrundeliegenden verteilungstheoretischen Eigenschaften des entsprechenden Frequentistischen Inferenzmodells und damit natürlich insbesondere der Verteilung der Stichprobenvariablen. Eine wichtige Brücke zwischen diesen beiden Ebenen der Verteilung der Stichprobenvariablen auf der einen Seite und der Verteilung der Testergebnisse auf der anderen Seite bilden die Begriffe des <em>kritischen Bereichs</em> und des <em>Ablehnungsbereichs</em> eines Tests.</p>
 <div id="def-kritischer-bereich-eines-test" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 24.6 (Kritischer Bereich eines Tests) </strong></span>Gegeben sei ein Testszenario und ein Test <span class="math inline">\(\phi\)</span>. Dann heißt die Untermenge <span class="math inline">\(K\)</span> des Ergebnisraums <span class="math inline">\(\mathcal{Y}\)</span> der Stichprobe <span class="math inline">\(\upsilon\)</span>, für die der Test den Wert 1 annimmt, <em>kritischer Bereich</em> des Tests, formal <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 24.6 (Kritischer Bereich eines Tests)</strong></span> Gegeben sei ein Testszenario und ein Test <span class="math inline">\(\phi\)</span>. Dann heißt die Untermenge <span class="math inline">\(K\)</span> des Ergebnisraums <span class="math inline">\(\mathcal{Y}\)</span> der Stichprobe <span class="math inline">\(\upsilon\)</span>, für die der Test den Wert 1 annimmt, <em>kritischer Bereich</em> des Tests, formal <span class="math display">\[\begin{equation}
 K := \{y \in \mathcal{Y} |\phi(y) = 1 \} \subset \mathcal{Y}.
 \end{equation}\]</span></p>
 </div>
-<p>Man beachte, dass vor dem Hintergrund von <a href="#def-kritischer-bereich-eines-test">Definition&nbsp;<span>24.6</span></a> die zufälligen Ereignisse <span class="math inline">\(\{\upsilon\in K\}\)</span> und <span class="math inline">\(\{\phi(\upsilon) = 1\}\)</span>, also dass die Stichprobe einen Wert im kritischen Bereichs des Tests annimmt bzw. dass der Test den Wert 1 annimmt, äquivalent sind und damit insbesondere auch die gleiche Wahrscheinlichkeit haben. Fragt man also nach der Wahrscheinlichkeit, dass ein Test den Wert 1 annimmt, also die Nullhypothese abgelehnt wird, so entspricht diese Wahrscheinlichkeit genau der Wahrscheinlichkeit, dass die Stichprobe einen Wert im kritischen Bereichs des Tests annimmt. Da die Verteilung der Stichprobe aber als bekannt vorausgesetzt ist, kann die Wahrscheinlichkeit für das Ablehnen der Nullhypothese darauf basierend bestimmt werden. Hat man insbesondere einen Standardtest vorliegen, so überträgt sich das Gesagte unmittelbar auch auf die zwischen Stichprobe und Test geschaltete Teststatistik. Dies führt auf die folgende Definition.</p>
+<p>Man beachte, dass vor dem Hintergrund von <a href="#def-kritischer-bereich-eines-test" class="quarto-xref">Definition&nbsp;<span>24.6</span></a> die zufälligen Ereignisse <span class="math inline">\(\{\upsilon\in K\}\)</span> und <span class="math inline">\(\{\phi(\upsilon) = 1\}\)</span>, also dass die Stichprobe einen Wert im kritischen Bereichs des Tests annimmt bzw. dass der Test den Wert 1 annimmt, äquivalent sind und damit insbesondere auch die gleiche Wahrscheinlichkeit haben. Fragt man also nach der Wahrscheinlichkeit, dass ein Test den Wert 1 annimmt, also die Nullhypothese abgelehnt wird, so entspricht diese Wahrscheinlichkeit genau der Wahrscheinlichkeit, dass die Stichprobe einen Wert im kritischen Bereichs des Tests annimmt. Da die Verteilung der Stichprobe aber als bekannt vorausgesetzt ist, kann die Wahrscheinlichkeit für das Ablehnen der Nullhypothese darauf basierend bestimmt werden. Hat man insbesondere einen Standardtest vorliegen, so überträgt sich das Gesagte unmittelbar auch auf die zwischen Stichprobe und Test geschaltete Teststatistik. Dies führt auf die folgende Definition.</p>
 <div id="def-ablehnungsbereich-eines-standardtests" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 24.7 (Ablehnungsbereich eines Standardtests) </strong></span>Gegeben sei ein Testszenario und ein Standardtest <span class="math inline">\(\phi\)</span> mit Teststatistik <span class="math inline">\(\gamma\)</span>. Die Untermenge <span class="math inline">\(A\)</span> des Ergebnisraums <span class="math inline">\(\Gamma\)</span> der Teststatistik, für die der Test den Wert 1 annimmt, <em>Ablehnungsbereich des Tests</em>, formal <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 24.7 (Ablehnungsbereich eines Standardtests)</strong></span> Gegeben sei ein Testszenario und ein Standardtest <span class="math inline">\(\phi\)</span> mit Teststatistik <span class="math inline">\(\gamma\)</span>. Die Untermenge <span class="math inline">\(A\)</span> des Ergebnisraums <span class="math inline">\(\Gamma\)</span> der Teststatistik, für die der Test den Wert 1 annimmt, <em>Ablehnungsbereich des Tests</em>, formal <span class="math display">\[\begin{equation}
 A := \{\gamma(y) \in \Gamma |\phi(y) = 1 \} \subset \Gamma.
 \end{equation}\]</span></p>
 </div>
-<p>Wie zum Begriff des kritischen Bereichs angemerkt gilt auch hier, dass die Ereignisse <span class="math inline">\(\{\phi(\upsilon) = 1\}\)</span> und <span class="math inline">\(\{\gamma(\upsilon) \in A\}\)</span> äquivalent sind und damit insbesondere auch die gleiche Wahrscheinlichkeit besitzen. Insgesamt gelten mit <a href="#def-kritischer-bereich-eines-test">Definition&nbsp;<span>24.6</span></a> und <a href="#def-ablehnungsbereich-eines-standardtests">Definition&nbsp;<span>24.7</span></a> für einen Standardtest also <span class="math display">\[\begin{equation}
+<p>Wie zum Begriff des kritischen Bereichs angemerkt gilt auch hier, dass die Ereignisse <span class="math inline">\(\{\phi(\upsilon) = 1\}\)</span> und <span class="math inline">\(\{\gamma(\upsilon) \in A\}\)</span> äquivalent sind und damit insbesondere auch die gleiche Wahrscheinlichkeit besitzen. Insgesamt gelten mit <a href="#def-kritischer-bereich-eines-test" class="quarto-xref">Definition&nbsp;<span>24.6</span></a> und <a href="#def-ablehnungsbereich-eines-standardtests" class="quarto-xref">Definition&nbsp;<span>24.7</span></a> für einen Standardtest also <span class="math display">\[\begin{equation}
 \{\upsilon\in K\} \Leftrightarrow \{\gamma(\upsilon) \in A\} \Leftrightarrow \{\phi(\upsilon) = 1\}
 \end{equation}\]</span> und <span class="math display">\[\begin{equation}
 \mathbb{P}_{\theta}\left(\{\upsilon\in K\}\right)
@@ -514,9 +557,9 @@ A := \{\gamma(y) \in \Gamma |\phi(y) = 1 \} \subset \Gamma.
 =
 \mathbb{P}_{\theta}\left(\{\phi(\upsilon) = 1\}\right),
 \end{equation}\]</span> wobei das Subskript <span class="math inline">\(\theta\)</span> bei der Verteilung der Teststatistik und des Tests andeuten soll, dass diese Verteilungen durch den Parameter der Stichprobenverteilung festgelegt sind.</p>
-<p>In der Anwendung basiert die in <a href="#def-standardtest">Definition&nbsp;<span>24.5</span></a> allgemein angebene Form der Entscheidungsregel eines Standardtest meist darauf, dass eine beobachtete Teststatistik mit Ergebnisraum <span class="math inline">\(\Gamma := \mathbb{R}\)</span> einen bestimmten sogenannten <em>kritischen Wert</em> <span class="math inline">\(k\in \mathbb{R}\)</span> überschreitet oder unterschreitet. Dies führt auf die Konzepte der <em>einseitigen</em> und <em>zweiseitigen kritischen Wert-basierte Tests</em>.</p>
+<p>In der Anwendung basiert die in <a href="#def-standardtest" class="quarto-xref">Definition&nbsp;<span>24.5</span></a> allgemein angebene Form der Entscheidungsregel eines Standardtest meist darauf, dass eine beobachtete Teststatistik mit Ergebnisraum <span class="math inline">\(\Gamma := \mathbb{R}\)</span> einen bestimmten sogenannten <em>kritischen Wert</em> <span class="math inline">\(k\in \mathbb{R}\)</span> überschreitet oder unterschreitet. Dies führt auf die Konzepte der <em>einseitigen</em> und <em>zweiseitigen kritischen Wert-basierte Tests</em>.</p>
 <div id="def-kritischer-wert-basierte-tests" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 24.8 (Kritischer Wert-basierte Tests) </strong></span>Ein <em>kritischer Wert-basierter Test</em> ist ein Standardtest, bei dem die Entscheidungsregel <span class="math inline">\(\delta\)</span> von einem kritischen Wert <span class="math inline">\(k\)</span> der Teststatistik mit Ergebnisraum <span class="math inline">\(\mathbb{R}\)</span> abhängt. Speziell ist</p>
+<p><span class="theorem-title"><strong>Definition 24.8 (Kritischer Wert-basierte Tests)</strong></span> Ein <em>kritischer Wert-basierter Test</em> ist ein Standardtest, bei dem die Entscheidungsregel <span class="math inline">\(\delta\)</span> von einem kritischen Wert <span class="math inline">\(k\)</span> der Teststatistik mit Ergebnisraum <span class="math inline">\(\mathbb{R}\)</span> abhängt. Speziell ist</p>
 <ul>
 <li>ein <em>einseitiger kritischer Wert-basierter Test</em> von der Form <span class="math display">\[\begin{equation}
 \phi : \mathcal{Y} \to \{0,1\}, y \mapsto \phi(y) := 1_{\{\gamma(y) \ge k\}} =
@@ -540,21 +583,25 @@ A := \{\gamma(y) \in \Gamma |\phi(y) = 1 \} \subset \Gamma.
 <h2 data-number="24.2" class="anchored" data-anchor-id="sec-testguetekriterien-und-testkonstruktion"><span class="header-section-number">24.2</span> Testgütekriterien und Testkonstruktion</h2>
 <p>Die Tatsache, dass in einem Testszenario der wahre, aber unbekannte, Parameter im Bereich der Nullhypothese oder der Alternativhypothese liegen kann und man gleichzeitig basierend auf dem Wert des Tests die Nullhypothese entweder ablehnen oder nicht ablehnen kann, impliziert, dass eine Testentscheidung richtig oder falsch sein kann. Untenstehende Definition soll dahingehend zunächst begriffliche Klarheit schaffen.</p>
 <div id="def-richtige-testentscheidungen-und-testfehler" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 24.9 (Richtige Testentscheidungen und Testfehler) </strong></span>Gegeben seien ein Testszenario und ein Test. Dann gibt es mit dem Nichtablehnen der Nullhypothese <span class="math inline">\(\phi(y) = 0\)</span>, wenn die Nullhypothese <span class="math inline">\(\theta \in \Theta_0\)</span> zutrifft und dem Ablehnen der Nullhypothese <span class="math inline">\(\phi(y) = 1\)</span>, wenn die Alternativhypothese <span class="math inline">\(\theta \in \Theta_1\)</span> zutrifft zwei Formen der <em>richtigen Testentscheidung</em>. Ebenso gibt es zwei Arten von <em>Testfehlern</em>: Das Ablehnen der Nullhypothese <span class="math inline">\(\phi(y) = 1\)</span>, wenn die Nullhypothese <span class="math inline">\(\theta \in \Theta_0\)</span> zutrifft, heißt <em>Typ I Fehler</em> und das Nichtablehen der Nullhypothese, wenn die Alternativhypothese <span class="math inline">\(\theta \in \Theta_1\)</span> zutrifft, heißt <em>Typ II Fehler</em>.</p>
+<p><span class="theorem-title"><strong>Definition 24.9 (Richtige Testentscheidungen und Testfehler)</strong></span> Gegeben seien ein Testszenario und ein Test. Dann gibt es mit dem Nichtablehnen der Nullhypothese <span class="math inline">\(\phi(y) = 0\)</span>, wenn die Nullhypothese <span class="math inline">\(\theta \in \Theta_0\)</span> zutrifft und dem Ablehnen der Nullhypothese <span class="math inline">\(\phi(y) = 1\)</span>, wenn die Alternativhypothese <span class="math inline">\(\theta \in \Theta_1\)</span> zutrifft zwei Formen der <em>richtigen Testentscheidung</em>. Ebenso gibt es zwei Arten von <em>Testfehlern</em>: Das Ablehnen der Nullhypothese <span class="math inline">\(\phi(y) = 1\)</span>, wenn die Nullhypothese <span class="math inline">\(\theta \in \Theta_0\)</span> zutrifft, heißt <em>Typ I Fehler</em> und das Nichtablehen der Nullhypothese, wenn die Alternativhypothese <span class="math inline">\(\theta \in \Theta_1\)</span> zutrifft, heißt <em>Typ II Fehler</em>.</p>
 </div>
-<div id="fig-testfehler" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./_figures/304-testfehler.png" class="img-fluid figure-img" style="width:70.0%"></p>
-<figcaption class="figure-caption">Abbildung&nbsp;24.1: Richtige Testentscheidungen und Typ I und Typ II Fehler</figcaption>
+<div id="fig-testfehler" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-testfehler-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/304-testfehler.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-testfehler-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;24.1: Richtige Testentscheidungen und Typ I und Typ II Fehler
+</figcaption>
 </figure>
 </div>
-<p><a href="#fig-testfehler">Abbildung&nbsp;<span>24.1</span></a> gibt eine Übersicht zu den möglichen richtigen Testentscheidungen und Testfehlern bei Durchführung eines Tests. Natürlich möchte man generell meist eine richtige Testentscheidung treffen. Das entscheidene Werkzeug, um vor dem Frequentistischen Hintergrund des Testszenarios gute Tests zu konstruieren, ist die sogenannte <em>Testgütefunktion</em>.</p>
+<p><a href="#fig-testfehler" class="quarto-xref">Abbildung&nbsp;<span>24.1</span></a> gibt eine Übersicht zu den möglichen richtigen Testentscheidungen und Testfehlern bei Durchführung eines Tests. Natürlich möchte man generell meist eine richtige Testentscheidung treffen. Das entscheidene Werkzeug, um vor dem Frequentistischen Hintergrund des Testszenarios gute Tests zu konstruieren, ist die sogenannte <em>Testgütefunktion</em>.</p>
 <div id="def-testgütefunktion" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 24.10 (Testgütefunktion) </strong></span>Gegeben sei ein Testszenario und ein Test <span class="math inline">\(\phi\)</span>. Dann ist die <em>Testgütefunktion</em> von <span class="math inline">\(\phi\)</span> definiert als <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 24.10 (Testgütefunktion)</strong></span> Gegeben sei ein Testszenario und ein Test <span class="math inline">\(\phi\)</span>. Dann ist die <em>Testgütefunktion</em> von <span class="math inline">\(\phi\)</span> definiert als <span class="math display">\[\begin{equation}
 q_{\phi} : \Theta \to [0,1], \theta \mapsto q_{\phi}(\theta) := \mathbb{P}_\theta(\phi(\upsilon) = 1).
 \end{equation}\]</span> Für <span class="math inline">\(\theta \in \Theta_1\)</span> heißt <span class="math inline">\(q_\phi\)</span> auch <em>Trennschärfefunktion</em> oder <em>Powerfunktion</em>.</p>
 </div>
-<p>Man beachte, dass <span class="math inline">\(\mathbb{P}_\theta\)</span> in <a href="#def-testgütefunktion">Definition&nbsp;<span>24.10</span></a> die Verteilung der Zufallsvariable <span class="math inline">\(\phi(\upsilon)\)</span> unter der Annahme, dass die Verteilung von <span class="math inline">\(\upsilon\)</span> durch <span class="math inline">\(\theta\)</span> festgelegt ist, bezeichnen soll. Für jedes <span class="math inline">\(\theta \in \Theta\)</span> liefert <span class="math inline">\(q_\phi\)</span> also die die Wahrscheinlichkeit dafür, dass die Nullhypothese durch den Test <span class="math inline">\(\phi\)</span> abgelehnt wird. Für diese Wahrscheinlichkeiten gelten insbesondere mit den Begriffen des kritischen Bereichs (vgl. <a href="#def-kritischer-bereich-eines-test">Definition&nbsp;<span>24.6</span></a>) und des Ablehnungsbereichs (vgl. <a href="#def-ablehnungsbereich-eines-standardtests">Definition&nbsp;<span>24.7</span></a>) wie bereits gesehen <span class="math display">\[\begin{equation}
+<p>Man beachte, dass <span class="math inline">\(\mathbb{P}_\theta\)</span> in <a href="#def-testgütefunktion" class="quarto-xref">Definition&nbsp;<span>24.10</span></a> die Verteilung der Zufallsvariable <span class="math inline">\(\phi(\upsilon)\)</span> unter der Annahme, dass die Verteilung von <span class="math inline">\(\upsilon\)</span> durch <span class="math inline">\(\theta\)</span> festgelegt ist, bezeichnen soll. Für jedes <span class="math inline">\(\theta \in \Theta\)</span> liefert <span class="math inline">\(q_\phi\)</span> also die die Wahrscheinlichkeit dafür, dass die Nullhypothese durch den Test <span class="math inline">\(\phi\)</span> abgelehnt wird. Für diese Wahrscheinlichkeiten gelten insbesondere mit den Begriffen des kritischen Bereichs (vgl. <a href="#def-kritischer-bereich-eines-test" class="quarto-xref">Definition&nbsp;<span>24.6</span></a>) und des Ablehnungsbereichs (vgl. <a href="#def-ablehnungsbereich-eines-standardtests" class="quarto-xref">Definition&nbsp;<span>24.7</span></a>) wie bereits gesehen <span class="math display">\[\begin{equation}
 \mathbb{P}_\theta(\phi(\upsilon) = 1)
 = \mathbb{P}_\theta(\gamma \in A)
 = \mathbb{P}_\theta (\upsilon \in K).
@@ -581,13 +628,13 @@ q_{\phi_b}(\theta) = \mathbb{P}_\theta(\phi(\upsilon) = 1) = 0 \mbox{ für } \th
 q_\phi(\theta) \le \alpha_0 \mbox{ für alle } \theta \in \Theta_0,
 \end{equation}\]</span> dass also die Wahrscheinlichkeit für das Ablehnen der Nullhypothese, wenn diese zutrifft, also die Wahrscheinlichkeit für einen Typ I Fehler, höchstens <span class="math inline">\(\alpha_0\)</span> beträgt. Konventionelle Werte für ein solches <span class="math inline">\(\alpha_0\)</span> sind zum Beispiel <span class="math inline">\(\alpha_0 := 0.001\)</span> und <span class="math inline">\(\alpha_0 := 0.05\)</span>. Unter allen Tests (und, bei Optimierung von Stichprobengrößen, Frequentistischen Inferenzmodellen), die die Ungleichung <span class="math inline">\(\eqref{eq:significance}\)</span> erfüllen, sucht man dann in einem zweiten Schritt einen Test, für den <span class="math inline">\(q_\phi(\theta)\)</span> für <span class="math inline">\(\theta \in \Theta_1\)</span> so groß wie möglich ist. Dieses zweischrittige Vorgehen ist nicht alternativlos, man könnte ja beispielsweise auch eine lineare Kombinationen von Typ I und Typ II Fehlern simultan minimieren. Allerdings ist das skizzierte zweischrittige Vorgehen das in der Anwendung populärste, so dass wir uns in der Folge darauf beschränken wollen. Ungleichung <span class="math inline">\(\eqref{eq:significance}\)</span> motiviert dann zunächst die Definition der Begriffe des <em>Level-<span class="math inline">\(\alpha_0\)</span>-Tests</em>, des <em>Signifikanzlevels <span class="math inline">\(\alpha_0\)</span></em> und des <em>Testumfangs <span class="math inline">\(\alpha\)</span></em>.</p>
 <div id="def-level-alpha-0-test-signifikanzlevel-alpha-0-testumfang-alpha" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 24.11 (Level-<span class="math inline">\(\alpha_0\)</span>-Test, Signifikanzlevel <span class="math inline">\(\alpha_0\)</span> und Testumfang <span class="math inline">\(\alpha\)</span>) </strong></span>Gegeben seien ein Testszenario, ein Test <span class="math inline">\(\phi\)</span>, seine Testgütefunktion <span class="math inline">\(q_\phi\)</span> und ein <span class="math inline">\(\alpha_0 \in [0,1]\)</span>. <span class="math inline">\(\phi\)</span> heißt ein <em>Level-<span class="math inline">\(\alpha_0\)</span>-Test</em>, wenn gilt, dass <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 24.11 (Level-<span class="math inline">\(\alpha_0\)</span>-Test, Signifikanzlevel <span class="math inline">\(\alpha_0\)</span> und Testumfang <span class="math inline">\(\alpha\)</span>)</strong></span> Gegeben seien ein Testszenario, ein Test <span class="math inline">\(\phi\)</span>, seine Testgütefunktion <span class="math inline">\(q_\phi\)</span> und ein <span class="math inline">\(\alpha_0 \in [0,1]\)</span>. <span class="math inline">\(\phi\)</span> heißt ein <em>Level-<span class="math inline">\(\alpha_0\)</span>-Test</em>, wenn gilt, dass <span class="math display">\[\begin{equation}
 q_\phi(\theta) \le \alpha_0 \mbox{ für alle } \theta \in \Theta_0.
 \end{equation}\]</span> Wenn <span class="math inline">\(\phi\)</span> ein Level-<span class="math inline">\(\alpha_0\)</span>-Test ist, nennt man den Wert <span class="math inline">\(\alpha_0\)</span> auch das <em>Signifikanzlevel</em> des Tests. Weiterhin heißt die Zahl <span class="math display">\[\begin{equation}
 \alpha := \max_{\theta \in \Theta_0} q_\phi(\theta) \in [0,1]
 \end{equation}\]</span> der <em>Testumfang</em> von <span class="math inline">\(\phi\)</span>.</p>
 </div>
-<p>Nach <a href="#def-level-alpha-0-test-signifikanzlevel-alpha-0-testumfang-alpha">Definition&nbsp;<span>24.11</span></a> ist der Testumfang <span class="math inline">\(\alpha\)</span> die maximale Wahrscheinlichkeit für einen Typ I Fehler und ein Test ist dann, und nur dann, ein Level-<span class="math inline">\(\alpha_0\)</span>-Test, wenn diese maximale Wahrscheinlichkeit kleiner oder gleich dem Signifikanzlevel <span class="math inline">\(\alpha_0\)</span> ist. Es ist dabei für die Anwendung wichtig, sich die feinen begrifflichen Unterschiede zwischen der Wahrscheinlichkeit eines Typ I Fehlers, dem Testumfang und dem Signifikanzlevels eines Tests zu verdeutlichen. Vor dem Hintergrund des Unterschiedes von einfachen und zusammengesetzten Nullhypothesen (vgl. <a href="#def-einfache-und-zusammengesetzte-testhypothesen">Definition&nbsp;<span>24.2</span></a>) muss man zunächst die Begriffe der Typ I Fehler Wahrscheinlichkeit und des Testumfangs differenzieren. Bei einer einfachen Nullhypothese <span class="math inline">\(\Theta_0\)</span> ist der Testumfang immer gleich der Wahrscheinlichkeit eines Typ I Fehlers, da gilt dass <span class="math display">\[\begin{equation}
+<p>Nach <a href="#def-level-alpha-0-test-signifikanzlevel-alpha-0-testumfang-alpha" class="quarto-xref">Definition&nbsp;<span>24.11</span></a> ist der Testumfang <span class="math inline">\(\alpha\)</span> die maximale Wahrscheinlichkeit für einen Typ I Fehler und ein Test ist dann, und nur dann, ein Level-<span class="math inline">\(\alpha_0\)</span>-Test, wenn diese maximale Wahrscheinlichkeit kleiner oder gleich dem Signifikanzlevel <span class="math inline">\(\alpha_0\)</span> ist. Es ist dabei für die Anwendung wichtig, sich die feinen begrifflichen Unterschiede zwischen der Wahrscheinlichkeit eines Typ I Fehlers, dem Testumfang und dem Signifikanzlevels eines Tests zu verdeutlichen. Vor dem Hintergrund des Unterschiedes von einfachen und zusammengesetzten Nullhypothesen (vgl. <a href="#def-einfache-und-zusammengesetzte-testhypothesen" class="quarto-xref">Definition&nbsp;<span>24.2</span></a>) muss man zunächst die Begriffe der Typ I Fehler Wahrscheinlichkeit und des Testumfangs differenzieren. Bei einer einfachen Nullhypothese <span class="math inline">\(\Theta_0\)</span> ist der Testumfang immer gleich der Wahrscheinlichkeit eines Typ I Fehlers, da gilt dass <span class="math display">\[\begin{equation}
 \alpha
 := \max_{\theta \in \Theta_0} q_\phi(\theta)
 =  \max_{\theta \in \{\theta_0\}} q_\phi(\theta)
@@ -597,7 +644,7 @@ q_\phi(\theta) \le \alpha_0 \mbox{ für alle } \theta \in \Theta_0.
 \alpha
 := \max_{\theta \in \Theta_0} q_\phi(\theta)
 = \max_{\theta \in \Theta_0} \mathbb{P}_{\theta}(\phi = 1).
-\end{equation}\]</span> Ebenso klar sollte man die Begriffe des Signifikanzlevels <span class="math inline">\(\alpha_0\)</span> und des Testumfangs <span class="math inline">\(\alpha\)</span> voneinander abgrenzen. Ein Signifikanzlevel ist eine frei gewählte obere Grenze für die maximale Wahrscheinlichkeit eines Typ I Fehlers. Die tatsächliche maximale Wahrscheinlichkeit für einen Typ I Fehler, kann mit dieser identisch sein, wie in den meisten Fällen der <a href="#sec-testbeispiele"><span>Kapitel&nbsp;24.3</span></a> diskutierten Beispiele, muss es aber nicht, wie zum Beispiel in multiplen Testszenarien mit nicht unabhängigen Stichprobenvariablen. Man nennt dementsprechend einen Test <em>exakt</em>, wenn sein Testumfang mit seinem Signifikanzlevel identisch ist, wenn also <span class="math display">\[\begin{equation}
+\end{equation}\]</span> Ebenso klar sollte man die Begriffe des Signifikanzlevels <span class="math inline">\(\alpha_0\)</span> und des Testumfangs <span class="math inline">\(\alpha\)</span> voneinander abgrenzen. Ein Signifikanzlevel ist eine frei gewählte obere Grenze für die maximale Wahrscheinlichkeit eines Typ I Fehlers. Die tatsächliche maximale Wahrscheinlichkeit für einen Typ I Fehler, kann mit dieser identisch sein, wie in den meisten Fällen der <a href="#sec-testbeispiele" class="quarto-xref"><span>Kapitel 24.3</span></a> diskutierten Beispiele, muss es aber nicht, wie zum Beispiel in multiplen Testszenarien mit nicht unabhängigen Stichprobenvariablen. Man nennt dementsprechend einen Test <em>exakt</em>, wenn sein Testumfang mit seinem Signifikanzlevel identisch ist, wenn also <span class="math display">\[\begin{equation}
 \alpha = \alpha_0.
 \end{equation}\]</span> Ein Test, für den der Testumfang kleiner als sein Signifikanzlevel ist, für den also gilt <span class="math display">\[\begin{equation}
 \alpha &lt; \alpha_0
@@ -608,9 +655,9 @@ q_\phi(\theta) \le \alpha_0 \mbox{ für alle } \theta \in \Theta_0.
 <h4 class="unnumbered anchored" data-anchor-id="p-wert">p-Wert</h4>
 <p>Ein definierendes Charakterstikum eines Tests ist es wie gesehen, dass die Wertemenge eines Tests binär ist, Resultat eines Tests ist entweder <span class="math inline">\(\phi = 0\)</span>, die Nullhypothese wird nicht abgelehnt, oder <span class="math inline">\(\phi = 1\)</span>, die Nullhypothese wird abgelehnt. Als finales Resultat einer Datenanalyse wird dabei die einem Datensatz inhärente Information sehr stark komprimiert. Insbesondere supprimiert das alleinige Berichten des Testergbnisses interessante Information über das Signal-zu-Rauschen-Verhältnis des betrachteten Datensatzes. So ist es ja beispielsweise möglich, dass die Nullhypothese im Kontext eines kritischen Wert-basierten abgelehnt wird, weil die Teststatistik den kritischen Wert nur um wenige Nachkommastellen übertroffen hat oder aber, dass die Testsstatistik ein Vielfaches des kritischen Werts angenommen hat. In beiden Fällen wäre das Testergebnis mit <span class="math inline">\(\phi = 1\)</span> identisch. Neben der reinen Testumfangkontrolle eines Tests und des Berichtens des binären Testergebnisses hat es sich deshalb für kritische Wert-basierte Tests eingebürgert, basierend auf dem beobachteten Wert der Teststatistik auch alle Werte des Signifikanzlevels <span class="math inline">\(\alpha_0\)</span>, für die ein Level-<span class="math inline">\(\alpha_0\)</span>-Test das Ergebnis <span class="math inline">\(\phi = 1\)</span> hätte, für die die Nullhypothese also abgelehnt werden würden, zu betrachten. Diese Überlegung führt auf folgende allgemeine Definition des sogenannten p-Werts, wobei p für <em>probability</em> steht.</p>
 <div id="def-p-wert" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 24.12 (p-Wert) </strong></span><span class="math inline">\(\phi\)</span> sei ein Test. Dann ist der das kleinste Signifikanzlevel <span class="math inline">\(\alpha_0\)</span>, bei dem die Nullhypothese basierend auf einem vorliegendem Wert der Teststatistik abgelehnt werden würde.</p>
+<p><span class="theorem-title"><strong>Definition 24.12 (p-Wert)</strong></span> <span class="math inline">\(\phi\)</span> sei ein Test. Dann ist der das kleinste Signifikanzlevel <span class="math inline">\(\alpha_0\)</span>, bei dem die Nullhypothese basierend auf einem vorliegendem Wert der Teststatistik abgelehnt werden würde.</p>
 </div>
-<p>Insbesondere in einfachen Anwendungsbeispielen, wie dem in <a href="#sec-einstichproben-t-test"><span>Kapitel&nbsp;24.3.1</span></a> betrachteten Einstichproben-T-Test-Szenario spiegeln p-Werte dann die Antwort auf die intuitive Frage, wie wahrscheinlich es im Frequentistischen Sinne wäre, den beobachteten oder einen extremeren Wert der Teststatistik unter der Annahme eines Nullmodels zu observieren. Dabei ist in vielen Bereichen der Grundlagenwissenschaft das Berichten von p-Werten sehr populär, aber auch umstritten (vgl. <span class="citation" data-cites="wasserstein2019">Wasserstein et al. (<a href="#ref-wasserstein2019" role="doc-biblioref">2019</a>)</span>). Dabei gilt es insbesondere, p-Werte nicht zu überinterpretieren. Basierend auf dem Gesagten gibt es keinen Grund dies anzunehmen, trotzdem weisen wir vorsorglich daraufhin, dass p-Werte <em>nicht</em> die Wahrscheinlichkeit dafür quantifizieren, dass die Nullhypothese wahr ist, man aufgrund eines p-Wertes kleiner als <span class="math inline">\(0.05\)</span> <em>nicht</em> darauf schließen kann, dass die Alternativhypothese zutrifft, und man aufgrund eines p-Wertes von größer als <span class="math inline">\(0.05\)</span> <em>nicht</em> darauf schließen kann, dass die Nullhypothese zutrifft. Ebenso wie der Wert einer Teststatistik und eines Tests quantifizieren p-Werte lediglich das in einem vorliegenden Datensatz beobachtete Signal-zu-Rauschen-Verhältnis - nicht weniger, aber auch nicht mehr.</p>
+<p>Insbesondere in einfachen Anwendungsbeispielen, wie dem in <a href="#sec-einstichproben-t-test" class="quarto-xref"><span>Kapitel 24.3.1</span></a> betrachteten Einstichproben-T-Test-Szenario spiegeln p-Werte dann die Antwort auf die intuitive Frage, wie wahrscheinlich es im Frequentistischen Sinne wäre, den beobachteten oder einen extremeren Wert der Teststatistik unter der Annahme eines Nullmodels zu observieren. Dabei ist in vielen Bereichen der Grundlagenwissenschaft das Berichten von p-Werten sehr populär, aber auch umstritten (vgl. <span class="citation" data-cites="wasserstein2019">Wasserstein et al. (<a href="#ref-wasserstein2019" role="doc-biblioref">2019</a>)</span>). Dabei gilt es insbesondere, p-Werte nicht zu überinterpretieren. Basierend auf dem Gesagten gibt es keinen Grund dies anzunehmen, trotzdem weisen wir vorsorglich daraufhin, dass p-Werte <em>nicht</em> die Wahrscheinlichkeit dafür quantifizieren, dass die Nullhypothese wahr ist, man aufgrund eines p-Wertes kleiner als <span class="math inline">\(0.05\)</span> <em>nicht</em> darauf schließen kann, dass die Alternativhypothese zutrifft, und man aufgrund eines p-Wertes von größer als <span class="math inline">\(0.05\)</span> <em>nicht</em> darauf schließen kann, dass die Nullhypothese zutrifft. Ebenso wie der Wert einer Teststatistik und eines Tests quantifizieren p-Werte lediglich das in einem vorliegenden Datensatz beobachtete Signal-zu-Rauschen-Verhältnis - nicht weniger, aber auch nicht mehr.</p>
 </section>
 <section id="anmerkungen-zur-wahl-von-null--und-alternativhypothese" class="level3 unnumbered">
 <h3 class="unnumbered anchored" data-anchor-id="anmerkungen-zur-wahl-von-null--und-alternativhypothese">Anmerkungen zur Wahl von Null- und Alternativhypothese</h3>
@@ -638,19 +685,19 @@ H_0:\mu \ge \mu_0 \mbox{ und } H_1:\mu &lt; \mu_0
 <section id="frequentistisches-inferenzmodell" class="level4 unnumbered">
 <h4 class="unnumbered anchored" data-anchor-id="frequentistisches-inferenzmodell">Frequentistisches Inferenzmodell</h4>
 <div id="def-frequentistisches-inferenzmodell-des-einstichproben-t-tests" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 24.13 (Frequentistisches Inferenzmodell des Einstichproben-T-Tests) </strong></span>Das Frequentistische Inferenzmodell des Einstichproben-T-Tests ist gegeben durch das Normalverteilungsmodell (vgl. <a href="301-Grundbegriffe.html#def-normalverteilungsmodell">Definition&nbsp;<span>21.2</span></a>) <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 24.13 (Frequentistisches Inferenzmodell des Einstichproben-T-Tests)</strong></span> Das Frequentistische Inferenzmodell des Einstichproben-T-Tests ist gegeben durch das Normalverteilungsmodell (vgl. <a href="301-Grundbegriffe.html#def-normalverteilungsmodell" class="quarto-xref">Definition&nbsp;<span>21.2</span></a>) <span class="math display">\[\begin{equation}
 \upsilon_1,...,\upsilon_n \sim N(\mu,\sigma^2) \mbox{ mit } (\mu,\sigma^2)\in \mathbb{R} \times \mathbb{R}_{&gt;0}
 \end{equation}\]</span></p>
 </div>
 <p>Wir erinnern daran, dass aus generativer Sicht das Normalverteilungsmodell dem Modell <span class="math display">\[\begin{equation}
 \upsilon_i = \mu + \varepsilon_i \mbox{ mit } \varepsilon_i \sim N(0,\sigma^2) \mbox{ für } i = 1,...,n
-\end{equation}\]</span> entspricht (vgl. <a href="301-Grundbegriffe.html#sec-anwendungsbeispiel-frequentistische-inferenz"><span>Kapitel&nbsp;21.3.1</span></a>). Die Annahme unabhängig und identisch normalverteilter Zufallsvariablen als Grundlage der Modellierung der Beobachtung von <span class="math inline">\(n\)</span> Datenpunkten ist wie in <a href="301-Grundbegriffe.html#sec-anwendungsbeispiel-frequentistische-inferenz"><span>Kapitel&nbsp;21.3.1</span></a> gesehen äquivalent zu der Annahme, dass sich jede einen Datenpunkt modellierende Zufallsvariable <span class="math inline">\(\upsilon_i\)</span> als Summe aus einem festen, wahren, aber unbekannten, über Zufallsvariablen konstanten Wert <span class="math inline">\(\mu\)</span> und aus einem Zufallsvariablen- bzw. Datenpunkt-spezifischen Abweichungsterm <span class="math inline">\(\varepsilon_i\)</span> ergibt. Dabei modelliert, wie gesehen, <span class="math inline">\(\mu\)</span> den tatsächlichen im wissenschaftlichen Anwendungskontext angenommen Effekt von Interesse und <span class="math inline">\(\varepsilon_i\)</span> den Aspekt der Datenvariabilität, der nicht durch diesen Effekt erklärt werden kann und im Sinne des Zentralen Grenzwertsatzes aus der Summation unendlich vieler Störeinflüsse hervorgeht und damit als Unsicherheit über die Erklärung der Datenvariabilität durch den festen Wert <span class="math inline">\(\mu\)</span> verbleibt.</p>
+\end{equation}\]</span> entspricht (vgl. <a href="301-Grundbegriffe.html#sec-anwendungsbeispiel-frequentistische-inferenz" class="quarto-xref"><span>Kapitel 21.3.1</span></a>). Die Annahme unabhängig und identisch normalverteilter Zufallsvariablen als Grundlage der Modellierung der Beobachtung von <span class="math inline">\(n\)</span> Datenpunkten ist wie in <a href="301-Grundbegriffe.html#sec-anwendungsbeispiel-frequentistische-inferenz" class="quarto-xref"><span>Kapitel 21.3.1</span></a> gesehen äquivalent zu der Annahme, dass sich jede einen Datenpunkt modellierende Zufallsvariable <span class="math inline">\(\upsilon_i\)</span> als Summe aus einem festen, wahren, aber unbekannten, über Zufallsvariablen konstanten Wert <span class="math inline">\(\mu\)</span> und aus einem Zufallsvariablen- bzw. Datenpunkt-spezifischen Abweichungsterm <span class="math inline">\(\varepsilon_i\)</span> ergibt. Dabei modelliert, wie gesehen, <span class="math inline">\(\mu\)</span> den tatsächlichen im wissenschaftlichen Anwendungskontext angenommen Effekt von Interesse und <span class="math inline">\(\varepsilon_i\)</span> den Aspekt der Datenvariabilität, der nicht durch diesen Effekt erklärt werden kann und im Sinne des Zentralen Grenzwertsatzes aus der Summation unendlich vieler Störeinflüsse hervorgeht und damit als Unsicherheit über die Erklärung der Datenvariabilität durch den festen Wert <span class="math inline">\(\mu\)</span> verbleibt.</p>
 </section>
 <section id="testhypothesen" class="level4 unnumbered">
 <h4 class="unnumbered anchored" data-anchor-id="testhypothesen">Testhypothesen</h4>
 <p>Wie oben diskutiert betrachten wir hier den Fall des Einstichproben-T-Tests mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese.</p>
 <div id="def-einfache-nullhypothese-und-zusammengesetzte-alternativhypothese-des-einstichproben-t-tests" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 24.14 (Einfache Nullhypothese und zusammengesetzte Alternativhypothese des Einstichproben-T-Tests) </strong></span>Gegeben sei das Frequentistiche Inferenzmodell des Einstichproben-T-Tests <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 24.14 (Einfache Nullhypothese und zusammengesetzte Alternativhypothese des Einstichproben-T-Tests)</strong></span> Gegeben sei das Frequentistiche Inferenzmodell des Einstichproben-T-Tests <span class="math display">\[\begin{equation}
 \upsilon_1,...,\upsilon_n \sim N(\mu,\sigma^2) \mbox{ mit } (\mu,\sigma^2)\in \mathbb{R} \times \mathbb{R}_{&gt;0}
 \end{equation}\]</span> und es sei <span class="math inline">\(\Theta := \mathbb{R}\)</span> der Parameterunteraum des Parameters von Interesse <span class="math inline">\(\mu\)</span>. Dann sind für den <em>Nullhypothesenparameterwert</em> <span class="math inline">\(\mu_0 \in \mathbb{R}\)</span> die <em>einfache Nullhypothese</em> und die <em>zusammengesetzte Alternativhypothese</em> des Einstichproben-T-Tests gegeben durch <span class="math display">\[\begin{equation}
 \Theta_0 := \{\mu_0\} \Leftrightarrow H_0 : \mu = \mu_0
@@ -664,18 +711,18 @@ H_0:\mu \ge \mu_0 \mbox{ und } H_1:\mu &lt; \mu_0
 <h4 class="unnumbered anchored" data-anchor-id="definition-der-teststatistik">Definition der Teststatistik</h4>
 <p>Mit der <em>Einstichproben-T-Test-Statistik</em> definieren wir nun eine Teststatistik, die als Grundlage eines kritischen Wert-basierten Tests dienen kann und deren Betrag eine Abweichung von der Nullhypothese indiziert.</p>
 <div id="def-einstichproben-t-test-statistik" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 24.15 (Einstichproben-T-Test-Statistik) </strong></span>Gegeben sei das Testszenario eines Einstichproben-T-Tests mit Stichprobe <span class="math inline">\(\upsilon_1,...,\upsilon_n\)</span>, Stichprobenmittel <span class="math inline">\(\bar{\upsilon}\)</span>, Stichprobenstandard- abweichung <span class="math inline">\(S\)</span> und Nullhypothesenparameter <span class="math inline">\(\mu_0\)</span>. Dann ist die <em>Einstichproben-T-Test-Statistik</em> definiert als <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 24.15 (Einstichproben-T-Test-Statistik)</strong></span> Gegeben sei das Testszenario eines Einstichproben-T-Tests mit Stichprobe <span class="math inline">\(\upsilon_1,...,\upsilon_n\)</span>, Stichprobenmittel <span class="math inline">\(\bar{\upsilon}\)</span>, Stichprobenstandard- abweichung <span class="math inline">\(S\)</span> und Nullhypothesenparameter <span class="math inline">\(\mu_0\)</span>. Dann ist die <em>Einstichproben-T-Test-Statistik</em> definiert als <span class="math display">\[\begin{equation}
 T := \sqrt{n}\frac{\bar{\upsilon} - \mu_0}{S}.
 \end{equation}\]</span></p>
 </div>
-<p>Offenbar hat die Einstichproben-T-Test-Statistik eine hohe Ähnlichkeit mit der T-Konfidenzintervallstatistik (vgl. <a href="303-Konfidenzintervalle.html#def-t-konfidenzintervallstatistik">Definition&nbsp;<span>23.2</span></a>). Man beachte allerdings, dass im Fall der Einstichproben-T-Test-Statistik der Nullhypothesenparameter <span class="math inline">\(\mu_0\)</span> nicht identisch mit dem in der T-Konfidenzintervallstatistik auftauchendem wahren, aber unbekannten, Parameterwert <span class="math inline">\(\mu\)</span> sein muss.</p>
+<p>Offenbar hat die Einstichproben-T-Test-Statistik eine hohe Ähnlichkeit mit der T-Konfidenzintervallstatistik (vgl. <a href="303-Konfidenzintervalle.html#def-t-konfidenzintervallstatistik" class="quarto-xref">Definition&nbsp;<span>23.2</span></a>). Man beachte allerdings, dass im Fall der Einstichproben-T-Test-Statistik der Nullhypothesenparameter <span class="math inline">\(\mu_0\)</span> nicht identisch mit dem in der T-Konfidenzintervallstatistik auftauchendem wahren, aber unbekannten, Parameterwert <span class="math inline">\(\mu\)</span> sein muss.</p>
 <p>Da die Einstichproben-T-Test-Statistik im Kontext des Einstichproben-T-Tests zentral ist, macht es Sinn, sich ihrer intuitiven Mechanik bewusst zu sein. Im Zähler des Bruches der Einstichproben-T-Test-Statistik tritt zunächst die Differenz des Stichprobenmittels <span class="math inline">\(\bar{\upsilon}\)</span> zum angenommenen Nullhypothesenparameter <span class="math inline">\(\mu_0\)</span> auf. Wie gesehen ist das Stichprobenmittel ein unverzerrter Schätzer des Erwartungswertparameters <span class="math inline">\(\mu\)</span> der Stichprobe. Die Differenz <span class="math inline">\(\bar{\upsilon} - \mu_0\)</span> entspricht also einer Schätzung der Abweichung des wahren, aber unbekannten, Erwartungswertsparameters vom Nullhypothesenparameter und damit dem Betrage nach der Evidenz für eine Abweichung des wahren, aber unbekannten, Erwartungswertparameters von der Nullhypothese. Grob betrachtet hat man mit dem Zähler <span class="math inline">\(\bar{\upsilon} - \mu_0\)</span> also ein Maß für das der Stichprobe innewohnende “Signal” im Sinne der Abweichung von der Nullhypothese oder “systematischer Variabilität”. Der Nenner <span class="math inline">\(S\)</span> erlaubt es dann, dieses Signal in Einheiten der Stichprobenstandardabweichung auszudrücken. Gilt zum Beispiel <span class="math inline">\(\bar{\upsilon} - \mu_0 = 2\)</span> und ist <span class="math inline">\(S = 1\)</span>, so beträgt die Abweichung des Stichprobenmittels vom Nullhypothesenparameter gerade zwei Standardabweichungen, ist dagegen <span class="math inline">\(S = 2\)</span> so beträgt die entsprechende Abweichung gerade eine Standardabweichung. Weiterhin entspricht der Nenner <span class="math inline">\(S\)</span> ja einem Maß für die beobachtete Datenvariabilität und einem Schätzer für die Standardabweichung <span class="math inline">\(\sigma\)</span> der Fehlerterme in der generativen Form des Einstichproben-T-Test Modells. Grob betrachtet hat man also im Nenner der Einstichproben-T-Test-Statistik ein Maß für das den Daten innewohnende “Rauschen” oder ihrer “unsystematischen Variabilität”. Insgesamt kann man den Bruch <span class="math inline">\(\frac{\bar{\upsilon} - \mu_0}{S}\)</span> also als eine Schätzung des “Signal-zu-Rauschen-Verhältnis” der Daten verstehen. Schließlich wird in der Einstichproben-T-Test-Statistik dieses Verhältnis mit der Wurzel der Stichprobengröße <span class="math inline">\(\sqrt{n}\)</span> gewichtet. Intuitiv entspricht diese Wichtung der Tatsache, dass man einem gegebenen Signal-zu-Rauschen-Verhältnis mehr Validität zumessen kann, wenn es auf einer höheren Anzahl von Datenpunkten basiert, als wenn es auf einer geringen Anzahl von Datenpunkten basiert. Insgesamt hat man mit der Einstichproben-T-Test-Statistik eine skalare Zusammenfassung der den Daten innewohnenden Evidenz gegen die Nullhypothese, bei der sowohl die Datenvariabilität als auch der Datenumfang betrachtet werden.</p>
 </section>
 <section id="verteilung-der-teststatistik" class="level4 unnumbered">
 <h4 class="unnumbered anchored" data-anchor-id="verteilung-der-teststatistik">Verteilung der Teststatistik</h4>
 <p>Für die Verteilung der Einstichproben-T-Test-Statistik gilt nun folgendes Theorem.</p>
 <div id="thm-verteilung-der-einstichproben-t-test-statistik" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 24.1 (Verteilung der Einstichproben-T-Test-Statistik) </strong></span>Gegeben sei das Testszenario eines Einstichproben-T-Tests mit Stichprobe <span class="math inline">\(\upsilon_1,...,\upsilon_n\)</span>, Stichprobenmittel <span class="math inline">\(\bar{\upsilon}\)</span>, Stichprobenstandard- abweichung <span class="math inline">\(S\)</span> , Nullhypothesenparameter <span class="math inline">\(\mu_0\)</span> und Einstichproben-T-Test-Statistik definiert als <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Theorem 24.1 (Verteilung der Einstichproben-T-Test-Statistik)</strong></span> Gegeben sei das Testszenario eines Einstichproben-T-Tests mit Stichprobe <span class="math inline">\(\upsilon_1,...,\upsilon_n\)</span>, Stichprobenmittel <span class="math inline">\(\bar{\upsilon}\)</span>, Stichprobenstandard- abweichung <span class="math inline">\(S\)</span> , Nullhypothesenparameter <span class="math inline">\(\mu_0\)</span> und Einstichproben-T-Test-Statistik definiert als <span class="math display">\[\begin{equation}
 T := \sqrt{n}\frac{\bar{\upsilon} - \mu_0}{S}.
 \end{equation}\]</span> Dann ist <span class="math inline">\(T\)</span> eine nichtzentrale <span class="math inline">\(t\)</span>-Zufallsvariable mit Nichtzentralitätsparameter <span class="math display">\[\begin{equation}
 d = \sqrt{n}\frac{\mu - \mu_0}{\sigma}
@@ -684,7 +731,7 @@ d = \sqrt{n}\frac{\mu - \mu_0}{\sigma}
 <div class="proof">
 <p><span class="proof-title"><em>Beweis</em>. </span></p>
 </div>
-<p>Man beachte, dass im Falle des Zutreffens der Nullhypothese der Nullhypothesenparameter <span class="math inline">\(\mu_0\)</span> mit dem wahren, aber unbekannten, Erwartungswertparameter <span class="math inline">\(\mu\)</span> identisch ist und der Nichtzentralitätsparameter der Verteilung der Einstichproben-T-Test-Statistik den Wert <span class="math inline">\(d = 0\)</span> annimmt. Im Falle des Zutreffens der Nullhypothese des Einstichproben-T-Testszenarios ist die Einstichproben-T-Test-Statistik also eine <span class="math inline">\(t\)</span>-verteilte Zufallsvariable mit Freiheitsgradparameter <span class="math inline">\(n-1\)</span>. Wir visualisieren die Verteilung der Einstichproben-T-Test-Statistik exemplarisch für ein Einstichproben-T-Testszenario mit <span class="math inline">\(n = 12\)</span>, wahren, aber unbekannten, Parametern <span class="math inline">\(\mu = 3\)</span> und <span class="math inline">\(\sigma^2 = 2\)</span> und Nullhypothesenparameter <span class="math inline">\(\mu_0 = 0\)</span> in <a href="#fig-einstichproben-t-test-statistik-verteilung">Abbildung&nbsp;<span>24.2</span></a> (B), Die Parameter dieser Verteilung ergeben sich dabei zu<br>
+<p>Man beachte, dass im Falle des Zutreffens der Nullhypothese der Nullhypothesenparameter <span class="math inline">\(\mu_0\)</span> mit dem wahren, aber unbekannten, Erwartungswertparameter <span class="math inline">\(\mu\)</span> identisch ist und der Nichtzentralitätsparameter der Verteilung der Einstichproben-T-Test-Statistik den Wert <span class="math inline">\(d = 0\)</span> annimmt. Im Falle des Zutreffens der Nullhypothese des Einstichproben-T-Testszenarios ist die Einstichproben-T-Test-Statistik also eine <span class="math inline">\(t\)</span>-verteilte Zufallsvariable mit Freiheitsgradparameter <span class="math inline">\(n-1\)</span>. Wir visualisieren die Verteilung der Einstichproben-T-Test-Statistik exemplarisch für ein Einstichproben-T-Testszenario mit <span class="math inline">\(n = 12\)</span>, wahren, aber unbekannten, Parametern <span class="math inline">\(\mu = 3\)</span> und <span class="math inline">\(\sigma^2 = 2\)</span> und Nullhypothesenparameter <span class="math inline">\(\mu_0 = 0\)</span> in <a href="#fig-einstichproben-t-test-statistik-verteilung" class="quarto-xref">Abbildung&nbsp;<span>24.2</span></a> (B), Die Parameter dieser Verteilung ergeben sich dabei zu<br>
 <span class="math display">\[\begin{equation}
 d
 = \sqrt{n}\frac{\mu - \mu_0}{\sigma}
@@ -693,10 +740,14 @@ d
 \mbox{ und }
 n - 1 = 11
 \end{equation}\]</span> ergeben.</p>
-<div id="fig-einstichproben-t-test-statistik-verteilung" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./_figures/304-Einstichproben-T-Test-Statistik-verteilung.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption class="figure-caption">Abbildung&nbsp;24.2: Verteilung der Einstichproben-T-Test-Statistik für <span class="math inline">\(n = 12, \mu = 3, \sigma^2\)</span> und <span class="math inline">\(\mu_0 = 0\)</span>. (A) Verteilung der Stichprobenvariablen. (B) Verteilung der Einstichproben-T-Test-Statstik</figcaption>
+<div id="fig-einstichproben-t-test-statistik-verteilung" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-einstichproben-t-test-statistik-verteilung-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/304-Einstichproben-T-Test-Statistik-verteilung.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-einstichproben-t-test-statistik-verteilung-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;24.2: Verteilung der Einstichproben-T-Test-Statistik für <span class="math inline">\(n = 12, \mu = 3, \sigma^2\)</span> und <span class="math inline">\(\mu_0 = 0\)</span>. (A) Verteilung der Stichprobenvariablen. (B) Verteilung der Einstichproben-T-Test-Statstik
+</figcaption>
 </figure>
 </div>
 </section>
@@ -704,7 +755,7 @@ n - 1 = 11
 <h4 class="unnumbered anchored" data-anchor-id="testdefinition">Testdefinition</h4>
 <p>Wir können nun den zweiseitigen Einstichproben-T-Test mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese definieren und seine Testgütefunktion analysieren.</p>
 <div id="def-zweiseitiger-einstichproben-t-test-mit-einfacher-nullhypothese" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 24.16 (Zweiseitiger Einstichproben-T-Test mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese) </strong></span>Gegeben seien das Frequentistische Inferenzmodell des Einstichproben-T-Tests mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese und <span class="math inline">\(T\)</span> bezeichne die Einstichproben-T-Test-Statistik mit Werten <span class="math inline">\(t \in \mathbb{R}\)</span>. Dann ist der <em>zweiseitige Einstichproben-T-Test mit einfacher Nullhypothese und zu- sammengesetzter Alternativhypothese</em> definiert als der zweiseitige kritische Wert-basierte Test <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 24.16 (Zweiseitiger Einstichproben-T-Test mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese)</strong></span> Gegeben seien das Frequentistische Inferenzmodell des Einstichproben-T-Tests mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese und <span class="math inline">\(T\)</span> bezeichne die Einstichproben-T-Test-Statistik mit Werten <span class="math inline">\(t \in \mathbb{R}\)</span>. Dann ist der <em>zweiseitige Einstichproben-T-Test mit einfacher Nullhypothese und zu- sammengesetzter Alternativhypothese</em> definiert als der zweiseitige kritische Wert-basierte Test <span class="math display">\[\begin{equation}
 \phi : \mathcal{Y} \to \{0,1\}, y \mapsto \phi(y) := 1_{\{|t| \ge k\}} =
 \begin{cases}
 1 &amp; |t| \ge k \\
@@ -719,7 +770,7 @@ n - 1 = 11
 <h3 class="unnumbered anchored" data-anchor-id="testgütefunktion-1">Testgütefunktion</h3>
 <p>Für die Kontrolle des Testumfangs durch Wahl eines kritischen Werts und zur Bestimmung der Powerfunktion dieses Tests ist nun folgendes Theorem maßgeblich.</p>
 <div id="thm-testguetefunktion-des-zweiseitigen-einstichproben-t-tests-mit-einfacher-nullhypothese-und-zusammengesetzter-alternativhypothese" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 24.2 (Testgütefunktion des zweiseitigen Einstichproben-T-Test mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese) </strong></span><span class="math inline">\(\phi\)</span> sei der zweiseitige Einstichproben-T-Test mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese. Dann ist die Testgütefunktion von <span class="math inline">\(\phi\)</span> gegeben durch <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Theorem 24.2 (Testgütefunktion des zweiseitigen Einstichproben-T-Test mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese)</strong></span> <span class="math inline">\(\phi\)</span> sei der zweiseitige Einstichproben-T-Test mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese. Dann ist die Testgütefunktion von <span class="math inline">\(\phi\)</span> gegeben durch <span class="math display">\[\begin{equation}
 q_{\phi} : \mathbb{R} \to [0,1],
 \mu \mapsto q_{\phi}(\mu)
 := 1 - \Psi(k;d_\mu,n-1) + \Psi(-k;d_\mu,n-1),
@@ -752,23 +803,29 @@ q_\phi(\mu)
 \end{split}
 \end{align}\]</span> wobei <span class="math inline">\(\Psi(\cdot; d_\mu,n-1)\)</span> die KVF der nichtzentralen T-Verteilung mit Nichtzentralitätsparameter <span class="math inline">\(d_\mu\)</span> und Freiheitsgradparameter <span class="math inline">\(n-1\)</span> bezeichnet.</p>
 </div>
-<p>In <a href="#fig-einstichproben-t-test-zweiseitig-h0-einfach-testgütefunktion">Abbildung&nbsp;<span>24.3</span></a> visualisieren wir die Testgütefunktion des zweiseitigen Einstichproben-T-Tests mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese aus <a href="#thm-testguetefunktion-des-zweiseitigen-einstichproben-t-tests-mit-einfacher-nullhypothese-und-zusammengesetzter-alternativhypothese">Theorem&nbsp;<span>24.2</span></a> für <span class="math inline">\(\sigma^2 = 9\)</span> und <span class="math inline">\(\mu_0 = 4\)</span> in Abhängigkeit vom kritischen Wert <span class="math inline">\(k\)</span>. Man beachte dabei zunächst, dass die Testgütefunktion als Funktion von <span class="math inline">\(\mu\)</span> sowohl das Szenario des Zutreffens der Nullhypothese <span class="math inline">\(\mu = \mu_0\)</span> als auch das Szenario des Zutreffens der Alternativhypothese <span class="math inline">\(\mu \neq \mu_0\)</span> abdeckt. Man beachte weiterhin, dass der Wert der Testgütefunktion, also die Wahrscheinlichkeit dafür, dass der Test den Wert 1 annimmt, sowohl bei positiven als auch bei negativen Abweichungen des wahren, aber unbekannten, Erwartungswertparameters <span class="math inline">\(\mu\)</span> vom Nullhypothesenparameter <span class="math inline">\(\mu_0\)</span> ansteigt. Dies ist natürlich der Tatsache geschuldet ist, dass die Testentscheidung auf dem Betrag der Teststatistik beruht. Schließlich ist die genaue Form und Lage der Testgütefunktion von der Wahl des kritischen Werts <span class="math inline">\(k\)</span> abhängig. Wird dieser größer gewählt, ist also ein größerer absoluter Wert der Teststatistik für dafür notwendig, dass der Test den Wert 1 annimmt, so ist die Wahrscheinlichkeit dafür, bei ansonsten konstanten Parametern, kleiner als bei kleineren Werten des kritischen Werts.</p>
-<div id="fig-einstichproben-t-test-zweiseitig-h0-einfach-testgütefunktion" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./_figures/304-einstichproben-t-test-zweiseitig-h0-einfach-testgütefunktion.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption class="figure-caption">Abbildung&nbsp;24.3: Testgütefunktion des zweiseitigen Einstichproben-T-Tests mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese für <span class="math inline">\(\sigma^2 = 9, \mu_0 = 4, n = 12\)</span> und <span class="math inline">\(k = 1,2,3\)</span>.</figcaption>
+<p>In <a href="#fig-einstichproben-t-test-zweiseitig-h0-einfach-testgütefunktion" class="quarto-xref">Abbildung&nbsp;<span>24.3</span></a> visualisieren wir die Testgütefunktion des zweiseitigen Einstichproben-T-Tests mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese aus <a href="#thm-testguetefunktion-des-zweiseitigen-einstichproben-t-tests-mit-einfacher-nullhypothese-und-zusammengesetzter-alternativhypothese" class="quarto-xref">Theorem&nbsp;<span>24.2</span></a> für <span class="math inline">\(\sigma^2 = 9\)</span> und <span class="math inline">\(\mu_0 = 4\)</span> in Abhängigkeit vom kritischen Wert <span class="math inline">\(k\)</span>. Man beachte dabei zunächst, dass die Testgütefunktion als Funktion von <span class="math inline">\(\mu\)</span> sowohl das Szenario des Zutreffens der Nullhypothese <span class="math inline">\(\mu = \mu_0\)</span> als auch das Szenario des Zutreffens der Alternativhypothese <span class="math inline">\(\mu \neq \mu_0\)</span> abdeckt. Man beachte weiterhin, dass der Wert der Testgütefunktion, also die Wahrscheinlichkeit dafür, dass der Test den Wert 1 annimmt, sowohl bei positiven als auch bei negativen Abweichungen des wahren, aber unbekannten, Erwartungswertparameters <span class="math inline">\(\mu\)</span> vom Nullhypothesenparameter <span class="math inline">\(\mu_0\)</span> ansteigt. Dies ist natürlich der Tatsache geschuldet ist, dass die Testentscheidung auf dem Betrag der Teststatistik beruht. Schließlich ist die genaue Form und Lage der Testgütefunktion von der Wahl des kritischen Werts <span class="math inline">\(k\)</span> abhängig. Wird dieser größer gewählt, ist also ein größerer absoluter Wert der Teststatistik für dafür notwendig, dass der Test den Wert 1 annimmt, so ist die Wahrscheinlichkeit dafür, bei ansonsten konstanten Parametern, kleiner als bei kleineren Werten des kritischen Werts.</p>
+<div id="fig-einstichproben-t-test-zweiseitig-h0-einfach-testgütefunktion" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-einstichproben-t-test-zweiseitig-h0-einfach-testgütefunktion-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/304-einstichproben-t-test-zweiseitig-h0-einfach-testgütefunktion.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-einstichproben-t-test-zweiseitig-h0-einfach-testgütefunktion-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;24.3: Testgütefunktion des zweiseitigen Einstichproben-T-Tests mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese für <span class="math inline">\(\sigma^2 = 9, \mu_0 = 4, n = 12\)</span> und <span class="math inline">\(k = 1,2,3\)</span>.
+</figcaption>
 </figure>
 </div>
 <section id="testumfangkontrolle" class="level4 unnumbered">
 <h4 class="unnumbered anchored" data-anchor-id="testumfangkontrolle">Testumfangkontrolle</h4>
-<p>Die Werte der Testgütefunktion bei <span class="math inline">\(\mu = \mu_0\)</span> in <a href="#fig-einstichproben-t-test-zweiseitig-h0-einfach-testgütefunktion">Abbildung&nbsp;<span>24.3</span></a> geben einen visuellen Eindruck davon, wie der kritische Wert den Testumfang kontrolliert. Die exakte Bestimmung des kritischen Werts bei einem gewünschten Testumfang ist Inhalt folgenden Theorems.</p>
+<p>Die Werte der Testgütefunktion bei <span class="math inline">\(\mu = \mu_0\)</span> in <a href="#fig-einstichproben-t-test-zweiseitig-h0-einfach-testgütefunktion" class="quarto-xref">Abbildung&nbsp;<span>24.3</span></a> geben einen visuellen Eindruck davon, wie der kritische Wert den Testumfang kontrolliert. Die exakte Bestimmung des kritischen Werts bei einem gewünschten Testumfang ist Inhalt folgenden Theorems.</p>
 <div id="thm-einstichproben-t-test-zweiseitig-h0-einfach-testumfangkontrolle" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 24.3 (Testumfangkontrolle für den zweiseitigen Einstichproben-T-Test mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese) </strong></span><span class="math inline">\(\phi\)</span> sei der zweiseitige Einstichproben-T-Test mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese. Dann ist <span class="math inline">\(\phi\)</span> ein Level-<span class="math inline">\(\alpha_0\)</span>-Test mit Testumfang <span class="math inline">\(\alpha_0\)</span>, wenn der kritische Wert definiert ist durch <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Theorem 24.3 (Testumfangkontrolle für den zweiseitigen Einstichproben-T-Test mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese)</strong></span> <span class="math inline">\(\phi\)</span> sei der zweiseitige Einstichproben-T-Test mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese. Dann ist <span class="math inline">\(\phi\)</span> ein Level-<span class="math inline">\(\alpha_0\)</span>-Test mit Testumfang <span class="math inline">\(\alpha_0\)</span>, wenn der kritische Wert definiert ist durch <span class="math display">\[\begin{equation}
 k_{\alpha_0} := \Psi^{-1}\left(1 - \frac{\alpha_0}{2}; n-1 \right),
 \end{equation}\]</span> wobei <span class="math inline">\(\Psi^{-1}(\cdot; n-1)\)</span> die inverse KVF der <span class="math inline">\(t\)</span>-Verteilung mit Freiheitsgradparameter <span class="math inline">\(n-1\)</span> bezeichnet.</p>
 </div>
 <div class="proof">
-<p><span class="proof-title"><em>Beweis</em>. </span>Damit der betrachtete Test ein Level-<span class="math inline">\(\alpha_0\)</span>-Test ist, muss bekanntlich <span class="math inline">\(q_\phi(\mu) \le \alpha_0\)</span> für alle <span class="math inline">\(\mu \in \{\mu_0\}\)</span>, also hier <span class="math inline">\(q_\phi(\mu_0) \le \alpha_0\)</span>, gelten. Weiterhin ist der Testumfang des betrachteten Tests durch <span class="math inline">\(\alpha = \max_{\mu \in \{\mu_0\}} q_\phi(\mu)\)</span>, also hier durch <span class="math inline">\(\alpha = q_\phi(\mu_0)\)</span> gegeben. Wir müssen also zeigen, dass die Wahl von <span class="math inline">\(k_{\alpha_0}\)</span> garantiert, dass <span class="math inline">\(\phi\)</span> ein Level-<span class="math inline">\(\alpha_0\)</span>-Test mit Testumfang <span class="math inline">\(\alpha_0\)</span> ist. Dazu merken wir zunächst an, dass für <span class="math inline">\(\mu = \mu_0\)</span> gilt, dass <span class="math display">\[\begin{align}
+<p><span class="proof-title"><em>Beweis</em>. </span>Damit der betrachtete Test ein Level-<span class="math inline">\(\alpha_0\)</span>-Test ist, muss bekanntlich <span class="math inline">\(q_\phi(\mu) \le \alpha_0\)</span> für alle <span class="math inline">\(\mu \in \{\mu_0\}\)</span>, also hier <span class="math inline">\(q_\phi(\mu_0)
+\le \alpha_0\)</span>, gelten. Weiterhin ist der Testumfang des betrachteten Tests durch <span class="math inline">\(\alpha = \max_{\mu \in \{\mu_0\}} q_\phi(\mu)\)</span>, also hier durch <span class="math inline">\(\alpha =
+q_\phi(\mu_0)\)</span> gegeben. Wir müssen also zeigen, dass die Wahl von <span class="math inline">\(k_{\alpha_0}\)</span> garantiert, dass <span class="math inline">\(\phi\)</span> ein Level-<span class="math inline">\(\alpha_0\)</span>-Test mit Testumfang <span class="math inline">\(\alpha_0\)</span> ist. Dazu merken wir zunächst an, dass für <span class="math inline">\(\mu = \mu_0\)</span> gilt, dass <span class="math display">\[\begin{align}
 \begin{split}
 q_\phi(\mu_0)
 &amp; =  1 - \Psi(k;d_{\mu_0},n-1) + \Psi(-k;d_{\mu_0},n-1)                          \\
@@ -787,11 +844,15 @@ q_\phi(\mu_0)
 \end{split}
 \end{align}\]</span> wobei die zweite Gleichung mit der Symmetrie der <span class="math inline">\(t\)</span>-Verteilung folgt. Es folgt also direkt, dass bei der Wahl von <span class="math inline">\(k = k_{\alpha_0}\)</span>, <span class="math inline">\(q_\phi(\mu_0)\le \alpha_0\)</span> ist und der betrachtete Test somit ein Level-<span class="math inline">\(\alpha_0\)</span>-Test ist. Weiterhin folgt direkt, dass der Testumfang des betrachteten Tests bei der Wahl von <span class="math inline">\(k = k_{\alpha_0}\)</span> gleich <span class="math inline">\(\alpha_0\)</span> ist.</p>
 </div>
-<p>Man beachte, dass nach <a href="#thm-einstichproben-t-test-zweiseitig-h0-einfach-testumfangkontrolle">Theorem&nbsp;<span>24.3</span></a> der hier betrachtete Tests inbesondere exakt ist, der Testumfang also mit dem Signifikanzlevel identisch ist. In <a href="#fig-einstichproben-t-test-zweiseitig-h0-einfach-testumfangkontrolle">Abbildung&nbsp;<span>24.4</span></a> visualisieren wir die Wahl des kritischen Werts <span class="math inline">\(k_{\alpha_0}\)</span> in einem zweiseitigen Einstichproben-T-Test-Szenario mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese für <span class="math inline">\(\alpha_0 := 0.05\)</span> und <span class="math inline">\(n =12\)</span>.</p>
-<div id="fig-einstichproben-t-test-zweiseitig-h0-einfach-testumfangkontrolle" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./_figures/304-einstichproben-t-test-zweiseitig-h0-einfach-testumfangkontrolle.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption class="figure-caption">Abbildung&nbsp;24.4: Bestimmung des kritischen Werts <span class="math inline">\(k_{\alpha_0}\)</span> für den zweiseitigen Einstichproben-T-Tests mit einfacher Nullhypothese für <span class="math inline">\(n =12\)</span> und <span class="math inline">\(\alpha_0 := 0.05\)</span> zu Kontrolle des Testumfangs (A) Für ein gewähltes <span class="math inline">\(\alpha_0\)</span> ist der kritische Wert des betrachteten Tests nach <a href="#thm-einstichproben-t-test-zweiseitig-h0-einfach-testumfangkontrolle">Theorem&nbsp;<span>24.3</span></a> durch den Wert der inversen KVF der <span class="math inline">\(t\)</span>-Verteilung mit Freiheitsgradparameter <span class="math inline">\(n-1\)</span> an der Stelle <span class="math inline">\(1 - \frac{\alpha_0}{2}\)</span> gegeben. Die Abbildung zeigt die Bestimmung dieses Werts zu <span class="math inline">\(k_{0.05} = 2.2\)</span> anhand der KVF der <span class="math inline">\(t\)</span>-Verteilung mit Freiheitsgradparameter <span class="math inline">\(n-1\)</span>. (B) Die Abbildung zeigt den aus der Wahl von <span class="math inline">\(k_{\alpha_0}\)</span> resultierenden Ablehunungsbereich des betrachteten Tests als grau hinterlegte Flächen unter der WDF der <span class="math inline">\(t\)</span>-Verteilung mit Freiheitsgradparameter <span class="math inline">\(n-1\)</span>. Die symmetrische Verteilung der Teilmengen des Ablehnungsbereichs in den Ausläufern der WDF ergibt sich dabei aus der Definition des Tests als Funktion des Betrages der Einstichproben-T-Test-Statistik, also insbesondere des zweiseitigen Charakters des hier betrachteten Tests.</figcaption>
+<p>Man beachte, dass nach <a href="#thm-einstichproben-t-test-zweiseitig-h0-einfach-testumfangkontrolle" class="quarto-xref">Theorem&nbsp;<span>24.3</span></a> der hier betrachtete Tests inbesondere exakt ist, der Testumfang also mit dem Signifikanzlevel identisch ist. In <a href="#fig-einstichproben-t-test-zweiseitig-h0-einfach-testumfangkontrolle" class="quarto-xref">Abbildung&nbsp;<span>24.4</span></a> visualisieren wir die Wahl des kritischen Werts <span class="math inline">\(k_{\alpha_0}\)</span> in einem zweiseitigen Einstichproben-T-Test-Szenario mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese für <span class="math inline">\(\alpha_0 := 0.05\)</span> und <span class="math inline">\(n =12\)</span>.</p>
+<div id="fig-einstichproben-t-test-zweiseitig-h0-einfach-testumfangkontrolle" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-einstichproben-t-test-zweiseitig-h0-einfach-testumfangkontrolle-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/304-einstichproben-t-test-zweiseitig-h0-einfach-testumfangkontrolle.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-einstichproben-t-test-zweiseitig-h0-einfach-testumfangkontrolle-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;24.4: Bestimmung des kritischen Werts <span class="math inline">\(k_{\alpha_0}\)</span> für den zweiseitigen Einstichproben-T-Tests mit einfacher Nullhypothese für <span class="math inline">\(n =12\)</span> und <span class="math inline">\(\alpha_0 := 0.05\)</span> zu Kontrolle des Testumfangs (A) Für ein gewähltes <span class="math inline">\(\alpha_0\)</span> ist der kritische Wert des betrachteten Tests nach <a href="#thm-einstichproben-t-test-zweiseitig-h0-einfach-testumfangkontrolle" class="quarto-xref">Theorem&nbsp;<span>24.3</span></a> durch den Wert der inversen KVF der <span class="math inline">\(t\)</span>-Verteilung mit Freiheitsgradparameter <span class="math inline">\(n-1\)</span> an der Stelle <span class="math inline">\(1 - \frac{\alpha_0}{2}\)</span> gegeben. Die Abbildung zeigt die Bestimmung dieses Werts zu <span class="math inline">\(k_{0.05} = 2.2\)</span> anhand der KVF der <span class="math inline">\(t\)</span>-Verteilung mit Freiheitsgradparameter <span class="math inline">\(n-1\)</span>. (B) Die Abbildung zeigt den aus der Wahl von <span class="math inline">\(k_{\alpha_0}\)</span> resultierenden Ablehunungsbereich des betrachteten Tests als grau hinterlegte Flächen unter der WDF der <span class="math inline">\(t\)</span>-Verteilung mit Freiheitsgradparameter <span class="math inline">\(n-1\)</span>. Die symmetrische Verteilung der Teilmengen des Ablehnungsbereichs in den Ausläufern der WDF ergibt sich dabei aus der Definition des Tests als Funktion des Betrages der Einstichproben-T-Test-Statistik, also insbesondere des zweiseitigen Charakters des hier betrachteten Tests.
+</figcaption>
 </figure>
 </div>
 <p>Folgender <strong>R</strong> Code demonstriert die Bestimmung des kritischen Werts des zweiseitigen Einstichproben-T-Tests mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese mithilfe der inversen KVF der <span class="math inline">\(t\)</span>-Verteilung, die in <strong>R</strong> als die Funktion <code>qt()</code> implementiert ist. Darüberhinaus simuliert der Code <span class="math inline">\(10^6\)</span> Stichprobenrealisationen für das hier betrachteten Testszenario bei Zutreffen der Nullhypothese und wertet den betrachteten Test aus. Es zeigt sich, dass die geschätzte Wahrscheinlichkeit dafür, dass der Test bei Zutreffen der Nullhypothese den Wert 1 annimmt mit dem gewünschten Wert von <span class="math inline">\(\alpha_0 = 0.05\)</span> sehr gut übereinstimmt.</p>
@@ -835,14 +896,14 @@ Geschätzter Testumfang alpha = 0.049755</code></pre>
 <h4 class="unnumbered anchored" data-anchor-id="p-wert-2">p-Wert</h4>
 <p>Der mit einem vorliegenden Wert der Teststatistik des zweiseitigen Einstichproben-T-Tests mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese assoziierte p-Wert ergibt aus folgendem Theorem wie folgt.</p>
 <div id="thm-einstichproben-t-test-zweiseitig-h0-einfach-p-wert" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 24.4 (p-Wert des zweiseitigen Einstichproben-T-Test mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese) </strong></span>Gegeben sei der zweiseitige Einstichproben-T-Test mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese und <span class="math inline">\(t\)</span> sei ein Wert der Einstichproben-T-Test-Statistik <span class="math inline">\(T\)</span>. Dann gilt <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Theorem 24.4 (p-Wert des zweiseitigen Einstichproben-T-Test mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese)</strong></span> Gegeben sei der zweiseitige Einstichproben-T-Test mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese und <span class="math inline">\(t\)</span> sei ein Wert der Einstichproben-T-Test-Statistik <span class="math inline">\(T\)</span>. Dann gilt <span class="math display">\[\begin{equation}
 \mbox{p-Wert} = 2(1 - \Psi(\vert t \vert;n-1))
 \end{equation}\]</span> wobei <span class="math inline">\(\Psi(\cdot; n-1)\)</span> die KVF der <span class="math inline">\(t\)</span>-Verteilung mit Freiheitsgradparameter <span class="math inline">\(n-1\)</span> bezeichnet.</p>
 </div>
 <div class="proof">
-<p><span class="proof-title"><em>Beweis</em>. </span>Nach <a href="#def-p-wert">Definition&nbsp;<span>24.12</span></a> ist der p-Wert das kleinste Signifikanzlevel <span class="math inline">\(\alpha_0\)</span> bei für den betrachteten Test die Nullhypothese basierend auf dem Wert von <span class="math inline">\(t\)</span> abgelehnt werden würde. Im vorliegenden Fall würde die Nullhypothese für jedes <span class="math inline">\(\alpha_0\)</span> mit <span class="math display">\[\begin{equation}
+<p><span class="proof-title"><em>Beweis</em>. </span>Nach <a href="#def-p-wert" class="quarto-xref">Definition&nbsp;<span>24.12</span></a> ist der p-Wert das kleinste Signifikanzlevel <span class="math inline">\(\alpha_0\)</span> bei für den betrachteten Test die Nullhypothese basierend auf dem Wert von <span class="math inline">\(t\)</span> abgelehnt werden würde. Im vorliegenden Fall würde die Nullhypothese für jedes <span class="math inline">\(\alpha_0\)</span> mit <span class="math display">\[\begin{equation}
 \vert t \vert \ge \Psi^{-1}\left(1- \frac{\alpha_0}{2};n-1\right)
-\end{equation}\]</span> abgelehnt werden, vgl. <a href="#thm-einstichproben-t-test-zweiseitig-h0-einfach-testumfangkontrolle">Theorem&nbsp;<span>24.3</span></a>. Für diese <span class="math inline">\(\alpha_0\)</span> gilt, dass <span class="math display">\[\begin{equation}
+\end{equation}\]</span> abgelehnt werden, vgl. <a href="#thm-einstichproben-t-test-zweiseitig-h0-einfach-testumfangkontrolle" class="quarto-xref">Theorem&nbsp;<span>24.3</span></a>. Für diese <span class="math inline">\(\alpha_0\)</span> gilt, dass <span class="math display">\[\begin{equation}
 \alpha_0 \ge 2(1 - \Psi(\vert t \vert;n-1)),
 \end{equation}\]</span> denn <span class="math display">\[\begin{align}
 \begin{split}
@@ -882,17 +943,21 @@ Geschätzter Testumfang alpha = 0.049755</code></pre>
 \alpha_0 = 2(1 - \Psi(\vert t \vert;n-1)).
 \end{equation}\]</span></p>
 </div>
-<p>In <a href="#fig-einstichproben-t-test-zweiseitig-h0-einfach-p-wert">Abbildung&nbsp;<span>24.5</span></a> visualisieren wir die Bestimmung von p-Werten für <span class="math inline">\(t = 2.26\)</span> und für <span class="math inline">\(t = 3.81\)</span>, welche sich zu <span class="math inline">\(\mbox{p} = 0.045\)</span> und <span class="math inline">\(\mbox{p} = 0.003\)</span>, respektive, ergeben. Man beachte, dass zum Beispiel der p-Wert zu <span class="math inline">\(t = -2.26\)</span> auch <span class="math inline">\(\mbox{p} = 0.045\)</span> beträgt.</p>
-<div id="fig-einstichproben-t-test-zweiseitig-h0-einfach-p-wert" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./_figures/304-einstichproben-t-test-zweiseitig-h0-einfach-p-wert.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption class="figure-caption">Abbildung&nbsp;24.5: p-Werte für zwei mögliche Werte der Einstichproben-T-Test-Statistik bei <span class="math inline">\(n = 12\)</span>. Die Bereiche im Ergebnisraum der Einstichproben-T-Test-Statistik über denen roten Flächen eingezeichnet sind, markieren die Bereiche mit <span class="math inline">\(T \ge |t|\)</span> gilt. Die summierten ihnen zugeordneten Wahrscheinlichkeiten, also die entsprechenden roten Flächen unter der WDF der <span class="math inline">\(t\)</span>-Verteilungen entsprechen dem p-Wert</figcaption>
+<p>In <a href="#fig-einstichproben-t-test-zweiseitig-h0-einfach-p-wert" class="quarto-xref">Abbildung&nbsp;<span>24.5</span></a> visualisieren wir die Bestimmung von p-Werten für <span class="math inline">\(t = 2.26\)</span> und für <span class="math inline">\(t = 3.81\)</span>, welche sich zu <span class="math inline">\(\mbox{p} = 0.045\)</span> und <span class="math inline">\(\mbox{p} = 0.003\)</span>, respektive, ergeben. Man beachte, dass zum Beispiel der p-Wert zu <span class="math inline">\(t = -2.26\)</span> auch <span class="math inline">\(\mbox{p} = 0.045\)</span> beträgt.</p>
+<div id="fig-einstichproben-t-test-zweiseitig-h0-einfach-p-wert" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-einstichproben-t-test-zweiseitig-h0-einfach-p-wert-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/304-einstichproben-t-test-zweiseitig-h0-einfach-p-wert.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-einstichproben-t-test-zweiseitig-h0-einfach-p-wert-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;24.5: p-Werte für zwei mögliche Werte der Einstichproben-T-Test-Statistik bei <span class="math inline">\(n = 12\)</span>. Die Bereiche im Ergebnisraum der Einstichproben-T-Test-Statistik über denen roten Flächen eingezeichnet sind, markieren die Bereiche mit <span class="math inline">\(T \ge |t|\)</span> gilt. Die summierten ihnen zugeordneten Wahrscheinlichkeiten, also die entsprechenden roten Flächen unter der WDF der <span class="math inline">\(t\)</span>-Verteilungen entsprechen dem p-Wert
+</figcaption>
 </figure>
 </div>
 </section>
 <section id="powerfunktion" class="level4 unnumbered">
 <h4 class="unnumbered anchored" data-anchor-id="powerfunktion">Powerfunktion</h4>
-<p>Die Powerfunktion eines Tests entspricht der Testgütefunktion eines Tests für den Bereich des Parameterraums, der der Alternativhypothese entspricht. Änderungen im Wert der Powerfunktion eines Tests, oft einfach als <em>Power des Tests</em> bezeichnet, ergeben sich also zunächst einmal durch Änderungen des Wertes des wahren, aber unbekannten, Parameters im Bereich der Alternativhypothese. Allerdings hat es sich eingebürgert, die Wahrscheinlichkeit dafür, dass der Test den Wert 1 annimmt, also die Nullhypothese abgelehnt wird, nicht ausschließlich als Funktion des wahren, aber unbekannten, Parameters, sondern auch weiterer und in der praktischen Anwendung relevanter Parameter eines Testszenarios zu betrachten. An erster Stelle ist hier der Stichprobenumfangs <span class="math inline">\(n\)</span> von Interesse. Im Kontext der praktischen Durchführung von <em>Poweranalysen</em> fragt man dann meist danach, welcher Stichprobenumfang bei Annahme eines Wertes für den wahren, aber unbekannten, Parameter im Bereich der Alternativhypothese mit einer bestimmten Wahrscheinlichkeit dafür, die Nullhypothese abzulehnen, assoziiert ist. Basierend auf der asymmetrischen Behandlung von Typ I und Typ II Fehlerwahrscheinlichkeiten (vgl. <a href="#sec-testguetekriterien-und-testkonstruktion"><span>Kapitel&nbsp;24.2</span></a>) setzt man dahingehend zunächst ein Signifikanzlevel <span class="math inline">\(\alpha_0\)</span> zur Kontrolle des Testumfangs fest. Für den hier diskutierten zweiseitigen Einstichproben-T-Test mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese betrachten wir also die Testgütefunktion <span class="math display">\[\begin{equation}
+<p>Die Powerfunktion eines Tests entspricht der Testgütefunktion eines Tests für den Bereich des Parameterraums, der der Alternativhypothese entspricht. Änderungen im Wert der Powerfunktion eines Tests, oft einfach als <em>Power des Tests</em> bezeichnet, ergeben sich also zunächst einmal durch Änderungen des Wertes des wahren, aber unbekannten, Parameters im Bereich der Alternativhypothese. Allerdings hat es sich eingebürgert, die Wahrscheinlichkeit dafür, dass der Test den Wert 1 annimmt, also die Nullhypothese abgelehnt wird, nicht ausschließlich als Funktion des wahren, aber unbekannten, Parameters, sondern auch weiterer und in der praktischen Anwendung relevanter Parameter eines Testszenarios zu betrachten. An erster Stelle ist hier der Stichprobenumfangs <span class="math inline">\(n\)</span> von Interesse. Im Kontext der praktischen Durchführung von <em>Poweranalysen</em> fragt man dann meist danach, welcher Stichprobenumfang bei Annahme eines Wertes für den wahren, aber unbekannten, Parameter im Bereich der Alternativhypothese mit einer bestimmten Wahrscheinlichkeit dafür, die Nullhypothese abzulehnen, assoziiert ist. Basierend auf der asymmetrischen Behandlung von Typ I und Typ II Fehlerwahrscheinlichkeiten (vgl. <a href="#sec-testguetekriterien-und-testkonstruktion" class="quarto-xref"><span>Kapitel 24.2</span></a>) setzt man dahingehend zunächst ein Signifikanzlevel <span class="math inline">\(\alpha_0\)</span> zur Kontrolle des Testumfangs fest. Für den hier diskutierten zweiseitigen Einstichproben-T-Test mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese betrachten wir also die Testgütefunktion <span class="math display">\[\begin{equation}
 q_\phi : \mathbb{R} \to [0,1],
 \mu \mapsto q_\phi(\mu)
 := 1 - \Psi(k_{\alpha_0}; d_\mu, n-1) + \Psi(-k_{\alpha_0}; d_\mu, n-1)
@@ -900,7 +965,7 @@ q_\phi : \mathbb{R} \to [0,1],
 k_{\alpha_0} := \Psi^{-1}\left(1-\frac{\alpha_0}{2};n-1\right)
 \end{equation}\]</span> mit festem <span class="math inline">\(\alpha_0\)</span> als Funktion des Nichtzentralitätsparameters <span class="math inline">\(d\)</span> und des Stichprobenumfangs <span class="math inline">\(n\)</span>. Insbesondere hängt dabei der Nichtzentralitätsparameter <span class="math inline">\(d\)</span> vom Verhältnis der wahren, aber unbekannten, Parameter <span class="math inline">\(\mu\)</span> und <span class="math inline">\(\sigma^2\)</span>, also dem wahren, aber unbekannten, Signal-zu-Rauschen-Verhältnis des Testszenarios und <span class="math inline">\(k_{\alpha_0}\)</span> von <span class="math inline">\(n\)</span> ab. Diese Überlegungen führen auf folgende Definition.</p>
 <div id="def-einstichproben-t-test-zweiseitig-h0-einfach-powerfunktion" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 24.17 (Powerfunktion des zweiseitigen Einstichproben-T-Tests mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese) </strong></span>Gegeben sei der zweiseitige Einstichproben-T-Test mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese. Dann ist die <em>Powerfunktion</em> des Tests gegeben durch <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 24.17 (Powerfunktion des zweiseitigen Einstichproben-T-Tests mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese)</strong></span> Gegeben sei der zweiseitige Einstichproben-T-Test mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese. Dann ist die <em>Powerfunktion</em> des Tests gegeben durch <span class="math display">\[\begin{equation}
 \pi : \mathbb{R} \times \mathbb{N} \to [0,1],
 (d,n) \mapsto
 \pi(d,n) := 1 - \Psi(k_{\alpha_0}; d, n-1) + \Psi(-k_{\alpha_0}; d, n-1)
@@ -925,24 +990,32 @@ k_{\alpha_0} := \Psi^{-1}\left(1-\frac{\alpha_0}{2};n-1\right)
 <span id="cb3-15"><a href="#cb3-15"></a>  }</span>
 <span id="cb3-16"><a href="#cb3-16"></a>}</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Wir visualisieren die Abhängigkeit der Powerfunktion des zweiseitigen Einstichproben-T-Tests mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese vom Nichtzentralitätsparameter und Stichprobenumfang in <a href="#fig-einstichproben-t-test-zweiseitig-h0-einfach-powerfunktionen">Abbildung&nbsp;<span>24.6</span></a> und <a href="#fig-einstichproben-t-test-zweiseitig-h0-einfach-powerfunktionen-schnitte">Abbildung&nbsp;<span>24.7</span></a>. Generell steigt die Powerfunktion des betrachteten Tests mit positiver oder negativer Abweichung des Nichtzentralitätsparameters vom Nullhypothesenszenario <span class="math inline">\(d = 0\)</span> und steigendem Stichprobenumfang <span class="math inline">\(n\)</span> monoton. Je nach Wahl des Signifikanzlevels erfolgt dieser Anstieg steiler oder weniger steil.</p>
-<div id="fig-einstichproben-t-test-zweiseitig-h0-einfach-powerfunktionen" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./_figures/304-einstichproben-t-test-zweiseitig-h0-einfach-powerfunktionen.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption class="figure-caption">Abbildung&nbsp;24.6: Powerfunktionen des zweiseitigen Einstichproben-T-Tests mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese. (A) Abhängigkeit der Powerfunktion <span class="math inline">\(\pi\)</span> vom Nichtzentralitätsparameter <span class="math inline">\(d\)</span> und Stichprobenumfang <span class="math inline">\(n\)</span> bei Wahl von <span class="math inline">\(\alpha_0 := 0.05\)</span>. (B) Abhängigkeit der Powerfunktion <span class="math inline">\(\pi\)</span> vom Nichtzentralitätsparameter <span class="math inline">\(d\)</span> und Stichprobenumfang <span class="math inline">\(n\)</span> bei Wahl von <span class="math inline">\(\alpha_0 := 0.001\)</span></figcaption>
+<p>Wir visualisieren die Abhängigkeit der Powerfunktion des zweiseitigen Einstichproben-T-Tests mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese vom Nichtzentralitätsparameter und Stichprobenumfang in <a href="#fig-einstichproben-t-test-zweiseitig-h0-einfach-powerfunktionen" class="quarto-xref">Abbildung&nbsp;<span>24.6</span></a> und <a href="#fig-einstichproben-t-test-zweiseitig-h0-einfach-powerfunktionen-schnitte" class="quarto-xref">Abbildung&nbsp;<span>24.7</span></a>. Generell steigt die Powerfunktion des betrachteten Tests mit positiver oder negativer Abweichung des Nichtzentralitätsparameters vom Nullhypothesenszenario <span class="math inline">\(d = 0\)</span> und steigendem Stichprobenumfang <span class="math inline">\(n\)</span> monoton. Je nach Wahl des Signifikanzlevels erfolgt dieser Anstieg steiler oder weniger steil.</p>
+<div id="fig-einstichproben-t-test-zweiseitig-h0-einfach-powerfunktionen" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-einstichproben-t-test-zweiseitig-h0-einfach-powerfunktionen-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/304-einstichproben-t-test-zweiseitig-h0-einfach-powerfunktionen.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-einstichproben-t-test-zweiseitig-h0-einfach-powerfunktionen-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;24.6: Powerfunktionen des zweiseitigen Einstichproben-T-Tests mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese. (A) Abhängigkeit der Powerfunktion <span class="math inline">\(\pi\)</span> vom Nichtzentralitätsparameter <span class="math inline">\(d\)</span> und Stichprobenumfang <span class="math inline">\(n\)</span> bei Wahl von <span class="math inline">\(\alpha_0 := 0.05\)</span>. (B) Abhängigkeit der Powerfunktion <span class="math inline">\(\pi\)</span> vom Nichtzentralitätsparameter <span class="math inline">\(d\)</span> und Stichprobenumfang <span class="math inline">\(n\)</span> bei Wahl von <span class="math inline">\(\alpha_0 := 0.001\)</span>
+</figcaption>
 </figure>
 </div>
-<div id="fig-einstichproben-t-test-zweiseitig-h0-einfach-powerfunktionen-schnitte" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./_figures/304-einstichproben-t-test-zweiseitig-h0-einfach-powerfunktionen-schnitte.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption class="figure-caption">Abbildung&nbsp;24.7: Schnitte der Powerfunktionen des zweiseitigen Einstichproben-T-Tests mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese. (A) Abhängigkeit der Powerfunktion <span class="math inline">\(\pi\)</span> vom Nichtzentralitätsparameter <span class="math inline">\(d\)</span> bei konstantem Stichprobenumfang <span class="math inline">\(n = 12\)</span> und Wahl von <span class="math inline">\(\alpha_0 := 0.05\)</span>. (B) Abhängigkeit der Powerfunktion vom Stichprobenumfang <span class="math inline">\(n\)</span> <span class="math inline">\(\pi\)</span> bei Nichtzentralitätsparameter <span class="math inline">\(d = 3\)</span> und Wahl von <span class="math inline">\(\alpha_0 := 0.05\)</span>. (C) Abhängigkeit der Powerfunktion <span class="math inline">\(\pi\)</span> vom Nichtzentralitätsparameter <span class="math inline">\(d\)</span> bei konstantem Stichprobenumfang <span class="math inline">\(n = 12\)</span> und Wahl von <span class="math inline">\(\alpha_0 := 0.001\)</span>. (D) Abhängigkeit der Powerfunktion vom Stichprobenumfang <span class="math inline">\(n\)</span> <span class="math inline">\(\pi\)</span> bei Nichtzentralitätsparameter <span class="math inline">\(d = 3\)</span> und Wahl von <span class="math inline">\(\alpha_0 := 0.001\)</span>.</figcaption>
+<div id="fig-einstichproben-t-test-zweiseitig-h0-einfach-powerfunktionen-schnitte" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-einstichproben-t-test-zweiseitig-h0-einfach-powerfunktionen-schnitte-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/304-einstichproben-t-test-zweiseitig-h0-einfach-powerfunktionen-schnitte.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-einstichproben-t-test-zweiseitig-h0-einfach-powerfunktionen-schnitte-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;24.7: Schnitte der Powerfunktionen des zweiseitigen Einstichproben-T-Tests mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese. (A) Abhängigkeit der Powerfunktion <span class="math inline">\(\pi\)</span> vom Nichtzentralitätsparameter <span class="math inline">\(d\)</span> bei konstantem Stichprobenumfang <span class="math inline">\(n = 12\)</span> und Wahl von <span class="math inline">\(\alpha_0 := 0.05\)</span>. (B) Abhängigkeit der Powerfunktion vom Stichprobenumfang <span class="math inline">\(n\)</span> <span class="math inline">\(\pi\)</span> bei Nichtzentralitätsparameter <span class="math inline">\(d = 3\)</span> und Wahl von <span class="math inline">\(\alpha_0 := 0.05\)</span>. (C) Abhängigkeit der Powerfunktion <span class="math inline">\(\pi\)</span> vom Nichtzentralitätsparameter <span class="math inline">\(d\)</span> bei konstantem Stichprobenumfang <span class="math inline">\(n = 12\)</span> und Wahl von <span class="math inline">\(\alpha_0 := 0.001\)</span>. (D) Abhängigkeit der Powerfunktion vom Stichprobenumfang <span class="math inline">\(n\)</span> <span class="math inline">\(\pi\)</span> bei Nichtzentralitätsparameter <span class="math inline">\(d = 3\)</span> und Wahl von <span class="math inline">\(\alpha_0 := 0.001\)</span>.
+</figcaption>
 </figure>
 </div>
 </section>
 <section id="praktische-durchführung" class="level4 unnumbered">
 <h4 class="unnumbered anchored" data-anchor-id="praktische-durchführung">Praktische Durchführung</h4>
 <p>Vor dem Hintergrund der in den bisherigen Abschnitten diskutierten Theorie des zweiseitigen Einstichproben-T-Tests mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese ergibt sich dann zunächst folgendes routiniertes Durchführen des Tests im Rahmen einer Datenanalyse.</p>
-<p>Man nimmt an, dass ein vorliegender univariater Datensatz <span class="math inline">\(y_1,...,y_n\)</span> eine Realisierung des Frequentistischen Inferenzmodells <span class="math inline">\(\upsilon_1,...,\upsilon_n \sim N(\mu,\sigma^2)\)</span> des Einstichproben-T-Tests mit wahren, aber unbekannten, Parameter <span class="math inline">\(\mu\)</span> und <span class="math inline">\(\sigma^2 &gt; 0\)</span> ist. Man nimmt ferner an, dass man entscheiden muss ob für einen gewählten Nullhypothesenparameter <span class="math inline">\(\mu_0\)</span> eher die Nullhypothese <span class="math inline">\(H_0 : \mu = \mu_0\)</span> oder die Alternativhypothese <span class="math inline">\(H_1: \mu \neq \mu_0\)</span> zutrifft. Um den Testumfang über viele Wiederholungen dieser Testprozedur zu kontrollieren, wählt ein Signifikanzlevel <span class="math inline">\(\alpha_0\)</span> und bestimmt den zugehörigen kritischen Wert <span class="math inline">\(k_{\alpha_0}\)</span>, so dass zum Beispiel bei einem Stichprobenumfang von <span class="math inline">\(n=12\)</span> und der Wahl von <span class="math inline">\(\alpha_0 := 0.05\)</span> ein kritischer Wert von <span class="math inline">\(k_{0.05} = 2.20\)</span> gewählt wird. Anhand des Stichprobenumfangs <span class="math inline">\(n\)</span>, des Nullhypothesenparameters <span class="math inline">\(\mu_0\)</span>, des Stichprobenmittels <span class="math inline">\(\bar{\upsilon}\)</span> und der Stichprobenstandardabweichung <span class="math inline">\(s\)</span> berechnet man sodann den Wert der Einstichproben-T-Test-Statistik durch <span class="math display">\[\begin{equation}
+<p>Man nimmt an, dass ein vorliegender univariater Datensatz <span class="math inline">\(y_1,...,y_n\)</span> eine Realisierung des Frequentistischen Inferenzmodells <span class="math inline">\(\upsilon_1,...,\upsilon_n \sim N(\mu,\sigma^2)\)</span> des Einstichproben-T-Tests mit wahren, aber unbekannten, Parameter <span class="math inline">\(\mu\)</span> und <span class="math inline">\(\sigma^2 &gt; 0\)</span> ist. Man nimmt ferner an, dass man entscheiden muss ob für einen gewählten Nullhypothesenparameter <span class="math inline">\(\mu_0\)</span> eher die Nullhypothese <span class="math inline">\(H_0 : \mu = \mu_0\)</span> oder die Alternativhypothese <span class="math inline">\(H_1: \mu \neq \mu_0\)</span> zutrifft. Um den Testumfang über viele Wiederholungen dieser Testprozedur zu kontrollieren, wählt ein Signifikanzlevel <span class="math inline">\(\alpha_0\)</span> und bestimmt den zugehörigen kritischen Wert <span class="math inline">\(k_{\alpha_0}\)</span>, so dass zum Beispiel bei einem Stichprobenumfang von <span class="math inline">\(n=12\)</span> und der Wahl von <span class="math inline">\(\alpha_0  := 0.05\)</span> ein kritischer Wert von <span class="math inline">\(k_{0.05} = 2.20\)</span> gewählt wird. Anhand des Stichprobenumfangs <span class="math inline">\(n\)</span>, des Nullhypothesenparameters <span class="math inline">\(\mu_0\)</span>, des Stichprobenmittels <span class="math inline">\(\bar{\upsilon}\)</span> und der Stichprobenstandardabweichung <span class="math inline">\(s\)</span> berechnet man sodann den Wert der Einstichproben-T-Test-Statistik durch <span class="math display">\[\begin{equation}
 t := \sqrt{n}\left(\frac{\bar{y} - \mu_0}{s}\right).
 \end{equation}\]</span> Wenn dieses für den vorliegenden Datensatz so bestimmte <span class="math inline">\(t\)</span> größer als <span class="math inline">\(k_{\alpha_0}\)</span> ist oder wenn <span class="math inline">\(t\)</span> kleiner als <span class="math inline">\(-k_{\alpha_0}\)</span> ist, lehnt man die Nullhypothese ab, andernfalls lehnt man sie nicht ab. Die oben entwickelte Theorie garantiert dann, dass man im langfristigen Mittel in höchstens <span class="math inline">\(\alpha_0 \cdot 100\)</span> von <span class="math inline">\(100\)</span> Fällen die Nullhypothese fälschlicherweise ablehnt. Weiterhin bestimmt man basierend auf dem vorliegenden Wert der Einstichproben-T-Test-Statistik den zugehörigen p-Wert durch <span class="math display">\[\begin{equation}
 \mbox{p-Wert} = 2(1 - \Psi(\vert t \vert;n-1))
@@ -958,7 +1031,7 @@ t := \sqrt{n}\left(\frac{\bar{y} - \mu_0}{s}\right).
 </div>
 <p>Will man im Rahmen einer Studienplanung eine Poweranalyse zur Optimierung des Stichprobenumfangs im vorliegenden Testszenario durchführen, so gilt natürlich zunächst grundsätzlich, dass mit steigendem Stichprobenumfang die Powerfunktion des Tests ansteigt. Vor dem Gesichtspunkt der Power des Tests ist ein größerer Stichprobenumfang also immer besser als ein kleinerer Stichprobenumfang. Allerdings bleiben dabei mögliche Kosten für die Erhöhung des Stichprobenumfangs, wie zum Beispiel mögliche Risiken für die Studienteilnehmer:innen, unberücksichtigt. Weiterhin ist der Wert, den die Powerfunktion bei einem gewählten Stichprobenumfang immer von den wahren, aber unbekannten, Parameterwerten <span class="math inline">\(\mu\)</span> und <span class="math inline">\(\sigma\)</span>, die in den Wert des Nichtzentralitätsparameters <span class="math inline">\(d\)</span> einfließen, abhängig. Würde man diese Werte in einem gegebenen Anwendungskontext schon sehr genau kennen, so würde man vermutlich keine Studie durchführen wollen. Generell wird im Rahmen der Studienplanung deshalb folgendes Vorgehen favorisiert. Zunächst entscheided man sich für ein Signifikanzlevel <span class="math inline">\(\alpha_0\)</span> zur Kontrolle des Testumfangs und evaluiert die Powerfunktion. Man überlegt sich dann einen Nichtzentralitätswert <span class="math inline">\(d^*\)</span>, den man mit einer Power von mindestens <span class="math inline">\(\beta\)</span> detektieren möchte, wobei ein typischer konventioneller <span class="math inline">\(\beta = 0.8\)</span> ist. Man wertet dann die für einen Powerfunktionswert <span class="math display">\[\begin{equation}
 \pi(d = d^*,n) = \beta
-\end{equation}\]</span> nötige Stichprobengröße aus. Aufgrund der Monotonie der Powerfunktion des zweiseitigen Einstichproben-T-Tests mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese im Bereich nicht-negativer Nichtzentralitätsparameter ist dann gewährleistet, dass die Power des Tests für Nichtzentralitätsparameter, die größer als <span class="math inline">\(d^*\)</span> sind, größer oder gleich <span class="math inline">\(\beta\)</span> sind. Folgender <strong>R</strong> Code implementiert dieses Vorgehen zur Optimierung des Stichprobenumfangs und <a href="#fig-einstichproben-t-test-zweiseitig-h0-einfach-stichprobenumfang">Abbildung&nbsp;<span>24.8</span></a> visualisiert es.</p>
+\end{equation}\]</span> nötige Stichprobengröße aus. Aufgrund der Monotonie der Powerfunktion des zweiseitigen Einstichproben-T-Tests mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese im Bereich nicht-negativer Nichtzentralitätsparameter ist dann gewährleistet, dass die Power des Tests für Nichtzentralitätsparameter, die größer als <span class="math inline">\(d^*\)</span> sind, größer oder gleich <span class="math inline">\(\beta\)</span> sind. Folgender <strong>R</strong> Code implementiert dieses Vorgehen zur Optimierung des Stichprobenumfangs und <a href="#fig-einstichproben-t-test-zweiseitig-h0-einfach-stichprobenumfang" class="quarto-xref">Abbildung&nbsp;<span>24.8</span></a> visualisiert es.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># Powerfunktionsbasierte Stichprobenumfangsoptimierung</span></span>
 <span id="cb5-2"><a href="#cb5-2"></a>alpha_0   <span class="ot">=</span> <span class="fl">0.05</span>                                                        <span class="co"># Signifikanzlevel</span></span>
@@ -980,16 +1053,20 @@ t := \sqrt{n}\left(\frac{\bar{y} - \mu_0}{s}\right).
 <pre><code>Minimal nötiges n = 16</code></pre>
 </div>
 </div>
-<div id="fig-einstichproben-t-test-zweiseitig-h0-einfach-stichprobenumfang" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./_figures/304-einstichproben-t-test-zweiseitig-h0-einfach-stichprobenumfang.png" class="img-fluid figure-img" style="width:60.0%"></p>
-<figcaption class="figure-caption">Abbildung&nbsp;24.8: Praktische Durchführung einer Powerfunktionsbasiertern Stichprobenumfangoptimierung. Bei gewählten Signifikanzlevel <span class="math inline">\(\alpha_0\)</span> und fest angenommenen Nichtzentralitätsparameter <span class="math inline">\(d*\)</span> evaluiert man den Stichprobenumfang für den die Testpowerfunktion einen Wert von <span class="math inline">\(\beta\)</span> oder größer hat.</figcaption>
+<div id="fig-einstichproben-t-test-zweiseitig-h0-einfach-stichprobenumfang" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-einstichproben-t-test-zweiseitig-h0-einfach-stichprobenumfang-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/304-einstichproben-t-test-zweiseitig-h0-einfach-stichprobenumfang.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-einstichproben-t-test-zweiseitig-h0-einfach-stichprobenumfang-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;24.8: Praktische Durchführung einer Powerfunktionsbasiertern Stichprobenumfangoptimierung. Bei gewählten Signifikanzlevel <span class="math inline">\(\alpha_0\)</span> und fest angenommenen Nichtzentralitätsparameter <span class="math inline">\(d*\)</span> evaluiert man den Stichprobenumfang für den die Testpowerfunktion einen Wert von <span class="math inline">\(\beta\)</span> oder größer hat.
+</figcaption>
 </figure>
 </div>
 </section>
 <section id="anwendungsbeispiel" class="level4 unnumbered">
 <h4 class="unnumbered anchored" data-anchor-id="anwendungsbeispiel">Anwendungsbeispiel</h4>
-<p>Abschließen wollen wir oben skizziertes Vorgehen zur Durchführung eines zweiseitigen Einstichproben-T-Tests mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese noch an dem in <a href="301-Grundbegriffe.html#sec-anwendungsbeispiel-frequentistische-inferenz"><span>Kapitel&nbsp;21.3.1</span></a> eingeführten Anwendungsbeispiel demonstrieren. Inhaltlich entsprich in diesem Fall die einfache Nullhypothese <span class="math inline">\(H_0 : \mu = 0\)</span> der Hypothese, dass die Therapie keinen Effekt auf BDI-II Reduktionsscores hat und die zusammengesetzte Alternativhypothese <span class="math inline">\(H_1 : \mu \neq 0\)</span>, dass die Therapie einen systematischen von Null verschiedenen Effekt auf BDI-II Reduktionsscores hat. Untenstehender <strong>R</strong> Code wendet das oben demonstrierte Verfahren zur Evaluation der Hypothesen auf den Prä-Post-Therapie BDI-II Reduktionsscore Datensatz von <span class="math inline">\(n = 12\)</span> Patient:innen an und evaluiert darüberhinaus zusätzlich das 95%-Konfidenzintervall für den Erwartungswertparameter.</p>
+<p>Abschließen wollen wir oben skizziertes Vorgehen zur Durchführung eines zweiseitigen Einstichproben-T-Tests mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese noch an dem in <a href="301-Grundbegriffe.html#sec-anwendungsbeispiel-frequentistische-inferenz" class="quarto-xref"><span>Kapitel 21.3.1</span></a> eingeführten Anwendungsbeispiel demonstrieren. Inhaltlich entsprich in diesem Fall die einfache Nullhypothese <span class="math inline">\(H_0 : \mu = 0\)</span> der Hypothese, dass die Therapie keinen Effekt auf BDI-II Reduktionsscores hat und die zusammengesetzte Alternativhypothese <span class="math inline">\(H_1 : \mu \neq 0\)</span>, dass die Therapie einen systematischen von Null verschiedenen Effekt auf BDI-II Reduktionsscores hat. Untenstehender <strong>R</strong> Code wendet das oben demonstrierte Verfahren zur Evaluation der Hypothesen auf den Prä-Post-Therapie BDI-II Reduktionsscore Datensatz von <span class="math inline">\(n = 12\)</span> Patient:innen an und evaluiert darüberhinaus zusätzlich das 95%-Konfidenzintervall für den Erwartungswertparameter.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>D         <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"./_data/304-Hypothesentests.csv"</span>)     <span class="co"># Datensatzeinlesen</span></span>
 <span id="cb7-2"><a href="#cb7-2"></a>y         <span class="ot">=</span> D<span class="sc">$</span>dBDI                                          <span class="co"># Datenauswahl</span></span>
@@ -1047,7 +1124,7 @@ mean of x
 <h2 data-number="24.4" class="anchored" data-anchor-id="sec-konfidenzintervalle-und-hypothesentests"><span class="header-section-number">24.4</span> Konfidenzintervalle und Hypothesentests</h2>
 <p>In diesem Abschnitt untersuchen wir, inwieweit Konfidenzintervalle und Hypothesentests als äquivalent angesehen werden können. Wir wollen dabei von dem Szenario eines Konfidenzintervalls ausgehen.</p>
 <div id="thm-dualität-von-konfidenzintervallen-und-hypothesentests" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 24.5 (Dualität von Konfidenzintervallen und Hypothesentests) </strong></span>Es sei <span class="math inline">\(\upsilon\)</span> die Stichprobe eines Frequentistischen Inferenzmodells mit Ergebnisraum <span class="math inline">\(\mathcal{Y}\)</span> und Parameterraum <span class="math inline">\(\Theta\)</span>. Weiterhin sei für ein <span class="math inline">\(\delta \in \,]0,1[\)</span> mit <span class="math inline">\([G_u(\upsilon), G_o(\upsilon)]\)</span> ein <span class="math inline">\(\delta\)</span>-Konfidenzintervall für den wahren, aber unbekannten, Parameter <span class="math inline">\(\theta \in \Theta\)</span> definiert. Dann gilt, dass der Hypothesentest definiert durch <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Theorem 24.5 (Dualität von Konfidenzintervallen und Hypothesentests)</strong></span> Es sei <span class="math inline">\(\upsilon\)</span> die Stichprobe eines Frequentistischen Inferenzmodells mit Ergebnisraum <span class="math inline">\(\mathcal{Y}\)</span> und Parameterraum <span class="math inline">\(\Theta\)</span>. Weiterhin sei für ein <span class="math inline">\(\delta \in \,]0,1[\)</span> mit <span class="math inline">\([G_u(\upsilon), G_o(\upsilon)]\)</span> ein <span class="math inline">\(\delta\)</span>-Konfidenzintervall für den wahren, aber unbekannten, Parameter <span class="math inline">\(\theta \in \Theta\)</span> definiert. Dann gilt, dass der Hypothesentest definiert durch <span class="math display">\[\begin{equation}
 \phi_\theta : \mathcal{Y} \to \{0,1\},
 y \mapsto \phi(y)
 :=
@@ -1069,14 +1146,14 @@ y \mapsto \phi(y)
 = 1 - \delta.
 \end{equation}\]</span></p>
 </div>
-<p><a href="#thm-dualität-von-konfidenzintervallen-und-hypothesentests">Theorem&nbsp;<span>24.5</span></a> besagt also, dass man mithilfe eines <span class="math inline">\(\delta\)</span>-Konfidenzintervalls einen Hypothesentest mit Signifikanzlevel <span class="math inline">\(\alpha_0 = 1 -\delta\)</span> mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese konstruieren kann. Dazu ist die bei diesem Test die Nullhypothese <span class="math inline">\(\theta = \theta_0\)</span> jeweils abzulehnen, wenn das Konfidenzintervall den Nullhypotheseparameter <span class="math inline">\(\theta_0\)</span> nicht überdeckt und ansonsten nicht. Anhand folgenden Theorems wollen wir <a href="#thm-dualität-von-konfidenzintervallen-und-hypothesentests">Theorem&nbsp;<span>24.5</span></a> für das in <a href="303-Konfidenzintervalle.html#sec-beispiele-fuer-konfidenzintervalle"><span>Kapitel&nbsp;23.2</span></a> betrachtete Konfidenzintervall für den Erwartungswertparameter des Normalverteilungsmodells und den in <a href="#sec-einstichproben-t-test"><span>Kapitel&nbsp;24.3.1</span></a> betrachteten Einstichproben-T-Test konkretisieren.</p>
+<p><a href="#thm-dualität-von-konfidenzintervallen-und-hypothesentests" class="quarto-xref">Theorem&nbsp;<span>24.5</span></a> besagt also, dass man mithilfe eines <span class="math inline">\(\delta\)</span>-Konfidenzintervalls einen Hypothesentest mit Signifikanzlevel <span class="math inline">\(\alpha_0 = 1 -\delta\)</span> mit einfacher Nullhypothese und zusammengesetzter Alternativhypothese konstruieren kann. Dazu ist die bei diesem Test die Nullhypothese <span class="math inline">\(\theta = \theta_0\)</span> jeweils abzulehnen, wenn das Konfidenzintervall den Nullhypotheseparameter <span class="math inline">\(\theta_0\)</span> nicht überdeckt und ansonsten nicht. Anhand folgenden Theorems wollen wir <a href="#thm-dualität-von-konfidenzintervallen-und-hypothesentests" class="quarto-xref">Theorem&nbsp;<span>24.5</span></a> für das in <a href="303-Konfidenzintervalle.html#sec-beispiele-fuer-konfidenzintervalle" class="quarto-xref"><span>Kapitel 23.2</span></a> betrachtete Konfidenzintervall für den Erwartungswertparameter des Normalverteilungsmodells und den in <a href="#sec-einstichproben-t-test" class="quarto-xref"><span>Kapitel 24.3.1</span></a> betrachteten Einstichproben-T-Test konkretisieren.</p>
 <div id="thm-dualität-von-erwartungswertkonfidenzintervall-und-einstichproben-t-test" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 24.6 (Dualität von Erwartungswertkonfidenzintervall und Einstichproben-T-Test) </strong></span>Gegeben sei das Normalverteilungsmodell und es sei <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Theorem 24.6 (Dualität von Erwartungswertkonfidenzintervall und Einstichproben-T-Test)</strong></span> Gegeben sei das Normalverteilungsmodell und es sei <span class="math display">\[\begin{equation}
 \kappa :=
 \left[\bar{\upsilon} - \frac{S}{\sqrt{n}}t_\delta,\bar{\upsilon} + \frac{S}{\sqrt{n}}t_\delta\right].
 \end{equation}\]</span> das mithilfe von <span class="math display">\[\begin{equation}
 t_\delta := \Psi^{-1}\left(\frac{1 + \delta}{2}; n-1 \right)
-\end{equation}\]</span> in <a href="303-Konfidenzintervalle.html#thm-konfidenzintervall-fuer-den-erwartungswertparameter-des-normalverteilungsmodells">Theorem&nbsp;<span>23.2</span></a> definierte <span class="math inline">\(\delta\)</span>-Konfidenzintervall für den Erwartungswertparameter. Dann ist mit <a href="#thm-dualität-von-konfidenzintervallen-und-hypothesentests">Theorem&nbsp;<span>24.5</span></a> der Test<br>
+\end{equation}\]</span> in <a href="303-Konfidenzintervalle.html#thm-konfidenzintervall-fuer-den-erwartungswertparameter-des-normalverteilungsmodells" class="quarto-xref">Theorem&nbsp;<span>23.2</span></a> definierte <span class="math inline">\(\delta\)</span>-Konfidenzintervall für den Erwartungswertparameter. Dann ist mit <a href="#thm-dualität-von-konfidenzintervallen-und-hypothesentests" class="quarto-xref">Theorem&nbsp;<span>24.5</span></a> der Test<br>
 <span class="math display">\[\begin{equation}
 \phi : \mathcal{Y} \to \{0,1\},
 y \mapsto \phi(y)
@@ -1136,11 +1213,15 @@ y \mapsto \phi(y)
 Geschätzter Testumfang      = 0.04</code></pre>
 </div>
 </div>
-<p>Wir visualisieren die Ergebnisse dieser Simulation in <a href="#fig-konfidenzintervall-hypothesentest-dualität">Abbildung&nbsp;<span>24.9</span></a>.</p>
-<div id="fig-konfidenzintervall-hypothesentest-dualität" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./_figures/304-dualität.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption class="figure-caption">Abbildung&nbsp;24.9: Dualität von Konfidenzintervall und Hypothesentest am Beispiel des Normalverteilungsmodells. Nutzt man das <span class="math inline">\(\delta\)</span>-Konfidenzintervall für den Erwartungswertparameter um bei Nichtübedeckung des Nullhypothesenparameters die Nullhypothese abzulehnen, so ergibt sich in diesem Fall ein Hypothesentest mit Signifikanzlevel <span class="math inline">\(\alpha_0 = 1 - \delta\)</span>.</figcaption>
+<p>Wir visualisieren die Ergebnisse dieser Simulation in <a href="#fig-konfidenzintervall-hypothesentest-dualität" class="quarto-xref">Abbildung&nbsp;<span>24.9</span></a>.</p>
+<div id="fig-konfidenzintervall-hypothesentest-dualität" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-konfidenzintervall-hypothesentest-dualität-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/304-dualität.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-konfidenzintervall-hypothesentest-dualität-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;24.9: Dualität von Konfidenzintervall und Hypothesentest am Beispiel des Normalverteilungsmodells. Nutzt man das <span class="math inline">\(\delta\)</span>-Konfidenzintervall für den Erwartungswertparameter um bei Nichtübedeckung des Nullhypothesenparameters die Nullhypothese abzulehnen, so ergibt sich in diesem Fall ein Hypothesentest mit Signifikanzlevel <span class="math inline">\(\alpha_0 = 1 - \delta\)</span>.
+</figcaption>
 </figure>
 </div>
 </section>
@@ -1169,7 +1250,7 @@ Geschätzter Testumfang      = 0.04</code></pre>
 </ol>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
 <div id="ref-amrhein2018" class="csl-entry" role="listitem">
 Amrhein, V., &amp; Greenland, S. (2018). Remove, Rather than Redefine, Statistical Significance. <em>Nature Human Behaviour</em>, <em>2</em>(1), 4–4. <a href="https://doi.org/10.1038/s41562-017-0224-0">https://doi.org/10.1038/s41562-017-0224-0</a>
 </div>
@@ -1283,10 +1364,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1296,8 +1376,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1310,6 +1399,125 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1353,6 +1561,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1378,6 +1587,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1439,12 +1674,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./303-Konfidenzintervalle.html" class="pagination-link">
+      <a href="./303-Konfidenzintervalle.html" class="pagination-link  aria-label=" &lt;span="">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Konfidenzintervalle</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./401-Regression.html" class="pagination-link">
+      <a href="./401-Regression.html" class="pagination-link" aria-label="<span class='chapter-number'>25</span>&nbsp; <span class='chapter-title'>Regression</span>">
         <span class="nav-page-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Regression</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
@@ -1453,4 +1688,5 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-</body></html>
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/304-Hypothesentests.qmd" class="toc-action"><i class="bi bi-github"></i>Seite editieren</a></li></ul></div></div></div></footer></body></html>

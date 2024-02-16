@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.549">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -58,6 +58,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -100,7 +101,13 @@ div.csl-indent {
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "Keine Treffer",
     "search-matching-documents-text": "Treffer",
@@ -109,6 +116,7 @@ div.csl-indent {
     "search-more-match-text": "weitere Treffer in diesem Dokument",
     "search-more-matches-text": "weitere Treffer in diesem Dokument",
     "search-clear-button-title": "Zurücksetzen",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Abbrechen",
     "search-submit-button-title": "Abschicken",
     "search-label": "Suchen"
@@ -118,6 +126,33 @@ div.csl-indent {
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
 </head>
 
 <body class="nav-sidebar floating">
@@ -126,12 +161,12 @@ div.csl-indent {
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./401-Regression.html">Das Allgemeine Lineare Modell</a></li><li class="breadcrumb-item"><a href="./404-Parameterschätzung.html"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Parameterschätzung</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./401-Regression.html">Das Allgemeine Lineare Modell</a></li><li class="breadcrumb-item"><a href="./404-Parameterschätzung.html"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Parameterschätzung</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
@@ -141,13 +176,13 @@ div.csl-indent {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Probabilistische Datenwissenschaft für die Psychologie</a> 
         <div class="sidebar-tools-main">
-    <a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-    <a href="./Probabilistische-Datenwissenschaft-für-die-Psychologie.pdf" rel="" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+    <a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages" title="Quellcode" class="quarto-navigation-tool px-1" aria-label="Quellcode"><i class="bi bi-github"></i></a>
+    <a href="./Probabilistische-Datenwissenschaft-für-die-Psychologie.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
 </div>
     </div>
       </div>
@@ -380,6 +415,12 @@ div.csl-indent {
  <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">T-Statistiken</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./406-F-Statistiken.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">F-Statistiken</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item">
@@ -406,16 +447,16 @@ div.csl-indent {
   <li><a href="#literaturhinweise" id="toc-literaturhinweise" class="nav-link" data-scroll-target="#literaturhinweise"><span class="header-section-number">28.6</span> Literaturhinweise</a></li>
   <li><a href="#selbstkontrollfragen" id="toc-selbstkontrollfragen" class="nav-link" data-scroll-target="#selbstkontrollfragen"><span class="header-section-number">28.7</span> Selbstkontrollfragen</a></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/404-Parameterschätzung.qmd" class="toc-action">Seite editieren</a></p></div></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/404-Parameterschätzung.qmd" class="toc-action"><i class="bi bi-github"></i>Seite editieren</a></li></ul></div></nav>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./401-Regression.html">Das Allgemeine Lineare Modell</a></li><li class="breadcrumb-item"><a href="./404-Parameterschätzung.html"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Parameterschätzung</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span id="sec-parameterschaetzung" class="quarto-section-identifier"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Parameterschätzung</span></span></h1>
 </div>
@@ -430,14 +471,16 @@ div.csl-indent {
   </div>
   
 
+
 </header>
+
 
 <p>In diesem Abschnitt betrachten wir die Frequentistische Punktschätzung von Betaparametervektor und Varianzparameter im ALM. Als Beispielanwendungen betrachten wir das Szenario <span class="math inline">\(n\)</span> unabhängig und identisch normalverteilter Zufallsvariablen und das Szenario der einfachen linearen Regression. Wir schließen mit der Dokumentation der Frequentistischen Parameterschätzerverteilungen des ALMs.</p>
 <section id="betaparameterschätzung" class="level2" data-number="28.1">
 <h2 data-number="28.1" class="anchored" data-anchor-id="betaparameterschätzung"><span class="header-section-number">28.1</span> Betaparameterschätzung</h2>
 <p>Wir fassen die Frequentistische Punktschätzung des Betaparametervektors in folgendem Theorem zusammen.</p>
 <div id="thm-betaparameterschaetzer" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 28.1 (Betaparameterschätzer) </strong></span>Es sei <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Theorem 28.1 (Betaparameterschätzer)</strong></span> Es sei <span class="math display">\[\begin{equation}
 \upsilon = X\beta+\varepsilon \mbox{ mit } \varepsilon \sim N\left(0_{n}, \sigma^{2} I_{n}\right)
 \end{equation}\]</span> das Allgemeine Lineare Modell und es sei <span class="math display">\[\begin{equation}
 \hat{\beta}:=\left(X^{T}X\right)^{-1}X^{T}\upsilon .
@@ -500,12 +543,12 @@ z^{T}X^{T}Xz \geq 0 \mbox{ für alle } z \in \mathbb{R}^{p}.
 = \beta .
 \end{equation}\]</span></p>
 </div>
-<p><a href="#thm-betaparameterschaetzer">Theorem&nbsp;<span>28.1</span></a> gibt mit <span class="math display">\[\begin{equation}
+<p><a href="#thm-betaparameterschaetzer" class="quarto-xref">Theorem&nbsp;<span>28.1</span></a> gibt mit <span class="math display">\[\begin{equation}
 \hat{\beta}=\left(X^{T}X\right)^{-1}X^{T}y
 \end{equation}\]</span> eine Formel an, um <span class="math inline">\(\beta\)</span> anhand der Designmatrix und einer Realisierung <span class="math inline">\(y \in \mathbb{R}^{n}\)</span> von <span class="math inline">\(\upsilon\)</span> konkret zu schätzen. Als Zufallsvektor ist <span class="math inline">\(\hat{\beta}\)</span> ist ein unverzerrter Schätzer von <span class="math inline">\(\beta\)</span> und als Maximum-Likelihood-Schätzer insbesondere auch konsistent, asymptotisch normalverteilt und asymptotisch effizient. Wir sehen an späterer Stelle dass <span class="math inline">\(\hat{\beta}\)</span> sogar normalverteilt ist. Neben den genannten Eigenschaften hat <span class="math inline">\(\hat{\beta}\)</span> noch weitere gute Eigenschaften. Zum Beispiel besitzt <span class="math inline">\(\hat{\beta}\)</span> die kleinste Varianz in der Klasse der linearen unverzerrten Schätzer von <span class="math inline">\(\beta\)</span>. Diese Eigenschaft ist Kernaussage des <em>Gauss-Markov Theorems</em>, auf das wir hier aber nicht näher eingehen wollen.</p>
 <p>Mithilfe des Betaparameterschätzers können wir die Begriffe der erklärten Daten, des Residuenvektors und der Residuen definieren, die wir an vielen Stellen benötigen werden.</p>
 <div id="def-erklaerte-daten-residuenvektor-und-residuen" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 28.1 (Erklärte Daten, Residuenvektor und Residuen) </strong></span>Es sei <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 28.1 (Erklärte Daten, Residuenvektor und Residuen)</strong></span> Es sei <span class="math display">\[\begin{equation}
 \upsilon = X\beta+\varepsilon \operatorname{mit} \varepsilon \sim N\left(0_{n}, \sigma^{2} I_{n}\right)
 \end{equation}\]</span> das Allgemeine Lineare Modell und es sei <span class="math display">\[\begin{equation}
 \hat{\beta}:=\left(X^{T}X\right)^{-1}X^{T}\upsilon .
@@ -522,30 +565,30 @@ z^{T}X^{T}Xz \geq 0 \mbox{ für alle } z \in \mathbb{R}^{p}.
 <h2 data-number="28.2" class="anchored" data-anchor-id="varianzparameterschätzung"><span class="header-section-number">28.2</span> Varianzparameterschätzung</h2>
 <p>Wir fassen die Frequentistische Punktschätzung des Varianzparameters in folgendem Theorem zusammen, das wir an dieser Stelle nicht beweisen wollen.</p>
 <div id="thm-varianzparameterschaetzer" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 28.2 (Varianzparameterschätzer) </strong></span>Es sei <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Theorem 28.2 (Varianzparameterschätzer)</strong></span> Es sei <span class="math display">\[\begin{equation}
 \upsilon = X\beta+\varepsilon \mbox{ mit } \varepsilon \sim N\left(0_{n}, \sigma^{2} I_{n}\right)
 \end{equation}\]</span> das Allgemeine Lineare Modell. Dann ist <span class="math display">\[\begin{equation}
 \hat{\sigma}^{2}:=\frac{\hat{\varepsilon}^{T} \hat{\varepsilon}}{n-p}
 \end{equation}\]</span> ein unverzerrter Schätzer von <span class="math inline">\(\sigma^{2}&gt;0\)</span>.</p>
 </div>
-<p><a href="#thm-varianzparameterschaetzer">Theorem&nbsp;<span>28.2</span></a> gibt mit <span class="math display">\[\begin{equation}
+<p><a href="#thm-varianzparameterschaetzer" class="quarto-xref">Theorem&nbsp;<span>28.2</span></a> gibt mit <span class="math display">\[\begin{equation}
 \hat{\sigma}^{2}
 = \frac{(y - X\hat{\beta})^{T}(y - X\hat{\beta})}{n-p}
-\end{equation}\]</span> eine Formel an, um <span class="math inline">\(\sigma^{2}\)</span> anhand der Designmatrix, des Betaparameterschätzers und einer Realisierung <span class="math inline">\(y \in \mathbb{R}^n\)</span> von <span class="math inline">\(\upsilon\)</span> zu schätzen. Offenbar gilt mit <a href="#thm-varianzparameterschaetzer">Theorem&nbsp;<span>28.2</span></a>, dass <span class="math display">\[\begin{equation}
+\end{equation}\]</span> eine Formel an, um <span class="math inline">\(\sigma^{2}\)</span> anhand der Designmatrix, des Betaparameterschätzers und einer Realisierung <span class="math inline">\(y \in \mathbb{R}^n\)</span> von <span class="math inline">\(\upsilon\)</span> zu schätzen. Offenbar gilt mit <a href="#thm-varianzparameterschaetzer" class="quarto-xref">Theorem&nbsp;<span>28.2</span></a>, dass <span class="math display">\[\begin{equation}
 \hat{\sigma}^{2}=\frac{1}{n-p} \sum_{i=1}^{n}\left(y_{i}-(X\hat{\beta})_{i}\right)^{2}
-\end{equation}\]</span> <span class="math inline">\(\hat{\sigma}^{2}\)</span> wird also durch die Summe der quadrierten Residuen, also als eine Summe von Abweichungsquadraten geschätzt. Für einen Beweis von <a href="#thm-varianzparameterschaetzer">Theorem&nbsp;<span>28.2</span></a> verweisen wir zum Beispiel auf <span class="citation" data-cites="searle1971">Searle (<a href="#ref-searle1971" role="doc-biblioref">1971</a>)</span>, <span class="citation" data-cites="searle2017">Searle &amp; Gruber (<a href="#ref-searle2017" role="doc-biblioref">2017</a>)</span> oder <span class="citation" data-cites="rencher2008">Rencher &amp; Schaalje (<a href="#ref-rencher2008" role="doc-biblioref">2008</a>)</span>. Aus probabilistischer Perspektive handelt es sich bei <span class="math inline">\(\hat{\sigma}^{2}\)</span> nicht um einen Maximum-Likelihood-Schätzer, sondern um einen Restricted Maximum-Likelihood-Schätzer von <span class="math inline">\(\sigma^{2}\)</span> (vgl. <span class="citation" data-cites="harville1977">Harville (<a href="#ref-harville1977" role="doc-biblioref">1977</a>)</span>, <span class="citation" data-cites="foulley1993">Foulley (<a href="#ref-foulley1993" role="doc-biblioref">1993</a>)</span>, <span class="citation" data-cites="starke2017">Starke &amp; Ostwald (<a href="#ref-starke2017" role="doc-biblioref">2017</a>)</span>). Aus geometrischer Perspektive handelt es sich bei <span class="math inline">\(\hat{\sigma}^{2}\)</span> um einen KQ-Schätzer (vgl. <span class="citation" data-cites="christensen2011">Christensen (<a href="#ref-christensen2011" role="doc-biblioref">2011</a>)</span>).</p>
+\end{equation}\]</span> <span class="math inline">\(\hat{\sigma}^{2}\)</span> wird also durch die Summe der quadrierten Residuen, also als eine Summe von Abweichungsquadraten geschätzt. Für einen Beweis von <a href="#thm-varianzparameterschaetzer" class="quarto-xref">Theorem&nbsp;<span>28.2</span></a> verweisen wir zum Beispiel auf <span class="citation" data-cites="searle1971">Searle (<a href="#ref-searle1971" role="doc-biblioref">1971</a>)</span>, <span class="citation" data-cites="searle2017">Searle &amp; Gruber (<a href="#ref-searle2017" role="doc-biblioref">2017</a>)</span> oder <span class="citation" data-cites="rencher2008">Rencher &amp; Schaalje (<a href="#ref-rencher2008" role="doc-biblioref">2008</a>)</span>. Aus probabilistischer Perspektive handelt es sich bei <span class="math inline">\(\hat{\sigma}^{2}\)</span> nicht um einen Maximum-Likelihood-Schätzer, sondern um einen Restricted Maximum-Likelihood-Schätzer von <span class="math inline">\(\sigma^{2}\)</span> (vgl. <span class="citation" data-cites="harville1977">Harville (<a href="#ref-harville1977" role="doc-biblioref">1977</a>)</span>, <span class="citation" data-cites="foulley1993">Foulley (<a href="#ref-foulley1993" role="doc-biblioref">1993</a>)</span>, <span class="citation" data-cites="starke2017">Starke &amp; Ostwald (<a href="#ref-starke2017" role="doc-biblioref">2017</a>)</span>). Aus geometrischer Perspektive handelt es sich bei <span class="math inline">\(\hat{\sigma}^{2}\)</span> um einen KQ-Schätzer (vgl. <span class="citation" data-cites="christensen2011">Christensen (<a href="#ref-christensen2011" role="doc-biblioref">2011</a>)</span>).</p>
 </section>
 <section id="unabhängig-identisch-normalverteilte-zufallsvariablen" class="level2" data-number="28.3">
 <h2 data-number="28.3" class="anchored" data-anchor-id="unabhängig-identisch-normalverteilte-zufallsvariablen"><span class="header-section-number">28.3</span> Unabhängig identisch normalverteilte Zufallsvariablen</h2>
-<p>Als erste Anwendung von <a href="#thm-betaparameterschaetzer">Theorem&nbsp;<span>28.1</span></a> und <a href="#thm-varianzparameterschaetzer">Theorem&nbsp;<span>28.2</span></a> analysieren wir das Szenario von <span class="math inline">\(n\)</span> unabhängigen und identisch normalverteilten Zufallsvariablen mit Erwartungswertparameter <span class="math inline">\(\mu \in \mathbb{R}\)</span> und Varianzparameter <span class="math inline">\(\sigma^{2}\)</span>, <span class="math display">\[\begin{equation}
+<p>Als erste Anwendung von <a href="#thm-betaparameterschaetzer" class="quarto-xref">Theorem&nbsp;<span>28.1</span></a> und <a href="#thm-varianzparameterschaetzer" class="quarto-xref">Theorem&nbsp;<span>28.2</span></a> analysieren wir das Szenario von <span class="math inline">\(n\)</span> unabhängigen und identisch normalverteilten Zufallsvariablen mit Erwartungswertparameter <span class="math inline">\(\mu \in \mathbb{R}\)</span> und Varianzparameter <span class="math inline">\(\sigma^{2}\)</span>, <span class="math display">\[\begin{equation}
 \upsilon_{i} \sim N\left(\mu, \sigma^{2}\right) \mbox{ für } i=1, \ldots, n.
-\end{equation}\]</span> Schreibt man dieses Modell in seiner Designmatrixform (vgl. <a href="403-Modellformulierung.html#eq-uinv-zven">Gleichung&nbsp;<span>27.2</span></a>) dann gilt, wie unten gezeigt, <span id="eq-uinv-schaetzung"><span class="math display">\[
+\end{equation}\]</span> Schreibt man dieses Modell in seiner Designmatrixform (vgl. <a href="403-Modellformulierung.html#eq-uinv-zven" class="quarto-xref">Gleichung&nbsp;<span>27.2</span></a>) dann gilt, wie unten gezeigt, <span id="eq-uinv-schaetzung"><span class="math display">\[
 \hat{\beta} =
 \frac{1}{n} \sum_{i=1}^{n} \upsilon_{i} =: \bar{\upsilon}
 \mbox{ und }
 \hat{\sigma}^{2} = \frac{1}{n-1} \sum_{i=1}^{n}\left(\upsilon_{i}-\bar{\upsilon}\right)^{2} =: s_{\upsilon}^{2}
 \tag{28.1}\]</span></span> In diesem Fall ist also der Betaparameterschätzer mit dem Stichprobenmittel <span class="math inline">\(\bar{\upsilon}\)</span> der <span class="math inline">\(\upsilon_{1}, \ldots, \upsilon_{n}\)</span> und der Varianzparameterschätzer mit der Stichprobenvarianz <span class="math inline">\(s_{\upsilon}^{2}\)</span> der <span class="math inline">\(\upsilon_{1}, \ldots, \upsilon_{n}\)</span> identisch.</p>
-<p><a href="#eq-uinv-schaetzung">Gleichung&nbsp;<span>28.1</span></a> ergibt sich wie folgt. Zum einen gilt <span class="math display">\[\begin{equation}
+<p><a href="#eq-uinv-schaetzung" class="quarto-xref">Gleichung&nbsp;<span>28.1</span></a> ergibt sich wie folgt. Zum einen gilt <span class="math display">\[\begin{equation}
 \begin{aligned}
 \hat{\beta}
 &amp; = \left(X^{T}X\right)^{-1}X^{T}\upsilon \\
@@ -637,9 +680,9 @@ z^{T}X^{T}Xz \geq 0 \mbox{ für alle } z \in \mathbb{R}^{p}.
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>beta       :  2 
-hat{beta}  :  2.113826 
+hat{beta}  :  2.175337 
 sigsqr     :  1 
-hat{sigsqr}:  1.288457</code></pre>
+hat{sigsqr}:  1.853173</code></pre>
 </div>
 </div>
 <p>Die Frequentistische Bedeutung der Schätzerunverzerrtheit in diesem Szenario simuliert folgender <strong>R</strong> Code.</p>
@@ -667,19 +710,19 @@ hat{sigsqr}:  1.288457</code></pre>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>Wahrer, aber unbekannter, Betaparameter                  :  2 
-Geschätzter Erwartungswert des Betaparameterschätzers    :  1.999382 
+Geschätzter Erwartungswert des Betaparameterschätzers    :  2.000351 
 Wahrer, aber unbekannter, Varianzparameter               :  1 
-Geschätzter Erwartungswert des Varianzparameterschätzers :  1.002328</code></pre>
+Geschätzter Erwartungswert des Varianzparameterschätzers :  1.007924</code></pre>
 </div>
 </div>
 </section>
 <section id="einfache-lineare-regression" class="level2" data-number="28.4">
 <h2 data-number="28.4" class="anchored" data-anchor-id="einfache-lineare-regression"><span class="header-section-number">28.4</span> Einfache lineare Regression</h2>
-<p>Als zweite Anwendung von <a href="#thm-betaparameterschaetzer">Theorem&nbsp;<span>28.1</span></a> und <a href="#thm-varianzparameterschaetzer">Theorem&nbsp;<span>28.2</span></a> analysieren wir das Szenario der einfachen linearen Regression</p>
+<p>Als zweite Anwendung von <a href="#thm-betaparameterschaetzer" class="quarto-xref">Theorem&nbsp;<span>28.1</span></a> und <a href="#thm-varianzparameterschaetzer" class="quarto-xref">Theorem&nbsp;<span>28.2</span></a> analysieren wir das Szenario der einfachen linearen Regression</p>
 <p><span class="math display">\[\begin{equation}
 \upsilon_{i}=\beta_{0}+\beta_{1} x_{i}+\varepsilon_{i}
 \mbox{ mit } \varepsilon_{i} \sim N\left(0, \sigma^{2}\right) \mbox{ für } i=1, \ldots, n.
-\end{equation}\]</span> Basierend auf der Designmatrixform <a href="403-Modellformulierung.html#eq-alm-elr">Gleichung&nbsp;<span>27.3</span></a> dieses Modells ergibt sich, wie unten gezeigt, <span id="eq-betahat-elr"><span class="math display">\[
+\end{equation}\]</span> Basierend auf der Designmatrixform <a href="403-Modellformulierung.html#eq-alm-elr" class="quarto-xref">Gleichung&nbsp;<span>27.3</span></a> dieses Modells ergibt sich, wie unten gezeigt, <span id="eq-betahat-elr"><span class="math display">\[
 \hat{\beta}
 =\begin{pmatrix}
 \hat{\beta}_{0} \\
@@ -692,12 +735,13 @@ Geschätzter Erwartungswert des Varianzparameterschätzers :  1.002328</code></p
 \mbox{ und }
 \hat{\sigma}^{2} = \frac{1}{n-2}\sum_{i=1}^{n}\left(\upsilon_{i}-\left(\hat{\beta}_{0}+\hat{\beta}_{1} x_{i}\right)\right)^{2}
 \tag{28.2}\]</span></span></p>
-<p>wobei <span class="math inline">\(\bar{x}\)</span> und <span class="math inline">\(\bar{\upsilon}\)</span> die Stichprobenmittel der <span class="math inline">\(x_{1}, \ldots, x_{n}\)</span> und <span class="math inline">\(\upsilon_{1}, \ldots, \upsilon_{n}, c_{x v}\)</span> die Stichprobenkovarianz der <span class="math inline">\(x_{1}, \ldots, x_{n}\)</span> und <span class="math inline">\(\upsilon_{1}, \ldots, \upsilon_{n}\)</span> und <span class="math inline">\(s_{x}^{2}\)</span> die Stichprobenvarianz der <span class="math inline">\(x_{1}, \ldots, x_{n}\)</span> bezeichnen. Wie in Kapitel 1 sind die Bezeichnungen Stichprobenkovarianz und Stichprobenvarianz bezüglich der <span class="math inline">\(x_{1}, \ldots, x_{n}\)</span> hier lediglich formal gemeint, da keine Annahme zugrundeliegt, dass die <span class="math inline">\(x_{1}, \ldots, x_{n}\)</span> Realisierungen von Zufallsvariablen sind.</p>
-<p>Wir halten also fest, dass für eine parametrische Designmatrixspalte sich der entsprechende Betaparameterschätzer aus der Stichprobenkovarianz der respektiven Spalte mit den Daten geteilt durch die Stichprobenvarianz der entsprechenden Spalte ergibt und somit einer standardisierten Stichprobenkovarianz entspricht. Ein Vergleich mit den Parametern der Ausgleichsgerade in <a href="401-Regression.html"><span>Kapitel&nbsp;25</span></a> zeigt weiterhin die Identität der Betaparameterschätzerkomponenten <span class="math inline">\(\hat{\beta}_{0}\)</span> und <span class="math inline">\(\hat{\beta}_{1}\)</span> mit den dort unter dem Kriterium der Minimierung der quadrierten vertikalen Abweichungen hergeleiteten Parametern. Dies überrascht nicht, da sowohl <span class="math inline">\(\hat{\beta}\)</span> als auch die Parameter der Ausgleichsgerade bei festem Wert <span class="math inline">\(y \in \mathbb{R}^n\)</span> von <span class="math inline">\(\upsilon\)</span> den Wert <span class="math display">\[\begin{equation}
+<p>wobei <span class="math inline">\(\bar{x}\)</span> und <span class="math inline">\(\bar{\upsilon}\)</span> die Stichprobenmittel der <span class="math inline">\(x_{1}, \ldots, x_{n}\)</span> und <span class="math inline">\(\upsilon_{1}, \ldots, \upsilon_{n}, c_{x v}\)</span> die Stichprobenkovarianz der <span class="math inline">\(x_{1},
+\ldots, x_{n}\)</span> und <span class="math inline">\(\upsilon_{1}, \ldots, \upsilon_{n}\)</span> und <span class="math inline">\(s_{x}^{2}\)</span> die Stichprobenvarianz der <span class="math inline">\(x_{1}, \ldots, x_{n}\)</span> bezeichnen. Wie in Kapitel 1 sind die Bezeichnungen Stichprobenkovarianz und Stichprobenvarianz bezüglich der <span class="math inline">\(x_{1}, \ldots, x_{n}\)</span> hier lediglich formal gemeint, da keine Annahme zugrundeliegt, dass die <span class="math inline">\(x_{1}, \ldots, x_{n}\)</span> Realisierungen von Zufallsvariablen sind.</p>
+<p>Wir halten also fest, dass für eine parametrische Designmatrixspalte sich der entsprechende Betaparameterschätzer aus der Stichprobenkovarianz der respektiven Spalte mit den Daten geteilt durch die Stichprobenvarianz der entsprechenden Spalte ergibt und somit einer standardisierten Stichprobenkovarianz entspricht. Ein Vergleich mit den Parametern der Ausgleichsgerade in <a href="401-Regression.html" class="quarto-xref"><span>Kapitel 25</span></a> zeigt weiterhin die Identität der Betaparameterschätzerkomponenten <span class="math inline">\(\hat{\beta}_{0}\)</span> und <span class="math inline">\(\hat{\beta}_{1}\)</span> mit den dort unter dem Kriterium der Minimierung der quadrierten vertikalen Abweichungen hergeleiteten Parametern. Dies überrascht nicht, da sowohl <span class="math inline">\(\hat{\beta}\)</span> als auch die Parameter der Ausgleichsgerade bei festem Wert <span class="math inline">\(y \in \mathbb{R}^n\)</span> von <span class="math inline">\(\upsilon\)</span> den Wert <span class="math display">\[\begin{equation}
 q(\tilde{\beta})
 =\sum_{i=1}^{n}\left(y_{i}-\left(\tilde{\beta}_{0}+\tilde{\beta}_{1} x_{i}\right)\right)^{2}=(y- X\tilde{\beta})^{T}(y- X\tilde{\beta})
 \end{equation}\]</span> hinsichtlich <span class="math inline">\(\tilde{\beta}\)</span> minimieren.</p>
-<p>Um die Form des Betaparameterschätzers in <a href="#eq-betahat-elr">Gleichung&nbsp;<span>28.2</span></a> herzuleiten, halten wir zunächst fest, dass <span class="math display">\[\begin{equation}
+<p>Um die Form des Betaparameterschätzers in <a href="#eq-betahat-elr" class="quarto-xref">Gleichung&nbsp;<span>28.2</span></a> herzuleiten, halten wir zunächst fest, dass <span class="math display">\[\begin{equation}
 \begin{aligned}
 \sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)\left(\upsilon_{i}-\bar{\upsilon}\right)
 &amp; =\sum_{i=1}^{n}\left(x_{i} \upsilon_{i}-x_{i} \bar{\upsilon}-\bar{x} \upsilon_{i}+\bar{x} \bar{\upsilon}\right) \\
@@ -847,9 +891,9 @@ n \bar{\upsilon} \\
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>beta       :  0 1 
-hat{beta}  :  0.0915494 1.012306 
+hat{beta}  :  -1.499275 1.148574 
 sigsqr     :  1 
-hat{sigsqr}:  1.917006</code></pre>
+hat{sigsqr}:  0.4342565</code></pre>
 </div>
 </div>
 <p>Analog zum Szenario der unabhängig und identisch normalverteilten Zufallsvariablen kann auch hier die Frequentistische Bedeutung der Schätzerunverzerrtheit simuliert werden.</p>
@@ -878,9 +922,9 @@ hat{sigsqr}:  1.917006</code></pre>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>Wahrer, aber unbekannter, Betaparameter                  :  0 1 
-Geschätzter Erwartungswert des Betaparameterschätzers    :  0.006220406 0.9995033 
+Geschätzter Erwartungswert des Betaparameterschätzers    :  0.005166924 0.9985443 
 Wahrer, aber unbekannter, Varianzparameter               :  1 
-Geschätzter Erwartungswert des Varianzparameterschätzers :  0.994014</code></pre>
+Geschätzter Erwartungswert des Varianzparameterschätzers :  0.9963506</code></pre>
 </div>
 </div>
 </section>
@@ -888,7 +932,7 @@ Geschätzter Erwartungswert des Varianzparameterschätzers :  0.994014</code></p
 <h2 data-number="28.5" class="anchored" data-anchor-id="frequentistische-schätzerverteilungen"><span class="header-section-number">28.5</span> Frequentistische Schätzerverteilungen</h2>
 <p>Wir dokumentieren die Frequentistische Verteilung des Betaparameterschätzers in folgendem Theorem.</p>
 <div id="thm-frequentistische-verteilung-des-betaparameterschaetzers" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 28.3 (Frequentistische Verteilung des Betaparameterschätzers.) </strong></span>Es sei <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Theorem 28.3 (Frequentistische Verteilung des Betaparameterschätzers.)</strong></span> Es sei <span class="math display">\[\begin{equation}
 \upsilon = X\beta+\varepsilon \mbox{ mit } \varepsilon \sim N\left(0_{n}, \sigma^{2} I_{n}\right)
 \end{equation}\]</span> das ALM. Weiterhin sei <span class="math display">\[\begin{equation}
 \hat{\beta}:=\left(X^{T}X\right)^{-1}X^{T}\upsilon
@@ -919,7 +963,7 @@ Geschätzter Erwartungswert des Varianzparameterschätzers :  0.994014</code></p
 <p>Als Diagonalelemente von <span class="math inline">\(\mathbb{C}(\hat{\beta})\)</span> hängen die Varianzen der Betaparameterschätzerkomponenten also sowohl vom Varianzparameter der Fehlervariablen als auch von der Designmatrix ab. Insbesondere bei festem, wahren, aber unbekannten <span class="math inline">\(\sigma^{2}&gt;0\)</span> kann also die Designmatrix so gewält werden, dass die Varianz der Betaparameterschätzerkomponenten minimiert wird.</p>
 <p>Die Frequentistische Verteilung des Varianzparameterschätzers dokumentieren wir in folgendem Theorem, welches wir an dieser Stelle nicht beweisen wollen.</p>
 <div id="thm-frequentistische-verteilung-des-varianzparameterschaetzers" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 28.4 (Frequentistische Verteilung des Varianzparameterschätzers) </strong></span>Es sei <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Theorem 28.4 (Frequentistische Verteilung des Varianzparameterschätzers)</strong></span> Es sei <span class="math display">\[\begin{equation}
 \upsilon = X\beta+\varepsilon \mbox{ mit } \varepsilon \sim N\left(0_{n}, \sigma^{2} I_{n}\right)
 \end{equation}\]</span> das ALM. Weiterhin sei <span class="math display">\[\begin{equation}
 \hat{\sigma}^{2}=\frac{\hat{\varepsilon}^{T} \hat{\varepsilon}}{n-p}
@@ -927,13 +971,13 @@ Geschätzter Erwartungswert des Varianzparameterschätzers :  0.994014</code></p
 \frac{n-p}{\sigma^{2}} \hat{\sigma}^{2} \sim \chi^{2}(n-p) .
 \end{equation}\]</span></p>
 </div>
-<p>Da es sich bei <span class="math inline">\((n-p) \hat{\sigma}^{2}\)</span> um eine Summe normalverteilter Zufallsvariablen handelt, liegt die <span class="math inline">\(\chi^{2}\)</span>-Verteilung im Lichte der <span class="math inline">\(\chi^{2}\)</span>-Transformation bei normalverteilten Zufallsvariablen zumindest nahe. Allerdings ist <span class="math inline">\(\hat{\sigma}^{2}\)</span> selbst nicht <span class="math inline">\(\chi^{2}\)</span> verteilt, sondern lediglich seine durch Multiplikation mit <span class="math inline">\(\frac{n-p}{\sigma^{2}}\)</span> skalierte Version. Wir wollen die Frequentistischen Schätzerverteilungen aus <a href="#thm-frequentistische-verteilung-des-betaparameterschaetzers">Theorem&nbsp;<span>28.3</span></a> und <a href="#thm-frequentistische-verteilung-des-varianzparameterschaetzers">Theorem&nbsp;<span>28.4</span></a> noch an den beiden Standardbeispielen verdeutlichen.</p>
+<p>Da es sich bei <span class="math inline">\((n-p) \hat{\sigma}^{2}\)</span> um eine Summe normalverteilter Zufallsvariablen handelt, liegt die <span class="math inline">\(\chi^{2}\)</span>-Verteilung im Lichte der <span class="math inline">\(\chi^{2}\)</span>-Transformation bei normalverteilten Zufallsvariablen zumindest nahe. Allerdings ist <span class="math inline">\(\hat{\sigma}^{2}\)</span> selbst nicht <span class="math inline">\(\chi^{2}\)</span> verteilt, sondern lediglich seine durch Multiplikation mit <span class="math inline">\(\frac{n-p}{\sigma^{2}}\)</span> skalierte Version. Wir wollen die Frequentistischen Schätzerverteilungen aus <a href="#thm-frequentistische-verteilung-des-betaparameterschaetzers" class="quarto-xref">Theorem&nbsp;<span>28.3</span></a> und <a href="#thm-frequentistische-verteilung-des-varianzparameterschaetzers" class="quarto-xref">Theorem&nbsp;<span>28.4</span></a> noch an den beiden Standardbeispielen verdeutlichen.</p>
 <section id="beispiel-1-unabhängige-und-identisch-normalverteilte-zufallsvariablen" class="level3 unnumbered">
 <h3 class="unnumbered anchored" data-anchor-id="beispiel-1-unabhängige-und-identisch-normalverteilte-zufallsvariablen">Beispiel (1) Unabhängige und identisch normalverteilte Zufallsvariablen</h3>
 <p>Es sei</p>
 <p><span class="math display">\[\begin{equation}
 \upsilon \sim N\left(X \beta, \sigma^{2} I_{n}\right) \mbox{ mit } X:=1_{n} \in \mathbb{R}^{n \times 1}, \beta:=\mu \in \mathbb{R} \mbox{ und } \sigma^{2}&gt;0
-\end{equation}\]</span> das ALM Szenario unabhängiger und identisch normalverteilter Zufallsvariablen bei bekannter Varianz. Wir haben bereits gesehen, dass in diesem Fall <span class="math inline">\(\hat{\beta}\)</span> mit dem Stichprobenmittel <span class="math inline">\(\bar{\upsilon}\)</span> identisch ist. <a href="#thm-frequentistische-verteilung-des-betaparameterschaetzers">Theorem&nbsp;<span>28.3</span></a> impliziert dann mit <span class="math display">\[\begin{equation}
+\end{equation}\]</span> das ALM Szenario unabhängiger und identisch normalverteilter Zufallsvariablen bei bekannter Varianz. Wir haben bereits gesehen, dass in diesem Fall <span class="math inline">\(\hat{\beta}\)</span> mit dem Stichprobenmittel <span class="math inline">\(\bar{\upsilon}\)</span> identisch ist. <a href="#thm-frequentistische-verteilung-des-betaparameterschaetzers" class="quarto-xref">Theorem&nbsp;<span>28.3</span></a> impliziert dann mit <span class="math display">\[\begin{equation}
 \left(X^{T}X\right)^{-1}=\left(1_{n}^{T} 1_{n}\right)^{-1}=\frac{1}{n},
 \end{equation}\]</span> dass <span class="math display">\[\begin{equation}
 \bar{\upsilon} \sim N\left(\mu, \frac{\sigma^{2}}{n}\right).
@@ -976,13 +1020,17 @@ Geschätzter Erwartungswert des Varianzparameterschätzers :  0.994014</code></p
 <span id="cb9-17"><a href="#cb9-17"></a>  beta_hat[,i] <span class="ot">=</span> <span class="fu">solve</span>(<span class="fu">t</span>(X) <span class="sc">%*%</span> X) <span class="sc">%*%</span> <span class="fu">t</span>(X) <span class="sc">%*%</span> y[,i]                           <span class="co"># \hat{\beta} = (X^T)X^{-1}X^T\upsilon</span></span>
 <span id="cb9-18"><a href="#cb9-18"></a>}</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="fig-elr-beta-hat" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./_figures/404-elr-beta-hat.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption class="figure-caption">Abbildung&nbsp;28.1: Frequentistische Betaparameterschätzerverteilung bei einfacher lineare Regression.</figcaption>
+<div id="fig-elr-beta-hat" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-elr-beta-hat-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/404-elr-beta-hat.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-elr-beta-hat-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;28.1: Frequentistische Betaparameterschätzerverteilung bei einfacher lineare Regression.
+</figcaption>
 </figure>
 </div>
-<p><a href="#fig-elr-beta-hat">Abbildung&nbsp;<span>28.1</span></a> zeigt 10 Realisationen des Modells einer einfachen linearen Regression und <a href="#fig-elr-beta-hat">Abbildung&nbsp;<span>28.1</span></a> B zeigt die entsprechenden Betaparameterschätzerrealisationen sowie die analytische Verteilung des Betaparameterschätzers.</p>
+<p><a href="#fig-elr-beta-hat" class="quarto-xref">Abbildung&nbsp;<span>28.1</span></a> zeigt 10 Realisationen des Modells einer einfachen linearen Regression und <a href="#fig-elr-beta-hat" class="quarto-xref">Abbildung&nbsp;<span>28.1</span></a> B zeigt die entsprechenden Betaparameterschätzerrealisationen sowie die analytische Verteilung des Betaparameterschätzers.</p>
 </section>
 </section>
 <section id="literaturhinweise" class="level2" data-number="28.6">
@@ -1002,7 +1050,7 @@ Geschätzter Erwartungswert des Varianzparameterschätzers :  0.994014</code></p
 </ol>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
 <div id="ref-christensen2011" class="csl-entry" role="listitem">
 Christensen, R. (2011). <em>Plane <span>Answers</span> to <span>Complex Questions</span></em>. <span>Springer New York</span>. <a href="https://doi.org/10.1007/978-1-4419-9816-3">https://doi.org/10.1007/978-1-4419-9816-3</a>
 </div>
@@ -1119,10 +1167,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1132,8 +1179,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1146,6 +1202,125 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1189,6 +1364,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1214,6 +1390,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1275,12 +1477,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./403-Modellformulierung.html" class="pagination-link">
+      <a href="./403-Modellformulierung.html" class="pagination-link  aria-label=" &lt;span="">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Modellformulierung</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./405-T-Statistiken.html" class="pagination-link">
+      <a href="./405-T-Statistiken.html" class="pagination-link" aria-label="<span class='chapter-number'>29</span>&nbsp; <span class='chapter-title'>T-Statistiken</span>">
         <span class="nav-page-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">T-Statistiken</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
@@ -1289,4 +1491,5 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-</body></html>
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/404-Parameterschätzung.qmd" class="toc-action"><i class="bi bi-github"></i>Seite editieren</a></li></ul></div></div></div></footer></body></html>
