@@ -1,0 +1,2206 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.549">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Probabilistische Datenwissenschaft für die Psychologie - 33&nbsp; Zweifaktorielle Varianzanalyse</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./Referenzen.html" rel="next">
+<link href="./408-Einfaktorielle-Varianzanalyse.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Keine Treffer",
+    "search-matching-documents-text": "Treffer",
+    "search-copy-link-title": "Link in die Suche kopieren",
+    "search-hide-matches-text": "Zusätzliche Treffer verbergen",
+    "search-more-match-text": "weitere Treffer in diesem Dokument",
+    "search-more-matches-text": "weitere Treffer in diesem Dokument",
+    "search-clear-button-title": "Zurücksetzen",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Abbrechen",
+    "search-submit-button-title": "Abschicken",
+    "search-label": "Suchen"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./401-Regression.html">Das Allgemeine Lineare Modell</a></li><li class="breadcrumb-item"><a href="./409-Zweifaktorielle-Varianzanalyse.html"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Zweifaktorielle Varianzanalyse</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Probabilistische Datenwissenschaft für die Psychologie</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages" title="Quellcode" class="quarto-navigation-tool px-1" aria-label="Quellcode"><i class="bi bi-github"></i></a>
+    <a href="./Probabilistische-Datenwissenschaft-für-die-Psychologie.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Suchen"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Willkommen</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Mathematische Grundlagen</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./101-Sprache-und-Logik.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Sprache und Logik</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./102-Mengen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Mengen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./103-Summen-Produkte-Potenzen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Summen, Produkte, Potenzen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./104-Funktionen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Funktionen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./105-Differentialrechnung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Differentialrechnung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./106-Folgen-Grenzwerte-Stetigkeit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Folgen, Grenzwerte, Stetigkeit</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./107-Integralrechnung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Integralrechnung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./108-Vektoren.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Vektoren</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./109-Matrizen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Matrizen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./110-Eigenanalyse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Eigenanalyse</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./200-Wahrscheinlichkeitstheorie.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Wahrscheinlichkeitstheorie</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./201-Wahrscheinlichkeitsräume.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Wahrscheinlichkeitsräume</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./202-Elementare-Wahrscheinlichkeiten.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Elementare Wahrscheinlichkeiten</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./203-Zufallsvariablen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Zufallsvariablen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./204-Zufallsvektoren.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Zufallsvektoren</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./205-Erwartungswerte.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Erwartungswerte</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./206-Ungleichungen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Ungleichungen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./207-Grenzwerte.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Grenzwerte</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./208-Transformationstheoreme.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Transformationstheoreme</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./209-Normalverteilungstransformationen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Normalverteilungstransformationen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./210-Multivariate-Normalverteilungen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Multivariate Normalverteilungen</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Frequentistische Inferenz</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./301-Grundbegriffe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Grundbegriffe</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./302-Punktschätzung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Punktschätzung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./303-Konfidenzintervalle.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Konfidenzintervalle</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./304-Hypothesentests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Hypothesentests</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Das Allgemeine Lineare Modell</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./401-Regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Regression</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./402-Korrelation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Korrelation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./403-Modellformulierung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Modellformulierung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./404-Parameterschätzung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Parameterschätzung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./405-T-Statistiken.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">T-Statistiken</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./406-F-Statistiken.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">F-Statistiken</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./407-T-Tests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">T-Tests</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./408-Einfaktorielle-Varianzanalyse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Einfaktorielle Varianzanalyse</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./409-Zweifaktorielle-Varianzanalyse.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Zweifaktorielle Varianzanalyse</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Referenzen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Referenzen</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Inhaltsverzeichnis</h2>
+   
+  <ul>
+  <li><a href="#anwendungsszenario" id="toc-anwendungsszenario" class="nav-link active" data-scroll-target="#anwendungsszenario"><span class="header-section-number">33.1</span> Anwendungsszenario</a>
+  <ul class="collapse">
+  <li><a href="#haupteffekte-und-interaktionen" id="toc-haupteffekte-und-interaktionen" class="nav-link" data-scroll-target="#haupteffekte-und-interaktionen">Haupteffekte und Interaktionen</a></li>
+  <li><a href="#anwendungsbeispiel" id="toc-anwendungsbeispiel" class="nav-link" data-scroll-target="#anwendungsbeispiel">Anwendungsbeispiel</a></li>
+  </ul></li>
+  <li><a href="#modellformulierung" id="toc-modellformulierung" class="nav-link" data-scroll-target="#modellformulierung"><span class="header-section-number">33.2</span> Modellformulierung</a>
+  <ul class="collapse">
+  <li><a href="#modell-der-additiven-zva" id="toc-modell-der-additiven-zva" class="nav-link" data-scroll-target="#modell-der-additiven-zva"><span class="header-section-number">33.2.1</span> Modell der additiven ZVA</a></li>
+  <li><a href="#modell-der-zva-mit-interaktion" id="toc-modell-der-zva-mit-interaktion" class="nav-link" data-scroll-target="#modell-der-zva-mit-interaktion"><span class="header-section-number">33.2.2</span> Modell der ZVA mit Interaktion</a></li>
+  </ul></li>
+  <li><a href="#modellschätzung" id="toc-modellschätzung" class="nav-link" data-scroll-target="#modellschätzung"><span class="header-section-number">33.3</span> Modellschätzung</a></li>
+  <li><a href="#modellevaluation" id="toc-modellevaluation" class="nav-link" data-scroll-target="#modellevaluation"><span class="header-section-number">33.4</span> Modellevaluation</a>
+  <ul class="collapse">
+  <li><a href="#evaluation-von-haupteffekten-im-additiven-modell-der-2-times-2-zva" id="toc-evaluation-von-haupteffekten-im-additiven-modell-der-2-times-2-zva" class="nav-link" data-scroll-target="#evaluation-von-haupteffekten-im-additiven-modell-der-2-times-2-zva">Evaluation von Haupteffekten im additiven Modell der <span class="math inline">\(2 \times 2\)</span> ZVA</a></li>
+  <li><a href="#evaluation-der-interaktion-im-modell-der-2-times-2-zva-mit-interaktion" id="toc-evaluation-der-interaktion-im-modell-der-2-times-2-zva-mit-interaktion" class="nav-link" data-scroll-target="#evaluation-der-interaktion-im-modell-der-2-times-2-zva-mit-interaktion">Evaluation der Interaktion im Modell der <span class="math inline">\(2 \times 2\)</span> ZVA mit Interaktion</a></li>
+  </ul></li>
+  <li><a href="#literaturhinweise" id="toc-literaturhinweise" class="nav-link" data-scroll-target="#literaturhinweise"><span class="header-section-number">33.5</span> Literaturhinweise</a></li>
+  <li><a href="#selbstkontrollfragen" id="toc-selbstkontrollfragen" class="nav-link" data-scroll-target="#selbstkontrollfragen"><span class="header-section-number">33.6</span> Selbstkontrollfragen</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/409-Zweifaktorielle-Varianzanalyse.qmd" class="toc-action"><i class="bi bi-github"></i>Seite editieren</a></li></ul></div></nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./401-Regression.html">Das Allgemeine Lineare Modell</a></li><li class="breadcrumb-item"><a href="./409-Zweifaktorielle-Varianzanalyse.html"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Zweifaktorielle Varianzanalyse</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-zweifaktorielle-varianzanalyse" class="quarto-section-identifier"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Zweifaktorielle Varianzanalyse</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="anwendungsszenario" class="level2" data-number="33.1">
+<h2 data-number="33.1" class="anchored" data-anchor-id="anwendungsszenario"><span class="header-section-number">33.1</span> Anwendungsszenario</h2>
+<p>Das klassische Anwendungsszenario einer zweifaktoriellen Varianzanalyse (ZVA) ist ein randomisiertes zweifaktorielles vollständig gekreuztes Studiendesign bestehend aus einer univariaten abhängige Variable bestimmt an randomisierten experimentellen Einheiten und zwei unabhängigen Variablen, die in der Regel jeweils mindestens zweistufig sind. Im Kontext der Varianzanalyse werden die unabhängigen Variablen bekanntlich auch Faktoren und ihre Ausprägungsstufen Faktorlevel genannt. Im Falle eines vollständig gekreuzten Designs wird jedes Level eines Faktors mit allen Level des anderen Faktors kombiniert. Die Kombination zweier spezifischer Faktorlevel wird dann auch Zelle des Designs genannt. Da den Zellen eines ZVA Designs üblicherweise Gruppen von experimentellen Einheiten zugeordnet werden, werden sie auch oft Gruppen oder experimentelle Bedingungen genant.</p>
+<p>Spezielle zweifaktorielle Studiendesigns werden üblicherweise anhand ihrer Faktorlevel bezeichnet. Ein <span class="math inline">\(I \times J\)</span> Studiendesign und seine entsprechende <span class="math inline">\(I \times J\)</span> zweifaktorielle Varianzanalyse impliziert also, dass <span class="math inline">\(I\)</span> Faktorlevel des ersten Faktors, im Folgenden als Faktor A bezeichnet, mit <span class="math inline">\(J\)</span> Faktorleveln des zweiten Faktors, im Folgenden als Faktor <span class="math inline">\(B\)</span> bezeichnet, gekreuzt werden. Folgende Tabelle gibt für einige der möglichen ZVA Designs die Bezeichnung und die Level der jeweiligen Faktoren an.</p>
+<p>Generell sind <span class="math inline">\(2 \times 2\)</span> ZVA Designs sehr populär und ermöglichen es, die wesentlichen Charakteristika zweifaktorieller Varianzanalysedesigns zu diskutieren. Wir fokussieren im Folgenden daher weitgehend auf diesen Fall. In <a href="#fig-zva-konzept-und-notation" class="quarto-xref">Abbildung&nbsp;<span>33.1</span></a> A visualisieren wir das konzeptuelle Design einer <span class="math inline">\(2 \times 2\)</span> ZVA, wobei wir die Zellen des Designs hier und im Folgenden mit A1B1, A1B2, A2B1 und A2B2 bezeichnen.</p>
+<p><a href="#fig-zva-konzept-und-notation" class="quarto-xref">Abbildung&nbsp;<span>33.1</span></a> B visualisiert, dass zu jeder Zelle des Designs eine Gruppen von Datenpunkten korrespondiert. Wir nutzen dabei folgende Indexkonvention: <span class="math inline">\(y_{ijk}\)</span> bezeichnet den Datenwert der <span class="math inline">\(k\)</span> ten experimentellen Einheit im <span class="math inline">\(i\)</span> ten Level von Faktor A und <span class="math inline">\(j\)</span> ten Level von Faktor B, wobei <span class="math inline">\(k=1, \ldots, n_{ij}\)</span> und im vorliegenden Fall <span class="math inline">\(i=1,2\)</span> sowie <span class="math inline">\(j=1,2\)</span>. Ist die Anzahl an Datenwerten <span class="math inline">\(n_{ij}\)</span> in jeder Zelle identisch, so spricht man wiederrum von einem balancierten Design.</p>
+<section id="haupteffekte-und-interaktionen" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="haupteffekte-und-interaktionen">Haupteffekte und Interaktionen</h3>
+<p>Intuitiv ist man in ZVA Designs an Haupteffekten und Interaktionen interessiert, die sich zunächst rein deskriptiv auf das Muster der zellspezifischen Gruppenmittelwerte beziehen.</p>
+<div id="fig-zva-konzept-und-notation" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-zva-konzept-und-notation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/409-zva-konzept-und-notation.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-zva-konzept-und-notation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;33.1: Konzeptuelles Design und Datennotation einer <span class="math inline">\(2 \times 2\)</span> ZVA.
+</figcaption>
+</figure>
+</div>
+<p>Für den Fall einer <span class="math inline">\(2 \times 2\)</span> ZVA spricht man dabei intuitiv vom Vorliegen eines <em>Haupteffekts von Faktor A</em>, wenn sich die Gruppenmittelwerte zwischen Level 1 und Level 2 von Faktor A, jeweils gemittelt über die zwei Level von Faktor B, unterscheiden. Weiterhin spricht man vom Vorliegen eines <em>Haupteffekts von Faktor B</em>, wenn sich die Gruppenmittelwerte zwischen Level 1 und Level 2 von Faktor B, jeweils gemittelt über die zwei Level von Faktor A, unterscheiden.</p>
+<p>Vom Vorliegen einer <em>Interaktion der Faktoren <span class="math inline">\(A\)</span> und <span class="math inline">\(B\)</span></em> schließlich spricht man, wenn der Unterschied der Gruppenmittelwerte von Faktor A zwischen Level 1 und 2 unterschiedlich für Level 1 und Level 2 von Faktor B ausgeprägt ist bzw. wenn der Unterschied der Gruppenmittelwerte von Faktor B zwischen Level 1 und 2 unterschiedlich für Level 1 und Level 2 von Faktor A ausgeprägt ist.</p>
+<p>Haupteffekte beziehen sich intuitiv also auf (marginale) Unterschiede (Differenzen), während sich Interaktionen auf Unterschiede von Unterschieden (Differenzen von Differenzen) beziehen. Dabei besagt das Vorliegen einer Interaktion also lediglich, dass sich die Unterschiede der Gruppenmittelwerte zwischen den Leveln eines experimentellen Faktors in Abhängigkeit von den Leveln des anderen experimentellen Faktors ändern, impliziert aber keine Aussage darüber, warum dies so ist. In anderen Worten sind Haupteffekte und Interaktionen bei Varianzanalysen Datenmuster, aber keine wissenschaftlichen Theorien. Die frequentitistisch-inferenzstatistische Absicherung dieser Datenmuster ist das Thema dieses Kapitels.</p>
+</section>
+<section id="anwendungsbeispiel" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="anwendungsbeispiel">Anwendungsbeispiel</h3>
+<p>Für ein konkretes Anwendungsbeispiel aus dem Bereich der Interventionsevaluation betrachten wir eine BDI-Pre-Postinterventionsdifferenzwertanalyse für je zwei Settings (Face-to-Face und Online) und Varianten (Mindfulness und Exercise) der kognitiven Verhaltenstherapie (<code>CBT</code>, <a href="#fig-anwendungsbeispiel" class="quarto-xref">Abbildung&nbsp;<span>33.2</span></a>). Setting sei Faktor (A) mit Leveln (1) Face-to-face (<code>F2F</code>) und (2) Online (<code>ONL</code>) und Variante sei Faktor (B) mit Leveln (1) Mindfulness (<code>MND</code>) und (2) Exercise (<code>EXC</code>). Jeder der durch Kreuzung der Faktorlevel entstehenden Interventionsbedingungen sei eine Gruppe (Stichprobe) von <span class="math inline">\(n_{ij}:=12\)</span> Patient:innen zugeordnet und für jede Patient:in sei die Differenz zwischen Preinterventions und Postinterventions BDI Wert bestimmt worden und mit dBDI bezeichnet.</p>
+<div id="fig-anwendungsbeispiel" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-anwendungsbeispiel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/409-anwendungsbeispiel.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-anwendungsbeispiel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;33.2: Konzeptuelles Design des Anwendungsbeispiels.
+</figcaption>
+</figure>
+</div>
+<div class="cell">
+<div id="tbl-zva-dbdi" class="cell quarto-float anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-zva-dbdi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabelle&nbsp;33.1: Pre-Post-BDI-Differenzwerte der Faktorlevelkombinationen
+</figcaption>
+<div aria-describedby="tbl-zva-dbdi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Setting</th>
+<th style="text-align: center;">Variant</th>
+<th style="text-align: center;">dBDI</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">F2F</td>
+<td style="text-align: center;">MND</td>
+<td style="text-align: center;">12</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">F2F</td>
+<td style="text-align: center;">MND</td>
+<td style="text-align: center;">11</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">F2F</td>
+<td style="text-align: center;">MND</td>
+<td style="text-align: center;">8</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">F2F</td>
+<td style="text-align: center;">MND</td>
+<td style="text-align: center;">8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">F2F</td>
+<td style="text-align: center;">MND</td>
+<td style="text-align: center;">12</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">F2F</td>
+<td style="text-align: center;">MND</td>
+<td style="text-align: center;">12</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">F2F</td>
+<td style="text-align: center;">MND</td>
+<td style="text-align: center;">9</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">F2F</td>
+<td style="text-align: center;">MND</td>
+<td style="text-align: center;">10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">F2F</td>
+<td style="text-align: center;">MND</td>
+<td style="text-align: center;">12</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">F2F</td>
+<td style="text-align: center;">MND</td>
+<td style="text-align: center;">13</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">F2F</td>
+<td style="text-align: center;">MND</td>
+<td style="text-align: center;">10</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">F2F</td>
+<td style="text-align: center;">MND</td>
+<td style="text-align: center;">9</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">F2F</td>
+<td style="text-align: center;">EXC</td>
+<td style="text-align: center;">14</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">F2F</td>
+<td style="text-align: center;">EXC</td>
+<td style="text-align: center;">11</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">F2F</td>
+<td style="text-align: center;">EXC</td>
+<td style="text-align: center;">15</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">F2F</td>
+<td style="text-align: center;">EXC</td>
+<td style="text-align: center;">16</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">F2F</td>
+<td style="text-align: center;">EXC</td>
+<td style="text-align: center;">15</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">F2F</td>
+<td style="text-align: center;">EXC</td>
+<td style="text-align: center;">19</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">F2F</td>
+<td style="text-align: center;">EXC</td>
+<td style="text-align: center;">16</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">F2F</td>
+<td style="text-align: center;">EXC</td>
+<td style="text-align: center;">14</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">F2F</td>
+<td style="text-align: center;">EXC</td>
+<td style="text-align: center;">11</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">F2F</td>
+<td style="text-align: center;">EXC</td>
+<td style="text-align: center;">15</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">F2F</td>
+<td style="text-align: center;">EXC</td>
+<td style="text-align: center;">15</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">F2F</td>
+<td style="text-align: center;">EXC</td>
+<td style="text-align: center;">17</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">ONL</td>
+<td style="text-align: center;">MND</td>
+<td style="text-align: center;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">ONL</td>
+<td style="text-align: center;">MND</td>
+<td style="text-align: center;">10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">ONL</td>
+<td style="text-align: center;">MND</td>
+<td style="text-align: center;">12</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">ONL</td>
+<td style="text-align: center;">MND</td>
+<td style="text-align: center;">13</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">ONL</td>
+<td style="text-align: center;">MND</td>
+<td style="text-align: center;">12</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">ONL</td>
+<td style="text-align: center;">MND</td>
+<td style="text-align: center;">12</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">ONL</td>
+<td style="text-align: center;">MND</td>
+<td style="text-align: center;">13</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">ONL</td>
+<td style="text-align: center;">MND</td>
+<td style="text-align: center;">10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">ONL</td>
+<td style="text-align: center;">MND</td>
+<td style="text-align: center;">10</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">ONL</td>
+<td style="text-align: center;">MND</td>
+<td style="text-align: center;">13</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">ONL</td>
+<td style="text-align: center;">MND</td>
+<td style="text-align: center;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">ONL</td>
+<td style="text-align: center;">MND</td>
+<td style="text-align: center;">8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">ONL</td>
+<td style="text-align: center;">EXC</td>
+<td style="text-align: center;">16</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">ONL</td>
+<td style="text-align: center;">EXC</td>
+<td style="text-align: center;">19</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">ONL</td>
+<td style="text-align: center;">EXC</td>
+<td style="text-align: center;">14</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">ONL</td>
+<td style="text-align: center;">EXC</td>
+<td style="text-align: center;">17</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">ONL</td>
+<td style="text-align: center;">EXC</td>
+<td style="text-align: center;">17</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">ONL</td>
+<td style="text-align: center;">EXC</td>
+<td style="text-align: center;">16</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">ONL</td>
+<td style="text-align: center;">EXC</td>
+<td style="text-align: center;">13</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">ONL</td>
+<td style="text-align: center;">EXC</td>
+<td style="text-align: center;">16</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">ONL</td>
+<td style="text-align: center;">EXC</td>
+<td style="text-align: center;">20</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">ONL</td>
+<td style="text-align: center;">EXC</td>
+<td style="text-align: center;">13</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">ONL</td>
+<td style="text-align: center;">EXC</td>
+<td style="text-align: center;">16</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">ONL</td>
+<td style="text-align: center;">EXC</td>
+<td style="text-align: center;">13</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p><a href="#tbl-zva-dbdi" class="quarto-xref">Tabelle&nbsp;<span>33.1</span></a> zeigt einen Beispieldatensatz. Dabei repräsentiert jede Zeile eine Patient:in, die Spalte Setting bezeichnet das dieser Patient:in entsprechende Level des Therapiesettingfaktors und die Spalte Variant das dieser Patient:in entsprechende Level des Therapievariantenfaktors. Der entsprechende dBDI Zeilenwert bildet den Pre-Post-InterventionsBDI-Differenzwert der entsprechenden Patient:in ab. Hohe Werte zeigen dabei eine starke Verbesserung, geringe Werte eher eine leichte Verbesserung der Depressionssymptomatik an.</p>
+<p><a href="#fig-beispieldatensatz" class="quarto-xref">Abbildung&nbsp;<span>33.3</span></a> schließlich zeigt zwei häufig genutzte Visualisationsformen für Deskriptivstatistiken (hier Gruppenmittelwerte und Standardabweichungen) in <span class="math inline">\(2 \times 2\)</span> ZVA Szenarien. <a href="#fig-beispieldatensatz" class="quarto-xref">Abbildung&nbsp;<span>33.3</span></a> A zeigt die faktorlevelkombinationsspezifischen Gruppenmittelwerte und ihre Standardabweichungen als Balkendiagramm. <a href="#fig-beispieldatensatz" class="quarto-xref">Abbildung&nbsp;<span>33.3</span></a> B zeigt die gleichen Daten als Liniendiagramm mit Fehlerbalken. Dabei entsprechen die zwei Linien den beiden Leveln des Settingfaktors F2F (dunkelgraue Linie) und ONL (hellgraue Linie). Die auf der x-Achse abgetragenen Werte dagegen entsprechen den beiden Leveln des Variantenfaktors MND und EXC. Für das Verständnis dieser Art der Visualisierung ist es sicherlich hilfreich, die Korrespondenz zwischen den in <a href="#fig-beispieldatensatz" class="quarto-xref">Abbildung&nbsp;<span>33.3</span></a> A und <a href="#fig-beispieldatensatz" class="quarto-xref">Abbildung&nbsp;<span>33.3</span></a> B einmal explizit durch nachzeichnen herzustellen.</p>
+<div id="fig-beispieldatensatz" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-beispieldatensatz-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/409-beispieldatensatz.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-beispieldatensatz-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;33.3: Visualisierung des Beispieldatensatzes als Balken- und Liniendiagramm.
+</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="modellformulierung" class="level2" data-number="33.2">
+<h2 data-number="33.2" class="anchored" data-anchor-id="modellformulierung"><span class="header-section-number">33.2</span> Modellformulierung</h2>
+<p>Um nun den Spezialfall des ALMs für das ZVA Szenario zu diskutieren, gehen wir in zwei Schritten vor. In einem ersten Schritt führen mit dem <em>Modell der additiven ZVA</em> ein Modell ein, das lediglich die Haupteffekte der Faktoren, nicht aber ihre Interaktion modellieren kann. Entsprechend können auf Grundlage dieses Modells Haupteffektparameter geschätzt und inferenzstatistisch evaluiert werden. In einem zweiten Schritt führen wir mit dem Modell der ZVA mit Interaktion ein Modell ein, das sowohl die Haupteffekte der Faktoren als auch ihre Interaktion modelliert und auf dessen Grundlage entsprechend sowohl Haupteffekts- als auch Interaktionsparameter geschätzt und inferenzstatistisch evaluiert werden können. In beiden Fällen ist das zentrale Thema der Modellformulierung wie bei der EVA von einer Intuition zur Modellierung der Erwartungswertparameter der Zellen des ZVA Szenarios zu einer nicht überparameterisierten Darstellung mithilfe von Effektparametern zu kommen.</p>
+<section id="modell-der-additiven-zva" class="level3" data-number="33.2.1">
+<h3 data-number="33.2.1" class="anchored" data-anchor-id="modell-der-additiven-zva"><span class="header-section-number">33.2.1</span> Modell der additiven ZVA</h3>
+<p>In Analogie zur EVA möchte man im Modell der additiven ZVA die Gruppenerwartungswerte <span class="math inline">\(\mu_{ij}\)</span> mit <span class="math inline">\(i=1, \ldots, I\)</span> für die Level von Faktor A und <span class="math inline">\(j=1, \ldots, J\)</span> für die Level von Faktor B als Summe eines gruppenunspezifischen Erwartungswertes und den Effekten der Level von Faktor A und der Level von Faktor B modellieren.</p>
+<p>Wir bezeichnen dabei den gruppenunspezifischen Erwartungswertparameter mit <span class="math inline">\(\mu_{0}\)</span>, den Effekt von Level <span class="math inline">\(i\)</span> von Faktor A mit <span class="math inline">\(\alpha_{i}\)</span> und den Effekt von Level <span class="math inline">\(j\)</span> von Faktor B mit <span class="math inline">\(\beta_{j}\)</span> ( <span class="math inline">\(\beta_{j}\)</span> bezeichnet hier also den <span class="math inline">\(j\)</span> ten Eintrag des Betaparametervektors). Dann ergibt sich zum Beispiel für <span class="math inline">\(I:=J:=2\)</span></p>
+<p><span class="math display">\[
+\begin{array}{l|l}
+\mu_{11}:=\mu_{0}+\alpha_{1}+\beta_{1}  &amp; \mu_{12}:=\mu_{0}+\alpha_{1}+\beta_{2} \\\hline
+\mu_{21}:=\mu_{0}+\alpha_{2}+\beta_{1}  &amp; \mu_{22}:=\mu_{0}+\alpha_{2}+\beta_{2}
+\end{array}
+\]</span></p>
+<p>Wie im Falle der EVA ist diese Darstellung der Gruppenerwartungswerte <span class="math inline">\(\mu_{ij}\)</span> allerdings überparameterisiert, speziell werden die vier Erwartungswertparameter <span class="math inline">\(\mu_{11}, \mu_{12}, \mu_{21}\)</span> und <span class="math inline">\(\mu_{22}\)</span> in obiger Formulierung durch die fünf Parameter <span class="math inline">\(\mu_{0}, \alpha_{1}, \alpha_{2}, \beta_{1}\)</span> und <span class="math inline">\(\beta_{2}\)</span> dargestellt. Um eine eindeutige Darstellung der <span class="math inline">\(\mu_{ij}\)</span> zu gewährleisten, bietet sich auch hier die Restriktion an, den Effekt des ersten Levels jedes Faktors als Null zu definieren <span class="math display">\[
+\alpha_{1}:=\beta_{1}:=0
+\]</span> und damit die Faktorlevelkombination A1B1 als Referenzgruppe zu etablieren. Es ergibt sich somit zum Beispiel für für <span class="math inline">\(I:=J:=2\)</span> <span class="math display">\[
+\begin{array}{l|l}
+\mu_{11} := \mu_{0}             &amp; \mu_{12} := \mu_{0}+\beta_{2}         \\\hline
+\mu_{21} :=\mu_{0}+\alpha_{2}   &amp; \mu_{22}:=\mu_{0}+\alpha_{2}+\beta_{2}
+\end{array}
+\]</span></p>
+<p>Hier werden nun also die vier Erwartungswertparameter <span class="math inline">\(\mu_{11}, \mu_{12}, \mu_{21}\)</span> und <span class="math inline">\(\mu_{22}\)</span> durch nur drei Effektparameter <span class="math inline">\(\mu_{0}, \alpha_{2}\)</span> und <span class="math inline">\(\beta_{2}\)</span> dargestellt (in diesem Sinne ist das Modell der additiven ZVA sogar unterparameterisiert, was im folgenden Abschnitt die Einführung eines Interaktionsparameters erlaubt). Allerdings ändern sich bei dieser <em>Effektdarstellung des Modells der additiven <span class="math inline">\(2 \times 2\)</span> ZVA mit Referenzgruppe</em> analog zur EVA die Interpretationen der Parameter <span class="math inline">\(\mu_{0}, \alpha_{2}, \beta_{2}\)</span> im Vergleich zum überparameterisierten Fall ohne Referenzgruppe: <span class="math inline">\(\mu_{0}\)</span> entspricht dem Erwartungswert der Faktorlevelkombination A1B1, <span class="math inline">\(\alpha_{2}\)</span> der Differenz beim Übergang von Level 1 zu Level 2 von Faktor A und <span class="math inline">\(\beta_{2}\)</span> der Differenz beim Übergang von Level 1 zu Level 2 von Faktor B. Wir fassen obige Überlegungen in folgender Definition zusammen.</p>
+<div id="def-modell-der-additiven-zva-mit-referenzgruppe" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 33.1 (Modell der additiven ZVA mit Referenzgruppe)</strong></span> <span class="math inline">\(\upsilon_{ijk}\)</span> mit <span class="math inline">\(i=1, \ldots, I, j=\)</span> <span class="math inline">\(1, \ldots, J, k=1, \ldots, n_{ij}\)</span> sei die Zufallsvariable, die den <span class="math inline">\(k\)</span>ten Datenpunkt zum <span class="math inline">\(i\)</span>ten Level von Faktor A und dem <span class="math inline">\(j\)</span>ten Level von Faktor B in einem ZVA Anwendungsszenario modelliert. Dann hat das Modell der additiven ZVA mit Referenzgruppe die strukturelle Form <span class="math display">\[
+\upsilon_{ijk} = \mu_{ij}+\varepsilon_{ijk} \sim N\left(0, \sigma^{2}\right)
+\mbox{ u.i.v. für } i=1, \ldots, I, j=1, \ldots, J, k=1, \ldots, n_{ij}
+\]</span> und die Datenverteilungsform <span class="math display">\[
+\upsilon_{ijk} \sim N\left(\mu_{ij}, \sigma^{2}\right) \mbox{ u.v. für } i=1, \ldots, I, j=1, \ldots, J, k=1, \ldots, n_{ij}
+\]</span> mit <span class="math display">\[
+\mu_{ij}:=\mu_{0}+\alpha_{i}+\beta_{j} \mbox{ für } i=1, \ldots, I, j=1, \ldots, J \mbox{ mit } \alpha_{1}:=\beta_{1}:=.
+\]</span> und <span class="math inline">\(\sigma^{2}&gt;0\)</span>.</p>
+</div>
+<p>Wir verzichten in <a href="#def-modell-der-additiven-zva-mit-referenzgruppe" class="quarto-xref">Definition&nbsp;<span>33.1</span></a> auf die Angabe einer allgemeinen Designmatrixform, die wir im Folgenden lediglich für den <span class="math inline">\(2 \times 2\)</span> ZVA Spezialfall betrachten.</p>
+<p>Die Expressivität des Modells der additiven ZVA ist, wie schon oben betont, auf das Abbilden von Haupteffekten beschränkt. Wir verdeutlichen dies in folgenden Parameterbeispielen und der zugehörigen fig-zva-add-beispiele.</p>
+<p><strong>Beispiel (1)</strong></p>
+<p>Es seien <span class="math inline">\(\mu_{0}:=1, \alpha_{2}:=1\)</span> und <span class="math inline">\(\beta_{2}:=0\)</span>, der Effektparameter für den Haupteffekt von Faktor A sei also von Null verschieden, der Effektparameter für den Haupteffekt von Faktor B dagegen gleich Null. Dann ergibt sich für die Gruppenerwartungswerte</p>
+<p><span class="math display">\[
+\begin{array}{l|l}
+\mu_{11}=\mu_{0}+\alpha_{1}+\beta_{1}=1+0+0=1 &amp; \mu_{12}=\mu_{0}+\alpha_{1}+\beta_{2}=1+0+0=1 \\\hline
+\mu_{21}=\mu_{0}+\alpha_{2}+\beta_{1}=1+1+0=2 &amp; \mu_{22}=\mu_{0}+\alpha_{2}+\beta_{2}=1+1+0=2
+\end{array}
+\]</span></p>
+<p>fig-zva-add-beispiele A zeigt Visualisierungen dieses Erwartungswertmusters in der Balkendiagramm- und Liniendiagrammform von <a href="#fig-beispieldatensatz" class="quarto-xref">Abbildung&nbsp;<span>33.3</span></a>.</p>
+<p><strong>Beispiel (2)</strong></p>
+<p>Es seien <span class="math inline">\(\mu_{0}:=1, \alpha_{2}:=0\)</span> und <span class="math inline">\(\beta_{2}:=1\)</span>, der Effektparameter für den Haupteffekt von Faktor A sei also gleich Null, der Effektparameter für den Haupteffekt von Faktor B dagegen von Null verschieden. Dann ergibt sich für die Gruppenerwartungswerte</p>
+<p><span class="math display">\[
+\begin{array}{l|l}
+\mu_{11}=\mu_{0}+\alpha_{1}+\beta_{1}=1+0+0=1 &amp; \mu_{12}=\mu_{0}+\alpha_{1}+\beta_{2}=1+0+1=2 \\\hline
+\mu_{21}=\mu_{0}+\alpha_{2}+\beta_{1}=1+0+0=1 &amp; \mu_{22}=\mu_{0}+\alpha_{2}+\beta_{2}=1+0+1=2
+\end{array}
+\]</span></p>
+<p>fig-zva-add-beispiele B zeigt Visualisierungen dieses Erwartungswertmusters in der Balkendiagramm- und Liniendiagrammform von <a href="#fig-beispieldatensatz" class="quarto-xref">Abbildung&nbsp;<span>33.3</span></a>.</p>
+<p><strong>Beispiel (3)</strong></p>
+<p>Es seien <span class="math inline">\(\mu_{0}:=1, \alpha_{2}:=1\)</span> und <span class="math inline">\(\beta_{2}:=1\)</span>, die Effektparameter für die Haupteffekte beider Faktoren seien also von Null verschieden. Dann ergibt sich für die Gruppenerwartungswerte</p>
+<p><span class="math display">\[
+\begin{array}{l|l}
+\mu_{11}=\mu_{0}+\alpha_{1}+\beta_{1}=1+0+0=1 &amp; \mu_{12}=\mu_{0}+\alpha_{1}+\beta_{2}=1+0+1=2 \\\hline
+\mu_{21}=\mu_{0}+\alpha_{2}+\beta_{1}=1+1+0=2 &amp; \mu_{22}=\mu_{0}+\alpha_{2}+\beta_{2}=1+1+1=3
+\end{array}
+\]</span></p>
+<p>fig-zva-add-beispiele C zeigt Visualisierungen dieses Erwartungswertmusters in der Balkendiagramm- und Liniendiagrammform von <a href="#fig-beispieldatensatz" class="quarto-xref">Abbildung&nbsp;<span>33.3</span></a>.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>png 
+  2 </code></pre>
+</div>
+</div>
+<p>In Hinblick auf die Liniendiagrammform der Gruppenerwartungswerte der additiven ZVA fällt auf, dass die den Leveln von Faktor A entsprechenden Linien immer parallel sind.</p>
+<div id="fig-zva-add-beispiele" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-zva-add-beispiele-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/409-zva-add-beispiele.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-zva-add-beispiele-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;33.4: Gruppenerwartungswerte der Beispielparameterszenarien in Balken- und Liniendiagrammform im Modell der additiven ZVA.
+</figcaption>
+</figure>
+</div>
+<p>Für den Fall der <span class="math inline">\(2 \times 2\)</span> ZVA gibt <a href="#def-modell-der-additiven-2x2-zva-mit-referengruppe" class="quarto-xref">Definition&nbsp;<span>33.2</span></a> abschließend das Modell der additiven ZVA mit Referenzgruppe inklusive seiner Designmatrixform an.</p>
+<div id="def-modell-der-additiven-2x2-zva-mit-referengruppe" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 33.2 (Modell der additiven <span class="math inline">\(2 \times 2\)</span> ZVA mit Referenzgruppe)</strong></span> <span class="math inline">\(\upsilon_{ijk}\)</span> mit <span class="math inline">\(i=\)</span> <span class="math inline">\(1,2, j=1,2, k=1, \ldots, n_{ij}\)</span> sei die Zufallsvariable, die den <span class="math inline">\(k\)</span>ten Datenpunkt zum <span class="math inline">\(i\)</span>ten Level von Faktor A und dem <span class="math inline">\(j\)</span>ten Level von Faktor B in einem <span class="math inline">\(2 \times 2\)</span> ZVA Anwendungsszenario modelliert. Dann hat mit <span class="math inline">\(\sigma^{2}&gt;0\)</span> das <em>Modell der additiven <span class="math inline">\(2 \times 2\)</span> ZVA mit Referenzgruppe</em> die strukturelle Form <span class="math display">\[
+\upsilon_{ijk} = \mu_{ij}+\varepsilon_{ijk}
+\mbox{ mit }
+\varepsilon_{ijk} \sim N\left(0, \sigma^{2}\right)
+\mbox{ u.i.v. für } i=1,2, j=1,2, k=1, \ldots, n_{ij},
+\]</span> die Datenverteilungsform <span class="math display">\[
+\upsilon_{ijk} \sim N\left(\mu_{ij}, \sigma^{2}\right) \mbox{ u.v. für } i=1,2, j=1,2, k=1, \ldots, n_{ij}
+\]</span> mit <span class="math display">\[
+\mu_{ij}:=\mu_{0}+\alpha_{i}+\beta_{j} \mbox{ für }i=1,2, j=1,2 \mbox{ mit } \alpha_{1}:=\beta_{1}:=0,
+\]</span> sowie die Designmatrixform <span class="math display">\[
+\upsilon \sim  N\left(X \beta, \sigma^{2} I_{n}\right)
+\]</span> wobei <span class="math display">\[
+\upsilon :=
+\begin{pmatrix}
+\upsilon_{111} \\
+\vdots \\
+\upsilon_{11 n_{11}} \\
+\upsilon_{121} \\
+\vdots \\
+\upsilon_{12 n_{12}} \\
+\upsilon_{211} \\
+\vdots \\
+\upsilon_{21 n_{21}} \\
+\upsilon_{221} \\
+\vdots \\
+\upsilon_{22 n_{22}}
+\end{pmatrix},
+X =
+\begin{pmatrix}
+1 &amp; 0 &amp; 0 \\
+\vdots &amp; \vdots &amp; \vdots \\
+1 &amp; 0 &amp; 0 \\
+1 &amp; 0 &amp; 1 \\
+\vdots &amp; \vdots &amp; \vdots \\
+1 &amp; 0 &amp; 1 \\
+1 &amp; 1 &amp; 0 \\
+\vdots &amp; \vdots &amp; \vdots \\
+1 &amp; 1 &amp; 0 \\
+1 &amp; 1 &amp; 1 \\
+\vdots &amp; \vdots &amp; \vdots \\
+1 &amp; 1 &amp; 1
+\end{pmatrix} \in \mathbb{R}^{n \times 3},
+\beta:=\begin{pmatrix}
+\mu_{0} \\
+\alpha_{2} \\
+\beta_{2}
+\end{pmatrix} \in \mathbb{R}^{3} \mbox{ und }\sigma^{2}&gt;0.
+\]</span></p>
+</div>
+</section>
+<section id="modell-der-zva-mit-interaktion" class="level3" data-number="33.2.2">
+<h3 data-number="33.2.2" class="anchored" data-anchor-id="modell-der-zva-mit-interaktion"><span class="header-section-number">33.2.2</span> Modell der ZVA mit Interaktion</h3>
+<p>In der ZVA mit Interaktion möchte man die Gruppenerwartungswerte <span class="math inline">\(\mu_{ij}\)</span> mit <span class="math inline">\(i=1, \ldots, I\)</span> für die Level von Faktor A und <span class="math inline">\(j=1, \ldots, J\)</span> für die Level von Faktor B als Summe eines gruppenunspezifischen Erwartungswertes, der Effekte der Level von Faktor A und Faktor B und der Interaktion der Level der Faktoren modellieren. Wir bezeichnen dazu den gruppenunspezifischen Erwartungswertparameter mit <span class="math inline">\(\mu_{0}\)</span>, den Effekt von Level <span class="math inline">\(i\)</span> von Faktor A mit <span class="math inline">\(\alpha_{i}\)</span>, den Effekt von Level <span class="math inline">\(j\)</span> von Faktor <span class="math inline">\(\mathrm{B}\)</span> mit <span class="math inline">\(\beta_{j}\)</span>, und die Interaktion von Level <span class="math inline">\(i\)</span> von Faktor A mit Level <span class="math inline">\(j\)</span> von Faktor B mit <span class="math inline">\(\gamma_{ij}\)</span>. Dann ergibt sich zum Beispiel für <span class="math inline">\(I:=J:=2\)</span></p>
+<p><span class="math display">\[
+\begin{array}{l|l}
+\mu_{11} :=\ mu_{0}+\alpha_{1}+\beta_{1}+\gamma_{11} &amp; \mu_{12}:=\mu_{0}+\alpha_{1}+\beta_{2}+\gamma_{12} \\\hline
+\mu_{21} :=\mu_{0}+\alpha_{2}+\beta_{1}+\gamma_{21}  &amp; \mu_{22}:=\mu_{0}+\alpha_{2}+\beta_{2}+\gamma_{22}
+\end{array}
+\]</span></p>
+<p>Wie in der die additiven ZVA ist diese Darstellung der Gruppenerwartungswerte <span class="math inline">\(\mu_{ij}\)</span> multipel überparameterisiert, speziell werden die vier Erwartungswertparameter <span class="math inline">\(\mu_{11}, \mu_{12}, \mu_{21}\)</span> und <span class="math inline">\(\mu_{22}\)</span> in obiger Formulierung durch die neun Parameter <span class="math inline">\(\mu_{0}, \alpha_{1}, \alpha_{2}, \beta_{1}, \beta_{2}, \gamma_{11}, \gamma_{12}, \gamma_{21}\)</span> und <span class="math inline">\(\gamma_{11}\)</span> dargestellt. Um eine eindeutige Darstellung der <span class="math inline">\(\mu_{ij}\)</span> zu gewährleisten, bietet sich auch hier die Restriktion an, den Effekt des ersten Levels jedes Faktors und jeder Interaktion als Null zu definieren <span class="math display">\[
+\alpha_{1}:=\beta_{1}:=\gamma_{i 1}:=\gamma_{1 j}:=0 \mbox{ für  }i=1, \ldots, I, j=1, . ., J
+\]</span> und damit die Faktorlevelkombination A1B1 als Referenzgruppe zu etablieren. Es ergibt sich somit zum Beispiel für <span class="math inline">\(I:=J:=2\)</span>: <span class="math display">\[
+\begin{array}{l|l}
+\mu_{11} :=\mu_{0}              &amp; \mu_{12}:=\mu_{0}+\beta_{2} \\\hline
+\mu_{21} :=\mu_{0}+\alpha_{2}   &amp; \mu_{22}:=\mu_{0}+\alpha_{2}+\beta_{2}+\gamma_{22}
+\end{array}
+\]</span> Hier werden nun also die vier Erwartungswertparameter <span class="math inline">\(\mu_{11}, \mu_{12}, \mu_{21}\)</span> und <span class="math inline">\(\mu_{22}\)</span> durch die vier Effektparameter <span class="math inline">\(\mu_{0}, \alpha_{2}, \beta_{2}\)</span> und <span class="math inline">\(\gamma_{22}\)</span> dargestellt. Natürlich ändern sich auch bei dieser Effektdarstellung des Modells der <span class="math inline">\(2 \times 2\)</span> ZVA mit Interaktion und Referenzgruppe die Interpretationen der Parameter <span class="math inline">\(\mu_{0}, \alpha_{2}, \beta_{2}, \gamma_{22}\)</span> im Vergleich zum überparameterisierten Fall ohne Referenzgruppe: <span class="math inline">\(\mu_{0}\)</span> entspricht dem Erwartungswert der Faktorlevelkombination A1B1, <span class="math inline">\(\alpha_{2}\)</span> der Differenz beim Übergang von Level 1 zu Level 2 von Faktor A, <span class="math inline">\(\beta_{2}\)</span> der Differenz beim Übergang von Level 1 zu Level 2 von Faktor B und <span class="math inline">\(\gamma_{22}\)</span> der Differenz beim Übergang von Level 1 zu Level 2 von Faktor B im Unterschied zum Übergang von Level 1 zu Level 2 von Faktor A. Wir fassen obige Überlegungen in folgender Definition zusammen, wobei wir wiederum auf die Angabe einer allgemeinen Designmatrixform verzichten wollen.</p>
+<div id="def-modell-der-zva-mit-interaktion-und-referenzgruppe" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 33.3 (Modell der ZVA mit Interaktion und Referenzgruppe)</strong></span> <span class="math inline">\(\upsilon_{ijk}\)</span> mit <span class="math inline">\(i=\)</span> <span class="math inline">\(1, \ldots, I, j=1, \ldots, J, k=1, \ldots, n_{ij}\)</span> sei die Zufallsvariable, die den <span class="math inline">\(k\)</span>ten Datenpunkt zum <span class="math inline">\(i\)</span>ten Level von Faktor A und dem <span class="math inline">\(j\)</span>ten Level von Faktor B in einem ZVA Anwendungsszenario modelliert. Dann hat das Modell der ZVA mit Interaktion und Referenzgruppe die strukturelle Form <span class="math display">\[
+\upsilon_{ijk} = \mu_{ij}+\varepsilon_{ijk} \sim N\left(0, \sigma^{2}\right)
+\mbox{ u.i.v. für } i=1, \ldots, I, j=1, \ldots, J, k=1, \ldots, n_{ij}
+\]</span> und die Datenverteilungsform <span class="math display">\[
+\upsilon_{ijk} \sim N\left(\mu_{ij}, \sigma^{2}\right) \mbox{ u.i.v. für } i=1, \ldots, I, j=1, \ldots, J, k=1, \ldots, n_{ij}
+\]</span> mit <span class="math display">\[
+\mu_{ij}:=\mu_{0}+\alpha_{i}+\beta_{j}+\gamma_{ij}
+\]</span> sowie <span class="math display">\[
+\alpha_{1}:=\beta_{1}:=\gamma_{i 1}:=\gamma_{1 j}:=0 \mbox{ für }i=1, \ldots, I, j=1, \ldots, J
+\]</span> und <span class="math inline">\(\sigma^{2}&gt;0\)</span>.</p>
+</div>
+<p>Die Expressivität des Modells der ZVA mit Interaktion entspricht nun dem Betrachten von Haupteffekten und Interaktion wie einleitend zum Anwendungsszenario der ZVA diskutiert. Wir wollen dies mithilfe folgender Parameterbeispiele und der zugehörigen <a href="#fig-zva-int-beispiele" class="quarto-xref">Abbildung&nbsp;<span>33.5</span></a> verdeutlichen.</p>
+<p><strong>Beispiel (1)</strong></p>
+<p>Es seien <span class="math inline">\(\mu_{0}:=1, \alpha_{2}:=0, \beta_{2}:=0\)</span> und <span class="math inline">\(\gamma_{22}=2\)</span>, die Effektparameter für die Haupteffekte beider Faktoren seien also gleich Null, aber der Effektparameter für die Interaktion der Faktoren positiv. Dann ergibt sich für die Gruppenerwartungswerte</p>
+<p><span class="math display">\[
+\begin{array}{l|l}
+\mu_{11}=\mu_{0}+\alpha_{1}+\beta_{1}+\gamma_{11}=1+0+0+0=1 &amp; \mu_{12}=\mu_{0}+\alpha_{1}+\beta_{2}+\gamma_{12}=1+0+0+0=1 \\\hline
+\mu_{21}=\mu_{0}+\alpha_{2}+\beta_{1}+\gamma_{21}=1+0+0+0=1 &amp; \mu_{22}=\mu_{0}+\alpha_{2}+\beta_{2}+\gamma_{22}=1+0+0+2=3
+\end{array}
+\]</span> </p>
+<p><a href="#fig-zva-int-beispiele" class="quarto-xref">Abbildung&nbsp;<span>33.5</span></a> A zeigt Visualisierungen dieses Erwartungswertmusters in Balkendiagramm- und Liniendiagrammform.</p>
+<p><strong>Beispiel (2)</strong></p>
+<p>Es seien <span class="math inline">\(\mu_{0}:=1, \alpha_{2}:=1, \beta_{2}:=1\)</span> und <span class="math inline">\(\gamma_{22}=-2\)</span>. Die Effektparameter für die Haupteffekte beider Faktoren seien also gleich und der Effektparameter für die Interaktion der Faktoren negativ. Dann ergibt sich für die Gruppenerwartungswerte</p>
+<p><span class="math display">\[
+\begin{array}{l|l}
+\mu_{11}=\mu_{0}+\alpha_{1}+\beta_{1}+\gamma_{11}=1+0+0+0=1 &amp; \mu_{12}=\mu_{0}+\alpha_{1}+\beta_{2}+\gamma_{12}=1+0+1+0=2 \\\hline
+\mu_{21}=\mu_{0}+\alpha_{2}+\beta_{1}+\gamma_{21}=1+0+1+0=2 &amp; \mu_{22}=\mu_{0}+\alpha_{2}+\beta_{2}+\gamma_{22}=1+1+1-2=1
+\end{array}
+\]</span> </p>
+<p><a href="#fig-zva-int-beispiele" class="quarto-xref">Abbildung&nbsp;<span>33.5</span></a> B zeigt Visualisierungen dieses Erwartungswertmusters in Balkendiagramm- und Liniendiagrammform.</p>
+<p><strong>Beispiel (3)</strong></p>
+<p>Es seien <span class="math inline">\(\mu_{0}:=1, \alpha_{2}:=1, \beta_{2}:=0\)</span> und <span class="math inline">\(\gamma_{22}=1\)</span>, der Effektparameter für Faktor A sei also positiv, der Effektparameter für Faktor B gleich Null und der Effektparameter für die Interaktion der Faktoren positiv. Dann ergibt sich für die Gruppenerwartungswerte</p>
+<p><span class="math display">\[
+\begin{array}{l|l}
+\mu_{11}=\mu_{0}+\alpha_{1}+\beta_{1}+\gamma_{11}=1+0+0+0=1 &amp; \mu_{12}=\mu_{0}+\alpha_{1}+\beta_{2}+\gamma_{12}=1+0+0+0=1 \\\hline
+\mu_{21}=\mu_{0}+\alpha_{2}+\beta_{1}+\gamma_{21}=1+1+0+0=2 &amp; \mu_{22}=\mu_{0}+\alpha_{2}+\beta_{2}+\gamma_{22}=1+1+0+1=3
+\end{array}
+\]</span> </p>
+<p><a href="#fig-zva-int-beispiele" class="quarto-xref">Abbildung&nbsp;<span>33.5</span></a> C zeigt Visualisierungen dieses Erwartungswertmusters in Balkendiagramm- und Liniendiagrammform.</p>
+<p><strong>Beispiel (4)</strong></p>
+<p>Es seien <span class="math inline">\(\mu_{0}:=1, \alpha_{2}:=0, \beta_{2}:=1\)</span> und <span class="math inline">\(\gamma_{22}=1\)</span>, der Effektparameter für Faktor A sei also gleich Null, der Effektparameter für Faktor B positiv und der Effektparameter für die Interaktion der Faktoren wiederrum positiv. Dann ergibt sich für die Gruppenerwartungswerte</p>
+<p><span class="math display">\[
+\begin{array}{l|l}
+\mu_{11}=\mu_{0}+\alpha_{1}+\beta_{1}+\gamma_{11}=1+0+0+0=1 &amp; \mu_{12}=\mu_{0}+\alpha_{1}+\beta_{2}+\gamma_{12}=1+0+1+0=2 \\\hline
+\mu_{21}=\mu_{0}+\alpha_{2}+\beta_{1}+\gamma_{21}=1+0+0+0=1 &amp; \mu_{22}=\mu_{0}+\alpha_{2}+\beta_{2}+\gamma_{22}=1+0+1+1=3
+\end{array}
+\]</span> </p>
+<p><a href="#fig-zva-int-beispiele" class="quarto-xref">Abbildung&nbsp;<span>33.5</span></a> D zeigt Visualisierungen dieses Erwartungswertmusters in Balkendiagramm- und Liniendiagrammform.</p>
+<p>Die obigen Beispiele zeigen, dass die Expressivität der ZVA mit Interaktion im Sinne der durch das Modell abzubildenden Datenmuster ungleich höher als die Expressivität des rein additiven Modells der ZVA ist. Insbesondere bilden obige vier Beispiele bei Weitem nicht den gesamten kombinatorischen qualitativen Parameterraum der ZVA mit Interaktion ab. Hinsichtlich der Liniendiagrammvisualisation der Gruppenerwartungswertparameter bei ZVA mit Interaktion fällt auf, dass ein von Null verschiedener Interaktionsterm immer impliziert, dass die die Level von Faktor A repräsentierenen Linien immer nicht parallel verlaufen.</p>
+<div id="fig-zva-int-beispiele" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-zva-int-beispiele-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/409-zva-int-beispiele.png" class="img-fluid quarto-figure quarto-figure-center figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-zva-int-beispiele-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;33.5: Gruppenerwartungswerte der Beispielparameterszenarien in Balken- und Liniendiagrammform im Modell der ZVA mit Interaktion.
+</figcaption>
+</figure>
+</div>
+<p>Abschließend geben wir in <a href="#def-modell-der-2x2-zva-mit-interaktion-und-referenzgruppe" class="quarto-xref">Definition&nbsp;<span>33.4</span></a> den Spezialfall des Modells der <span class="math inline">\(2 \times 2\)</span> ZVA mit Interaktion und Referenzgruppe inklusiver seiner Designmatrixform an.</p>
+<div id="def-modell-der-2x2-zva-mit-interaktion-und-referenzgruppe" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 33.4 (Modell der <span class="math inline">\(2 \times 2\)</span> ZVA mit Interaktion und Referenzgruppe.)</strong></span> <span class="math inline">\(\upsilon_{ijk}\)</span> mit <span class="math inline">\(i=\)</span> <span class="math inline">\(1,2, j=1,2, k=1, \ldots, n_{ij}\)</span> sei die Zufallsvariable, die den <span class="math inline">\(k\)</span> ten Datenpunkt zum <span class="math inline">\(i\)</span> ten Level von Faktor A und dem <span class="math inline">\(j\)</span> ten Level von Faktor B in einem <span class="math inline">\(2 \times 2\)</span> ZVA Anwendungsszenario modelliert. Dann hat das Modell der <span class="math inline">\(2 \times 2\)</span> ZVA mit Interaktion und Referenzgruppe für <span class="math inline">\(\sigma^{2}&gt;0\)</span> die strukturelle Form</p>
+<p><span class="math display">\[
+\upsilon_{ijk}=\mu_{ij}+\varepsilon_{ijk} \mbox{ mit }
+\varepsilon_{ijk} \sim N\left(0, \sigma^{2}\right) \mbox{ u.i.v. für } i=1,2, j=1,2, k=1, \ldots, n_{ij},
+\]</span> die Datenverteilungsform <span class="math display">\[
+\upsilon_{ijk} \sim N\left(\mu_{ij}, \sigma^{2}\right) \mbox{ u.i.v. für } i=1,2, j=1,2, k=1, \ldots, n_{ij}
+\]</span> mit <span class="math display">\[
+\mu_{ij}:=\mu_{0}+\alpha_{i}+\beta_{j}+\gamma_{ij}
+\]</span> sowie <span class="math display">\[
+\alpha_{1}:=\beta_{1}:=\gamma_{i 1}:=\gamma_{1 j}:=0 \mbox{ für }i=1, \ldots, I, j=1, \ldots, J
+\]</span> und für <span class="math inline">\(n:=\sum_{i=1}^{2} \sum_{i=1}^{2} n_{ij}\)</span> die Designmatrixform <span class="math display">\[
+\upsilon \sim  N\left(X \beta, \sigma^{2} I_{n}\right), \mbox{ mit }
+\]</span> <span class="math display">\[
+\upsilon :=
+\begin{pmatrix}
+\upsilon_{111} \\
+\vdots \\
+\upsilon_{11 n_{11}} \\
+\upsilon_{121} \\
+\vdots \\
+\upsilon_{12 n_{12}} \\
+\upsilon_{211} \\
+\vdots \\
+\upsilon_{21 n_{21}} \\
+\upsilon_{221} \\
+\vdots \\
+\upsilon_{22 n_{22}}
+\end{pmatrix},
+X =
+\begin{pmatrix}
+1 &amp; 0 &amp; 0 &amp; 0 \\
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots \\
+1 &amp; 0 &amp; 0 &amp; 0 \\
+1 &amp; 0 &amp; 1 &amp; 0 \\
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots \\
+1 &amp; 0 &amp; 1 &amp; 0 \\
+1 &amp; 1 &amp; 0 &amp; 0 \\
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots \\
+1 &amp; 1 &amp; 0 &amp; 0 \\
+1 &amp; 1 &amp; 1 &amp; 1 \\
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots \\
+1 &amp; 1 &amp; 1 &amp; 1
+\end{pmatrix} \in \mathbb{R}^{n \times 4},
+\beta :=
+\begin{pmatrix}
+\mu_{0} \\
+\alpha_{2} \\
+\beta_{2} \\
+\gamma_{22}
+\end{pmatrix} \in \mathbb{R}^{4} \mbox{ und }\sigma^{2}&gt;0.
+\]</span></p>
+</div>
+<p><strong>Beispiel</strong></p>
+<p>Als konkretes Beispiel für die Designmatrixform des in <a href="#def-modell-der-2x2-zva-mit-interaktion-und-referenzgruppe" class="quarto-xref">Definition&nbsp;<span>33.4</span></a> definierten Modells betrachten wir das Szenario <span class="math inline">\(n_{ij}:=4\)</span>, also <span class="math inline">\(n=16\)</span>. Dann gilt <span class="math display">\[
+\upsilon = X\beta+\varepsilon \mbox{ mit } \varepsilon \sim N\left(0_{16}, \sigma^{2} I_{16}\right)
+\]</span> mit <span class="math display">\[
+\upsilon :=
+\begin{pmatrix}
+\upsilon_{111} \\
+\upsilon_{112} \\
+\upsilon_{113} \\
+\upsilon_{114} \\
+\upsilon_{121} \\
+\upsilon_{122} \\
+\upsilon_{123} \\
+\upsilon_{124} \\
+\upsilon_{211} \\
+\upsilon_{212} \\
+\upsilon_{213} \\
+\upsilon_{214} \\
+\upsilon_{221} \\
+\upsilon_{222} \\
+\upsilon_{223} \\
+\upsilon_{224}
+\end{pmatrix},
+X :=
+\begin{pmatrix}
+1 &amp; 0 &amp; 0 &amp; 0 \\
+1 &amp; 0 &amp; 0 &amp; 0 \\
+1 &amp; 0 &amp; 0 &amp; 0 \\
+1 &amp; 0 &amp; 0 &amp; 0 \\
+1 &amp; 0 &amp; 1 &amp; 0 \\
+1 &amp; 0 &amp; 1 &amp; 0 \\
+1 &amp; 0 &amp; 1 &amp; 0 \\
+1 &amp; 0 &amp; 1 &amp; 0 \\
+1 &amp; 1 &amp; 0 &amp; 0 \\
+1 &amp; 1 &amp; 0 &amp; 0 \\
+1 &amp; 1 &amp; 0 &amp; 0 \\
+1 &amp; 1 &amp; 0 &amp; 0 \\
+1 &amp; 1 &amp; 1 &amp; 1 \\
+1 &amp; 1 &amp; 1 &amp; 1 \\
+1 &amp; 1 &amp; 1 &amp; 1 \\
+1 &amp; 1 &amp; 1 &amp; 1
+\end{pmatrix} \in \mathbb{R}^{16 \times 4},
+\beta :=
+\begin{pmatrix}
+\mu_{0} \\
+\alpha_{2} \\
+\beta_{2} \\
+\gamma_{22}
+\end{pmatrix} \in \mathbb{R}^{4} \mbox{ und }\sigma^{2}&gt;0.
+\]</span></p>
+<p>Folgender <strong>R</strong> Code erlaubt die Realisierung von Daten im Falle dieses Beispiels.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">library</span>(MASS)                                                                    <span class="co"># Multivariate Normalverteilung</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>I      <span class="ot">=</span> <span class="dv">2</span>                                                                       <span class="co"># Anzahl Level Faktor A</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a>J      <span class="ot">=</span> <span class="dv">2</span>                                                                       <span class="co"># Anzahl Level Faktor B</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a>n_ij   <span class="ot">=</span> <span class="dv">4</span>                                                                       <span class="co"># Anzahl von Datenpunkten der i,jten Gruppe</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a>n      <span class="ot">=</span> I<span class="sc">*</span>J<span class="sc">*</span>n_ij                                                                <span class="co"># Anzahl Datenpunkte</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a>p      <span class="ot">=</span> <span class="dv">1</span> <span class="sc">+</span> (I<span class="dv">-1</span>)<span class="sc">+</span>(J<span class="dv">-1</span>)<span class="sc">+</span>(I<span class="sc">*</span>J<span class="dv">-3</span>)                                                 <span class="co"># Anzahl Parameter</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a>D      <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,                                                       <span class="co"># Prototypische Designmatrix für balancierte Designs</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a>                  <span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,</span>
+<span id="cb2-9"><a href="#cb2-9"></a>                  <span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,</span>
+<span id="cb2-10"><a href="#cb2-10"></a>                  <span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>),</span>
+<span id="cb2-11"><a href="#cb2-11"></a>                <span class="at">nrow  =</span> p,</span>
+<span id="cb2-12"><a href="#cb2-12"></a>                <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-13"><a href="#cb2-13"></a>C      <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="dv">1</span>,n_ij),<span class="at">nrow =</span> n_ij)                                         <span class="co"># Prototypischer Zellenvektor für balancierte Designs</span></span>
+<span id="cb2-14"><a href="#cb2-14"></a>X      <span class="ot">=</span> <span class="fu">kronecker</span>(D,C)                                                          <span class="co"># Kroneckerprodukt Designmatrix Erzeugung </span></span>
+<span id="cb2-15"><a href="#cb2-15"></a>I_n    <span class="ot">=</span> <span class="fu">diag</span>(n)                                                                 <span class="co"># n x n Einheitsmatrix</span></span>
+<span id="cb2-16"><a href="#cb2-16"></a>beta   <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>), <span class="at">nrow =</span> p)                                            <span class="co"># \beta = (\mu_0,\alpha_2,\alpha_3,\alpha_4)</span></span>
+<span id="cb2-17"><a href="#cb2-17"></a>sigsqr <span class="ot">=</span> <span class="dv">10</span>                                                                      <span class="co"># \sigma^2</span></span>
+<span id="cb2-18"><a href="#cb2-18"></a>y      <span class="ot">=</span> <span class="fu">mvrnorm</span>(<span class="dv">1</span>, X <span class="sc">%*%</span> beta, sigsqr<span class="sc">*</span>I_n)                                      <span class="co"># eine Realisierung eines n-dimensionalen ZVs</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="modellschätzung" class="level2" data-number="33.3">
+<h2 data-number="33.3" class="anchored" data-anchor-id="modellschätzung"><span class="header-section-number">33.3</span> Modellschätzung</h2>
+<p>Wir betrachten im Folgenden die Betaparameterschätzer im additiven <span class="math inline">\(2 \times 2\)</span> ZVA Modell mit Referenzgruppe und im <span class="math inline">\(2 \times 2\)</span> ZVA mit Interaktion und Referenzgruppe. Dabei stellt sich wenig überraschend heraus, dass sich die Schätzer für die Komponenten des Betaparameters der in <a href="#def-modell-der-additiven-2x2-zva-mit-referengruppe" class="quarto-xref">Definition&nbsp;<span>33.2</span></a> und <a href="#def-modell-der-2x2-zva-mit-interaktion-und-referenzgruppe" class="quarto-xref">Definition&nbsp;<span>33.4</span></a> formulierten Modelle als gewichtete Summen der gruppenspezifischen Stichprobenmittel ergeben. Die genaue Form dieser gewichteten Summen ist Inhalt der beiden folgenden Theoreme. Der Einfachheit halber gehen wir dabei jeweils von einem balancierten Design aus. Wir beginnen mit der Betaparameterschätzung im additiven <span class="math inline">\(2 \times 2\)</span> ZVA Modell mit Referenzgruppe.</p>
+<div id="thm-betaparameterschaetzng-im-additiven-2x2-ZVA-modell-mit-referenzgruppe" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 33.1 (Betaparameterschätzung im additiven <span class="math inline">\(2 \times 2\)</span> ZVA Modell mit Referenzgruppe)</strong></span> Gegeben sei die Designmatrixform eines balancierten additiven <span class="math inline">\(2 \times 2\)</span> ZVA Modells mit Referenzgruppe. Dann ergibt sich für den Betaparameterschätzer <span class="math display">\[
+\hat{\beta} :=
+\begin{pmatrix}
+\hat{\mu}_{0} \\
+\hat{\alpha}_{2} \\
+\hat{\beta}_{2}
+\end{pmatrix}
+=
+\begin{pmatrix}
+\frac{3}{4} \bar{\upsilon}_{11}+\frac{1}{4}\left(\bar{\upsilon}_{12}+\bar{\upsilon}_{21}\right)-\frac{1}{4} \bar{\upsilon}_{22} \\
+\frac{1}{2}\left(\bar{\upsilon}_{21}+\bar{\upsilon}_{22}\right)-\frac{1}{2}\left(\bar{\upsilon}_{11}+\bar{\upsilon}_{12}\right) \\
+\frac{1}{2}\left(\bar{\upsilon}_{12}+\bar{\upsilon}_{22}\right)-\frac{1}{2}\left(\bar{\upsilon}_{11}+\bar{\upsilon}_{21}\right)
+\end{pmatrix},
+\]</span> wobei <span class="math display">\[
+\bar{\upsilon}_{i j}:=\frac{1}{n_{ij}} \sum_{k=1}^{n_{ij}} \upsilon_{ijk} \mbox{ für }1 \leq i, j \leq 2
+\]</span> das Stichprobenmittel der <span class="math inline">\(i,j\)</span>ten Gruppe des <span class="math inline">\(2 \times 2\)</span> ZVA Designs bezeichnet.</p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Beweis</em>. </span>Wir bestimmen zunächst <span class="math inline">\(X^T\upsilon, X^{T} X\)</span> und <span class="math inline">\(\left(X^{T} X\right)^{-1}\)</span> bei konstantem <span class="math inline">\(n_{ij}\)</span> für <span class="math inline">\(1 \leq i, j \leq 2\)</span>. Es ergeben sich <span class="math display">\[
+X^T\upsilon
+=
+\begin{pmatrix}
+1 &amp; \cdots &amp; 1 &amp; 1 &amp; \cdots &amp; 1 &amp; 1 &amp; \cdots &amp; 1 &amp; 1 &amp; \cdots &amp; 1 \\
+0 &amp; \cdots &amp; 0 &amp; 0 &amp; \cdots &amp; 0 &amp; 1 &amp; \cdots &amp; 1 &amp; 1 &amp; \cdots &amp; 1 \\
+0 &amp; \cdots &amp; 0 &amp; 1 &amp; \cdots &amp; 1 &amp; 0 &amp; \cdots &amp; 0 &amp; 1 &amp; \cdots &amp; 1
+\end{pmatrix}
+\begin{pmatrix}
+\upsilon_{111} \\
+\vdots \\
+\upsilon_{11 n_{11}} \\
+\upsilon_{121} \\
+\vdots \\
+\upsilon_{12 n_{12}} \\
+\upsilon_{211} \\
+\vdots \\
+\upsilon_{21 n_{21}} \\
+\upsilon_{221} \\
+\vdots \\
+\upsilon_{22 n_{22}} \\
+\end{pmatrix}
+=
+\begin{pmatrix}
+\sum_{i=1}^{2} \sum_{k=1}^{2} \sum_{k=1}^{n_{ij}} \upsilon_{ijk} \\
+\sum_{j=1}^{2} \sum_{k=1}^{n_{2j}} \upsilon_{2jk}              \\
+\sum_{i=1}^{2} \sum_{k=1}^{n_{i2}} \upsilon_{i2k}
+\end{pmatrix},
+\]</span> <span class="math display">\[
+X^{T}X
+=
+\begin{pmatrix}
+1 &amp; \cdots &amp; 1 &amp; 1 &amp; \cdots &amp; 1 &amp; 1 &amp; \cdots &amp; 1 &amp; 1 &amp; \cdots &amp; 1 \\
+0 &amp; \cdots &amp; 0 &amp; 0 &amp; \cdots &amp; 0 &amp; 1 &amp; \cdots &amp; 1 &amp; 1 &amp; \cdots &amp; 1 \\
+0 &amp; \cdots &amp; 0 &amp; 1 &amp; \cdots &amp; 1 &amp; 0 &amp; \cdots &amp; 0 &amp; 1 &amp; \cdots &amp; 1
+\end{pmatrix}
+\begin{pmatrix}
+1 &amp; 0 &amp; 0 \\
+\vdots &amp; \vdots &amp; \vdots \\
+1 &amp; 0 &amp; 0 \\
+1 &amp; 0 &amp; 1 \\
+\vdots &amp; \vdots &amp; \vdots \\
+1 &amp; 0 &amp; 1 \\
+1 &amp; 1 &amp; 0 \\
+\vdots &amp; \vdots &amp; \vdots \\
+1 &amp; 1 &amp; 0 \\
+1 &amp; 1 &amp; 1 \\
+\vdots &amp; \vdots &amp; \vdots \\
+1 &amp; 1 &amp; 1
+\end{pmatrix}
+=
+n_{ij}
+\begin{pmatrix}
+4 &amp; 2 &amp; 2 \\
+2 &amp; 2 &amp; 1 \\
+2 &amp; 1 &amp; 2
+\end{pmatrix},
+\]</span> sowie <span class="math display">\[
+\left(X^{T} X\right)^{-1}=n_{ij}
+\begin{pmatrix}
+4 &amp; 2 &amp; 2 \\
+2 &amp; 2 &amp; 1 \\
+2 &amp; 1 &amp; 2
+\end{pmatrix}^{-1}=\frac{1}{n_{ij}}
+\begin{pmatrix}
+\frac{3}{4} &amp; -\frac{1}{2} &amp; -\frac{1}{2} \\
+-\frac{1}{2} &amp; 1 &amp; 0 \\
+-\frac{1}{2} &amp; 0 &amp; 1
+\end{pmatrix}.
+\]</span> Es ergibt sich also <span class="math display">\[
+\hat{\beta} =
+\begin{pmatrix}
+\hat{\mu}_{0} \\
+\hat{\alpha}_{2} \\
+\hat{\beta}_{2}
+\end{pmatrix}
+=
+\frac{1}{n_{ij}}
+\begin{pmatrix}
+\frac{3}{4} &amp; -\frac{1}{2} &amp; -\frac{1}{2} \\
+-\frac{1}{2} &amp; 1 &amp; 0 \\
+-\frac{1}{2} &amp; 0 &amp; 1
+\end{pmatrix}
+\begin{pmatrix}
+\sum_{i=1}^{2} \sum_{j=1}^{2} \sum_{k=1}^{n_{ij}} \upsilon_{ijk} \\
+\sum_{j=1}^{2} \sum_{k=1}^{n_{2 j}} \upsilon_{2 j k} \\
+\sum_{i=1}^{2} \sum_{k=1}^{n_{i 2}} \upsilon_{i 2 k}
+\end{pmatrix}.
+\]</span> Damit ergibt sich dann <span class="math display">\[
+\begin{aligned}
+\hat{\mu}_{0}
+&amp; = \frac{1}{n_{ij}}\left(\frac{3}{4} \sum_{i=1}^{2} \sum_{j=1}^{2} \sum_{k=1}^{n_{ij}} \upsilon_{ijk}-\frac{1}{2} \sum_{j=1}^{2} \sum_{k=1}^{n_{2 j}} \upsilon_{2 j k}-\frac{1}{2} \sum_{i=1}^{2} \sum_{k=1}^{n_{i 2}} \upsilon_{i 2 k}\right) \\
+&amp; = \frac{1}{n_{ij}}\left(\frac{3}{4} \sum_{k=1}^{n_{11}} \upsilon_{11 k}+\frac{3}{4} \sum_{k=1}^{n_{12}} \upsilon_{12 k}+\frac{3}{4} \sum_{k=1}^{n_{21}} \upsilon_{21 k}+\frac{3}{4} \sum_{k=1}^{n_{22}} \upsilon_{22 k}\right) \\
+&amp; + \frac{1}{n_{ij}}\left(-\frac{1}{2} \sum_{k=1}^{n_{21}} \upsilon_{21 k}-\frac{1}{2} \sum_{k=1}^{n_{22}} \upsilon_{22 k}-\frac{1}{2} \sum_{k=1}^{n_{12}} \upsilon_{12 k}-\frac{1}{2} \sum_{k=1}^{n_{22}} \upsilon_{22 k}\right) \\
+&amp; = \frac{1}{n_{ij}}\left(\frac{3}{4} \sum_{k=1}^{n_{11}} \upsilon_{11 k}+\frac{1}{4} \sum_{k=1}^{n_{12}} \upsilon_{12 k}+\frac{1}{4} \sum_{k=1}^{n_{21}} \upsilon_{21 k}-\frac{1}{4} \sum_{k=1}^{n_{22}} \upsilon_{22 k}\right) \\
+&amp; = \frac{3}{4} \bar{\upsilon}_{11}+\frac{1}{4}\left(\bar{\upsilon}_{12}+\bar{\upsilon}_{21}\right)-\frac{1}{4} \bar{\upsilon}_{22}
+\end{aligned}
+\]</span> sowie <span class="math display">\[
+\begin{aligned}
+\hat{\alpha}_{2}
+&amp; =\frac{1}{n_{ij}}\left(-\frac{1}{2} \sum_{i=1}^{2} \sum_{j=1}^{2} \sum_{k=1}^{n_{ij}} \upsilon_{ijk}+\sum_{j=1}^{2} \sum_{k=1}^{n_{2 j}} \upsilon_{2 j k}\right) \\
+&amp; =\frac{1}{n_{ij}}\left(-\frac{1}{2} \sum_{k=1}^{n_{11}} \upsilon_{11 k}-\frac{1}{2} \sum_{k=1}^{n_{12}} \upsilon_{12 k}-\frac{1}{2} \sum_{k=1}^{n_{21}} \upsilon_{21 k}-\frac{1}{2} \sum_{k=1}^{n_{22}} \upsilon_{22 k}+\sum_{k=1}^{n_{21}} \upsilon_{21 k}+\sum_{k=1}^{n_{22}} \upsilon_{22 k}\right) \\
+&amp; =\frac{1}{n_{ij}}\left(-\frac{1}{2} \sum_{k=1}^{n_{11}} \upsilon_{11 k}-\frac{1}{2} \sum_{k=1}^{n_{12}} \upsilon_{12 k}+\frac{1}{2} \sum_{k=1}^{n_{21}} \upsilon_{21 k}+\frac{1}{2} \sum_{k=1}^{n_{22}} \upsilon_{22 k}\right) \\
+&amp; =\frac{1}{2}\left(\bar{\upsilon}_{21}+\bar{\upsilon}_{22}\right)-\frac{1}{2}\left(\bar{\upsilon}_{11}+\bar{\upsilon}_{12}\right)
+\end{aligned}
+\]</span> und analog für <span class="math inline">\(\hat{\beta}_{2}\)</span>.</p>
+</div>
+<p><strong>Beispiel</strong></p>
+<p>Wir verdeutlichen den in <a href="#thm-betaparameterschaetzng-im-additiven-2x2-ZVA-modell-mit-referenzgruppe" class="quarto-xref">Theorem&nbsp;<span>33.1</span></a> formulierten Zusammenhang zwischen den Betaparameterschätzerkomponenten und den gruppenspezifischen Stichprobenmitteln mithilfe folgenden <strong>R</strong> Codes am Beispieldatensatz.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># Datenreformatierung</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>D          <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"./_data/409-zweifaktorielle-varianzanalyse.csv"</span>)         <span class="co"># Datensatz</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a>A1B1       <span class="ot">=</span> D<span class="sc">$</span>dBDI[D<span class="sc">$</span>Setting <span class="sc">==</span> <span class="st">"F2F"</span> <span class="sc">&amp;</span> D<span class="sc">$</span>Variant <span class="sc">==</span> <span class="st">"MND"</span> ]                   <span class="co"># Face-to-face, mindfulness</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a>A1B2       <span class="ot">=</span> D<span class="sc">$</span>dBDI[D<span class="sc">$</span>Setting <span class="sc">==</span> <span class="st">"F2F"</span> <span class="sc">&amp;</span> D<span class="sc">$</span>Variant <span class="sc">==</span> <span class="st">"EXC"</span> ]                   <span class="co"># Face-to-face, exercise</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a>A2B1       <span class="ot">=</span> D<span class="sc">$</span>dBDI[D<span class="sc">$</span>Setting <span class="sc">==</span> <span class="st">"ONL"</span> <span class="sc">&amp;</span> D<span class="sc">$</span>Variant <span class="sc">==</span> <span class="st">"MND"</span> ]                   <span class="co"># Online      , mindfulness</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a>A2B2       <span class="ot">=</span> D<span class="sc">$</span>dBDI[D<span class="sc">$</span>Setting <span class="sc">==</span> <span class="st">"ONL"</span> <span class="sc">&amp;</span> D<span class="sc">$</span>Variant <span class="sc">==</span> <span class="st">"EXC"</span> ]                   <span class="co"># Online      , exercise</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a></span>
+<span id="cb3-8"><a href="#cb3-8"></a><span class="co"># Datenmatrix für Gruppenmittelwerte</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a>n_ij       <span class="ot">=</span> <span class="fu">length</span>(A1B1)                                                       <span class="co"># Anzahl Datenpunkte pro Gruppe</span></span>
+<span id="cb3-10"><a href="#cb3-10"></a>Y          <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(A1B1,A1B2,A2B1,A2B2), <span class="at">nrow =</span> n_ij)                        <span class="co"># Datenmatrix</span></span>
+<span id="cb3-11"><a href="#cb3-11"></a>bar_y      <span class="ot">=</span> <span class="fu">colMeans</span>(Y)                                                        <span class="co"># Zellenmittelwerte</span></span>
+<span id="cb3-12"><a href="#cb3-12"></a></span>
+<span id="cb3-13"><a href="#cb3-13"></a><span class="co"># Modellschätzung</span></span>
+<span id="cb3-14"><a href="#cb3-14"></a>I          <span class="ot">=</span> <span class="dv">2</span>                                                                  <span class="co"># Anzahl Level Faktor A (Therapiesetting)</span></span>
+<span id="cb3-15"><a href="#cb3-15"></a>J          <span class="ot">=</span> <span class="dv">2</span>                                                                  <span class="co"># Anzahl Level Faktor B (Therapievariante)</span></span>
+<span id="cb3-16"><a href="#cb3-16"></a>n          <span class="ot">=</span> I<span class="sc">*</span>J<span class="sc">*</span>n_ij                                                           <span class="co"># Anzahl Datenpunkte</span></span>
+<span id="cb3-17"><a href="#cb3-17"></a>p          <span class="ot">=</span> <span class="dv">1</span> <span class="sc">+</span> (I<span class="dv">-1</span>)<span class="sc">+</span>(J<span class="dv">-1</span>)<span class="sc">+</span>(I<span class="sc">*</span>J<span class="dv">-3</span>)                                            <span class="co"># Anzahl Parameter</span></span>
+<span id="cb3-18"><a href="#cb3-18"></a>D          <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,                                                    <span class="co"># Prototypische Designmatrix für balancierte Designs</span></span>
+<span id="cb3-19"><a href="#cb3-19"></a>                      <span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,</span>
+<span id="cb3-20"><a href="#cb3-20"></a>                      <span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,</span>
+<span id="cb3-21"><a href="#cb3-21"></a>                      <span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>), <span class="at">nrow =</span> p, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-22"><a href="#cb3-22"></a>C          <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="dv">1</span>,n_ij),<span class="at">nrow =</span> n_ij)                                    <span class="co"># Prototypischer Zellenvektor für balancierte Designs</span></span>
+<span id="cb3-23"><a href="#cb3-23"></a>X          <span class="ot">=</span> <span class="fu">kronecker</span>(D,C)                                                     <span class="co"># Kroneckerprodukt Designmatrix</span></span>
+<span id="cb3-24"><a href="#cb3-24"></a>y          <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(A1B1,A1B2,A2B1,A2B2), <span class="at">nrow =</span> n)                           <span class="co"># Datenvektor</span></span>
+<span id="cb3-25"><a href="#cb3-25"></a>beta_hat   <span class="ot">=</span> <span class="fu">solve</span>(<span class="fu">t</span>(X) <span class="sc">%*%</span> X) <span class="sc">%*%</span> <span class="fu">t</span>(X) <span class="sc">%*%</span> y                                   <span class="co"># Betaparameterschätzer</span></span>
+<span id="cb3-26"><a href="#cb3-26"></a>eps_hat    <span class="ot">=</span> y <span class="sc">-</span> X <span class="sc">%*%</span> beta_hat                                                 <span class="co"># Residuenvektor</span></span>
+<span id="cb3-27"><a href="#cb3-27"></a>sigsqr_hat <span class="ot">=</span> (<span class="fu">t</span>(eps_hat) <span class="sc">%*%</span> eps_hat) <span class="sc">/</span>(n<span class="sc">-</span>p)                                    <span class="co"># Varianzparameterschätzer</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>hat{beta}                                                :  10.15 0.29 5.04 
+hat{sigsqr}                                              :  6.07 
+bar{y}_11,bar{y}_12,bar{y}_21,bar{y}_22                  :  10.5 14.83 10.08 15.83 
+3/4bar{y}_11 + 1/4(bar{y}_12 + bar{y}_21) - 1/4bar{y}_22 :  10.15 
+1/2(bar{y}_21 + bar{y}_22) - 1/2(bar{y}_11 + bar{y}_12)  :  0.29 
+1/2(bar{y}_12 + bar{y}_22) - 1/2(bar{y}_11 + bar{y}_21)  :  5.04</code></pre>
+</div>
+</div>
+<p>Für die Betaparameterschätzung im <span class="math inline">\(2 \times 2\)</span> ZVA Modell mit Interaktion und Referenzgruppe ergibt sich folgendes Theorem.</p>
+<div id="thm-betaparameterschaetzung-im-2x2-zva-modell-mit-interaktion-und-referenzgruppe" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 33.2 (Betaparameterschätzung im <span class="math inline">\(2 \times 2\)</span> ZVA Modell mit Interaktion und Referenzgruppe)</strong></span> Gegeben sei die Designmatrixform eines balancierten <span class="math inline">\(2 \times 2\)</span> ZVA Modells mit Interaktion und Referenzgruppe. Dann ergibt sich für den Betaparameterschätzer <span class="math display">\[
+\hat{\beta}:=
+\begin{pmatrix}
+\hat{\mu}_{0} \\
+\hat{\alpha}_{2} \\
+\hat{\beta}_{2} \\
+\hat{\gamma}_{22}
+\end{pmatrix}=\begin{pmatrix}
+\bar{\upsilon}_{11}-\bar{\upsilon}_{11} \\
+\bar{\upsilon}_{12}-\bar{\upsilon}_{11} \\
+\bar{\upsilon}_{11}+\bar{\upsilon}_{22}-\bar{\upsilon}_{12}-\bar{\upsilon}_{21}
+\end{pmatrix}
+\]</span> wobei <span class="math display">\[
+\bar{\upsilon}_{i j}:=\frac{1}{n_{ij}} \sum_{k=1}^{n_{ij}} \upsilon_{ijk} \mbox{ für }1 \leq i, j \leq 2
+\]</span> das Stichprobenmittel der i,jten Gruppe des <span class="math inline">\(2 \times 2\)</span> ZVA Designs bezeichnet.</p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Beweis</em>. </span>Wir bestimmen zunächst <span class="math inline">\(X^T\upsilon, X^{T} X\)</span> und <span class="math inline">\(\left(X^{T} X\right)^{-1}\)</span> bei konstantem <span class="math inline">\(n_{ij}\)</span> für <span class="math inline">\(1 \leq i, j \leq 2\)</span>. Es ergeben sich <span class="math display">\[
+X^T\upsilon
+=
+\begin{pmatrix}
+1 &amp; \cdots &amp; 1 &amp; 1 &amp; \cdots &amp; 1 &amp; 1 &amp; \cdots &amp; 1 &amp; 1 &amp; \cdots &amp; 1 \\
+0 &amp; \cdots &amp; 0 &amp; 0 &amp; \cdots &amp; 0 &amp; 1 &amp; \cdots &amp; 1 &amp; 1 &amp; \cdots &amp; 1 \\
+0 &amp; \cdots &amp; 0 &amp; 1 &amp; \cdots &amp; 1 &amp; 0 &amp; \cdots &amp; 0 &amp; 1 &amp; \cdots &amp; 1 \\
+0 &amp; \cdots &amp; 0 &amp; 0 &amp; \cdots &amp; 0 &amp; 0 &amp; \cdots &amp; 0 &amp; 1 &amp; \cdots &amp; 1
+\end{pmatrix}
+\begin{pmatrix}
+\upsilon_{111} \\
+\vdots \\
+\upsilon_{11 n_{11}} \\
+\upsilon_{121} \\
+\vdots \\
+\upsilon_{12 n_{12}} \\
+\upsilon_{211} \\
+\vdots \\
+\upsilon_{21 n_{21}} \\
+\upsilon_{221} \\
+\vdots \\
+\upsilon_{22 n_{22}}
+\end{pmatrix}
+=
+\begin{pmatrix}
+\sum_{i=1}^{2} \sum_{j=1}^{2} \sum_{k=1}^{n_{ij}} \upsilon_{ijk} \\
+\sum_{j=1}^{2} \sum_{k=1}^{n_{2 j}} \upsilon_{2 j k} \\
+\sum_{i=1}^{2} \sum_{k=1}^{n} \upsilon_{i 2 k} \\
+\sum_{k=1}^{n_{22}} \upsilon_{22 k}
+\end{pmatrix},
+\]</span></p>
+<p><span class="math display">\[
+X^{T}X =
+\begin{pmatrix}
+1 &amp; \cdots &amp; 1 &amp; 1 &amp; \cdots &amp; 1 &amp; 1 &amp; \cdots &amp; 1 &amp; 1 &amp; \cdots &amp; 1 \\
+0 &amp; \cdots &amp; 0 &amp; 0 &amp; \cdots &amp; 0 &amp; 1 &amp; \cdots &amp; 1 &amp; 1 &amp; \cdots &amp; 1 \\
+0 &amp; \cdots &amp; 0 &amp; 1 &amp; \cdots &amp; 1 &amp; 0 &amp; \cdots &amp; 0 &amp; 1 &amp; \cdots &amp; 1 \\
+0 &amp; \cdots &amp; 0 &amp; 0 &amp; \cdots &amp; 0 &amp; 0 &amp; \cdots &amp; 0 &amp; 1 &amp; \cdots &amp; 1
+\end{pmatrix}
+\begin{pmatrix}
+1 &amp; 0 &amp; 0 &amp; 0 \\
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots \\
+1 &amp; 0 &amp; 0 &amp; 0 \\
+1 &amp; 0 &amp; 1 &amp; 0 \\
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots \\
+1 &amp; 0 &amp; 1 &amp; 0 \\
+1 &amp; 1 &amp; 0 &amp; 0 \\
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots \\
+1 &amp; 1 &amp; 0 &amp; 0 \\
+1 &amp; 1 &amp; 1 &amp; 1 \\
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots \\
+1 &amp; 1 &amp; 1 &amp; 1
+\end{pmatrix}
+= n_{ij}
+\begin{pmatrix}
+4 &amp; 2 &amp; 2 &amp; 1 \\
+2 &amp; 2 &amp; 1 &amp; 1 \\
+2 &amp; 1 &amp; 2 &amp; 1 \\
+1 &amp; 1 &amp; 1 &amp; 1
+\end{pmatrix},
+\]</span> sowie <span class="math display">\[
+\left(X^{T} X\right)^{-1}=n_{ij}
+\begin{pmatrix}
+4 &amp; 2 &amp; 2 &amp; 1 \\
+2 &amp; 2 &amp; 1 &amp; 1 \\
+2 &amp; 1 &amp; 2 &amp; 1 \\
+1 &amp; 1 &amp; 1 &amp; 1
+\end{pmatrix}^{-1}
+=
+\frac{1}{n_{ij}}
+\begin{pmatrix}
+1 &amp; -1 &amp; -1 &amp; 1 \\
+-1 &amp; 2 &amp; 1 &amp; -2 \\
+-1 &amp; 1 &amp; 2 &amp; -2 \\
+1 &amp; -2 &amp; -2 &amp; 4
+\end{pmatrix}
+\]</span> Es ergibt sich also <span class="math display">\[
+\hat{\beta} =
+\begin{pmatrix}
+\hat{\mu}_{0} \\
+\hat{\alpha}_{2} \\
+\hat{\beta}_{2} \\
+\hat{\gamma}_{22}
+\end{pmatrix}
+=
+\frac{1}{n_{ij}}
+\begin{pmatrix}
+1 &amp; -1 &amp; -1 &amp; 1 \\
+-1 &amp; 2 &amp; 1 &amp; -2 \\
+-1 &amp; 1 &amp; 2 &amp; -2 \\
+1 &amp; -2 &amp; -2 &amp; 4
+\end{pmatrix}
+\begin{pmatrix}
+\sum_{i=1}^{2} \sum_{j=1}^{2} \sum_{k=1}^{n_{ij}} \upsilon_{ijk} \\
+\sum_{j=1}^{2} \sum_{k=1}^{n_{2 j}} \upsilon_{2 j k} \\
+\sum_{i=1}^{2} \sum_{k=1}^{n_{i 2}} \upsilon_{i 2 k} \\
+\sum_{k=1}^{n 22} \upsilon_{22 k}
+\end{pmatrix}
+\]</span> Damit ergibt sich dann <span class="math display">\[
+\begin{aligned}
+\hat{\mu}_{0}
+&amp; = \frac{1}{n_{ij}}\left(\sum_{i=1}^{2} \sum_{j=1}^{2} \sum_{k=1}^{n_{ij}} \upsilon_{ijk}-\sum_{j=1}^{2} \sum_{k=1}^{n_{2 j}} \upsilon_{2 j k}-\sum_{i=1}^{2} \sum_{k=1}^{n_{i 2}} \upsilon_{i 2 k}+\sum_{k=1}^{n_{22}} \upsilon_{22 k}\right) \\
+&amp; = \frac{1}{n_{ij}}\left(\sum_{k=1}^{n_{11}} \upsilon_{11 k}+\sum_{k=1}^{n_{12}} \upsilon_{12 k}+\sum_{k=1}^{n_{21}} \upsilon_{21 k}+\sum_{k=1}^{n_{22}} \upsilon_{22 k}\right) \\
+&amp; + \frac{1}{n_{ij}}\left(-\sum_{k=1}^{n_{21}} \upsilon_{21 k}-\sum_{k=1}^{n_{22}} \upsilon_{22 k}-\sum_{k=1}^{n_{12}} \upsilon_{12 k}-\sum_{k=1}^{n_{22}} \upsilon_{22 k}+\sum_{k=1}^{n_{22}} \upsilon_{22 k}\right) \\
+&amp; = \frac{1}{n_{11}} \sum_{k=1}^{n_{11}} \upsilon_{11 k} \\
+&amp; = \bar{\upsilon}_{11}
+\end{aligned}
+\]</span> sowie <span class="math display">\[
+\begin{aligned}
+\hat{\alpha}_{2}
+&amp; = \frac{1}{n_{ij}}\left(-\sum_{i=1}^{2} \sum_{j=1}^{2} \sum_{k=1}^{n_{ij}} \upsilon_{ijk}+2 \sum_{j=1}^{2} \sum_{k=1}^{n_{2 j}} \upsilon_{2 j k}+1 \sum_{i=1}^{2} \sum_{k=1}^{n_{i 2}} \upsilon_{i 2 k}-2 \sum_{k=1}^{n_{22}} \upsilon_{22 k}\right) \\
+&amp; = \frac{1}{n_{ij}}\left(-\sum_{k=1}^{n_{11}} \upsilon_{11 k}-\sum_{k=1}^{n_{12}} \upsilon_{12 k}-\sum_{k=1}^{n_{21}} \upsilon_{21 k}-\sum_{k=1}^{n_{22}} \upsilon_{22 k}\right) \\
+&amp; + \frac{1}{n_{ij}}\left(2 \sum_{k=1}^{n_{21}} \upsilon_{21 k}+2 \sum_{k=1}^{n_{22}} \upsilon_{22 k}+\sum_{k=1}^{n_{12}} \upsilon_{12 k}+\sum_{k=1}^{n_{22}} \upsilon_{22 k}-2 \sum_{k=1}^{n_{22}} \upsilon_{22 k}\right) \\
+&amp; = \frac{1}{n_{ij}}\left(\sum_{k=1}^{n_{21}} \upsilon_{21 k}-\sum_{k=1}^{n_{11}} \upsilon_{11 k}\right) \\
+&amp; = \bar{\upsilon}_{21}-\bar{\upsilon}_{11}
+\end{aligned}
+\]</span> und analog für <span class="math inline">\(\hat{\beta}_{2}\)</span>. Schließlich ergibt sich <span class="math display">\[
+\begin{aligned}
+\hat{\gamma}_{22}
+&amp; = \frac{1}{n_{ij}}\left(\sum_{i=1}^{2} \sum_{j=1}^{2} \sum_{k=1}^{n_{ij}} \upsilon_{ijk}-2 \sum_{j=1}^{2} \sum_{k=1}^{n_{2 j}} \upsilon_{2 j k}-2 \sum_{i=1}^{2} \sum_{k=1}^{n_{i 2}} \upsilon_{i 2 k}+4 \sum_{k=1}^{n_{22}} \upsilon_{22 k}\right) \\
+&amp; = \frac{1}{n_{ij}}\left(\sum_{k=1}^{n_{11}} \upsilon_{11 k}+\sum_{k=1}^{n_{12}} \upsilon_{12 k}+\sum_{k=1}^{n_{21}} \upsilon_{21 k}+\sum_{k=1}^{n_{22}} \upsilon_{22 k}\right) \\
+&amp; + \frac{1}{n_{ij}}\left(-2 \sum_{k=1}^{n_{21}} \upsilon_{21 k}-2 \sum_{k=1}^{n_{22}} \upsilon_{22 k}-2 \sum_{k=1}^{n_{12}} \upsilon_{12 k}-2 \sum_{k=1}^{n_{22}} \upsilon_{22 k}+4 \sum_{k=1}^{n_{22}} \upsilon_{22 k}\right) \\
+&amp; = \frac{1}{n_{ij}}\left(\sum_{k=1}^{n_{11}} \upsilon_{11 k}+\sum_{k=1}^{n_{22}} \upsilon_{22 k}-\sum_{k=1}^{n_{12}} \upsilon_{12 k}-\sum_{k=1}^{n_{21}} \upsilon_{21 k}\right) \\
+&amp; = \bar{\upsilon}_{11}+\bar{\upsilon}_{22}-\bar{\upsilon}_{12}-\bar{\upsilon}_{21} .
+\end{aligned}
+\]</span></p>
+</div>
+<p>Auch hier vedeutlichen wir den in obigem Theorem formulierten Zusammenhang zwischen den Betaparameterschätzerkomponenten und den gruppenspezifischen Stichprobenmitteln anhand des Beispieldatensatzes mithilfe folgenden <strong>R</strong> Codes.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># Datenreformatierung</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>D          <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"./_data/409-zweifaktorielle-varianzanalyse.csv"</span>)         <span class="co"># Datensatz</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a>A1B1       <span class="ot">=</span> D<span class="sc">$</span>dBDI[D<span class="sc">$</span>Setting <span class="sc">==</span> <span class="st">"F2F"</span> <span class="sc">&amp;</span> D<span class="sc">$</span>Variant <span class="sc">==</span> <span class="st">"MND"</span> ]                   <span class="co"># Face-to-face, mindfulness</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>A1B2       <span class="ot">=</span> D<span class="sc">$</span>dBDI[D<span class="sc">$</span>Setting <span class="sc">==</span> <span class="st">"F2F"</span> <span class="sc">&amp;</span> D<span class="sc">$</span>Variant <span class="sc">==</span> <span class="st">"EXC"</span> ]                   <span class="co"># Face-to-face, exercise</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a>A2B1       <span class="ot">=</span> D<span class="sc">$</span>dBDI[D<span class="sc">$</span>Setting <span class="sc">==</span> <span class="st">"ONL"</span> <span class="sc">&amp;</span> D<span class="sc">$</span>Variant <span class="sc">==</span> <span class="st">"MND"</span> ]                   <span class="co"># Online      , mindfulness</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a>A2B2       <span class="ot">=</span> D<span class="sc">$</span>dBDI[D<span class="sc">$</span>Setting <span class="sc">==</span> <span class="st">"ONL"</span> <span class="sc">&amp;</span> D<span class="sc">$</span>Variant <span class="sc">==</span> <span class="st">"EXC"</span> ]                   <span class="co"># Online      , exercise</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a></span>
+<span id="cb5-8"><a href="#cb5-8"></a><span class="co"># Datenmatrix für Gruppenmittelwerte</span></span>
+<span id="cb5-9"><a href="#cb5-9"></a>n_ij       <span class="ot">=</span> <span class="fu">length</span>(A1B1)                                                       <span class="co"># Anzahl Datenpunkte pro Gruppe</span></span>
+<span id="cb5-10"><a href="#cb5-10"></a>Y          <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(A1B1,A1B2,A2B1,A2B2), <span class="at">nrow =</span> n_ij)                        <span class="co"># Datenmatrix</span></span>
+<span id="cb5-11"><a href="#cb5-11"></a>bar_y      <span class="ot">=</span> <span class="fu">colMeans</span>(Y)                                                        <span class="co"># Zellenmittelwerte</span></span>
+<span id="cb5-12"><a href="#cb5-12"></a></span>
+<span id="cb5-13"><a href="#cb5-13"></a><span class="co"># Modellschätzung</span></span>
+<span id="cb5-14"><a href="#cb5-14"></a>I          <span class="ot">=</span> <span class="dv">2</span>                                                                  <span class="co"># Anzahl Level Faktor A (Therapiesetting)</span></span>
+<span id="cb5-15"><a href="#cb5-15"></a>J          <span class="ot">=</span> <span class="dv">2</span>                                                                  <span class="co"># Anzahl Level Faktor B (Therapievariante)</span></span>
+<span id="cb5-16"><a href="#cb5-16"></a>n          <span class="ot">=</span> I<span class="sc">*</span>J<span class="sc">*</span>n_ij                                                           <span class="co"># Anzahl Datenpunkte</span></span>
+<span id="cb5-17"><a href="#cb5-17"></a>p          <span class="ot">=</span> <span class="dv">1</span> <span class="sc">+</span> (I<span class="dv">-1</span>)<span class="sc">+</span>(J<span class="dv">-1</span>)<span class="sc">+</span>(I<span class="sc">*</span>J<span class="dv">-3</span>)                                            <span class="co"># Anzahl Parameter</span></span>
+<span id="cb5-18"><a href="#cb5-18"></a>D          <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,                                                  <span class="co"># Prototypische Designmatrix  </span></span>
+<span id="cb5-19"><a href="#cb5-19"></a>                      <span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,</span>
+<span id="cb5-20"><a href="#cb5-20"></a>                      <span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,</span>
+<span id="cb5-21"><a href="#cb5-21"></a>                      <span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>), <span class="at">nrow =</span> p, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-22"><a href="#cb5-22"></a>C          <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="dv">1</span>,n_ij),<span class="at">nrow =</span> n_ij)                                    <span class="co"># Prototypischer Zellenvektor  </span></span>
+<span id="cb5-23"><a href="#cb5-23"></a>X          <span class="ot">=</span> <span class="fu">kronecker</span>(D,C)                                                     <span class="co"># Kroneckerprodukt Designmatrix</span></span>
+<span id="cb5-24"><a href="#cb5-24"></a>y          <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(A1B1,A1B2,A2B1,A2B2), <span class="at">nrow =</span> n)                           <span class="co"># Datenvektor</span></span>
+<span id="cb5-25"><a href="#cb5-25"></a>beta_hat   <span class="ot">=</span> <span class="fu">solve</span>(<span class="fu">t</span>(X) <span class="sc">%*%</span> X) <span class="sc">%*%</span> <span class="fu">t</span>(X) <span class="sc">%*%</span> y                                   <span class="co"># Betaparameterschätzer</span></span>
+<span id="cb5-26"><a href="#cb5-26"></a>eps_hat    <span class="ot">=</span> y <span class="sc">-</span> X <span class="sc">%*%</span> beta_hat                                                 <span class="co"># Residuenvektor</span></span>
+<span id="cb5-27"><a href="#cb5-27"></a>sigsqr_hat <span class="ot">=</span> (<span class="fu">t</span>(eps_hat) <span class="sc">%*%</span> eps_hat) <span class="sc">/</span>(n<span class="sc">-</span>p)                                    <span class="co"># Varianzparameterschätzer</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>hat{beta}                                        :  10.5 -0.42 4.33 1.42 
+hat{sigsqr}                                      :  5.94 
+bar{y}_11,bar{y}_12,bar{y}_21,bar{y}_22          :  10.5 14.83 10.08 15.83 
+bar{y}_11                                        :  10.5 
+bar{y}_21 - bar{y}_11                            :  -0.42 
+bar{y}_12 - bar{y}_11                            :  4.33 
+bar{y}_11 + bar{y}_22 - bar{y}_12 + bar{y}_21    :  1.42</code></pre>
+</div>
+</div>
+</section>
+<section id="modellevaluation" class="level2" data-number="33.4">
+<h2 data-number="33.4" class="anchored" data-anchor-id="modellevaluation"><span class="header-section-number">33.4</span> Modellevaluation</h2>
+<p>Die inferenzstatistische Evaluation von Haupteffekt- und Interaktionsparametern in ZVA Modellen in allgemeiner Form kann aus mindestens drei Blickwinkeln betrachtet werden. Analog zur EVA könnnen auch für die ZVA Quadratsummenzerlegungen entwickelt werden und zur Definition entsprechender F-Statistiken eingesetzt werden. Wir folgen hier dem alternativen Ansatz, F-Statistiken für Haupteffekte und Interaktionen vor dem Hintergrund von Modellvergleichen in den entsprechenden ZVA Modellen zu formulieren. Einen integrativen Blick auf beide Ansätze bietet die Theorie der Allgemeinen Linearen Hypothese, auf deren Diskussion wir hier aber verzichten. Dementsprechend beschränken wir uns hier auf (1) die Evaluation der Haupteffekte im additiven Modell der <span class="math inline">\(2 \times 2\)</span> ZVA mit Referenzgruppe und (2) die Evaluation der Interaktion im Modell der <span class="math inline">\(2 \times 2\)</span> ZVA mit Interaktion und Referenzgruppe. Für beide Evaluationen formulieren wir (1) die zugrundeliegenden Modelle und Teststatistiken, (2) die Testhypothesen und Tests und (3) die Prozeduren zur Testumfangkontrolle und Auswertung des p-Wertes.</p>
+<section id="evaluation-von-haupteffekten-im-additiven-modell-der-2-times-2-zva" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="evaluation-von-haupteffekten-im-additiven-modell-der-2-times-2-zva">Evaluation von Haupteffekten im additiven Modell der <span class="math inline">\(2 \times 2\)</span> ZVA</h3>
+<div id="thm-teststatistiken-fuer-haupteffekte" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 33.3 (Teststatistiken für Haupteffekte)</strong></span> Es sei <span class="math display">\[
+\upsilon = X\beta+\varepsilon \mbox{ mit } \varepsilon \sim N\left(0_{n}, \sigma^{2} I_{n}\right)
+\]</span> die Designmatrixform des additiven Modells der <span class="math inline">\(2 \times 2 Z V A\)</span> mit Referenzgruppe, wobei die <span class="math inline">\(n \times 1\)</span> Spalten von <span class="math inline">\(X\)</span> bezeichnet seien durch <span class="math display">\[
+X:=
+\begin{pmatrix}
+X_{\mu_{0}} &amp; X_{\alpha_{2}} &amp; X_{\beta_{2}}
+\end{pmatrix}
+\in \mathbb{R}^{n \times 3}.
+\]</span> Dann gelten</p>
+<ol type="A">
+<li><p>Eine F-Teststatistik für den Haupteffekt von Faktor A ist die F-Statistik des ALMs mit <span class="math display">\[
+X_{A} :=
+\begin{pmatrix}
+X_{\mu_{0}} &amp; X_{\beta_{2}} &amp; X_{\alpha_{2}}
+\end{pmatrix} \in \mathbb{R}^{n \times 3},
+\beta_{A} :=
+\begin{pmatrix}
+\mu_{0} \\
+\beta_{2} \\
+\alpha_{2}
+\end{pmatrix} \in \mathbb{R}^{3} \mbox{ und }p_{0}:=2, p_{1}:=1
+\]</span></p></li>
+<li><p>Eine F-Teststatistik für den Haupteffekt von Faktor B ist die F-Statistik des ALMs mit <span class="math display">\[
+X_{B}
+:=
+\begin{pmatrix}
+X_{\mu_{0}} &amp; X_{\alpha_{2}} &amp; X_{\beta_{2}}
+\end{pmatrix} \in \mathbb{R}^{n \times 3},
+\beta_{B}
+:= \begin{pmatrix}
+\mu_{0} \\
+\alpha_{2} \\
+\beta_{2}
+\end{pmatrix} \in \mathbb{R}^{3} \mbox{ und }p_{0}:=2, p_{1}:=1
+\]</span></p></li>
+</ol>
+</div>
+<div id="def-testhypothesen-und-test-fuer-haupteffekte" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 33.5 (Testhypothesen und Tests für Haupteffekte)</strong></span> Gegeben sei das Modell der additiven <span class="math inline">\(2 \times 2\)</span> ZVA und die F-Teststatistiken für die Haupteffekte von Faktor A und B seien mit <span class="math inline">\(F_{A}\)</span> und <span class="math inline">\(F_{B}\)</span> bezeichnet und wie oben definiert. Dann gelten folgende Definitionen:</p>
+<ol type="A">
+<li><p>Der kritische Wert-basierte Test <span class="math display">\[
+\phi_{A}(\upsilon):=1_{\left\{F_{A} \geq k\right\}} \text { mit Nullhypothese } H_{0}^{A}: \alpha_{2}=0
+\]</span> definiert den <span class="math inline">\(F\)</span>-Test des Haupteffekts von Faktor <span class="math inline">\(A\)</span> im Modell mit <span class="math inline">\(X_{A}, \beta_{A}\)</span>.</p></li>
+<li><p>Der kritische Wert-basierte Test <span class="math display">\[
+\phi_{B}(\upsilon):=1_{\left\{F_{B} \geq k\right\}} \text { mit Nullhypothese } H_{0}^{B}: \beta_{2}=0
+\]</span> definiert den <span class="math inline">\(F\)</span>-Test des Haupteffekts von Faktor <span class="math inline">\(B\)</span> im Modell mit <span class="math inline">\(X_{B}, \beta_{B}\)</span>.</p></li>
+</ol>
+</div>
+<div id="thm-testumfangkontrolle-und-p-werte-fuer-haupteffekte" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 33.4 (Testumfangkontrolle und p-Werte für Haupteffekte)</strong></span> Mit obigen Definitionen und der KVF <span class="math inline">\(\varphi\)</span> der f-Verteilung gelten:</p>
+<ol type="A">
+<li><span class="math inline">\(\phi_{A}\)</span> ist ein Level- <span class="math inline">\(\alpha_{0}\)</span>-Test mit Testumfang <span class="math inline">\(\alpha_{0}\)</span>, wenn der kritische Wert definiert ist durch <span class="math display">\[
+k_{\alpha_{0}}^{A}:=\varphi^{-1}\left(1-\alpha_{0} ; 1, n-3\right) .
+\]</span> Der zu einem beobachteten Wert <span class="math inline">\(f_{A}\)</span> von <span class="math inline">\(F_{A}\)</span> assoziierte <span class="math inline">\(p\)</span>-Wert ist gegeben durch <span class="math display">\[
+p_{A}-\text { Wert }:=1-\varphi\left(f_{A} ; 1, n-3\right).
+\]</span></li>
+<li><span class="math inline">\(\phi_{B}\)</span> ist ein Level- <span class="math inline">\(\alpha_{0}\)</span>-Test mit Testumfang <span class="math inline">\(\alpha_{0}\)</span>, wenn der kritische Wert definiert ist durch <span class="math display">\[
+k_{\alpha_{0}}^{B}:=\varphi^{-1}\left(1-\alpha_{0} ; 1, n-3\right) .
+\]</span> Der zu einem beobachteten Wert <span class="math inline">\(f_{B}\)</span> von <span class="math inline">\(F_{B}\)</span> assoziierte <span class="math inline">\(p\)</span>-Wert ist gegeben durch <span class="math display">\[
+p_{B}-\text { Wert }:=1-\varphi\left(f_{B} ; 1, n-3\right) .
+\]</span></li>
+</ol>
+</div>
+<p><strong>Anwendungsbeispiel</strong></p>
+<p>Die Anwendung des oben formulierten Evaluationsverfahrens für die Haupteffekte im Modell der additiven <span class="math inline">\(2 \times 2\)</span> ZVA mit Referenzgruppe anhand des Beispieldatensatzes demonstriert folgender <strong>R</strong> Code.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>D          <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"./_data/409-zweifaktorielle-varianzanalyse.csv"</span>)         <span class="co"># Datensatz</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>A1B1       <span class="ot">=</span> D<span class="sc">$</span>dBDI[D<span class="sc">$</span>Setting <span class="sc">==</span> <span class="st">"F2F"</span> <span class="sc">&amp;</span> D<span class="sc">$</span>Variant <span class="sc">==</span> <span class="st">"MND"</span> ]                   <span class="co"># Face-to-face, mindfulness</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a>A1B2       <span class="ot">=</span> D<span class="sc">$</span>dBDI[D<span class="sc">$</span>Setting <span class="sc">==</span> <span class="st">"F2F"</span> <span class="sc">&amp;</span> D<span class="sc">$</span>Variant <span class="sc">==</span> <span class="st">"EXC"</span> ]                   <span class="co"># Face-to-face, exercise</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a>A2B1       <span class="ot">=</span> D<span class="sc">$</span>dBDI[D<span class="sc">$</span>Setting <span class="sc">==</span> <span class="st">"ONL"</span> <span class="sc">&amp;</span> D<span class="sc">$</span>Variant <span class="sc">==</span> <span class="st">"MND"</span> ]                   <span class="co"># Online      , mindfulness</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a>A2B2       <span class="ot">=</span> D<span class="sc">$</span>dBDI[D<span class="sc">$</span>Setting <span class="sc">==</span> <span class="st">"ONL"</span> <span class="sc">&amp;</span> D<span class="sc">$</span>Variant <span class="sc">==</span> <span class="st">"EXC"</span> ]                   <span class="co"># Online      , exercise</span></span>
+<span id="cb7-6"><a href="#cb7-6"></a>I          <span class="ot">=</span> <span class="dv">2</span>                                                                  <span class="co"># Anzahl Level Faktor Setting</span></span>
+<span id="cb7-7"><a href="#cb7-7"></a>J          <span class="ot">=</span> <span class="dv">2</span>                                                                  <span class="co"># Anzahl Level Faktor Variante </span></span>
+<span id="cb7-8"><a href="#cb7-8"></a>n_ij       <span class="ot">=</span> <span class="fu">length</span>(A1B1)                                                       <span class="co"># balanciertes ANOVA Design</span></span>
+<span id="cb7-9"><a href="#cb7-9"></a>n          <span class="ot">=</span> I<span class="sc">*</span>J<span class="sc">*</span>n_ij                                                           <span class="co"># Anzahl Datenpunkte</span></span>
+<span id="cb7-10"><a href="#cb7-10"></a>p          <span class="ot">=</span> <span class="dv">3</span>                                                                  <span class="co"># Anzahl Parameter vollständiges Modell</span></span>
+<span id="cb7-11"><a href="#cb7-11"></a>y          <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(A1B1,A1B2,A2B1,A2B2), <span class="at">nrow =</span> n)                           <span class="co"># Datenvektor</span></span>
+<span id="cb7-12"><a href="#cb7-12"></a>D          <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>),                                 <span class="co"># Prototypische Designmatrix</span></span>
+<span id="cb7-13"><a href="#cb7-13"></a>                     <span class="at">nrow =</span> I<span class="sc">*</span>J,<span class="at">byrow=</span><span class="cn">TRUE</span>)</span>
+<span id="cb7-14"><a href="#cb7-14"></a>C          <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="dv">1</span>,n_ij),<span class="at">nrow =</span> n_ij)                                    <span class="co"># Prototypischer Zellenvektor </span></span>
+<span id="cb7-15"><a href="#cb7-15"></a>X          <span class="ot">=</span> <span class="fu">kronecker</span>(D,C)                                                     <span class="co"># ZVA Kroneckerprodukt Designmatrix</span></span>
+<span id="cb7-16"><a href="#cb7-16"></a>XH         <span class="ot">=</span> <span class="fu">list</span>(X[,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">2</span>)], X)                                              <span class="co"># Modellvarianten</span></span>
+<span id="cb7-17"><a href="#cb7-17"></a>alpha_0    <span class="ot">=</span> <span class="fl">0.05</span>                                                               <span class="co"># Signifikanzlevel</span></span>
+<span id="cb7-18"><a href="#cb7-18"></a>Eff        <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,<span class="dv">2</span>)                                                         <span class="co"># F-Teststatistik Arrayinitialisierung</span></span>
+<span id="cb7-19"><a href="#cb7-19"></a>k_alpha_0  <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,<span class="dv">2</span>)                                                         <span class="co"># Kritischer Wert Arrayinitialisierung</span></span>
+<span id="cb7-20"><a href="#cb7-20"></a>phi        <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,<span class="dv">2</span>)                                                         <span class="co"># Testwert Arrayinitialisierung</span></span>
+<span id="cb7-21"><a href="#cb7-21"></a>p_vals     <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,<span class="dv">2</span>)                                                         <span class="co"># p-Wert Arrayinitialisierung</span></span>
+<span id="cb7-22"><a href="#cb7-22"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>){                                                                  <span class="co"># Iteration über Modellvarianten</span></span>
+<span id="cb7-23"><a href="#cb7-23"></a>    X            <span class="ot">=</span> XH[[i]]                                                      <span class="co"># Designmatrix vollständiges Modell</span></span>
+<span id="cb7-24"><a href="#cb7-24"></a>    X_0          <span class="ot">=</span> X[,<span class="sc">-</span><span class="dv">3</span>]                                                       <span class="co"># Designmatrix reduziertes Modell</span></span>
+<span id="cb7-25"><a href="#cb7-25"></a>    p            <span class="ot">=</span> <span class="fu">ncol</span>(X)                                                      <span class="co"># Anzahl Parameter vollständiges Modell</span></span>
+<span id="cb7-26"><a href="#cb7-26"></a>    p_0          <span class="ot">=</span> <span class="fu">ncol</span>(X_0)                                                    <span class="co"># Anzahl Parameter reduziertes Modell</span></span>
+<span id="cb7-27"><a href="#cb7-27"></a>    p_1          <span class="ot">=</span> p <span class="sc">-</span> p_0                                                      <span class="co"># Anzahl zusätzlicher Parameter im vollst. Modell</span></span>
+<span id="cb7-28"><a href="#cb7-28"></a>    beta_hat_0   <span class="ot">=</span> <span class="fu">solve</span>(<span class="fu">t</span>(X_0)<span class="sc">%*%</span>X_0)<span class="sc">%*%</span><span class="fu">t</span>(X_0)<span class="sc">%*%</span>y                             <span class="co"># Betaparameterschätzer reduziertes Modell</span></span>
+<span id="cb7-29"><a href="#cb7-29"></a>    beta_hat     <span class="ot">=</span> <span class="fu">solve</span>(<span class="fu">t</span>(X) <span class="sc">%*%</span>X )<span class="sc">%*%</span><span class="fu">t</span>(X) <span class="sc">%*%</span>y                                <span class="co"># Betaparameterschätzer vollständiges Modell</span></span>
+<span id="cb7-30"><a href="#cb7-30"></a>    eps_hat_0    <span class="ot">=</span> y<span class="sc">-</span>X_0<span class="sc">%*%</span>beta_hat_0                                           <span class="co"># Residuenvektor reduziertes Modell</span></span>
+<span id="cb7-31"><a href="#cb7-31"></a>    eps_hat      <span class="ot">=</span> y <span class="sc">-</span> X<span class="sc">%*%</span>beta_hat                                             <span class="co"># Residuenvektor vollständiges Modell</span></span>
+<span id="cb7-32"><a href="#cb7-32"></a>    eh0_eh0      <span class="ot">=</span> <span class="fu">t</span>(eps_hat_0) <span class="sc">%*%</span> eps_hat_0                                   <span class="co"># RQS reduziertes Modell</span></span>
+<span id="cb7-33"><a href="#cb7-33"></a>    eh_eh        <span class="ot">=</span> <span class="fu">t</span>(eps_hat) <span class="sc">%*%</span> eps_hat                                       <span class="co"># RQS vollständiges Modell</span></span>
+<span id="cb7-34"><a href="#cb7-34"></a>    sigsqr_hat   <span class="ot">=</span> eh_eh<span class="sc">/</span>(n<span class="sc">-</span>p)                                                  <span class="co"># Varianzparameterschätzer vollst. Modell</span></span>
+<span id="cb7-35"><a href="#cb7-35"></a>    Eff[i]       <span class="ot">=</span> ((eh0_eh0<span class="sc">-</span>eh_eh)<span class="sc">/</span>p_1)<span class="sc">/</span>sigsqr_hat                             <span class="co"># F-Statistik</span></span>
+<span id="cb7-36"><a href="#cb7-36"></a>    k_alpha_0[i] <span class="ot">=</span> <span class="fu">qf</span>(<span class="dv">1</span><span class="sc">-</span>alpha_0, p_1, n<span class="sc">-</span>p)                                      <span class="co"># kritischer Wert</span></span>
+<span id="cb7-37"><a href="#cb7-37"></a>    <span class="cf">if</span>(Eff[i] <span class="sc">&gt;=</span> k_alpha_0[i]){ phi[i] <span class="ot">=</span> <span class="dv">1</span> }                                    <span class="co"># H_0 Ablehnen</span></span>
+<span id="cb7-38"><a href="#cb7-38"></a>    <span class="cf">else</span> {                      phi[i] <span class="ot">=</span> <span class="dv">0</span> }                                    <span class="co"># H_A Annehmen</span></span>
+<span id="cb7-39"><a href="#cb7-39"></a>    p_vals[i]    <span class="ot">=</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">pf</span>(Eff[i], p_1,n<span class="sc">-</span>p)                                      <span class="co"># p-Wert</span></span>
+<span id="cb7-40"><a href="#cb7-40"></a>}</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>             f     k phi p.Wert
+Setting  0.172 4.057   0   0.68
+Variant 51.356 4.057   1   0.00</code></pre>
+</div>
+</div>
+<p>Für den Haupteffekt des Faktors Settings ergibt sich dabei ein Wert der <span class="math inline">\(F\)</span>-Statistik von <span class="math inline">\(F_{A}=0.17\)</span> bei einem kritischen Wert von <span class="math inline">\(k_{0.05}=4.06\)</span>. Die Nullhypothese eines wahren, aber unbekannten, Effektparameterwertes von Null für den Faktor Setting würde im Lichte der in <a href="#fig-beispieldatensatz" class="quarto-xref">Abbildung&nbsp;<span>33.3</span></a> visualisierten Daten also nicht verworfen werden. Für den Haupteffekt des Faktors Variant dagegen ergibt ein Wert der <span class="math inline">\(F\)</span>-Statistik von <span class="math inline">\(F_{B}=51.36\)</span> bei dem gleichen kritischen Wert von <span class="math inline">\(k_{0.05}=4.06\)</span>. Die Nullhypothese eines wahren, aber unbekannten, Effektparameterwertes von Null für den Faktor Variant würde im Lichte der in <a href="#fig-beispieldatensatz" class="quarto-xref">Abbildung&nbsp;<span>33.3</span></a> visualisierten Daten mit einem Signifikanzlevel von <span class="math inline">\(\alpha_{0}:=0.05\)</span> also verworfen werden.</p>
+<p>Folgender <strong>R</strong> Code demonstriert die gleiche Analyse mithilfe der <strong>R</strong> Funktion <code>aov()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>D          <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"./_data/409-zweifaktorielle-varianzanalyse.csv"</span>)         <span class="co"># Datensatz</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a>res.aov    <span class="ot">=</span> <span class="fu">aov</span>(dBDI <span class="sc">~</span> Setting <span class="sc">+</span> Variant, <span class="at">data =</span> D)                            <span class="co"># Modellformulierung und Modellschätzung</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="fu">summary</span>(res.aov)                                                                <span class="co"># Modellevaluation</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+Setting      1   1.02    1.02   0.172     0.68    
+Variant      1 305.02  305.02  51.356 5.78e-09 ***
+Residuals   45 267.27    5.94                     
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>normalsize</p>
+<p>Folgender <strong>R</strong> Code schließlich demonstriert die gleiche Analyse mithilfe der <strong>R</strong> Funktionen <code>lm()</code> und <code>anova()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>D          <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"./_data/409-zweifaktorielle-varianzanalyse.csv"</span>)         <span class="co"># Datensatz</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a>glm        <span class="ot">=</span> <span class="fu">lm</span>(dBDI <span class="sc">~</span> Setting <span class="sc">+</span> Variant, <span class="at">data =</span> D)                             <span class="co"># Modellformulierung und Modellschätzung</span></span>
+<span id="cb11-3"><a href="#cb11-3"></a><span class="fu">anova</span>(glm)                                                                      <span class="co"># Modellevaluation</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Variance Table
+
+Response: dBDI
+          Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+Setting    1   1.021   1.021  0.1719    0.6804    
+Variant    1 305.021 305.021 51.3559 5.779e-09 ***
+Residuals 45 267.271   5.939                      
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+</section>
+<section id="evaluation-der-interaktion-im-modell-der-2-times-2-zva-mit-interaktion" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="evaluation-der-interaktion-im-modell-der-2-times-2-zva-mit-interaktion">Evaluation der Interaktion im Modell der <span class="math inline">\(2 \times 2\)</span> ZVA mit Interaktion</h3>
+<div id="thm-teststatistik-fuer-die-interaktion" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 33.5 (Teststatistik für die Interaktion)</strong></span> Es sei <span class="math display">\[
+\upsilon = X\beta+\varepsilon \mbox{ mit } \varepsilon \sim N\left(0_{n}, \sigma^{2} I_{n}\right)
+\]</span> die Designmatrixform des <span class="math inline">\(2 \times 2\)</span> ZVA Modells mit Interaktion und Referenzgruppe. Dann ist die <span class="math inline">\(F\)</span>-Statistik mit <span class="math inline">\(p_{0}:=3\)</span> und <span class="math inline">\(p_{1}:=1\)</span> eine <span class="math inline">\(F\)</span>-Teststatistik für die Interaktion von Faktor <span class="math inline">\(A\)</span> und Faktor <span class="math inline">\(B\)</span>.</p>
+</div>
+<div id="def-testhypothese-und-test-fuer-die-interaktion" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 33.6 (Testhypothese und Test für die Interaktion)</strong></span> Die F-Teststatistik für die Interaktion von Faktor A und Faktor B sei mit <span class="math inline">\(F_{A \times B}\)</span> bezeichnet und wie oben definiert. Dann definiert der kritische Wert-basierte Test <span class="math display">\[
+\phi_{A \times B}(\upsilon):=1_{\left\{F_{A \times B} \geq k\right\}} \mbox{ mit Nullhypothese } H_{0}^{A \times B}: \gamma_{22}=0
+\]</span> den <span class="math inline">\(F\)</span>-Test der Interaktion von Faktor <span class="math inline">\(A\)</span> und Faktor B.</p>
+</div>
+<div id="thm-testumfangkontrolle-und-p-wert-fuer-die-interaktion" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 33.6 (Testumfangkontrolle und p-Wert für die Interaktion)</strong></span> Mit obigen Definition und der KVF <span class="math inline">\(\varphi\)</span> der <span class="math inline">\(f\)</span>-Verteilung gilt, dass <span class="math inline">\(\phi_{A \times B}\)</span> ein Level- <span class="math inline">\(\alpha_{0}\)</span>-Test mit Testumfang <span class="math inline">\(\alpha_{0}\)</span> ist, wenn der kritische Wert definiert ist durch <span class="math display">\[
+k_{\alpha_{0}}^{A \times B}:=\varphi^{-1}\left(1-\alpha_{0} ; 1, n-4\right).
+\]</span> Der zu einem beobachteten Wert <span class="math inline">\(f_{A \times B}\)</span> von <span class="math inline">\(F_{A \times B}\)</span> assoziierte <span class="math inline">\(p\)</span>-Wert ist gegeben durch <span class="math display">\[
+p_{A \times B}-\text { Wert }:=1-\varphi\left(f_{A \times B} ; 1, n-4\right) \text {. }
+\]</span></p>
+</div>
+<p><strong>Anwendungsbeispiel</strong></p>
+<p>Die Anwendung des oben formulierten Evaluationsverfahrens für die Interaktion der Faktoren im Modell der <span class="math inline">\(2 \times 2\)</span> ZVA mit Interaktion und Referenzgruppe anhand des Beispieldatensatzes demonstriert folgender <strong>R</strong> Code.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>D          <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"./_data/409-zweifaktorielle-varianzanalyse.csv"</span>)         <span class="co"># Datensatz</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a>A1B1       <span class="ot">=</span> D<span class="sc">$</span>dBDI[D<span class="sc">$</span>Setting <span class="sc">==</span> <span class="st">"F2F"</span> <span class="sc">&amp;</span> D<span class="sc">$</span>Variant <span class="sc">==</span> <span class="st">"MND"</span> ]                   <span class="co"># Face-to-face, mindfulness</span></span>
+<span id="cb13-3"><a href="#cb13-3"></a>A1B2       <span class="ot">=</span> D<span class="sc">$</span>dBDI[D<span class="sc">$</span>Setting <span class="sc">==</span> <span class="st">"F2F"</span> <span class="sc">&amp;</span> D<span class="sc">$</span>Variant <span class="sc">==</span> <span class="st">"EXC"</span> ]                   <span class="co"># Face-to-face, exercise</span></span>
+<span id="cb13-4"><a href="#cb13-4"></a>A2B1       <span class="ot">=</span> D<span class="sc">$</span>dBDI[D<span class="sc">$</span>Setting <span class="sc">==</span> <span class="st">"ONL"</span> <span class="sc">&amp;</span> D<span class="sc">$</span>Variant <span class="sc">==</span> <span class="st">"MND"</span> ]                   <span class="co"># Online      , mindfulness</span></span>
+<span id="cb13-5"><a href="#cb13-5"></a>A2B2       <span class="ot">=</span> D<span class="sc">$</span>dBDI[D<span class="sc">$</span>Setting <span class="sc">==</span> <span class="st">"ONL"</span> <span class="sc">&amp;</span> D<span class="sc">$</span>Variant <span class="sc">==</span> <span class="st">"EXC"</span> ]                   <span class="co"># Online      , exercise</span></span>
+<span id="cb13-6"><a href="#cb13-6"></a>I          <span class="ot">=</span> <span class="dv">2</span>                                                                  <span class="co"># Anzahl Level Faktor Setting</span></span>
+<span id="cb13-7"><a href="#cb13-7"></a>J          <span class="ot">=</span> <span class="dv">2</span>                                                                  <span class="co"># Anzahl Level Faktor Variante </span></span>
+<span id="cb13-8"><a href="#cb13-8"></a>n_ij       <span class="ot">=</span> <span class="fu">length</span>(A1B1)                                                       <span class="co"># balanciertes ANOVA Design</span></span>
+<span id="cb13-9"><a href="#cb13-9"></a>n          <span class="ot">=</span> I<span class="sc">*</span>J<span class="sc">*</span>n_ij                                                           <span class="co"># Anzahl Datenpunkte</span></span>
+<span id="cb13-10"><a href="#cb13-10"></a>p          <span class="ot">=</span> <span class="dv">4</span>                                                                  <span class="co"># Anzahl Parameter vollständiges Modell</span></span>
+<span id="cb13-11"><a href="#cb13-11"></a>y          <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(A1B1,A1B2,A2B1,A2B2), <span class="at">nrow =</span> n)                           <span class="co"># Datenvektor</span></span>
+<span id="cb13-12"><a href="#cb13-12"></a>D          <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>, <span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>),<span class="at">nrow =</span> I<span class="sc">*</span>J,<span class="at">byrow=</span><span class="cn">TRUE</span>)  <span class="co"># Prototypische Designmatrix</span></span>
+<span id="cb13-13"><a href="#cb13-13"></a>C          <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="dv">1</span>,n_ij),<span class="at">nrow =</span> n_ij)                                    <span class="co"># Prototypischer Zellenvektor   </span></span>
+<span id="cb13-14"><a href="#cb13-14"></a>X          <span class="ot">=</span> <span class="fu">kronecker</span>(D,C)                                                     <span class="co"># ZVA Kroneckerprodukt Designmatrix</span></span>
+<span id="cb13-15"><a href="#cb13-15"></a>XH         <span class="ot">=</span> <span class="fu">list</span>(X[,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">2</span>)], X)                                              <span class="co"># Modellvarianten</span></span>
+<span id="cb13-16"><a href="#cb13-16"></a>alpha_0    <span class="ot">=</span> <span class="fl">0.05</span>                                                               <span class="co"># Signifikanzlevel</span></span>
+<span id="cb13-17"><a href="#cb13-17"></a>X          <span class="ot">=</span> XH[[i]]                                                            <span class="co"># Designmatrix vollständiges Modell</span></span>
+<span id="cb13-18"><a href="#cb13-18"></a>X_0        <span class="ot">=</span> X[,<span class="sc">-</span><span class="dv">4</span>]                                                             <span class="co"># Designmatrix reduziertes Modell</span></span>
+<span id="cb13-19"><a href="#cb13-19"></a>p          <span class="ot">=</span> <span class="fu">ncol</span>(X)                                                            <span class="co"># Anzahl Parameter vollständiges Modell</span></span>
+<span id="cb13-20"><a href="#cb13-20"></a>p_0        <span class="ot">=</span> <span class="fu">ncol</span>(X_0)                                                          <span class="co"># Anzahl Parameter reduziertes Modell</span></span>
+<span id="cb13-21"><a href="#cb13-21"></a>p_1        <span class="ot">=</span> p <span class="sc">-</span> p_0                                                            <span class="co"># Anzahl zusätzlicher Parameter im vollst. Modell</span></span>
+<span id="cb13-22"><a href="#cb13-22"></a>beta_hat_0 <span class="ot">=</span> <span class="fu">solve</span>(<span class="fu">t</span>(X_0)<span class="sc">%*%</span>X_0)<span class="sc">%*%</span><span class="fu">t</span>(X_0)<span class="sc">%*%</span>y                                   <span class="co"># Betaparameterschätzer reduziertes Modell</span></span>
+<span id="cb13-23"><a href="#cb13-23"></a>beta_hat   <span class="ot">=</span> <span class="fu">solve</span>(<span class="fu">t</span>(X) <span class="sc">%*%</span>X )<span class="sc">%*%</span><span class="fu">t</span>(X) <span class="sc">%*%</span>y                                      <span class="co"># Betaparameterschätzer vollständiges Modell</span></span>
+<span id="cb13-24"><a href="#cb13-24"></a>eps_hat_0  <span class="ot">=</span> y<span class="sc">-</span>X_0<span class="sc">%*%</span>beta_hat_0                                                 <span class="co"># Residuenvektor reduziertes Modell</span></span>
+<span id="cb13-25"><a href="#cb13-25"></a>eps_hat    <span class="ot">=</span> y <span class="sc">-</span> X<span class="sc">%*%</span>beta_hat                                                   <span class="co"># Residuenvektor vollständiges Modell</span></span>
+<span id="cb13-26"><a href="#cb13-26"></a>eh0_eh0    <span class="ot">=</span> <span class="fu">t</span>(eps_hat_0) <span class="sc">%*%</span> eps_hat_0                                         <span class="co"># RQS reduziertes Modell</span></span>
+<span id="cb13-27"><a href="#cb13-27"></a>eh_eh      <span class="ot">=</span> <span class="fu">t</span>(eps_hat) <span class="sc">%*%</span> eps_hat                                             <span class="co"># RQS vollständiges Modell</span></span>
+<span id="cb13-28"><a href="#cb13-28"></a>sigsqr_hat <span class="ot">=</span> eh_eh<span class="sc">/</span>(n<span class="sc">-</span>p)                                                        <span class="co"># Varianzparameterschätzer vollst. Modell</span></span>
+<span id="cb13-29"><a href="#cb13-29"></a>f          <span class="ot">=</span> ((eh0_eh0<span class="sc">-</span>eh_eh)<span class="sc">/</span>p_1)<span class="sc">/</span>sigsqr_hat                                   <span class="co"># F-Statistik</span></span>
+<span id="cb13-30"><a href="#cb13-30"></a>k_alpha_0  <span class="ot">=</span> <span class="fu">qf</span>(<span class="dv">1</span><span class="sc">-</span>alpha_0, p_1, n<span class="sc">-</span>p)                                            <span class="co"># kritischer Wert</span></span>
+<span id="cb13-31"><a href="#cb13-31"></a><span class="cf">if</span>(f <span class="sc">&gt;=</span> k_alpha_0){phi <span class="ot">=</span> <span class="dv">1</span>} <span class="cf">else</span> {phi <span class="ot">=</span> <span class="dv">0</span>}                                      <span class="co"># Test</span></span>
+<span id="cb13-32"><a href="#cb13-32"></a>p_val      <span class="ot">=</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">pf</span>(f, p_1,n<span class="sc">-</span>p)                                                 <span class="co"># p-Wert</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>                      f     k phi p.Wert
+Setting x Variant 1.014 4.062   0  0.319</code></pre>
+</div>
+</div>
+<p>Es ergibt sich dabei eine Wert der <span class="math inline">\(F\)</span>-Statistik von <span class="math inline">\(F_{A \times B}=1.01\)</span> bei einem kritischen Wert von <span class="math inline">\(k_{0.05}=4.06\)</span>. Die Nullhypothese eines wahren, aber unbekannten, Effektparameterwertes von Null für den Interaktionseffekt würde im Lichte der in <a href="#fig-beispieldatensatz" class="quarto-xref">Abbildung&nbsp;<span>33.3</span></a> visualisierten Daten also nicht verworfen werden.</p>
+<p>Folgender <strong>R</strong> Code demonstriert die gleiche Analyse mithilfe der <strong>R</strong> Funktion <code>aov()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>D          <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"./_data/409-zweifaktorielle-varianzanalyse.csv"</span>)         <span class="co"># Datensatz</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a>res.aov    <span class="ot">=</span> <span class="fu">aov</span>(dBDI <span class="sc">~</span> Setting <span class="sc">+</span> Variant <span class="sc">+</span> Setting<span class="sc">:</span>Variant, <span class="at">data =</span> D)          <span class="co">#  Modellformulierung und Modellschätzung</span></span>
+<span id="cb15-3"><a href="#cb15-3"></a><span class="fu">summary</span>(res.aov)                                                                <span class="co"># Modellevaluation</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                Df Sum Sq Mean Sq F value  Pr(&gt;F)    
+Setting          1   1.02    1.02   0.172   0.680    
+Variant          1 305.02  305.02  51.372 6.5e-09 ***
+Setting:Variant  1   6.02    6.02   1.014   0.319    
+Residuals       44 261.25    5.94                    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>Folgender <strong>R</strong> Code schließlich demonstriert die gleiche Analyse mithilfe der <strong>R</strong> Funktionen <code>lm</code> und <code>anova()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>D          <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"./_data/409-zweifaktorielle-varianzanalyse.csv"</span>)         <span class="co"># Datensatz</span></span>
+<span id="cb17-2"><a href="#cb17-2"></a>glm        <span class="ot">=</span> <span class="fu">lm</span>(dBDI <span class="sc">~</span> Setting <span class="sc">+</span> Variant <span class="sc">+</span> Setting<span class="sc">:</span>Variant, <span class="at">data =</span> D)           <span class="co"># Modellformulierung und Modellschätzung</span></span>
+<span id="cb17-3"><a href="#cb17-3"></a><span class="fu">anova</span>(glm)                                                                      <span class="co"># Modellevaluation</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Variance Table
+
+Response: dBDI
+                Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+Setting          1   1.021   1.021  0.1719    0.6804    
+Variant          1 305.021 305.021 51.3719 6.502e-09 ***
+Setting:Variant  1   6.021   6.021  1.0140    0.3194    
+Residuals       44 261.250   5.938                      
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="literaturhinweise" class="level2" data-number="33.5">
+<h2 data-number="33.5" class="anchored" data-anchor-id="literaturhinweise"><span class="header-section-number">33.5</span> Literaturhinweise</h2>
+<p>Die Popularität varianzanalytischer Verfahren wird im Allgemeinen auf <span class="citation" data-cites="fisher1925b">Fisher (<a href="#ref-fisher1925b" role="doc-biblioref">1925</a>)</span> und <span class="citation" data-cites="fisher1935">Fisher (<a href="#ref-fisher1935" role="doc-biblioref">1935</a>)</span> zurückgeführt. <span class="citation" data-cites="everitt2005">Everitt &amp; Howell (<a href="#ref-everitt2005" role="doc-biblioref">2005</a>)</span> und <span class="citation" data-cites="stigler1986">Stigler (<a href="#ref-stigler1986" role="doc-biblioref">1986</a>)</span> geben einen kurzen und einen ausführlichen historischen Überblick, respektive.</p>
+</section>
+<section id="selbstkontrollfragen" class="level2" data-number="33.6">
+<h2 data-number="33.6" class="anchored" data-anchor-id="selbstkontrollfragen"><span class="header-section-number">33.6</span> Selbstkontrollfragen</h2>
+<ol type="1">
+<li>Erläutern Sie das Anwendungsszenario der zweifaktoriellen Varianzanalyse.</li>
+<li>Aus wie vielen Datenpunkten besteht ein Datensatz eines 3 x 4 ZVA Designs mit 10 Datenpunkten pro Zelle?</li>
+<li>Erläutern Sie die intuitive Bedeutung eines Haupteffektes in einem ZVA Design.</li>
+<li>Erläutern Sie die intuitive Bedeutung einer Interaktion ein einem ZVA Design.</li>
+<li>Geben Sie die Definition des additiven Modells der ZVA mit Referenzgruppe wieder.</li>
+<li>Erläutern Sie die Bedeutung der Parameter <span class="math inline">\(\mu_{0}, \alpha_{2}\)</span> und <span class="math inline">\(\beta_{2}\)</span> im additiven Modell der ZVA mit Referenzgruppe.</li>
+<li>Bestimmen Sie <span class="math inline">\(\mu_{ij}\)</span> für <span class="math inline">\(\mu_{0}:=2, \alpha_{2}=-1\)</span> und <span class="math inline">\(\beta_{2}:=3\)</span> im additiven Modell der ZVA mit Referenzgruppe.</li>
+<li>Geben Sie die Designmatrixform des Modells einer additiven <span class="math inline">\(2 \times 2\)</span> ZVA mit Referenzgruppe für <span class="math inline">\(n_{ij}:=1\)</span> an.</li>
+<li>Geben Sie die Designmatrixform des Modells einer additiven <span class="math inline">\(2 \times 2\)</span> ZVA mit Referenzgruppe für <span class="math inline">\(n_{ij}:=3\)</span> an.</li>
+<li>Geben Sie die Definition des Modells der ZVA mit Interaktion und Referenzgruppe wieder.</li>
+<li>Erläutern Sie die Bedeutung der Parameter <span class="math inline">\(\mu_{0}, \alpha_{2}, \beta_{2}\)</span> und <span class="math inline">\(\gamma_{22}\)</span> im Modell der ZVA mit Interaktion und Referenzgruppe.</li>
+<li>Geben Sie die Designmatrixform des Modells einer <span class="math inline">\(2 \times 2\)</span> ZVA mit Interaktion und Referenzgruppe für <span class="math inline">\(n_{ij}:=1\)</span> an.</li>
+<li>Geben Sie die Designmatrixform des Modells einer <span class="math inline">\(2 \times 2\)</span> ZVA mit Interaktion und Referenzgruppe für <span class="math inline">\(n_{ij}:=3\)</span> an.</li>
+<li>Geben Sie das Theorem zur Betaparameterschätzung im additiven <span class="math inline">\(2 \times 2\)</span> ZVA Modell mit Referenzgruppe wieder.</li>
+<li>Geben Sie das Theorem zur Betaparameterschätzung im <span class="math inline">\(2 \times 2\)</span> ZVA Modell mit Interaktion und Referenzgruppe wieder. </li>
+</ol>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-everitt2005" class="csl-entry" role="listitem">
+Everitt, B., &amp; Howell, D. C. (Hrsg.). (2005). <em>Encyclopedia of Statistics in Behavioral Science</em>. <span>John Wiley &amp; Sons</span>.
+</div>
+<div id="ref-fisher1925b" class="csl-entry" role="listitem">
+Fisher, R. A. (1925). Applications of "<span>Student</span>’s" Distribution. <em>Metron</em>, <em>5</em>, 90–104.
+</div>
+<div id="ref-fisher1935" class="csl-entry" role="listitem">
+Fisher, R. A. (1935). <em>The Design of Experiments</em> (1. ed). <span>Hafner Press</span>.
+</div>
+<div id="ref-stigler1986" class="csl-entry" role="listitem">
+Stigler, S. M. (1986). <em>The History of Statistics: The Measurement of Uncertainty before 1900</em>. <span>Belknap Press of Harvard University Press</span>.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Kopiert");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Kopiert");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./408-Einfaktorielle-Varianzanalyse.html" class="pagination-link  aria-label=" &lt;span="" varianzanalyse&lt;="" span&gt;"="">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Einfaktorielle Varianzanalyse</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./Referenzen.html" class="pagination-link" aria-label="Referenzen">
+        <span class="nav-page-text">Referenzen</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/409-Zweifaktorielle-Varianzanalyse.qmd" class="toc-action"><i class="bi bi-github"></i>Seite editieren</a></li></ul></div></div></div></footer></body></html>
