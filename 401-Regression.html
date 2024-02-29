@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.549">
+<meta name="generator" content="quarto-1.4.550">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -669,22 +669,21 @@ n \hat{\beta}_{0}+\hat{\beta}_{1} \sum_{i=1}^{n} x_{i}=\sum_{i=1}^{n} y_{i} \Lef
 <p><a href="#thm-ausgleichsgerade" class="quarto-xref">Theorem&nbsp;<span>25.1</span></a> besagt, dass die Parameterwerte, die für einen gegebenen Datensatz <span class="math inline">\(\left\{\left(x_{1}, y_{1}\right), \ldots,\left(x_{n}, y_{n}\right)\right\}\)</span> die Summe der quadrierten vertikalen Abweichungen für eine linear-affine Funktion minimieren mithilfe der Stichprobenmittel der <span class="math inline">\(x_{i^{-}}\)</span>und <span class="math inline">\(y_{i}\)</span>-Werte, der Stichprobenvarianz der <span class="math inline">\(x_{i}\)</span>-Werte und der Stichprobenkovarianz der <span class="math inline">\(x_{i}\)</span> - und <span class="math inline">\(y_{i}\)</span>-Werte berechnet werden können. Die Terminologie orientiert sich hier an den Begrifflichkeiten der deskriptiven Statistik, insbesondere werden die <span class="math inline">\(x_{i}\)</span>-Werte häufig nicht als Realisationen von Zufallsvariablen verstanden, der Begriff der Stichprobe wird jedoch trotzdem verwendet. Aus der Anwendungsperspektive können nach <a href="#thm-ausgleichsgerade" class="quarto-xref">Theorem&nbsp;<span>25.1</span></a> die Parameter der Ausgleichsgerade also mithilfe der bekannten Funktionen für die Auswertung deskriptiver Statistiken bestimmt werden. Folgender <strong>R</strong> Code demonstriert dies.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># Einlesen des Beispieldatensatzes</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a>fname       <span class="ot">=</span> <span class="fu">file.path</span>(<span class="fu">getwd</span>(), <span class="st">"_data"</span>, <span class="st">"401-Regression.csv"</span>)</span>
-<span id="cb1-3"><a href="#cb1-3"></a>D           <span class="ot">=</span> <span class="fu">read.table</span>(fname, <span class="at">sep =</span> <span class="st">","</span>, <span class="at">header =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1-4"><a href="#cb1-4"></a></span>
-<span id="cb1-5"><a href="#cb1-5"></a><span class="co"># Stichprobenstatistiken</span></span>
-<span id="cb1-6"><a href="#cb1-6"></a>x_bar       <span class="ot">=</span> <span class="fu">mean</span>(D<span class="sc">$</span>x_i)                                                       <span class="co"># Stichprobenmittel der x_i-Werte</span></span>
-<span id="cb1-7"><a href="#cb1-7"></a>y_bar       <span class="ot">=</span> <span class="fu">mean</span>(D<span class="sc">$</span>y_i)                                                       <span class="co"># Stichprobenmittel der y_i-Werte</span></span>
-<span id="cb1-8"><a href="#cb1-8"></a>s2x         <span class="ot">=</span> <span class="fu">var</span>(D<span class="sc">$</span>x_i)                                                        <span class="co"># Stichprobenvarianz der  x_i-Werte</span></span>
-<span id="cb1-9"><a href="#cb1-9"></a>cxy         <span class="ot">=</span> <span class="fu">cov</span>(D<span class="sc">$</span>x_i, D<span class="sc">$</span>y_i)                                                 <span class="co"># Stichprobenkovarianz der (x_i,y_i)-Werte</span></span>
-<span id="cb1-10"><a href="#cb1-10"></a></span>
-<span id="cb1-11"><a href="#cb1-11"></a><span class="co"># Ausgleichsgeradenparameter</span></span>
-<span id="cb1-12"><a href="#cb1-12"></a>beta_1_hat  <span class="ot">=</span> cxy<span class="sc">/</span>s2x                                                           <span class="co"># \hat{\beta}_1, Steigungsparameter</span></span>
-<span id="cb1-13"><a href="#cb1-13"></a>beta_0_hat  <span class="ot">=</span> y_bar <span class="sc">-</span> beta_1_hat<span class="sc">*</span>x_bar                                          <span class="co"># \hat{\beta}_0, Offset Parameter</span></span>
-<span id="cb1-14"><a href="#cb1-14"></a></span>
-<span id="cb1-15"><a href="#cb1-15"></a><span class="co"># Ausgabe</span></span>
-<span id="cb1-16"><a href="#cb1-16"></a><span class="fu">cat</span>(<span class="st">"beta_0_hat:"</span>, beta_0_hat,</span>
-<span id="cb1-17"><a href="#cb1-17"></a>    <span class="st">"</span><span class="sc">\n</span><span class="st">beta_1_hat:"</span>, beta_1_hat)</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-2"><a href="#cb1-2"></a>D           <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"./_data/401-regression.csv"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3"></a></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="co"># Stichprobenstatistiken</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a>x_bar       <span class="ot">=</span> <span class="fu">mean</span>(D<span class="sc">$</span>x_i)                                                       <span class="co"># Stichprobenmittel der x_i-Werte</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a>y_bar       <span class="ot">=</span> <span class="fu">mean</span>(D<span class="sc">$</span>y_i)                                                       <span class="co"># Stichprobenmittel der y_i-Werte</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a>s2x         <span class="ot">=</span> <span class="fu">var</span>(D<span class="sc">$</span>x_i)                                                        <span class="co"># Stichprobenvarianz der  x_i-Werte</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a>cxy         <span class="ot">=</span> <span class="fu">cov</span>(D<span class="sc">$</span>x_i, D<span class="sc">$</span>y_i)                                                 <span class="co"># Stichprobenkovarianz der (x_i,y_i)-Werte</span></span>
+<span id="cb1-9"><a href="#cb1-9"></a></span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="co"># Ausgleichsgeradenparameter</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a>beta_1_hat  <span class="ot">=</span> cxy<span class="sc">/</span>s2x                                                           <span class="co"># \hat{\beta}_1, Steigungsparameter</span></span>
+<span id="cb1-12"><a href="#cb1-12"></a>beta_0_hat  <span class="ot">=</span> y_bar <span class="sc">-</span> beta_1_hat<span class="sc">*</span>x_bar                                          <span class="co"># \hat{\beta}_0, Offset Parameter</span></span>
+<span id="cb1-13"><a href="#cb1-13"></a></span>
+<span id="cb1-14"><a href="#cb1-14"></a><span class="co"># Ausgabe</span></span>
+<span id="cb1-15"><a href="#cb1-15"></a><span class="fu">cat</span>(<span class="st">"beta_0_hat:"</span>, beta_0_hat,</span>
+<span id="cb1-16"><a href="#cb1-16"></a>    <span class="st">"</span><span class="sc">\n</span><span class="st">beta_1_hat:"</span>, beta_1_hat)</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>beta_0_hat: -6.194704 
 beta_1_hat: 1.657055</code></pre>
@@ -1284,12 +1283,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./304-Hypothesentests.html" class="pagination-link  aria-label=" &lt;span="">
+      <a href="./304-Hypothesentests.html" class="pagination-link" aria-label="Hypothesentests">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Hypothesentests</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./402-Korrelation.html" class="pagination-link" aria-label="<span class='chapter-number'>26</span>&nbsp; <span class='chapter-title'>Korrelation</span>">
+      <a href="./402-Korrelation.html" class="pagination-link" aria-label="Korrelation">
         <span class="nav-page-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Korrelation</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>

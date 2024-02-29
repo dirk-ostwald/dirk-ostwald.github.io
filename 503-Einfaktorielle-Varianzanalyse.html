@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.549">
+<meta name="generator" content="quarto-1.4.550">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -801,7 +801,7 @@ Tabelle&nbsp;38.1: Prä-Post-Interventions-BDI-II-Score und -Glukokortikoidplasm
 <p>Folgender <strong>R</strong> Code demonstriert die Auswertung gruppenspezifischer Deskriptivstatistiken für diesen Datensatz.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># Studiengruppenspezifische Deskriptivstatistiken</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a>D       <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"./_data/503-Einfaktorielle-Varianzanalyse.csv"</span>)             <span class="co"># Dateneinlesen</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a>D       <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"./_data/503-einfaktorielle-varianzanalyse.csv"</span>)             <span class="co"># Dateneinlesen</span></span>
 <span id="cb1-3"><a href="#cb1-3"></a>m       <span class="ot">=</span> <span class="dv">2</span>                                                                     <span class="co"># Datendimension von Interesse</span></span>
 <span id="cb1-4"><a href="#cb1-4"></a>p       <span class="ot">=</span> <span class="dv">3</span>                                                                     <span class="co"># Anzahl Gruppen</span></span>
 <span id="cb1-5"><a href="#cb1-5"></a>k       <span class="ot">=</span> <span class="dv">15</span>                                                                    <span class="co"># Anzahl Datenpunkte pro Gruppe</span></span>
@@ -1242,7 +1242,7 @@ Geschätzte Testumfänge:  0.0472 0.0496 0.0522 0.0488</code></pre>
 <p>Wir betrachten das eingangs diskutierte Anwendungsbeispiel eines simulierten zweidimensionalen Datensatzes dreier Therapiegruppen. Wir wollen nun mithilfe einer einfaktoriellen Varianzanalyse für diesen Datensatz die Nullhypothese identischer Gruppenerwartungswertparameter überprüfen. Folgender <strong>R</strong> Code implementiert das praktische Vorgehen für ein Signifikanzlevel von <span class="math inline">\(\alpha_0 := 0.05\)</span>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="co"># Einlesen und Präprozessierung des Datensatzes</span></span>
-<span id="cb10-2"><a href="#cb10-2"></a>D           <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"./_data/503-Einfaktorielle-Varianzanalyse.csv"</span>)         <span class="co"># Dateneinlesen</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a>D           <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"./_data/503-einfaktorielle-varianzanalyse.csv"</span>)         <span class="co"># Dateneinlesen</span></span>
 <span id="cb10-3"><a href="#cb10-3"></a>m           <span class="ot">=</span> <span class="dv">2</span>                                                                 <span class="co"># Datendimension von Interesse</span></span>
 <span id="cb10-4"><a href="#cb10-4"></a>p           <span class="ot">=</span> <span class="dv">3</span>                                                                 <span class="co"># Anzahl Gruppen</span></span>
 <span id="cb10-5"><a href="#cb10-5"></a>k           <span class="ot">=</span> <span class="dv">15</span>                                                                <span class="co"># Anzahl Datenpunkte pro Gruppe</span></span>
@@ -1281,7 +1281,7 @@ P(tau &gt; tau_tilde) 8.881784e-16</code></pre>
 <p>Im vorliegenden Fall wird die Nullhypothese identischer Gruppenerwartungswertparameter also verworfen. Schließlich validieren wir obige Analyse im Sinne eines Black-Box-Verfahrens mithilfe der <strong>R</strong> <code>lm()</code> und <code>Manova()</code> Funktionen.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">library</span>(car)</span>
-<span id="cb12-2"><a href="#cb12-2"></a>D        <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"./_data/503-Einfaktorielle-Varianzanalyse.csv"</span>)            <span class="co"># Dateneinlesen</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a>D        <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"./_data/503-einfaktorielle-varianzanalyse.csv"</span>)            <span class="co"># Dateneinlesen</span></span>
 <span id="cb12-3"><a href="#cb12-3"></a>model    <span class="ot">=</span> <span class="fu">lm</span>(<span class="fu">cbind</span>(D<span class="sc">$</span>dBDI,D<span class="sc">$</span>dGLU) <span class="sc">~</span> D<span class="sc">$</span>COND, D)                                 <span class="co"># Modellspezifikation</span></span>
 <span id="cb12-4"><a href="#cb12-4"></a><span class="fu">Manova</span>(model, <span class="at">test.statistic =</span> <span class="st">"Wilks"</span>)                                         <span class="co"># Einfaktorielle Varianzanalyse</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1729,12 +1729,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./502-Einstichproben-T2-Tests.html" class="pagination-link  aria-label=" &lt;span="">
+      <a href="./502-Einstichproben-T2-Tests.html" class="pagination-link" aria-label="Einstichproben-T$^2$-Tests">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Einstichproben-T<span class="math inline">\(^2\)</span>-Tests</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./504-Kanonische-Korrelationsanalyse.html" class="pagination-link" aria-label="<span class='chapter-number'>39</span>&nbsp; <span class='chapter-title'>Kanonische Korrelationsanalyse</span>">
+      <a href="./504-Kanonische-Korrelationsanalyse.html" class="pagination-link" aria-label="Kanonische Korrelationsanalyse">
         <span class="nav-page-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">Kanonische Korrelationsanalyse</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>

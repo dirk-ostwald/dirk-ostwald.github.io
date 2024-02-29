@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.549">
+<meta name="generator" content="quarto-1.4.550">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -659,7 +659,7 @@ Tabelle&nbsp;37.1: Prä-Post-Interventions-Differenzwerte von BDI Scores und Glu
 <p>Unabhängig von diesem inferenzstatistischen Vorgehen betrachten wir zunächst zu diesem Datensatz einige Deskriptivstatistiken wie durch folgenden <strong>R</strong> Code ausgewertet und in <a href="#fig-einstichproben-t2-deskription" class="quarto-xref">Abbildung&nbsp;<span>37.1</span></a> dargestellt. Verglichen mit einem Therapienormwert von <span class="math inline">\(\mu_0 := (30,3.5)^T\)</span> fallen die Komponenten des Stichprobenmittels mit <span class="math inline">\(\bar{\upsilon} = (26.3, 3.0)^T\)</span> etwas geringer aus, allerdings bei einer nicht zu vernachlässigen Datenvariabilität, die sich in einer Mahalanobisdistanz von <span class="math inline">\(D = 0.4\)</span> des Stichprobenmittels vom Therapienormwert in bezug auf die Stichprobenkovarianzmatrix des Datensatzes wiederspiegelt.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># Datendeskription</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a>D      <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"_data/502-einstichproben-T2-tests.csv"</span>)                      <span class="co"># Daten einlesen</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a>D      <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"_data/502-einstichproben-t2-tests.csv"</span>)                      <span class="co"># Daten einlesen</span></span>
 <span id="cb1-3"><a href="#cb1-3"></a>Y      <span class="ot">=</span> <span class="fu">rbind</span>(D<span class="sc">$</span>y_1i, D<span class="sc">$</span>y_2i)                                                  <span class="co"># Datenmatrix               </span></span>
 <span id="cb1-4"><a href="#cb1-4"></a>mu_0   <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">30</span>,<span class="fl">3.5</span>), <span class="at">nrow =</span> <span class="dv">2</span>)                                            <span class="co"># Normwert</span></span>
 <span id="cb1-5"><a href="#cb1-5"></a>n      <span class="ot">=</span> <span class="fu">ncol</span>(Y)                                                                <span class="co"># Anzahl Datenpunkte</span></span>
@@ -999,7 +999,7 @@ m := 2, n := 15, \mu := \mu0 := \begin{pmatrix} 1 \\ 1 \end{pmatrix}
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Kritischer Wert              =  8.196602 
-Geschätzter Testumfang alpha =  0.0522</code></pre>
+Geschätzter Testumfang alpha =  0.0459</code></pre>
 </div>
 </div>
 <p>In der Praxis entsPrächen obige Ergebnisse dann folgendem Vorgehen bei der Durchführung eines Einstichproben-T<span class="math inline">\(^2\)</span>-Tests. Man unterstellt, dass ein vorliegender Datensatz von <span class="math inline">\(m\)</span>-dimensionalen Datenvektoren eine Realisation von <span class="math inline">\(n\)</span> u.i.v. <span class="math inline">\(m\)</span>-dimensionalen Zufallsvektoren <span class="math inline">\(\upsilon_1,...,\upsilon_n \sim N(\mu,\Sigma)\)</span> mit unbekannten Parametern <span class="math inline">\(\mu \in \mathbb{R}^m\)</span> und <span class="math inline">\(\Sigma \in \mathbb{R}^{m \times m} \mbox{ pd }\)</span> ist und möchte entscheiden, ob für ein <span class="math inline">\(\mu_0 \in \mathbb{R}^m\)</span> eher die Nullhypothese <span class="math inline">\(H_0 : \mu = \mu_0\)</span> oder die Alternativhypothese <span class="math inline">\(H_1: \mu \neq \mu_0\)</span> zutrifft. Zu diesem Zweck wählt man zunächst ein Signifikanzlevel <span class="math inline">\(\alpha_0\)</span> und bestimmt dann den zugehörigen kritischen Wert <span class="math inline">\(k_{\alpha_0}\)</span>. Beispielsweise gilt für <span class="math inline">\(m = 2\)</span> und <span class="math inline">\(n=15\)</span> bei Wahl von <span class="math inline">\(\alpha_0 := 0.05\)</span>, dass <span class="math inline">\(k_{0.05}=\nu^{-1}F^{-1}(1 - 0.05;2,13) \approx 8.2\)</span> ist. Anhand von <span class="math inline">\(m, n, \mu_0\)</span>, dem Stichprobenmittel <span class="math inline">\(\bar{\upsilon}\)</span> und der Stichprobenkovarianzmatrix <span class="math inline">\(C\)</span> berechnet man dann die Realisierung der Einstichproben-T<span class="math inline">\(^2\)</span>-Teststatistik <span class="math display">\[\begin{equation}
@@ -1156,7 +1156,7 @@ Abbildung&nbsp;37.9: Bestimmung eines minimalen Stichprobenumfangs zur Detektion
 <p>Wir betrachten das eingangs diskutierte Anwendungsbeispiel eines simulierten zweidimensionalen Datensatzes dreier Studiengruppen. Wir wollen abschließen für diesen Datensatz die Nullhypothese z für ein Abweichen des wahren, aber unbekannten, Erwartungswertparameters der Daten von <span class="math inline">\(\mu_0\)</span> ist. Wir betrachten also weiterhin die einfache Nullhypothese <span class="math inline">\(H_0 :\mu = \mu_0\)</span> und die zusammegesetzte Alternativhypothese <span class="math inline">\(H_1 :\mu \neq \mu_0\)</span>. Folgender <strong>R</strong> Code implementiert das praktische Vorgehen für ein Signifikanzlevel von <span class="math inline">\(\alpha_0 := 0.05\)</span>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co"># Datenbereitstellung</span></span>
-<span id="cb11-2"><a href="#cb11-2"></a>D         <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"./_data/502-einstichproben-T2-tests.csv"</span>)                 <span class="co"># Datensatzeinlesen </span></span>
+<span id="cb11-2"><a href="#cb11-2"></a>D         <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"./_data/502-einstichproben-t2-tests.csv"</span>)                 <span class="co"># Datensatzeinlesen </span></span>
 <span id="cb11-3"><a href="#cb11-3"></a>Y         <span class="ot">=</span> <span class="fu">rbind</span>(D<span class="sc">$</span>y_1i, D<span class="sc">$</span>y_2i)                                               <span class="co"># Datenmatrix</span></span>
 <span id="cb11-4"><a href="#cb11-4"></a></span>
 <span id="cb11-5"><a href="#cb11-5"></a><span class="co"># Testparameter</span></span>
@@ -1612,12 +1612,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./501-Datendeskription.html" class="pagination-link  aria-label=" &lt;span="">
+      <a href="./501-Datendeskription.html" class="pagination-link" aria-label="Datendeskription">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Datendeskription</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./503-Einfaktorielle-Varianzanalyse.html" class="pagination-link" aria-label="<span class='chapter-number'>38</span>&nbsp; <span class='chapter-title'>Einfaktorielle Varianzanalyse</span>">
+      <a href="./503-Einfaktorielle-Varianzanalyse.html" class="pagination-link" aria-label="Einfaktorielle Varianzanalyse">
         <span class="nav-page-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Einfaktorielle Varianzanalyse</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
