@@ -1,0 +1,651 @@
+# Partielle Korrelation {#sec-partielle-korrelation}
+## Motivation
+\normalsize
+
+Zur Motivation des Begriffs der partiellen Korrelation betrachten wir zunächst 
+den in @fig-bpr-beispiel visualisierten Beispieldatensatz zum Zusammenhang von 
+Eiskonsum und Sonnenbrandinzidenz. Wir stellen uns vor, dass jeder der in 
+@fig-bpr-beispiel abgebildeten Datenpunkte ein Wertepaar aus einem durchschnittlichen 
+und normalisierten Eiskonsum und einer durchschnittlichen und normalisierten 
+Sonnenbrandinzidenz eines Landes über einen gewissen Erhebungszeitraum ist. 
+Visuell betrachtet sieht man eine Tendenz dafür, dass hohe Werte des Eiskonsums 
+mit eher hohen Werten der Sonnenbrandinzidenz auftreten, während niedrige Werte 
+des Eiskonsums mit eher niedrigen Werten der Sonnenbrandinziden zusammen auftreten. 
+Die Bestimmung des Stichprobenkorrelationskoeffizienten zu diesem Datensatz
+ergibt mit $r=0.46$ eine mittelstarke positive Korrelation.
+
+```{r, eval = F, echo = F}
+library(MASS)                                                                   # Multivariate Normalverteilung
+set.seed(1)                                                                     # reproduzierbare Daten
+S     = matrix(c( 1,.5,.9,                                                      # Kovarianzmatrixparameter \Sigma
+                 .5, 1,.5,
+                 .9,.5, 1),nrow=3,byrow=TRUE)
+n     = 1e2                                                                     # Anzahl Realisierungen   
+xyz   = mvrnorm(n,rep(0,3),S)                                                   # Realisierungen         
+
+library(latex2exp)
+pdf(
+file        = "./_figures/410-bpr-beispiel.pdf",
+width       = 4.5,
+height      = 4.5)
+par(
+family      = "sans",
+mfcol       = c(1,1),
+pty         = "s",
+bty         = "l",
+lwd         = 1,
+las         = 1,
+mgp         = c(2.5,1,0),
+xaxs        = "i",
+yaxs        = "i",
+font.main   = 1,
+cex         = 1,
+cex.main    = 1.2)
+
+
+# r(x,y)
+plot(
+xyz[,1:2],
+pch         = 21,
+col         = "white",
+bg          = "gray50",
+xlab        = TeX("$Eiskonsum$"),
+ylab        = TeX("$Sonnenbrandinzidenz$"),
+xlim        = c(-3,3),
+ylim        = c(-3,3),
+main        = TeX(sprintf("$r$ = %.2f", cor(xyz[,1],xyz[,2]))))
+dev.off()
+```
+
+![Beispielszenario zur Evaluation bedingter und partieller Korrelationen.](./_figures/410-bpr-beispiel){#fig-bpr-beispiel fig-align="center" width=60%}
+
+Intuitiv ist es jedoch eher unplausibel, dass Eiskonsum ursächlich Sonnenbrand 
+hervorruft bzw. das Sonnenbrand den Eiskonsum erhöht (allerdings sind diese 
+Szenarien auch nicht gänzlich auszuschließen: ein bestimmter Eiskonsum könnte eine 
+allergische Reaktion hervorrufen mit Symptomen, die dem Sonnenbrand sehr ähnlich 
+sind, andersherum wäre es denkbar, dass bei Sonnenbrand zur Abkühlung gerne Eis 
+konsumiert wird. Wir wollen diese eher unplausiblen Erklärungsansätze hier 
+jedoch nicht weiter verfolgen). Der in @fig-bpr-beispiel dargestellte Datensatz 
+ist also ein Beispiel dafür, dass Korrelation als Maß für den linearen Zusammenhang 
+zweier Zufallsvariablen lediglich ein Maß für die Koinzidenz bestimmter Datenwerte 
+ist, jedoch keine Kausalerklärung der Werte einer abhängigen Variable aus den 
+Werten einer unabhängigen Variable impliziert. In Kurzform hat sich zur
+Beschreibung dieser Tatsache seit Beginn der modernen Inferenzstatistik 
+am Anfang des 20. Jahrhunderts der Leitsatz "Correlation is not causation" eingebürgert.
+
+Basierend auf dem negativen Ergebnis, dass eine mittelstarke Korrelation wie 
+im Beispiel von Eiskonsum und Sonnenbrandinzidenz nur sehr unplausibel durch 
+eine direkte kausale Beziehung der beiden Variablen zu erklären ist, stellt 
+sich die Frage, inwieweit andere datenanalytische Verfahren hier Abhilfe schaffen 
+können. Dabei stellt sich natürlich zunächst das philosophische Problem, 
+was Kausalität eigentlich bedeuten soll und als nächstes die Frage, wie ein 
+solcher Begriff mit den Mitteln der Wahrscheinlichkeitstheorie und Inferenzstatistik 
+evaluiert werden könnte. Diesen Ansatz verfolgt das Gebiet der Kausalen Inferenz, 
+wie zum Beispiel durch die Arbeiten von @pearl2000 und @imbens2015 repräsentiert. 
+Wir wollen an dieser Stelle diesen Ansatz nicht vertiefen, sondern stattdessen 
+fragen, wie im obigen Beispiel anhand weiterer Daten die beobachtete Korrelation 
+von Eiskonsum und Sonnenbrandinzidenz so aufgeklärt werden kann, dass die 
+statistische Beschreibung des in @fig-bpr-beispiel dargestellten Datensatzes 
+plausibler erscheint. Dies ist das zentrale Thema der partiellen Korrelation.
+
+Dazu nehmen wir an, dass der Zusammenhang von Eiskonsum und Sonnenbrandinzidenz 
+(@fig-eis-sonnenbrand-sommer A) plausibel durch die Kovariation beider Variablen mit einer 
+dritten Variable, nämlich der Anzahl der im Erhebungszeitraum und Land 
+auftretenden Anzahl an Sommertagen, d.h. Tagen mit einer maximalen Temperatur 
+von über $25^{\circ}$ Celsius, erklärt werden kann (@fig-eis-sonnenbrand-sommer B).
+
+![Zufallsvariablen im Beispielszenario.](./_figures/410-eis-sonnenbrand-sommer){#fig-eis-sonnenbrand-sommer fig-align="center" width=80%}
+
+@fig-eis-sonnenbrand-sommer 
+
+Intuitiv erklärt sich die positive Korrelation von Eiskonsum und Sonnenbrandinziden
+ dann wie folgt. Treten im Erhebungszeitraum in einem Land mehr Sommertage auf, 
+ so steigt in diesem Land sowohl der Eiskonsum als auch die Sonnenbrandinzidenz, 
+ treten dagegen weniger Sommertage auf, so fallen in diesem Land sowohl der 
+ Eiskonsum als auch die Sonnenbrandinzidenz. Lässt man die Anzahl der Sommertage 
+ außer Acht, so treten also hohe Werte von Eiskonsum und Sonnenbrandinzidenz 
+ als auch niedrige Werte von Eiskonsum und Sonnenbrandinzidenz häufig zusammen 
+ auf und es ergibt sich die in @fig-bpr-beispiel implizierte positive Korrelation.
+
+Die entscheidende Frage in diesem Kontext ist also, ob bei gleicher Anzahl 
+von Sommertagen Evidenz für eine Korrelation von Eiskonsum und Sonnenbrandinzidenz 
+besteht oder nicht. In diesem Fall würde die Kovarianz von Eiskonsum und 
+Sonnenbrandinzidenz also bedingt auf einer konstanten Anzahl von Sommertagen 
+betrachtet werden. Die datenanalytischen Werkzeuge, bei Vorliegen von Realisationen 
+von drei Zufallsvariablen eben diese Form einer bedingten Korrelation zu evaluieren, 
+stellen der Begriff der bedingten Korrelation und der eng verwandte Begriff der 
+partiellen Korrelation bereit. Intuitiv handelt es sich dabei um die Korrelation
+zweier Zufallsvariablen (\zeta.B. Eiskonsum und Sonnenbrandinziden\zeta) nachdem aus 
+beiden Zufallsvariablen der Einfluß einer dritten Zufallsvariable (\zeta.B. Anzahl 
+an Sommertagen) "herausgerechnet" wurde. Die Begriffe der bedingten und partiellen 
+Korrelation sind dabei nicht auf das Szenario von drei Zufallsvariablen beschränkt, 
+sondern können für beliebig viele Zufallsvariablen generalisiert werden. Wir 
+beschränken uns in diesem Abschnitt allerdings auf das Szenario dreier 
+Zufallsvariablen um die Grundlagen der Theorie zu verdeutlichen.
+
+Wir gehen dabei wie folgt vor. In Kapitel 12.2 führen wir mit der bedingten 
+Kovarianz und der bedingten Korrelation zunächst allgemeine Maße für den auf 
+den Werten einer dritten Zufallsvariable bedingten linear-affinen Zusammenhang 
+zweier Zufallsvariablen ein, verdeutlichen dann die Begriffe anhand des 
+Szenarios dreier gemeinsam multivariat normalverteilter Zufallsvariablen und 
+diskutieren schließlich den Zusammenhang zwischen bedingter Korrelation und 
+paarweisen (unbedingten) Korrelation. In Kapitel 12.3 führen wir mit der 
+partiellen Korrelation dann ein regressionsbasiertes Maß für den bedingten 
+Zusammenhang zweier Zufallsvariablen ein. Dabei ergibt sich insbesondere, 
+dass im Falle von gemeinsam multivariat normalverteilten Zufallsvariablen 
+bedingte und partielle Korrelation identisch sind. Wir schließen diesen 
+Abschnitt mit der Evaluation der partiellen Korrelation von Eiskonsum und 
+Sonnenbrandinzidenz im Lichte des Wissens um die Anzahl an Sommertagen für 
+den in @fig-bpr-beispiel visualisierten Beispieldatensatz. 
+
+## Bedingte Korelation
+
+Wir definieren zunächst die bedingte Kovarianz und die bedingte Korrelation 
+zweier Zufallsvariablen gegeben eine dritte Zufallsvariable.
+
+:::{#def-bedingte-kovarianz-und-bedingte-korrelation}
+## Bedingte Kovarianz und bedingte Korrelation 
+Gegeben seien drei Zufallsvariablen $\xi,\upsilon,\zeta$ einer gemeinsamen Verteilung 
+$\mathbb{P}_{\xi,\upsilon,\zeta}(\xi,\upsilon,\zeta)$. Weiterhin sei 
+$\mathbb{P}_{\xi, \upsilon \vert \zeta}(\xi,\upsilon)$ die bedingte Verteilung von $\xi$ und $\upsilon$ 
+gegeben $\zeta$. Dann heißt die Kovarianz von $\xi$ und $\upsilon$ in der Verteilung 
+$\mathbb{P}_{\xi, \upsilon \vert \zeta}(\xi,\upsilon)$ die bedingte Kovarianz von $\xi$ und 
+$\upsilon$ gegeben $\zeta$ und wird mit $\mathbb{C}(\xi, \upsilon \vert \zeta)$ 
+bezeichnet. Weiterhin seien $\mathbb{P}_{\xi, \upsilon \vert \zeta}(\xi)$ und 
+$\mathbb{P}_{\xi, \upsilon \vert \zeta}(\upsilon)$ die marginalen Verteilungen von $\xi$ 
+und $\upsilon$ gegeben $\zeta$, respektive, und $\mathbb{S}(\xi\vert\zeta), 
+\mathbb{S}(\upsilon\vert\zeta)$ die Standardabweichungen von $\xi$ und $\upsilon$ 
+hinsichtlich $\mathbb{P}_{\xi, \upsilon \vert \zeta}(\upsilon)$ und 
+$\mathbb{P}_{\xi, \upsilon \vert \zeta}(\xi)$, respektive. Dann heißt die Korrelation 
+von $\xi$ und $\upsilon$ in der Verteilung $\mathbb{P}_{\xi, \upsilon \vert \zeta}(\xi,\upsilon)$,
+\begin{equation}
+\rho(\xi, \upsilon \vert \zeta):=\frac{\mathbb{C}(\xi, \upsilon \vert \zeta)}{\mathbb{S}(\xi\vert\zeta) \mathbb{S}(\upsilon\vert\zeta)}
+\end{equation}
+die *bedingte Korrelation* von $\xi$ und $\upsilon$ gegeben $\zeta$
+:::
+
+Die bedingte Kovarianz zweier Zufallsvariablen ist also definiert als die Kovarianz 
+zweier Zufallsvariablen in einer auf einer dritten Zufallsvariable bedingten 
+Verteilung. Gleiches gilt für die bedingte Korrelation zweier Zufallsvariablen. 
+Durch Vertauschen in obiger Definition kann man analog $\rho(\upsilon,\zeta\vert\xi)$ 
+und $\rho(\xi,\zeta\vert\upsilon)$ definieren. Wir verdeutlichen 
+@def-bedingte-kovarianz-und-bedingte-korrelation als nächstes an einem Beispiel.
+
+### Beispiel {-}
+
+Die Zufallsvariablen $\xi,\upsilon,\zeta$ seien multivariat normalverteilt, d.h. 
+für $\gamma := (\xi,\upsilon,\zeta)^{T}$ gelte, dass
+\begin{equation}
+\gamma \sim N(\mu, \Sigma)
+\end{equation}
+mit
+\begin{equation}
+\mu:=
+\begin{pmatrix}
+\mu_{\upsilon} \\
+\mu_{\xi}   \\
+\mu_{\zeta}
+\end{pmatrix} 
+\mbox{ und } 
+\Sigma:=\begin{pmatrix}
+\sigma_{\xi}^{2}            & \sigma_{\xi,\upsilon}^{2}     & \sigma_{\xi,\zeta}^{2} \\
+\sigma_{\upsilon,\xi}^{2}   & \sigma_{\upsilon}^{2}         & \sigma_{\upsilon, \zeta}^{2} \\
+\sigma_{\zeta,\xi}^{2}      & \sigma_{\zeta,\upsilon}^{2}   & \sigma_{\zeta}^{2}
+\end{pmatrix}
+\end{equation}
+Wir nehmen an, dass wir die bedingte Korrelation von $\xi$ und $\upsilon$ gegeben 
+$\zeta$ bestimmen wollen und wenden uns entprechend der bedingten Verteilung von 
+$\xi$ und $\upsilon$ gegeben $\zeta$ zu. Nach @thm-bedingte-normalverteilungen wissen wir, dass 
+diese bedingte Verteilung ebenfalls eine Normalverteilung ist, deren 
+Kovarianzmatrixparameter wir aus dem Kovarianzmatrixparameter der gemeinsamen 
+Verteilung von $\xi,\upsilon,\zeta$ bestimmen können. Wir definieren zu diesem Zweck zunächst
+\begin{equation}
+\Sigma_{\xi,\upsilon} := 
+\begin{pmatrix}
+\sigma_{\xi}^{2} & \sigma_{\xi,\upsilon}^{2} \\
+\sigma_{\upsilon,\xi}^{2} & \sigma_{\upsilon}^{2}
+\end{pmatrix}, 
+\Sigma_{\zeta} := \left(\sigma_{\zeta}^{2}\right) 
+\mbox{ und } 
+\Sigma_{(\xi,\upsilon), \zeta} 
+:=\Sigma_{\zeta,(\xi,\upsilon)}^{T}
+:=
+\begin{pmatrix}
+\sigma_{\xi,\zeta}^{2} \\
+\sigma_{\upsilon, \zeta}^{2}
+\end{pmatrix}
+\end{equation}
+so dass für den Kovarianzmatrixparameter der gemeinsamen Verteilung von $\xi,\upsilon,\zeta$ gilt, dass
+\begin{equation}
+\Sigma
+=
+\begin{pmatrix}
+\Sigma_{\xi,\upsilon} & \Sigma_{(\xi,\upsilon), \zeta} \\
+\Sigma_{\zeta,(\xi,\upsilon)} & \Sigma_{\zeta}
+\end{pmatrix}
+\end{equation}
+Mit Theorem 4.8 ergibt sich der Kovarianzmatrixparameter des Zufallsvektors $(\xi,\upsilon)^{T}$ dann zu
+\begin{equation}
+\Sigma_{\xi, \upsilon \vert \zeta} 
+= \Sigma_{\xi,\upsilon}-\Sigma_{(\xi,\upsilon), \zeta} \Sigma_{\zeta}^{-1} \Sigma_{\zeta,(\xi,\upsilon)}
+\end{equation}
+Mit den Eigenschaften von multivariaten Normalverteilungen gilt dann, dass die 
+Diagonaleinträge von $\Sigma_{\xi, \upsilon \vert \zeta}$ den bedingten Varianzen 
+von $\xi$ und $\upsilon$ gegeben $\zeta$ entsprechen und dass der Nichtdiagonaleintrag 
+von $\Sigma_{\xi, \upsilon \vert \zeta}$ die bedingte Kovarianz von $\xi$ und 
+$\upsilon$ gegeben $\zeta$ ist. In anderen Worten gilt
+\begin{equation}
+\Sigma_{\xi, \upsilon \vert \zeta}
+=
+\begin{pmatrix}
+\mathbb{C}(\xi,\xi\vert\zeta)       & \mathbb{C}(\xi,\upsilon \vert \zeta) \\
+\mathbb{C}(\upsilon,\xi\vert\zeta)  & \mathbb{C}(\upsilon,\upsilon\vert\zeta)
+\end{pmatrix}
+\end{equation}
+Die bedingte Korrelation $\rho(\xi, \upsilon \vert \zeta)$ von $\xi$ und $\upsilon$ 
+gegeben $\zeta$ ergibt sich dann aus den Einträgen von $\Sigma_{\xi, \upsilon \vert \zeta}$ gemäß
+\begin{equation}
+\rho(\xi, \upsilon \vert \zeta) = 
+\frac{\mathbb{C}(\xi, \upsilon \vert \zeta)}{\sqrt{\mathbb{C}(\xi,\xi\vert\zeta)}\sqrt{\mathbb{C}(\upsilon, \upsilon\vert\zeta)}}
+\end{equation}
+Sei konkret etwa der Kovarianzmatrixparameter von $(\xi,\upsilon,\zeta)^{T}$ gegeben als
+\begin{equation}
+\Sigma := 
+\begin{pmatrix}
+1.0 & 0.5 & 0.9 \\
+0.5 & 1.0 & 0.5 \\
+0.9 & 0.5 & 1.0
+\end{pmatrix}
+\end{equation}
+Dann ergibt sich
+\begin{equation}
+\rho(\xi,\upsilon)=0.50 \mbox{ und } \rho(\xi, \upsilon \vert \zeta) \approx 0.13
+\end{equation}
+Folgender **R** Code demonstriert die Auswertung dieser bedingten Korrelation.
+
+\tiny
+```{r, warning=FALSE}
+# Bedingte Korrelation bei Normalverteilung 
+S         = matrix(c( 1,.5,.9,                                                  # \Sigma
+                     .5, 1,.5,
+                     .9,.5, 1), nrow  = 3, byrow = TRUE)
+rho_xy    = S[1,2]/(sqrt(S[1,1])*sqrt(S[2,2]))                                  # \rho(x,y)
+S_xy_z    = S[1:2,1:2] -  S[1:2,3] %*% solve(S[3,3]) %*%S[3,1:2]                # \Sigma_{x,y|z} 
+rho_xy_z  = S_xy_z[1,2]/(sqrt(S_xy_z[1,1])*sqrt(S_xy_z[2,2]))                   # \rho(x,y|z)
+```
+
+```{r, echo = F}
+# Ausgabe
+cat("rho(x,y)   :"  , round(rho_xy,2),                           
+    "\nrho(x,y|z) :", round(rho_xy_z,2))                          
+```
+\normalsize
+
+
+## Bedingte Korrelation bei Normalverteilung
+
+Für den Fall dreier gemeinsam normalverteilter Zufallsvariablen eröffnet folgendes 
+Theorem eine Möglichkeit, die bedingte Korrelation zweier dieser Zufallsvariablen
+gegeben die dritte auf Grundlage der (unbedingten) paarweisen Korrelationen 
+der Zufallsvariablen zu bestimmen. So kann bei gemeinsamer Normalverteilung 
+von $\xi,\upsilon,\zeta$ zum Beispiel $\rho(\xi, \upsilon \vert \zeta)$ aus den 
+Korrelationen $\rho(\xi,\upsilon), \rho(\xi,\zeta)$, und $\rho(\upsilon, \zeta)$ 
+bestimmt werden. Speziell gilt folgendes Theorem.
+
+:::{#thm-bedingte-korrelation-und-korrelationen-bei-normalverteilung}
+## Bedingte Korrelation und Korrelationen bei Normalverteilung
+$\xi,\upsilon,\zeta$ seien drei gemeinsam multivariat normalverteilte Zufallsvariablen. 
+Dann gilt
+\begin{equation}
+\rho(\xi,\upsilon \vert \zeta) 
+= \frac{\rho(\xi,\upsilon)-\rho(\xi,\zeta) \rho(\upsilon, \zeta)}{\sqrt{\left(1-\rho(\xi,\zeta)^{2}\right)} \sqrt{\left(1-\rho(\upsilon, \zeta)^{2}\right)}}
+\end{equation}
+:::
+
+:::{.proof}
+Ohne Beschränkung der Allgemeinheit betrachten wir den Fall eines standardisierten 
+multivariat normalverteilten Zufallsvektors $\gamma := (\xi,\upsilon,\zeta)^{T}$ 
+mit Kovarianzmatrixparameter
+\begin{equation}
+\Sigma :=
+\begin{pmatrix}
+1                       & \rho(\xi,\upsilon)    & \rho(\xi,\zeta) \\
+\rho(\upsilon, \xi)     & 1                     & \rho(\upsilon, \zeta) \\
+\rho(\zeta, \xi)        & \rho(\zeta, \upsilon) & 1
+\end{pmatrix}
+\end{equation}
+Wir definieren nun zunächst
+\begin{equation}
+\Sigma_{\xi,\upsilon} := 
+\begin{pmatrix}
+1                   & \rho(\xi,\upsilon) \\
+\rho(\upsilon, \xi) & 1
+\end{pmatrix}, 
+\Sigma_{\zeta}:=(1) 
+\mbox{ und } 
+\Sigma_{(\xi,\upsilon), \zeta}:=\Sigma_{\zeta,(\xi,\upsilon)}^{T} := 
+\begin{pmatrix}
+\rho(\xi,\zeta) \\
+\rho(\upsilon, \zeta)
+\end{pmatrix},
+\end{equation}
+so dass
+\begin{equation}
+\Sigma 
+= \begin{pmatrix}
+\Sigma_{\xi,\upsilon}           & \Sigma_{(\xi,\upsilon), \zeta} \\
+\Sigma_{\zeta,(\xi,\upsilon)}   & \Sigma_{\zeta}
+\end{pmatrix}.
+\end{equation}
+Mit dem @thm-bedingte-normalverteilungen ist dann die Kovarianzmatrix 
+des Zufallsvektors $(\xi,\upsilon)$ gegeben durch
+\begin{equation}
+\Sigma_{\xi, \upsilon \vert \zeta} = \Sigma_{\xi,\upsilon} - \Sigma_{(\xi,\upsilon), \zeta} \Sigma_{\zeta}^{-1} \Sigma_{\zeta,(\xi,\upsilon)}
+\end{equation}
+Es ergibt sich also
+\begin{equation}
+\begin{aligned}
+\begin{pmatrix}
+\sigma_{\xi, \xi\vert\zeta}^{2}      & \sigma_{\xi, \upsilon \vert \zeta}^{2} \\
+\sigma_{\upsilon, \xi\vert\zeta}^{2} & \sigma_{\upsilon, \upsilon\vert\zeta}^{2}
+\end{pmatrix} 
+&  = 
+\begin{pmatrix}
+1                   & \rho(\xi,\upsilon) \\
+\rho(\upsilon, \xi) & 1
+\end{pmatrix}
+-
+\begin{pmatrix}
+\rho(\xi,\zeta) \\
+\rho(\upsilon, \zeta)
+\end{pmatrix}(1)^{-1}
+\begin{pmatrix}
+\rho(\xi,\zeta) & \rho(\upsilon, \zeta)
+\end{pmatrix}
+\\
+& 
+= \begin{pmatrix}
+1 & \rho(\xi,\upsilon) \\
+\rho(\upsilon, \xi) & 1
+\end{pmatrix}-
+\begin{pmatrix}
+\rho(\xi,\zeta) \rho(\xi,\zeta)         & \rho(\xi,\zeta) \rho(\upsilon, \zeta) \\
+\rho(\upsilon, \zeta) \rho(\xi,\zeta)   & \rho(\upsilon, \zeta) \rho(\upsilon, \zeta)
+\end{pmatrix} \\
+& = 
+\begin{pmatrix}
+1-\rho(\xi,\zeta)^{2}                                       & \rho(\xi,\upsilon)-\rho(\xi,\zeta) \rho(\upsilon, \zeta) \\
+\rho(\upsilon, \xi)-\rho(\upsilon, \zeta) \rho(\xi,\zeta)   & 1-\rho(\upsilon, \zeta)^{2}
+\end{pmatrix}.
+\end{aligned}
+\end{equation}
+Es ergibt sich also
+\begin{equation}
+\rho(\xi, \upsilon \vert \zeta) = 
+\frac{\sigma_{\xi, \upsilon \vert \zeta}^{2}}{\sqrt{\sigma_{\xi, \xi\vert\zeta}^{2}} \sqrt{\sigma_{\upsilon, \upsilon\vert\zeta}^{2}}}
+=\frac{\rho(\xi,\upsilon)-\rho(\xi,\zeta) \rho(\upsilon, \zeta)}{\sqrt{1-\rho(\xi,\zeta)^{2}} \sqrt{1-\rho(\upsilon, \zeta)^{2}}}
+\end{equation}
+Im Falle des Vorliegens von Realisierungen von $\xi,\upsilon,\zeta$ ergibt sich 
+ein entsprechender Schätzer für $\rho(\xi, \upsilon \vert \zeta)$ mit den 
+Stichprobenkorrelationen $r_{\xi,\upsilon}, r_{\xi,\zeta}, r_{\upsilon, \zeta}$ dann zu
+\begin{equation}
+r_{\xi, \upsilon \vert \zeta} 
+= \frac{r_{\xi,\upsilon}-r_{\xi,\zeta} r_{\upsilon, \zeta}}{\sqrt{\left(1-r_{\xi,\zeta}^{2}\right)} \sqrt{\left(1-r_{\upsilon, \zeta}^{2}\right)}}
+\end{equation}
+:::
+
+## Partielle Korrelation
+
+Wir defininieren als nächstes die partielle Korrelation zweier Zufallsvariablen gegeben eine dritte Zufallsvariable.
+
+:::{#def-partielle-korrelation}
+## Partielle Korrelation.
+$\xi,\upsilon,\zeta$ seien Zufallsvariablen mit linear-affinen Abhängigkeiten 
+zwischen $\xi$ und $\zeta$ sowie zwischen $\upsilon$ und $\zeta$,
+\begin{equation}
+\begin{aligned}
+\xi         & :=\beta_{0}^{\xi, \zeta}     + \beta_{1}^{\xi, \zeta}\zeta \\
+\upsilon    & :=\beta_{0}^{\upsilon, \zeta}+ \beta_{1}^{\upsilon, \zeta}\zeta
+\end{aligned}
+\end{equation}
+mit Residualvariablen
+\begin{equation}
+\begin{aligned}
+& \varepsilon^{\xi, \zeta}      := \xi-\beta_{0}^{\xi, \zeta}          -\beta_{1}^{\xi, \zeta}\zeta \\
+& \varepsilon^{\upsilon, \zeta} := \upsilon-\beta_{0}^{\upsilon, \zeta}-\beta_{1}^{\upsilon, \zeta}\zeta
+\end{aligned}
+\end{equation}
+Dann ist die partielle Korrelation von $\xi$ und $\upsilon$ mit auspartialisiertem $\zeta$ definiert als
+\begin{equation}
+\rho(\xi,y \backslash \zeta):=\rho\left(\varepsilon^{\xi, \zeta}, \varepsilon^{\upsilon, \zeta}\right) .
+\end{equation}
+:::
+
+Intuitiv entsprechen in obiger Definition die Zufallsvariable $\varepsilon^{\xi, \zeta}$ 
+der Zufallsvariable $\xi$, aus der der Einfluss von $\zeta$ "herausgerechnet" wurde, 
+und die Zufallsvariable $\varepsilon^{\upsilon, \zeta}$ der Zufallsvariable $\upsilon$, 
+aus der der Einfluss von $\zeta$ "herausgerechnet" wurde. Damit entspricht 
+$\rho(\xi,y \backslash \zeta)$ dann intuitiv der Korrelation von $\xi$ und $\upsilon$, 
+aus denen jeweils der Einfluss von $\zeta$ "herausgerechnet" wurde. Wir geben 
+als nächstes einen Schätzer für die partielle Korrelation zweier Zufallsvariablen 
+gegeben eine dritte Zufallsvariable an.
+
+:::{#def-partielle-stichprobenkorrelation}
+## Partielle Stichprobenkorrelation
+$\xi,\upsilon,\zeta$ seien Zufallsvariablen mit linear-affinen Abhängigkeiten 
+zwischen $\upsilon$ und $\zeta$ sowie zwischen $\xi$ und $\zeta$ wie in der 
+Definition der partiellen Korrelation. Weiterhin seien
+
+* $\left\{\left(x_{i}, y_{i}, z_{i}\right)\right\}_{i=1, \ldots, n}$ eine Menge von Realisierungen des Zufallsvektors $(\xi,\upsilon,\zeta)^{T}$,
+* $\hat{\beta}_{0}^{\xi, \zeta}, \hat{\beta}_{1}^{\xi, \zeta}$ die Ausgleichsgeradenparameter für $\left\{\left(x_{i}, z_{i}\right)\right\}_{i=1, \ldots, n}$,
+* $\hat{\beta}_{0}^{\upsilon, \zeta}, \hat{\beta}_{1}^{\upsilon, \zeta}$ die Ausgleichsgeradenparameter für $\left\{\left(y_{i}, z_{i}\right)\right\}_{i=1, \ldots, n}$.
+
+Schließlich seien für $i=1, \ldots, n$
+
+* $e_{i}^{\xi, \zeta}     := x_{i}-\hat{\beta}_{0}^{\xi, \zeta}      + \hat{\beta}_{1}^{\xi, \zeta}\zeta_{i}$
+* $e_{i}^{\upsilon, \zeta}:= y_{i}-\hat{\beta}_{0}^{\upsilon, \zeta} + \hat{\beta}_{1}^{\upsilon, \zeta}\zeta_{i}$
+
+die Residualwerte der jeweiligen Ausgleichsgeraden. Dann heißt die Stichprobenkorrelation 
+der Wertemenge $\left\{\left(e_{i}^{\upsilon, \zeta}, e_{i}^{\xi, \zeta}\right)\right\}_{i=1, \ldots, n}$ 
+*partielle Stichprobenkorrelation der $x_{i}$ und $y_{i}$ mit auspartialisierten $z_{i}$*.
+:::
+
+Für den Fall, dass $\xi,\upsilon,\zeta$ multivariat normalverteilt sind, gibt
+folgendes Theorem, auf dessen Beweis wir hier verzichten wollen, den Zusammenhang 
+zwischen bedingter und partieller Korrelation an.
+
+:::{#thm-bedingte-und-partielle-korrelation-bei-normalverteilung}
+## Bedingte und Partielle Korrelation bei Normalverteilung  
+$\xi,\upsilon,\zeta$ seien drei gemeinsam multivariat normalverteilte 
+Zufallsvariablen. Dann gilt
+\begin{equation}
+\rho(\xi, \upsilon \vert \zeta)=\rho(\xi,y \backslash \zeta)
+\end{equation}
+:::
+
+Man beachte, dass obiges Theorem im Falle dreier multivariat normalverteilter 
+Zufallsvariablen gilt. Im Allgemeinen, also für beliebige Verteilungen der 
+drei Zufallsvariablen gilt die Identität von bedingter und partieller 
+Korrelationen nicht. Weitere Details in diesem Zusammenhang diskutieren zum 
+Beispiel @lawrance1976 und @baba2004.
+
+Aus @thm-bedingte-und-partielle-korrelation-bei-normalverteilung folgt mit 
+@thm-bedingte-und-partielle-korrelation-bei-normalverteilung dann unmittelbar, 
+dass bei gemeinsamer Normalverteilung von $\xi,\upsilon,\zeta$ die partielle 
+Korrelation $\rho(\xi, \upsilon \vert \zeta)$ ebenso wie die bedingte 
+Korrelation $\rho(\xi,y \backslash \zeta)$ basierend auf den (unbedingten) 
+Korrelationen $\rho(\xi,\upsilon), \rho(\xi,\zeta)$ und $\rho(\upsilon, \zeta)$ 
+bestimmt werden kann, bzw. im Falle der jeweiligen Stichprobenäquivalente durch 
+diese geschätzt werden kann.
+
+Folgender **R** Code demonstriert die Auswertung der partiellen Stichprobenkorrelation 
+basierend auf einem simulierten Datensatz dreier multivariat normalverteilter 
+Zufallsvariablen. Dabei bestimmen wir die partielle Korrelation einmal basierend 
+aus den Residualstichprobenkorrelation wie in @def-partielle-stichprobenkorrelation 
+und einmal basierend auf den paarweisen Stichprobenkorrelationen anhand von 
+@thm-bedingte-und-partielle-korrelation-bei-normalverteilung. Schließlich stellt 
+das **R** Paket `ppcor `mit `pcor()` eine Funktion zur automatisierten Auswertung 
+partieller Stichprobenkorrelationen bereit, auch ihre Anwendung demonstrieren wir 
+untenstehend. Das Resultat ist natürlich in allen drei Fällen identisch.
+
+\tiny
+```{r, warning = F}
+# Modellformulierung und Datenrealisierung
+library(MASS)                                                                   # Multivariate Normalverteilung
+set.seed(1)                                                                     # reproduzierbare Daten
+S     = matrix(c( 1,.5,.9,                                                      # Kovarianzmatrixparameter \Sigma
+                 .5, 1,.5,
+                 .9,.5, 1),nrow=3,byrow=TRUE)
+n     = 1e6                                                                     # Anzahl Realisierungen   
+xyz   = mvrnorm(n,rep(0,3),S)                                                   # Realisierungen          
+
+# Partielle Stichprobenkorrelation als Residualstichprobenkorrelation
+bars  = apply(xyz, 2, mean)                                                     # Stichprobenmittel
+s     = apply(xyz, 2, sd)                                                       # Stichprobenstandardabweichungen
+c     = cov(xyz)                                                                # Stichprobenkovarianzen
+b_xz1 = c[1,3]/c[3,3]                                                           # beta_1 (x,z)
+b_xz0 = bars[1] - b_xz1*bars[3]                                                 # beta_0 (x,z)
+b_yz1 = c[2,3]/c[3,3]                                                           # beta_1 (y,z)
+b_yz0 = bars[2] - b_yz1*bars[3]                                                 # beta_0 (y,z)
+e_xz  = xyz[,1] - b_xz1*xyz[,3] - b_xz0                                         # Residualwerte e^{x,z}
+e_yz  = xyz[,2] - b_yz1*xyz[,3] - b_yz0                                         # Residualwerte e^{y,z}
+pr_e  = cor(e_xz,e_yz)                                                          # \rho(x,y\z)
+
+# Partielle Stichprobenkorrelation aus Stichprobenkorrelationen
+r      = cor(xyz)                                                               # Stichprobenkorrelationsmatrix
+pr_r_n = r[1,2]-r[1,3]*r[2,3]                                                   # \rho(x,y\z) Formel Zähler
+pr_r_d = sqrt((1-r[1,3]^2)*(1-r[2,3]^2))                                        # \rho(x,y\z) Formel Nenner
+pr_r   = pr_r_n/pr_r_d                                                          # \rho(x,y\z)          
+
+# partielle Stichprobenkorrelation aus Toolbox
+library(ppcor)                                                                  # Laden der Toolbox
+pr_t   = pcor(xyz)                                                              # \rho(x,y\z),\rho(x,z\y),\rho(y,z\x) 
+```
+
+```{r, echo = F}
+# Ausgabe
+cat("r(x,y)                           :"   , round(r[1,2],2),
+    "\nr(x,y/z) aus Residuenkorrelation :" , round(pr_e,2),
+    "\nr(x,y/z) aus Korrelationen       :" , round(pr_r,2),
+    "\nr(x,y/z) aus Toolbox             :" , round( pr_t$estimate[1,2],2))
+```
+\normalsize
+
+### Anwendungsbeispiel {-}
+
+Mithilfe oben eingeführten **R** Codes wenden wir uns nun abschließend dem eingangs 
+diskutierten Beispiel zum Zusammenhang von Eiskonsum und Sonnenbrandinzidenz zu. 
+Wir nehmen an, dass zu jedem Wertepaar von Eiskonsum $\left(x_{i}\right)$ und 
+Sonnenbrandinzidenz $\left(y_{i}\right)$ der korrespondierende Wert der Anzahl der 
+Sommertage $\left(z_{i}\right)$ im betrachteten Erhebungszeitraum und Land verfügbar ist. 
+Dann eröffnet obige Theorie die Möglichkeit, die partielle Korrelation von 
+Eiskonsum und Sonnenbrandinziden nach Korrektur für die Anzahl der Sommertage zu bestimmen.
+
+```{r, eval = F, echo = F}
+# Modellformulierung und Sampling
+library(MASS)                                                                   # Multivariate Normalverteilung
+set.seed(1)                                                                     # reproduzierbare Daten
+S     = matrix(c( 1,.5,.9,                                                      # Kovarianzmatrixparameter \Sigma
+                 .5, 1,.5,
+                 .9,.5, 1),nrow=3,byrow=TRUE)
+n     = 1e2                                                                     # Anzahl Realisierungen   
+xyz   = mvrnorm(n,rep(0,3),S)                                                   # Realisierungen         
+
+
+
+# Partielle Stichprobenkorrelation als Residualstichprobenkorrelation
+bars  = apply(xyz, 2, mean)                                                     # Stichprobenmittel
+s     = apply(xyz, 2, sd)                                                       # Stichprobenstandardabweichungen
+c     = cov(xyz)                                                                # Stichprobenkovarianzen
+b_xz1 = c[1,3]/c[3,3]                                                           # beta_1 (x,z)
+b_xz0 = bars[1] - b_xz1*bars[3]                                                 # beta_0 (x,z)
+b_yz1 = c[2,3]/c[3,3]                                                           # beta_1 (y,z)
+b_yz0 = bars[2] - b_yz1*bars[3]                                                 # beta_0 (y,z)
+e_xz  = xyz[,1] - b_xz1*xyz[,3] - b_xz0                                         # Residualwerte e^{x,z}
+e_yz  = xyz[,2] - b_yz1*xyz[,3] - b_yz0                                         # Residualwerte e^{y,z}
+
+# Visualisierung
+library(latex2exp)
+pdf(
+file        = file.path("./_figures/410-partielle-korrelation-anwendung.pdf"),
+width       = 9,
+height      = 4.5)
+par(
+family      = "sans",
+mfcol       = c(1,2),
+pty         = "s",
+bty         = "l",
+lwd         = 1,
+las         = 1,
+mgp         = c(2.5,1,0),
+xaxs        = "i",
+yaxs        = "i",
+font.main   = 1,
+cex         = 1,
+cex.main    = 1.2)
+
+# r(x,y)
+plot(
+xyz[,1:2],
+pch         = 21,
+col         = "white",
+bg          = "gray50",
+xlab        = TeX("$Eiskonsum$"),
+ylab        = TeX("$Sonnenbrandinzidenz$"),
+xlim        = c(-3,3),
+ylim        = c(-3,3),
+main        = TeX(sprintf("$r$ = %.2f", cor(xyz[,1],xyz[,2]))))
+
+# r(e_y2,e_12)
+plot(
+matrix(c(e_xz,e_yz), nrow = n),
+pch         = 21,
+col         = "white",
+bg          = "gray50",
+xlab        = TeX("$Eiskonsum | Sommertage$"),
+ylab        = TeX("$Sonnenbrandinzidenz | Sommertage$"),
+main        = TeX(sprintf("$r$ = %.2f", pr_e)),
+xlim        = c(-3,3),
+ylim        = c(-3,3))
+dev.off()
+```
+
+![Evaluation der partiellen Korrelation im Beispielszenario.](./_figures/410-partielle-korrelation-anwendung){#fig-partielle-korrelation-anwendung fig-align="center" width=100%}
+
+@fig-partielle-korrelation-anwendung 
+
+Dazu stellt @fig-partielle-korrelation-anwendung mit der 
+Achsenbeschriftung  `Eiskonsum | Sommertage` die Residualwerte
+\begin{equation}
+e_{i}^{\xi, \zeta} := x_{i} -\ hat{\beta}_{0}^{\xi, \zeta}+\hat{\beta}_{1}^{\xi, \zeta}\zeta_{i}
+\end{equation}
+und mit der Achsenbeschriftung `Sonnenbrandinzidenz | Sommertage die Residualwerte`
+\begin{equation}
+e_{i}^{\upsilon, \zeta} := y_{i}-\hat{\beta}_{0}^{\upsilon, \zeta}+\hat{\beta}_{1}^{\upsilon, \zeta}\zeta_{i}
+\end{equation}
+dar. Man erkennt, dass kein systematischer Zusammenhang hoher bzw. niedriger Werte 
+von `Eiskonsum | Sommertage` mit hohen bzw. niedrigen Werten von `Sonnenbrandinzidenz | Sommertage` 
+besteht. Die Korrelation dieser Residualwerte beträgt dementsprechend auch nur 
+$r=0.17$ und nicht, wie im Falle der nicht für die Kovariation mit der Anzahl der 
+Sommertage korrigierten Werte von Eiskonsum und Sonnenbrandinzidenz, $r=0.46$ 
+(vgl. @fig-bpr-beispiel). Der bei der nicht durch die Anzahl der Sommertage 
+informierten Korrelationsanalyse implizierte Zusammenhang von Eiskonsum und 
+Sonnenbrandinzidenz lässt sich also durch die Kovariation beider Variablen mit der 
+Drittvariable Sommertage aufklären bzw. "wegerklären".
+
+## Literaturhinweise
+
+Die Theorie partielle und bedingter Korrelationen findet spätestens seit Beginn 
+der modernen Korrelationsanalyse zu Beginn des 20. Jahrhunderts Beachtung, man 
+vergleiche hierzu zum Beispiel @pearson1920, @yule1907 oder @fisher1924.
+
+## Selbstkontrollfragen
+\footnotesize
+1. Erläutern Sie die Motivation zur Bestimmung bedingter und partieller Korrelationen.
+1. Geben Sie die Definition der Begriffe der bedingten Kovarianz und der bedingten Korrelation wieder.
+1. Geben Sie das Theorem zu bedingter Korrelation und Korrelationen bei Normalverteilung an.
+1. Geben Sie die Definition des Begriffs der partiellen Korrelation wieder.
+1. Geben Sie die Definition des Begriffs der partiellen Stichprobenkorrelation wieder.
+1. Geben Sie das Theorem zu bedingter und partieller Korrelation bei Normalverteilung wieder.
+1. Erläutern Sie die Auswertung einer partiellen Korrelation anhand eines Anwendungsbeispiels.  
+\normalsize

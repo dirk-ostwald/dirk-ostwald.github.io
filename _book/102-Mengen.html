@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.549">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Probabilistische Datenwissenschaft für die Psychologie - 2&nbsp; Mengen</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./103-Summen-Produkte-Potenzen.html" rel="next">
+<link href="./101-Sprache-und-Logik.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Keine Treffer",
+    "search-matching-documents-text": "Treffer",
+    "search-copy-link-title": "Link in die Suche kopieren",
+    "search-hide-matches-text": "Zusätzliche Treffer verbergen",
+    "search-more-match-text": "weitere Treffer in diesem Dokument",
+    "search-more-matches-text": "weitere Treffer in diesem Dokument",
+    "search-clear-button-title": "Zurücksetzen",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Abbrechen",
+    "search-submit-button-title": "Abschicken",
+    "search-label": "Suchen"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./101-Sprache-und-Logik.html">Mathematische Grundlagen</a></li><li class="breadcrumb-item"><a href="./102-Mengen.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Mengen</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Probabilistische Datenwissenschaft für die Psychologie</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages" title="Quellcode" class="quarto-navigation-tool px-1" aria-label="Quellcode"><i class="bi bi-github"></i></a>
+    <a href="./Probabilistische-Datenwissenschaft-für-die-Psychologie.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Suchen"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Willkommen</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Mathematische Grundlagen</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./101-Sprache-und-Logik.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Sprache und Logik</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./102-Mengen.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Mengen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./103-Summen-Produkte-Potenzen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Summen, Produkte, Potenzen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./104-Funktionen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Funktionen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./105-Differentialrechnung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Differentialrechnung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./106-Folgen-Grenzwerte-Stetigkeit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Folgen, Grenzwerte, Stetigkeit</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./107-Integralrechnung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Integralrechnung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./108-Vektoren.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Vektoren</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./109-Matrizen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Matrizen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./110-Eigenanalyse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Eigenanalyse</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./200-Wahrscheinlichkeitstheorie.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Wahrscheinlichkeitstheorie</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./201-Wahrscheinlichkeitsräume.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Wahrscheinlichkeitsräume</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./202-Elementare-Wahrscheinlichkeiten.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Elementare Wahrscheinlichkeiten</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./203-Zufallsvariablen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Zufallsvariablen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./204-Zufallsvektoren.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Zufallsvektoren</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./205-Erwartungswerte.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Erwartungswerte</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./206-Ungleichungen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Ungleichungen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./207-Grenzwerte.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Grenzwerte</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./208-Transformationstheoreme.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Transformationstheoreme</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./209-Normalverteilungstransformationen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Normalverteilungstransformationen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./210-Multivariate-Normalverteilungen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Multivariate Normalverteilungen</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Frequentistische Inferenz</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./301-Grundbegriffe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Grundbegriffe</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./302-Punktschätzung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Punktschätzung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./303-Konfidenzintervalle.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Konfidenzintervalle</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./304-Hypothesentests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Hypothesentests</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Das Allgemeine Lineare Modell</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./401-Regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Regression</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./402-Korrelation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Korrelation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./403-Modellformulierung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Modellformulierung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./404-Parameterschätzung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Parameterschätzung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./405-T-Statistiken.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">T-Statistiken</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./406-F-Statistiken.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">F-Statistiken</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./407-T-Tests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">T-Tests</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./408-Einfaktorielle-Varianzanalyse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Einfaktorielle Varianzanalyse</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./409-Zweifaktorielle-Varianzanalyse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Zweifaktorielle Varianzanalyse</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./410-Partielle-Korrelation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Partielle Korrelation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./411-Multiple-Regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Multiple Regression</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Multivariate Inferenz</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./501-Datendeskription.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Datendeskription</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./502-Einstichproben-T2-Tests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Einstichproben-T<span class="math inline">\(^2\)</span>-Tests</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./503-Einfaktorielle-Varianzanalyse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Einfaktorielle Varianzanalyse</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./504-Kanonische-Korrelationsanalyse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">Kanonische Korrelationsanalyse</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Referenzen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Referenzen</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Inhaltsverzeichnis</h2>
+   
+  <ul>
+  <li><a href="#grundlegende-definitionen" id="toc-grundlegende-definitionen" class="nav-link active" data-scroll-target="#grundlegende-definitionen"><span class="header-section-number">2.1</span> Grundlegende Definitionen</a></li>
+  <li><a href="#sec-verknuepfung-von-mengen" id="toc-sec-verknuepfung-von-mengen" class="nav-link" data-scroll-target="#sec-verknuepfung-von-mengen"><span class="header-section-number">2.2</span> Verknüpfungen von Mengen</a></li>
+  <li><a href="#spezielle-mengen" id="toc-spezielle-mengen" class="nav-link" data-scroll-target="#spezielle-mengen"><span class="header-section-number">2.3</span> Spezielle Mengen</a></li>
+  <li><a href="#sec-selbstkontrollfragen-mengen" id="toc-sec-selbstkontrollfragen-mengen" class="nav-link" data-scroll-target="#sec-selbstkontrollfragen-mengen"><span class="header-section-number">2.4</span> Selbstkontrollfragen</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/102-Mengen.qmd" class="toc-action"><i class="bi bi-github"></i>Seite editieren</a></li></ul></div></nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./101-Sprache-und-Logik.html">Mathematische Grundlagen</a></li><li class="breadcrumb-item"><a href="./102-Mengen.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Mengen</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-mengen" class="quarto-section-identifier"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Mengen</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="grundlegende-definitionen" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="grundlegende-definitionen"><span class="header-section-number">2.1</span> Grundlegende Definitionen</h2>
+<p>Mengen fassen mathematische Objekte wie beispielsweise Zahlen zusammen und bilden die Grundlage der modernen Mathematik. Wir beginnen mit folgender Definition.</p>
+<div id="def-mengen" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.1 (Mengen)</strong></span> Nach <span class="citation" data-cites="cantor1895">Cantor (<a href="#ref-cantor1895" role="doc-biblioref">1895</a>)</span> ist eine <em>Menge</em> definiert als “eine Zusammenfassung <span class="math inline">\(M\)</span> von bestimmten wohlunterschiedenen Objekten <span class="math inline">\(m\)</span> unsere Anschauung oder unseres Denken (welche die Elemente der Menge genannt werden) zu einem Ganzen”. Wir schreiben <span class="math display">\[\begin{equation}
+m \in M \mbox{ bzw. } m \notin M
+\end{equation}\]</span> um auszudrücken, dass <span class="math inline">\(m\)</span> ein Element bzw. kein Element von <span class="math inline">\(M\)</span> ist.</p>
+</div>
+<p>Zur Definition von Mengen gibt es mindestens folgende Möglichkeiten:</p>
+<ul>
+<li>Auflisten der Elemente in geschweiften Klammern, z.B. <span class="math inline">\(M := \{1,2,3\}\)</span>.</li>
+<li>Angabe der Eigenschaften der Elemente, z.B. <span class="math inline">\(M := \{x \in \mathbb{N}|x &lt; 4\}\)</span>.</li>
+<li>Gleichsetzen mit einer anderen eindeutig definieren Menge, z.B. <span class="math inline">\(M := \mathbb{N}_3\)</span>.</li>
+</ul>
+<p>Die Schreibweise <span class="math inline">\(\{x \in \mathbb{N}|x &lt; 4\}\)</span> wird gelesen als “<span class="math inline">\(x \in \mathbb{N}\)</span>, für die gilt, dass <span class="math inline">\(x &lt; 4\)</span> ist”, wobei die Bedeutung von <span class="math inline">\(\mathbb{N}\)</span> im Folgenden noch zu erläutern sein wird. Es ist wichtig zu erkennen, dass Mengen <em>ungeordnete</em> mathematische Objekte sind, dass heißt die Reihenfolge der Auflistung der Elemente einer Menge spielt keine Rolle. Zum Beispiel bezeichnen <span class="math inline">\(\{1,2,3\}\)</span>, <span class="math inline">\(\{1,3,2\}\)</span> und <span class="math inline">\(\{2,3,1\}\)</span> dieselbe Menge, nämlich die Menge der ersten drei natürlichen Zahlen.</p>
+<p>Grundlegende Beziehungen zwischen mehreren Mengen werden in der nächsten Definition festgelegt.</p>
+<div id="def-teilmengen-und-mengengleichheit" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.2 (Teilmengen und Mengengleichheit)</strong></span> <span class="math inline">\(A\)</span> und <span class="math inline">\(B\)</span> seien zwei Mengen.</p>
+<ul>
+<li>Eine Menge <span class="math inline">\(A\)</span> heißt <em>Teilmenge</em> einer Menge <span class="math inline">\(B\)</span>, wenn für jedes Element <span class="math inline">\(a \in A\)</span> gilt, dass auch <span class="math inline">\(a\in B\)</span>. Ist <span class="math inline">\(A\)</span> eine Teilmenge von <span class="math inline">\(B\)</span>, so schreibt man <span class="math display">\[\begin{equation}
+A \subseteq B
+\end{equation}\]</span> und nennt <span class="math inline">\(A\)</span> <em>Untermenge</em> von <span class="math inline">\(B\)</span> und <span class="math inline">\(B\)</span> <em>Obermenge</em> von <span class="math inline">\(A\)</span>.</li>
+<li>Eine Menge <span class="math inline">\(A\)</span> heißt <em>echte Teilmenge</em> einer Menge <span class="math inline">\(B\)</span>, wenn für jedes Element <span class="math inline">\(a \in A\)</span> gilt, dass auch <span class="math inline">\(a\in B\)</span>, es aber zumindest ein Element <span class="math inline">\(b \in B\)</span> gibt, für das gilt <span class="math inline">\(b \notin A\)</span>. Ist <span class="math inline">\(A\)</span> eine echte Teilmenge von <span class="math inline">\(B\)</span>, so schreibt man <span class="math display">\[\begin{equation}
+A \subset B.
+\end{equation}\]</span></li>
+<li>Zwei Mengen <span class="math inline">\(A\)</span> und <span class="math inline">\(B\)</span> heißen <em>gleich</em>, wenn für jedes Element <span class="math inline">\(a \in A\)</span> gilt, dass auch <span class="math inline">\(a \in B\)</span>, und wenn für jedes Element <span class="math inline">\(b \in B\)</span> gilt, dass auch <span class="math inline">\(b
+\in A\)</span>. Sind die Mengen <span class="math inline">\(A\)</span> und <span class="math inline">\(B\)</span> gleich, so schreibt man <span class="math display">\[\begin{equation}
+A = B.
+\end{equation}\]</span></li>
+</ul>
+</div>
+<p>Betrachten wir zum Beispiel die Mengen <span class="math inline">\(A := \{1\}\)</span>, <span class="math inline">\(B := \{1,2\}\)</span>, und <span class="math inline">\(C := \{1,2\}\)</span>. Dann gilt mit obigen Definitionen, dass <span class="math inline">\(A \subset B\)</span>, weil <span class="math inline">\(1 \in A\)</span> und <span class="math inline">\(1 \in B\)</span>, aber <span class="math inline">\(2 \in B\)</span> und <span class="math inline">\(2 \notin A\)</span>. Weiterhin gilt, dass <span class="math inline">\(B \subseteq C\)</span>, weil <span class="math inline">\(1 \in B\)</span> und <span class="math inline">\(1 \in C\)</span> sowie <span class="math inline">\(2 \in B\)</span> und <span class="math inline">\(2 \in C\)</span> und es kein Element von <span class="math inline">\(C\)</span> gibt, welches nicht in <span class="math inline">\(B\)</span> ist. Ebenso gilt <span class="math inline">\(C \subseteq B\)</span>, weil <span class="math inline">\(1 \in C\)</span> und <span class="math inline">\(1 \in B\)</span> sowie <span class="math inline">\(2 \in C\)</span> und <span class="math inline">\(2 \in B\)</span> und es kein Element von <span class="math inline">\(B\)</span> gibt, welches nicht in <span class="math inline">\(C\)</span> ist. Schließlich gilt sogar <span class="math inline">\(B = C\)</span>, weil für jedes Element <span class="math inline">\(b \in B\)</span> gilt, dass auch <span class="math inline">\(b \in C\)</span>, und gleichzeitig für jedes Element <span class="math inline">\(c \in C\)</span> gilt, dass auch <span class="math inline">\(c\in B\)</span>.</p>
+<p>Eine wichtige Eigenschaft einer Menge ist die Anzahl der in ihr enthaltenen Elemente. Diese wird als <em>Kardinalität</em> der Menge bezeichnet.</p>
+<div id="def-kardinalität" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.3 (Kardinalität)</strong></span> Die Anzahl der Elemente einer Menge <span class="math inline">\(M\)</span> heißt <em>Kardinalität</em> und wird mit <span class="math inline">\(|M|\)</span> bezeichnet.</p>
+</div>
+<p>Eine besondere Menge ist die Menge ohne Elemente.</p>
+<div id="def-leere-menge" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.4</strong></span> Eine Menge mit Kardinalität Null heißt <em>leere Menge</em> und wird mit <span class="math inline">\(\emptyset\)</span> bezeichnet.</p>
+</div>
+<p>Als Beispiele seien <span class="math inline">\(A := \{1,2,3\}\)</span>, <span class="math inline">\(B = \{a,b,c,d\}\)</span> und <span class="math inline">\(C := \{\,\}\)</span>. Dann gelten <span class="math inline">\(|A| = 3\)</span>, <span class="math inline">\(B = 4\)</span> und <span class="math inline">\(|C| = 0\)</span>.</p>
+<p>Zu jeder Menge kann man die Menge aller Teilmengen dieser Menge betrachten. Dies führt auf den wichtigen Begriff der <em>Potenzmenge</em>.</p>
+<div id="def-potenzmenge" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.5 (Potenzmenge)</strong></span> Die Menge aller Teilmengen einer Menge <span class="math inline">\(M\)</span> heißt <em>Potenzmenge von <span class="math inline">\(M\)</span></em> und wird mit <span class="math inline">\(\mathcal{P}(M)\)</span> bezeichnet.</p>
+</div>
+<p>Man beachte, dass die leere Untermenge von <span class="math inline">\(M\)</span> und <span class="math inline">\(M\)</span> selbst auch immer Elemente von <span class="math inline">\(\mathcal{P}(M)\)</span> sind. Wir betrachten vier Beispiele zum Begriff der Potenzmenge.</p>
+<ul>
+<li><p><span class="math inline">\(M_0 := \emptyset\)</span> sei die leere Menge. Dann gilt <span class="math display">\[\begin{equation}
+\mathcal{P}(M_0) = \emptyset.
+\end{equation}\]</span></p></li>
+<li><p><span class="math inline">\(M_1\)</span> sei die einelementige Menge <span class="math inline">\(M_1 := \{a\}\)</span>. Dann gilt <span class="math display">\[\begin{equation}
+\mathcal{P}(M_1) = \{\emptyset,\{a\}\}.
+\end{equation}\]</span></p></li>
+<li><p>Es sei <span class="math inline">\(M_2 := \{a,b\}\)</span>. Dann hat <span class="math inline">\(M_2\)</span> sowohl ein- als auch zweielementige Teilmengen und es gilt <span class="math display">\[\begin{equation}
+\mathcal{P}(M_2) = \{\emptyset,\{a\}\, \{b\}, \{a,b\}\}.
+\end{equation}\]</span></p></li>
+<li><p>Schließlich sei <span class="math inline">\(M_3 := \{a,b,c\}\)</span>. Dann hat <span class="math inline">\(M\)</span> ein-, zwei-, als auch dreielementige Teilmengen und es gilt <span class="math display">\[\begin{equation}
+\mathcal{P}(M_3) = \{\emptyset, \{a\},\{b\},\{c\},\{a,b\},\{a,c\},\{b,c\},\{a,b,c\}\}.
+\end{equation}\]</span></p></li>
+</ul>
+<p>Hinsichtlich der Kardinalitäten einer Menge und ihrer Potenzmenge kann man beweisen, dass aus <span class="math inline">\(|M| = n\)</span> mit <span class="math inline">\(n&gt;0\)</span> folgt, dass die Kardinalität der Potenzmenge <span class="math inline">\(|\mathcal{P}(M)| = 2^n\)</span> ist. In den obigen Beispielen haben wir die Fälle <span class="math inline">\(|M_1| = 1\)</span> und somit <span class="math inline">\(|\mathcal{P}(M_1)| = 2^1 = 2\)</span>, <span class="math inline">\(|M_2| = 2\)</span> und somit <span class="math inline">\(|\mathcal{P}(M_3)| = 2^2 = 4\)</span> und schließlich <span class="math inline">\(|M_3| = 3\)</span> und somit <span class="math inline">\(|\mathcal{P}(M_3)| = 2^3 = 8\)</span>, wovon man sich durch Nachzählen schnell überzeugt.</p>
+</section>
+<section id="sec-verknuepfung-von-mengen" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="sec-verknuepfung-von-mengen"><span class="header-section-number">2.2</span> Verknüpfungen von Mengen</h2>
+<p>Zwei Mengen können auf unterschiedliche Weise miteinander verknüpft werden. Das Ergebnis einer solchen Verknüpfung ist eine weitere Menge. Wir bezeichnen die Verknüpfung zweier Mengen als <em>Mengenoperation</em> und geben folgende Definitionen.</p>
+<div id="def-mengenoperationen" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.6 (Mengenoperationen)</strong></span> <span class="math inline">\(M\)</span> und <span class="math inline">\(N\)</span> seien zwei Mengen.</p>
+<ul>
+<li><p>Die <em>Vereinigung von <span class="math inline">\(M\)</span> und <span class="math inline">\(N\)</span></em> ist definiert als die Menge <span class="math display">\[\begin{equation}
+M \cup N := \{x | x \in M \lor x \in N\},
+\end{equation}\]</span> wobei <span class="math inline">\(\lor\)</span> wie immer im inklusiven Sinne als und/oder zu verstehen ist.</p></li>
+<li><p>Der <em>Durchschnitt von <span class="math inline">\(M\)</span> und <span class="math inline">\(N\)</span></em> ist definiert als die Menge <span class="math display">\[\begin{equation}
+M \cap N := \{x | x \in M \land x \in N\}.
+\end{equation}\]</span> Wenn für <span class="math inline">\(M\)</span> und <span class="math inline">\(N\)</span> gilt, dass <span class="math inline">\(M \cap N= \emptyset\)</span>, dann heißen <span class="math inline">\(M\)</span> und <span class="math inline">\(N\)</span> <em>disjunkt</em>.</p></li>
+<li><p>Die <em>Differenz von <span class="math inline">\(M\)</span> und <span class="math inline">\(N\)</span></em> ist definiert als die Menge <span class="math display">\[\begin{equation}
+M\setminus N := \{x | x \in M \land x \notin N\}.
+\end{equation}\]</span> Die Differenz <span class="math inline">\(M\)</span> und <span class="math inline">\(N\)</span> heißt, insbesondere bei <span class="math inline">\(M \subseteq N\)</span>, auch das <em>Komplement von <span class="math inline">\(N\)</span> bezüglich <span class="math inline">\(M\)</span></em> und wird mit <span class="math inline">\(N^c\)</span> bezeichnet.</p></li>
+<li><p>Die <em>symmetrische Differenz von <span class="math inline">\(M\)</span> und <span class="math inline">\(N\)</span></em> ist definiert als die Menge <span class="math display">\[\begin{equation}
+M \Delta N := \{x|(x \in M \lor x \in N ) \land x \notin M \cap N\},
+\end{equation}\]</span> Die symmetrische Differenz kann also als <em>exklusives oder</em> verstanden werden.</p></li>
+</ul>
+</div>
+<p>Als Beispiel betrachten wir die Mengen <span class="math inline">\(M := \{1,2,3\}\)</span>und <span class="math inline">\(N := \{2,3,4,5\}\)</span>. Dann gelten</p>
+<ul>
+<li><span class="math inline">\(M \cup N = \{1,2,3,4,5\}\)</span>, weil <span class="math inline">\(1 \in M\)</span>, <span class="math inline">\(2 \in M\)</span>, <span class="math inline">\(3 \in M\)</span>, <span class="math inline">\(4 \in N\)</span> und <span class="math inline">\(5 \in N\)</span>.</li>
+<li><span class="math inline">\(M \cap N = \{2,3\}\)</span>, weil nur für <span class="math inline">\(2\)</span> und <span class="math inline">\(3\)</span> gilt, dass <span class="math inline">\(2\in M, 3 \in M\)</span> und auch <span class="math inline">\(2\in N, 3 \in N\)</span>. Für <span class="math inline">\(1\)</span> gilt lediglich, dass <span class="math inline">\(1 \in M\)</span> und für <span class="math inline">\(4\)</span> und <span class="math inline">\(5\)</span> gelten lediglich, dass <span class="math inline">\(4 \in N\)</span> und <span class="math inline">\(5 \in N\)</span>.</li>
+<li><span class="math inline">\(M \setminus N = \{1\}\)</span>, weil <span class="math inline">\(1 \in M\)</span>, aber <span class="math inline">\(1 \notin N\)</span> und <span class="math inline">\(2 \in M\)</span>, aber auch <span class="math inline">\(2 \in N\)</span>.</li>
+<li><span class="math inline">\(N \setminus M = \{4,5\}\)</span>, weil <span class="math inline">\(2 \in N\)</span> und <span class="math inline">\(3 \in N\)</span>, aber auch <span class="math inline">\(2\in M\)</span> und <span class="math inline">\(3 \in M\)</span>. Dies zeigt insbesondere, dass die Differenz von <span class="math inline">\(M\)</span> Und <span class="math inline">\(N\)</span> <em>nicht</em> symmetrisch ist, also dass <em>nicht</em> zwangsläufig gilt, dass <span class="math inline">\(M\setminus N\)</span> gleich <span class="math inline">\(N \setminus M\)</span> ist.</li>
+<li><span class="math inline">\(M \Delta N = \{1,4,5\}\)</span>, weil <span class="math inline">\(1 \in M\)</span>, aber <span class="math inline">\(1 \notin \{2,3\}\)</span>, <span class="math inline">\(2 \in M\)</span>, aber <span class="math inline">\(2 \in \{2,3\}\)</span>, <span class="math inline">\(3 \in M\)</span>, aber <span class="math inline">\(3 \in \{2,3\}\)</span>, <span class="math inline">\(4 \in N\)</span>, aber <span class="math inline">\(4 \notin \{2,3\}\)</span> und <span class="math inline">\(5 \in N\)</span>, aber <span class="math inline">\(5 \notin \{2,3\}\)</span>.</li>
+</ul>
+<p>Schließlich wollen wir noch den Begriff der Partition einer Menge einführen.</p>
+<div id="def-partition" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.7 (Partition)</strong></span> <span class="math inline">\(M\)</span> sei eine Menge und <span class="math inline">\(P := \{N_i\}\)</span> sei eine Menge von Mengen <span class="math inline">\(N_i\)</span> mit <span class="math inline">\(i = 1,...,n\)</span>, so dass gilt <span class="math display">\[\begin{equation}
+M = \cup_{i=1}^n N_i \land N_i \cap N_j = \emptyset \mbox{ für } i = 1,...,n, j = 1,...,n, i \neq j.
+\end{equation}\]</span> Dann heißt <span class="math inline">\(P\)</span> eine .</p>
+</div>
+<p>Intuitiv entspricht die Partition einer Menge also dem Aufteilen der Menge in disjunkte Teilmengen. Partitionen sind generell nicht eindeutig, d.h. es gibt meist verschiedene Möglichkeiten eine gegebene Menge zu partitionieren. Betrachten wir zum Beispiel die Menge <span class="math inline">\(M := \{1,2,3,4,5,6\}\)</span>. Dann sind <span class="math inline">\(P_1 := \{\{1\}, \{2,3,4,5,6\}\}\)</span>, <span class="math inline">\(P_2 := \{\{1,2,3\}, \{4,5,6\}\}\)</span> und <span class="math inline">\(P_3 := \{\{1,2\},\{3,4\}, \{5,6\}\}\)</span> drei mögliche Partitionen von <span class="math inline">\(M\)</span>.</p>
+</section>
+<section id="spezielle-mengen" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="spezielle-mengen"><span class="header-section-number">2.3</span> Spezielle Mengen</h2>
+<p>In der Naturwissenschaft versucht man, Phänomene der Welt mit Zahlen zu beschreiben. Je nach Phänomen bieten sich dazu <em>diskrete</em> oder <em>kontinuierliche</em> Zahlenmengen an. Die Mathematik stellt dazu unter anderem die in folgender Definition gegebenen Zahlenmengen bereit.</p>
+<div id="def-zahlenmengen" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.8 (Zahlenmengen)</strong></span> Es bezeichnen</p>
+<ul>
+<li><span class="math inline">\(\mathbb{N}\,\,\, := \{1,2,3,...\}\)</span> die <em>natürlichen Zahlen</em>,</li>
+<li><span class="math inline">\(\mathbb{N}_n     := \{1,2,3,...,n\}\)</span> die <em>natürlichen Zahlen der Ordnung <span class="math inline">\(n\)</span></em>,</li>
+<li><span class="math inline">\(\mathbb{N}^0     := \mathbb{N} \cup \{0\}\)</span> die <em>natürlichen Zahlen</em> und Null,</li>
+<li><span class="math inline">\(\mathbb{Z}\,\,\, := \{...,-3,-2,-1,0,1,2,3...\}\)</span> die <em>ganzen Zahlen</em>,</li>
+<li><span class="math inline">\(\mathbb{Q}\,\,\, := \{\frac{p}{q}|p,q \in \mathbb{Z}, q \neq 0\}\)</span> die <em>rationalen Zahlen</em>,</li>
+<li><span class="math inline">\(\mathbb{R}\,\,\,\)</span> die <em>reellen Zahlen</em>, und</li>
+<li><span class="math inline">\(\mathbb{C}\,\,\, := \{a + ib|a,b\in \mathbb{R}, i := \sqrt{-1} \}\)</span> die <em>komplexen Zahlen</em>.</li>
+</ul>
+</div>
+<p>Die natürlichen und ganzen Zahlen eignen sich insbesondere zum Quantifizieren diskreter Phänomene. Die rationalen und insbesondere die reellen Zahlen eignen sich zum Quantifizieren kontinuierlicher Phänomene. <span class="math inline">\(\mathbb{R}\)</span> umfasst dabei die rationalen Zahlen und die sogenannten <em>irrationalen Zahlen</em> <span class="math inline">\(\mathbb{R}\setminus
+\mathbb{Q}\)</span>. Rationale Zahlen sind Zahlen, die sich, wie oben definiert, durch Brüche ganzer Zahlen ausdrücken lassen. Dies sind alle ganzen Zahlen sowie die negativen und positiven Dezimalzahlen wie z.B. <span class="math inline">\(-\frac{9}{10} = -0.9\)</span>, <span class="math inline">\(\frac{1}{3} = 1.3\bar{3}\)</span>, und <span class="math inline">\(\frac{196}{100} = 1.96\)</span>. Irrationale Zahlen sind Zahlen, die sich nicht als rationale Zahlen ausdrücken lassen. Beispiele für irrationale Zahlen sind die <em>Eulersche Zahl</em> <span class="math inline">\(e \approx 2.71\)</span>, die <em>Kreiszahl</em> <span class="math inline">\(\pi \approx 3.14\)</span> und die Quadratwurzel von <span class="math inline">\(2\)</span>, <span class="math inline">\(\sqrt{2} \approx 1.41\)</span>.</p>
+<p>Die reellen Zahlen enthalten als Teilmengen die natürlichen, ganzen, und die rationalen Zahlen. Es gibt also sehr viele reelle Zahlen. Tatsächlich kann man beweisen (<span class="citation" data-cites="cantor1892">Cantor (<a href="#ref-cantor1892" role="doc-biblioref">1892</a>)</span>), dass es mehr reelle Zahlen als natürliche Zahlen gibt, obwohl es sowohl unendlich viele reelle Zahlen als auch unendlich viele natürliche Zahlen gibt. Diese Eigenschaft der reellen Zahlen bezeichnet man als die <em>Überabzählbarkeit</em> der reellen Zahlen. Insbesondere gilt <span class="math display">\[\begin{equation}
+\mathbb{N} \subset \mathbb{Z} \subset \mathbb{Q} \subset \mathbb{R}.
+\end{equation}\]</span> Zwischen zwei reellen Zahlen gibt es unendlich viele weitere reelle Zahlen. Positiv-Unendlich (<span class="math inline">\(\infty\)</span>) und Negativ-Unendlich (<span class="math inline">\(-\infty\)</span>) sind keine Zahlen, mit denen in der Standardmathematik gerechnet werden kann. Sie gehören auch nicht zu den in obiger Definition gegebenen Zahlenmengen, es gilt also sowohl <span class="math inline">\(\infty \notin \mathbb{R}\)</span> als auch <span class="math inline">\(-\infty \notin \mathbb{R}\)</span>.</p>
+<p>Komplexe Zahlen eignen sich zur Beschreibung zweidimensionaler kontinuierlicher Phänomene. Dabei werden die Werte der ersten Dimension im reellen Teil <span class="math inline">\(a\)</span> und die Werte der zweiten Dimension im komplexen Teil <span class="math inline">\(b\)</span> einer komplexen Zahl repräsentiert. Komplexe Zahlen kommen insbesondere bei der Modellierung physikalischer Phänomene und im Bereich der Fourieranalyse zum Einsatz. Wir vertiefen die Theorie komplexer Zahlen an dieser Stelle nicht.</p>
+<p>Wichtige Teilmengen der reellen Zahlen sind die sogenannten <em>Intervalle</em>. Wir geben folgende Definitionen.</p>
+<div id="def-intervalle" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.9</strong></span> Zusammenhängende Teilmengen der reellen Zahlen heißen <em>Intervalle</em>. Für <span class="math inline">\(a,b\in \mathbb{R}\)</span> unterscheidet man</p>
+<ul>
+<li>das <em>abgeschlossene Intervall</em> <span class="math display">\[\begin{equation}
+[a,b] := \{x \in \mathbb{R}|a \le x \le b\},
+\end{equation}\]</span></li>
+<li>das <em>offene Interval</em> <span class="math display">\[\begin{equation}
+]a,b[ := \{x \in \mathbb{R}|a &lt; x &lt; b\},
+\end{equation}\]</span></li>
+<li>und die <em>halboffenen Intervalle</em> <span class="math display">\[\begin{equation}
+]a,b] := \{x \in \mathbb{R}| a &lt; x \le b\} \mbox{ und }
+[a,b[ := \{x \in \mathbb{R}| a \le x &lt; b\}.
+\end{equation}\]</span></li>
+</ul>
+</div>
+<p>Wie oben erwähnt sind Positiv-Unendlich (<span class="math inline">\(\infty\)</span>) und Negativ-Unendlich (<span class="math inline">\(-\infty\)</span>) keine Elemente von <span class="math inline">\(\mathbb{R}\)</span>. Es gilt also immer <span class="math inline">\(]-\infty,b]\)</span> oder <span class="math inline">\(]-\infty,b[\)</span> bzw. <span class="math inline">\(]a,\infty[\)</span> oder <span class="math inline">\([a,\infty[\)</span>, sowie <span class="math inline">\(\mathbb{R} = ]-\infty, \infty[\)</span>.</p>
+<p>Oft möchte man mehrere Eigenschaften eines Phänomens gleichzeitig quantitativ beschreiben. Zu diesem Zweck können die oben definierten eindimensionalen Zahlenmenge durch Bildung <em>Kartesischer Produkte</em> auf mehrdimensionale Zahlenmengen erweitert werden. Die Elemente Kartesischer Produkte nennt man <em>geordnete Tupel</em> oder auch <em>Vektoren</em>.</p>
+<div id="def-kartesische-produkte" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.10 (Kartesische Produkte)</strong></span> <span class="math inline">\(M\)</span> und <span class="math inline">\(N\)</span> seien zwei Mengen. Dann ist das <em>Kartesische Produkt der Mengen <span class="math inline">\(M\)</span> und <span class="math inline">\(N\)</span></em> die Menge aller geordneten Tupel <span class="math inline">\((m,n)\)</span> mit <span class="math inline">\(m \in M\)</span> und <span class="math inline">\(n \in N\)</span>, formal <span class="math display">\[\begin{equation}
+M \times N := \{(m,n)|m\in M, n \in N \}.
+\end{equation}\]</span></p>
+<p>Das Kartesische Produkt einer Menge <span class="math inline">\(M\)</span> mit sich selbst wird bezeichnet mit <span class="math display">\[\begin{equation}
+M^2 := M \times M.
+\end{equation}\]</span> Seien weiterhin <span class="math inline">\(M_1, M_2, ..., M_n\)</span> Mengen. Dann ist das <em>Kartesische Produkt der Mengen <span class="math inline">\(M_1,...,M_n\)</span></em> die Menge aller geordneten <span class="math inline">\(n\)</span>-Tupel <span class="math inline">\((m_1,...,m_n)\)</span> mit <span class="math inline">\(m_i \in M_i\)</span> für <span class="math inline">\(i = 1,...,n\)</span>, formal <span class="math display">\[\begin{equation}
+\prod_{i=1}^n M_i := M_1 \times \cdots \times M_n := \{(m_1,...,m_n)
+                |m_i \in M_i \mbox{ für } i = 1,...,n\}.
+\end{equation}\]</span> Das <span class="math inline">\(n\)</span>-fache Kartesische Produkt einer Menge <span class="math inline">\(M\)</span> mit sich selbst wird bezeichnet mit <span class="math display">\[\begin{equation}
+M^n := \prod_{i=1}^n M := \{(m_1,,...,m_n)|m_i \in M\}.
+\end{equation}\]</span></p>
+</div>
+<p>Im Gegensatz zu Mengen sind die in <a href="#def-kartesische-produkte" class="quarto-xref">Definition&nbsp;<span>2.10</span></a> eingeführten Tupel <em>geordnet</em>. Das heißt, für Mengen gilt zum Beispiel <span class="math inline">\(\{1,2\} = \{2,1\}\)</span>, aber für Tupel gilt <span class="math inline">\((1,2) \neq (2,1)\)</span>.</p>
+<p>Wie oben beschrieben eignen sich insbesondere die reellen Zahlen zur Beschreibung kontinuierlicher Phänomene. Zur simultanen Beschreibung mehrere Aspekte eines kontinuierlichen Phänomens bietet sich entsprechend die <em>Menge der reellen Tupel <span class="math inline">\(n\)</span>-ter Ordnung</em> an.</p>
+<div id="def-menge-der-reellen-tupel-nter-ordnung" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.11 (Menge der reellen Tupel <span class="math inline">\(n\)</span>-ter Ordnung)</strong></span> Das <span class="math inline">\(n\)</span>-fache Kartesische Produkt der reellen Zahlen mit sich selbst wird bezeichnet mit <span class="math display">\[\begin{equation}
+\mathbb{R}^n := \prod_{i=1}^n \mathbb{R} := \{x := (x_1,,...,x_n)|x_i \in \mathbb{R}\}
+\end{equation}\]</span> und wird “<span class="math inline">\(\mathbb{R}\)</span> hoch <span class="math inline">\(n\)</span>” gesprochen. Wir schreiben die Elemente von <span class="math inline">\(\mathbb{R}^n\)</span> als Spalten <span class="math display">\[\begin{equation}
+x :=
+\begin{pmatrix}
+x_1
+\\
+\vdots
+\\
+x_n
+\end{pmatrix}
+\end{equation}\]</span> und nennen sie <em><span class="math inline">\(n\)</span>-dimensionale Vektoren</em>. Zu Abgrenzung nennen wir die Elemente von <span class="math inline">\(\mathbb{R}^1 = \mathbb{R}\)</span> auch <em>Skalare</em>.</p>
+</div>
+<p>Ein Beispiel für <span class="math inline">\(x \in \mathbb{R}^4\)</span> ist <span class="math display">\[\begin{equation}
+x = \begin{pmatrix} 0.16 \\ 1.76 \\ 0.23 \\ 7.11 \end{pmatrix}.
+\end{equation}\]</span></p>
+</section>
+<section id="sec-selbstkontrollfragen-mengen" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="sec-selbstkontrollfragen-mengen"><span class="header-section-number">2.4</span> Selbstkontrollfragen</h2>
+<ol type="1">
+<li>Geben Sie die Definition einer Menge nach Cantor (1895) wieder.</li>
+<li>Nennen Sie drei Möglichkeiten zur Definition einer Menge.</li>
+<li>Erläutern Sie die Ausdrücke <span class="math inline">\(m \in M, m \notin N, M \subseteq N, M \subset N\)</span> für zwei Mengen <span class="math inline">\(M\)</span> und <span class="math inline">\(N\)</span>.</li>
+<li>Geben Sie die Definition der Kardinalität einer Menge wieder.</li>
+<li>Geben Sie die Definition der Potenzmenge einer Menge wieder.</li>
+<li>Es sei <span class="math inline">\(M := \{1,2\}\)</span>. Bestimmen Sie <span class="math inline">\(\mathcal{P}(M)\)</span>.</li>
+<li>Es seien <span class="math inline">\(M := \{1,2\}, N := \{1,4,5\}\)</span>. Bestimmen Sie <span class="math inline">\(M \cup N, M \cap N, M\setminus N, M \Delta N\)</span>.</li>
+<li>Erläutern Sie die Symbole <span class="math inline">\(\mathbb{N}\)</span>, <span class="math inline">\(\mathbb{N}_n\)</span>, und <span class="math inline">\(\mathbb{N}^0\)</span>.</li>
+<li>Erläutern Sie die Unterschiede zwischen <span class="math inline">\(\mathbb{N}\)</span> und <span class="math inline">\(\mathbb{Z}\)</span> und zwischen <span class="math inline">\(\mathbb{R}\)</span> und <span class="math inline">\(\mathbb{Q}\)</span>.</li>
+<li>Geben Sie die Definition abgeschlossener, offener, und halboffener Intervalle wieder.</li>
+<li>Es seien <span class="math inline">\(M\)</span> und <span class="math inline">\(N\)</span> Mengen. Erläutern Sie die Notation <span class="math inline">\(M \times N\)</span>.</li>
+<li>Geben Sie die Definition von <span class="math inline">\(\mathbb{R}^n\)</span> wieder.</li>
+</ol>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-cantor1892" class="csl-entry" role="listitem">
+Cantor, G. (1892). <span>Ü</span>ber Eine <span>Eigenschaft</span> Des <span>Inbegriffes</span> Aller Reellen Algebraischen <span>Zahlen</span>. <em>Jahresbericht der Deutschen Mathematiker-Vereinigung</em>, <em>1</em>.
+</div>
+<div id="ref-cantor1895" class="csl-entry" role="listitem">
+Cantor, G. (1895). Beitr<span>ä</span>ge Zur <span>Begr<span>ü</span>ndung</span> Der Transfiniten <span>Mengenlehre</span>. <em>Mathematische Annalen</em>, <em>46</em>(4), 481–512. <a href="https://doi.org/10.1007/BF02124929">https://doi.org/10.1007/BF02124929</a>
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Kopiert");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Kopiert");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./101-Sprache-und-Logik.html" class="pagination-link  aria-label=" &lt;span="" und="" logik&lt;="" span&gt;"="">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Sprache und Logik</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./103-Summen-Produkte-Potenzen.html" class="pagination-link" aria-label="<span class='chapter-number'>3</span>&nbsp; <span class='chapter-title'>Summen, Produkte, Potenzen</span>">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Summen, Produkte, Potenzen</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/102-Mengen.qmd" class="toc-action"><i class="bi bi-github"></i>Seite editieren</a></li></ul></div></div></div></footer></body></html>

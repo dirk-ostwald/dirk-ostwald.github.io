@@ -1,0 +1,805 @@
+# T-Tests {#sec-t-tests}
+\normalsize
+
+## Einstichproben-T-Tests
+### Anwendungsszenario {-}
+
+Das Anwendungsszenario eines Einstichproben-T-Test ist bekanntlich
+dadurch gekennzeichnet, dass $n$ univariate Datenpunkte einer 
+Stichprobe (Gruppe) randomisierter experimenteller Einheiten betrachtet 
+werden, von denen angenommen wird, dass sie Realisierungen von 
+$n$ unabhängigen und identisch normalverteilten Zufallsvariablen sind. 
+Hinsichtlich der identischen univariaten Normalverteilungen 
+$N\left(\mu, \sigma^{2}\right)$ dieser Zufallsvariablen wird angenommen, 
+dass sowohl der Erwartungswertparameter $\mu$ als auch der 
+Varianzparameter $\sigma^{2}$ unbekannt sind. Schließlich wird vorausgesetzt, 
+dass ein Interesse an einem inferentiellen Vergleich des unbekannten 
+Erwartungswertparameters $\mu$ mit einen vorgebenenen Wert $\mu_{0}$ 
+(z.B. $\mu_{0}:=0$ ) besteht.
+
+### Anwendungsbeispiel {-}
+
+Für ein konkretes Anwendungsbeispiel betrachten wir die Analyse von 
+Pre-PostInterventions-BDI-Differenzwerten einer Gruppe von $n=12$ 
+Patient:innen wie in @tbl-ett-daten dargestellt. Die ersten beiden Spalten 
+dieser Tabelle listen die patientenspezifische BDI Werte vor (PreBDI) und 
+nach (PosBDI) der psychotherapeutischen Intervention, die dritte Spalte 
+dBDI zeigt die entsprechenden PreBDI-PosBDI Differenzwerte. Ein positiver 
+Wert entspricht hier einer Verbesserung der Depressionssymptomatik und ein 
+negativer Wert einer Verschlechterung der Depressionssymptomatik
+
+```{r, eval = F, echo = F}
+# Datengeneration
+set.seed(1)                                                                      # Random number generator seed
+n_c    = 2                                                                       # Anzahl Gruppen
+n_i    = 12                                                                      # Anzahl Proband:innen pro Gruppe
+n      = n_c*n_i                                                                 # Gesamtanzahl Datenpunte
+mu_pre = c(31, 32)                                                               # \mu pre F2F, ONL, WLC
+mu_pos = c(27, 26)                                                               # \mu post F2F, ONL, WLC
+sigsqr = 10                                                                      # \sigma^2
+D            = data.frame("ID" = 1:n)                                            # Dataframe Initialisierung und ID Variable
+D$COND    = c(rep("F2F",n_i), rep("ONL", n_i))                                   # Bedingung
+D$PreBDI     = c(round(rnorm(n_i, mu_pre[1], sqrt(sigsqr))),                     # PreBDI
+                 round(rnorm(n_i, mu_pre[2], sqrt(sigsqr))))
+D$PosBDI     = c(round(rnorm(n_i, mu_pos[1], sqrt(sigsqr))),                     # PostBDI
+                 round(rnorm(n_i, mu_pos[2], sqrt(sigsqr))))
+D$dBDI       = -(D$PosBDI - D$PreBDI)                                            # -(PostBDI - PreBDI) = PreBDI - PostBDI
+write.csv(D, "./_data/407-t-tests.csv")
+```
+
+\footnotesize
+```{r echo = F, warning = F}
+#| label: tbl-ett-daten
+#| tbl-cap : "Pre- und Post-Intervention BDI Werte"
+library(knitr)                                                                  # knitr für Tabellen
+fname       = "3-Einstichproben-T-Test.csv"                                     # Dateiname
+D           = read.csv("./_data/407-t-tests.csv")                               # Laden des Datensatzes
+kable(D[1:12,4:6], digits = 2, align = "c")                                     # Markdowntabellenoutput für head(D)
+``` 
+\normalsize
+
+Bei der Anwendung eines Einstichproben-T-Tests auf die dBDI Daten dieses 
+Datensatzes nehmen wir also an, dass die `dBDI` Daten Realisierungen 
+von $n=12$ unabhängig normalverteilten Zufallsvariablen 
+$\upsilon_i \sim N\left(\mu, \sigma^{2}\right)$ sind. Wir nehmen 
+weiterhin an, dass wir daran interessiert sind, unsere Unsicherheit 
+beim inferentiellen Vergleich des wahren, aber unbekannten, 
+Erwartungswertparameters $\mu$ mit einem Vergleichswert $\mu_{0}$ 
+im Sinne eines Hypothesentests zu quantifizieren.
+
+Unabhängig von diesem inferenzstatistischen Vorgehen betrachten 
+wir zunächst die deskriptiven Statistiken der dBDI Daten, wie in 
+@tbl-ett-deskription dargestellt. Es fällt insbesondere auf, dass das 
+Stichprobenmittel im Vergleich zur Standardabweichung relativ klein ist. 
+Im Gruppenmittel unterscheiden sich die PreBDI und PosBDI also zwar in 
+positiver Richtung, was eine Verringerung der Depressionssymptomatik 
+impliziert, allerdings streuen die Daten auch über Patient:innen deutlich, 
+wie auch bereits aus @tbl-ett-daten ersichtlich.
+
+```{r echo = F}
+# Initialisierung eines Dataframes
+D             = read.csv("./_data/407-t-tests.csv")
+tp            = c("F2F")                           # Therapiebedingungen
+ntp           = length(tp)                          # Anzahl Therapiebedingungen
+S             = data.frame(                         # Dataframeerzeugung
+                n         = rep(NaN,ntp),           # Stichprobengrößen
+                Max       = rep(NaN,ntp),           # Maxima
+                Min       = rep(NaN,ntp),           # Minima
+                Median    = rep(NaN,ntp),           # Mediane
+                Mean      = rep(NaN,ntp),           # Mittelwerte
+                Var       = rep(NaN,ntp),           # Varianzen
+                Std       = rep(NaN,ntp),           # Standardabweichungen
+                row.names = tp)                     # Therapiebedingungen
+
+# Iterationen über Therapiebedingungen
+for(i in 1:ntp){
+  data        = D$dBDI[D$COND == tp[i]]          # Daten
+  S$n[i]      = length(data)                        # Stichprobengröße
+  S$Max[i]    = max(data)                           # Maxima
+  S$Min[i]    = min(data)                           # Minima
+  S$Median[i] = median(data)                        # Mediane
+  S$Mean[i]   = mean(data)                          # Mittelwerte
+  S$Var[i]    = var(data)                           # Varianzen
+  S$Std[i]    = sd(data)                            # Standardabweichungen
+}
+```
+
+\footnotesize
+```{r echo = F, warning = F}
+#| label: tbl-ett-deskription
+#| tbl-cap : "Deskriptivstatistiken der Pre-Post BDI Differenzwerte"
+library(knitr)                                                        # knitr für Tabellen
+kable(S, digits = 2, align = "c")                                     # Markdowntabellenoutput f
+``` 
+
+\normalsize
+
+### Modellformulierung {-}
+
+\normalsize
+Wir definieren nun das Einstichproben-T-Test-Modell wie folgt.
+
+:::{#def-einstichproben-t-test-modell}
+## Einstichproben-T-Test-Modell 
+Für $i=1, \ldots, n$ seien $\upsilon_i$ Zufallsvariablen, die die 
+$n$ Datenpunkte eines Einstichproben-T-Test-Szenarios modellieren. 
+Dann hat das Einstichproben-T-Test-Modell die strukturelle Form
+\begin{equation}
+\upsilon_i 
+= \mu+\varepsilon_{i} 
+\mbox{ mit } \varepsilon_{i} \sim N\left(0, \sigma^{2}\right) 
+\mbox{ u.i.v für } i=1, \ldots, n \mbox{ mit } \mu \in \mathbb{R} \mbox{ und } \sigma^{2}>0,
+\end{equation}
+die Datenverteilungsform
+\begin{equation}
+\upsilon_i \sim N\left(\mu, \sigma^{2}\right) 
+\mbox{ u.i.v für } i=1, \ldots, n \mbox{ mit } \mu \in \mathbb{R} \mbox{ und } \sigma^{2}>0,
+\end{equation}
+und für den Datenvektor $v=\left(\upsilon_{1}, \ldots, \upsilon_{n}\right)^{T}$ die Designmatrixform
+\begin{equation}
+\upsilon = X\beta+\varepsilon 
+\mbox{ mit } X:=1_{n} \in \mathbb{R}^{n \times 1}, 
+\beta:=\mu \in \mathbb{R}, 
+\varepsilon \sim N\left(0_{n}, \sigma^{2} I_{n}\right) 
+\mbox{ und } \sigma^{2}>0.
+\end{equation}
+:::
+
+Das Modell des Einstichproben-T-Tests ist offenbar mit dem dem Modell 
+unabhängiger und identisch normalverteilter Zufallsvariablen identisch 
+(vgl. @sec-modellformulierung). Die Äquivalenz von struktureller, 
+Datenverteilungs- und Designmatrixform des Einstichproben-T-TestModells wurde 
+in @sec-modellformulierung bereits ausführlich diskutiert. Die Simulation 
+von Daten basierend auf dem Einstichproben-T-Test-Modell hat dementsprechend 
+die gleiche Form wie die Simulation unabhängig und identisch normalverteilter 
+Zufallsvariablen. Unterer **R** Code demonstriert dies.
+
+\tiny
+```{r}
+# Modellformulierung
+library(MASS)                                                         # Multivariate Normalverteilung
+n      = 12                                                           # Anzahl von Datenpunkten
+p      = 1                                                            # Anzahl von Betaparameter
+X      = matrix(rep(1,n), nrow = n)                                   # Designmatrix
+I_n    = diag(n)                                                      # n x n Einheitsmatrix
+beta   = 5                                                            # wahrer, aber unbekannter, Betaparameter
+sigsqr = 14                                                           # wahrer, aber unbekannter, Varianzparameter
+
+# Datenrealisierung
+y      = mvrnorm(1, X %*% beta, sigsqr*I_n)                           # eine Realisierung eines n-dimensionalen ZVs
+```
+\normalsize
+
+### Modellschätzung {-}
+
+Da die Form des Einstichproben-T-Test-Modells mit dem Szenario unabhängig und 
+identisch normalverteilter Zufallsvariablen identisch ist, trifft dies auch auf 
+die entsprechenden Beta- und Varianzparameterschätzer zu. Es ergibt sich also 
+folgendes Theorem, das bereits in @sec-parameterschaetzung bewiesen wurde.
+
+:::{#thm-parameterschaetzer-im-einstichtproben-t-test-modell}
+## Parameterschätzer im Einstichproben-T-Test-Modell
+
+Gegeben sei die Designmatrixform des Einstichproben-T-Test-Modells. Dann ergeben 
+sich für den Betaparameterschätzer
+\begin{equation}
+\hat{\beta}=\frac{1}{n} \sum_{i=1}^{n} \upsilon_i=: \bar{\upsilon}
+\end{equation}
+und für den Varianzparameterschätzer
+\begin{equation}
+\hat{\sigma}^{2}=\frac{1}{n-1} \sum_{i=1}^{n}\left(\upsilon_i-\bar{\upsilon}\right)^{2}=: s_{\upsilon}^{2}
+\end{equation}
+$\bar{\upsilon}$ und $s_{\upsilon}^{2}$ bezeichnen hier also wiederum das 
+Stichprobenmittel und die Stichprobenvarianz der Zufallsvariablen  $\upsilon_{1}, \ldots, \upsilon_{n}$.
+:::
+
+## Modellevaluation
+
+Basierend auf @def-t-statistik formulieren wir nun die T-Teststatistik für das 
+Einstichproben-T-Test Szenario und geben ihre frequentistische Verteilung an.
+
+:::{#thm-t-teststatistik-des-einstichproben-t-tests}
+## T-Teststatistik des Einstichproben-T-Tests 
+Gegeben sei die Designmatrixform des Einstichproben-T-Test-Modells. Dann ergibt 
+sich für die T-Teststatistik mit
+\begin{equation}
+c:=1 \mbox{ und } c^{T} \beta_{0}=: \mu_{0},
+\end{equation}
+dass
+\begin{equation}
+T = \sqrt{n}\left(\frac{\bar{\upsilon}-\mu_{0}}{s_{\upsilon}}\right)
+\end{equation}
+und es gilt, dass
+\begin{equation}
+T \sim t(\delta, n-1) \mbox{ mit } \delta=\sqrt{n}\left(\frac{\mu-\mu_{0}}{\sigma}\right).
+\end{equation}
+:::
+
+:::{.proof} 
+Mit @thm-frequentistische-verteilung-der-t-statistik gilt
+\begin{equation}
+T
+=\frac{c^{T} \hat{\beta}-c^{T} \beta_{0}}{\sqrt{\hat{\sigma}^{2} c^{T}\left(X^{T} X\right)^{-1} c}}
+=\frac{1^{T} \bar{\upsilon}-1^{T} \mu_{0}}{\sqrt{s_{\upsilon}^{2} 1^{T}\left(1_{n}^{T} 1_{n}\right)^{-1} 1}}
+=\sqrt{n}\left(\frac{\bar{\upsilon}-\mu_{0}}{s_{\upsilon}}\right) .
+\end{equation}
+Weiterhin gilt mit demselben Theorem
+\begin{equation}
+\delta
+=\frac{c^{T} \beta-c^{T} \beta_{0}}{\sqrt{\sigma^{2} c^{T}\left(X^{T} X\right)^{-1} c}}
+=\frac{1^{T} \mu-1^{T} \mu_{0}}{\sqrt{\sigma^{2} 1^{T}\left(1_{n}^{T} 1_{n}\right)^{-1} 1}}=\sqrt{n}\left(\frac{\mu-\mu_{0}}{\sigma}\right).
+\end{equation}
+:::
+
+Die Formen der T-Teststatistik und ihre Verteilung im Einstichproben-T-Test-Spezialfall 
+des ALMs sind also natürlicherweise mit den entsprechenden Formen im ALM-freien 
+Kontext identisch. Die enstprechende Theorie zu Konfidenzintervallen und der Kontrolle 
+des Testumfangs bei Einstichproben-T-Tests sowie der Gebrauch der Testgütefunktion 
+zur Evaluation der Testtrennschärfe (Power) folgt also analog.
+
+### Anwendungsbeispiel {-}
+
+Folgender **R** Code demonstriert die Evaluation eines 95\%-Konfidenzintervalls 
+für den Erwartungswertparameter $\mu$ sowie Durchführung eines zweiseitigen 
+Einstichproben-T-Tests mit einfacher Nullhypothese $\Theta_{0}:=\{0\}$ und 
+Signifikanzlevel $\alpha_{0}:=0.05$ für das oben skizzierte Anwendungsbeispiel. 
+
+\tiny
+```{r echo = T, warning = F}
+# Datenanalyse
+D           = read.csv("./_data/407-t-tests.csv")                        # Laden des Datensatzes
+y           = D$dBDI[D$COND == "F2F"]                                    # Post-Pre Differenzwerte
+n           = length(y)                                                  # Anzahl Datenpunkte
+p           = 1                                                          # Anzahl Betaparameter
+c           = 1                                                          # Kontrastgewichtsvektor
+mu_0        = 0                                                          # Nullhypothesenparameter       
+delta       = 0.95                                                       # Konfidenzlevel
+alpha_0     = 0.05                                                       # Signifikanzlevel  
+X           = matrix(rep(1,n), nrow = n)                                 # Einstichproben-T-Test Designmatrix 
+beta_hat    = solve(t(X)%*%X)%*%t(X)%*%y                                 # Betaparameterschätzer
+eps_hat     = y - X %*% beta_hat                                         # Residuenvektor 
+sigsqr_hat  = (t(eps_hat) %*% eps_hat)/(n-p)                             # Varianzparameterschätzer
+t_delta     = qt((1+delta)/2,n-1)                                        # \Psi^{-1}(1+\delta)/2, n-1)
+lambda      = diag(solve(t(X) %*% X))                                    # \lambda_j Werte
+kappa_u     = beta_hat - sqrt(sigsqr_hat*lambda)*t_delta                 # untere Konfidenzintervallgrenze
+kappa_o     = beta_hat + sqrt(sigsqr_hat*lambda)*t_delta                 # obere Konfidenzintervallgrenze
+t_num       = t(c) %*% beta_hat - mu_0                                   # Zähler der Einstichproben-T-Teststatistik
+t_den       = sqrt(sigsqr_hat %*% t(c) %*% solve(t(X) %*% X) %*% c)      # Nenner der Einstichproben-T-Teststatistik
+t           = t_num/t_den                                                # Wert der Einstichproben-T-Teststatistik
+pval        = 2*(1 - pt(abs(t), n-1))                                    # p-Wert bei zweiseitigem Einstichproben-T-Test
+k_alpha_0   = qt(1-alpha_0/2, n-1)                                       # kritischer Wert 
+if(abs(t) > k_alpha_0){phi = 1} else {phi = 0}                           # Einstichproben-T-Test
+```
+
+```{r, echo = F}
+# Ausgabe
+cat("Betaparameterschätzer            : ", round(beta_hat, digits = 2),
+    "\n95%-Konfidenzintervall          : ", round(kappa_u,digits = 2), round(kappa_o,digits = 2),
+    "\nVarianzparameterschätzer        : ", round(sigsqr_hat, digits = 2),
+    "\nalpha_0                         : ", round(alpha_0, digits = 2),
+    "\nKritischer Wert                 : ", round(k_alpha_0, digits = 2), 
+    "\nEinstichproben-T-Teststatistik  : ", round(t, digits = 2),
+    "\nphi                             : ", phi,
+    "\np-Wert                          : ", round(pval, digits = 2))                                       
+```
+\normalsize
+
+Die Nullhypothese wird in diesem Fall bei einem einem kritischen Wert von 
+$k_{0.05}=2.20$ und einem Wert der T-Statistik von $T=3.91$ abgelehnt. Das 
+$95/\%$-Konfidenzintervall für den wahren, aber unbekannten, Erwartungswertparameter 
+ist $[2.26, 8.07]$, überdeckt also den Nullhypothesenparameterwert $\mu_0=0$ nicht.
+
+## Zweistichproben-T-Tests
+
+### Anwendungsszenario {-}
+
+Das Anwendungsszenario eines Zweistichproben-T-Tests für unabhängige Stichproben 
+ist bekanntlich dadurch gekennzeichnet, dass insgesamt $n$ univariate Datenpunkte 
+zweier Stichproben (Gruppen) randomisierter experimenteller Einheiten betrachtet werden. 
+Es wird dabei insbesondere angenommen, dass die $n_{1}$ univariaten Datenpunkte 
+der ersten Gruppe Realisierungen von $n_{1}$ unabhängigen und identisch normalverteilten 
+Zufallsvariablen mit Erwartungswertparameter $\mu_{1}$ und Varianzparameter 
+$\sigma^{2}$ sind, während weiterhin angenommen wird, dass die $n_{2}$ univariaten 
+Datenpunkte der zweiten Gruppe Realisierungen von $n_{2}$ unabhängigen und identisch 
+normalverteilten Zufallsvariablen mit Erwartungswertparameter $\mu_{2}$ und 
+Varianzparameter $\sigma^{2}$ sind. Es wird also insbesondere angenommen, dass sich 
+die wahren, aber unbekannten, Erwartungswertparameter beider Gruppen von Zufallsvariablen 
+unterscheiden können, die Varianzparameter beider Gruppen dagegen werden als 
+identisch angenommen. Schließlich wird voraussgesetzt, dass ein Interesse am 
+inferentiellen Vergleich der unbekannten Erwartungswertparameter $\mu_{1}$ und 
+$\mu_{2}$ besteht, so zum Beispiel ihrer Gleichheit $\mu_{1}=\mu_{2}$ oder 
+Verschiedenheit $\mu_{1} \neq \mu_{2}$.
+
+### Anwendungsbeispiel {-}
+
+Für ein konkretes Anwendungsbeispiel betrachten wird die Analyse von 
+Pre-Post-Interventions-BDI-Differenzwerten zweier Gruppen von je 12 Patient:innen 
+in unterschiedlichen Therapiesettings, wie in @tbl-ztt-daten dargestellt. 
+Die erste Spalte der Tabelle (`COND`) listet das patientenspezifische 
+Therapiesetting (F2F: face-to-face, ONL: online) auf. Die zweite Spalte der 
+Tabelle (`dBDI`) listet die entsprechenden patientenspezifischen 
+Pre-Post-Interventions-BDI-Differenzwerte auf. Positive Werte entsprechen hier 
+erneut einer Abnahme der Depressionssymptomatik, negative Werte einer Zunahme 
+der Depressionssymptomatik.
+
+\footnotesize
+```{r echo = F, warning = F}
+#| label: tbl-ztt-daten
+#| tbl-cap : "Pre-Post-BDI Differenzwerte für zwei Stichproben"
+library(knitr)                                                                   # knitr für Tabellen
+fname       = "3-Einstichproben-T-Test.csv"                                      # Dateiname
+D           = read.csv("./_data/407-t-tests.csv")                                # Laden des Datensatzes
+kable(D[1:24,c(3,6)], digits = 2, align = "c")                                   # Markdowntabellenoutput für head(D)
+``` 
+\normalsize
+
+Zu Anwendung eines Zweistichproben-T-Tests auf die dBDI Daten nehmen wir an, 
+dass die 12 Datenpunkte der F2F Therapiegruppe Realisierungen von $n_{1}=12$
+unabhängig und identisch normalverteilten Zufallsvariablen 
+$\upsilon_{1j} \sim N\left(\mu_{1}, \sigma^{2}\right)$ mit $j=1, \ldots, n_{1}$ 
+sind und dass die 12 Datenpunkte der  ONL Therapiegruppe Realisierungen von 
+$n_{2}=12$ unabhängig und identisch normalverteilten Zufallsvariablen 
+$\upsilon_{2j} \sim N\left(\mu_{2}, \sigma^{2}\right)$ mit  $j=1, \ldots, n_{2}$ sind.
+
+Unabhängig von dem unten beschriebenen inferenzstatistischen Vorgehen betrachten 
+wir auch hier zunächst die deskriptiven Statistiken der Therapiesetting-spezifischen 
+dBDI Werte. Diese sind in @tbl-ztt-deskription aufgeführt.
+
+\footnotesize
+```{r echo = F}
+# Initialisierung eines Dataframes
+D             = read.csv("./_data/407-t-tests.csv") # Daten
+tp            = c("F2F", "ONL")                     # Therapiebedingungen
+ntp           = length(tp)                          # Anzahl Therapiebedingungen
+S             = data.frame(                         # Dataframeerzeugung
+                n         = rep(NaN,ntp),           # Stichprobengrößen
+                Max       = rep(NaN,ntp),           # Maxima
+                Min       = rep(NaN,ntp),           # Minima
+                Median    = rep(NaN,ntp),           # Mediane
+                Mean      = rep(NaN,ntp),           # Mittelwerte
+                Var       = rep(NaN,ntp),           # Varianzen
+                Std       = rep(NaN,ntp),           # Standardabweichungen
+                row.names = tp)                     # Therapiebedingungen
+
+# Iterationen über Therapiebedingungen
+for(i in 1:ntp){
+  data        = D$dBDI[D$COND == tp[i]]             # Daten
+  S$n[i]      = length(data)                        # Stichprobengröße
+  S$Max[i]    = max(data)                           # Maxima
+  S$Min[i]    = min(data)                           # Minima
+  S$Median[i] = median(data)                        # Mediane
+  S$Mean[i]   = mean(data)                          # Mittelwerte
+  S$Var[i]    = var(data)                           # Varianzen
+  S$Std[i]    = sd(data)                            # Standardabweichungen
+}
+```
+\footnotesize
+```{r echo = F, warning = F}
+#| label: tbl-ztt-deskription
+#| tbl-cap : "Deskriptivstatistiken der Pre-Post BDI Differenzwerte bei unterschiedlichen Therapiesettings"
+library(knitr)                                                        # knitr für Tabellen
+kable(S, digits = 2, align = "c")                                     # Markdowntabellenoutput f
+``` 
+\normalsize
+
+### Modellformulierung {-}
+
+Mit dem Index $i$ für die Gruppen und dem Index $j$ für die experimentellen 
+Einheiten in jeder Gruppe definieren wir das Zweistichproben-T-Test-Modell wie folgt.
+
+:::{#def-zweistichproben-t-test-modell}
+## Zweistichproben-T-Test-Modell 
+Für $i=1,2$ und $j=1,\ldots,n_{i}$ seien $\upsilon_{ij}$ Zufallsvariablen, die die 
+$n=n_{1}+n_{2}$ Datenpunkte eines Zweistichproben-T-Test Szenarios modellieren. 
+Dann hat das Zweistichproben-T-Test-Modell die strukturelle Form
+\begin{equation}
+\upsilon_{ij} = \mu_{i}+\varepsilon_{ij} 
+\mbox{ mit } \varepsilon_{ij} \sim N\left(0, \sigma^{2}\right) 
+\mbox{ u.i.v. mit } \mu_{i} \in \mathbb{R} \mbox{ und } \sigma^{2}>0,
+\end{equation}
+die Datenverteilungsform
+\begin{equation}
+\upsilon_{ij} \sim N\left(\mu_{i}, \sigma^{2}\right) 
+\mbox{ u.i.v. mit } \mu_{i} \in \mathbb{R} \mbox{ und } \sigma^{2}>0,
+\end{equation}
+und für den $n$-dimensionalen Datenvektor definiert als
+\begin{equation}
+\upsilon := \left(\upsilon_{11}, \cdots, \upsilon_{1n_{1}}, 
+                  \upsilon_{21}, \cdots, \upsilon_{2n_{2}}\right)^{T}
+\end{equation}
+die Designmatrixform
+\begin{equation}
+\upsilon = X\beta+\varepsilon
+\end{equation}
+mit
+\begin{equation}
+X:=
+\begin{pmatrix}
+1_{n_{1}} & 0_{n_{1}} \\
+0_{n_{2}} & 1_{n_{2}}
+\end{pmatrix} \in \mathbb{R}^{n \times 2}, 
+\beta:=
+\begin{pmatrix}
+\mu_{1} \\
+\mu_{2}
+\end{pmatrix} \in \mathbb{R}^{2}, 
+\varepsilon \sim N\left(0_{n}, \sigma^{2} I_{n}\right), \sigma^{2}>0 .
+\end{equation}
+:::
+
+Die hier gewählte Definition des Zweistichproben-T-Test-Modells in Designmatrixform 
+ist nicht die einzig mögliche, jedoch diejenige, unter der sich am klarsten die 
+Äquivalenz zum Zweistichproben-T-Test-Modell im ALM-freien Kontext erkennen lässt. 
+In @sec-einfaktorielle-varianzanalyse lernen wir eine alternative Parameterisierung 
+auch des Zweistichproben-T-Test-Modells kennen. Wie schon beim Szenario des 
+Einstichproben-T-Tests ergibt sich die Äquivalenz der in @def-zweistichproben-t-test-modell 
+formulierten Modellformen mit den Ergebnissen in @sec-modellformulierung. Die 
+Simulation von Daten basierend auf dem Zweistichproben-T-Test-Modell ist, bis 
+auf die Definition von Designmatrix und Betaparametervektor mit den bisher 
+bekannten Simulationen von ALM Spezialfällen identisch, wie folgender **R** Code demonstriert.
+
+\tiny
+```{r}
+# Modellformulierung
+library(MASS)                                # Multivariate Normalverteilung
+n_1    = 12                                  # Anzahl von Datenpunkten Gruppe 1
+n_2    = 12                                  # Anzahl von Datenpunkten Gruppe 2
+n      = n_1 + n_2                           # Gesamtanzahl Datenpunkte
+p      = 2                                   # Anzahl von Betaparameter
+X      = matrix(c(rep(1,n_1), rep(0,n_1),    # Designmatrix
+                  rep(0,n_2), rep(1,n_2)),
+                  nrow  = n)
+I_n    = diag(n)                             # n x n Einheitsmatrix
+beta   = matrix(c(1,2), nrow = p)            # wahrer, aber unbekannter, Betaparameter
+sigsqr = 10                                  # wahrer, aber unbekannter, Varianzparameter
+
+# Datenrealisierung
+y      = mvrnorm(1, X %*% beta, sigsqr*I_n)  # eine Realisierung eines n-dimensionalen ZVs
+```
+\normalsize
+
+### Modellschätzung {-}
+
+Die beiden Betaparameterkomponenten des Zweistichproben-T-Test-Modells in 
+Designmatrixform werden wenig überraschend durch die entsprechenden 
+Gruppenstichprobenmittel geschätzt. Für den Varianzparameterschätzer ergibt sich 
+die sogenannte *gepoolte Stichprobenvarianz*. Dies sind die beiden Kernaussagen 
+folgenden Theorems.
+
+:::{#thm-parameterschaetzung-im-zweistichproben-t-test-modell}
+## Parameterschätzung im Zweistichproben-T-Test-Modell 
+Gegeben sei die Designmatrixform des Zweistichproben-T-Test-Modells. Dann 
+ergeben sich für den Betaparameterschätzer
+\begin{equation}
+\hat{\beta}
+=\begin{pmatrix}
+\frac{1}{n_{1}} \sum_{j=1}^{n_{1}} \upsilon_{1j} \\
+\frac{1}{n_{2}} \sum_{j=1}^{n_{2}} \upsilon_{2j}
+\end{pmatrix}=:\begin{pmatrix}
+\bar{\upsilon}_{1} \\
+\bar{\upsilon}_{2}
+\end{pmatrix}
+\end{equation}
+und für den Varianzparameterschätzer
+\begin{equation}
+\hat{\sigma}^{2} 
+= \frac{\sum_{j=1}^{n_{1}}\left(\upsilon_{1j}-\bar{\upsilon}_{1}\right)^{2}+\sum_{j=1}^{n_{2}}\left(\upsilon_{2j}-\bar{\upsilon}_{2}\right)^{2}}{n_{1}+n_{2}-2} 
+=: s_{12}^{2}
+\end{equation}
+:::
+
+:::{.proof} 
+Für $i=1,2$ sei $\upsilon_i:=\left(\upsilon_{i1}, \ldots, \upsilon_{i n_{i}}\right)^{T}$. 
+Dann ergibt sich für den Betaparameterschätzer
+\begin{align}
+\begin{split}
+\hat{\beta} 
+& = \left(X^{T} X\right)^{-1} X^{T} y \\
+& = 
+\left(\begin{pmatrix}
+1_{n_{1}} & 0_{n_{2}} \\
+0_{n_{1}} & 1_{n_{2}}
+\end{pmatrix}
+\begin{pmatrix}
+1_{n_{1}} & 0_{n_{1}} \\
+0_{n_{2}} & 1_{n_{2}}
+\end{pmatrix}\right)^{-1}
+\begin{pmatrix}
+1_{n_{1}} & 0_{n_{2}} \\
+0_{n_{1}} & 1_{n_{2}}
+\end{pmatrix}
+\begin{pmatrix}
+\upsilon_{1} \\
+\upsilon_{2}
+\end{pmatrix} \\
+& =
+\begin{pmatrix}
+n_{1} & 0 \\
+0 & n_{2}
+\end{pmatrix}^{-1}
+\begin{pmatrix}
+\sum_{j=1}^{n_{1}} & \upsilon_{1j} \\
+\sum_{j=1}^{n_{2}} \upsilon_{2j}
+\end{pmatrix} \\
+& =
+\begin{pmatrix}
+n_{1}^{-1} & 0 \\
+0 & n_{2}^{-1}
+\end{pmatrix}
+\begin{pmatrix}
+\sum_{j=1}^{n_{1}} & \upsilon_{1j} \\
+\sum_{j=1}^{n_{2}} & \upsilon_{2j}
+\end{pmatrix} \\
+& =
+\begin{pmatrix}
+\frac{1}{n_{1}} \sum_{j=1}^{n_{1}} \upsilon_{1j} \\
+\frac{1}{n_{2}} \sum_{j=1}^{n_{2}} \upsilon_{2j}
+\end{pmatrix} \\
+& =:
+\begin{pmatrix}
+\bar{\upsilon}_{1} \\
+\bar{\upsilon}_{2}
+\end{pmatrix}
+\end{split}
+\end{align}
+Gleichsam ergibt sich für Varianzparameterschätzer mit $n=n_{1}+n_{2}$ und $p=2$
+\begin{align}
+\begin{split}
+\hat{\sigma}^{2} 
+& =\frac{(\upsilon - X \hat{\beta})^{T}(\upsilon - X \hat{\beta})}{n-p} \\
+& =\frac{1}{n_{1}+n_{2}-2}
+\left(
+\begin{pmatrix}
+\upsilon_{1} \\
+\upsilon_{2}
+\end{pmatrix}-
+\begin{pmatrix}
+1_{n_{1}} & 0_{n_{1}} \\
+0_{n_{2}} & 1_{n_{2}}
+\end{pmatrix}
+\begin{pmatrix}
+\bar{\upsilon}_{1} \\
+\bar{\upsilon}_{2}
+\end{pmatrix}\right)^{T}
+\left(\begin{pmatrix}
+\upsilon_{1} \\
+\upsilon_{2}
+\end{pmatrix}
+-\begin{pmatrix}
+1_{n_{1}} & 0_{n_{1}} \\
+0_{n_{2}} & 1_{n_{2}}
+\end{pmatrix}\begin{pmatrix}
+\bar{\upsilon}_{1} \\
+\bar{\upsilon}_{2}
+\end{pmatrix}\right) \\
+& =
+\frac{1}{n_{1}+n_{2}-2}
+\begin{pmatrix}
+\upsilon_{11}-\bar{\upsilon}_{1} \\
+\vdots \\
+\upsilon_{1 n_{1}}-\bar{\upsilon}_{1} \\
+\upsilon_{21}-\bar{\upsilon}_{2} \\
+\vdots \\
+\upsilon_{2 n_{2}}-\bar{\upsilon}_{2}
+\end{pmatrix}\begin{pmatrix}
+\upsilon_{11}-\bar{\upsilon}_{1} \\
+\vdots \\
+\upsilon_{1 n_{1}}-\bar{\upsilon}_{1} \\
+\upsilon_{21}-\bar{\upsilon}_{2} \\
+\vdots \\
+\upsilon_{2 n_{2}}-\bar{\upsilon}_{2}
+\end{pmatrix} \\
+& 
+= \frac{\sum_{j=1}^{n_{1}}\left(\upsilon_{1j}-\bar{\upsilon}_{1}\right)^{2}+\sum_{j=1}^{n_{2}}\left(\upsilon_{2j}-\bar{\upsilon}_{2}\right)^{2}}{n_{1}+n_{2}-2} \\
+= & : s_{12}^{2} .
+\end{split}
+\end{align}
+:::
+
+Man beachte, dass sich die Stichprobenvarianz $s_{\upsilon}^{2}$ der Komponenten 
+von \upsilon im Allgemeinen von der gepoolten Stichprobenvarianz $s_{12}^{2}$ 
+unterscheidet. Dies ist nicht zuletzt dadurch bedingt, dass die Stichprobenvarianz 
+basierend auf dem Gesamtstichprobenmittel $\bar{\upsilon}$, die gepoolte 
+Stichprobenvarianz dagegen basierend auf den gruppenspezifischen Stichprobenmittel 
+$\bar{\upsilon}_{1}$ und $\bar{\upsilon}_{2}$ ermittelt wird. Wir wollen das 
+Konzept der gepoolten Stichprobenvarianz hier aber nicht weiter vertiefen.
+
+### Modellevaluation {-}
+
+Basierend auf @thm-frequentistische-verteilung-der-t-statistik  formulieren 
+wir nun die T-Teststatistik für das in @def-zweistichproben-t-test-modell in 
+Designmatrixform definierte Zweistichproben-T-Test-Modell und geben ihre 
+frequentistische Verteilung an.
+
+:::{#thm-t-teststatistik-des-zweistichproben-t-tests} 
+## T-Teststatistik des Zweistichproben-T-Tests 
+Gegeben sei die Designmatrixform des Zweistichproben-T-Tests. Dann ergibt sich 
+für die T-Teststatistik mit
+\begin{equation}
+c:=(1,-1)^{T} \mbox{ und } c^{T} \beta_{0}=: \mu_{0},
+\end{equation}
+dass
+\begin{equation}
+T
+=\sqrt{\frac{n_{1} n_{2}}{n_{1}+n_{2}}}
+\left(\frac{\bar{\upsilon}_{1}-\bar{\upsilon}_{2}-\mu_{0}}{s_{12}}\right)
+\end{equation}
+und es gilt
+\begin{equation}
+T \sim t\left(\delta, n_{1}+n_{2}-2\right) 
+\mbox{ mit } \delta=\sqrt{\frac{n_{1} n_{2}}{n_{1}+n_{2}}}\left(\frac{\mu_{1}-\mu_{2}-\mu_{0}}{\sigma}\right) .
+\end{equation}
+:::
+
+:::{.proof} 
+Mit @thm-frequentistische-verteilung-der-t-statistik gilt zunächst für die 
+Zähler von $T$ und $\delta$, dass
+\begin{equation}
+c^{T} \hat{\beta}-c^{T} \beta_{0}
+=\begin{pmatrix}
+1 & -1
+\end{pmatrix}
+\begin{pmatrix}
+\bar{\upsilon}_{1} \\
+\bar{\upsilon}_{2}
+\end{pmatrix}-\mu_{0}
+=\bar{\upsilon}_{1}-\bar{\upsilon}_{2}-\mu_{0}
+\end{equation}
+und
+\begin{equation}
+c^{T} \beta-c^{T} \beta_{0}
+=\begin{pmatrix}
+1 & -1
+\end{pmatrix}
+\begin{pmatrix}
+\mu_{1} \\
+\mu_{2}
+\end{pmatrix}-\mu_{0}
+=\mu_{1}-\mu_{2}-\mu_{0}
+\end{equation}
+respektive. Weiterhin gilt für die Nenner von $T$ und $\delta$, dass
+\begin{equation}
+c^{T}\left(X^{T}X\right)^{-1}c
+=
+\begin{pmatrix}
+1 & -1
+\end{pmatrix}
+\begin{pmatrix}
+n_{1}^{-1} & 0 \\
+0 & n_{2}^{-1}
+\end{pmatrix}
+\begin{pmatrix}
+1 \\
+-1
+\end{pmatrix}
+=
+\begin{pmatrix}
+n_{1}^{-1} & -n_{2}^{-1}
+\end{pmatrix}
+\begin{pmatrix}
+1 \\
+-1
+\end{pmatrix}
+=\frac{1}{n_{1}}+\frac{1}{n_{2}}
+\end{equation}
+Außerdem gilt
+\begin{equation}
+\left(\frac{1}{n_{1}}+\frac{1}{n_{2}}\right)^{-\frac{1}{2}}=\left(\frac{n_{2}}{n_{1} n_{2}}+\frac{n_{1}}{n_{1} n_{2}}\right)^{-\frac{1}{2}}=\left(\frac{n_{1}+n_{2}}{n_{1} n_{2}}\right)^{-\frac{1}{2}}=\left(\frac{n_{1} n_{2}}{n_{1}+n_{2}}\right)^{\frac{1}{2}}
+\end{equation}
+Zusammengenommen folgt direkt, dass
+\begin{equation}
+T 
+= \sqrt{\frac{n_{1} n_{2}}{n_{1}+n_{2}}}
+\left(\frac{\bar{\upsilon}_{1}-\bar{\upsilon}_{2}-\mu_{0}}{s_{12}}\right) 
+\mbox{ und } 
+\delta=\sqrt{\frac{n_{1} n_{2}}{n_{1}+n_{2}}}\left(\frac{\mu_{1}-\mu_{2}-\mu_{0}}{\sigma}\right) .
+\end{equation}
+:::
+
+Die Formen der T-Teststatistik und ihre Verteilung im Zweistichproben-T-Test Modell 
+in Designmatrixform sind also wiederum natürlicherweise mit den entsprechenden Formen 
+im ALM-freien Kontext identisch. Die enstprechende zur Kontrolle des Testumfangs 
+bei Zweistichproben-T-Tests sowie der Gebrauch der Testgütefunktion zur Evaluation 
+der Testtrennschärfe (Power) folgt also analog.
+
+### Anwendungsbeispiel {-}
+
+Folgender **R** Code demonstriert die Evaluation von 95\%-Konfidenzintervallen 
+für die Erwartungswertparameter $\mu_{1}$ und $\mu_{2}$ sowie Durchführung eines 
+zweiseitigen ZweistichprobenT-Tests mit Nullhypothese
+\begin{equation}
+\Theta_{0}
+:=
+\left\{
+\begin{pmatrix}
+\mu_{1} \\
+\mu_{2}
+\end{pmatrix} \in \mathbb{R}^{2} \mid
+\mu_{1}=\mu_{2}
+\right\}
+\end{equation}
+und Signifikanzlevel $\alpha_{0}:=0.05$ für das oben skizzierte Anwendungsbeispiel. 
+
+\tiny
+```{r}
+# Dateneinlesen
+D           = read.csv("./_data/407-t-tests.csv")               # Dataframe
+y_1         = D$dBDI[D$COND == "F2F"]                           # BDI Differenzwerte in der F2F Gruppe
+y_2         = D$dBDI[D$COND == "ONL"]                           # BDI Differenzwerte in der ONL Gruppe
+
+# Modellformulierung
+n_1         = length(y_1)                                       # Anzahl Datenpunkte Gruppe 1 (F2F)
+n_2         = length(y_1)                                       # Anzahl Datenpunkte Gruppe 2 (ONL)
+n           = n_1 + n_2                                         # Gesamtanzahl Datenpunkte
+y           = matrix(c(y_1, y_2), nrow = n)                     # Datenvektor
+p           = 2                                                 # Anzahl Betaparameter
+X           = matrix(c(rep(1,n_1), rep(0,n_2),                  # Zweistichproben-T-Test Designmatrix
+                       rep(0,n_1), rep(1,n_2)),
+              nrow = n)
+
+# Parameterschätzng
+beta_hat    = solve(t(X) %*% X) %*% t(X) %*% y                  # Betaparameterschätzer
+eps_hat     = y - X %*% beta_hat                                # Residuenvektor
+sigsqr_hat  = (t(eps_hat) %*% eps_hat) /(n-p)                   # Varianzparameterschätzer
+
+# Konfidenzintervall
+delta       = 0.95                                              # Konfidenzbedingung
+t_delta     = qt((1+delta)/2,n-1)                               # \Psi^{-1}((1+\delta)/2,n-1)
+lambda      = diag(solve(t(X) %*% X))                           # \lambda_j Werte
+kappa       = matrix(rep(NaN,p*2), nrow = p)                    # \beta_j Konfidenintervall array
+for(j in 1:p){                                                  # Iteration über \beta_j
+  kappa[j,1] = beta_hat[j]-sqrt(sigsqr_hat*lambda[j])*t_delta   # untere KI Grenze
+  kappa[j,2] = beta_hat[j]+sqrt(sigsqr_hat*lambda[j])*t_delta}  # obere KI Grenze
+
+# Hypothesentest
+c           = matrix(c(1,-1), nrow = 2)                         # Kontrastgewichtsvektor
+mu_0        = 0                                                 # Nullhypothese H_0
+alpha_0     = 0.05                                              # Signifikanzniveau
+k_alpha_0   = qt(1 - (alpha_0/2), n-1)                          # kritischer Wert
+t_num       = t(c) %*% beta_hat - mu_0                          # T-Teststatistik Zähler
+t_den       = sqrt(sigsqr_hat*t(c) %*% solve(t(X) %*% X)%*%c)   # T-Teststatistik Nenner
+t           = t_num/t_den                                       # T-Teststatistik
+if(abs(t) >= k_alpha_0){phi = 1} else {phi = 0}                 # Test 1_{|T(X) >= k_alpha_0|}
+pval      = 2*(1-pt(abs(t), n_1+n_2-2))                         # p-Wert
+```
+
+```{r, echo = F}
+# Ausgabe
+cat("Betaparameterschätzer            : ", round(beta_hat, digits = 2),
+    "\n95%-Konfidenzintervalle         : ", round(kappa, digits = 2),
+    "\nVarianzparameterschätzer        : ", round(sigsqr_hat, digits = 2),
+    "\nalpha_0                         : ", round(alpha_0, digits = 2),
+    "\nKritischer Wert                 : ", round(k_alpha_0, digits = 2), 
+    "\nEinstichproben-T-Teststatistik  : ", round(t, digits = 2),
+    "\nphi                             : ", phi,
+    "\np-Wert                          : ", round(pval, digits = 2))                                       
+```
+\normalsize
+
+Die Nullhypothese würde in diesem Fall bei einem kritischen Wert von $k_{0.05}=2.07$ 
+und einem Wert der T-Statistik von $T=-033$ nicht verworfen werden. Inferenzstatisch 
+besteht also keine Evidenz dafür, dass sich der wahre, aber unbekannte 
+Erwartungswertparameter im F2F Therapiesetting vom wahren, aber unbekannte 
+Erwartungswertparameter im ONL Therapiesetting unterscheidet. Die 95/\%Konfidenzintervalle 
+für die wahren, aber unbekannten, Erwartungswertparameter 
+$\mu_{1}$ und $\mu_{2}$ sind $[2.60,7.74]$ und $[3.18,8.32]$, respektive.
+
+
+## Literaturhinweise
+
+Obwohl die frequentistische Literatur der ersten Hälfte des 20. Jahrhunderts von
+der Äquivalenz regressions- und varianzanalytischer linearer Modelle durchdrungen 
+ist, fällt es schwer eine definite Quelle anzugeben, die hinsichtlich der Beschreibung 
+von T-Tests als Spezialfälle des ALM Priorität hätte. Es sei hier deshalb 
+eher allgemein auf @fisher1925 und @fisher1935 verwiesen.
+
+## Selbstkontrollfragen
+\footnotesize
+1. Geben Sie die Definition des Einstichproben-T-Test-Modells wieder.
+1. Geben Sie das Theorem zur Parameterschätzung im Einstichproben-T-Test-Modell wieder.
+1. Geben Sie das Theorem zur T-Teststatistik des Einstichproben-T-Tests wieder.
+1. Geben Sie die Definition des Zweistichproben-T-Test-Modells wieder.
+1. Geben Sie das Theorem zur Parameterschätzung im Zweistichproben-T-Test-Modell wieder.
+1. Geben Sie das Theorem zur T-Teststatistik des Zweistichproben-T-Tests wieder.
+
+\normalsize 

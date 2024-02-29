@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.549">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Probabilistische Datenwissenschaft für die Psychologie - 14&nbsp; Zufallsvektoren</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./205-Erwartungswerte.html" rel="next">
+<link href="./203-Zufallsvariablen.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Keine Treffer",
+    "search-matching-documents-text": "Treffer",
+    "search-copy-link-title": "Link in die Suche kopieren",
+    "search-hide-matches-text": "Zusätzliche Treffer verbergen",
+    "search-more-match-text": "weitere Treffer in diesem Dokument",
+    "search-more-matches-text": "weitere Treffer in diesem Dokument",
+    "search-clear-button-title": "Zurücksetzen",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Abbrechen",
+    "search-submit-button-title": "Abschicken",
+    "search-label": "Suchen"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./200-Wahrscheinlichkeitstheorie.html">Wahrscheinlichkeitstheorie</a></li><li class="breadcrumb-item"><a href="./204-Zufallsvektoren.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Zufallsvektoren</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Probabilistische Datenwissenschaft für die Psychologie</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages" title="Quellcode" class="quarto-navigation-tool px-1" aria-label="Quellcode"><i class="bi bi-github"></i></a>
+    <a href="./Probabilistische-Datenwissenschaft-für-die-Psychologie.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Suchen"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Willkommen</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Mathematische Grundlagen</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./101-Sprache-und-Logik.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Sprache und Logik</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./102-Mengen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Mengen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./103-Summen-Produkte-Potenzen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Summen, Produkte, Potenzen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./104-Funktionen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Funktionen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./105-Differentialrechnung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Differentialrechnung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./106-Folgen-Grenzwerte-Stetigkeit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Folgen, Grenzwerte, Stetigkeit</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./107-Integralrechnung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Integralrechnung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./108-Vektoren.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Vektoren</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./109-Matrizen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Matrizen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./110-Eigenanalyse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Eigenanalyse</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./200-Wahrscheinlichkeitstheorie.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Wahrscheinlichkeitstheorie</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./201-Wahrscheinlichkeitsräume.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Wahrscheinlichkeitsräume</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./202-Elementare-Wahrscheinlichkeiten.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Elementare Wahrscheinlichkeiten</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./203-Zufallsvariablen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Zufallsvariablen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./204-Zufallsvektoren.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Zufallsvektoren</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./205-Erwartungswerte.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Erwartungswerte</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./206-Ungleichungen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Ungleichungen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./207-Grenzwerte.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Grenzwerte</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./208-Transformationstheoreme.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Transformationstheoreme</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./209-Normalverteilungstransformationen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Normalverteilungstransformationen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./210-Multivariate-Normalverteilungen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Multivariate Normalverteilungen</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Frequentistische Inferenz</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./301-Grundbegriffe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Grundbegriffe</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./302-Punktschätzung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Punktschätzung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./303-Konfidenzintervalle.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Konfidenzintervalle</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./304-Hypothesentests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Hypothesentests</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Das Allgemeine Lineare Modell</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./401-Regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Regression</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./402-Korrelation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Korrelation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./403-Modellformulierung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Modellformulierung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./404-Parameterschätzung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Parameterschätzung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./405-T-Statistiken.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">T-Statistiken</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./406-F-Statistiken.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">F-Statistiken</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./407-T-Tests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">T-Tests</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./408-Einfaktorielle-Varianzanalyse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Einfaktorielle Varianzanalyse</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./409-Zweifaktorielle-Varianzanalyse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Zweifaktorielle Varianzanalyse</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./410-Partielle-Korrelation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Partielle Korrelation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./411-Multiple-Regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Multiple Regression</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Multivariate Inferenz</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./501-Datendeskription.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Datendeskription</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./502-Einstichproben-T2-Tests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Einstichproben-T<span class="math inline">\(^2\)</span>-Tests</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./503-Einfaktorielle-Varianzanalyse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Einfaktorielle Varianzanalyse</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./504-Kanonische-Korrelationsanalyse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">Kanonische Korrelationsanalyse</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Referenzen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Referenzen</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Inhaltsverzeichnis</h2>
+   
+  <ul>
+  <li><a href="#sec-definition-und-multivariate-verteilungen" id="toc-sec-definition-und-multivariate-verteilungen" class="nav-link active" data-scroll-target="#sec-definition-und-multivariate-verteilungen"><span class="header-section-number">14.1</span> Definition und multivariate Verteilungen</a>
+  <ul class="collapse">
+  <li><a href="#beispiel" id="toc-beispiel" class="nav-link" data-scroll-target="#beispiel">Beispiel</a></li>
+  </ul></li>
+  <li><a href="#sec-marginalverteilungen" id="toc-sec-marginalverteilungen" class="nav-link" data-scroll-target="#sec-marginalverteilungen"><span class="header-section-number">14.2</span> Marginalverteilungen</a></li>
+  <li><a href="#sec-bedingte-verteilungen" id="toc-sec-bedingte-verteilungen" class="nav-link" data-scroll-target="#sec-bedingte-verteilungen"><span class="header-section-number">14.3</span> Bedingte Verteilungen</a></li>
+  <li><a href="#sec-unabhängige-zufallsvariablen" id="toc-sec-unabhängige-zufallsvariablen" class="nav-link" data-scroll-target="#sec-unabhängige-zufallsvariablen"><span class="header-section-number">14.4</span> Unabhängige Zufallsvariablen</a></li>
+  <li><a href="#selbstkontrollfragen" id="toc-selbstkontrollfragen" class="nav-link" data-scroll-target="#selbstkontrollfragen"><span class="header-section-number">14.5</span> Selbstkontrollfragen</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/204-Zufallsvektoren.qmd" class="toc-action"><i class="bi bi-github"></i>Seite editieren</a></li></ul></div></nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./200-Wahrscheinlichkeitstheorie.html">Wahrscheinlichkeitstheorie</a></li><li class="breadcrumb-item"><a href="./204-Zufallsvektoren.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Zufallsvektoren</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-zufallsvektoren" class="quarto-section-identifier"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Zufallsvektoren</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Zufallsvektoren sind Tupel von Zufallsvariablen. Da jede Zufallsvariable einer Wahrscheinlichkeitsverteilung unterliegt, unterliegt auch ein Zufallsvektor einer Wahrscheinlichkeitsverteilung. Da ein Zufallsvektor aus zwei oder mehr Zufallsvariablen besteht, beschreibt die Verteilung eines Zufallsvektors die <em>gemeinsame</em> Verteilung von zwei oder mehr Zufallsvariablen. In diesem Kapitel wollen wir zunächst den Begriff des Zufallsvektors und seiner assoziierten Wahrscheinlichkeitsverteilung, die oft einfach als eine <em>multivariate Verteilung</em> bezeichnet wird, einführen. Wir wollen dann diskutieren, wie die Begriffe der WMF, WDF und KVF von Zufallsvariablen auf Zufallsvektoren übertragen werden können (<a href="#sec-definition-und-multivariate-verteilungen" class="quarto-xref"><span>Kapitel 14.1</span></a>). Mit den <em>marginalen</em> und <em>bedingten Verteilungen</em> führen wir dann nachfolgend Begriffe ein, die in der Betrachtung von Zufallsvariablen nicht auftreten. Schließlich führen wir mit dem Begriff der <em>unabhängigen Zufallsvariablen</em> das probabilistische Standardmodell für univariate Datensätze ein, das einen Spezialfall der gemeinsamen Verteilung des durch die Zufallsvariablen konstituierten Zufallsvektors darstellt.</p>
+<section id="sec-definition-und-multivariate-verteilungen" class="level2" data-number="14.1">
+<h2 data-number="14.1" class="anchored" data-anchor-id="sec-definition-und-multivariate-verteilungen"><span class="header-section-number">14.1</span> Definition und multivariate Verteilungen</h2>
+<p>Die Konstruktion und Definition eines Zufallsvektors ist analog zu der einer Zufallsvariable, mit dem Unterschied, dass es sich bei einer Zufallsvariable um eine skalarwertige, bei einem Zufallsvektor dagegen um eine vektorwertige Abbildung auf dem Ergebnisraum eines Wahrscheinlichkeitsraums handelt.</p>
+<div id="def-zufallsvektor" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 14.1 (Zufallsvektor)</strong></span> <span class="math inline">\((\Omega, \mathcal{A}, \mathbb{P})\)</span> sei ein Wahrscheinlichkeitsraum und <span class="math inline">\((\mathcal{X},\mathcal{S})\)</span> sei ein <span class="math inline">\(n\)</span>-dimensionaler Messraum. Ein <span class="math inline">\(n\)</span>-dimensionaler ist definiert als eine Abbildung <span class="math display">\[\begin{equation}
+\xi:\Omega \to \mathcal{X}, \omega \mapsto \xi(\omega) :=
+\begin{pmatrix}
+\xi_1(\omega) \\
+\vdots      \\
+\xi_n(\omega)
+\end{pmatrix}
+\end{equation}\]</span> mit der <span class="math display">\[\begin{equation}
+\{\omega \in \Omega|\xi(\omega) \in S \} \in \mathcal{A} \mbox{ für alle } S \in \mathcal{S}.
+\end{equation}\]</span></p>
+</div>
+<p>Das Standardbeispiel für den Ergebisraum eines Zufallsvektors ist <span class="math inline">\(\mathbb{R}^n\)</span>, das Standardbeispiel für die auf ihm definierte <span class="math inline">\(\sigma\)</span>-Algebra ist die <span class="math inline">\(n\)</span>-dimensionale Borelsche <span class="math inline">\(\sigma\)</span>-Algebra <span class="math inline">\(\mathcal{B}(\mathbb{R}^n)\)</span>. Für eine explizite und formale Einführung der <span class="math inline">\(n\)</span>-dimensionalen Borelschen <span class="math inline">\(\sigma\)</span>-Algebra verweisen wir auf die weiterführende Literatur (z.B. <span class="citation" data-cites="schmidt2009">Schmidt (<a href="#ref-schmidt2009" role="doc-biblioref">2009</a>)</span>). Wir begnügen uns hier wieder mit der (weiterhin formal falschen) Intuition der <span class="math inline">\(n\)</span>-dimensionale Borelschen <span class="math inline">\(\sigma\)</span>-Algebra als Menge aller Teilmengen des <span class="math inline">\(\mathbb{R}^n\)</span>. Das Standardbeispiel für einen <span class="math inline">\(n\)</span>-dimensionalen Messraum ist damit <span class="math inline">\((\mathbb{R}^n, \mathcal{B}(\mathbb{R}^n))\)</span>.</p>
+<p>Wie bei allen vektorwertigen Funktionen nennen wir die den Zufallsvektor konstituierenden Funktionen <span class="math inline">\(\xi_i\)</span> die <em>Komponentenfunktionen</em> von <span class="math inline">\(\xi\)</span>. Legen wir den <span class="math inline">\(n\)</span>-dimensionalen Messraum <span class="math inline">\((\mathbb{R}^n, \mathcal{B}(\mathbb{R}^n))\)</span> dem Zufallsvektor zugrunde, so haben diese die Form <span class="math display">\[\begin{equation}
+\xi_i : \Omega \to \mathbb{R}, \omega \mapsto \xi_i(\omega).
+\end{equation}\]</span> Ohne Beweis halten wir fest, dass der Zufallsvektor <span class="math inline">\(\xi\)</span> messbar ist, wenn für alle <span class="math inline">\(i = 1,...,n\)</span> die Funktionen <span class="math inline">\(\xi_i\)</span> messbar sind und umgekehrt. Damit sind die Komponentenfunktionen eines Zufallsvektors (letztlich nach Definition) Zufallsvariablen. Ein <span class="math inline">\(n\)</span>-dimensionaler Zufallsvektor wird also als eine Konkatenation von <span class="math inline">\(n\)</span> Zufallsvariablen betrachtet, für <span class="math inline">\(n := 1\)</span> entspricht ein Zufallsvektor einer Zufallsvariable.</p>
+<p>Zufallsvektoren werden manchmal auch als “multivariate Zufallsvariablen” bezeichnet. Tatsächlich stehen bei der Betrachtung von Zufallsvektoren auch zunächst primär wahrscheinlichkeitstheoretische Aspekte und nicht etwa Aspekte der geometrischen Vektorraumtheorie im Vordergrund. Die Betrachtung von Vektorraumstrukturen ist im Kontext probabilistischer Standardmodelle wie dem Allgemeinem Linearen Modell aber durchaus üblich, so dass wir hier den Begriff des Zufallsvektors bevorzugen (vgl. <span class="citation" data-cites="christensen2011">Christensen (<a href="#ref-christensen2011" role="doc-biblioref">2011</a>)</span>). Trotzdem werden wir Zufallsvektoren, wie in vielen Texten der Probabilistik üblich, auch oft in Zeilenform, also etwa als <span class="math inline">\(\xi:= (\xi_1,...,\xi_n)\)</span>, notieren.</p>
+<div id="fig-zufallsvektor" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-zufallsvektor-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/204-zufallsvektor.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-zufallsvektor-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;14.1: Konstruktion von Zufallsvektor und multivariater Verteilung.
+</figcaption>
+</figure>
+</div>
+<p>Das durch die Konstruktion eines Zufallsvektors definierte Bildmaß heißt die <em>multivariate Verteilung des Zufallsvektors</em>, wie in folgender Definition ausgeführt (<a href="#fig-zufallsvektor" class="quarto-xref">Abbildung&nbsp;<span>14.1</span></a>).</p>
+<div id="def-multivariate-verteilung" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 14.2 (Multivariate Verteilung)</strong></span> <span class="math inline">\((\Omega, \mathcal{A}, \mathbb{P})\)</span> sei ein Wahrscheinlichkeitsraum, <span class="math inline">\((\mathcal{X},\mathcal{S})\)</span> sei ein <span class="math inline">\(n\)</span>-dimensionaler Messraum und <span class="math display">\[\begin{equation}
+\xi : \Omega \to \mathcal{X}, \omega \mapsto \xi(\omega)
+\end{equation}\]</span> sei ein Zufallsvektor. Dann heißt das Wahrscheinlichkeitsmaß <span class="math inline">\(\mathbb{P}_\xi\)</span>, definiert durch <span class="math display">\[\begin{equation}
+\mathbb{P}_\xi : \mathcal{S} \to [0,1], S \mapsto \mathbb{P}_\xi(S)
+:= \mathbb{P}(\xi^{-1}(S))
+= \mathbb{P}\left(\{\omega \in \Omega|\xi(\omega) \in S\}\right)
+\end{equation}\]</span> die .</p>
+</div>
+<p>Der Einfachheit halber spricht man oft auch nur von <em>der Verteilung des Zufallsvektors <span class="math inline">\(\xi\)</span></em> oder einer <em>multivariaten Verteilung</em>. Die Notationskonventionen für Zufallsvariablen <a href="203-Zufallsvariablen.html#def-notation-für-zufallsvariablen" class="quarto-xref">Definition&nbsp;<span>13.3</span></a> gelten für Zufallsvektoren analog. Zum Beispiel gelten <span class="math display">\[\begin{align}
+\begin{split}
+\mathbb{P}_\xi(\xi \in S)
+&amp; := \mathbb{P}\left(\{\xi \in S\} \right)
+= \mathbb{P}\left(\{\omega \in \Omega|\xi(\omega) \in S\} \right)
+\\
+\mathbb{P}_\xi(\xi = x)
+&amp; := \mathbb{P}\left(\{\xi = x\} \right)
+= \mathbb{P}\left(\{\omega \in \Omega|\xi(\omega) = x\} \right)
+\\
+\mathbb{P}_\xi(\xi \le x)
+&amp; := \mathbb{P}\left(\{\xi \le x\} \right)
+= \mathbb{P}\left(\{\omega \in \Omega|\xi(\omega) \le x\} \right)
+\\
+\mathbb{P}_\xi(x_1 \le \xi \le x_2)
+&amp; := \mathbb{P}\left(\{x_1 \le \xi \le x_2\} \right)
+   = \mathbb{P}\left(\{\omega \in \Omega|x_1 \le \xi(\omega) \le x_2\} \right)
+\end{split}
+\end{align}\]</span> wobei die Relationsoperatoren <span class="math inline">\(&lt;, \le, &gt;, \ge\)</span> werden hier <em>komponentenweise</em> verstanden werden. So heißt beispielsweise <span class="math inline">\(x \le y\)</span> für <span class="math inline">\(x,y \in \mathbb{R}^n\)</span>, dass für alle Komponenten <span class="math inline">\(x_i,y_i, i = 1,...,n\)</span> gilt, dass <span class="math inline">\(x_i \le y_i\)</span>. Eben dieser Konvention folgt auch die Definition der <em>multivariaten kumulativen Verteilungsfunktion</em> in Generalisierung von <a href="203-Zufallsvariablen.html#def-kumulative-verteilungsfunktion" class="quarto-xref">Definition&nbsp;<span>13.13</span></a>.</p>
+<div id="def-multivariate-kumulative-verteilungsfunktionen" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 14.3 (Multivariate kumulative Verteilungsfunktionen)</strong></span> <span class="math inline">\(\xi\)</span> sei ein Zufallsvektor mit Ergebnisraum <span class="math inline">\(\mathcal{X}\)</span>. Dann heißt eine Funktion der Form <span class="math display">\[\begin{equation}
+P_\xi : \mathcal{X} \to [0,1],\, x \mapsto P_\xi(x) := \mathbb{P}_\xi(\xi \le x)
+\end{equation}\]</span> multivariate kumulative Verteilungsfunktion von <span class="math inline">\(\xi\)</span>.</p>
+</div>
+<p>Wie kumulative Verteilungsfunktionen können auch multivariate kumulative Verteilungsfunktionen zur Definition von multivariaten Verteilungen genutzt werden. Häufiger ist allerdings, wie im univariaten Fall, die Definition multivariater Verteilungen durch <em>multivariate Wahrscheinlichkeitsmasse</em> - oder <em>Wahrscheinlichkeitsdichtefunktionen</em>. Wir generalisieren die Definitionen diskreter und kontinuierlicher Zufallsvariablen und ihren assoziierten Wahrscheinlichkeitsmasse- und Wahrscheinlichkeitsdichtefunktionen (vgl. <a href="203-Zufallsvariablen.html#def-diskrete-zufallsvariable-und-wahrscheinlichkeitsmassefunktion" class="quarto-xref">Definition&nbsp;<span>13.4</span></a> und <a href="203-Zufallsvariablen.html#def-kontinuierliche-zufallsvariable-und-wahrscheinlichkeitsdichtefunktion" class="quarto-xref">Definition&nbsp;<span>13.8</span></a>) wie folgt.</p>
+<div id="def-diskreter-zufallsvektor-und-multivariate-wahrscheinlichkeitsmassefunktion" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 14.4 (Diskreter Zufallsvektor und multivariate Wahrscheinlichkeitsmassefunktion)</strong></span> Ein Zufallsvektor <span class="math inline">\(\xi\)</span> heißt <em>diskret</em>, wenn sein Ergebnisraum <span class="math inline">\(\mathcal{X}\)</span> endlich oder abzählbar ist und eine Funktion <span class="math display">\[\begin{equation}
+p_\xi : \mathcal{X} \to [0,1], x \mapsto p_\xi(x)  
+\end{equation}\]</span> existiert, für die gilt</p>
+<ol type="1">
+<li><span class="math inline">\(\sum_{x \in \mathcal{X}}p(x) = 1\)</span> und</li>
+<li><span class="math inline">\(\mathbb{P}_\xi(\xi = x) = p(x)\)</span> für alle <span class="math inline">\(x \in \mathcal{X}\)</span>.</li>
+</ol>
+<p>Ein entsprechende Funktion <span class="math inline">\(p_\xi\)</span> heißt <em>multivariate Wahrscheinlichkeitsmassefunktion (WMF)</em> von <span class="math inline">\(\xi\)</span>.</p>
+</div>
+<p>Der Begriff der multivariaten WMF ist offenbar direkt analog zum Begriff der WMF. Wie univariate WMFen sind multivariate WMFen nicht-negativ und normiert. Der Einfachheit halber spricht man oft einfach von <em>der WMF eines Zufallsvektors</em> und verzichtet bei ihrer Bezeichnung, wenn der betreffende Zufallsvektor aus dem Kontext klar ist, auf das <span class="math inline">\(\xi\)</span> Subscript, schreibt also oft einfach <span class="math inline">\(p\)</span> anstelle von <span class="math inline">\(p_\xi\)</span>.</p>
+<section id="beispiel" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="beispiel">Beispiel</h3>
+<p>Zur Illustration des Begriffs des diskreten Zufallsvektors und seiner WMF wollen wir ein Beispiel betrachten. Dazu sei <span class="math inline">\(\xi:= (\xi_1,\xi_2)\)</span> ein Zufallsvektor, der Werte in <span class="math inline">\(\mathcal{X} := \mathcal{X}_1 \times \mathcal{X}_2\)</span> annimmt, wobei <span class="math inline">\(\mathcal{X}_1 := \{1,2,3\}\)</span> und <span class="math inline">\(\mathcal{X}_2 = \{1,2,3,4\}\)</span> seien. Dann entspricht der Ergebnisraum von <span class="math inline">\(\xi\)</span> der in untenstehender Tabelle spezifizierten Menge an Tupeln <span class="math inline">\((x_1,x_2)\)</span>.</p>
+<p>Eine exemplarische bivariate WMF der Form <span class="math display">\[\begin{equation}
+p_\xi: \{1,2,3\} \times \{1,2,3,4\} \to [0,1], (x_1,x_2) \mapsto p_\xi(x_1,x_2)
+\end{equation}\]</span> ist dann durch nachfolgende Tabelle definiert:</p>
+<p>Man beachte, dass die so spezifierte Funktion <span class="math inline">\(p_\xi\)</span> den Normiertheits- und Nichtnegativitätsansprüchen an eine WMF genügt. Insbesondere gilt hier <span class="math display">\[\begin{equation}
+\sum_{x \in \mathcal{X}} p_\xi(x) = \sum_{x_1 = 1}^3 \sum_{x_2 = 1}^4 p_\xi(x_1,x_2) = 1.
+\end{equation}\]</span></p>
+<p>Den Begriff des kontinuierlichen Zufallsvektors und der multivariaten Wahrscheinlichkeitsdichtefunktion definieren wir wie folgt.</p>
+<div id="def-kontinuierlicher-zufallsvektor-und-multivariate-wahrscheinlichkeitdichtefunktion" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 14.5 (Kontinuierlicher Zufallsvektor und multivariate Wahrscheinlichkeitdichtefunktion)</strong></span> Ein Zufallsvektor <span class="math inline">\(\xi\)</span> heißt <em>kontinuierlich</em>, wenn sein Ergebnisraum durch <span class="math inline">\(\mathbb{R}^n\)</span> gegeben ist und eine Funktion<br>
+<span class="math display">\[\begin{equation}
+p_\xi : \mathbb{R}^n \to \mathbb{R}_{\ge 0}, x \mapsto p_\xi(x),
+\end{equation}\]</span> existiert, für die gilt, dass</p>
+<ol type="1">
+<li><span class="math inline">\(\int_{\mathbb{R}^n} p_\xi(x)\,dx = 1\)</span> und</li>
+<li><span class="math inline">\(\mathbb{P}_\xi(x_1 \le \xi \le x_2)  = \int_{x_{1_1}}^{x_{2_1}} \cdots \int_{x_{1_n}}^{x_{2_n}} p_\xi(s_1,...,s_n)\,ds_1 \cdots ds_n\)</span>.</li>
+</ol>
+<p>Eine entsprechende Funktion <span class="math inline">\(p_\xi\)</span> heißt <em>multivariate Wahrscheinlichkeitsdichtefunktion (WDF) von <span class="math inline">\(\xi\)</span></em>.</p>
+</div>
+<p>Offenbar ist der der Begriff der multivariaten WDF eines kontinuierlichen Zufallsvektors analog zum Begriff der WDF einer kontinuierlichen Zufallsvariable und wie univariate WDFen sind multivariate WDFen nicht-negativ und normiert. Der Einfachheit halber spricht man auch hier oft einfach von <em>multivariaten WDFen</em> und verzichtet auf die den Zufallsvektor identifizieren Subskripte. Wie für kontinuierliche Zufallsvariablen gilt für kontinuierliche Zufallsvektoren <span class="math display">\[\begin{equation}
+\mathbb{P}_\xi(\xi = x)
+= \mathbb{P}_\xi(x \le \xi \le x)
+= \int_{x_1}^{x_1} \cdots \int_{x_n}^{x_n} p_\xi(s_1,...,s_n)\,ds_1 \cdots ds_n
+= 0.
+\end{equation}\]</span></p>
+<p>Das Standardbeispiel für eine multivariate WDF ist die <em>multivariate Normalverteilung</em>, welcher wir mit <a href="210-Multivariate-Normalverteilungen.html" class="quarto-xref"><span>Kapitel 20</span></a> ein eigenes Kapitel widmen.</p>
+</section>
+</section>
+<section id="sec-marginalverteilungen" class="level2" data-number="14.2">
+<h2 data-number="14.2" class="anchored" data-anchor-id="sec-marginalverteilungen"><span class="header-section-number">14.2</span> Marginalverteilungen</h2>
+<p>Hat man die Verteilung eines Zufallsvektors spezifiziert, so kann man sich fragen, welche Verteilungen daraus für die einzelnen Komponenten des Zufallsvektors, also die Zufallsvariablen, die zusammen den Zufallsvektor bilden, folgen. Im Kontext eines Zufallsvektors nennt man diese die <em>univariaten Marginalverteilungen</em> des Zufallsvektors. Folgende Definition ist grundlegend.</p>
+<div id="def-univariate-marginalverteilung" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 14.6 (Univariate Marginalverteilung)</strong></span> <span class="math inline">\((\Omega, \mathcal{A}, \mathbb{P})\)</span> sei ein Wahrscheinlichkeitsraum, <span class="math inline">\((\mathcal{X}, \mathcal{S})\)</span> sei ein <span class="math inline">\(n\)</span>-dimensionaler Messraum, <span class="math inline">\(\xi:\Omega \to \mathcal{X}\)</span> sei ein Zufallsvektor, <span class="math inline">\(\mathbb{P}_\xi\)</span> sei die Verteilung von <span class="math inline">\(\xi\)</span>, <span class="math inline">\(\mathcal{X}_i \subset \mathcal{X}\)</span> sei der Ergebnisraum der <span class="math inline">\(i\)</span>ten Komponente <span class="math inline">\(\xi_i\)</span> von <span class="math inline">\(\xi\)</span>, und <span class="math inline">\(\mathcal{S}_i\)</span> sei eine <span class="math inline">\(\sigma\)</span>-Algebra auf <span class="math inline">\(\xi_i\)</span>. Dann heißt die durch <span class="math display">\[\begin{equation}
+\mathbb{P}_{\xi_i} : \mathcal{S}_i \to [0,1],
+S \mapsto  \mathbb{P}_\xi\left(\mathcal{X}_1
+                     \times
+                     \cdots
+                     \times
+                     \mathcal{X}_{i-1}
+                     \times S
+                     \times \mathcal{X}_{i+1}
+                     \times \cdots
+                     \times \mathcal{X}_n\right)
+\mbox{ für } S \in \mathcal{S}_i
+\end{equation}\]</span> definierte Verteilung die <em><span class="math inline">\(i\)</span>te univariate Marginalverteilung von <span class="math inline">\(\xi\)</span></em>.</p>
+</div>
+<p>Konkret kann man sowohl für diskrete als auch für kontinuierliche Zufallsvektoren die WMFen bzw. WDFen ihrer Komponenten direkt aus der entsprechenden multivariaten WMF bzw. WDF bestimmen. Dies ist die Aussage folgenden Theorems.</p>
+<div id="thm-marginale-wahrscheinlichkeitsmasse-und-dichtefunktionen" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 14.1 (Marginale Wahrscheinlichkeitsmasse und Wahrscheinlichkeitsdichtefunktionen)</strong></span> (1) <span class="math inline">\(\xi= (\xi_1,...,\xi_n)\)</span> sei ein <span class="math inline">\(n\)</span>-dimensionaler diskreter Zufallsvektor mit Wahrscheinlichkeitsmassefunktion <span class="math inline">\(p_\xi\)</span> und Komponentenergebnisräumen <span class="math inline">\(\mathcal{X}_1, ..., \mathcal{X}_n\)</span>. Dann ergibt sich die Wahrscheinlichkeitsmassefunktion der <span class="math inline">\(i\)</span>ten Komponente <span class="math inline">\(\xi_i\)</span> von <span class="math inline">\(\xi\)</span> als <span class="math display">\[\begin{multline}
+p_{\xi_i} : \mathcal{X}_i \to [0,1], x_i \mapsto
+\\ p_{\xi_i}(x_i) := \sum_{x_1} \cdots \sum_{x_{i-1}} \sum_{x_{i+1}} \cdots \sum_{x_n} p_\xi(x_1,...,x_{i-1},x_i,x_{i+1}, ...,x_n).
+\end{multline}\]</span> (2) <span class="math inline">\(\xi= (\xi_1,...,\xi_n)\)</span> sei ein <span class="math inline">\(n\)</span>-dimensionaler kontinuierlicher Zufallsvektor mit Wahrscheinlichkeitsdichtefunktion <span class="math inline">\(p_\xi\)</span> und Komponentenergebnisraum <span class="math inline">\(\mathbb{R}\)</span>. Dann ergibt sich die Wahrscheinlichkeitsdichtefunktion der <span class="math inline">\(i\)</span>ten Komponente <span class="math inline">\(\xi_i\)</span> von <span class="math inline">\(\xi\)</span> als <span class="math display">\[\begin{multline}
+p_{\xi_i} : \mathbb{R} \to \mathbb{R}_{\ge 0},  x_i \mapsto
+\\ p_{\xi_i}(x_i) :=  
+\int_{x_1} \cdots \int_{x_{i-1}} \int_{x_{i+1}} \cdots \int_{x_n}
+p_\xi(x_1,..., x_{i-1},x_i,x_{i+1}, ...,x_n)
+\,dx_1...\,dx_{i-1}\,dx_{i+1}...\,dx_n.
+\end{multline}\]</span></p>
+</div>
+<p>Die WMFen der univariaten Marginalverteilungen diskreter Zufallsvektoren ergeben sich also durch Summation über alle Werte der zu der jeweils betrachteten Zufallsvariable komplementären Zufallsvariablen und die WDFen der univariaten Marginalverteilungen kontinuierlicher Zufallsvektoren ergeben sich analog durch Integration über alle Werte der zu der jeweils betrachteten Zufallsvariable komplementären Zufallsvariablen. Für einen Beweis von <a href="#thm-marginale-wahrscheinlichkeitsmasse-und-dichtefunktionen" class="quarto-xref">Theorem&nbsp;<span>14.1</span></a> verweisen wir auf die weiterführende Literatur.</p>
+<p><strong>Beispiel</strong></p>
+<p>In Fortführung des in <a href="#sec-definition-und-multivariate-verteilungen" class="quarto-xref"><span>Kapitel 14.1</span></a> betrachteten Beispiels eines zweidimensionalen Zufallsvektor <span class="math inline">\(\xi:= (\xi_1,\xi_2)\)</span> ergeben sich für die dort definierte WMF für die marginalen WMFen <span class="math inline">\(p_{\xi_1}\)</span> und <span class="math inline">\(p_{\xi_2}\)</span> die an den Rändern der unten spezifizierter Tabelle aufgelisteten WMFen anhand von <span class="math display">\[\begin{equation}
+p_{\xi_1}(x_1) = \sum_{x_2 = 1}^{4} p_\xi(x_1,x_2) \mbox{ und }
+p_{\xi_2}(x_2) = \sum_{x_1 = 1}^{3} p_\xi(x_1,x_2)
+\end{equation}\]</span></p>
+<p>zu</p>
+<p>Für die Werte von <span class="math inline">\(p_{\xi_1}\)</span> werden die entsprechenden Werte von <span class="math inline">\(p_\xi\)</span> also zeilenweise und für die Werte von <span class="math inline">\(p_{\xi_2}\)</span> spaltenweise addiert. Man beachte, dass aus der Normiertheit von <span class="math inline">\(p_\xi\)</span> die Normiertheit von <span class="math inline">\(p_{\xi_1}\)</span> und <span class="math inline">\(p_{\xi_2}\)</span> direkt folgt, da sich die Gesamtsumme an Wahrscheinlichkeitsmasse nicht ändert: <span class="math display">\[\begin{equation}
+1
+= \sum_{x_1=1}^{3}\sum_{x_2 = 1}^{4} p_\xi(x_1,x_2)
+= \sum_{x_1=1}^{3} p_{\xi_1}(x_1)
+= \sum_{x_2=1}^{4} p_{\xi_2}(x_2).
+\end{equation}\]</span></p>
+<p>Ein Realisierungsbeispiel mithilfe relativer Häufigkeiten mag den Begriff der marginalen WMF intuitiv verdeutlichen. Nehmen wir an, wir hätten <span class="math inline">\(n = 100\)</span> unabhängige Realisierungen von <span class="math inline">\(\xi\)</span> vorliegen. Um die Wahrscheinlichkeiten <span class="math inline">\(p_\xi(x_1,x_2)\)</span> zu schätzen, würden wir die Anzahl der Realisierungen von <span class="math inline">\((x_1,x_2)\)</span> zählen und durch <span class="math inline">\(n\)</span> teilen. Hätten wir beispielsweise 12 Realisierungen von <span class="math inline">\((3,2)\)</span> vorliegen, so würden wir <span class="math inline">\(p_\xi(3,2) \approx 12/100 = 0.12\)</span> schätzen. Die Frage nach der marginalen Wahrscheinlichkeit von <span class="math inline">\(x_2 = 2\)</span> entspräche dann der Frage, wie oft unter den Realisierungen solche zu finden sind, bei denen <span class="math inline">\(x_2 = 2\)</span> ist, irrespektive des Wertes von <span class="math inline">\(x_1\)</span>. Dies wäre gerade die Anzahl der Realisierungen der Form <span class="math inline">\((1,2), (2,2)\)</span> und <span class="math inline">\((3,2)\)</span>. Gäbe es von diesen beispielsweise <span class="math inline">\(0, 22\)</span> und <span class="math inline">\(12\)</span> respektive, so würde man die Wahrscheinlichkeit <span class="math inline">\(p_{\xi_2}(2)\)</span> natürlicherweise durch <span class="math display">\[\begin{equation}
+\frac{0 + 22 + 12}{100} = \frac{0}{100} + \frac{22}{100} + \frac{12}{100} = 0.00 + 0.22 + 0.12 = 0.34
+\end{equation}\]</span> schätzen. Anstelle der Wahrscheinlichkeiten <span class="math inline">\(p_\xi(1,2)\)</span>, <span class="math inline">\(p_\xi(2,2)\)</span>, <span class="math inline">\(p_\xi(3,2)\)</span> addiert man hier also die entsprechenden relativen Häufigkeiten.</p>
+<p>Marginale Verteilungen im Fall von kontinuierlichen Zufallsvektoren behandeln wir am Standardbeispiel der multivariaten Normalverteilung in <a href="210-Multivariate-Normalverteilungen.html" class="quarto-xref"><span>Kapitel 20</span></a>.</p>
+</section>
+<section id="sec-bedingte-verteilungen" class="level2" data-number="14.3">
+<h2 data-number="14.3" class="anchored" data-anchor-id="sec-bedingte-verteilungen"><span class="header-section-number">14.3</span> Bedingte Verteilungen</h2>
+<p>Hat man die Verteilung eines Zufallsvektors spezifiziert, so kann man sich fragen, welche Verteilung daraus für eine einzelne Komponenten des Zufallsvektors folgt, wenn man den Wert einer anderen Komponente als bekannt annimmt. Dies führt auf den Begriff der <em>bedingten Verteilung</em>, welcher sich natürlicherweise aus dem Begriff der bedingten Wahrscheinlichkeit (vgl. <a href="202-Elementare-Wahrscheinlichkeiten.html#sec-bedingte-wahrscheinlichkeiten" class="quarto-xref"><span>Kapitel 12.2</span></a>) ergibt. Wir erinnern uns zunächst, dass für einen Wahrscheinlichkeitsraum <span class="math inline">\((\Omega, \mathcal{A}, \mathbb{P})\)</span> und zwei Ereignisse <span class="math inline">\(A,B \in \mathcal{A}\)</span> mit <span class="math inline">\(\mathbb{P}(B) &gt; 0\)</span> die bedingte Wahrscheinlichkeit von <span class="math inline">\(A\)</span> gegeben <span class="math inline">\(B\)</span> definiert ist als <span class="math display">\[\begin{equation}
+\mathbb{P}(A|B) = \frac{\mathbb{P}(A \cap B)}{\mathbb{P}(B)}.
+\end{equation}\]</span> Analog wird für zwei Zufallsvariablen <span class="math inline">\(\xi_1,\xi_2\)</span> mit Ereignisräumen <span class="math inline">\(\mathcal{X}_1,\mathcal{X}_2\)</span> und (messbaren) Mengen <span class="math inline">\(S_1 \in \mathcal{X}_1, S_2 \in \mathcal{X}_2\)</span> die bedingte Verteilung von <span class="math inline">\(\xi_1\)</span> gegeben <span class="math inline">\(\xi_2\)</span> mithilfe der Ereignisse <span class="math display">\[\begin{equation}
+A := \{\xi_1 \in S_1\} \mbox{ und } B := \{\xi_2 \in S_2\}
+\end{equation}\]</span> definiert. So ergibt sich zum Beispiel die bedingte Wahrscheinlichkeit, dass <span class="math inline">\(\xi_1 \in S_1\)</span> gegeben, dass <span class="math inline">\(\xi_2 \in S_2\)</span> unter der Annahme, dass <span class="math inline">\(\mathbb{P}(\{\xi_2 \in S_2\}) &gt; 0\)</span>, zu <span class="math display">\[\begin{equation}
+\mathbb{P}( \{\xi_1 \in S_1\}|\{\xi_2 \in S_2\})
+= \frac{\mathbb{P}(\{\xi_1 \in S_1\} \cap \{\xi_2 \in S_2\})}{\mathbb{P}(\{\xi_2 \in S_2\})}.
+\end{equation}\]</span></p>
+<p>Wir betrachten zunächst die Definition der bedingten Verteilungen von diskreten Zufallsvektoren, die lediglich aus zwei Zufallsvariablen bestehen.</p>
+<div id="def-bedingte-wahrscheinlichkeitsmassefunktion-und-diskrete-bedingte-verteilung" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 14.7 (Bedingte Wahrscheinlichkeitsmassefunktion und diskrete bedingte Verteilung)</strong></span> <span class="math inline">\(\xi:= (\xi_1,\xi_2)\)</span> sei ein diskreter Zufallsvektor mit Ergebnisraum <span class="math inline">\(\mathcal{X} := \mathcal{X}_1 \times \mathcal{X}_2\)</span>, WMF <span class="math inline">\(p_\xi = p_{\xi_1,\xi_2}\)</span> und marginalen WMFen <span class="math inline">\(p_{\xi_1}\)</span> und <span class="math inline">\(p_{\xi_2}\)</span>. Die bedingte WMF von <span class="math inline">\(\xi_1\)</span> gegeben <span class="math inline">\(\xi_2 = x_2\)</span> ist dann für <span class="math inline">\(p_{\xi_2}(x_2) &gt; 0\)</span> definiert als <span class="math display">\[\begin{equation}
+p_{\xi_1|\xi_2 = x_2} : \mathcal{X}_1 \to [0,1],
+x_1 \mapsto p_{\xi_1|\xi_2 = x_2}(x_1|x_2) := \frac{p_{\xi_1,\xi_2}(x_1,x_2)}{p_{\xi_2}(x_2)}
+\end{equation}\]</span> Analog ist für <span class="math inline">\(p_{\xi_1}(x_1) &gt; 0\)</span> die bedingte WMF von <span class="math inline">\(\xi_2\)</span> gegeben <span class="math inline">\(\xi_1 = x_1\)</span> definiert als <span class="math display">\[\begin{equation}
+p_{\xi_2|\xi_1 = x_1} : \mathcal{X}_2 \to [0,1],
+x_2 \mapsto p_{\xi_2|\xi_1 = x_2}(x_1|x_2) := \frac{p_{\xi_1,\xi_2}(x_1,x_2)}{p_{\xi_1}(x_1)}
+\end{equation}\]</span> Die bedingten Verteilungen mit WMFen <span class="math inline">\(p_{\xi_1|\xi_2 = x_2}\)</span> und <span class="math inline">\(p_{\xi_2|\xi_1 = x_1}\)</span> heißen dann die , respektive.</p>
+</div>
+<p>In Analogie zur Definition der bedingten Wahrscheinlichkeit von Ereignissen gilt also <span class="math display">\[\begin{equation}
+p_{\xi_1|\xi_2}(x_1|x_2)
+= \frac{p_{\xi_1,\xi_2}(x_1,x_2)}{p_{\xi_2}(x_2)}
+= \frac{\mathbb{P}(\{\xi_1 = x_1\} \cap \{\xi_2 = x_2\})}{\mathbb{P}(\{\xi_2 = x_2\})}.
+\end{equation}\]</span> Es ist dabei entscheidend zu erkennen, dass bedingte Verteilungen lediglich normalisierte gemeinsame Verteilungen sind.</p>
+<p><strong>Beispiel</strong></p>
+<p>In Fortführung des in <a href="#sec-definition-und-multivariate-verteilungen" class="quarto-xref"><span>Kapitel 14.1</span></a> betrachteten Beispiels eines zweidimensionalen Zufallsvektor <span class="math inline">\(\xi:= (\xi_1,\xi_2)\)</span> ergeben und seiner in <a href="#sec-marginalverteilungen" class="quarto-xref"><span>Kapitel 14.2</span></a> bestimmten Marginalverteilungen ergeben sich folgende bedingte WMFen für <span class="math inline">\(p_{\xi_2|\xi_1 = x_1}\)</span>:</p>
+<p>Man beachte, dass zum einen gilt, dass <span class="math display">\[\begin{equation}
+\sum_{x_2 = 1}^4 p_{\xi_2|\xi_1 = x_1}(x_2|x_1) = 1 \mbox{ für alle } x_1 \in \mathcal{X}_1,
+\end{equation}\]</span> die bedingten WMFen sind also normiert. Zum anderen beachte man die qualitative Ähnlichkeit der WMFen <span class="math inline">\(p_{\xi_1,\xi_2}(x_1,x_2)\)</span> und <span class="math inline">\(p_{\xi_2|\xi_1}(x_2|x_1)\)</span>, die sich einfach daraus ergibt, dass <span class="math inline">\(p_{\xi_1,\xi_2}(x_1,x_2)\)</span> und <span class="math inline">\(p_{\xi_2|\xi_1}(x_2|x_1)\)</span> für alle <span class="math inline">\(x_1 \in \mathcal{X}_1\)</span> bis auf den gemeinsamen Skalierungsfaktor <span class="math inline">\(1/p_{\xi_1}(x_1)\)</span> identisch sind.</p>
+<p>Im Fall eines kontinuierlichen Zufallsvektors sind die analogen bedingten WDFen definiert wie folgt.</p>
+<div id="def-bedingte-wahrscheinlichkeitsdichtefunktion-und-kontinuierliche-bedingte-verteilung" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 14.8 (Bedingte Wahrscheinlichkeitsdichtefunktion und kontinuierliche bedingte Verteilung)</strong></span> <span class="math inline">\(\xi:= (\xi_1,\xi_2)\)</span> sei ein kontinuierlicher Zufallsvektor mit Ergebnisraum <span class="math inline">\(\mathbb{R}^2\)</span>, WDF <span class="math inline">\(p_\xi = p_{\xi_1,\xi_2}\)</span> und marginalen WDFen <span class="math inline">\(p_{\xi_1}\)</span> und <span class="math inline">\(p_{\xi_2}\)</span>. Die bedingte WDF von <span class="math inline">\(\xi_1\)</span> gegeben <span class="math inline">\(\xi_2 = x_2\)</span> ist dann für <span class="math inline">\(p_{\xi_2}(x_2) &gt; 0\)</span> definiert als <span class="math display">\[\begin{equation}
+p_{\xi_1|\xi_2 = x_2} : \mathbb{R} \to \mathbb{R}_{\ge 0},
+x_1 \mapsto p_{\xi_1|\xi_2 = x_2}(x_1|x_2) := \frac{p_{\xi_1,\xi_2}(x_1,x_2)}{p_{\xi_2}(x_2)}
+\end{equation}\]</span> Analog ist für <span class="math inline">\(p_{\xi_1}(x_1) &gt; 0\)</span> die bedingte WMF von <span class="math inline">\(\xi_2\)</span> gegeben <span class="math inline">\(\xi_1 = x_1\)</span> definiert als <span class="math display">\[\begin{equation}
+p_{\xi_2|\xi_1 = x_1} : \mathbb{R} \to \mathbb{R}_{\ge 0},
+x_2 \mapsto p_{\xi_2|\xi_1 = x_1}(x_2|x_1) := \frac{p_{\xi_1,\xi_2}(x_1,x_2)}{p_{\xi_1}(x_1)}
+\end{equation}\]</span></p>
+<p>Die Verteilungen mit WDFen <span class="math inline">\(p_{\xi_1|\xi_2 = x_2}\)</span> und <span class="math inline">\(p_{\xi_2|\xi_1 = x_1}\)</span> heißen dann die , respektive.</p>
+</div>
+<p>Man beachte, dass im kontinuierlichen Fall zwar <span class="math inline">\(\mathbb{P}(\xi = x) = 0\)</span>, aber nicht notwendig auch <span class="math inline">\(p_\xi(x) = 0\)</span> gilt. Die bedingten Verteilungen multivariater Normalverteilungen diskutieren wir in <a href="210-Multivariate-Normalverteilungen.html" class="quarto-xref"><span>Kapitel 20</span></a>.</p>
+</section>
+<section id="sec-unabhängige-zufallsvariablen" class="level2" data-number="14.4">
+<h2 data-number="14.4" class="anchored" data-anchor-id="sec-unabhängige-zufallsvariablen"><span class="header-section-number">14.4</span> Unabhängige Zufallsvariablen</h2>
+<p>Ähnlich wie die bedingte Wahrscheinlichkeiten von Ereignissen lässt sich auch das Konzept der unabhängigen Ereignisse auf Zufallsvektoren übertragen. Wir definieren zunächst den Begriff der unabhängigen Zufallsvariablen.</p>
+<div id="def-unabhängige-zufallsvariablen" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 14.9 (Unabhängige Zufallsvariablen)</strong></span> <span class="math inline">\((\Omega, \mathcal{A}, \mathbb{P})\)</span> sei ein Wahrscheinlichkeitsraum und <span class="math inline">\(\xi: = (\xi_1,\xi_2)\)</span> ein zweidimensionaler Zufallsvektor. Die Zufallsvariablen <span class="math inline">\(\xi_1,\xi_2\)</span> mit Ergebnisräumen <span class="math inline">\(\mathcal{X}_1, \mathcal{X}_2\)</span> heißen , wenn für alle <span class="math inline">\(S_1 \subseteq \mathcal{X}_1\)</span> und <span class="math inline">\(S_2 \subseteq \mathcal{X}_2\)</span> gilt, dass <span class="math display">\[\begin{equation}
+\mathbb{P}_\xi(\xi_1 \in S_1, \xi_2 \in S_2) =
+\mathbb{P}_{\xi_1}(\xi_1 \in S_1)\mathbb{P}_{\xi_2}(\xi_2 \in S_2).
+\end{equation}\]</span></p>
+</div>
+<p><a href="#def-unabhängige-zufallsvariablen" class="quarto-xref">Definition&nbsp;<span>14.9</span></a> besagt, dass die Ereignisse <span class="math inline">\(\{\xi_1 \in S_1\}\)</span> und <span class="math inline">\(\{\xi_2 \in S_2\}\)</span> unabhängig sind. Es gilt also auch, dass <span class="math display">\[\begin{equation}
+\mathbb{P}(\{\xi_1 \in S_1\})|\{\xi_2 \in S_2\}) = \mathbb{P}(\{\xi_1 \in S_1\})
+\end{equation}\]</span> und das Wissen um das Eintreten des Ereignisses <span class="math inline">\(\{\xi_2 \in S_2\}\)</span> verändert die Wahrscheinlichkeit des Ereignisses <span class="math inline">\(\{\xi_1 \in S_1\}\)</span> nicht. Das Faktorisierungsprinzip zur Modellierung probabilistischer Unabhängigkeit überträgt sich auf WMFen und WDFen von Zufallsvektoren. Dies ist die Aussagen folgenden Theorems.</p>
+<div id="thm-unabhängigkeit-und-faktorisierung" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 14.2 (Unabhängigkeit und Faktorisierung)</strong></span> &nbsp;</p>
+<ol type="1">
+<li><span class="math inline">\(\xi:= (\xi_1,\xi_2)\)</span> sei ein diskreter Zufallsvektor mit Ergebnisraum <span class="math inline">\(\mathcal{X}_1 \times \mathcal{X}_2\)</span>, WMF <span class="math inline">\(p_\xi\)</span> und marginalen WMFen <span class="math inline">\(p_{\xi_1}, p_{\xi_2}\)</span>. Dann gilt <span class="math display">\[\begin{multline}
+\xi_1 \mbox{ und } \xi_2 \mbox{ sind unabhängige Zufallsvariablen} \Leftrightarrow \\
+p_\xi(x_1,x_2) = p_{\xi_1}(x_1)p_{\xi_2}(x_2) \mbox{ für alle } (x_1,x_2) \in \mathcal{X}_1 \times \mathcal{X}_2.
+\end{multline}\]</span></li>
+<li><span class="math inline">\(\xi:= (\xi_1,\xi_2)\)</span> sei ein kontinuierlicher Zufallsvektor mit Ergebnisraum <span class="math inline">\(\mathbb{R}^2\)</span>, WDF <span class="math inline">\(p_\xi\)</span> und marginalen WDFen <span class="math inline">\(p_{\xi_1}, p_{\xi_2}\)</span>. Dann gilt <span class="math display">\[\begin{multline}
+\xi_1 \mbox{ und } \xi_2 \mbox{ sind unabhängige Zufallsvariablen } \Leftrightarrow \\
+p_\xi(x_1,x_2) = p_{\xi_1}(x_1)p_{\xi_2}(x_2) \mbox{ für alle } (x_1,x_2) \in \mathbb{R}^2.
+\end{multline}\]</span></li>
+</ol>
+</div>
+<p>Generell ist die Unabhängigkeit zweier Zufallsvariablen also äquivalent zur Faktorisierung ihrer gemeinsamen WMF oder WDF. Für einen Beweis von <a href="#thm-unabhängigkeit-und-faktorisierung" class="quarto-xref">Theorem&nbsp;<span>14.2</span></a> verweisen wir auf die weiterführende Literatur. Nichtsdestotrotz ist <a href="#thm-unabhängigkeit-und-faktorisierung" class="quarto-xref">Theorem&nbsp;<span>14.2</span></a> für weite Aspekte der probabilistischen Modellierung grundlegend.</p>
+<p><strong>Beispiel</strong></p>
+Wir betrachten erneut den zweidimensionalen Zufallsvektor <span class="math inline">\(\xi:= (\xi_1, \xi_2)\)</span> aus <a href="#sec-definition-und-multivariate-verteilungen" class="quarto-xref"><span>Kapitel 14.1</span></a>, dessen gemeinsame und marginale WMFen bekanntlich die untenstehende Form haben
+<p>Wir fragen zunächst, ob <span class="math inline">\(\xi_1\)</span> und <span class="math inline">\(\xi_2\)</span> wohl unabhängig sind. Dies ist nicht der Fall, da hier gilt, dass <span class="math display">\[\begin{equation}
+p_\xi(1,1) = 0.10 \neq 0.08 = 0.40\cdot 0.20 =  p_{\xi_1}(1)p_{\xi_2}(1).
+\end{equation}\]</span> Möchten wir basierend auf den Marginalverteilungen von <span class="math inline">\(\xi\)</span> eine gemeinsame Verteilung erzeugen, in der <span class="math inline">\(\xi_1\)</span> und <span class="math inline">\(\xi_2\)</span> unabhängig sind, so muss sich jeder Eintrag der gemeinsamen Verteilung <span class="math inline">\(p_\xi(\xi_1,\xi_2)\)</span> aus dem jeweiligen Produkt der Marginalwahrscheinlichkeiten ergeben. Die gemeinsame Verteilung von <span class="math inline">\(\xi_1\)</span> und <span class="math inline">\(\xi_2\)</span> unter der Annahme der Unabhängigkeit von <span class="math inline">\(\xi_1\)</span> und <span class="math inline">\(\xi_2\)</span> bei gleichen Marginalverteilungen wie im obigen Fall ergibt sich also zu</p>
+<p>Weiterhin ergeben sich im Falle der Unabhängigkeit von <span class="math inline">\(\xi_1\)</span> und <span class="math inline">\(\xi_2\)</span> beispielsweise die bedingten WMFen <span class="math inline">\(p_{\xi_2|\xi_1}\)</span> zu wie folgt:</p>
+<p>Im Falle der Unabhängigkeit von <span class="math inline">\(\xi_1\)</span> und <span class="math inline">\(\xi_2\)</span> ändert sich die Verteilung von <span class="math inline">\(\xi_2\)</span> gegeben (oder im Wissen um) den Wert von <span class="math inline">\(\xi_1\)</span> also nicht und entspricht jeweils der Marginalverteilung von <span class="math inline">\(\xi_2\)</span>. Dies entspricht natürlich der Intuition der Unabhängigkeit von Ereignissen im Kontext elementarer Wahrscheinlichkeiten.</p>
+<p>Wir wollen den Begriff der unabhängigen Zufallsvariablen nun für mehr als zwei Zufallsvariablen definieren.</p>
+<div id="def-n-unabhängige-zufallsvariablen" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 14.10 (<span class="math inline">\(n\)</span> unabhängige Zufallsvariablen)</strong></span> <span class="math inline">\(\xi:= (\xi_1,...,\xi_n)\)</span> sei ein <span class="math inline">\(n\)</span>-dimensionaler Zufallsvektor mit Ergebnisraum <span class="math inline">\(\mathcal{X}  = \times_{i=1}^n \mathcal{X}_i\)</span>. Die <span class="math inline">\(n\)</span> Zufallsvariablen <span class="math inline">\(\xi_1,...,\xi_n\)</span> heißen , wenn für alle <span class="math inline">\(S_i \in \mathcal{X}_i, i = 1,...,n\)</span> gilt, dass <span class="math display">\[\begin{equation}
+\mathbb{P}_\xi(\xi_1 \in S_1, ...,\xi_n \in S_n) = \prod_{i=1}^n \mathbb{P}_{\xi_i}(\xi_i \in S_i).
+\end{equation}\]</span> Wenn der Zufallsvektor eine <span class="math inline">\(n\)</span>-dimensionale WMF oder WDF <span class="math inline">\(p_\xi\)</span> mit marginalen WMFen oder WDFen <span class="math inline">\(p_{\xi_i}, i = 1,...,n\)</span> besitzt, dann ist die Unabhängigkeit von <span class="math inline">\(\xi_1,...,\xi_n\)</span> gleichbedeutend mit der Faktorisierung der gemeinsamen WMF oder WDF, also mit <span class="math display">\[\begin{equation}
+p_\xi(\xi_1,...,\xi_n) = \prod_{i=1}^n p_{\xi_i}(x_i).
+\end{equation}\]</span></p>
+</div>
+<p>Es handelt bei <a href="#def-n-unabhängige-zufallsvariablen" class="quarto-xref">Definition&nbsp;<span>14.10</span></a> also um eine direkte Generalisierung des zweidimensionalen Falls.</p>
+<p>Sind <span class="math inline">\(n\)</span> Zufallsvariablen nicht nur unabhängig, sondern haben sie auch alle die gleiche Verteilung, so nennt man sie <em>unabhängig und identisch verteilt (u.i.v)</em>:</p>
+<div id="def-unabhängig-und-identisch-verteilte-zufallsvariablen" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 14.11 (Unabhängig und identisch verteilte Zufallsvariablen)</strong></span> <span class="math inline">\(n\)</span> Zufallsvariablen <span class="math inline">\(\xi_1,...,\xi_n\)</span> heißen <em>unabhängig und identisch verteilt (u.i.v.)</em>, wenn</p>
+<ol type="1">
+<li><span class="math inline">\(\xi_1,...,\xi_n\)</span> unabhängige Zufallsvariablen sind, und</li>
+<li>die Marginalverteilungen der <span class="math inline">\(\xi_i\)</span> übereinstimmen, also gilt, dass <span class="math display">\[\begin{equation}
+\mathbb{P}_{\xi_i} = \mathbb{P}_{\xi_j} \mbox{ für alle } 1 \le i,j \le n.
+\end{equation}\]</span> Wenn die Zufallsvariablen <span class="math inline">\(\xi_1,...,\xi_n\)</span> unabhängig und identisch verteilt sind und die <span class="math inline">\(i\)</span>te Marginalverteilung <span class="math inline">\(\mathbb{P}_\xi := \mathbb{P}_{\xi_i}\)</span> ist, so schreibt man auch <span class="math display">\[\begin{equation}
+\xi_1,...,\xi_n \sim \mathbb{P}_\xi.
+\end{equation}\]</span></li>
+</ol>
+</div>
+<p>Man sagt kurz, dass “<span class="math inline">\(\xi_1,...,\xi_n\)</span> u.i.v.” sind. Im Englischen spricht man von <em>independent and identically distributed (i.i.d)</em> Zufallsvariablen. U.i.v. Zufallsvariablen spielen an vielen Stellen der probabilistischen Modellierung eine wichtige Rolle. So werden, wie wir an späterer Stelle sehen werden, additive Fehlerterme in probabilistischen Modellen meist durch u.i.v. Zufallsvariablen modelliert.</p>
+<p>Schließlich halten wir fest, dass <span class="math inline">\(n\)</span> u.i.v. normalverteilte Zufallsvektoren werden als <span class="math display">\[\begin{equation}
+\xi_1,...,\xi_n \sim N(\mu,\sigma^2)
+\end{equation}\]</span> geschrieben werden. In <a href="210-Multivariate-Normalverteilungen.html" class="quarto-xref"><span>Kapitel 20</span></a> zeigen wir, wie genau die gemeinsame Verteilung von <span class="math inline">\(n\)</span> u.i.v. normalverteilte Zufallsvektoren beschaffen ist.</p>
+</section>
+<section id="selbstkontrollfragen" class="level2" data-number="14.5">
+<h2 data-number="14.5" class="anchored" data-anchor-id="selbstkontrollfragen"><span class="header-section-number">14.5</span> Selbstkontrollfragen</h2>
+<ol type="1">
+<li>Geben Sie die Definition des Begriffs des Zufallsvektors wieder.</li>
+<li>Geben Sie die Definition des Begriffs der multivariaten Verteilung eines Zufallsvektors wieder.</li>
+<li>Geben Sie die Definition des Begriffs der multivariaten WMF wieder.</li>
+<li>Geben Sie die Definition des Begriffs der multivariaten WDF wieder.</li>
+<li>Geben Sie die Definition des Begriffs der univariaten Marginalverteilung eines Zufallsvektors wieder</li>
+<li>Wie berechnet man die WMF der <span class="math inline">\(i\)</span>ten Komponente eines diskreten Zufallsvektors?</li>
+<li>Wie berechnet man die WDF der <span class="math inline">\(i\)</span>ten Komponente eines kontinuierlichen Zufallsvektors?</li>
+<li>Geben Sie die Definition des Begriffs der Unabhängigkeit zweier Zufallsvariablen wieder.</li>
+<li>Wie erkennt man an der gemeinsamen WMF oder WDF eines zweidimensionalen Zufallsvektors, ob die Komponenten des Zufallsvektors unabhängig sind oder nicht?</li>
+<li>Geben Sie die Definition des Begriffs der Unabhängigkeit von <span class="math inline">\(n\)</span> Zufallsvariablen wieder.</li>
+<li>Geben Sie die Definition des Begriffs der <span class="math inline">\(n\)</span> unabhängig und identisch verteilten Zufallsvariablen wieder.</li>
+</ol>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-christensen2011" class="csl-entry" role="listitem">
+Christensen, R. (2011). <em>Plane <span>Answers</span> to <span>Complex Questions</span></em>. <span>Springer New York</span>. <a href="https://doi.org/10.1007/978-1-4419-9816-3">https://doi.org/10.1007/978-1-4419-9816-3</a>
+</div>
+<div id="ref-schmidt2009" class="csl-entry" role="listitem">
+Schmidt, K. D. (2009). <em><span>Ma<span>ß</span> und Wahrscheinlichkeit</span></em>. <span>Springer</span>.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Kopiert");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Kopiert");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./203-Zufallsvariablen.html" class="pagination-link  aria-label=" &lt;span="">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Zufallsvariablen</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./205-Erwartungswerte.html" class="pagination-link" aria-label="<span class='chapter-number'>15</span>&nbsp; <span class='chapter-title'>Erwartungswerte</span>">
+        <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Erwartungswerte</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/204-Zufallsvektoren.qmd" class="toc-action"><i class="bi bi-github"></i>Seite editieren</a></li></ul></div></div></div></footer></body></html>

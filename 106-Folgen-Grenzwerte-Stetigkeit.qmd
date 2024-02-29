@@ -1,0 +1,544 @@
+# Folgen, Grenzwerte, Stetigkeit {#sec-folgen-grenzwerte-stetigkeit}
+\normalsize
+
+Die in diesem Kapitel behandelten Themen sind in der probabilistischen Datenanayse 
+nicht zentral, sondern bilden Grundpfeiler der reellen Analysis. Durch die enge 
+Verschränkung der modernen Wahrscheinlichkeitstheorie mit analytischen Ansätzen
+dienen sie jedoch dem Verständnis von zum Beispiel dem Zentralen Grenzwertsatz,
+der eine Hauptgrundlage für die weit verbreitete Normalverteilungsannahme 
+in der probabilistischen Datenanalyse darstellt. In aller Kürze ist der Zentrale
+Grenzwertsatz eine Aussage über die Grenzfunktion einer Funktionenfolge, nämlich
+einer Folge von Zufallsvariablen. Das Wissen um das Wesen von Folgen, 
+Funktionenfolgen und ihren Grenzwerten erlaubt also ein tieferes Verständnis wichtiger
+Grundannahmen der probabilistischen Datenanalyse. Weiterhin ermöglichen die in
+diesem Kapitel behandelten Themen zumindest einen ersten Einstieg in das Verständnis
+der Stetigkeit und Glattheit von Funktionen, die insbesondere in der nichtlinearen
+Optimierung zu Bestimmung von Parameterschätzern in probabilistischen Modellen wichtige
+Grundkonzepte bilden.  
+
+## Folgen {#sec-folgen}
+Wir beginnen mit der Definition des Begriffs der *reellen Folge*.
+
+:::{#def-reelle-folge}
+## Reelle Folge
+Eine \textit{reelle Folge} ist eine Funktion der Form
+\begin{equation}
+f : \mathbb{N} \to \mathbb{R}, n \mapsto f(n)
+\end{equation}
+Die Funktionswerte $f(n)$ einer reellen Folge werden üblicherweise mit $x_n$
+bezeichnet und \textit{Folgenglieder} genannt. Übliche Schreibweisen für Folgen sind
+\begin{equation}
+(x_1,x_2,...) 
+\mbox{ oder } 
+(x_n)_{n=1}^\infty 
+\mbox{ oder } 
+(x_n)_{n\in \mathbb{N}}
+\mbox{ oder } 
+(x_n).
+\end{equation}
+:::
+
+Man beachte, dass weil es unendlich viele natürliche Zahlen gibt, eine reelle Folge
+immer unendlich viele Folgenglieder hat. Dies sollte man sich insbesondere bei
+der Schreibweise $(x_1,x_2,...)$ bewusst machen. Wir wollen zwei Standardbeispiele
+für reelle Folgen betrachten.
+
+**Beispiele für reelle Folgen**
+
+(1) Reelle Folgen der Form
+\begin{equation}
+f : \mathbb{N} \to \mathbb{R}, n \mapsto f(n) := \left(\frac{1}{n}\right)^{\frac{p}{q}} \mbox{ mit } p,q\in \mathbb{N}
+\end{equation}
+nennen wir *harmonische Folgen*. Für $p := q := 1$ hat eine harmonische Folge die Folgengliederform
+\begin{equation}
+\left(\frac{1}{1}, \frac{1}{2}, \frac{1}{3}, ...\right).
+\end{equation}
+
+(2) Reelle Folgen der Form
+\begin{equation}
+f : \mathbb{N} \to \mathbb{R}, n \mapsto f(n) := q^n \mbox{ mit } q \in ]-1,1[
+\end{equation}
+werden *geometrische Folgen* genannt. Für $q := \frac{1}{2}$ hat eine geometrische
+Folge die Folgengliederform
+\begin{align}
+\begin{split}
+\left(\left(\frac{1}{2}\right)^1,\left(\frac{1}{2}\right)^2,\left(\frac{1}{2}\right)^3, ...\right)    
+& = \left(\left(\frac{1}{2}\right)^1,\left(\frac{1}{2}\right)^2,\left(\frac{1}{2}\right)^3, ...\right)\\
+& = \left(\frac{1^1}{2^1},\frac{1^2}{2^2},\frac{1^3}{2^3} ...\right)                                  \\
+& = \left(\frac{1}{2},\frac{1}{4},\frac{1}{8} ...\right)
+\end{split}
+\end{align}
+
+
+Neben den reellen Folgen, die Folgen reeller Zahlen sind, kann man auch Folgen
+anderer mathematischer Objekte betrachten. Eine wichtige Folgenart sind die 
+*Funktionenfolgen*.
+
+:::{#def-funktionenfolge}
+## Funktionenfolge
+Es sei $\phi$ eine Menge univariater reellwertiger Funktionen mit Definitionsmenge
+$D \subseteq \mathbb{R}$. Dann ist eine Funktionenfolge eine Funktion der Form
+\begin{equation}
+F: \mathbb{N} \to \phi, n \mapsto F(n).
+\end{equation}
+Die Funktionswerte $F(n)$ einer Funktionenfolgen werden üblicherweise mit $f_n$
+bezeichnet und \textit{Folgenglieder} genannt. Übliche Schreibweisen für Funktionenfolgen
+sind 
+\begin{equation}
+(f_1,f_2,...) 
+\mbox{ oder } 
+(f_n)_{n=1}^\infty 
+\mbox{ oder } 
+(f_n)_{n\in \mathbb{N}}
+\mbox{ oder } 
+(f_n).
+\end{equation}
+:::
+
+Die Definition einer Funktionenfolge ist offenbar analog zur Definition einer reellen Folge.
+Der Unterschied zwischen einer reellen Folge und einer Funktionenfolge ist, dass die Folgenglieder
+einer reellen Folge reelle Zahlen, die Folgenglieder einer Funktionenfolgen dagegen univariate reellwertige Funktionen sind. Auch hier wollen wir zwei Standardbeispiel diskutieren.
+
+**Beispiele für Funktionenfolgen**
+
+(1) Wir betrachten die Menge $\phi$ der univariaten reellwertigen Funktionen der Form
+\begin{equation}
+\phi := \{f_n|f_n : [0,1] \to \mathbb{R}, x \mapsto f_n(x) := x^n \mbox{ für } n \in \mathbb{N}\}
+\end{equation}
+Dann definiert 
+\begin{equation}
+F : \mathbb{N} \to \phi, n\mapsto F(n)
+\end{equation}
+eine Funktionenfolge. Für die Funktionswerte der Folgenglieder von $F$ gilt
+\begin{equation}
+f_1(x) := x^1, f_2(x) := x^2,  f_3(x) := x^3, ...
+\end{equation}
+(2) Wir betrachten die Menge $\phi$ der univariaten reellwertigen Funktionen der Form
+\begin{equation}
+\phi := \{f_n|f_n : [-a,a] \to \mathbb{R}, x \mapsto f_n(x) := \sum_{k=0}^n \frac{x^k}{k!} \mbox{ für } n \in \mathbb{N}\}
+\end{equation}
+Dann definiert 
+\begin{equation}
+F : \mathbb{N} \to \phi, n\mapsto F(n)
+\end{equation}
+eine Funktionenfolge. Für die Funktionswerte der Folgenglieder von $F$ gilt
+\begin{equation}
+f_1(x) := \sum_{k=0}^1 \frac{x^k}{k!}, f_2(x) := \sum_{k=0}^2 \frac{x^k}{k!},  f_3(x) := \sum_{k=0}^3 \frac{x^k}{k!}, ...
+\end{equation}
+
+## Grenzwerte {#sec-grenzwerte}
+
+Wenn man die Folgenglieder einer Folge betrachtet, kann man sich fragen, welche
+Werte eine Folge wohl annimmt, wenn der Folgenindex $n$ sehr groß wird, also
+gegen unendlich strebt. Wenn in diesem Fall die Folgenglieder sehr ähnliche Werte
+annehmen (und nicht etwa auch unendlich groß werden), so ist man auf den Begriff
+des *Grenzwerts* für reelle Folgen bzw. der *Grenzfunktion* für Funktionenfolgen 
+geführt.
+
+:::{#def-grenzwert-einer-folge}
+## Grenzwert einer Folge
+$x \in \mathbb{R}$ heißt Grenzwert einer reellen Folge $(x_n)_{n=1}^\infty$, wenn
+es zu jedem $\epsilon>0$ ein $m \in \mathbb{N}$ gibt, so dass
+\begin{equation}
+|x_n - x| < \epsilon \mbox{ für alle } n \ge m.
+\end{equation}
+Eine Folge, die einen Grenzwert besitzt, wird \textit{konvergente Folge} genannt,
+eine Folge die keinen Grenzwert besitzt, wird \textit{divergente Folge} genannt.
+Dafür, dass $x \in \mathbb{R}$ Grenzwert der Folge  $(x_n)_{n=1}^\infty$ ist, schreibt 
+man auch
+\begin{equation}
+\lim_{n \to \infty} x_n = x 
+\mbox{ oder } 
+x_n \to x \mbox{ für } n \to \infty 
+\mbox{ oder }
+x_n\xrightarrow[]{n \to \infty} x.
+\end{equation}
+:::
+
+Der Grenzwert einer Folge kann also, aber muss nicht existieren. So hat zum Beispiel
+die Folge 
+\begin{equation}
+f : \mathbb{N} \to \mathbb{R}, n \mapsto f(n) := n
+\end{equation}
+keinen Grenzwert, da hier sowohl $n$ als auch $f(n)$ unendlich groß werden. Die
+oben betrachteten Beispiele für reelle Folgen dagegen haben Grenzwert. Dies ist
+Inhalt folgender Beispiele
+
+**Beispiele**
+
+(1) Für die verallgemeinerten harmonischen Folgen gilt mit $p,q \in \mathbb{N}$
+$$
+\lim_{n\to \infty} \left(\frac{1}{n}\right)^{\frac{p}{q}} = 0.
+$$ {#eq-lim-ham}
+
+(2) Für die geometrischen Folgen gilt mit $q \in ]-1,1[$
+$$
+\lim_{n\to \infty} q^n = 0.
+$$ {#eq-lim-geo}
+
+Man nennt die harmonischen und geometrischen Folgen entsprechend auch *Nullfolgen*.
+Für Beweise von @eq-lim-ham und @eq-lim-geo verweisen wir auf die weiterführende 
+Literatur. Tatsächlich sind diese Beweise nicht trivial und rühren an die 
+Grundannahmen über das Wesen der reellen Zahlen.  Wir visualisieren die ersten 
+zehn Folgenglieder sowie die Grenzwerte der harmonischen Folge fr $p := q := 1$ 
+und der geometrischen Folge für $q := 1/2$ in @fig-reelle-folgen-grenzwerte.
+
+```{r, echo = F, eval = F}
+pdf(
+file        = "./_figures/106-reelle-folgen-grenzwerte.pdf",
+width       = 10,
+height      = 5)
+
+library(latex2exp)
+par(
+mfcol     = c(1,2),
+family    = "sans",
+pty       = "s",
+bty       = "l",
+lwd       = 1,
+las       = 1,
+mgp       = c(2,1,0),
+font.main = 1,
+cex.main  = 1.2)
+
+# Folgendefinition
+n         = 1:10                                                                 # Definitionsmenge
+f_h       = 1/n                                                                 # Harmonische Folge für p := q := 1
+f_g       = (1/2) ** n                                                          # Geometrische Folge für q := 1/2
+
+# Harmonische folge für p := q := 1
+plot(
+n,
+f_h,
+type      = "p",
+xlim      = c(0,11),
+ylim      = c(-.1,1),
+ylab      = " ",
+xlab      = "n",
+main      = "" )
+abline(
+0,
+0,
+col       = "gray")
+legend(
+6,
+1,
+c(TeX("$\\frac{1}{n}$"), TeX("$\\lim_{n \\to \\infty} \\frac{1}{n}$")),
+cex       = 1,
+lty       = c(0,1),
+pch       = c(1,NA),
+col       = c("gray30", "gray70"),
+lwd       = c(1,1),
+y.intersp = 1.5,
+bty       = "n")
+
+# Geometrische Folge für q := 1/2
+plot(
+n,
+f_g,
+type      = "p",
+xlim      = c(0,11),
+ylim      = c(-.1,1),
+ylab      = " ",
+xlab      = "n",
+main      = "")
+abline(
+0,
+0,
+col       = "gray")
+legend(
+6,
+1,
+c(TeX("$\\left(\\frac{1}{2}\\right)^n$"), TeX("$\\lim_{n \\to \\infty} \\left(\\frac{1}{2}\\right)^n$")),
+cex       = 1,
+lty       = c(0,1),
+pch       = c(1,NA),
+col       = c("gray30", "gray70"),
+lwd       = c(1,1),
+y.intersp = 1.5,
+bty       = "n")
+dev.off()
+```
+
+![Beispiele für Grenzwerte reeller Folgen.](./_figures/106-reelle-folgen-grenzwerte){#fig-reelle-folgen-grenzwerte fig-align="center"}
+
+Für Funktionenfolgen ist eine Möglichkeit der Erweiterung der Begriffe der Konvergenz
+und des Grenzwertes folgende.
+
+:::{#def-grenzfunktion-einer-funktionenfolge}
+## Punktweise Konvergenz und Grenzfunktion einer Funktionenfolge
+$F = (f_n)_{n\in \mathbb{N}}$ sei eine Funktionenfolge von univariaten reellwertigen
+Funktionen mit Definitionsbereich $D$. $F$ heißt \textit{punktweise konvergent}, 
+wenn die reelle Folge $\left(f_n(x)\right)_{n\in \mathbb{N}}$ für jedes $x \in D$
+eine konvergente Folge ist, also einen Grenzwert besitzt. Die Funktion, die jedem 
+$x \in D$ diesen Grenzwert von $\left(f_n(x)\right)_{n\in \mathbb{N}}$ zuordnet, 
+heißt dann die \textit{Grenzfunktion  der Funktionenfolge $F$} und hat die Form
+\begin{equation}
+f : D \to \mathbb{R}, x \mapsto f(x) := \lim_{n\to \infty}f_n(x).
+\end{equation}
+:::
+
+Man beachte, dass die Grenzwerte von konvergenten reellen Folgen reelle Zahlen sind, 
+die Grenzfunktionen von punktweise konvergenten Funktionenfolgen dagegen sind Funktionen.
+Neben der punktweisen Konvergenz von Funktionenfolgen gibt es noch den mächtigeren 
+Begriff der *gleichmäßigen Konvergenz* von Funktionenfolgen, für den wir aber auf
+die weiterführende Literatur verweisen. Als Beispiel betrachten wir die Grenzfunktionen
+der oben diskutierten Funktionenfolgen, wobei wir für Beweise ebenfalls auf
+die weiterführende Literatur verweisen.
+
+**Beispiele**
+
+(1) Wir betrachten die Funktionenfolge
+\begin{equation}
+F : \mathbb{N} \to \phi, n\mapsto F(n)
+\end{equation}
+mit 
+\begin{equation}
+\phi := \{f_n|f_n : [0,1] \to \mathbb{R}, x \mapsto f_n(x) := x^n \mbox{ für } n \in \mathbb{N}\}
+\end{equation}
+Dann ist $F$ punktweise konvergent mit Grenzfunktion
+\begin{equation}
+f : [0,1] \to \mathbb{R}, x \mapsto f(x)
+:= 
+\begin{cases}
+0, & \mbox{ für } x \in [0,1[ \\
+1, & \mbox{ für } x = 1       \\
+\end{cases}
+\end{equation}
+da $f_n(x) := x^n$ für $x \in [0,1[$ eine geometrische Folge und damit eine 
+Nullfolge ist und $f_n(x) := x^n$ für $x = 1$ eine konstante Folge ist, für die 
+alle Folgenglieder den Abstand $0$ von $1$ haben. Die Funktionenfolge $F$ 
+konvergiert also gegen eine Funktion, die auf dem gesamten Intervall $[0,1]$
+gleich Null ist, außer im Punkt $1$. Diese Funktion hat offenbar einen Sprung.
+
+(2) Wir betrachten die Funktionenfolge
+\begin{equation}
+F : \mathbb{N} \to \phi, n\mapsto F(n)
+\end{equation}
+mit 
+\begin{equation}
+\phi := \{f_n|f_n : [-a,a] \to \mathbb{R}, x \mapsto f_n(x) := \sum_{k=0}^n \frac{x^k}{k!} \mbox{ für } n \in \mathbb{N}\}
+\end{equation}
+Dann ist $F$ punktweise konvergent mit Grenzfunktion
+\begin{equation}
+f : [-a,a] \to \mathbb{R}, x \mapsto f(x)
+:= \sum_{k=0}^\infty \frac{x^k}{k!} 
+=: \exp(x)
+\end{equation}
+Die Funktionenfolge $F$ konvergiert also gegen die Exponentialfunktion auf $[-a,a]$.
+Umgekehrt betrachtet ist die Exponentialfunktion gerade durch
+\begin{equation}
+\exp(x) :=  \sum_{k=0}^\infty \frac{x^k}{k!}
+\end{equation}
+definiert.
+
+
+```{r, echo = F, eval = F}
+# PDF Speicherung
+pdf(
+file        = "./_figures/106-funktionenfolgen-grenzwerte.pdf",
+width       = 10,
+height      = 5)
+library(latex2exp)
+par(
+mfcol     = c(1,2),
+family    = "sans",
+pty       = "s",
+bty       = "l",
+lwd       = 1,
+las       = 1,
+mgp       = c(2,1,0),
+font.main = 1,
+cex.main  = 1.5)
+
+# f_n(x) := x^n
+x_min     = 0                                                                   # minimum x-value
+x_max     = 1                                                                   # maximum x-value
+x_res     = 1e3                                                                 # x-space resolution
+x         = seq(x_min,x_max,len = x_res)                                        # x-space
+f_nx      = cbind(matrix(x**1), matrix(x**2), matrix(x**3), matrix(x**4))       # f_n(x) := x^n für n = 1,2,3,4
+matplot(
+x,
+f_nx,
+type      = "l",
+lty       = 1,
+lwd       = 2,
+col       = c("gray10", "gray30", "gray50", "gray70", "red"),
+xlim      = c(x_min,x_max),
+ylim      = c(x_min,x_max),
+ylab      = " ",
+xlab      = "x",
+main      = TeX("$f_n(x) := x^n$"))
+lines(
+x,
+rep(0,length(x)),
+lwd       = 2,
+col       = "red")
+points(
+1,
+1,
+lwd       = 2,
+col       = "red")
+
+legend(
+0,
+1,
+c(TeX("$f_1$"),TeX("$f_2$"),TeX("$f_3$"), TeX("$f_4$"), TeX("f")), 
+cex       = 1.2,
+lty       = 1,
+col       = c("gray10", "gray30", "gray50", "gray70", "red"),
+lwd       = 2,
+y.intersp = 1,
+bty       = "n")
+
+# f_n(x) := \sum_{k=0}^n x^k/k!
+x_min     = -2                                                                  # minimum x-value
+x_max     = 2                                                                   # maximum x-value
+x_res     = 1e2                                                                 # x-space resolution
+x         = seq(x_min,x_max,len = x_res)                                        # x-space
+n_max     = 4                                                                   # maximal n value
+xt        = matrix(rep(NaN,x_res*(n_max+1)), nrow = x_res)                      # x-terms of the summation defintion
+for(i in 1:x_res){                                                              # x value iterations
+  for(k in 0:n_max){                                                            # k value iterations
+    xt[i,k+1] = (x[i]**k)/factorial(k)
+  }
+}
+f_nx      = cbind(matrix(rowSums(xt[,1:2])),                                    # f_n(x) :=\sum_{k=0}^n x^k/k! für n = 1,2,3,4
+                  matrix(rowSums(xt[,1:3])),
+                  matrix(rowSums(xt[,1:4])),
+                  matrix(rowSums(xt[,1:5])))           
+matplot(
+x,
+f_nx,
+type      = "l",
+lty       = 1,
+lwd       = 2,
+col       = c("gray10", "gray30", "gray50", "gray70"),
+xlim      = c(x_min,x_max),
+ylab      = " ",
+xlab      = "x",
+main      = TeX("$f_n(x) := \\sum_{k=0}^n \\frac{x^k}{x!}$"))
+lines(
+x, 
+exp(x),
+type      = "l",
+lwd       = 2,
+col       = "red")
+legend(
+-2,
+7,
+c(TeX("$f_1$"),TeX("$f_2$"),TeX("$f_3$"), TeX("$f_4$"), TeX("$\\exp$")), 
+cex       = 1.2,
+lty       = 1,
+col       = c("gray10", "gray30", "gray50", "gray70", "red"),
+lwd       = 2,
+y.intersp = 1,
+bty       = "n")
+dev.off()
+```
+
+![Beispiele für Grenzwerte von Funktionenfolgen](./_figures/106-funktionenfolgen-grenzwerte){#fig-funktionenfolgen-grenzwerte fig-align="center"}
+
+## Stetigkeit {#stetigkeit}
+
+In diesem Abschnitt versuchen wir uns dem Begriff der *Stetigkeit* einer Funktion
+zu nähern. Intuitiv ist eine Funktion stetig, wenn sie keine Sprünge hat oder äquivalent,
+wenn kleine Änderungen in ihren Argumenten stets nur zu kleinen Änderungen in ihren
+Funktionswerten (und damit eben keinen Sprüngen) führen. Zur Definition der Stetigkeit
+benötigen wir zunächst den Begriff des *Grenzwertes einer Funktion*.
+
+:::{#def-grenzwert-einer-funktion}
+## Grenzwert einer Funktion
+Für $D\subseteq\mathbb{R}$ und $Z\subseteq\mathbb{R}$ sei $f : D \to Z, x \mapsto f(x)$
+eine Funktion und es seien $a,b \in \mathbb{R}$. $b$ heißt \textit{Grenzwert
+der Funktion $f$ für $x$ gegen $a$}, wenn 
+\begin{itemize}
+\item[(1)] es eine reelle Folge $(x_n)_{n=1}^\infty$ mit Folgengliedern in $D$ 
+mit Grenzwert $a$ gibt, also $\lim_{n \to \infty} x_n = a$ gilt, und
+\item[(2)] für jede solche Folge gilt, dass $b$ der Grenzwert der Folge der 
+Funktionswerte $f(x_n)$ der Folgenglieder von $(x_n)_{n=1}^\infty$ ist, also
+$\lim_{n \to \infty} f(x_n) = b$ gilt. 
+\end{itemize}
+Wenn $b$ Grenzwert der Funktion $f$ für $x$ gegen $a$ ist, so schreibt man auch 
+$\lim_{x \to a} f(x) = b$.
+:::
+In @fig-grenzwert-einer-funktion visualisieren wir den Grenzwert der Exponential
+funktion in $a = 1$ durch Darstellung von Folgenglieder $x_n \to 1$ und den
+entsprechenden Folgengliedern $f(x_n)$. Offenbar gilt $\lim_{x\to 1}\exp(x) = e$.
+
+```{r, echo = F, eval = F}
+# PDF Speicherung
+pdf(
+file        = "./_figures/106-grenzwert-einer-funktion.pdf",
+width       = 5,
+height      = 5)
+library(latex2exp)
+par(
+mfcol     = c(1,1),
+family    = "sans",
+pty       = "m",
+bty       = "l",
+lwd       = 1,
+las       = 1,
+mgp       = c(2,1,0),
+font.main = 1,
+cex.main  = 1)
+
+# f(x) := exp(x)
+x_min     = 0.5                                                                 # minimum x-value
+x_max     = 1.2                                                                 # maximum x-value
+x_res     = 1e3                                                                 # x-space resolution
+x         = seq(x_min,x_max,len = x_res)                                        # x-space
+a         = 1                                                                   # Häufungspunkt von Interesse
+n_max     = 10                                                                  # Maximum n für geometrische Folge
+f_g       = (1/2)**(1:n_max)                                                    # geometrische Folge  
+xtoa      = 1 - f_g                                                             # x \to a
+fxtoa     = exp(xtoa)                                                           # f(x \to a) =    
+fx        = exp(x)                                                              # Exponentialfunktion
+plot(
+x,
+fx,
+type      = "l",
+lty       = 1,
+lwd       = 2,
+xlim      = c(x_min,x_max),
+ylim      = c(1.5,exp(x_max)),
+xlab      = "x",
+ylab      = " ")
+points(
+xtoa,
+rep(1.5,length(xtoa)),
+pch       = 21,
+col       = "black",
+bg        = "white")
+points(
+xtoa,
+fxtoa,
+pch       = 21,
+col       = "gray",
+bg        = "white")
+dev.off()
+```
+
+![Beispiele für einen Grenzwert einer Funktion](./_figures/106-grenzwert-einer-funktion){#fig-grenzwert-einer-funktion fig-align="center" width=50%}
+
+Wir können nun den Begriff der Stetigkeit einer Funktion definieren.
+
+:::{#def-stetigkeit-einer-funktion}
+## Stetigkeit einer Funktion
+Eine Funktion $f : D \to Z$ mit $D \subseteq \mathbb{R}, Z \subseteq \mathbb{R}$
+heißt \textit{stetig in $a \in D$}, wenn
+\begin{equation}
+\lim_{x\to a} f(x) = f(a).
+\end{equation}
+Ist $f$ in jedem $x \in D$ stetig, so heißt \textit{$f$ stetig auf $D$}.
+:::
+
+Man beachte, dass für eine in $a$ stetige Funktion folgt, dass
+\begin{equation}
+\lim_{x \to a} f(x) = f\left(\lim_{x\to a} x\right)
+\end{equation}
+Bei stetigen Funktion können also Grenzwertbildung und Auswertung der Funktion 
+vertauscht werden.
+
+

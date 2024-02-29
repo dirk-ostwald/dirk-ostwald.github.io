@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.549">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Probabilistische Datenwissenschaft für die Psychologie - 23&nbsp; Konfidenzintervalle</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./304-Hypothesentests.html" rel="next">
+<link href="./302-Punktschätzung.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Keine Treffer",
+    "search-matching-documents-text": "Treffer",
+    "search-copy-link-title": "Link in die Suche kopieren",
+    "search-hide-matches-text": "Zusätzliche Treffer verbergen",
+    "search-more-match-text": "weitere Treffer in diesem Dokument",
+    "search-more-matches-text": "weitere Treffer in diesem Dokument",
+    "search-clear-button-title": "Zurücksetzen",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Abbrechen",
+    "search-submit-button-title": "Abschicken",
+    "search-label": "Suchen"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./301-Grundbegriffe.html">Frequentistische Inferenz</a></li><li class="breadcrumb-item"><a href="./303-Konfidenzintervalle.html"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Konfidenzintervalle</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Probabilistische Datenwissenschaft für die Psychologie</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages" title="Quellcode" class="quarto-navigation-tool px-1" aria-label="Quellcode"><i class="bi bi-github"></i></a>
+    <a href="./Probabilistische-Datenwissenschaft-für-die-Psychologie.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Suchen"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Willkommen</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Mathematische Grundlagen</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./101-Sprache-und-Logik.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Sprache und Logik</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./102-Mengen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Mengen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./103-Summen-Produkte-Potenzen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Summen, Produkte, Potenzen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./104-Funktionen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Funktionen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./105-Differentialrechnung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Differentialrechnung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./106-Folgen-Grenzwerte-Stetigkeit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Folgen, Grenzwerte, Stetigkeit</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./107-Integralrechnung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Integralrechnung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./108-Vektoren.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Vektoren</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./109-Matrizen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Matrizen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./110-Eigenanalyse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Eigenanalyse</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./200-Wahrscheinlichkeitstheorie.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Wahrscheinlichkeitstheorie</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./201-Wahrscheinlichkeitsräume.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Wahrscheinlichkeitsräume</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./202-Elementare-Wahrscheinlichkeiten.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Elementare Wahrscheinlichkeiten</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./203-Zufallsvariablen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Zufallsvariablen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./204-Zufallsvektoren.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Zufallsvektoren</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./205-Erwartungswerte.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Erwartungswerte</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./206-Ungleichungen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Ungleichungen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./207-Grenzwerte.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Grenzwerte</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./208-Transformationstheoreme.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Transformationstheoreme</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./209-Normalverteilungstransformationen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Normalverteilungstransformationen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./210-Multivariate-Normalverteilungen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Multivariate Normalverteilungen</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Frequentistische Inferenz</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./301-Grundbegriffe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Grundbegriffe</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./302-Punktschätzung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Punktschätzung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./303-Konfidenzintervalle.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Konfidenzintervalle</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./304-Hypothesentests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Hypothesentests</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Das Allgemeine Lineare Modell</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./401-Regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Regression</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./402-Korrelation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Korrelation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./403-Modellformulierung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Modellformulierung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./404-Parameterschätzung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Parameterschätzung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./405-T-Statistiken.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">T-Statistiken</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./406-F-Statistiken.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">F-Statistiken</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./407-T-Tests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">T-Tests</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./408-Einfaktorielle-Varianzanalyse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Einfaktorielle Varianzanalyse</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./409-Zweifaktorielle-Varianzanalyse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Zweifaktorielle Varianzanalyse</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./410-Partielle-Korrelation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Partielle Korrelation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./411-Multiple-Regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Multiple Regression</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Multivariate Inferenz</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./501-Datendeskription.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Datendeskription</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./502-Einstichproben-T2-Tests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Einstichproben-T<span class="math inline">\(^2\)</span>-Tests</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./503-Einfaktorielle-Varianzanalyse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Einfaktorielle Varianzanalyse</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./504-Kanonische-Korrelationsanalyse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">Kanonische Korrelationsanalyse</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Referenzen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Referenzen</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Inhaltsverzeichnis</h2>
+   
+  <ul>
+  <li><a href="#sec-definition" id="toc-sec-definition" class="nav-link active" data-scroll-target="#sec-definition"><span class="header-section-number">23.1</span> Definition</a></li>
+  <li><a href="#sec-beispiele-fuer-konfidenzintervalle" id="toc-sec-beispiele-fuer-konfidenzintervalle" class="nav-link" data-scroll-target="#sec-beispiele-fuer-konfidenzintervalle"><span class="header-section-number">23.2</span> Beispiele für Konfidenzintervalle</a>
+  <ul class="collapse">
+  <li><a href="#konfidenzintervall-für-den-erwartungswertparameter-des-normalverteilungsmodells" id="toc-konfidenzintervall-für-den-erwartungswertparameter-des-normalverteilungsmodells" class="nav-link" data-scroll-target="#konfidenzintervall-für-den-erwartungswertparameter-des-normalverteilungsmodells">Konfidenzintervall für den Erwartungswertparameter des Normalverteilungsmodells</a></li>
+  <li><a href="#konfidenzintervall-für-den-varianzparameter-des-normalverteilungsmodells" id="toc-konfidenzintervall-für-den-varianzparameter-des-normalverteilungsmodells" class="nav-link" data-scroll-target="#konfidenzintervall-für-den-varianzparameter-des-normalverteilungsmodells">Konfidenzintervall für den Varianzparameter des Normalverteilungsmodells</a></li>
+  </ul></li>
+  <li><a href="#sec-anwendungsbeispiel" id="toc-sec-anwendungsbeispiel" class="nav-link" data-scroll-target="#sec-anwendungsbeispiel"><span class="header-section-number">23.3</span> Anwendungsbeispiel</a></li>
+  <li><a href="#literaturhinweise" id="toc-literaturhinweise" class="nav-link" data-scroll-target="#literaturhinweise"><span class="header-section-number">23.4</span> Literaturhinweise</a></li>
+  <li><a href="#selbstkontrollfragen" id="toc-selbstkontrollfragen" class="nav-link" data-scroll-target="#selbstkontrollfragen"><span class="header-section-number">23.5</span> Selbstkontrollfragen</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/303-Konfidenzintervalle.qmd" class="toc-action"><i class="bi bi-github"></i>Seite editieren</a></li></ul></div></nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./301-Grundbegriffe.html">Frequentistische Inferenz</a></li><li class="breadcrumb-item"><a href="./303-Konfidenzintervalle.html"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Konfidenzintervalle</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-konfidenzintervalle" class="quarto-section-identifier"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Konfidenzintervalle</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Konfidenzintervalle stellen eine Intervallschätzung wahrer, aber unbekannter, Parameter dar, die so konstruiert ist, dass sie in den meisten Fällen zutrifft. Dabei wird die gegenüber der Punktschätzung gewonnene Sicherheit hinsichtlich der Akkuratheit der Schätzung durch einen Verlust der Genauigkeit der Schätzung erkauft. Wo im Bereich der Punktschätzung zum Beispiel die Schätzung eines wahren, aber unbekannten, Parameterwertes von <span class="math inline">\(\theta = 2\)</span> durch einen Punktschätzer der Form <span class="math inline">\(\hat{\theta}\)</span> zwar sehr genau erfolgt, z.B. durch <span class="math inline">\(\hat{\theta} = 2.14\)</span> ist diese Schätzung zum Beispiel vor dem Hintergrund der verschwindenen Wahrscheinlichkeit einer normalverteilten Zufallsvariable wie dem Stichprobenmittel im Normalverteilungsmodell genau einen reellen Wert anzunehmen mit sehr hoher Sicherheit falsch. Durch eine Intervallschätzung des wahren, aber unbekannten Parameters durch z.B. <span class="math inline">\([1.94, 2.34]\)</span> ist eine gröbere Schätzung gegeben, die jedoch wie im folgenden thematisiert so konstruiert werden kann, dass sie mit einer hohen gewünschten Wahrscheinlichkeit, also, vor der Form eines geeigneten Frequentistischen Inferenzmodell nur mit einem geringes Maß an Unsicherheit assoziiert ist. Um diese Intuition formal darzustellen, fokussieren wir in diesem Kapitel zunächst auf eindimensionale Parameterräume, also <span class="math inline">\(\Theta \subseteq \mathbb{R}\)</span> und damit in der Tat nur Konfidenz<em>intervalle</em>, d.h. Teilmengen von <span class="math inline">\(\mathbb{R}\)</span>. Eine Generalisierung der hier vorgestellten Konzepte auf höher dimensionale Parameterräume im Sinne von Konfidenz<em>mengen</em> ist jedoch relativ unproblematisch möglich.</p>
+<section id="sec-definition" class="level2" data-number="23.1">
+<h2 data-number="23.1" class="anchored" data-anchor-id="sec-definition"><span class="header-section-number">23.1</span> Definition</h2>
+<div id="def-delta-konfidenzintervall" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 23.1 (<span class="math inline">\(\delta\)</span>-Konfidenzintervall)</strong></span> Es sei <span class="math inline">\(\upsilon\)</span> die Stichprobe eines Frequentistischen Inferenzmodells mit wahrem, aber unbekannten Parameter, <span class="math inline">\(\theta \in \Theta\)</span>, es sei <span class="math inline">\(\delta \in \,]0,1[\)</span> und es seien <span class="math inline">\(G_u(\upsilon)\)</span> und <span class="math inline">\(G_o(\upsilon)\)</span>. Dann heißt ein Intervall der Form <span class="math display">\[\begin{equation}
+\kappa(\upsilon) := [G_u(\upsilon), G_o(\upsilon)],
+\end{equation}\]</span> so dass <span class="math display">\[\begin{equation}
+\mathbb{P}_\theta\left(\kappa(\upsilon) \ni \theta\right) =
+\mathbb{P}_\theta\left(G_u(\upsilon) \le \theta \le G_o(\upsilon) \right) =
+\delta \mbox{ für alle } \theta \in \Theta \mbox{ gilt}
+\end{equation}\]</span> ein <em><span class="math inline">\(\delta\)</span>-Konfidenzintervall für <span class="math inline">\(\theta\)</span></em>. <span class="math inline">\(\delta\)</span> ist die Überdeckungswahrscheinlichkeit von <span class="math inline">\(\kappa(\upsilon)\)</span> für <span class="math inline">\(\theta\)</span> und wird meist <em>Konfidenzlevel</em> genannt. Die Statistiken <span class="math inline">\(G_u(\upsilon)\)</span> und <span class="math inline">\(G_o(\upsilon)\)</span> heißen die unteren und oberen Grenzen des Konfidenzintervalls, respektive.</p>
+</div>
+<p>Man beachte in <a href="#def-delta-konfidenzintervall" class="quarto-xref">Definition&nbsp;<span>23.1</span></a> dass, wie in allen Frequentistischen Inferenzmodellen, der Parameter <span class="math inline">\(\theta\)</span> ein wahrer, aber unbekannter, Wert und damit insbesondere fest, nicht zufällig, ist. Weil die oberen und unteren Grenzen eines Konfidenzintervalls als Funktionen der zufälligen Stichprobe Zufallsvariablen sind, ist das durch sie definierte Konfidenzintervall ein zufälliges Intervall. Die etwas ungewöhnliche Schreibweise <span class="math inline">\(\kappa(\upsilon) \ni \theta\)</span> bedeutet schlicht <span class="math inline">\(\theta \in \kappa(\upsilon)\)</span>. Da <span class="math inline">\(\kappa(\upsilon)\)</span> in dem Ausdruck <span class="math inline">\(\mathbb{P}_\theta\left(\kappa(\upsilon) \ni \theta\right)\)</span> wie beschrieben die zufällige Entität ist, steht <span class="math inline">\(\kappa(\upsilon)\)</span> konventionellerweise links, man denke zum Beispiel an einen Ausdruck wie <span class="math inline">\(\mathbb{P}(\xi = x)\)</span>. Ein <span class="math inline">\(\delta\)</span>-Konfidenzintervall überdeckt den wahren, aber unbekannten, Parameter <span class="math inline">\(\theta\)</span> nach Definition mit Wahrscheinlichkeit <span class="math inline">\(\delta\)</span>. Dabei wird oft eine hohe Überdeckungswahrscheinlichkeit von <span class="math inline">\(\delta := 0.95\)</span> gewählt, in diesem Fall spricht man von einem <em><span class="math inline">\(95\%\)</span>-Konfidenzintervall</em>.</p>
+<p>Intuitiv mag man <span class="math inline">\(\delta\)</span>-Konfidenzintervalle auf zwei Arten interpretieren. Im ersten Fall geht man von der Wiederholung der unabhängigen Realisierung von Stichproben bei immer identischen wahren, aber unbekannten, Parameter <span class="math inline">\(\theta\)</span> aus. Wiederholt man die Realisierung von Daten also “unter immer den gleichen Umständen” und bei identischen wahren, aber, unbekannten, Parameter <span class="math inline">\(\theta\)</span>, so überdeckt ein <span class="math inline">\(\delta\)</span>-Konfidenzintervall diesen wahren, aber unbekannten, Parameter im langfristigen Mittel in <span class="math inline">\(\delta\cdot 100 \%\)</span> der realisierten Fälle. Alternativ gilt diese Frequentistische Wahrscheinlichkeit für die Überdeckung des wahren, aber unbekannten, Parameters nach <a href="#def-delta-konfidenzintervall" class="quarto-xref">Definition&nbsp;<span>23.1</span></a> jedoch auch für jeden beliebigen wahren, aber unbekannten, Parameterwert <span class="math inline">\(\theta_i, i = 1,2,...\)</span>. Auch wenn man also unterschiedliche, wahre, aber unbekannte, Parameterwerte <span class="math inline">\(\theta_1,\theta_2,...\)</span> betrachtet und in jedem Fall eine, von den anderen Realisierungen unabhängige, Realisierung der Stichprobe erfasst, so überdecken die entsprechenden <span class="math inline">\(\delta\)</span>-Konfidenzintervalle diese wahren, aber unbekannten, Parameter im langfristigen Mittel in <span class="math inline">\(\delta\cdot 100 \%\)</span> der Fälle. Intuitiv braucht man also “eine Studie”, also die Untersuchung eines wahren, aber unbekannten, Parameterwerts, nicht unter den gleichen Umständen “unendlich oft wiederholen”, um von der Überdeckungswahrscheinlichkeit eines Konfidenzintervalls zu profitieren, sondern es genügt in “unterschiedlichen Studien”, also den Untersuchungen unterschiedlicher wahrer, aber unbekannten, Parameter, Konfidenzintervalle gemäß <a href="#def-delta-konfidenzintervall" class="quarto-xref">Definition&nbsp;<span>23.1</span></a> zu bestimmen, auch im diesen Fall ist ihre Überdeckungswahrscheinlichkeit für die wahren, aber unbekannten Parameter, gesichert. Wir demonstrieren diese beiden Interpretationen in der Folge mithilfe einer Simulation.</p>
+<p>Um nun für gegeben Frequentistische Inferenzmodelle <span class="math inline">\(\delta\)</span>-Konfidenzintervalle durch eine konkrete Angabe der Statistiken <span class="math inline">\(G_u(\upsilon)\)</span> und <span class="math inline">\(G_o(\upsilon)\)</span> zu konstruieren, geht man vor wie folgt. Zunächst definiert man das Frequentistische Inferenzmodell und legt damit die Verteilung der Stichprobe <span class="math inline">\(\upsilon\)</span> fest. In einem zweiten Schritt definiert man eine Statistik, also eine Funktion der Stichprobe, die als Grundlage für <span class="math inline">\(G_u(\upsilon)\)</span> und <span class="math inline">\(G_o(\upsilon)\)</span> dienen mag und analysiert ihre, auf der Stichprobenverteilung basierende, Verteilung. Hat man die entsprechende Verteilung gefunden, so kann man diese dazu nutzen, die Überdeckungswahrscheinlichkeit des wahren, aber unbekannten, Parameters durch ein entsprechend definiertes Konfidenzintervall zu sichern. Wir zeichnen dieses Verfahren in der Entwicklung und den konstruktiven Beweisen der folgenden Beispiele nach.</p>
+</section>
+<section id="sec-beispiele-fuer-konfidenzintervalle" class="level2" data-number="23.2">
+<h2 data-number="23.2" class="anchored" data-anchor-id="sec-beispiele-fuer-konfidenzintervalle"><span class="header-section-number">23.2</span> Beispiele für Konfidenzintervalle</h2>
+<section id="konfidenzintervall-für-den-erwartungswertparameter-des-normalverteilungsmodells" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="konfidenzintervall-für-den-erwartungswertparameter-des-normalverteilungsmodells">Konfidenzintervall für den Erwartungswertparameter des Normalverteilungsmodells</h3>
+<p>Wir betrachten die Konstruktion eines <span class="math inline">\(\delta\)</span>-Konfidenzintervalls für den Erwartungswertparameter des Normalverteilungsmodells. Zu diesem Zweck definieren wir zunächst folgende Konfidenzintervallstatistik.</p>
+<div id="def-t-konfidenzintervallstatistik" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 23.2 (<span class="math inline">\(T\)</span>-Konfidenzintervallstatistk)</strong></span> Gegeben sei das Normalverteilungsmodell <span class="math display">\[\begin{equation}
+\upsilon_1,...,\upsilon_n \sim N\left(\mu,\sigma^2\right)
+\end{equation}\]</span> Dann heißt die mit dem Stichprobenmittel und der Stichprobenstandardabweichung <span class="math display">\[\begin{equation}
+\bar{\upsilon} := \frac{1}{n}\sum_{i=1}^n \upsilon_i \mbox{ und } S := \sqrt{\frac{1}{n-1}\sum_{i=1}^n(\upsilon_i - \bar{\upsilon})^2},
+\end{equation}\]</span> definierte Statistik <span class="math display">\[\begin{equation}
+T := \sqrt{n}\frac{\bar{\upsilon} - \mu}{S}
+\end{equation}\]</span> <em><span class="math inline">\(T\)</span>-Konfidenzintervallstatistik</em>.</p>
+</div>
+<p>Für die Verteilung der <span class="math inline">\(T\)</span>-Konfidenzintervallstatistik gilt folgendes Theorem.</p>
+<div id="thm-verteilung-der-t-konfidenzintervallstatistik" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 23.1 (Verteilung der <span class="math inline">\(T\)</span>-Konfidenzintervallstatistik)</strong></span> Die <span class="math inline">\(T\)</span>-Konfidenzintervallstatistik ist eine <span class="math inline">\(t\)</span>-verteilte Zufallsvariable mit Parameter <span class="math inline">\(n-1\)</span>, es gilt also <span class="math display">\[\begin{equation}
+T \sim t(n-1)
+\end{equation}\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Beweis</em>. </span></p>
+</div>
+<p>Man beachte, dass die <span class="math inline">\(T\)</span>-Konfidenzintervallstatistik nach <a href="#def-t-konfidenzintervallstatistik" class="quarto-xref">Definition&nbsp;<span>23.2</span></a> eine Funktion der Stichprobe ist, während ihre Verteilung nach <a href="#thm-verteilung-der-t-konfidenzintervallstatistik" class="quarto-xref">Theorem&nbsp;<span>23.1</span></a> unabhängig von den wahren, aber unbekannten, Parametern der Stichprobenverteilung ist. Man nennt dies auch die <em>Pivoteigenschaft</em> der <span class="math inline">\(T\)</span>-Konfidenzeigenschaft. Für die folgenden Entwicklungen erinnern wir daran, dass wir die WDF einer <span class="math inline">\(t\)</span>-verteilten Zufallvariable mit <span class="math inline">\(t\)</span>, die KVF einer <span class="math inline">\(t\)</span>-verteilten Zufallvariable mit <span class="math inline">\(\Psi\)</span> und die inverse KVF einer <span class="math inline">\(t\)</span>-verteilten Zufallvariable mit <span class="math inline">\(\Psi^{-1}\)</span> bezeichnen. Folgender <strong>R</strong> Code simuliert zunächst die Verteilung der <span class="math inline">\(T\)</span>-Konfidenzintervallstatistitk.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># Modellformulierung</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a>mu       <span class="ot">=</span> <span class="dv">10</span>                                         <span class="co"># wahrer, aber unbekannter, Erwartungswertparameter</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a>sigsqr   <span class="ot">=</span> <span class="dv">4</span>                                          <span class="co">#  wahrer, aber unbekannter, Varianzparameter</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a>n        <span class="ot">=</span> <span class="dv">12</span>                                         <span class="co"># Stichprobenumfang</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a>ns       <span class="ot">=</span> <span class="fl">1e4</span>                                        <span class="co"># Anzahl Stichprobenrealisierungen</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a>res      <span class="ot">=</span> <span class="fl">1e3</span>                                        <span class="co"># Ausgangsraumaufloesung</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a></span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="co"># analytische Definitionen und Resultate</span></span>
+<span id="cb1-9"><a href="#cb1-9"></a>yx       <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">3</span>,<span class="dv">17</span>,<span class="at">len =</span> res)                        <span class="co"># \upsilonilon_i Raum</span></span>
+<span id="cb1-10"><a href="#cb1-10"></a>ssqrx    <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">20</span>,<span class="at">len =</span> res)                        <span class="co"># S^2 Raum</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a>tx       <span class="ot">=</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">4</span>,<span class="dv">4</span>,<span class="at">len =</span> res)                        <span class="co"># T Raum</span></span>
+<span id="cb1-12"><a href="#cb1-12"></a>p_y_i    <span class="ot">=</span> <span class="fu">dnorm</span>(yx,mu,<span class="fu">sqrt</span>(sigsqr))                  <span class="co"># \upsilonilon_i WDF</span></span>
+<span id="cb1-13"><a href="#cb1-13"></a>p_y_bar  <span class="ot">=</span> <span class="fu">dnorm</span>(yx,mu,<span class="fu">sqrt</span>(sigsqr<span class="sc">/</span>n))                <span class="co"># \upsilonilon_bar WDF</span></span>
+<span id="cb1-14"><a href="#cb1-14"></a>p_sqr    <span class="ot">=</span> <span class="fu">dchisq</span>(ssqrx,n<span class="dv">-1</span>)                          <span class="co"># S^2 WDF</span></span>
+<span id="cb1-15"><a href="#cb1-15"></a>p_t      <span class="ot">=</span> <span class="fu">dt</span>(tx,n<span class="dv">-1</span>)                                 <span class="co"># T WDF</span></span>
+<span id="cb1-16"><a href="#cb1-16"></a></span>
+<span id="cb1-17"><a href="#cb1-17"></a><span class="co"># Simulation</span></span>
+<span id="cb1-18"><a href="#cb1-18"></a>y_i      <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                                <span class="co"># y_i Array</span></span>
+<span id="cb1-19"><a href="#cb1-19"></a>y_bar    <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                                <span class="co"># \bar{y} Array</span></span>
+<span id="cb1-20"><a href="#cb1-20"></a>S        <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                                <span class="co"># S Array  </span></span>
+<span id="cb1-21"><a href="#cb1-21"></a>TKS      <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                                <span class="co"># T-Konfidenzintervallstatistik Array</span></span>
+<span id="cb1-22"><a href="#cb1-22"></a><span class="cf">for</span>(s <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>ns){                                       <span class="co"># Simulationsiterationen</span></span>
+<span id="cb1-23"><a href="#cb1-23"></a>  y         <span class="ot">=</span> <span class="fu">rnorm</span>(n,mu,<span class="fu">sqrt</span>(sigsqr))                <span class="co"># Stichprobenrealisierung</span></span>
+<span id="cb1-24"><a href="#cb1-24"></a>  y_i[s]    <span class="ot">=</span> y[<span class="dv">1</span>]                                    <span class="co"># Stichprobenrealisierung \upsilonilon_i mit i = 1</span></span>
+<span id="cb1-25"><a href="#cb1-25"></a>  y_bar[s]  <span class="ot">=</span> <span class="fu">mean</span>(y)                                 <span class="co"># Stichprobenmittelrealisierung</span></span>
+<span id="cb1-26"><a href="#cb1-26"></a>  S[s]      <span class="ot">=</span> <span class="fu">sd</span>(y)                                   <span class="co"># Stichprobenstandardabweichungrealisierung</span></span>
+<span id="cb1-27"><a href="#cb1-27"></a>  TKS[s]    <span class="ot">=</span> <span class="fu">sqrt</span>(n)<span class="sc">*</span>((y_bar[s]<span class="sc">-</span>mu)<span class="sc">/</span>S[s])            <span class="co"># T-Konfidenzintervallstatistikrealisierung</span></span>
+<span id="cb1-28"><a href="#cb1-28"></a>}</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="fig-t-konfidenzintervallstatistik" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-t-konfidenzintervallstatistik-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/303-t-konfidenzintervallstatistik.png" class="img-fluid quarto-figure quarto-figure-center figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-t-konfidenzintervallstatistik-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;23.1: Simulation der Verteilung der <span class="math inline">\(T\)</span>-Konfidenzintervallstatistik und der ihr zugrundeliegenden Verteilungen der Stichprobenvariable, des Stichprobenmittels und der Stichprobenvarianz.
+</figcaption>
+</figure>
+</div>
+<p>In <a href="#fig-t-konfidenzintervallstatistik" class="quarto-xref">Abbildung&nbsp;<span>23.1</span></a> visualisieren wir die Verteilung der <span class="math inline">\(T\)</span>-Konfidenzintervallstatistik als Resultat der ihr zugrundeliegenden Verteilungen der Stichprobenvariablen, des Stichprobenmittels und der Stichprobenvarianz (vgl. <a href="209-Normalverteilungstransformationen.html#sec-t-transformation" class="quarto-xref"><span>Kapitel 19.4</span></a>). Mithilfe der Verteilung der <span class="math inline">\(T\)</span>-Konfidenzintervallstatistik können wir jetzt folgendes Theorem zum Konfidenzintervall für den Erwartungswertparameter des Normalverteilungsmodells beweisen.</p>
+<div id="thm-konfidenzintervall-fuer-den-erwartungswertparameter-des-normalverteilungsmodells" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 23.2 (Konfidenzintervall für den Erwartungswertparameter des Normalverteilungsmodells)</strong></span> Gegeben sei das Normalverteilungsmodell <span class="math display">\[\begin{equation}
+\upsilon_1,...,\upsilon_n \sim N(\mu,\sigma^2)
+\end{equation}\]</span> mit wahren, aber unbekannten, Parametern <span class="math inline">\(\mu\)</span> und <span class="math inline">\(\sigma^2\)</span>, es sei <span class="math inline">\(\delta \in ]0,1[\)</span> und es sei <span class="math display">\[\begin{equation}
+t_\delta := \Psi^{-1}\left(\frac{1+\delta}{2}; n-1\right).
+\end{equation}\]</span> mit der inversen KVF <span class="math inline">\(\Psi^{-1}\)</span> einer <span class="math inline">\(t\)</span>-verteilten Zufallsvariable. Dann gilt für das Intervall <span class="math display">\[\begin{equation}
+\kappa(\upsilon) :=
+\left[\bar{\upsilon} - \frac{S}{\sqrt{n}}t_\delta,
+\bar{\upsilon} + \frac{S}{\sqrt{n}}t_\delta\right],
+\end{equation}\]</span> mit dem Stichprobenmittel und der Stichprobenstandardabweichung <span class="math display">\[\begin{equation}
+\bar{\upsilon} := \frac{1}{n}\sum_{i=1}^n \upsilon_i \mbox{ und } S := \sqrt{\frac{1}{n-1}\sum_{i=1}^n(\upsilon_i - \bar{\upsilon})^2},
+\end{equation}\]</span> respektive, dass <span class="math display">\[\begin{equation}
+\mathbb{P}_{\mu}(\kappa(\upsilon) \ni \mu) = \delta.
+\end{equation}\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Beweis</em>. </span>Für <span class="math inline">\(\delta \in ]0,1[\)</span> seien zunächst <span class="math display">\[\begin{equation}
+t_1 := \Psi^{-1}\left(\frac{1 - \delta}{2}; n - 1\right)
+\mbox{ und }
+t_2 := \Psi^{-1}\left(\frac{1 + \delta}{2}; n-1\right)
+\end{equation}\]</span> definiert. Dann gilt <span class="math display">\[\begin{equation}
+\frac{1+\delta}{2} - \frac{1-\delta}{2} = \delta
+\end{equation}\]</span> und weiterhin gilt mit der Symmetrie der WDF der <span class="math inline">\(t\)</span>-Verteilung, dass <span class="math display">\[\begin{equation}
+t_1 = - t_2.
+\end{equation}\]</span> Per Definition gilt dann aber mit <a href="#def-t-konfidenzintervallstatistik" class="quarto-xref">Definition&nbsp;<span>23.2</span></a> und <a href="#thm-verteilung-der-t-konfidenzintervallstatistik" class="quarto-xref">Theorem&nbsp;<span>23.1</span></a>, dass <span class="math display">\[\begin{equation}
+\mathbb{P}_\mu\left(-t_{\delta} \le T \le t_{\delta} \right) = \delta.
+\end{equation}\]</span> Damit folgt dann aber direkt <span class="math display">\[\begin{align}
+\begin{split}
+\delta
+&amp; =
+\mathbb{P}_\mu\left(-t_\delta \le T \le t_\delta \right)                                                                            \\
+&amp; =
+\mathbb{P}_\mu\left(-t_\delta \le \frac{\sqrt{n}}{S}(\bar{\upsilon} - \mu) \le t_\delta \right)                                         \\
+&amp; =
+\mathbb{P}_\mu\left(-\frac{S}{\sqrt{n}}t_\delta \le \bar{\upsilon} - \mu \le \frac{S}{\sqrt{n}}t_\delta \right)                     \\
+&amp; =
+\mathbb{P}_\mu\left(-\bar{\upsilon} -\frac{S}{\sqrt{n}}t_\delta \le - \mu \le - \bar{\upsilon} + \frac{S}{\sqrt{n}}t_\delta \right)     \\
+&amp; =
+\mathbb{P}_\mu\left(\bar{\upsilon} + \frac{S}{\sqrt{n}}t_\delta \ge \mu \ge \bar{\upsilon} - \frac{S}{\sqrt{n}}t_\delta \right)         \\
+&amp; =
+\mathbb{P}_\mu\left(\bar{\upsilon} - \frac{S}{\sqrt{n}}t_\delta \le \mu \le \bar{\upsilon} + \frac{S}{\sqrt{n}}t_\delta \right)         \\
+&amp; =
+\mathbb{P}_\mu\left(\left[\bar{\upsilon} - \frac{S}{\sqrt{n}}t_\delta, \bar{\upsilon} + \frac{S}{\sqrt{n}}t_\delta\right] \ni \mu \right).      \\
+&amp; =
+\mathbb{P}_\mu\left(\kappa(\upsilon) \ni \mu \right).       \\
+\end{split}
+\end{align}\]</span></p>
+</div>
+<p>Der entscheidene Schritt zur Sicherung der Überdeckungswahrscheinlichkeit <span class="math inline">\(\delta\)</span> des wahren, aber unbekannten, Erwartungswertparameters durch das in <a href="#thm-konfidenzintervall-fuer-den-erwartungswertparameter-des-normalverteilungsmodells" class="quarto-xref">Theorem&nbsp;<span>23.2</span></a> definierte Konfidenzintervall ist die Definition von<br>
+<span class="math display">\[\begin{equation}
+t_\delta := \Psi^{-1}\left(\frac{1+\delta}{2}; n-1\right).
+\end{equation}\]</span> Wie im Beweis von <a href="#thm-konfidenzintervall-fuer-den-erwartungswertparameter-des-normalverteilungsmodells" class="quarto-xref">Theorem&nbsp;<span>23.2</span></a> nachgezeichnet ist die Überdeckungswahrscheinlichkeit des Konfidenzintervalls für den wahren, aber unbekannten, Erwartungswertparameter äquivalent zu der Tatsache, dass bei Wahl eben dieses <span class="math inline">\(t_\delta\)</span> die <span class="math inline">\(T\)</span>-Konfidenzintervallstatistik eine Wahrscheinlichkeit von <span class="math inline">\(\delta\)</span> dafür hat, einen Wert im Intervall <span class="math inline">\([-t_\delta, t_\delta]\)</span> anzunehmen. Wir visualisieren die Wahl von <span class="math inline">\(t_\delta\)</span> für Fall <span class="math inline">\(\delta := 0.95\)</span> und <span class="math inline">\(n := 5\)</span> in <a href="#fig-t-konfidenzbedingung" class="quarto-xref">Abbildung&nbsp;<span>23.2</span></a>. In diesem Fall ergibt sich <span class="math display">\[\begin{equation}
+-t_\delta = \Psi^{-1}(0.025;4) = -2.57 \mbox{ und }
+t_\delta = \Psi^{-1}(0.975;4) = 2.57.
+\end{equation}\]</span> <a href="#fig-t-konfidenzbedingung" class="quarto-xref">Abbildung&nbsp;<span>23.2</span></a> A zeigt diese Wahl aus Perspektive der WDF der <span class="math inline">\(T\)</span>-Konfidenintervallstatistik. Die von <span class="math inline">\(-t_\delta\)</span> und <span class="math inline">\(t_\delta\)</span> eingeschlossene Wahrscheinlichkeitsmasse beträgt nach Konstruktion <span class="math inline">\(\delta\)</span>, <span class="math inline">\(T\)</span> nimmt mit einer Wahrscheinlichkeit von <span class="math inline">\(\delta\)</span> also einen Wert zwischen <span class="math inline">\(-t_\delta\)</span> und <span class="math inline">\(t_\delta\)</span> an. <a href="#fig-t-konfidenzbedingung" class="quarto-xref">Abbildung&nbsp;<span>23.2</span></a> B zeigt die entsprechende Perspektive der KVF der <span class="math inline">\(T\)</span>-Konfidenintervallstatistik. Basierend auf der Vorgabe von <span class="math inline">\(\frac{1-\delta}{2}\)</span> und <span class="math inline">\(\frac{1+\delta}{2}\)</span> werden anhand der inversen KVF <span class="math inline">\(\Psi^{-1}\)</span> die entsprechenden Werte für <span class="math inline">\(-t_\delta\)</span> und <span class="math inline">\(t_\delta\)</span> bestimmt. Man beachte, dass die hier gegebene Zentralität der Wahrscheinlichkeitsmasse in <a href="#def-delta-konfidenzintervall" class="quarto-xref">Definition&nbsp;<span>23.1</span></a> nicht implizit ist, sondern sich aus den Gegebenheiten der Verteilung der <span class="math inline">\(T\)</span>-Konfidenzintervallstatistik, insbesondere ihrer Symmetrie um 0, ergibt.</p>
+<div id="fig-t-konfidenzbedingung" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-t-konfidenzbedingung-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/303-t-konfidenzbedingung.png" class="img-fluid quarto-figure quarto-figure-center figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-t-konfidenzbedingung-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;23.2: Sicherung der Überdeckungswahrscheinlichkeit des Konfidenzintervalls für den Erwartungswertparameter des Normalverteilungsmodells für <span class="math inline">\(\delta := 0.95\)</span> und <span class="math inline">\(n := 5\)</span> aus Perspektive der WDF (A) und der KVF (B) der Verteilung der <span class="math inline">\(T\)</span>-Konfidenzintervallstatistik.
+</figcaption>
+</figure>
+</div>
+<p>Abschließend wollen wir die Überdeckungswahrscheinlichkeit des durch <a href="#thm-konfidenzintervall-fuer-den-erwartungswertparameter-des-normalverteilungsmodells" class="quarto-xref">Theorem&nbsp;<span>23.2</span></a> gegebenen Konfidenzintervalls mithilfe einer Simulation demonstrieren. Wir betrachten dabei lediglich die erste Interpretation eines Konfidenzintervalls bei konstantem, wahrem, aber unbekanntem, Parameter. Folgender <strong>R</strong> Code bestimmt in diesem Sinne zu jeder Stichprobenrealisierung das entsprechende Konfidenzintervall.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># Modellformulierung</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)                                        <span class="co"># Random number generator seed</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a>mu      <span class="ot">=</span> <span class="dv">2</span>                                        <span class="co"># wahrer, aber unbekannter, Erwartungswertparameter</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a>sigsqr  <span class="ot">=</span> <span class="dv">1</span>                                        <span class="co"># wahrer, aber unbekannter, Varianzparameter</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a>sigma   <span class="ot">=</span> <span class="fu">sqrt</span>(sigsqr)                             <span class="co"># wahrer, aber unbekannter, Standardabweichungsparameter</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a>n       <span class="ot">=</span> <span class="dv">12</span>                                       <span class="co"># Stichprobenumfang</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a>delta   <span class="ot">=</span> <span class="fl">0.95</span>                                     <span class="co"># Konfidenzbedingung</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a>t_delta <span class="ot">=</span> <span class="fu">qt</span>((<span class="dv">1</span><span class="sc">+</span>delta)<span class="sc">/</span><span class="dv">2</span>,n<span class="dv">-1</span>)                      <span class="co"># \Psi^-1((\delta + 1)/2, n-1)</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a></span>
+<span id="cb2-10"><a href="#cb2-10"></a><span class="co"># Stichprobenrealisierungen</span></span>
+<span id="cb2-11"><a href="#cb2-11"></a>ns      <span class="ot">=</span> <span class="fl">1e2</span>                                      <span class="co"># Anzahl Stichprobenrealisierungen </span></span>
+<span id="cb2-12"><a href="#cb2-12"></a>y_bar   <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                              <span class="co"># Stichprobenmittelarray</span></span>
+<span id="cb2-13"><a href="#cb2-13"></a>S       <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                              <span class="co"># Standardabweichungsarray</span></span>
+<span id="cb2-14"><a href="#cb2-14"></a>kappa   <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="cn">NaN</span>,<span class="dv">2</span><span class="sc">*</span>ns), <span class="at">ncol =</span> <span class="dv">2</span>)          <span class="co"># Konfidenzintervallarray</span></span>
+<span id="cb2-15"><a href="#cb2-15"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>ns){                                     </span>
+<span id="cb2-16"><a href="#cb2-16"></a>   y          <span class="ot">=</span> <span class="fu">rnorm</span>(n,mu,sigma)                  <span class="co"># Stichprobenrealisierung</span></span>
+<span id="cb2-17"><a href="#cb2-17"></a>   y_bar[i]   <span class="ot">=</span> <span class="fu">mean</span>(y)                            <span class="co"># Stichprobenmittel</span></span>
+<span id="cb2-18"><a href="#cb2-18"></a>   S[i]       <span class="ot">=</span> <span class="fu">sd</span>(y)                              <span class="co"># Stichprobenstandardabweichung</span></span>
+<span id="cb2-19"><a href="#cb2-19"></a>   kappa[i,<span class="dv">1</span>] <span class="ot">=</span> y_bar[i] <span class="sc">-</span> (S[i]<span class="sc">/</span><span class="fu">sqrt</span>(n))<span class="sc">*</span>t_delta  <span class="co"># untere Konfidenzintervallgrenze</span></span>
+<span id="cb2-20"><a href="#cb2-20"></a>   kappa[i,<span class="dv">2</span>] <span class="ot">=</span> y_bar[i] <span class="sc">+</span> (S[i]<span class="sc">/</span><span class="fu">sqrt</span>(n))<span class="sc">*</span>t_delta  <span class="co"># obere Konfidenzintervallgrenze</span></span>
+<span id="cb2-21"><a href="#cb2-21"></a>}</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Wir visualisieren die Ergebnisse dieser Simulation in <a href="#fig-ki-erwartungswertparameter-normalverteilung-1" class="quarto-xref">Abbildung&nbsp;<span>23.3</span></a>.</p>
+<div id="fig-ki-erwartungswertparameter-normalverteilung-1" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ki-erwartungswertparameter-normalverteilung-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/303-ki-erwartungswertparameter-normalverteilung-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ki-erwartungswertparameter-normalverteilung-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;23.3: Simulation der Überdeckungswahrscheinlichkeit des Konfidenzintervalls für den Erwartungswertparameter des Normalverteilungsmodells bei konstanten, wahren, aber unbekannten, Erwartungswertparameter <span class="math inline">\(\mu := 2\)</span> für <span class="math inline">\(\sigma^2 := 2, n := 12\)</span> und einer gewünschten Überdeckungswahrscheinlichkeit von <span class="math inline">\(\delta := 0.95\)</span>. Die Abbildung zeigt für jede Stichprobenrealisierung das Konfidenzintervall und den entsprechenden Erwartungswertparameterschätzer. In der vorliegenden Simulation überdecken die Konfidenzintervalle den durch eine graue Linie eingezeichneten immer gleichen wahren, aber unbekannten, Erwartungswertparameter <span class="math inline">\(\mu:=2\)</span> in 96 von 100 Fällen. Die Stichprobenrealisierungen, für die dies nicht der Fall sind, sind mit einen orangen Kreis markiert
+</figcaption>
+</figure>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># Anzahl Simulationen mit \theta_1, \theta_2,...</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)                                        <span class="co"># random number generator seed</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a>ns      <span class="ot">=</span> <span class="fl">1e2</span>                                      <span class="co"># Anzahl Simulationen</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a>mu      <span class="ot">=</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="at">len =</span> ns)                      <span class="co"># wahrer, aber unbekannter, Erwartungswertparameter</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a>sigsqr  <span class="ot">=</span> <span class="dv">1</span>                                        <span class="co"># wahrer, aber unbekannter, Varianzparameter</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a>sigma   <span class="ot">=</span> <span class="fu">sqrt</span>(sigsqr)                             <span class="co"># wahrer, aber unbekannter, Standardabweichungsparameter</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a>n       <span class="ot">=</span> <span class="dv">12</span>                                       <span class="co"># Stichprobenumfang</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a>delta   <span class="ot">=</span> <span class="fl">0.95</span>                                     <span class="co"># Konfidenzbedingung</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a>t_delta <span class="ot">=</span> <span class="fu">qt</span>((<span class="dv">1</span><span class="sc">+</span>delta)<span class="sc">/</span><span class="dv">2</span>,n<span class="dv">-1</span>)                      <span class="co"># \Psi^-1((\delta + 1)/2, n-1)</span></span>
+<span id="cb3-10"><a href="#cb3-10"></a></span>
+<span id="cb3-11"><a href="#cb3-11"></a><span class="co"># Simulation</span></span>
+<span id="cb3-12"><a href="#cb3-12"></a>y_bar   <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                              <span class="co"># Stichprobenmittelarray</span></span>
+<span id="cb3-13"><a href="#cb3-13"></a>S       <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                              <span class="co"># Standardabweichungsarray</span></span>
+<span id="cb3-14"><a href="#cb3-14"></a>kappa   <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="cn">NaN</span>,<span class="dv">2</span><span class="sc">*</span>ns), <span class="at">ncol =</span> <span class="dv">2</span>)          <span class="co"># Konfidenzintervallarray</span></span>
+<span id="cb3-15"><a href="#cb3-15"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>ns){</span>
+<span id="cb3-16"><a href="#cb3-16"></a>   y          <span class="ot">=</span> <span class="fu">rnorm</span>(n,mu[i],sigma)               <span class="co"># Stichprobenrealisierung</span></span>
+<span id="cb3-17"><a href="#cb3-17"></a>   y_bar[i]   <span class="ot">=</span> <span class="fu">mean</span>(y)                            <span class="co"># Stichprobenmittel</span></span>
+<span id="cb3-18"><a href="#cb3-18"></a>   S[i]       <span class="ot">=</span> <span class="fu">sd</span>(y)                              <span class="co"># Stichprobenstandardabweichung</span></span>
+<span id="cb3-19"><a href="#cb3-19"></a>   kappa[i,<span class="dv">1</span>] <span class="ot">=</span> y_bar[i] <span class="sc">-</span> (S[i]<span class="sc">/</span><span class="fu">sqrt</span>(n))<span class="sc">*</span>t_delta  <span class="co"># untere Konfidenzintervallgrenze</span></span>
+<span id="cb3-20"><a href="#cb3-20"></a>   kappa[i,<span class="dv">2</span>] <span class="ot">=</span> y_bar[i] <span class="sc">+</span> (S[i]<span class="sc">/</span><span class="fu">sqrt</span>(n))<span class="sc">*</span>t_delta  <span class="co"># obere Konfidenzintervallgrenze</span></span>
+<span id="cb3-21"><a href="#cb3-21"></a>}</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Wir visualisieren die Ergebnisse dieser Simulation in <a href="#fig-ki-erwartungswertparameter-normalverteilung-2" class="quarto-xref">Abbildung&nbsp;<span>23.4</span></a>.</p>
+<div id="fig-ki-erwartungswertparameter-normalverteilung-2" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ki-erwartungswertparameter-normalverteilung-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/303-ki-erwartungswertparameter-normalverteilung-2.png" class="img-fluid quarto-figure quarto-figure-center figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ki-erwartungswertparameter-normalverteilung-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;23.4: Simulation der Überdeckungswahrscheinlichkeit des Konfidenzintervalls für den Erwartungswertparameter des Normalverteilungsmodells bei variablem, wahren, aber unbekannten, Erwartungswertparameter <span class="math inline">\(\mu\)</span> für <span class="math inline">\(\sigma^2 := 2, n := 12\)</span> und einer gewünschten Überdeckungswahrscheinlichkeit von <span class="math inline">\(\delta := 0.95\)</span>. Die Abbildung zeigt für jede Stichprobenrealisierung das Konfidenzintervall und den entsprechenden Erwartungswertparameterschätzer. In der vorliegenden Simulation überdecken die Konfidenzintervalle den durch eine graue Linie eingezeichneten variablen wahren, aber unbekannten, Erwartungswertparameter <span class="math inline">\(\mu\)</span> in 95 von 100 Fällen. Die Stichprobenrealisierungen, für die dies nicht der Fall sind, sind mit einen orangen Kreis markiert
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="konfidenzintervall-für-den-varianzparameter-des-normalverteilungsmodells" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="konfidenzintervall-für-den-varianzparameter-des-normalverteilungsmodells">Konfidenzintervall für den Varianzparameter des Normalverteilungsmodells</h3>
+<p>Wir betrachten die Konstruktion eines <span class="math inline">\(\delta\)</span>-Konfidenzintervalls für den Varianzparameter des Normalverteilungsmodells. Zu diesem Zweck definieren zunächst folgende Konfidenzintervallstatistik.</p>
+<div id="def-u-konfidenzintervallstatistik" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 23.3 (<span class="math inline">\(U\)</span>-Konfindenzintervallstatistik)</strong></span> Gegeben sei das Normalverteilungsmodell <span class="math display">\[\begin{equation}
+\upsilon_1,...,\upsilon_n \sim N(\mu,\sigma^2)
+\end{equation}\]</span> Dann heißt die mit der Stichprobenvarianz <span class="math display">\[\begin{equation}
+\frac{1}{n-1}\sum_{i=1}^n \left(\upsilon_i - \bar{\upsilon}\right)^2
+\end{equation}\]</span> definierte Statistik <span class="math display">\[\begin{equation}
+U := \frac{n-1}{\sigma^2}S^2  
+\end{equation}\]</span> <em><span class="math inline">\(U\)</span>-Konfidenzintervallstatistik</em>.</p>
+</div>
+<p>Für die Verteilung der <span class="math inline">\(U\)</span>-Konfidenzintervallstatistik gilt folgendes Theorem.</p>
+<div id="thm-verteilung-der-u-konfidenzintervallstatistik" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 23.3 (Verteilung der <span class="math inline">\(U\)</span>-Konfidenzintervallstatistik)</strong></span> Die <span class="math inline">\(U\)</span>-Konfidenzintervallstatistik ist eine <span class="math inline">\(\chi^2\)</span>-verteilte Zufallsvariable mit Parameter <span class="math inline">\(n-1\)</span>, es gilt also <span class="math display">\[\begin{equation}
+U \sim \chi^2(n-1)
+\end{equation}\]</span></p>
+</div>
+<p>Für einen Beweis von <a href="#thm-verteilung-der-u-konfidenzintervallstatistik" class="quarto-xref">Theorem&nbsp;<span>23.3</span></a> verrweisen wir auf <span class="citation" data-cites="casella2012">Casella &amp; Berger (<a href="#ref-casella2012" role="doc-biblioref">2012</a>)</span>. Wie die <span class="math inline">\(T\)</span>-Konfidenzintervallstatistik besitzt auch die <span class="math inline">\(U\)</span>-Konfidenzintervallstatistik die Pivoteigenschaft, da sie eine Funktion der Stichprobe ist, aber ihre Verteilung nach <a href="#thm-verteilung-der-u-konfidenzintervallstatistik" class="quarto-xref">Theorem&nbsp;<span>23.3</span></a> von den wahren, aber unbekannten, Verteilungsparametern der Stichprobe nicht abhängt. Für die folgenden Entwicklungen erinnern wir daran, dass wir die WDF einer <span class="math inline">\(\chi^2\)</span>-verteilten Zufallvariable mit <span class="math inline">\(\chi^2\)</span>, die KVF einer <span class="math inline">\(\chi^2\)</span>-verteilten Zufallvariable mit <span class="math inline">\(\Xi\)</span> und die inverse KVF einer <span class="math inline">\(\chi^2\)</span>-verteilten Zufallvariable mit <span class="math inline">\(\Xi^{-1}\)</span> bezeichnen. Folgender <strong>R</strong> Code simuliert zunächst die Verteilung der <span class="math inline">\(U\)</span>-Konfidenzintervallstatistik.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># Modellformulierung</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a>mu      <span class="ot">=</span> <span class="dv">10</span>                                    <span class="co"># wahrer Erwartungswertparameter</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a>sigsqr  <span class="ot">=</span> <span class="dv">4</span>                                     <span class="co"># wahrer bekannter Varianzparameter</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a>n       <span class="ot">=</span> <span class="dv">12</span>                                    <span class="co"># Stichprobenumfang</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a>ns      <span class="ot">=</span> <span class="fl">1e4</span>                                   <span class="co"># Anzahl Stichprobenrealisierungen</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a>res     <span class="ot">=</span> <span class="fl">1e3</span>                                   <span class="co"># Ausgangsraumaufloesung</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a></span>
+<span id="cb4-8"><a href="#cb4-8"></a><span class="co"># analytische Definitionen und Resultate</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a>yx      <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">3</span>,<span class="dv">17</span>,<span class="at">len =</span> res)                   <span class="co"># \upsilonilon_i Raum</span></span>
+<span id="cb4-10"><a href="#cb4-10"></a>ux      <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">30</span>,<span class="at">len =</span> res)                   <span class="co"># U Raum</span></span>
+<span id="cb4-11"><a href="#cb4-11"></a>p_y_i   <span class="ot">=</span> <span class="fu">dnorm</span>(yx,mu,<span class="fu">sqrt</span>(sigsqr))             <span class="co"># \upsilonilon_i WDF</span></span>
+<span id="cb4-12"><a href="#cb4-12"></a>p_y_bar <span class="ot">=</span> <span class="fu">dnorm</span>(yx,mu,<span class="fu">sqrt</span>(sigsqr<span class="sc">/</span>n))           <span class="co"># \upsilonilon_bar WDF</span></span>
+<span id="cb4-13"><a href="#cb4-13"></a>p_u     <span class="ot">=</span> <span class="fu">dchisq</span>(ux,n<span class="dv">-1</span>)                        <span class="co"># U WDF</span></span>
+<span id="cb4-14"><a href="#cb4-14"></a></span>
+<span id="cb4-15"><a href="#cb4-15"></a><span class="co"># Simulation</span></span>
+<span id="cb4-16"><a href="#cb4-16"></a>y_i     <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                           <span class="co"># y_i Array</span></span>
+<span id="cb4-17"><a href="#cb4-17"></a>y_bar   <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                           <span class="co"># \bar{y} Array</span></span>
+<span id="cb4-18"><a href="#cb4-18"></a>S_sqr   <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                           <span class="co"># S^2 Array</span></span>
+<span id="cb4-19"><a href="#cb4-19"></a>UKS     <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                           <span class="co"># U-Konfidenzintervallstatistik Array</span></span>
+<span id="cb4-20"><a href="#cb4-20"></a><span class="cf">for</span>(s <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>ns){                                 <span class="co"># Simulationsiterationen</span></span>
+<span id="cb4-21"><a href="#cb4-21"></a>  y         <span class="ot">=</span> <span class="fu">rnorm</span>(n,mu,<span class="fu">sqrt</span>(sigsqr))          <span class="co"># Stichprobenrealisierung</span></span>
+<span id="cb4-22"><a href="#cb4-22"></a>  y_i[s]    <span class="ot">=</span> y[<span class="dv">1</span>]                              <span class="co"># Stichprobenrealisierung \upsilonilon_i mit i = 1</span></span>
+<span id="cb4-23"><a href="#cb4-23"></a>  y_bar[s]  <span class="ot">=</span> <span class="fu">mean</span>(y)                           <span class="co"># Stichprobenmittelrealisierung</span></span>
+<span id="cb4-24"><a href="#cb4-24"></a>  S_sqr[s]  <span class="ot">=</span> <span class="fu">var</span>(y)                            <span class="co"># Stichprobenvarianzrealisierung</span></span>
+<span id="cb4-25"><a href="#cb4-25"></a>  UKS[s]    <span class="ot">=</span> ((n<span class="dv">-1</span>)<span class="sc">/</span>sigsqr)<span class="sc">*</span>S_sqr[s]           <span class="co"># U-Konfidenzintervallstatistikrealisierung</span></span>
+<span id="cb4-26"><a href="#cb4-26"></a>} </span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="fig-u-konfidenzintervallstatistik" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-u-konfidenzintervallstatistik-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/303-u-konfidenzintervallstatistik.png" class="img-fluid quarto-figure quarto-figure-center figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-u-konfidenzintervallstatistik-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;23.5: Simulation der Verteilung der <span class="math inline">\(U\)</span>-Konfidenzintervallstatistik und der ihr zugrundeliegenden Verteilungen der Stichprobenvariable, des Stichprobenmittels und der Stichprobenvarianz.
+</figcaption>
+</figure>
+</div>
+<p>Mithilfe der Verteilung der <span class="math inline">\(U\)</span>-Konfidenzintervallstatistik können wir jetzt folgendes Theorem zum Konfidenzintervall für den Varianzparameter des Normalverteilungsmodells beweisen.</p>
+<div id="thm-konfidenzintervall-fuer-den-varianzparameter-des-normalverteilungsmodells" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 23.4 (Konfidenzintervall für den Varianzparameter des Normalverteilungsmodells)</strong></span> Gegeben sei das Normalverteilungsmodell <span class="math display">\[\begin{equation}
+\upsilon_1,...,\upsilon_n \sim N(\mu,\sigma^2)
+\end{equation}\]</span> mit wahren, aber unbekannten, Parametern <span class="math inline">\(\mu\)</span> und <span class="math inline">\(\sigma^2\)</span>, es sei <span class="math inline">\(\delta \in ]0,1[\)</span> und es seien <span class="math display">\[\begin{equation}
+u_{\delta} := \Xi^{-1}\left(\frac{1 - \delta}{2}; n -1  \right)
+\mbox{ und }
+u_{\delta}' := \Xi^{-1}\left(\frac{1 + \delta}{2};n-1 \right)
+\end{equation}\]</span> mit der inversen KVF <span class="math inline">\(\Xi^{-1}\)</span> einer <span class="math inline">\(\chi^2\)</span>-verteilten Zufallsvariable. Dann gilt für das Intervall <span class="math display">\[\begin{equation}
+\kappa(\upsilon) := \left[\frac{(n-1)S^2}{u_{\delta}'}, \frac{(n-1)S^2}{u_{\delta}}\right].
+\end{equation}\]</span> mit der Stichprobenvarianz <span class="math display">\[\begin{equation}
+S^2 := \frac{1}{n-1}\sum_{i=1}^n(\upsilon_i - \bar{\upsilon})^2,
+\end{equation}\]</span> dass <span class="math display">\[\begin{equation}
+\mathbb{P}_{\sigma^2}(\kappa(\upsilon) \ni \sigma^2) = \delta.
+\end{equation}\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Beweis</em>. </span>Per Definition gilt mit <a href="#def-u-konfidenzintervallstatistik" class="quarto-xref">Definition&nbsp;<span>23.3</span></a> und <a href="#thm-verteilung-der-u-konfidenzintervallstatistik" class="quarto-xref">Theorem&nbsp;<span>23.3</span></a>, dass <span class="math display">\[\begin{equation}
+\mathbb{P}_{\sigma^2}\left(u_{\delta} \le U \le u_{\delta}' \right) = \delta.
+\end{equation}\]</span> Damit folgt dann aber direkt <span class="math display">\[\begin{align}
+\begin{split}
+\delta
+&amp; = \mathbb{P}_{\sigma^2}\left(u_{\delta} \le U \le u_{\delta}' \right)                                                                     \\
+&amp; = \mathbb{P}_{\sigma^2}\left(u_{\delta} \le \frac{n-1}{\sigma^2}S^2  \le u_{\delta}' \right)                                        \\
+&amp; = \mathbb{P}_{\sigma^2}\left(u_{\delta}^{-1} \ge \frac{\sigma^2}{(n-1)S^2} \ge {u_{\delta}'}^{-1} \right)                               \\
+&amp; = \mathbb{P}_{\sigma^2}\left(\frac{(n-1)S^2}{u_{\delta}} \ge \sigma^2 \ge \frac{(n-1)S^2}{u_{\delta}'} \right)                   \\
+&amp; = \mathbb{P}_{\sigma^2}\left(\frac{(n-1)S^2}{u_{\delta}'} \le \sigma^2 \le \frac{(n-1)S^2)}{u_{\delta}} \right)                 \\
+&amp; = \mathbb{P}_{\sigma^2}\left(\left[\frac{(n-1)S^2}{u_{\delta}'}, \frac{(n-1)S^2)}{u_{\delta}}\right] \ni \sigma^2 \right).    \\
+\end{split}
+\end{align}\]</span></p>
+</div>
+<p>Wie im Falle von <a href="#thm-konfidenzintervall-fuer-den-erwartungswertparameter-des-normalverteilungsmodells" class="quarto-xref">Theorem&nbsp;<span>23.2</span></a> ist der entscheidene Schritt zur Sicherung der Überdeckungswahrscheinlichkeit <span class="math inline">\(\delta\)</span> des wahren, aber unbekannten, Varianzparameters durch das in <a href="#thm-konfidenzintervall-fuer-den-varianzparameter-des-normalverteilungsmodells" class="quarto-xref">Theorem&nbsp;<span>23.4</span></a> definierte Konfidenzintervall die Definition von<br>
+<span class="math display">\[\begin{equation}
+u_{\delta} := \Xi^{-1}\left(\frac{1-\delta}{2}; n-1\right)
+\mbox{ und }
+u_{\delta}' := \Xi^{-1}\left(\frac{1 + \delta}{2};n-1 \right)
+\end{equation}\]</span> Wie im Beweis von <a href="#thm-konfidenzintervall-fuer-den-varianzparameter-des-normalverteilungsmodells" class="quarto-xref">Theorem&nbsp;<span>23.4</span></a> nachgezeichnet ist die Überdeckungswahrscheinlichkeit des Konfidenzintervalls für den wahren, aber unbekannten, Varianzparameter äquivalent zu der Tatsache, dass bei Wahl eben dieser Werte von <span class="math inline">\(u_\delta\)</span> und <span class="math inline">\(u_{\delta}'\)</span> die <span class="math inline">\(U\)</span>-Konfidenzintervallstatistik eine Wahrscheinlichkeit von <span class="math inline">\(\delta\)</span> dafür hat, einen Wert im Intervall <span class="math inline">\([u_{\delta}, u_{\delta}']\)</span> anzunehmen. Wir visualisieren die Wahl von <span class="math inline">\(u_\delta\)</span> und <span class="math inline">\(u_\delta'\)</span> für Fall <span class="math inline">\(\delta := 0.95\)</span> und <span class="math inline">\(n := 10\)</span> in <a href="#fig-u-konfidenzbedingung" class="quarto-xref">Abbildung&nbsp;<span>23.6</span></a>. In diesem Fall ergibt sich <span class="math display">\[\begin{equation}
+u_{\delta}  := \Xi^{-1}\left(0.025;9\right) = 2.70 \mbox{ und }
+u_{\delta}' := \Xi^{-1}\left(0.975;9\right) = 19.0.
+\end{equation}\]</span> <a href="#fig-u-konfidenzbedingung" class="quarto-xref">Abbildung&nbsp;<span>23.6</span></a> A zeigt diese Wahl aus Perspektive der WDF der <span class="math inline">\(U\)</span>-Konfidenintervallstatistik. Die von <span class="math inline">\(u_\delta\)</span> und <span class="math inline">\(u_\delta'\)</span> eingeschlossene Wahrscheinlichkeitsmasse beträgt nach Konstruktion <span class="math inline">\(\delta\)</span>, <span class="math inline">\(U\)</span> nimmt mit einer Wahrscheinlichkeit von <span class="math inline">\(\delta\)</span> also einen Wert zwischen <span class="math inline">\(u_\delta\)</span> und <span class="math inline">\(u_\delta'\)</span> an. <a href="#fig-u-konfidenzbedingung" class="quarto-xref">Abbildung&nbsp;<span>23.6</span></a> B zeigt die entsprechende Perspektive der KVF der <span class="math inline">\(U\)</span>-Konfidenintervallstatistik. Basierend auf der Vorgabe von <span class="math inline">\(\frac{1-\delta}{2}\)</span> und <span class="math inline">\(\frac{1+\delta}{2}\)</span> werden anhand der inversen KVF <span class="math inline">\(\Psi^{-1}\)</span> die entsprechenden Werte für <span class="math inline">\(u_\delta\)</span> und <span class="math inline">\(u_\delta'\)</span> bestimmt. Man beachte, dass in diesem Fall die Wahrscheinlichkeitsmasse recht arbiträr hinsichtlich des Modalwerts der Verteilung der <span class="math inline">\(U\)</span>-Konfidenzintervallstatistik lokalisiert ist. Dementsprechend gibt es weitergehende Verfahren, die Überdeckungswahrscheinlichkeit einer Konfidenzintervallstatistik so zu lokalisieren, dass sie beispielsweise ein maximales Intervall in ihrem Ergebnisraum einnimmt oder eine Symmetrieeigenschaft um den Erwartungswert erfüllt, die wir hier aber nicht vertiefen wollen.</p>
+<div id="fig-u-konfidenzbedingung" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-u-konfidenzbedingung-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/303-u-konfidenzbedingung.png" class="img-fluid quarto-figure quarto-figure-center figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-u-konfidenzbedingung-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;23.6: Sicherung der Überdeckungswahrscheinlichkeit des Konfidenzintervalls für den Varianzparameter des Normalverteilungsmodells für <span class="math inline">\(\delta := 0.95\)</span> und <span class="math inline">\(n := 10\)</span> aus Perspektive der WDF (A) und der KVF (B) der Verteilung der <span class="math inline">\(U\)</span>-Konfidenzintervallstatistik.
+</figcaption>
+</figure>
+</div>
+<p>Abschließend wollen wir die Überdeckungswahrscheinlichkeit des durch <a href="#thm-konfidenzintervall-fuer-den-varianzparameter-des-normalverteilungsmodells" class="quarto-xref">Theorem&nbsp;<span>23.4</span></a> gegebenen Konfidenzintervalls mithilfe einer Simulation demonstrieren. Dazu betrachten wir zunächst die in <a href="#sec-definition" class="quarto-xref"><span>Kapitel 23.1</span></a> gegebene erste Interpretation eines Konfidenzintervalls bei immer gleichem wahrem, aber unbekanntem, Parameter. Folgender <strong>R</strong> Code bestimmt in diesem Sinne zu jeder Stichprobenrealisierung das entsprechende Konfidenzintervall.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># Modellformulierung</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)                                     <span class="co"># random number generator seed</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a>mu          <span class="ot">=</span> <span class="dv">2</span>                                 <span class="co"># wahrer, aber unbekannter,  Erwartungswertparameter</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>sigsqr      <span class="ot">=</span> <span class="dv">2</span>                                 <span class="co"># wahrer, aber unbekannter,  Varianzparameter</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a>n           <span class="ot">=</span> <span class="dv">12</span>                                <span class="co"># Stichprobenumfang</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a>delta       <span class="ot">=</span> <span class="fl">0.95</span>                              <span class="co"># Konfidenzbedingung</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a>u_delta_u   <span class="ot">=</span> <span class="fu">qchisq</span>((<span class="dv">1</span><span class="sc">-</span>delta)<span class="sc">/</span><span class="dv">2</span>, n <span class="sc">-</span> <span class="dv">1</span>)        <span class="co"># \Xi^2((1-\delta)/2; n - 1)</span></span>
+<span id="cb5-8"><a href="#cb5-8"></a>u_delta_o   <span class="ot">=</span> <span class="fu">qchisq</span>((<span class="dv">1</span><span class="sc">+</span>delta)<span class="sc">/</span><span class="dv">2</span>, n <span class="sc">-</span> <span class="dv">1</span>)        <span class="co"># \Xi^2((1+\delta)/2; n - 1)</span></span>
+<span id="cb5-9"><a href="#cb5-9"></a></span>
+<span id="cb5-10"><a href="#cb5-10"></a><span class="co"># Stichprobenrealisierungen</span></span>
+<span id="cb5-11"><a href="#cb5-11"></a>ns          <span class="ot">=</span> <span class="fl">1e2</span>                               <span class="co"># Anzahl Simulationen</span></span>
+<span id="cb5-12"><a href="#cb5-12"></a>y_bar       <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                       <span class="co"># Stichprobenmittelarray</span></span>
+<span id="cb5-13"><a href="#cb5-13"></a>S2          <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                       <span class="co"># Stichprobenvarianzarray</span></span>
+<span id="cb5-14"><a href="#cb5-14"></a>kappa       <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="cn">NaN</span>,<span class="dv">2</span><span class="sc">*</span>ns), <span class="at">ncol =</span> <span class="dv">2</span>)   <span class="co"># Konfidenzintervallarray</span></span>
+<span id="cb5-15"><a href="#cb5-15"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>ns){                                 <span class="co"># Simulationsiterationen</span></span>
+<span id="cb5-16"><a href="#cb5-16"></a>   y        <span class="ot">=</span> <span class="fu">rnorm</span>(n,mu,<span class="fu">sqrt</span>(sigsqr))          <span class="co"># Stichprobenrealisierung</span></span>
+<span id="cb5-17"><a href="#cb5-17"></a>   S2[i]    <span class="ot">=</span> <span class="fu">var</span>(y)                            <span class="co"># Stichprobenvarianz</span></span>
+<span id="cb5-18"><a href="#cb5-18"></a>   kappa[i,<span class="dv">1</span>]   <span class="ot">=</span> (n<span class="dv">-1</span>)<span class="sc">*</span>S2[i]<span class="sc">/</span>u_delta_o         <span class="co"># untere Konfidenzintervallgrenze</span></span>
+<span id="cb5-19"><a href="#cb5-19"></a>   kappa[i,<span class="dv">2</span>]   <span class="ot">=</span> (n<span class="dv">-1</span>)<span class="sc">*</span>S2[i]<span class="sc">/</span>u_delta_u         <span class="co"># obere Konfidenzintervallgrenze</span></span>
+<span id="cb5-20"><a href="#cb5-20"></a>}</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="fig-ki-varianzparameter-normalverteilung" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ki-varianzparameter-normalverteilung-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/303-ki-varianzparameter-normalverteilung.png" class="img-fluid quarto-figure quarto-figure-center figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ki-varianzparameter-normalverteilung-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;23.7: Simulation der Überdeckungswahrscheinlichkeit des Konfidenzintervalls für den Varianzparameter des Normalverteilungsmodells bei konstanten, wahren, aber unbekannten, Varianzparameter <span class="math inline">\(\sigma^2 := 2\)</span> für <span class="math inline">\(\mu := 2, n := 12\)</span> und einer gewünschten Überdeckungswahrscheinlichkeit von <span class="math inline">\(\delta := 0.95\)</span>. Die Abbildung zeigt für jede Stichprobenrealisierung das Konfidenzintervall und den entsprechenden Varianzparameterschätzer. In der vorliegenden Simulation überdecken die Konfidenzintervalle den durch eine graue Linie eingezeichneten immer gleichen wahren, aber unbekannten, Varianzparameter <span class="math inline">\(\sigma^2 :=2\)</span> in 95 von 100 Fällen. Die Stichprobenrealisierungen, für die dies nicht der Fall sind, sind mit einen orangen Kreis markiert. Man beachte, dass die Konfidenzintervalle nicht symmetrisch um den den Varianzparameterschätzer angeordnet sind
+</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="sec-anwendungsbeispiel" class="level2" data-number="23.3">
+<h2 data-number="23.3" class="anchored" data-anchor-id="sec-anwendungsbeispiel"><span class="header-section-number">23.3</span> Anwendungsbeispiel</h2>
+<p>Zum Abschluss dieses Abschnitts wollen wir die Evaluation von Konfidenzintervallen für den Erwartungswert und den Varianzparameter bei Normalverteilung nun im Kontext des Anwendungsbeispiels von <a href="301-Grundbegriffe.html#sec-anwendungsbeispiel-frequentistische-inferenz" class="quarto-xref"><span>Kapitel 21.3.1</span></a>. Dazu werten wir zunächst einmal die unverzerrten Punktschätzer von <span class="math inline">\(\mu\)</span> und <span class="math inline">\(\sigma^2\)</span>, also das Stichprobenmittel und die Stichprobenvarianz des Datensatzes mithilfe folgenden <strong>R</strong> Codes aus.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>D           <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"./_data/303-Konfidenzintervalle.csv"</span>)  <span class="co"># Datensatzeinlesen </span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>y           <span class="ot">=</span> D<span class="sc">$</span>dBDI                                           <span class="co"># Datenauswahl            </span></span>
+<span id="cb6-3"><a href="#cb6-3"></a>mu_hat      <span class="ot">=</span> <span class="fu">mean</span>(y)                                          <span class="co"># Stichprobenmittel </span></span>
+<span id="cb6-4"><a href="#cb6-4"></a>sigsqr_hat  <span class="ot">=</span> <span class="fu">var</span>(y)                                           <span class="co"># Stichprobenvarianz</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a><span class="fu">cat</span>(<span class="st">"mu_hat     :"</span>, mu_hat,<span class="st">"</span><span class="sc">\n</span><span class="st">sigsqr_hat :"</span>, sigsqr_hat)       <span class="co"># Ausgabe    </span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>mu_hat     : 3.166667 
+sigsqr_hat : 13.78788</code></pre>
+</div>
+</div>
+<p>Basierend auf diesen Schätzern und den vorliegenden <span class="math inline">\(n = 12\)</span> Datenpunkten sind also <span class="math display">\[\begin{equation}
+\hat{\mu} = 3.17 \mbox{ und } \hat{\sigma}^{2} = 13.8
+\end{equation}\]</span> sinnvolle Tipps für <span class="math inline">\(\mu\)</span> und <span class="math inline">\(\sigma^2\)</span>. Um neben diesen Punktschätzern, die zwar sehr genau sind, mit einer Wahrscheinlichkeit von 0 aber den wahren, aber unbekannten Parametern, exakt entsprechen, werten wir zusätzlich die 95%-Konfidenzintervallschätzungen für <span class="math inline">\(\mu\)</span> und <span class="math inline">\(\sigma^2\)</span> aus. Folgender <strong>R</strong> Code bestimmt das 95%-Konfidenzintervall für den Erwartungswertparameter.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co"># Konfidenzintervall für den Erwartungswertparameter</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a>delta    <span class="ot">=</span> <span class="fl">0.95</span>                                    <span class="co"># Konfidenzlevel</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a>n        <span class="ot">=</span> <span class="fu">length</span>(y)                               <span class="co"># Anzahl Datenpunkte</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a>t_delta  <span class="ot">=</span> <span class="fu">qt</span>((<span class="dv">1</span><span class="sc">+</span>delta)<span class="sc">/</span><span class="dv">2</span>,n<span class="dv">-1</span>)                     <span class="co"># \psi^-1((\delta+1)/2,n-1)</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a>y_bar    <span class="ot">=</span> <span class="fu">mean</span>(y)                                 <span class="co"># Stichprobenmittel</span></span>
+<span id="cb8-6"><a href="#cb8-6"></a>s        <span class="ot">=</span> <span class="fu">sd</span>(y)                                   <span class="co"># Stichprobenstandardabweichung</span></span>
+<span id="cb8-7"><a href="#cb8-7"></a>mu_hat   <span class="ot">=</span> y_bar                                   <span class="co"># Erwartungswertparameterschätzer</span></span>
+<span id="cb8-8"><a href="#cb8-8"></a>kappa_u  <span class="ot">=</span> y_bar <span class="sc">-</span> (s<span class="sc">/</span><span class="fu">sqrt</span>(n))<span class="sc">*</span>t_delta             <span class="co"># untere Konfidenzintervallgrenze</span></span>
+<span id="cb8-9"><a href="#cb8-9"></a>kappa_o  <span class="ot">=</span> y_bar <span class="sc">+</span> (s<span class="sc">/</span><span class="fu">sqrt</span>(n))<span class="sc">*</span>t_delta             <span class="co"># obere  Konfidenzintervallgrenze</span></span>
+<span id="cb8-10"><a href="#cb8-10"></a><span class="fu">cat</span>(<span class="st">"kappa_u:"</span>, kappa_u, <span class="st">"</span><span class="sc">\n</span><span class="st">kappa_o:"</span>, kappa_o)    <span class="co"># Ausgabe  </span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>kappa_u: 0.8074098 
+kappa_o: 5.525923</code></pre>
+</div>
+</div>
+<p>Das 0.95-Konfidenzintervall für den Erwartungswertparameter ist also <span class="math display">\[\begin{equation}
+\kappa(y) = [0.80,5.52].
+\end{equation}\]</span> Im langfristigen Mittel überdeckt ein auf diese Weise berechnetes Konfidenzintervall den wahren, aber unbekannten, Erwartungswertparameter in 95 von 100 Fällen. In diesem Sinne liegt der wahre, aber unbekannte, Therapieeffekt also sehr sicher in einem Intervall zwischen 0.80 und 5.52 BDI-II Score Pre-Post-Differenzen.</p>
+<p>Folgender <strong>R</strong> Code bestimmt das 95%-Konfidenzintervall für den Varianzparameter.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="co"># Konfidenzintervall für den Varianzwertparameter</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a>delta       <span class="ot">=</span>  <span class="fl">0.95</span>                                <span class="co"># Konfidenzlevel</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a>n           <span class="ot">=</span> <span class="fu">length</span>(y)                            <span class="co"># Anzahl Datenpunkte</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a>u_delta_u   <span class="ot">=</span> <span class="fu">qchisq</span>((<span class="dv">1</span><span class="sc">-</span>delta)<span class="sc">/</span><span class="dv">2</span>, n <span class="sc">-</span> <span class="dv">1</span>)           <span class="co"># \Xi^2((1-\delta)/2; n - 1)</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a>u_delta_o   <span class="ot">=</span> <span class="fu">qchisq</span>((<span class="dv">1</span><span class="sc">+</span>delta)<span class="sc">/</span><span class="dv">2</span>, n <span class="sc">-</span> <span class="dv">1</span>)           <span class="co"># \Xi^2((1+\delta)/2; n - 1)</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a>s2          <span class="ot">=</span> <span class="fu">var</span>(y)                               <span class="co"># Stichprobenstandardabweichung</span></span>
+<span id="cb10-7"><a href="#cb10-7"></a>sigsqr_hat  <span class="ot">=</span> s2                                   <span class="co"># Varianzparameterschätzer</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a>kappa_u     <span class="ot">=</span> (n<span class="dv">-1</span>)<span class="sc">*</span>s2<span class="sc">/</span>u_delta_o                   <span class="co"># untere Konfidenzintervallgrenze</span></span>
+<span id="cb10-9"><a href="#cb10-9"></a>kappa_o        <span class="ot">=</span> (n<span class="dv">-1</span>)<span class="sc">*</span>s2<span class="sc">/</span>u_delta_u                <span class="co"># obere Konfidenzintervallgrenze</span></span>
+<span id="cb10-10"><a href="#cb10-10"></a><span class="fu">cat</span>(<span class="st">"kappa_u:"</span>, kappa_u, <span class="st">"</span><span class="sc">\n</span><span class="st">kappa_o:"</span>, kappa_o)    <span class="co"># Ausgabe  </span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>kappa_u: 6.919084 
+kappa_o: 39.74756</code></pre>
+</div>
+</div>
+<p>Das 0.95-Konfidenzintervall für den Varianzparameter ist also <span class="math display">\[\begin{equation}
+\kappa(y) = [6.91,39.74].
+\end{equation}\]</span> Im langfristigen Mittel überdeckt ein auf diese Weise berechnetes Konfidenzintervall den wahren, aber unbekannten, Varianzparameter in 95 von 100 Fällen. In diesem Sinne liegt die wahre, aber unbekannte, Therapieeffektstreuung also sehr sicher in einem Intervall zwischen 6.91 und 39.74 quadriertern BDI-II Score Pre-Post-Differenzen.</p>
+</section>
+<section id="literaturhinweise" class="level2" data-number="23.4">
+<h2 data-number="23.4" class="anchored" data-anchor-id="literaturhinweise"><span class="header-section-number">23.4</span> Literaturhinweise</h2>
+<p>Die in diesem Kapitel vorgestellten Ergebnisse gehen in ganz wesentlicher Weise auf <span class="citation" data-cites="neyman1937">Neyman (<a href="#ref-neyman1937" role="doc-biblioref">1937</a>)</span> zurück.</p>
+</section>
+<section id="selbstkontrollfragen" class="level2" data-number="23.5">
+<h2 data-number="23.5" class="anchored" data-anchor-id="selbstkontrollfragen"><span class="header-section-number">23.5</span> Selbstkontrollfragen</h2>
+<ol type="1">
+<li>Geben Sie die Definition des Begriffs eines <span class="math inline">\(\delta\)</span>-Konfidenzintervalls wieder.</li>
+<li>Erläutern Sie die zwei Interpretationen eines <span class="math inline">\(\delta\)</span>-Konfidenzintervalls.</li>
+<li>Erläutern Sie die typischen Schritte zur Konstruktion eines <span class="math inline">\(\delta\)</span>-Konfidenzintervalls.</li>
+<li>Geben Sie das Theorem zum <span class="math inline">\(\delta\)</span>-Konfidenzintervall für den Erwartungswert der Normalverteilung wieder.</li>
+<li>Geben Sie das Theorem zum <span class="math inline">\(\delta\)</span>-Konfidenzintervall für den Varianzparameter der Normalverteilung wieder.</li>
+</ol>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-casella2012" class="csl-entry" role="listitem">
+Casella, G., &amp; Berger, R. (2012). <em>Statistical <span>Inference</span></em>. <span>Duxbury</span>.
+</div>
+<div id="ref-neyman1937" class="csl-entry" role="listitem">
+Neyman, J. (1937). Outline of a <span>Theory</span> of <span>Statistical Estimation Based</span> on the <span>Classical Theory</span> of <span>Probability</span>. <em>Statistical Stimation</em>.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Kopiert");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Kopiert");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./302-Punktschätzung.html" class="pagination-link  aria-label=" &lt;span="">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Punktschätzung</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./304-Hypothesentests.html" class="pagination-link" aria-label="<span class='chapter-number'>24</span>&nbsp; <span class='chapter-title'>Hypothesentests</span>">
+        <span class="nav-page-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Hypothesentests</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/303-Konfidenzintervalle.qmd" class="toc-action"><i class="bi bi-github"></i>Seite editieren</a></li></ul></div></div></div></footer></body></html>

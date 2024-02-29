@@ -1,0 +1,1270 @@
+# Konfidenzintervalle {#sec-konfidenzintervalle}
+\normalsize
+
+Konfidenzintervalle stellen eine Intervallschätzung wahrer, aber unbekannter, 
+Parameter dar, die so konstruiert ist, dass sie in den meisten Fällen zutrifft. Dabei 
+wird die gegenüber der Punktschätzung gewonnene Sicherheit hinsichtlich der 
+Akkuratheit der Schätzung durch einen Verlust der Genauigkeit der Schätzung erkauft.
+Wo im Bereich der Punktschätzung zum Beispiel die Schätzung eines wahren, aber 
+unbekannten, Parameterwertes von $\theta = 2$ durch einen Punktschätzer der Form 
+$\hat{\theta}$ zwar sehr genau erfolgt, z.B. durch $\hat{\theta} = 2.14$ ist diese 
+Schätzung zum Beispiel vor dem Hintergrund der verschwindenen Wahrscheinlichkeit
+einer normalverteilten Zufallsvariable  wie dem Stichprobenmittel im Normalverteilungsmodell 
+genau einen reellen Wert anzunehmen mit sehr hoher Sicherheit falsch. Durch eine 
+Intervallschätzung des wahren, aber unbekannten Parameters durch z.B. $[1.94, 2.34]$
+ist eine gröbere Schätzung gegeben, die jedoch wie im folgenden thematisiert so konstruiert
+werden kann, dass sie mit einer hohen gewünschten Wahrscheinlichkeit, also, vor 
+der Form eines geeigneten Frequentistischen Inferenzmodell nur mit einem 
+geringes Maß an Unsicherheit assoziiert ist. Um diese Intuition formal darzustellen,
+fokussieren wir in diesem Kapitel zunächst auf eindimensionale Parameterräume, 
+also $\Theta \subseteq \mathbb{R}$ und damit in der Tat nur Konfidenz*intervalle*, d.h. Teilmengen 
+von $\mathbb{R}$. Eine Generalisierung der hier vorgestellten Konzepte auf höher 
+dimensionale Parameterräume im Sinne von Konfidenz*mengen* ist jedoch relativ 
+unproblematisch möglich.   
+
+
+## Definition {#sec-definition}
+:::{#def-delta-konfidenzintervall}
+## $\delta$-Konfidenzintervall
+Es sei $\upsilon$ die Stichprobe eines Frequentistischen Inferenzmodells mit wahrem, 
+aber unbekannten Parameter, $\theta \in \Theta$, es sei $\delta \in \,]0,1[$ 
+und es seien $G_u(\upsilon)$ und $G_o(\upsilon)$. Dann heißt ein Intervall der Form 
+\begin{equation}
+\kappa(\upsilon) := [G_u(\upsilon), G_o(\upsilon)],
+\end{equation}
+so dass
+\begin{equation}
+\mathbb{P}_\theta\left(\kappa(\upsilon) \ni \theta\right) =
+\mathbb{P}_\theta\left(G_u(\upsilon) \le \theta \le G_o(\upsilon) \right) =
+\delta \mbox{ für alle } \theta \in \Theta \mbox{ gilt} 
+\end{equation}
+ein *$\delta$-Konfidenzintervall für $\theta$*. $\delta$ ist die Überdeckungswahrscheinlichkeit 
+von $\kappa(\upsilon)$ für $\theta$ und wird meist *Konfidenzlevel* genannt. Die Statistiken 
+$G_u(\upsilon)$ und $G_o(\upsilon)$ heißen die unteren und oberen Grenzen des Konfidenzintervalls, respektive.
+:::
+
+Man beachte in @def-delta-konfidenzintervall dass, wie in allen Frequentistischen
+Inferenzmodellen, der Parameter $\theta$ ein wahrer, aber unbekannter, Wert und damit 
+insbesondere fest, nicht zufällig, ist. Weil die oberen und unteren Grenzen 
+eines Konfidenzintervalls als Funktionen der zufälligen Stichprobe Zufallsvariablen sind, 
+ist das durch sie definierte Konfidenzintervall ein zufälliges Intervall. Die 
+etwas ungewöhnliche Schreibweise $\kappa(\upsilon) \ni \theta$ bedeutet schlicht 
+$\theta \in \kappa(\upsilon)$. Da $\kappa(\upsilon)$ in dem Ausdruck 
+$\mathbb{P}_\theta\left(\kappa(\upsilon) \ni \theta\right)$ wie beschrieben die 
+zufällige Entität ist, steht $\kappa(\upsilon)$ konventionellerweise links, man denke 
+zum Beispiel an einen Ausdruck wie $\mathbb{P}(\xi = x)$. Ein $\delta$-Konfidenzintervall 
+überdeckt den wahren, aber unbekannten, Parameter $\theta$ nach Definition mit 
+Wahrscheinlichkeit $\delta$. Dabei wird oft eine hohe Überdeckungswahrscheinlichkeit 
+von $\delta := 0.95$ gewählt, in diesem Fall spricht man von einem *$95\%$-Konfidenzintervall*.
+
+
+Intuitiv mag man $\delta$-Konfidenzintervalle auf zwei Arten interpretieren. Im ersten 
+Fall geht man von der Wiederholung der unabhängigen Realisierung von Stichproben 
+bei immer identischen wahren, aber unbekannten, Parameter $\theta$ aus. Wiederholt 
+man die Realisierung von Daten also "unter immer den gleichen Umständen" und 
+bei identischen wahren, aber, unbekannten, Parameter $\theta$, so überdeckt ein 
+$\delta$-Konfidenzintervall diesen wahren, aber unbekannten, Parameter im 
+langfristigen Mittel in $\delta\cdot 100 \%$ der realisierten Fälle. Alternativ 
+gilt diese Frequentistische Wahrscheinlichkeit für die Überdeckung des wahren, aber 
+unbekannten, Parameters nach @def-delta-konfidenzintervall jedoch auch für jeden beliebigen
+wahren, aber unbekannten, Parameterwert $\theta_i, i = 1,2,...$. Auch wenn man 
+also unterschiedliche, wahre, aber unbekannte, Parameterwerte $\theta_1,\theta_2,...$
+betrachtet und in jedem Fall eine, von den anderen Realisierungen unabhängige, 
+Realisierung der Stichprobe erfasst, so überdecken die entsprechenden $\delta$-Konfidenzintervalle
+diese wahren, aber unbekannten, Parameter im langfristigen Mittel in $\delta\cdot 100 \%$ 
+der Fälle. Intuitiv braucht man also "eine Studie", also die Untersuchung eines wahren,
+aber unbekannten, Parameterwerts, nicht unter den gleichen Umständen "unendlich oft wiederholen",
+um von der Überdeckungswahrscheinlichkeit eines Konfidenzintervalls zu profitieren, 
+sondern es genügt in "unterschiedlichen Studien", also den Untersuchungen 
+unterschiedlicher wahrer, aber unbekannten, Parameter, Konfidenzintervalle 
+gemäß @def-delta-konfidenzintervall zu bestimmen, auch im diesen Fall ist ihre 
+Überdeckungswahrscheinlichkeit für die wahren, aber unbekannten Parameter, gesichert. 
+Wir demonstrieren diese beiden Interpretationen in der Folge mithilfe einer Simulation.
+
+Um nun für gegeben Frequentistische Inferenzmodelle $\delta$-Konfidenzintervalle 
+durch eine konkrete Angabe der Statistiken $G_u(\upsilon)$ und $G_o(\upsilon)$ zu konstruieren,
+geht man vor wie folgt. Zunächst definiert man das Frequentistische Inferenzmodell 
+und legt damit die Verteilung der Stichprobe $\upsilon$ fest. In einem zweiten Schritt 
+definiert man eine Statistik, also eine Funktion der Stichprobe, die als Grundlage 
+für $G_u(\upsilon)$ und $G_o(\upsilon)$ dienen mag und analysiert ihre, auf der Stichprobenverteilung 
+basierende, Verteilung. Hat man die entsprechende Verteilung gefunden, so kann 
+man diese dazu nutzen, die Überdeckungswahrscheinlichkeit des wahren, aber unbekannten, 
+Parameters durch ein entsprechend definiertes Konfidenzintervall zu sichern. 
+Wir zeichnen dieses Verfahren in der Entwicklung und den konstruktiven Beweisen 
+der folgenden Beispiele nach.
+
+## Beispiele für Konfidenzintervalle {#sec-beispiele-fuer-konfidenzintervalle}
+
+### \normalsize Konfidenzintervall für den Erwartungswertparameter des Normalverteilungsmodells {-}
+
+Wir betrachten die Konstruktion eines $\delta$-Konfidenzintervalls für den
+Erwartungswertparameter des Normalverteilungsmodells. Zu diesem Zweck definieren 
+wir zunächst folgende Konfidenzintervallstatistik.
+
+:::{#def-t-konfidenzintervallstatistik}
+## $T$-Konfidenzintervallstatistk
+Gegeben sei das Normalverteilungsmodell
+\begin{equation}
+\upsilon_1,...,\upsilon_n \sim N\left(\mu,\sigma^2\right)
+\end{equation}
+Dann heißt die mit dem Stichprobenmittel und der Stichprobenstandardabweichung
+\begin{equation}
+\bar{\upsilon} := \frac{1}{n}\sum_{i=1}^n \upsilon_i \mbox{ und } S := \sqrt{\frac{1}{n-1}\sum_{i=1}^n(\upsilon_i - \bar{\upsilon})^2},
+\end{equation}
+definierte Statistik
+\begin{equation}
+T := \sqrt{n}\frac{\bar{\upsilon} - \mu}{S}
+\end{equation}
+*$T$-Konfidenzintervallstatistik*.
+::: 
+
+Für die Verteilung der $T$-Konfidenzintervallstatistik gilt folgendes Theorem.
+
+:::{#thm-verteilung-der-t-konfidenzintervallstatistik}
+## Verteilung der $T$-Konfidenzintervallstatistik
+Die $T$-Konfidenzintervallstatistik ist eine $t$-verteilte Zufallsvariable mit 
+Parameter $n-1$, es gilt also
+\begin{equation}
+T \sim t(n-1)
+\end{equation}
+:::
+
+:::{.proof}
+:::
+
+Man beachte, dass die $T$-Konfidenzintervallstatistik nach @def-t-konfidenzintervallstatistik 
+eine Funktion der Stichprobe ist, während ihre Verteilung nach @thm-verteilung-der-t-konfidenzintervallstatistik
+unabhängig von den wahren, aber unbekannten, Parametern der Stichprobenverteilung ist. 
+Man nennt dies auch die *Pivoteigenschaft* der $T$-Konfidenzeigenschaft. Für die 
+folgenden Entwicklungen erinnern wir daran, dass wir die WDF einer $t$-verteilten 
+Zufallvariable mit $t$, die KVF einer $t$-verteilten Zufallvariable mit $\Psi$ 
+und die inverse KVF einer $t$-verteilten Zufallvariable mit $\Psi^{-1}$ bezeichnen. 
+Folgender **R** Code simuliert  zunächst die Verteilung der $T$-Konfidenzintervallstatistitk.
+
+\tiny
+```{r, echo = T}
+# Modellformulierung
+mu       = 10                                         # wahrer, aber unbekannter, Erwartungswertparameter
+sigsqr   = 4                                          #  wahrer, aber unbekannter, Varianzparameter
+n        = 12                                         # Stichprobenumfang
+ns       = 1e4                                        # Anzahl Stichprobenrealisierungen
+res      = 1e3                                        # Ausgangsraumaufloesung
+
+# analytische Definitionen und Resultate
+yx       = seq(3,17,len = res)                        # \upsilonilon_i Raum
+ssqrx    = seq(0,20,len = res)                        # S^2 Raum
+tx       = seq(-4,4,len = res)                        # T Raum
+p_y_i    = dnorm(yx,mu,sqrt(sigsqr))                  # \upsilonilon_i WDF
+p_y_bar  = dnorm(yx,mu,sqrt(sigsqr/n))                # \upsilonilon_bar WDF
+p_sqr    = dchisq(ssqrx,n-1)                          # S^2 WDF
+p_t      = dt(tx,n-1)                                 # T WDF
+
+# Simulation
+y_i      = rep(NaN,ns)                                # y_i Array
+y_bar    = rep(NaN,ns)                                # \bar{y} Array
+S        = rep(NaN,ns)                                # S Array  
+TKS      = rep(NaN,ns)                                # T-Konfidenzintervallstatistik Array
+for(s in 1:ns){                              	      # Simulationsiterationen
+  y         = rnorm(n,mu,sqrt(sigsqr))                # Stichprobenrealisierung
+  y_i[s]    = y[1]                                    # Stichprobenrealisierung \upsilonilon_i mit i = 1
+  y_bar[s]  = mean(y)                                 # Stichprobenmittelrealisierung
+  S[s]      = sd(y)                                   # Stichprobenstandardabweichungrealisierung
+  TKS[s]    = sqrt(n)*((y_bar[s]-mu)/S[s])            # T-Konfidenzintervallstatistikrealisierung
+}
+```
+\normalsize 
+
+```{r, eval = F, echo = F}
+pdf(                                                               
+file        = "_figures/303-t-konfidenzintervallstatistik.pdf",               
+width       = 8,                                                                
+height      = 8)
+library(latex2exp)                                                                   
+par(                                                                             
+family      = "sans",                                                            
+mfcol       = c(2,2),                                                            
+pty         = "m",                                                               
+bty         = "l",                                                               
+lwd         = 1,                                                                 
+las         = 1,                                                                 
+mgp         = c(2,1,0),                                                          
+xaxs        = "i",                                                               
+yaxs        = "i",                                                               
+font.main   = 1,                                                                 
+cex         = 1,                                                               
+cex.main    = 1)                                                               
+
+# \upsilonilon_i
+hist(
+y_i,                                                                             
+breaks      = 50,                                                                
+col         = "gray90",                                                          
+prob        = TRUE,                                                              
+xlim        = c(yx[1],yx[length(yx)]),                                        
+ylim        = c(0,.5),                                                           
+xlab        = TeX("$y$"),                                                
+ylab        = "",                                                                
+cex         = 1.1,                                                               
+main        = TeX("$\\upsilonilon_i \\sim N(10,4), \\, i = 1,...,12$"))              
+lines(
+yx,                                                                             
+p_y_i,                                                                           
+lwd         = 2,                                                                 
+col         = "darkorange")                                                      
+
+# \upsilonilon_bar
+hist(
+y_bar,                                                                           
+breaks      = 50,                                                                
+col         = "gray90",                                                          
+prob        = TRUE,                                                              
+xlim        = c(yx[1],yx[length(yx)]),                                        
+ylim        = c(0,.8),                                                           
+xlab        = TeX("$\\bar{y}$"),                                         
+ylab        = "",                                                                
+cex         = 1.1,                                                               
+main        = TeX("$\\bar{\\upsilonilon} \\sim N(10,1/3)"))                     
+lines(                                                                           
+yx,                                                                             
+p_y_bar,                                                                         
+lwd         = 2,                                                                 
+col         = "darkorange")                                                      
+
+# Stichprobenstandardabweichung
+hist(
+((n-1)/sigsqr)*S^2,                                                                             
+breaks      = 100,                                                               
+col         = "gray90",                                                          
+prob        = TRUE,                                                              
+xlim        = c(ssqrx[1],ssqrx[length(ssqrx)]),                                              
+ylim        = c(0,.4),                                                           
+xlab        = TeX("$s$"),                                                        
+ylab        = "",                                                                
+cex         = 1.1,                                                               
+main        = TeX("$\\frac{n-1}{\\sigma^2}S^2 \\sim \\chi^2(11)"))                                             
+lines(                                                                           
+ssqrx,                                                                               
+p_sqr,                                                                             
+lwd         = 2,                                                                 
+col         = "darkorange")                                                      
+
+# T-Konfidenzintervallstatistik
+hist(
+TKS,                                                                             
+breaks      = 100,                                                               
+col         = "gray90",                                                          
+prob        = TRUE,                                                              
+xlim        = c(tx[1],tx[length(tx)]),                                              
+ylim        = c(0,.4),                                                           
+xlab        = TeX("$t$"),                                                        
+ylab        = "",                                                                
+cex         = 1.1,                                                               
+main        = TeX("$T \\sim t(11)"))                                             
+lines(                                                                           
+tx,                                                                               
+p_t,                                                                             
+lwd         = 2,                                                                 
+col         = "darkorange")                                                      
+dev.off()
+```
+
+![Simulation der Verteilung der $T$-Konfidenzintervallstatistik und der ihr 
+zugrundeliegenden Verteilungen der Stichprobenvariable, des Stichprobenmittels und der Stichprobenvarianz.](./_figures/303-t-konfidenzintervallstatistik){#fig-t-konfidenzintervallstatistik fig-align="center"}
+
+In @fig-t-konfidenzintervallstatistik visualisieren wir die Verteilung 
+der $T$-Konfidenzintervallstatistik als Resultat der ihr zugrundeliegenden Verteilungen 
+der Stichprobenvariablen, des Stichprobenmittels und der Stichprobenvarianz 
+(vgl. @sec-t-transformation). Mithilfe der Verteilung der $T$-Konfidenzintervallstatistik 
+können wir jetzt folgendes Theorem zum Konfidenzintervall für den Erwartungswertparameter des Normalverteilungsmodells beweisen.
+
+:::{#thm-konfidenzintervall-fuer-den-erwartungswertparameter-des-normalverteilungsmodells}
+## Konfidenzintervall für den Erwartungswertparameter des Normalverteilungsmodells
+Gegeben sei das Normalverteilungsmodell
+\begin{equation}
+\upsilon_1,...,\upsilon_n \sim N(\mu,\sigma^2)
+\end{equation}
+mit wahren, aber unbekannten, Parametern $\mu$ und $\sigma^2$, es sei 
+$\delta \in ]0,1[$ und es sei 
+\begin{equation}
+t_\delta := \Psi^{-1}\left(\frac{1+\delta}{2}; n-1\right).
+\end{equation}
+mit der inversen KVF $\Psi^{-1}$ einer $t$-verteilten Zufallsvariable. Dann gilt für das Intervall
+\begin{equation}
+\kappa(\upsilon) :=
+\left[\bar{\upsilon} - \frac{S}{\sqrt{n}}t_\delta,
+\bar{\upsilon} + \frac{S}{\sqrt{n}}t_\delta\right],
+\end{equation}
+mit dem Stichprobenmittel und der Stichprobenstandardabweichung
+\begin{equation}
+\bar{\upsilon} := \frac{1}{n}\sum_{i=1}^n \upsilon_i \mbox{ und } S := \sqrt{\frac{1}{n-1}\sum_{i=1}^n(\upsilon_i - \bar{\upsilon})^2},
+\end{equation}
+respektive, dass
+\begin{equation}
+\mathbb{P}_{\mu}(\kappa(\upsilon) \ni \mu) = \delta. 
+\end{equation}
+:::
+
+:::{.proof}
+Für $\delta \in ]0,1[$ seien zunächst
+\begin{equation}
+t_1 := \Psi^{-1}\left(\frac{1 - \delta}{2}; n - 1\right)
+\mbox{ und }
+t_2 := \Psi^{-1}\left(\frac{1 + \delta}{2}; n-1\right)
+\end{equation}
+definiert. Dann gilt
+\begin{equation}
+\frac{1+\delta}{2} - \frac{1-\delta}{2} = \delta
+\end{equation}
+und weiterhin gilt mit der Symmetrie der WDF der $t$-Verteilung, dass 
+\begin{equation}
+t_1 = - t_2. 
+\end{equation}
+Per Definition gilt dann aber mit @def-t-konfidenzintervallstatistik und @thm-verteilung-der-t-konfidenzintervallstatistik,
+dass
+\begin{equation}
+\mathbb{P}_\mu\left(-t_{\delta} \le T \le t_{\delta} \right) = \delta.
+\end{equation}
+Damit folgt dann aber direkt
+\begin{align}
+\begin{split}
+\delta
+& =
+\mathbb{P}_\mu\left(-t_\delta \le T \le t_\delta \right) 																			\\
+& =
+\mathbb{P}_\mu\left(-t_\delta \le \frac{\sqrt{n}}{S}(\bar{\upsilon} - \mu) \le t_\delta \right) 										\\
+& =
+\mathbb{P}_\mu\left(-\frac{S}{\sqrt{n}}t_\delta \le \bar{\upsilon} - \mu \le \frac{S}{\sqrt{n}}t_\delta \right) 					\\
+& =
+\mathbb{P}_\mu\left(-\bar{\upsilon} -\frac{S}{\sqrt{n}}t_\delta \le - \mu \le - \bar{\upsilon} + \frac{S}{\sqrt{n}}t_\delta \right) 	\\
+& =
+\mathbb{P}_\mu\left(\bar{\upsilon} + \frac{S}{\sqrt{n}}t_\delta \ge \mu \ge \bar{\upsilon} - \frac{S}{\sqrt{n}}t_\delta \right) 		\\
+& =
+\mathbb{P}_\mu\left(\bar{\upsilon} - \frac{S}{\sqrt{n}}t_\delta \le \mu \le \bar{\upsilon} + \frac{S}{\sqrt{n}}t_\delta \right) 		\\
+& =
+\mathbb{P}_\mu\left(\left[\bar{\upsilon} - \frac{S}{\sqrt{n}}t_\delta, \bar{\upsilon} + \frac{S}{\sqrt{n}}t_\delta\right] \ni \mu \right). 		\\
+& =
+\mathbb{P}_\mu\left(\kappa(\upsilon) \ni \mu \right). 		\\
+\end{split}
+\end{align}
+:::
+
+Der entscheidene Schritt zur Sicherung der Überdeckungswahrscheinlichkeit $\delta$ 
+des wahren, aber unbekannten, Erwartungswertparameters durch das in 
+@thm-konfidenzintervall-fuer-den-erwartungswertparameter-des-normalverteilungsmodells 
+definierte Konfidenzintervall ist die Definition von   
+\begin{equation}
+t_\delta := \Psi^{-1}\left(\frac{1+\delta}{2}; n-1\right).
+\end{equation}
+Wie im Beweis von @thm-konfidenzintervall-fuer-den-erwartungswertparameter-des-normalverteilungsmodells 
+nachgezeichnet ist die Überdeckungswahrscheinlichkeit des Konfidenzintervalls für 
+den wahren, aber unbekannten, Erwartungswertparameter äquivalent zu der Tatsache,
+dass bei Wahl eben dieses $t_\delta$ die $T$-Konfidenzintervallstatistik eine 
+Wahrscheinlichkeit von $\delta$ dafür hat, einen Wert im Intervall $[-t_\delta, t_\delta]$
+anzunehmen. Wir visualisieren die Wahl von $t_\delta$ für Fall $\delta := 0.95$ 
+und $n := 5$ in @fig-t-konfidenzbedingung. In diesem Fall ergibt sich 
+\begin{equation}
+-t_\delta = \Psi^{-1}(0.025;4) = -2.57 \mbox{ und }
+ t_\delta = \Psi^{-1}(0.975;4) = 2.57.
+\end{equation}
+@fig-t-konfidenzbedingung A zeigt diese Wahl aus Perspektive der WDF der $T$-Konfidenintervallstatistik. Die von $-t_\delta$ und $t_\delta$ eingeschlossene Wahrscheinlichkeitsmasse beträgt nach Konstruktion $\delta$, $T$ nimmt mit 
+einer Wahrscheinlichkeit von $\delta$ also einen Wert zwischen $-t_\delta$ und 
+$t_\delta$ an. @fig-t-konfidenzbedingung B zeigt die entsprechende Perspektive 
+der KVF der $T$-Konfidenintervallstatistik. Basierend auf der Vorgabe von 
+$\frac{1-\delta}{2}$ und $\frac{1+\delta}{2}$ werden anhand der inversen KVF $\Psi^{-1}$ 
+die entsprechenden Werte für $-t_\delta$ und $t_\delta$ bestimmt. Man beachte, 
+dass die hier gegebene Zentralität der Wahrscheinlichkeitsmasse in 
+@def-delta-konfidenzintervall nicht implizit ist, sondern sich aus den Gegebenheiten 
+der Verteilung der $T$-Konfidenzintervallstatistik, insbesondere ihrer Symmetrie um 0, 
+ergibt.
+
+
+```{r, eval = F, echo = F}
+library(latex2exp)
+delta       = 0.95                                                              # Konfidenzlevel
+n           = 5                                                                 # Freiheitsgrade
+t_delta     = qt((1+delta)/2, n-1)                                              # t_2
+tee         = seq(-4,4,length=1e4)                                              # support
+ptee        = dt(tee, n-1)                                                      # WDF
+Ptee        = pt(tee, n-1)                                                      # cmulative density
+pdf(
+file        = "_figures/303-t-konfidenzbedingung.pdf",
+width       = 10,
+height      = 5)                                                                     
+par(                                                                             
+family      = "sans",                                                            
+mfcol       = c(1,2),                                                            
+pty         = "m",                                                               
+bty         = "l",                                                               
+lwd         = 1,                                                                 
+las         = 1,                                                                 
+mgp         = c(2,1,0),                                                          
+xaxs        = "i",                                                               
+yaxs        = "i",                                                               
+font.main   = 1,                                                                 
+cex         = 1.2,                                                               
+cex.main    = 1.3)                                                                
+
+# WDF Perspektive
+plot(                                                                           
+tee,
+ptee,
+type        = "l",
+ylab        = " ",
+xlab        = "t",
+main        = "t",
+ylim        = c(0,.4))
+polygon(                                                                        
+c(tee[tee  >= -t_delta], max(tee), -t_delta),
+c(ptee[tee >= -t_delta],      0, 0),
+col         = "gray90",
+border      = NA)
+polygon(                                                                         
+c(tee[tee  >= t_delta] , max(tee), t_delta),
+c(ptee[tee >= t_delta],       0, 0),
+col         = "white",
+border      = NA)
+lines(                                                                           
+tee,
+ptee,
+type        = "l")
+lines(                                                                          
+c(-t_delta,t_delta),
+c(0,0),
+type        = "p",
+pch         = 18,
+xpd         = TRUE)                                                              
+text(0,.15, TeX("$\\delta$"), cex = 1.2)
+text(-t_delta,.06, TeX("$-t_{\\delta}$"))
+text( t_delta,.06, TeX("$t_{\\delta}$"))
+mtext(LETTERS[1], adj=0, line=2, cex = 2, at = -6)
+
+# KVF Perspektive
+plot(                                                                             
+tee,
+Ptee,
+type        = "l",
+ylab        = " ",
+xlab        = "t",
+ylim        = c(0,1),
+main        = TeX("$\\Psi$"))
+lines(
+c(-t_delta,t_delta),
+c(0,0),
+type        = "p",
+pch         = 18,
+xpd         = TRUE)
+text(-t_delta,.10, TeX("$-t_{\\delta}$"), xpd = TRUE)
+text( t_delta,.10, TeX("$t_{\\delta}$") , xpd = TRUE)
+lines(
+c(-4,-4),
+c((1+delta)/2,(1-delta)/2),
+type        = "p",
+pch         = 15,
+xpd         = TRUE)
+text(-5.0, 0.9, TeX("$(1+\\delta)/2$"), xpd = TRUE)
+text(-5.0, 0.1, TeX("$(1-\\delta)/2$"), xpd = TRUE)
+arrows(
+x0          = min(tee),
+y0          = (1-delta)/2,
+x1          = -t_delta,
+y1          = (1-delta)/2,
+col         = "darkorange",
+angle       = 45,
+length      = .08)
+arrows(
+x0          = min(tee),
+y0          = (1+delta)/2,
+x1          = t_delta,
+y1          = (1+delta)/2,
+col         = "darkorange",
+angle       = 45,
+length      = .08)
+arrows(
+x0          = -t_delta,
+y0          = (1-delta)/2,
+x1          = -t_delta,
+y1          = 0,
+col         = "darkorange",
+angle       = 45,
+length      = .08)
+arrows(
+x0          = t_delta,
+y0          = (1+delta)/2,
+x1          = t_delta,
+y1          = 0,
+col         = "darkorange",
+angle       = 45,
+length      = .08)
+mtext(LETTERS[2], adj=0, line=2, cex = 2, at = -6)
+dev.off()
+```
+
+![Sicherung der Überdeckungswahrscheinlichkeit des Konfidenzintervalls für den 
+Erwartungswertparameter des Normalverteilungsmodells für $\delta := 0.95$ und 
+$n := 5$ aus Perspektive der WDF (A) und der KVF (B) der Verteilung der $T$-Konfidenzintervallstatistik.](./_figures/303-t-konfidenzbedingung){#fig-t-konfidenzbedingung fig-align="center"}
+
+Abschließend wollen wir die Überdeckungswahrscheinlichkeit des durch 
+@thm-konfidenzintervall-fuer-den-erwartungswertparameter-des-normalverteilungsmodells
+gegebenen Konfidenzintervalls mithilfe einer Simulation demonstrieren. Wir betrachten
+dabei lediglich die erste Interpretation eines Konfidenzintervalls bei konstantem, 
+wahrem, aber unbekanntem, Parameter. Folgender **R** Code bestimmt in diesem Sinne 
+zu jeder Stichprobenrealisierung das entsprechende Konfidenzintervall. 
+
+\tiny
+```{r, echo = T}
+# Modellformulierung
+set.seed(1)                                        # Random number generator seed
+mu      = 2                                        # wahrer, aber unbekannter, Erwartungswertparameter
+sigsqr  = 1                                        # wahrer, aber unbekannter, Varianzparameter
+sigma   = sqrt(sigsqr)                             # wahrer, aber unbekannter, Standardabweichungsparameter
+n       = 12                                       # Stichprobenumfang
+delta   = 0.95                                     # Konfidenzbedingung
+t_delta = qt((1+delta)/2,n-1)                      # \Psi^-1((\delta + 1)/2, n-1)
+
+# Stichprobenrealisierungen
+ns      = 1e2                                      # Anzahl Stichprobenrealisierungen 
+y_bar   = rep(NaN,ns)                              # Stichprobenmittelarray
+S       = rep(NaN,ns)                              # Standardabweichungsarray
+kappa   = matrix(rep(NaN,2*ns), ncol = 2)          # Konfidenzintervallarray
+for(i in 1:ns){                                     
+   y          = rnorm(n,mu,sigma)                  # Stichprobenrealisierung
+   y_bar[i]   = mean(y)                            # Stichprobenmittel
+   S[i]       = sd(y)                              # Stichprobenstandardabweichung
+   kappa[i,1] = y_bar[i] - (S[i]/sqrt(n))*t_delta  # untere Konfidenzintervallgrenze
+   kappa[i,2] = y_bar[i] + (S[i]/sqrt(n))*t_delta  # obere Konfidenzintervallgrenze
+}
+```
+
+Wir visualisieren die Ergebnisse dieser Simulation in @fig-ki-erwartungswertparameter-normalverteilung-1.
+
+```{r, eval = F, echo = F}
+pdf(
+file     = "_figures/303-ki-erwartungswertparameter-normalverteilung-1.pdf",
+width    = 8,
+height   = 5)
+P_idx       = rep(NaN,ns)                                                         
+P_idx[mu < kappa[,1] | mu > kappa[,2]]   = 3.5                                    
+fig  = par(                                                                      
+family      = "sans",                                                            
+bty         = "l",                                                               
+lwd         = 1,                                                                 
+las         = 1,                                                                 
+mgp         = c(2,1,0),                                                          
+xaxs        = "i",                                                               
+yaxs        = "i",                                                               
+font.main   = 1,                                                                 
+cex         = 1.1,                                                               
+cex.main    = 1.2)                                                               
+
+# Errorbarplot
+plot(
+1:ns,
+y_bar,
+type    = "p",
+ylim    = c(0,4),
+xlim    = c(0,102),
+xlab    = "Stichprobenrealisierungen",
+ylab    = "",
+pch     =  19,
+cex     =  .5,
+main    = TeX("$\\mu = 2\\,\\, \\sigma^2 = 2, \\, n = 12,\\, \\delta = 0.95"))
+arrows(
+x0      = 1:ns,
+y0      = kappa[,1],
+x1      = 1:ns,
+y1      = kappa[,2],
+code    = 3,
+angle   = 90,
+length  = 0.01,
+lwd     = .7)
+lines(
+1:ns,
+rep(mu,ns),
+col      = "gray80",
+lty      = 1)
+lines(
+1:ns,
+P_idx,
+type    = "p",
+pch     = 13,
+col     = "darkorange")
+dev.off()
+```
+![Simulation der Überdeckungswahrscheinlichkeit des Konfidenzintervalls für den 
+Erwartungswertparameter des Normalverteilungsmodells bei konstanten, wahren, aber 
+unbekannten, Erwartungswertparameter $\mu := 2$ für $\sigma^2 := 2, n := 12$ und 
+einer gewünschten Überdeckungswahrscheinlichkeit von $\delta := 0.95$. Die Abbildung 
+zeigt für jede Stichprobenrealisierung das Konfidenzintervall und den entsprechenden 
+Erwartungswertparameterschätzer. In der vorliegenden Simulation überdecken die 
+Konfidenzintervalle den durch eine graue Linie eingezeichneten immer gleichen
+wahren, aber unbekannten, Erwartungswertparameter $\mu:=2$ in 96 von 100 Fällen.
+Die Stichprobenrealisierungen, für die dies nicht der Fall sind, sind mit einen orangen 
+Kreis markiert](./_figures/303-ki-erwartungswertparameter-normalverteilung-1){#fig-ki-erwartungswertparameter-normalverteilung-1 fig-align="center"}
+
+\tiny
+```{r, echo = T}
+# Anzahl Simulationen mit \theta_1, \theta_2,...
+set.seed(1)                                        # random number generator seed
+ns      = 1e2                                      # Anzahl Simulationen
+mu      = 2*seq(0,1,len = ns)                      # wahrer, aber unbekannter, Erwartungswertparameter
+sigsqr  = 1                                        # wahrer, aber unbekannter, Varianzparameter
+sigma   = sqrt(sigsqr)                             # wahrer, aber unbekannter, Standardabweichungsparameter
+n       = 12                                       # Stichprobenumfang
+delta   = 0.95                                     # Konfidenzbedingung
+t_delta = qt((1+delta)/2,n-1)                      # \Psi^-1((\delta + 1)/2, n-1)
+
+# Simulation
+y_bar   = rep(NaN,ns)                              # Stichprobenmittelarray
+S       = rep(NaN,ns)                              # Standardabweichungsarray
+kappa   = matrix(rep(NaN,2*ns), ncol = 2)          # Konfidenzintervallarray
+for(i in 1:ns){
+   y          = rnorm(n,mu[i],sigma)               # Stichprobenrealisierung
+   y_bar[i]   = mean(y)                            # Stichprobenmittel
+   S[i]       = sd(y)                              # Stichprobenstandardabweichung
+   kappa[i,1] = y_bar[i] - (S[i]/sqrt(n))*t_delta  # untere Konfidenzintervallgrenze
+   kappa[i,2] = y_bar[i] + (S[i]/sqrt(n))*t_delta  # obere Konfidenzintervallgrenze
+}
+```
+\normalsize
+
+Wir visualisieren die Ergebnisse dieser Simulation in @fig-ki-erwartungswertparameter-normalverteilung-2.
+
+```{r, eval = F, echo = F}
+# PDF Speicherung
+pdf(
+file     = "_figures/303-ki-erwartungswertparameter-normalverteilung-2.pdf",
+width    = 8,
+height   = 5) 
+P_idx                                   = rep(NaN,ns)                            
+P_idx[mu < kappa[,1] | mu > kappa[,2]]  = 3.5                                                                                                   
+fig  = par(                                                                      
+family      = "sans",                                                            
+bty         = "l",                                                               
+lwd         = 1,                                                                 
+las         = 1,                                                                 
+mgp         = c(2,1,0),                                                          
+xaxs        = "i",                                                               
+yaxs        = "i",                                                               
+font.main   = 1,                                                                 
+cex         = 1.1,                                                               
+cex.main    = 1.2)                                                               
+plot(
+1:ns,
+y_bar,
+type    = "p",
+ylim    = c(-2,4),
+xlim    = c(0,102),
+xlab    = "Stichprobenrealisierungen",
+ylab    = "",
+pch     =  19,
+cex     =  .5,
+main    = TeX("$\\sigma^2 = 2, \\, n = 12,\\, \\delta = 0.95"))
+arrows(
+x0      = 1:ns,
+y0      = kappa[,1],
+x1      = 1:ns,
+y1      = kappa[,2],
+code    = 3,
+angle   = 90,
+length  = 0.01,
+lwd     = .7)
+lines(
+1:ns,
+mu,
+col      = "gray80",
+lty      = 1)
+lines(
+1:ns,
+P_idx,
+type    = "p",
+pch     = 13,
+col     = "darkorange")
+dev.off()
+```
+![Simulation der Überdeckungswahrscheinlichkeit des Konfidenzintervalls für den 
+Erwartungswertparameter des Normalverteilungsmodells bei variablem, wahren, aber 
+unbekannten, Erwartungswertparameter $\mu$ für $\sigma^2 := 2, n := 12$ und 
+einer gewünschten Überdeckungswahrscheinlichkeit von $\delta := 0.95$. Die Abbildung 
+zeigt für jede Stichprobenrealisierung das Konfidenzintervall und den entsprechenden 
+Erwartungswertparameterschätzer. In der vorliegenden Simulation überdecken die 
+Konfidenzintervalle den durch eine graue Linie eingezeichneten variablen
+wahren, aber unbekannten, Erwartungswertparameter $\mu$ in 95 von 100 Fällen.
+Die Stichprobenrealisierungen, für die dies nicht der Fall sind, sind mit einen orangen 
+Kreis markiert](./_figures/303-ki-erwartungswertparameter-normalverteilung-2){#fig-ki-erwartungswertparameter-normalverteilung-2 fig-align="center"}
+
+### \normalsize Konfidenzintervall für den Varianzparameter des Normalverteilungsmodells {-} 
+
+Wir betrachten die Konstruktion eines $\delta$-Konfidenzintervalls für den 
+Varianzparameter des Normalverteilungsmodells. Zu diesem Zweck definieren 
+zunächst folgende Konfidenzintervallstatistik. 
+
+:::{#def-u-konfidenzintervallstatistik}
+## $U$-Konfindenzintervallstatistik
+Gegeben sei das Normalverteilungsmodell
+\begin{equation}
+\upsilon_1,...,\upsilon_n \sim N(\mu,\sigma^2)
+\end{equation}
+Dann heißt die mit der Stichprobenvarianz 
+\begin{equation}
+\frac{1}{n-1}\sum_{i=1}^n \left(\upsilon_i - \bar{\upsilon}\right)^2 
+\end{equation}
+definierte Statistik 
+\begin{equation}
+U := \frac{n-1}{\sigma^2}S^2  
+\end{equation}
+*$U$-Konfidenzintervallstatistik*.
+::: 
+
+Für die Verteilung der $U$-Konfidenzintervallstatistik gilt folgendes Theorem.
+
+:::{#thm-verteilung-der-u-konfidenzintervallstatistik}
+## Verteilung der $U$-Konfidenzintervallstatistik
+Die $U$-Konfidenzintervallstatistik ist eine $\chi^2$-verteilte Zufallsvariable mit 
+Parameter $n-1$, es gilt also
+\begin{equation}
+U \sim \chi^2(n-1)
+\end{equation}
+:::
+
+Für einen Beweis von @thm-verteilung-der-u-konfidenzintervallstatistik verrweisen 
+wir auf @casella2012. Wie die $T$-Konfidenzintervallstatistik besitzt auch die 
+$U$-Konfidenzintervallstatistik die Pivoteigenschaft, da sie eine Funktion der 
+Stichprobe ist, aber ihre Verteilung nach @thm-verteilung-der-u-konfidenzintervallstatistik 
+von den wahren, aber unbekannten, Verteilungsparametern der Stichprobe nicht abhängt.
+Für die folgenden Entwicklungen erinnern wir daran, dass wir die WDF einer 
+$\chi^2$-verteilten Zufallvariable mit $\chi^2$, die KVF einer $\chi^2$-verteilten 
+Zufallvariable mit $\Xi$ und die inverse KVF einer $\chi^2$-verteilten Zufallvariable 
+mit $\Xi^{-1}$ bezeichnen. Folgender **R** Code simuliert zunächst die Verteilung 
+der $U$-Konfidenzintervallstatistik. 
+
+\tiny
+```{r, echo = T}
+# Modellformulierung
+mu      = 10                                    # wahrer Erwartungswertparameter
+sigsqr  = 4                                     # wahrer bekannter Varianzparameter
+n       = 12                                    # Stichprobenumfang
+ns      = 1e4                                   # Anzahl Stichprobenrealisierungen
+res     = 1e3                                   # Ausgangsraumaufloesung
+
+# analytische Definitionen und Resultate
+yx      = seq(3,17,len = res)                   # \upsilonilon_i Raum
+ux      = seq(0,30,len = res)                   # U Raum
+p_y_i   = dnorm(yx,mu,sqrt(sigsqr))             # \upsilonilon_i WDF
+p_y_bar = dnorm(yx,mu,sqrt(sigsqr/n))           # \upsilonilon_bar WDF
+p_u     = dchisq(ux,n-1)                        # U WDF
+
+# Simulation
+y_i     = rep(NaN,ns)                           # y_i Array
+y_bar   = rep(NaN,ns)                           # \bar{y} Array
+S_sqr   = rep(NaN,ns)                          	# S^2 Array
+UKS     = rep(NaN,ns)                           # U-Konfidenzintervallstatistik Array
+for(s in 1:ns){                                 # Simulationsiterationen
+  y         = rnorm(n,mu,sqrt(sigsqr))        	# Stichprobenrealisierung
+  y_i[s]    = y[1]                              # Stichprobenrealisierung \upsilonilon_i mit i = 1
+  y_bar[s]  = mean(y)                           # Stichprobenmittelrealisierung
+  S_sqr[s]  = var(y)                            # Stichprobenvarianzrealisierung
+  UKS[s]    = ((n-1)/sigsqr)*S_sqr[s]           # U-Konfidenzintervallstatistikrealisierung
+} 
+```
+\normalsize 
+
+```{r, eval = F, echo = F}
+# Visualisierung
+library(latex2exp)
+pdf(                                                                    
+file        = "_figures/303-u-konfidenzintervallstatistik.pdf",               
+width       = 13,                                                                
+height      = 10)                                                                      
+par(                                                                             
+family      = "sans",                                                            
+mfcol       = c(2,2),                                                            
+pty         = "m",                                                               
+bty         = "l",                                                               
+lwd         = 1,                                                                 
+las         = 1,                                                                 
+mgp         = c(2,1,0),                                                          
+xaxs        = "i",                                                               
+yaxs        = "i",                                                               
+font.main   = 1,                                                                 
+cex         = 1.3,                                                               
+cex.main    = 1.3)                                                               
+
+# \upsilonilon_i
+hist(
+y_i,                                                                             
+breaks      = 50,                                                                
+col         = "gray90",                                                          
+prob        = TRUE,                                                              
+xlim        = c(yx[1],yx[length(yx)]),                                        
+ylim        = c(0,.5),                                                           
+xlab        = expression("x"[1]),                                                
+ylab        = "",                                                                
+cex         = 1.1,                                                               
+main        = TeX("$\\upsilonilon_i \\sim N(10,4), \\, i = 1,...,12$"))              
+lines(
+yx,                                                                             
+p_y_i,                                                                           
+lwd         = 2,                                                                 
+col         = "darkorange")                                                      
+
+# S^2
+hist(
+S_sqr,                                                                           
+breaks      = 50,                                                                
+col         = "gray90",                                                          
+prob        = TRUE,                                                              
+xlim        = c(ux[1],ux[length(ux)]),                                        
+ylim        = c(0,.4),                                                           
+xlab        = TeX("$S^2$"),                                                 
+ylab        = "",                                                                
+cex         = 1.1,                                                               
+mgp         = c(3.5,1,0),                                                        
+main        = TeX("$S^2$"))                                                 
+
+# y_bar
+hist(
+y_bar,                                                                           
+breaks      = 50,                                                                
+col         = "gray90",                                                          
+prob        = TRUE,                                                              
+xlim        = c(yx[1],yx[length(yx)]),                                        
+ylim        = c(0,.8),                                                           
+xlab        = TeX("$\\bar{y}_{12}$"),                                            
+ylab        = "",                                                                
+cex         = 1.1,                                                               
+main        = TeX("$\\bar{\\upsilonilon}_{12} \\sim N(10,1/3)"))     
+lines(                                                                          
+yx,                                                                             
+p_y_bar,                                                                         
+lwd         = 2,                                                                 
+col         = "darkorange")                                                      
+
+# U
+hist(
+(n-1)/sigsqr*S_sqr,                                                              
+breaks      = 50,                                                                
+col         = "gray90",                                                          
+prob        = TRUE,                                                              
+xlim        = c(ux[1],ux[length(ux)]),                                        
+ylim        = c(0,.4),                                                           
+xlab        = TeX("$u$"),                                                        
+ylab        = "",                                                                
+cex         = 1.1,                                                               
+mgp         = c(3.5,1,0),                                                        
+main        = TeX("$U \\sim \\frac{11}{4}S^2$"))                           
+lines(                                                                          
+ux,                                                                             
+p_u,                                                                             
+lwd         = 2,                                                                 
+col         = "darkorange")                                                      
+dev.off()
+```
+
+![Simulation der Verteilung der $U$-Konfidenzintervallstatistik und der ihr 
+zugrundeliegenden Verteilungen der Stichprobenvariable, des Stichprobenmittels und 
+der Stichprobenvarianz.](./_figures/303-u-konfidenzintervallstatistik){#fig-u-konfidenzintervallstatistik fig-align="center"}
+
+Mithilfe der Verteilung der $U$-Konfidenzintervallstatistik können wir jetzt folgendes
+Theorem zum Konfidenzintervall für den Varianzparameter des Normalverteilungsmodells 
+beweisen. 
+
+:::{#thm-konfidenzintervall-fuer-den-varianzparameter-des-normalverteilungsmodells}
+## Konfidenzintervall für den Varianzparameter des Normalverteilungsmodells
+Gegeben sei das Normalverteilungsmodell
+\begin{equation}
+\upsilon_1,...,\upsilon_n \sim N(\mu,\sigma^2)
+\end{equation}
+mit wahren, aber unbekannten, Parametern $\mu$ und $\sigma^2$, es sei 
+$\delta \in ]0,1[$ und es seien 
+\begin{equation}
+u_{\delta} := \Xi^{-1}\left(\frac{1 - \delta}{2}; n -1  \right)
+\mbox{ und }
+u_{\delta}' := \Xi^{-1}\left(\frac{1 + \delta}{2};n-1 \right)
+\end{equation}
+mit der inversen KVF $\Xi^{-1}$ einer $\chi^2$-verteilten Zufallsvariable. Dann 
+gilt für das Intervall
+\begin{equation}
+\kappa(\upsilon) := \left[\frac{(n-1)S^2}{u_{\delta}'}, \frac{(n-1)S^2}{u_{\delta}}\right].
+\end{equation}
+mit der Stichprobenvarianz
+\begin{equation}
+S^2 := \frac{1}{n-1}\sum_{i=1}^n(\upsilon_i - \bar{\upsilon})^2,
+\end{equation}
+dass
+\begin{equation}
+\mathbb{P}_{\sigma^2}(\kappa(\upsilon) \ni \sigma^2) = \delta. 
+\end{equation}
+::: 
+
+:::{.proof}
+Per Definition gilt mit @def-u-konfidenzintervallstatistik und 
+@thm-verteilung-der-u-konfidenzintervallstatistik, dass
+\begin{equation}
+\mathbb{P}_{\sigma^2}\left(u_{\delta} \le U \le u_{\delta}' \right) = \delta.
+\end{equation}
+Damit folgt dann aber direkt
+\begin{align}
+\begin{split}
+\delta
+& = \mathbb{P}_{\sigma^2}\left(u_{\delta} \le U \le u_{\delta}' \right)															            \\
+& = \mathbb{P}_{\sigma^2}\left(u_{\delta} \le \frac{n-1}{\sigma^2}S^2  \le u_{\delta}' \right) 									      \\
+& = \mathbb{P}_{\sigma^2}\left(u_{\delta}^{-1} \ge \frac{\sigma^2}{(n-1)S^2} \ge {u_{\delta}'}^{-1} \right) 						      \\
+& = \mathbb{P}_{\sigma^2}\left(\frac{(n-1)S^2}{u_{\delta}} \ge \sigma^2 \ge \frac{(n-1)S^2}{u_{\delta}'} \right) 				   \\
+& = \mathbb{P}_{\sigma^2}\left(\frac{(n-1)S^2}{u_{\delta}'} \le \sigma^2 \le \frac{(n-1)S^2)}{u_{\delta}} \right) 			      \\
+& = \mathbb{P}_{\sigma^2}\left(\left[\frac{(n-1)S^2}{u_{\delta}'}, \frac{(n-1)S^2)}{u_{\delta}}\right] \ni \sigma^2 \right). 	\\
+\end{split}
+\end{align}
+:::
+
+Wie im Falle von @thm-konfidenzintervall-fuer-den-erwartungswertparameter-des-normalverteilungsmodells 
+ist der entscheidene Schritt zur Sicherung der Überdeckungswahrscheinlichkeit $\delta$ 
+des wahren, aber unbekannten, Varianzparameters durch das in @thm-konfidenzintervall-fuer-den-varianzparameter-des-normalverteilungsmodells 
+definierte Konfidenzintervall die Definition von   
+\begin{equation}
+u_{\delta} := \Xi^{-1}\left(\frac{1-\delta}{2}; n-1\right)
+\mbox{ und }
+u_{\delta}' := \Xi^{-1}\left(\frac{1 + \delta}{2};n-1 \right)
+\end{equation}
+Wie im Beweis von @thm-konfidenzintervall-fuer-den-varianzparameter-des-normalverteilungsmodells
+nachgezeichnet ist die Überdeckungswahrscheinlichkeit des Konfidenzintervalls für 
+den wahren, aber unbekannten, Varianzparameter äquivalent zu der Tatsache,
+dass bei Wahl eben dieser Werte von $u_\delta$ und $u_{\delta}'$ die $U$-Konfidenzintervallstatistik eine Wahrscheinlichkeit von $\delta$ dafür hat, einen Wert im Intervall $[u_{\delta}, u_{\delta}']$
+anzunehmen. Wir visualisieren die Wahl von $u_\delta$ und $u_\delta'$ für Fall 
+$\delta := 0.95$ und $n := 10$ in @fig-u-konfidenzbedingung. In diesem Fall ergibt sich 
+\begin{equation}
+u_{\delta}  := \Xi^{-1}\left(0.025;9\right) = 2.70 \mbox{ und }
+u_{\delta}' := \Xi^{-1}\left(0.975;9\right) = 19.0.
+\end{equation}
+@fig-u-konfidenzbedingung A zeigt diese Wahl aus Perspektive der WDF der $U$-Konfidenintervallstatistik. 
+Die von $u_\delta$ und $u_\delta'$ eingeschlossene Wahrscheinlichkeitsmasse 
+beträgt nach Konstruktion $\delta$, $U$ nimmt mit einer Wahrscheinlichkeit von 
+$\delta$ also einen Wert zwischen $u_\delta$ und $u_\delta'$ an. @fig-u-konfidenzbedingung B 
+zeigt die entsprechende Perspektive der KVF der $U$-Konfidenintervallstatistik. 
+Basierend auf der Vorgabe von $\frac{1-\delta}{2}$ und $\frac{1+\delta}{2}$ 
+werden anhand der inversen KVF $\Psi^{-1}$ die entsprechenden Werte für $u_\delta$ 
+und $u_\delta'$ bestimmt. Man beachte, dass in diesem Fall die Wahrscheinlichkeitsmasse 
+recht arbiträr hinsichtlich des Modalwerts der Verteilung der $U$-Konfidenzintervallstatistik 
+lokalisiert ist. Dementsprechend gibt es weitergehende Verfahren, die Überdeckungswahrscheinlichkeit 
+einer Konfidenzintervallstatistik so zu lokalisieren, dass sie beispielsweise ein
+maximales Intervall in ihrem Ergebnisraum einnimmt oder eine Symmetrieeigenschaft um 
+den Erwartungswert erfüllt, die wir hier aber nicht vertiefen wollen.
+
+```{r, eval = F, echo = F}
+# PDF Speicherung
+library(latex2exp)
+pdf(
+file        = "_figures/303-u-konfidenzbedingung.pdf",
+width       = 10,
+height      = 5) 
+delta       = 0.95                                                              # Konfidenzlevel
+n           = 10                                                                # Freiheitsgrade
+u_delta_u   = qchisq((1-delta)/2,n-1)                                           # u_delta
+u_delta_o   = qchisq((1+delta)/2,n-1)                                           # u_delta'
+u           = seq(0,30,length=1e4)                                              # support
+pu          = dchisq(u,n-1)                                                     # WDF
+Pu          = pchisq(u,n-1)                                                     # KVF                                                                    
+par(                                                                             
+family      = "sans",                                                            
+mfcol       = c(1,2),                                                            
+pty         = "m",                                                               
+bty         = "l",                                                               
+lwd         = 1,                                                                 
+las         = 1,                                                                 
+mgp         = c(2,1,0),                                                          
+xaxs        = "i",                                                               
+yaxs        = "i",                                                               
+font.main   = 1,                                                                 
+cex         = 1.2,                                                               
+cex.main    = 1.3)                                                               
+
+# WDF Perspektive
+plot(                                                                            
+u,
+pu,
+type        = "l",
+ylab        = " ",
+xlab        = "u", 
+ylim        = c(0,.11),
+main        = TeX("$\\chi^2$"))
+polygon(                                                                        
+c(u[u >= u_delta_u], max(u), u_delta_u),
+c(pu[u >= u_delta_u],      0, 0),
+col = "gray90",
+border = NA)
+polygon(                                                                        
+c(u[u  >= u_delta_o] , max(u), u_delta_o),
+c(pu[u >= u_delta_o],       0, 0),
+col = "white",
+border = NA)
+lines(                                                                         
+u,
+pu,
+type        = "l")
+lines(                                                                          
+c(u_delta_u,u_delta_o),
+c(0,0),
+type        = "p",
+pch         = 18,
+xpd         = TRUE)
+abline(u,0,0)                                                                   
+text(0,.15, TeX("$\\delta$"), cex = 1.2)
+text(u_delta_u,.01, TeX("$u_{\\delta}$"))
+text(u_delta_o,.01, TeX("$u_{\\delta}'$"))
+mtext(LETTERS[1], adj=0, line=2, cex = 2, at = -5)
+
+# KDF Perspektive
+plot(                                                                            
+u,
+Pu,
+type     = "l",
+ylab     = " ",
+ylim     = c(0,1),
+main     = TeX("$\\Xi$"))
+lines(
+c(u_delta_u,u_delta_o),
+c(0,0),
+type     = "p",
+pch      = 18,
+xpd      = TRUE)
+text(u_delta_u,.10, TeX("$u_{\\delta}$"), xpd = TRUE)
+text(u_delta_o,.10, TeX("$u_{\\delta}'$") , xpd = TRUE)
+lines(
+c(0,0),
+c((1+delta)/2,(1-delta)/2),
+type     = "p",
+pch      = 15,
+xpd      = TRUE)
+text(-5.0, 0.9, TeX("$(1+\\\delta)/2$"), xpd = TRUE)
+text(-5.0, 0.1, TeX("$(1-\\\delta)/2$"), xpd = TRUE)
+arrows(
+x0       = min(u),
+y0       = (1-delta)/2,
+x1       = u_delta_u,
+y1       = (1-delta)/2,
+col      = "darkorange",
+angle    = 45,
+length   = .08)
+arrows(
+x0       = min(u),
+y0       = (1+delta)/2,
+x1       = u_delta_o,
+y1       = (1+delta)/2,
+col      = "darkorange",
+angle    = 45,
+length   = .08)
+arrows(
+x0       = u_delta_u,
+y0       = (1-delta)/2,
+x1       = u_delta_u,
+y1       = 0,
+col      = "darkorange",
+angle    = 45,
+length   = .08)
+arrows(
+x0       = u_delta_o,
+y0       = (1+delta)/2,
+x1       = u_delta_o,
+y1       = 0,
+col      = "darkorange",
+angle    = 45,
+length   = .08)
+mtext(LETTERS[2], adj=0, line=2, cex = 2, at = -5)
+dev.off()
+```
+![Sicherung der Überdeckungswahrscheinlichkeit des Konfidenzintervalls für den 
+Varianzparameter des Normalverteilungsmodells für $\delta := 0.95$ und 
+$n := 10$ aus Perspektive der WDF (A) und der KVF (B) der Verteilung der $U$-Konfidenzintervallstatistik.](./_figures/303-u-konfidenzbedingung){#fig-u-konfidenzbedingung fig-align="center"}
+
+Abschließend wollen wir die Überdeckungswahrscheinlichkeit des durch 
+@thm-konfidenzintervall-fuer-den-varianzparameter-des-normalverteilungsmodells
+gegebenen Konfidenzintervalls mithilfe einer Simulation demonstrieren. Dazu betrachten
+wir zunächst die in @sec-definition gegebene erste Interpretation eines Konfidenzintervalls 
+bei immer gleichem wahrem, aber unbekanntem, Parameter. Folgender **R** Code bestimmt 
+in diesem Sinne zu jeder Stichprobenrealisierung das entsprechende Konfidenzintervall. 
+
+\tiny 
+```{r, echo = T}
+# Modellformulierung
+set.seed(1)                                     # random number generator seed
+mu          = 2                                 # wahrer, aber unbekannter,  Erwartungswertparameter
+sigsqr      = 2                                 # wahrer, aber unbekannter,  Varianzparameter
+n           = 12                                # Stichprobenumfang
+delta       = 0.95                              # Konfidenzbedingung
+u_delta_u   = qchisq((1-delta)/2, n - 1)        # \Xi^2((1-\delta)/2; n - 1)
+u_delta_o   = qchisq((1+delta)/2, n - 1)        # \Xi^2((1+\delta)/2; n - 1)
+
+# Stichprobenrealisierungen
+ns          = 1e2                               # Anzahl Simulationen
+y_bar       = rep(NaN,ns)                       # Stichprobenmittelarray
+S2          = rep(NaN,ns)                       # Stichprobenvarianzarray
+kappa       = matrix(rep(NaN,2*ns), ncol = 2)   # Konfidenzintervallarray
+for(i in 1:ns){                                 # Simulationsiterationen
+   y        = rnorm(n,mu,sqrt(sigsqr))          # Stichprobenrealisierung
+   S2[i]    = var(y)                            # Stichprobenvarianz
+   kappa[i,1]   = (n-1)*S2[i]/u_delta_o         # untere Konfidenzintervallgrenze
+   kappa[i,2]   = (n-1)*S2[i]/u_delta_u         # obere Konfidenzintervallgrenze
+}
+```
+
+```{r, eval = F, echo = F}
+library(latex2exp)
+pdf(
+file     = "_figures/303-ki-varianzparameter-normalverteilung.pdf",
+width    = 8,
+height   = 5)
+P_idx                                          = rep(NaN,ns)                    
+P_idx[sigsqr < kappa[,1] | sigsqr > kappa[,2]] = 15                              Markerpositionen                                                                  
+fig  = par(                                                                      
+family      = "sans",                                                            
+bty         = "l",                                                               
+lwd         = 1,                                                                 
+las         = 1,                                                                 
+mgp         = c(2,1,0),                                                          
+xaxs        = "i",                                                               
+yaxs        = "i",                                                               
+font.main   = 1,                                                                 
+cex         = 1.1,                                                               
+cex.main    = 1.2)                                                               
+plot(
+1:ns,
+S2,
+type    = "p",
+ylim    = c(0,16),
+xlim    = c(0,102),
+xlab    = "Stichprobenrealisierungen",
+ylab    = "",
+pch     =  19,
+cex     =  .5,
+main    = TeX("$\\mu = 2,\\, \\sigma^2 = 2, \\, n = 12,\\, \\delta = 0.95"))
+arrows(
+x0      = 1:ns,
+y0      = kappa[,1],
+x1      = 1:ns,
+y1      = kappa[,2],
+code    = 3,
+angle   = 90,
+length  = 0.01,
+lwd     = .7)
+abline(
+sigsqr,
+0,
+col      = "gray80",
+lty      = 1)
+lines(
+1:ns,
+P_idx,
+type    = "p",
+pch     = 13,
+col     = "darkorange")
+dev.off()
+```
+\normalsize 
+
+![Simulation der Überdeckungswahrscheinlichkeit des Konfidenzintervalls für den 
+Varianzparameter des Normalverteilungsmodells bei konstanten, wahren, aber 
+unbekannten, Varianzparameter $\sigma^2 := 2$ für $\mu := 2, n := 12$ und 
+einer gewünschten Überdeckungswahrscheinlichkeit von $\delta := 0.95$. Die Abbildung 
+zeigt für jede Stichprobenrealisierung das Konfidenzintervall und den entsprechenden 
+Varianzparameterschätzer. In der vorliegenden Simulation überdecken die 
+Konfidenzintervalle den durch eine graue Linie eingezeichneten immer gleichen
+wahren, aber unbekannten, Varianzparameter $\sigma^2 :=2$ in 95 von 100 Fällen.
+Die Stichprobenrealisierungen, für die dies nicht der Fall sind, sind mit einen orangen 
+Kreis markiert. Man beachte, dass die Konfidenzintervalle nicht symmetrisch um den 
+den Varianzparameterschätzer angeordnet sind](./_figures/303-ki-varianzparameter-normalverteilung){#fig-ki-varianzparameter-normalverteilung fig-align="center"}
+
+## Anwendungsbeispiel {#sec-anwendungsbeispiel} 
+
+Zum Abschluss dieses Abschnitts wollen wir die Evaluation von Konfidenzintervallen 
+für den Erwartungswert und den Varianzparameter bei Normalverteilung nun im 
+Kontext des Anwendungsbeispiels von @sec-anwendungsbeispiel-frequentistische-inferenz.
+Dazu werten wir zunächst einmal die unverzerrten Punktschätzer von $\mu$ und 
+$\sigma^2$, also das Stichprobenmittel und die Stichprobenvarianz des Datensatzes 
+mithilfe folgenden **R** Codes aus.
+
+\tiny
+```{r, echo = T}
+D           = read.csv("./_data/303-Konfidenzintervalle.csv")  # Datensatzeinlesen 
+y           = D$dBDI                                           # Datenauswahl            
+mu_hat      = mean(y)                                          # Stichprobenmittel 
+sigsqr_hat  = var(y)                                           # Stichprobenvarianz
+cat("mu_hat     :", mu_hat,"\nsigsqr_hat :", sigsqr_hat)       # Ausgabe    
+```
+\normalsize 
+
+Basierend auf diesen Schätzern und den vorliegenden $n = 12$ Datenpunkten sind also 
+\begin{equation}
+\hat{\mu} = 3.17 \mbox{ und } \hat{\sigma}^{2} = 13.8
+\end{equation}
+sinnvolle Tipps für $\mu$ und $\sigma^2$. Um neben diesen Punktschätzern, die 
+zwar sehr genau sind, mit einer Wahrscheinlichkeit von 0 aber den wahren, aber 
+unbekannten Parametern, exakt entsprechen, werten wir zusätzlich die 
+95%-Konfidenzintervallschätzungen für $\mu$ und $\sigma^2$ aus. Folgender **R** 
+Code bestimmt das 95%-Konfidenzintervall für den Erwartungswertparameter.
+
+\tiny
+```{r, echo = T}
+# Konfidenzintervall für den Erwartungswertparameter
+delta    = 0.95                                    # Konfidenzlevel
+n        = length(y)                               # Anzahl Datenpunkte
+t_delta  = qt((1+delta)/2,n-1)                     # \psi^-1((\delta+1)/2,n-1)
+y_bar    = mean(y)                                 # Stichprobenmittel
+s        = sd(y)                                   # Stichprobenstandardabweichung
+mu_hat   = y_bar                                   # Erwartungswertparameterschätzer
+kappa_u  = y_bar - (s/sqrt(n))*t_delta             # untere Konfidenzintervallgrenze
+kappa_o  = y_bar + (s/sqrt(n))*t_delta             # obere  Konfidenzintervallgrenze
+cat("kappa_u:", kappa_u, "\nkappa_o:", kappa_o)    # Ausgabe  
+```
+\normalsize 
+
+Das 0.95-Konfidenzintervall für den Erwartungswertparameter ist also 
+\begin{equation}
+\kappa(y) = [0.80,5.52]. 
+\end{equation}
+Im langfristigen Mittel überdeckt ein auf diese Weise berechnetes Konfidenzintervall 
+den wahren, aber unbekannten, Erwartungswertparameter in 95 von 100 Fällen. In 
+diesem Sinne liegt der wahre, aber unbekannte, Therapieeffekt also sehr sicher 
+in einem Intervall zwischen 0.80 und 5.52 BDI-II Score Pre-Post-Differenzen. 
+
+Folgender **R** Code bestimmt das 95%-Konfidenzintervall für den Varianzparameter.
+
+\tiny
+```{r, echo = T}
+# Konfidenzintervall für den Varianzwertparameter
+delta       =  0.95                                # Konfidenzlevel
+n           = length(y)                            # Anzahl Datenpunkte
+u_delta_u   = qchisq((1-delta)/2, n - 1)           # \Xi^2((1-\delta)/2; n - 1)
+u_delta_o   = qchisq((1+delta)/2, n - 1)           # \Xi^2((1+\delta)/2; n - 1)
+s2          = var(y)                               # Stichprobenstandardabweichung
+sigsqr_hat  = s2                                   # Varianzparameterschätzer
+kappa_u     = (n-1)*s2/u_delta_o                   # untere Konfidenzintervallgrenze
+kappa_o        = (n-1)*s2/u_delta_u                # obere Konfidenzintervallgrenze
+cat("kappa_u:", kappa_u, "\nkappa_o:", kappa_o)    # Ausgabe  
+```
+\normalsize 
+
+Das 0.95-Konfidenzintervall für den Varianzparameter ist also 
+\begin{equation}
+\kappa(y) = [6.91,39.74]. 
+\end{equation}
+Im langfristigen Mittel überdeckt ein auf diese Weise berechnetes Konfidenzintervall 
+den wahren, aber unbekannten, Varianzparameter in 95 von 100 Fällen. In 
+diesem Sinne liegt die wahre, aber unbekannte, Therapieeffektstreuung also sehr sicher 
+in einem Intervall zwischen 6.91 und 39.74 quadriertern BDI-II Score Pre-Post-Differenzen. 
+
+## Literaturhinweise
+
+Die in diesem Kapitel vorgestellten Ergebnisse gehen in ganz wesentlicher Weise
+auf @neyman1937 zurück.
+
+## Selbstkontrollfragen
+
+\footnotesize
+1. Geben Sie die Definition des Begriffs eines $\delta$-Konfidenzintervalls wieder.
+1. Erläutern Sie die zwei Interpretationen eines $\delta$-Konfidenzintervalls.
+1. Erläutern Sie die typischen Schritte zur Konstruktion eines $\delta$-Konfidenzintervalls.
+1. Geben Sie das Theorem zum $\delta$-Konfidenzintervall für den Erwartungswert der Normalverteilung wieder.
+1. Geben Sie das Theorem zum $\delta$-Konfidenzintervall für den Varianzparameter der Normalverteilung wieder.
+
+\normalsize
+
+

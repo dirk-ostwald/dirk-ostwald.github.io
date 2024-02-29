@@ -1,0 +1,1396 @@
+# Erwartungswerte {#sec-erwartungswerte}
+\normalsize
+
+In diesem Kapitel führen wir mit den Begriffen des *Erwartungswerts* und der *Varianz*
+einer Zufallsvariable skalare Zusammenfassungen von Verteilungen ein, die häufig
+als charakteristische Kennzahlen von Wahrscheinlichkeitsverteilungen dienen. Dabei
+ist der Erwartungswert als ein Maß der "durchschnittlichen Realisierung" und die
+Varianz als Maß der "durchschnittlichen Variabilität" einer Wahrscheinlichkeitsverteilung 
+zu verstehen. Weiterhin führen wir mit der *Kovarianz* zweier Zufallsvariablen ein
+Maß für linear-affine Abhängigkeiten zwischen Zufallsvariablen ein. Wir ergänzen diese
+Begriffe um ihre Analoga in Bezug auf Zufallsvektoren (*Erwartungswert* und *Kovarianzmatrix*)
+und ihre deskriptiv-statistischen Äquivalente, das *Stichprobenmittel*, die *Stichprobenvarianz*,
+und die *Stichprobenkovarianz*. 
+
+## Erwartungswert {#sec-erwartungswert}
+:::{#def-erwartungswert}
+## Erwartungswert
+$(\Omega, \mathcal{A},\mathbb{P})$ sei ein Wahrscheinlichkeitsraum und $\xi$
+sei eine  Zufallsvariable. Dann ist der *Erwartungswert von $\xi$* definiert als
+
+* $\mathbb{E}(\xi) := \sum_{x \in \mathcal{X}} x\,p_\xi(x)$, wenn $\xi : \Omega \to \mathcal{X}$ diskret mit WMF $p_\xi$ ist,
+* $\mathbb{E}(\xi) := \int_{-\infty}^\infty x \,p_\xi(x)\,dx$, wenn $\xi : \Omega \to \mathbb{R}$ kontinuierlich mit WDF $p_\xi$ ist.
+
+Man sagt, dass der Erwartungswert einer Zufallsvariable *existiert*, wenn er endlich ist.
+:::
+
+Der Erwartungswert ist also eine skalare Zusammenfassung der Verteilung einer 
+Zufallsvariable. Eine integrierte Definition des Erwartungswertes, die ohne
+eine Fallunterscheidung in kontinuierliche und diskrete Zufallsvariablen auskommt,
+ist möglich, erfordert aber mit der Einführung des Lebesgue-Integrals einigen
+technischen Aufwand. Wir verweisen dahingehend auf die weiterführende Literatur
+(vgl. @schmidt2009, @meintrup2005). Intuitiv entspricht der Erwartungswert einer
+Zufallsvariable dem im langfristigen Mittel zu erwartenden Wert der Zufallsvariable,
+also etwa
+\begin{equation}
+\mathbb{E}(\xi) \approx \frac{1}{n}\sum_{i=1}^n \xi_i
+\end{equation}
+für eine große Zahl $n$ von Kopien $\xi_i$ von $\xi$. Wir werden diese Intuition
+im Kontext der Gesetze der großen Zahl in @sec-grenzwerte weiter ausarbeiten. 
+
+### Beispiele {-}
+
+Mit dem Erwartungswert einer Bernoulli-Zufallsvariable und dem Erwartungswert
+einer normalverteilten Zufallsvariable wollen wir nun zwei erste Beispiele
+für den Erwartungswert einer diskreten und einer kontinuierlichen Zufallsvariable
+betrachten.
+
+:::{#thm-erwartungwert-einer-bernoulli-zufallsvariable}
+## Erwartungswert einer Bernoulli Zufallsvariable
+Es sei $\xi \sim \mbox{Bern}(\mu)$. Dann gilt $\mathbb{E}(\xi) = \mu$.
+:::
+
+:::{.proof}
+$\xi$ ist diskret mit $\mathcal{X} = \{0,1\}$. Also gilt
+\begin{align}
+\begin{split}
+\mathbb{E}(\xi)
+& = \sum_{x \in \{0,1\}} x\,\mbox{Bern}(x;\mu) \\
+& = 0\cdot \mu^0 (1 - \mu)^{1-0} + 1\cdot \mu^1 (1 - \mu)^{1-1} \\
+& = 1\cdot \mu^1 (1 - \mu)^{0} \\
+& = \mu.
+\end{split}
+\end{align}
+:::
+
+Es ergibt sich hier also, dass der Parameter $\mu \in [0,1]$ der Verteilung
+einer Bernoulli-Zufallsvariable gleichzeitig auch ihr Erwartungswert ist.
+
+:::{#thm-erwartungwert-einer-normalverteilten-zufallsvariable}
+## Erwartungswert einer normalverteilten Zufallsvariable
+Es sei $\xi \sim N(\mu,\sigma^2)$. Dann gilt $\mathbb{E}(\xi) = \mu$.
+:::
+
+:::{.proof}
+Die Herleitung des Erwartungswerts einer normalverteilten Zufallsvariable ist 
+überraschend aufwändig. Wir müssen in diesem Fall einige grundlegende Eigenschaften
+der Exponentialfunktion als gegeben annehmen. Dazu halten wir zunächst ohne 
+Beweis fest, dass 
+$$
+\int_{-\infty}^\infty \exp\left(-x^2\right)\,dx = \sqrt{\pi} 
+$$ {#eq-gauss-integral}
+und dass
+$$
+\lim_{x \to -\infty} \exp\left(-x^2\right) = 0 \mbox{ und } \lim_{x \to \infty}\exp\left(-x^2\right) = 0.
+$$ {#eq-exp-limits}
+@eq-gauss-integral  ist unter der Bezeichnung *Gauss-* oder *Euler-Poisson-Integral*
+bekannt. Mit der Definition des Erwartungswerts für kontinuierliche Zufallsvariablen 
+gilt dann zunächst
+\begin{equation}
+\mathbb{E}(\xi)
+= \int_{-\infty}^\infty x \frac{1}{\sqrt{2\pi\sigma^2}}\exp\left(-\frac{1}{2\sigma^2}(x - \mu)^2\right) \,dx.
+\end{equation}
+Mit der allgemeinen Substitutionsregel (vgl. @thm-rechenregeln-für-stammfunktionen)
+\begin{equation}
+\int_{g(a)}^{g(b)} f(x)\,dx = \int_a^b f(g(x))g'(x)\,dx
+\end{equation}
+und der Definition von
+\begin{equation}
+g : \mathbb{R} \to \mathbb{R}, x \mapsto g(x) := \sqrt{2\sigma^2}x + \mu
+\mbox{ with } g'(x) = \sqrt{2\sigma^2},
+\end{equation}
+gilt dann
+\begin{align}
+\begin{split}
+\mathbb{E}(\xi)
+& = \frac{1}{\sqrt{2\pi\sigma^2}}
+\int_{-\infty}^\infty x
+\exp\left(-\frac{1}{2\sigma^2}(x - \mu)^2\right) \,dx \\
+& = \frac{1}{\sqrt{2\pi\sigma^2}}
+\int_{-\infty}^\infty (\sqrt{2\sigma^2}x + \mu)
+\exp\left(-\frac{1}{2\sigma^2}\left(\left(\sqrt{2\sigma^2}x + \mu \right) - \mu\right)^2\right)
+\sqrt{2\sigma^2}\,dx \\
+& = \frac{\sqrt{2\sigma^2}}{\sqrt{2\pi\sigma^2}}
+\int_{-\infty}^\infty (\sqrt{2\sigma^2}x + \mu)
+\exp\left(-x^2\right) \,dx \\
+& = \frac{1}{\sqrt{\pi}}
+\left(\sqrt{2\sigma^2} \int_{-\infty}^\infty x \exp\left(-x^2\right) \,dx
+      + \mu \int_{-\infty}^\infty \exp\left(-x^2\right) \,dx \right) \\
+& = \frac{1}{\sqrt{\pi}}
+\left(\sqrt{2\sigma^2} \int_{-\infty}^\infty x \exp\left(-x^2\right) \,dx
+      + \mu \sqrt{\pi} \right).
+\end{split}
+\end{align}
+Eine Stammfunktion von $x \exp\left(-x^2\right)$ ist $-\frac{1}{2}\exp\left(-x^2\right)$,
+weil
+\begin{equation}
+\frac{d}{dx}\left(-\frac{1}{2}\exp\left(-x^2\right)\right)
+= -\frac{1}{2} \frac{d}{dx}\exp\left(-x^2\right)
+= -\frac{1}{2}\exp\left(-x^2\right)(-2x)
+= x\exp\left(-x^2\right) 
+\end{equation}
+Mit @eq-exp-limits und der Definition des uneigentlichen Integrals 
+(vgl. @def-uneigentliche-integrale) verschwindet der Integralterm $\int_{-\infty}^\infty x \exp\left(-x^2\right) \,dx$
+damit und wir erhalten
+\begin{align}
+\mathbb{E}(\xi)
+= \frac{1}{\sqrt{\pi}}\left(\mu \sqrt{\pi}\right)
+= \mu.
+\end{align}
+:::
+
+Der Erwartungswert einer univariaten Normalverteilung ist also durch ihren Parameter
+$\mu\in \mathbb{R}$ gegeben. 
+
+In Verallgemeinerung von @def-erwartungswert geben wir folgende
+Definition für den Erwartungswert einer Funktion einer Zufallsvariable
+
+:::{#def-erwartungswert-einer-funktion-einer-zufallsvariable}
+## Erwartungswert einer Funktion einer Zufallsvariable
+$(\Omega, \mathcal{A},\mathbb{P})$ sei ein Wahrscheinlichkeitsraum, $\xi$
+sei eine  Zufallsvariable mit Ergebnisraum $\mathcal{X}$ und $f: \mathcal{X} \to \mathcal{Z}$
+sei eine Funktion mit Zielmenge $\mathcal{Z}$. Dann ist der *Erwartungswert der
+Funktion $f$ der Zufallsvariable $\xi$* definiert als
+
+* $\mathbb{E}(f(\xi)) := \sum_{x \in \mathcal{X}} f(x)\,p_\xi(x)$,
+wenn $\xi : \Omega \to \mathcal{X}$ diskret mit WMF $p_\xi$ ist,
+* $\mathbb{E}(f(\xi)) := \int_{-\infty}^\infty f(x) \,p_\xi(x)\,dx$,
+wenn $\xi : \Omega \to \mathbb{R}$ kontinuierlich mit WDF $p_\xi$ ist.
+:::
+
+Der Erwartungswert einer Zufallsvariable ergibt sich anhand von 
+@def-erwartungswert-einer-funktion-einer-zufallsvariable als der Spezialfall,
+in dem gilt, dass 
+\begin{equation}
+f : \mathcal{X} \to \mathcal{Z}, x \mapsto f(x) := x.
+\end{equation}
+In der englischsprachigen Literatur ist @def-erwartungswert-einer-funktion-einer-zufallsvariable 
+auch als "Law of the unconscious statistician" bekannt und wird oft auch direkt zur Definition des
+Erwartungswertes herangezogen. 
+
+Weiterhin ist man wie im univariaten Fall manchmal darum bemüht, die Verteilung 
+eines Zufallsvektors mit einigen wenigen Maßzahlen zu charakterisieren. Das multivariate Analogon des
+des Erwartungswerts einer Zufallsvariablen ist der *Erwartungswert eines Zufallsvektors*,
+der wie folgt definiert ist.
+
+:::{#def-erwartungswert-eines-zufallsvektors}
+## Erwartungswert eines Zufallsvektors
+$\xi$ sei ein $n$-dimensionaler Zufallvektor. Dann ist der *Erwartungwert*
+von $\xi$ definiert als der $n$-dimensionale reelle Vektor
+\begin{equation}
+\mathbb{E}(\xi) :=
+\begin{pmatrix}
+\mathbb{E}(\xi_1) \\
+\vdots            \\
+\mathbb{E}(\xi_n)
+\end{pmatrix}
+\end{equation}
+:::
+
+Der Erwartungswert eines Zufallsvektors $\xi$ ist also der Vektor der Erwartungswerte
+der Komponenten $\xi_1, ...,\xi_n$ von $\xi$, ist also direkt im Sinne von Erwartungswerten
+von Zufallsvariablen definiert. In Analogie zu @def-erwartungswert-einer-funktion-einer-zufallsvariable
+definiert man für die Funktion eines Zufallsvektors den Erwartungswert dieser Transformation
+wie folgt.
+
+:::{#def-erwartungswert-einer-funktion-einer-zufallsvektors}
+## Erwartungswert einer Funktion eines Zufallsvektors
+$(\Omega, \mathcal{A},\mathbb{P})$ sei ein Wahrscheinlichkeitsraum, $\xi$
+sei ein Zufallsvektor mit Ergebnisraum $\mathcal{X}$ und $f: \mathcal{X} \to \mathcal{Z}$
+sei eine Funktion mit Zielmenge $\mathcal{Z}$. Dann ist der *Erwartungswert der
+Funktion $f$ des Zufallsvektors $\xi$* definiert als
+
+* $\mathbb{E}(f(\xi)) := \sum_{x \in \mathcal{X}} f(x)\,p_\xi(x)$,
+wenn $\xi : \Omega \to \mathcal{X}$ diskret mit WMF $p_\xi$ ist,
+* $\mathbb{E}(f(\xi)) := \int_{-\infty}^\infty f(x) \,p_\xi(x)\,dx$,
+wenn $\xi : \Omega \to \mathbb{R}$ kontinuierlich mit WDF $p_\xi$ ist.
+:::
+
+
+Folgendes Theorem gibt nun einige Rechenregeln im Umgang mit Erwartungswerten an,
+die uns an vielen Stellen begegnen werden. Diese Rechenregeln folgen direkt aus
+der Summen- bzw. Integraldefinition des Erwartungswertes, im Beweis des Theorems
+betrachten wir dementsprechend lediglich den Fall kontinuierlicher Zufallsvariablen.
+
+:::{#thm-eigenschaften-des-erwartungswerts}
+## Eigenschaften des Erwartungswerts
+(1) (Linear-affine Transformation) Für eine Zufallsvariable $\xi$ und $a,b\in \mathbb{R}$ gilt
+\begin{equation}
+\mathbb{E}(a\xi + b) = a\mathbb{E}(\xi) + b.
+\end{equation}
+(2) (Linearkombination) Für Zufallsvariablen $\xi_1,...,\xi_n$ und $a_1,...,a_n \in \mathbb{R}$ gilt
+\begin{equation}
+\mathbb{E}\left(\sum_{i=1}^n a_i\xi_i \right) = \sum_{i = 1}^n a_i \mathbb{E}(\xi_i).
+\end{equation}
+(3) (Faktorisierung bei Unabhängigkeit) Für unabhängige Zufallsvariablen $\xi_1,...,\xi_n$ gilt
+\begin{equation}
+\mathbb{E}\left(\prod_{i=1}^n \xi_i \right) = \prod_{i = 1}^n \mathbb{E}(\xi_i).
+\end{equation}
+:::
+
+:::{.proof}
+Eigenschaft (1) folgt aus den Linearitätseigenschaften von Summen und Integralen. 
+Wir betrachten nur den Fall einer kontinuierlichen Zufallsvariable $\xi$ mit WDF $p_\xi$ 
+genauer und definieren zunächst $\upsilon := a\xi + b$. Dann gilt
+
+\begin{align}
+\begin{split}
+\mathbb{E}(\upsilon)
+& = \mathbb{E}(a\xi + b) 						                \\
+& = \int_{-\infty}^\infty (ax + b)p_\xi(x) \,dx				                \\
+& = \int_{-\infty}^\infty  axp_\xi(x)  + b p_\xi(x) \,dx			            \\
+& = a\int_{-\infty}^\infty xp_\xi(x) \,dx + b \int_{-\infty}^\infty p_\xi(x) \,dx	        \\
+& = a\mathbb{E}(\xi) + b.
+\end{split}
+\end{align}
+Eigenschaft (2) folgt gleichfalls aus den Linearitätseigenschaften von Summen 
+und Integralen. Wir wollen nur den Fall von zwei kontinuierlichen Zufallsvariablen
+$\xi_1$ und $\xi_2$ mit bivariater WDF $p_{\xi_1,\xi_2}$ genauer betrachten. 
+In diesem Fall gilt
+\begin{align}
+\begin{split}
+\mathbb{E}\left(\sum_{i=1}^2 a_i\xi_i\right)
+& = \mathbb{E}(a_1\xi_1 + a_2\xi_2) \\
+& = \iint_{\mathbb{R}^2} (a_1x_1 + a_2x_2)p_{\xi_1,\xi_2}(x_1,x_2)\,dx_1\,dx_2 	\\
+& = \iint_{\mathbb{R}^2} a_1x_1 p_{\xi_1,\xi_2}(x_1,x_2)
+                                   + a_2x_2 p_{\xi_1,\xi_2}(x_1,x_2)\,dx_1\,dx_2			\\
+& =  a_1\iint_{\mathbb{R}^2} x_1 p_{\xi_1,\xi_2}(x_1,x_2) \,dx_1\,dx_2
+  +  a_2\iint_{\mathbb{R}^2} x_2 p_{\xi_1,\xi_2}(x_1,x_2)\,dx_1\,dx_2			\\
+& =  a_1\int_{-\infty}^\infty x_1 \left(\int_{-\infty}^\infty p_{\xi_1,\xi_2}(x_1,x_2) \,dx_2 \right)\,dx_1
+  +  a_2\int_{-\infty}^\infty x_2 \left(\int_{-\infty}^\infty p_{\xi_1,\xi_2}(x_1,x_2) \,dx_1 \right) \,dx_2 \\
+& =  a_1\int_{-\infty}^\infty x_1 p_{\xi_1}(x_1) \,dx_1
+  +  a_2\int_{-\infty}^\infty x_2 p_{\xi_2}(x_2) \,dx_2 \\
+& =  a_1 \mathbb{E}(\xi_1) +  a_2\mathbb{E}(\xi_2) \\
+& = \sum_{i=1}^2 a_i \mathbb{E}(\xi_i).
+\end{split}
+\end{align}
+Ein Induktionsbeweis erlaubt dann die Generalisierung vom bivariaten auf den
+$n$-variaten Fall.
+
+Zu Eigenschaft (3) betrachten wir den Fall von $n$ kontinuierlichen Zufallsvariablen
+mit gemeinsamer WDF $p_{\xi_1,...,\xi_n}$. Weil als $\xi_1,...,\xi_n$ unabhängig vorausgesetzt
+sind, gilt
+\begin{equation}
+p_{\xi_1,...,\xi_n}(x_1,...,x_n) = \prod_{i=1}^n p_{\xi_i}(x_i).
+\end{equation}
+Weiterhin gilt also
+\begin{align}
+\begin{split}
+\mathbb{E}\left(\prod_{i=1}^n \xi_i \right)
+& = \int_{-\infty}^\infty\cdots\int_{-\infty}^\infty \left(\prod_{i=1}^n x_i\right)
+		p_{\xi_1,...,\xi_n}(x_1,...,x_n) \,dx_1...\,dx_n	\\
+& = \int_{-\infty}^\infty\cdots\int_{-\infty}^\infty  \prod_{i=1}^n x_i
+		 \prod_{i=1}^n p_{\xi_i}(x_i)\,dx_1...\,dx_n	\\
+& = \int_{-\infty}^\infty\cdots \int_{-\infty}^\infty  \prod_{i=1}^n x_i p_{\xi_i}(x_i) \,dx_1...\,dx_n	\\
+& = \prod_{i=1}^n \int_{-\infty}^\infty x_i p_{\xi_i}(x_i) \,dx_i	\\
+& = \prod_{i=1}^n \mathbb{E}(\xi_i).
+\end{split}
+\end{align}
+:::
+
+## Varianz und Standardabweichung {#sec-varianz-und-standardabweichung}
+
+Häufig genutzte Maße für die Streuung von Verteilungen von Zufallsvariablen sind
+die Varianz und die Standardabweichung. Diese sind wie folgt definiert.
+
+:::{#def-varianz-und-standardabweichung}
+## Varianz und Standardabweichung
+$\xi$ sei eine Zufallsvariable mit existierendem Erwartungswert $\mathbb{E}(\xi)$. 
+
+* Die \textit{Varianz von $\xi$} ist definiert als
+\begin{equation}
+\mathbb{V}(\xi) := \mathbb{E}\left((\xi - \mathbb{E}(\xi))^2\right).
+\end{equation}
+* Die \textit{Standardabweichung von $\xi$} ist definiert als
+\begin{equation}
+\mathbb{S}(\xi) := \sqrt{\mathbb{V}(\xi)}.
+\end{equation}
+:::
+
+Inwiefern die Varianz und ihre Quadratwurzel als Maße für die Streuung einer 
+Zufallsvariable dienen, werden wir in @thm-chebyshev-ungleichung begründen.
+Die Quadrierung der Abweichung der Zufallsvariable von ihrem Erwartungswert
+in der Definition der Varianz ist nötig, da andernfalls mit @thm-eigenschaften-des-erwartungswerts
+immer gelten würde, dass
+\begin{equation}
+\mathbb{E}(\xi-\mathbb{E}(\xi)) = \mathbb{E}(\xi) - \mathbb{E}(\xi) = 0.
+\end{equation}
+Allerdings gibt es neben der Varianz durchaus weitere Maße der Streuung von Zufallsvariablen,
+hier seien beispielsweise die erwartete absolute Abweichung einer Zufallsvariable von
+ihrem Erwartungswert, $\mathbb{E}(|\xi - \mathbb{E}(\xi)|)$ und die sogenannte *Entropie*
+$-\mathbb{E}(\ln p_\xi)$ genannt. Im Sinne von @def-erwartungswert-einer-funktion-einer-zufallsvariable ist die Varianz der Zufallsvariable $\xi: \Omega \to \mathcal{X}$ der Erwartungswert 
+der Funktion
+\begin{equation}
+f : \mathcal{X} \to \mathcal{Z}, x \mapsto f(x) := (x - \mathbb{E}(\xi))^2.
+\end{equation}
+Das Berechnen von Varianzen wird durch folgendes Theorem, den sogenannten *Varianzverschiebungssatz*
+oft erleichtert, insbesondere, wenn der Erwartungswert der quadrierten Zufallsvariable
+leicht zu bestimmen oder bekannt ist.
+
+:::{#thm-varianzverschiebungssatz}
+## Varianzverschiebungssatz
+$\xi$ sei eine Zufallsvariable. Dann gilt
+\begin{equation}
+\mathbb{V}(\xi) = \mathbb{E}\left(\xi^2 \right) - \mathbb{E}(\xi)^2.
+\end{equation}
+:::
+
+:::{.proof}
+Mit der Definition der Varianz und der Linearität des Erwartungswerts gilt
+\begin{align}
+\begin{split}
+\mathbb{V}(\xi)
+& = \mathbb{E}\left((\xi - \mathbb{E}(\xi))^2\right) \\
+& = \mathbb{E}\left(\xi^2 - 2\xi\mathbb{E}(\xi) + \mathbb{E}(\xi)^2 \right) \\
+& =    \mathbb{E}(\xi^2)
+    - 2\mathbb{E}(\xi)\mathbb{E}(\xi)
+    + \mathbb{E}\left(\mathbb{E}(\xi)^2\right)   \\
+& = \mathbb{E}(\xi^2) - 2\mathbb{E}(\xi)^2 + \mathbb{E}(\xi)^2  \\
+& = \mathbb{E}(\xi^2) - \mathbb{E}(\xi)^2.
+\end{split}
+\end{align}
+:::
+
+Wie für den Erwartungswert gibt es auch für die Varianz einige Rechenregeln,
+die den Umgang mit ihr oft erleichtern. Wir fassen sie in folgendem Theorem
+zusammen.
+
+:::{#thm-eigenschaften-der-varianz}
+## Eigenschaften der Varianz
+(1) (Linear-affine Transformation) Für eine Zufallsvariable $\xi$ und 
+$a,b\in \mathbb{R}$ gelten
+\begin{equation}
+\mathbb{V}(a\xi + b) = a^2 \mathbb{V}(\xi)
+\mbox{ und }
+\mathbb{S}(a\xi + b) = |a|\mathbb{S}(\xi).
+\end{equation}
+(2) (Linearkombination bei Unabhängigkeit) Für unabhängige 
+Zufallsvariablen $\xi_1,...,\xi_n$ und $a_1,...,a_n \in \mathbb{R}$ gilt
+\begin{equation}
+\mathbb{V}\left(\sum_{i=1}^n a_i\xi_i\right) = \sum_{i=1}^n a_i^2 \mathbb{V}(\xi_i).
+\end{equation}
+:::
+
+:::{.proof}
+Um Eigenschaft (1) zu zeigen, definieren wir zunächst $\upsilon := a\xi + b$ und halten
+fest, dass $\mathbb{E}(\upsilon) = a\mathbb{E}(\xi) + b$. Für die Varianz von $\upsilon$ ergibt
+sich dann
+\begin{align}
+\begin{split}
+\mathbb{V}(\upsilon)
+& = \mathbb{E}\left((\upsilon - \mathbb{E}(\upsilon))^2\right) 		\\
+& = \mathbb{E}\left((a\xi+b-a\mathbb{E}(\xi)-b)^2\right) 	\\
+& = \mathbb{E}\left((a\xi-a\mathbb{E}(\xi))^2\right) 		\\
+& = \mathbb{E}\left((a(\xi - \mathbb{E}(\xi))^2\right) 		\\
+& = \mathbb{E}\left(a^2(\xi - \mathbb{E}(\xi))^2\right) 	\\
+& = a^2\mathbb{E}\left((\xi - \mathbb{E}(\xi))^2\right) 	\\
+& = a^2\mathbb{V}(\xi) 									\\
+\end{split}
+\end{align}
+Wurzelziehen ergibt dann das Resultat für die Standardabweichung.
+
+Für Eigenschaft (2) betrachten wir den Fall zweier unabhängiger Zufallsvariablen
+$\xi_1$ und $\xi_2$ genauer. Wir halten zunächst fest, dass in diesem Fall gilt, dass
+\begin{equation}
+\mathbb{E}\left(a_1\xi_1 + a_2\xi_2\right) = a_1\mathbb{E}(\xi_1) + a_2\mathbb{E}(\xi_2).
+\end{equation}
+Es ergibt sich also
+\begin{align}
+\begin{split}
+\mathbb{V}\left(\sum_{i=1}^2 a_i \xi_i\right) 											     
+& = \mathbb{V}(a_1\xi_1 + a_2\xi_2)                                                               \\
+& = \mathbb{E}\left((a_1\xi_1 + a_2\xi_2 - \mathbb{E}\left(a_1\xi_1 + a_2\xi_2\right))^2\right)   \\
+& = \mathbb{E}\left((a_1\xi_1 + a_2\xi_2 - a_1\mathbb{E}(\xi_1) - a_2\mathbb{E}(\xi_2))^2\right)  \\
+& = \mathbb{E}\left((a_1\xi_1 - a_1\mathbb{E}(\xi_1) + a_2\xi_2  - a_2\mathbb{E}(\xi_2))^2\right) \\
+& = \mathbb{E}\left(((a_1(\xi_1 - \mathbb{E}(\xi_1)) + (a_2(\xi_2 - \mathbb{E}(\xi_2)))^2\right)  \\
+& = \mathbb{E}\left((a_1(\xi_1 - \mathbb{E}(\xi_1)))^2
+				   + 2(a_1(\xi_1 - \mathbb{E}(\xi_1))(a_2(\xi_2 - \mathbb{E}(\xi_2))
+				   + (a_2(\xi_2 - \mathbb{E}(\xi_2)))^2\right) \\
+& = \mathbb{E}\left((a_1^2(\xi_1 - \mathbb{E}(\xi_1))^2
+				   + 2a_1a_2(\xi_1 - \mathbb{E}(\xi_1))(\xi_2 - \mathbb{E}(\xi_2))
+				   + a_2^2(\xi_2 - \mathbb{E}(\xi_2))^2\right) \\
+& = a_1^2\mathbb{E}\left((\xi_1 - \mathbb{E}(\xi_1))^2\right)
+   + 2a_1a_2\mathbb{E}\left((\xi_1 - \mathbb{E}(\xi_1))(\xi_2 - \mathbb{E}(\xi_2))\right)
+   + a_2^2\mathbb{E}\left((\xi_2 - \mathbb{E}(\xi_2))^2\right) \\
+& = a_1^2\mathbb{V}(\xi_1)
+   + 2a_1a_2\mathbb{E}\left((\xi_1 - \mathbb{E}(\xi_1))(\xi_2 - \mathbb{E}(\xi_2))\right)
+   + a_2^2\mathbb{V}(\xi_2) \\
+& = \sum_{i=1}^2 a_i^2\mathbb{V}(\xi_i)
+   + 2a_1a_2\mathbb{E}\left((\xi_1 - \mathbb{E}(\xi_1))(\xi_2 - \mathbb{E}(\xi_2))\right).
+\end{split}.
+\end{align}
+Weil $\xi_1$ und $\xi_2$ unabhängig sind, ergibt sich mit den Eigenschaften des
+Erwartungswerts für unabhängige Zufallsvariablen, dass
+\begin{align}
+\begin{split}
+\mathbb{E}\left((\xi_1 - \mathbb{E}(\xi_1))(\xi_2 - \mathbb{E}(\xi_2))\right)
+& = \mathbb{E}\left((\xi_1 - \mathbb{E}(\xi_1))\right)
+	\mathbb{E}\left((\xi_2 - \mathbb{E}(\xi_2))\right) \\
+& = (\mathbb{E}(\xi_1) - \mathbb{E}(\xi_1))
+  	(\mathbb{E}(\xi_2) - \mathbb{E}(\xi_2)) \\
+& = 0
+\end{split}
+\end{align}
+ist. Damit folgt also
+\begin{equation}
+\mathbb{V}\left(\sum_{i=1}^2 a_i \xi_i\right)
+=  \sum_{i=1}^2 a_i^2\mathbb{V}(\xi_i).
+\end{equation}
+Ein Induktionsbeweis erlaubt dann die Generalisierung vom bivariaten zum $n$-variaten Fall.
+:::
+
+### Beispiele {-}
+
+Mit der Varianz einer Bernoulli-Zufallsvariable und der Varianz einer normalverteilten
+Zufallsvariable wollen wir auch hier zwei erste Beispiele für die Varianz
+einer diskreten und einer kontinuierlichen Zufallsvariable betrachten.
+
+:::{#thm-varianz-einer-bernoulli-zufallsvariable}
+## Varianz einer Bernoulli Zufallsvariable
+Es sei $\xi \sim \mbox{Bern}(\mu)$. Dann ist die Varianz von $\xi$ gegeben durch
+\begin{equation}
+\mathbb{V}(\xi) = \mu(1-\mu).
+\end{equation}
+:::
+
+:::{.proof}
+$\xi$ ist eine diskrete Zufallsvariable und es gilt $\mathbb{E}(\xi) = \mu$. Also gilt
+\begin{align}
+\begin{split}
+\mathbb{V}(\xi)
+& = \mathbb{E}\left((\xi - \mu)^2\right) \\
+& = \sum_{x \in \{0,1\}} (x - \mu)^2 \mbox{Bern}(x;\mu) \\
+& = (0 - \mu)^2 \mu^0(1-\mu)^{1-0}  + (1 - \mu)^2\mu^1(1-\mu)^{1-1}  \\
+& = \mu^2 (1-\mu)  + (1 - \mu)^2\mu  \\
+& = \left(\mu^2  + (1 - \mu)\mu\right)(1-\mu)  \\
+& = \left(\mu^2 + \mu - \mu^2\right)(1 - \mu) \\
+& = \mu(1-\mu).
+\end{split}
+\end{align}
+:::
+
+:::{#thm-varianz-einer-normalverteilten-zufallsvariable}
+## Varianz einer normalverteilten Zufallsvariable
+Es sei $\xi \sim N(\mu,\sigma^2)$. Dann ist die Varianz von $\xi$ gegeben durch
+\begin{equation}
+\mathbb{V}(\xi) = \sigma^2.
+\end{equation}
+:::
+
+:::{.proof}
+
+Die Herleitung der Varianz einer normalverteilten Zufallsvariable ist nicht unaufwändig,
+so dass wir hier auch wieder unbewiesen die Gültigkeit von @eq-gauss-integral und
+@eq-exp-limits sowie weiterhin von 
+$$
+\int_{-\infty}^\infty x \exp(-x^2)\,dx = 0
+$$ {#eq-gauss-zero}
+annehmen wollen. Wir halten zunächst fest, dass mit dem Varianzverschiebungssatz gilt, dass
+\begin{align}\label{eq:var_gauss_1}
+\begin{split}
+\mathbb{V}(\xi)
+= \mathbb{E}(\xi^2) - \mathbb{E}(\xi)^2
+= \frac{1}{2\pi\sigma^2}\int_{-\infty}^\infty x^2 \exp\left(-\frac{1}{2\sigma^2}(x-\mu)^2 \right)\,dx - \mu^2.
+\end{split}
+\end{align}
+Mit der allgemeinen Substitutionsregel (@thm-rechenregeln-für-stammfunktionen)
+\begin{equation}
+\int_{a}^{b} f(g(x))g'(x)\,dx = \int_{g(a)}^{g(b)} f(x)\,dx
+\end{equation}
+und der Definition von
+\begin{equation}
+g:\mathbb{R} \to \mathbb{R}, x \mapsto \sqrt{2\sigma^2}x + \mu,
+g(-\infty) := -\infty, g(\infty) := \infty,
+\mbox{ mit }
+g'(x) = \sqrt{2\sigma^2}
+\end{equation}
+kann das Integral auf der rechten Seite von Gleichung \eqref{eq:var_gauss_1} dann als
+\begin{align}
+\begin{split}
+\int_{-\infty}^\infty x^2 \exp\left(-\frac{1}{2\sigma^2}(x - \mu)^2 \right) \,dx 
+& = \int_{-\infty}^\infty (\sqrt{2\sigma^2}x + \mu)^2 \exp\left(-\frac{1}{2\sigma^2}((\sqrt{2\sigma^2}x + \mu)-\mu)^2 \right)\sqrt{2\sigma^2}\,dx \\
+& = \sqrt{2\sigma^2}\int_{-\infty}^\infty (\sqrt{2\sigma^2}x + \mu)^2 \exp\left(-\frac{2\sigma^2 x^2}{2\sigma^2} \right)\,dx \\
+& = \sqrt{2\sigma^2}\int_{-\infty}^\infty (\sqrt{2\sigma^2}x + \mu)^2 \exp\left(-x^2\right)\,dx
+\end{split}
+\end{align}
+geschrieben werden. Also gilt
+\begin{align}
+\begin{split}
+\mathbb{V}(\xi)
+& =
+\frac{\sqrt{2\sigma^2}}{\sqrt{2\pi\sigma^2}}
+\int_{-\infty}^\infty (\sqrt{2\sigma^2}x + \mu)^2 \exp\left(-x^2 \right)\,dx
+- \mu^2
+\\
+&
+= \frac{1}{\sqrt{\pi}}
+\int_{-\infty}^\infty(\sqrt{2\sigma^2}x)^2 + 2\sqrt{2\sigma^2}x\mu + \mu^2) \exp\left(-x^2 \right)\,dx
+- \mu^2
+\\
+&
+= \frac{1}{\sqrt{\pi}}
+\left(
+		2\sigma^2\int_{-\infty}^\infty x^2 \exp\left(-x^2 \right)\,dx +
+		2\sqrt{2\sigma^2}\mu\int_{-\infty}^\infty x\exp\left(-x^2 \right)\,dx +
+		\mu^2\int_{-\infty}^\infty \exp\left(-x^2 \right)\,dx
+\right)
+- \mu^2.
+\end{split}
+\end{align}
+Mit @eq-gauss-zero ergibt sich dann
+\begin{align}
+\begin{split}
+\mathbb{V}(\xi)
+& = \frac{1}{\sqrt{\pi}}
+\left(2\sigma^2\int_{-\infty}^\infty x^2 \exp\left(-x^2 \right)\,dx + \mu^2\sqrt{\pi} \right)
+- \mu^2
+\\
+& = \frac{2\sigma^2}{\sqrt{\pi}}
+\int_{-\infty}^\infty x^2 \exp\left(-x^2 \right)\,dx
++ \mu^2 - \mu^2
+\\
+& = \frac{2\sigma^2}{\sqrt{\pi}} \int_{-\infty}^\infty x^2 \exp\left(-x^2 \right)\,dx.
+\end{split}
+\end{align}
+Mit der allgemeinen Form der partiellen Integrationsregel (@thm-rechenregeln-für-stammfunktionen)
+\begin{equation}
+\int_{a}^{b} f'(x)g(x)\,dx =
+f(x)g(x)|_{a}^{b} - \int_{a}^{b} f(x)g'(x)\,dx
+\end{equation}
+und der Definition von
+\begin{equation}
+f : \mathbb{R} \to \mathbb{R}, x \mapsto f(x) := \exp\left(-x^2\right) \mbox{ mit } f'(x) = -2\exp\left(-x^2\right)
+\end{equation}
+und
+\begin{equation}
+g : \mathbb{R} \to \mathbb{R}, x\mapsto g(x) := -\frac{1}{2}x \mbox{ mit } g'(x) = -\frac{1}{2},
+\end{equation}
+so dass
+\begin{equation}
+f'(x)g(x) = -2\exp\left(-x^2\right)\left(-\frac{1}{2}x \right) = x^2\exp\left(-x^2\right),
+\end{equation}
+gilt, ergibt sich dann
+\begin{align}
+\begin{split}
+\mathbb{V}(\xi)
+& = \frac{2\sigma^2}{\sqrt{\pi}} \int_{-\infty}^\infty x^2 \exp\left(-x^2 \right)\,dx  \\
+& = \frac{2\sigma^2}{\sqrt{\pi}}
+\left( -\frac{1}{2}x\exp\left(-x^2\right)|_{-\infty}^{\infty}
+- \int_{-\infty}^\infty \exp\left(-x^2 \right)\left(-\frac{1}{2} \right)\,dx \right)  \\
+& = \frac{2\sigma^2}{\sqrt{\pi}}
+\left(
+ -\frac{1}{2}x\exp\left(-x^2\right)|_{-\infty}^{\infty}
++ \frac{1}{2}\int_{-\infty}^\infty \exp\left(-x^2 \right)\,dx
+\right).
+\end{split}
+\end{align}
+Aus @eq-exp-limits schließen wir dann, dass der erste Term in den Klammern auf der
+ rechten Seite der obigen Gleichung gleich $0$ ist. Schließlich ergibt sich damit
+\begin{align}
+\begin{split}
+\mathbb{V}(\xi)
+= \frac{2\sigma^2}{\sqrt{\pi}} \left(\frac{1}{2}\int_{-\infty}^\infty \exp\left(-x^2 \right)\,dx\right)
+= \frac{\sigma^2}{\sqrt{\pi}} \sqrt{\pi}
+= \sigma^2.
+\end{split}
+\end{align}
+:::
+
+Allgemein ergeben sich die Erwartungswerte und Varianzen parametrischer
+Verteilungen als Funktionen ihrer Parameter. Wir fassen die 
+Erwartungswerte uns bekannter Verteilungen in @thm-erwartungswerte-varianzen
+zusammen.
+
+:::{#thm-erwartungswerte-varianzen}
+## Erwartungswerte und Varianzen einiger Wahrscheinlichkeitsverteilungen
+\begin{center}
+\begin{tabular}{l|c|c}
+Zufallsvariable 							&	Erwartungswert					&	Varianz														\\\hline
+$\xi \sim \mbox{B}(\mu)$ 					& 	$\mu$							&	$\mu(1-\mu)$ 												\\
+$\xi \sim \mbox{Bin}(\mu,n)$ 				& 	$n\mu$							&	$n\mu(1-\mu)$  												\\
+$\xi \sim N(\mu,\sigma^2)$ 					& 	$\mu$							&	$\sigma^2$  												\\
+$\xi \sim G(\alpha,\beta)$					& 	$\alpha\beta$ 					&	$\alpha\beta^2$												\\
+$\xi \sim \mbox{Beta}(\alpha,\beta)$		& 	$\frac{\alpha}{\alpha+\beta}$ 	&	$\frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)}$ 		\\
+$\xi \sim \mbox{U}(a,b)$					& 	$\frac{a+b}{2}$ 				&	$\frac{(b-a)^2}{12}$  										\\
+\end{tabular}
+\end{center}
+:::
+
+Wir verzichten auf einen Beweis.
+
+## Kennzahlen univariater Stichproben {#sec-stichprobenkennzahlen}
+
+Wie wir @sec-grundbegriffe-frequentistischer-inferenz noch ausführlich diskutieren, 
+werden ist eine Charakteristikum der probabilistischen Modellierung, beobachtete 
+Daten als Realisierungen von Zufallsvariablen zu verstehen. Hat meine Menge 
+$\xi_1,...,\xi_n$ von Zufallsvariablen, so nennt man diese auch eine *Stichprobe*. 
+Basierend auf einer Stichprobe kann man nun Kennzahlen berechnen, die auf den 
+ersten Blick den Begriffen von Erwartungswert, Varianz und Standardabweichung
+ähneln, mit diesen aber keinesfalls zu verwechseln sind. Defacto dienen die
+in folgender Definition aufgeführten Stichprobenkennzahlen oft als *Schätzer* für
+die Kennzahlen von Zufallsvariablen, wie wir in @sec-punktschätzung ausführlich
+darlegen wollen. Gewissermaßen Vorgriff zur Abgrenzung der Begrifflichkeiten 
+und auch als Grundlage für @sec-grenzwerte definieren wir hier einige deskriptive
+Stichprobenkennzahlen.
+
+:::{#def-stichprobenkennzahlen}
+## Stichprobenmittel, Stichprobenvarianz, Stichprobenstandardabweichung
+$\xi_1,...,\xi_n$ sei eine Menge von Zufallsvariablen, genannt *Stichprobe*.
+
+* Das *Stichprobenmittel* von $\xi_1,...,\xi_n$ ist definiert als 
+\begin{equation}
+\bar{\xi} := \frac{1}{n}\sum_{i=1}^n \xi_i.
+\end{equation}
+* Die *Stichprobenvarianz* von $\xi_1,...,\xi_n$ ist definiert als
+\begin{equation}
+S^2 := \frac{1}{n-1}\sum_{i=1}^n (\xi_i - \bar{\xi})^2.
+\end{equation}
+* Die *Stichprobenstandardabweichung* ist definiert als
+\begin{equation}
+S := \sqrt{S^2}.
+\end{equation}
+:::
+
+Zur Abgrenzung erinnern wir noch einmal daran, dass Erwartungswert $\mathbb{E}(\xi)$,
+Varianz $\mathbb{V}(\xi)$ und Standardabweichung $\mathbb{S}(\xi)$ Kennzahlen 
+einer Zufallsvariable $\xi$ sind, wohingegen $\bar{\xi}, S^2$, und $S$ 
+Kennzahlen einer Stichprobe $\xi_1,...,\xi_n$ sind. 
+
+**Beispiel**
+
+Wir wollen die Bestimmung der in @def-stichprobenkennzahlen eingeführten 
+Stichprobenkennzahlen an einem Beispiel erläutern. Dazu halten wir nochmals fest, dass
+$\bar{\xi}, S^2$, $S$ Zufallsvariablen sind und wollen ihre Realisationen im 
+Folgenden mit $\bar{x}, s^2$ und $s$ bezeichnen. Nehmen wir also an, wir haben für
+$n := 10$ die in folgender Tabelle gezeigten Realisationen von u.i.v. 
+nach $N(1,2)$ verteilten Zufallsvariable $\xi_1,...,\xi_{10}$, wobei für 
+$i = 1,...,10$ die Realisation von $\xi_i$ mit $x_i$ bezeichnen ist:
+
+\begin{center}
+\begin{tabular}{ccccccccccc}
+   $x_1$
+&  $x_2$
+&  $x_3$
+&  $x_4$
+&  $x_5$
+&  $x_6$
+&  $x_7$
+&  $x_8$
+&  $x_9$
+&  $x_{10}$ \\\hline
+   0.54
+&  1.01
+& -3.28
+&  0.35
+&  2.75
+& -0.51
+&  2.32
+&  1.49
+&  0.96
+&  1.25
+\end{tabular}
+\end{center}
+
+Nach @def-stichprobenkennzahlen ist die Stichprobenmittelrealisation dann gegeben durch
+\begin{equation}
+\bar{x}
+= \frac{1}{10}\sum_{i = 1}^{10}x_i
+= \frac{6.88}{10}
+= 0.68,
+\end{equation}
+die Stichprobenvarianzrealisation gegeben durch
+\begin{equation}
+s^2
+= \frac{1}{9}\sum_{i=1}^{10} (x_i - \bar{x})^2
+= \frac{1}{9}\sum_{i=1}^{10} (x_i - 0.68)^2
+= \frac{25.37}{9}
+= 2.82.
+\end{equation}
+und die Stichprobenstandardabweichungrealisation gegeben durch
+\begin{equation}
+s = \sqrt{s^2} = \sqrt{2.82} = 1.68.
+\end{equation}
+
+## Kovarianz und Korrelation {#sec-kovarianz-und-korrelation}
+
+Häufig genutzte Maße für den Zusammenhang zweier Zufallsvariablen sind die
+*Kovarianz* und die *Korrelation*. Diese sind wie folgt definiert.
+
+:::{#def-kovarianz-und-korrelation}
+## Kovarianz und Korrelation
+Die *Kovarianz* zweier Zufallsvariablen $\xi$ und $\upsilon$ ist definiert als
+\begin{equation}
+\mathbb{C}(\xi,\upsilon) :=
+\mathbb{E}\left(\left(\xi-\mathbb{E}(\xi)\right)\left(\upsilon-\mathbb{E}(\upsilon)\right)\right).
+\end{equation}
+Die *Korrelation* zweier Zufallsvariablen $\xi$ und $\upsilon$ ist definiert als
+\begin{equation}
+\rho(\xi,\upsilon)
+:= \frac{\mathbb{C}(\xi,\upsilon)}{\sqrt{\mathbb{V}(\xi)}\sqrt{\mathbb{V}(\upsilon)}}
+ = \frac{\mathbb{C}(\xi,\upsilon)}{\mathbb{S}(\xi){\mathbb{S}(\upsilon)}}.
+\end{equation}
+:::
+Die Kovarianz einer Zufallsvariable $\xi$ mit sich entspricht ihrer Varianz, da 
+\begin{equation}
+\mathbb{C}(\xi,\xi) =
+\mathbb{E}\left(\left(\xi - \mathbb{E}(\xi) \right)^2\right) =
+\mathbb{V}(\xi).
+\end{equation}
+Im Gegensatz zur Varianz kann die Kovarianz aber auch negative Werte annehmen.
+
+
+**Beispiel**  
+
+Wir wollen beispielgebend für zwei Zufallsvariablen mit gemeinsamer diskreter
+Verteilung ihre Kovarianz berechnen. Dazu sei $\zeta := (\xi, \upsilon)$ ein Zufallsvektor 
+mit WMF $p_{\xi,\upsilon}$ definiert durch
+\renewcommand{\arraystretch}{1.4}
+\begin{center}
+\begin{tabular}{c|ccc|c}
+$p_{\xi,\upsilon}(x,y)$	& 	$y = 1$ 	& 	$y = 2$ 	& 	$y = 3$ 	&	$p_{\xi}(x)$		\\\hline
+$x = 1$				&	$0.10$		&	$0.05$		&	$0.15$		&	$0.30$				\\
+$x = 2$				&	$0.60$		&	$0.05$		&	$0.05$		&	$0.70$				\\\hline
+$p_{\upsilon}(y)$		&	$0.70$		&	$0.10$		& 	$0.20$		&				    	\\
+\end{tabular}
+\end{center}
+und damit $\xi$, $\upsilon$ zwei Zufallsvariablen mit einer bekannten bivariaten Verteilung.
+Um $\mathbb{C}(\xi,\upsilon)$ zu berechnen, halten wir zunächst fest, dass
+\begin{equation}
+\mathbb{E}(\xi) = \sum_{x=1}^2 x p_{\xi}(x) = 1\cdot 0.3 + 2\cdot 0.7 = 1.7
+\end{equation}
+und
+\begin{equation}
+\mathbb{E}(\upsilon) = \sum_{y=1}^3 y p_{\upsilon}(y) = 1\cdot 0.7 + 2\cdot 0.1 + 3\cdot 0.2 = 1.5.
+\end{equation}
+Mit der Definition der Kovarianz von $\xi$ und $\upsilon$ gilt dann
+
+\footnotesize
+\begin{align}
+\begin{split}
+\mathbb{C}(\xi,\upsilon) 																		     		 
+& = \mathbb{E}((\xi - \mathbb{E}(\xi))(\upsilon - \mathbb{E}(\upsilon)))								\\
+& = \sum_{x = 1}^2 \sum_{y = 1}^3 (x - \mathbb{E}(\xi))(y - \mathbb{E}(\upsilon))p_{\xi,\upsilon}(x,y) 	\\
+& = \sum_{x = 1}^2 \sum_{y = 1}^3 (x - 1.7)(y - 1.5)p_{\xi,\upsilon}(x,y) 							\\
+& = \sum_{x = 1}^2 (x - 1.7)(1 - 1.5)p_{\xi,\upsilon}(x,1) + 
+                   (x - 1.7)(2 - 1.5)p_{\xi,\upsilon}(x,2) + 	
+				   (x - 1.7)(3 - 1.5)p_{\xi,\upsilon}(x,3) 											\\
+& =	\quad	
+		(1 - 1.7)(1 - 1.5)p_{\xi,\upsilon}(1,1)
+	+	(1 - 1.7)(2 - 1.5)p_{\xi,\upsilon}(1,2)
+	+	(1 - 1.7)(3 - 1.5)p_{\xi,\upsilon}(1,3) 													\\
+& \quad	
+	+ 	(2 - 1.7)(1 - 1.5)p_{\xi,\upsilon}(2,1)
+	+ 	(2 - 1.7)(2 - 1.5)p_{\xi,\upsilon}(2,2)
+	+ 	(2 - 1.7)(3 - 1.5)p_{\xi,\upsilon}(2,3) 													\\
+& = \quad
+	(-0.7)\cdot(-0.5) 	\cdot 0.10  	 
+	+ (-0.7)\cdot 0.5  	\cdot 0.05   	 
+	+ (-0.7)\cdot 1.5 	\cdot 0.15 																\\
+& \quad																  
+	+ 0.3   \cdot (-0.5) \cdot 0.60     
+  	+ 0.3   \cdot   0.5  \cdot 0.05  	 
+  	+ 0.3   \cdot   1.5  \cdot 0.05  															\\
+& = 0.035
+	- 0.0175
+	- 0.1575
+    - 0.09
+	+ 0.0075
+	+ 0.0225																					\\
+& = - 0.2.
+\end{split}
+\end{align}
+\normalsize 
+
+Die Kovarianz der Zufallsvariablen $\xi$ und $\upsilon$ mit der in obiger Tabelle
+festgelegter Verteilung ist also $\mathbb{C}(\xi,\upsilon) = -0.2$.
+
+Die Korrelation $\rho(\xi,\upsilon)$ zweier Zufallsvariablen entspricht ihrer anhand
+der Standardabweichungen der jeweiligen Zufallsvariablen standardisierten Kovarianz
+und wird manchmal auch als *Korrelationskoeffizient* von $\xi$ und $\upsilon$ bezeichnet.
+Ist die Korrelation $\rho(\xi,\upsilon) = 0$, so werden $\xi$ und $\upsilon$ *unkorreliert* 
+genannt. Insbesondere ist die Korrelation im Gegensatz zur Kovarianz *normalisiert*, 
+d.h. es gilt, wie wir an späterer Stellte mithilfe der Cauchy-Schwarz Ungleichung (@thm-cauchy-schwarz-ungleichung) zeigen gilt 
+\begin{equation}
+-1 \le \rho(\xi,\upsilon) \le 1.
+\end{equation}
+Man sagt in diesem Kontext auch, dass die Korrelation im Gegensatz zur Kovarianz
+maßstabsunabhängig sei: wendet man auf eine Zufallsvariable eine linear-affine
+Transformation an, so ändert sich die Kovarianz der Zufallsvariablen, nicht aber
+ihre Korrelation. Das ist die Kernaussage folgenden Theorems.
+
+
+:::{#thm-kovarianz-und-korrelation-bei-linear-affinen-transformationen-von-zufallsvariablen}
+## Kovarianz und Korrelation bei linear affinen Transformationen von Zufallsvariablen
+
+$\xi$ und $\upsilon$ seien Zufallsvariablen und es seien $a,b,c,d \in \mathbb{R}$. 
+Dann gelten
+\begin{equation}
+\mathbb{C}(a\xi + b, c\upsilon + d) = ac\mathbb{C}(\xi,\upsilon)
+\end{equation}
+und
+\begin{equation}
+\rho(a\xi + b, c\upsilon + d) = \rho(\xi,\upsilon).
+\end{equation}
+:::
+
+:::{.proof}
+Es gilt zunächst
+\begin{align}
+\begin{split}
+\mathbb{C}(a\xi+b,c\upsilon+d)
+& = \mathbb{E}((a\xi+b-\mathbb{E}(a\xi+b))(c\upsilon+d-\mathbb{E}(c\upsilon+d)))    \\
+& = \mathbb{E}((a\xi+b-a\mathbb{E}(\xi)-b)(c\upsilon+d-c\mathbb{E}(c\upsilon)-d))   \\
+& = \mathbb{E}(a(\xi-\mathbb{E}(\xi))(c(\upsilon -c\mathbb{E}(\upsilon)))             \\
+& = \mathbb{E}(ac((\xi-\mathbb{E}(\xi))(\upsilon -c\mathbb{E}(\upsilon))))            \\
+&  = ac\mathbb{C}(\xi,\upsilon)
+\end{split}
+\end{align}
+Also folgt
+\begin{align}
+\begin{split}
+\rho(a\xi + b, c\upsilon + d)
+& = \frac{\mathbb{C}(a\xi+b,c\upsilon+d)}{\sqrt{\mathbb{V}(a\xi+b)}\sqrt{\mathbb{V}(c\upsilon+d)}} \\
+& = \frac{ac\mathbb{C}(\xi,\upsilon)}{\sqrt{a^2\mathbb{V}(\xi)}\sqrt{c^2\mathbb{V}(\upsilon)}}     \\
+& = \frac{ac\mathbb{C}(\xi,\upsilon)}{a\mathbb{S}(\xi)c\mathbb{S}(\upsilon)}         \\
+& = \frac{\mathbb{C}(\xi,\upsilon)}{\mathbb{S}(\xi)\mathbb{S}(\upsilon)}             \\
+& = \rho(\xi,\upsilon).
+\end{split}
+\end{align}
+:::
+
+Wie das Berechnen von Varianzen wird auch das Berechnen von Kovarianzen manchmal 
+durch folgendes Theorem, den sogenannten *Kovarianzverschiebungssatz* erleichtert.
+
+:::{#thm-kovarianzverschiebungssatz}
+## Kovarianzverschiebungssatz
+$\xi$ und $\upsilon$ seien Zufallsvariablen. Dann gilt
+\begin{equation}
+\mathbb{C}(\xi,\upsilon) = \mathbb{E}(\xi\upsilon) - \mathbb{E}(\xi)\mathbb{E}(\upsilon).
+\end{equation}
+:::
+
+:::{.proof}
+Mit der Definition der Kovarianz gilt
+\begin{align}
+\begin{split}
+\mathbb{C}(\xi,\upsilon)
+& = \mathbb{E}\left((\xi - \mathbb{E}(\xi))(\upsilon - \mathbb{E}(\upsilon))\right) 											\\
+& = \mathbb{E}\left(\xi\upsilon - \xi\mathbb{E}(\upsilon) - \mathbb{E}(\xi)\upsilon  + \mathbb{E}(\xi) \mathbb{E}(\upsilon)\right) 			\\
+& = \mathbb{E}(\xi\upsilon) - \mathbb{E}(\xi)\mathbb{E}(\upsilon) - \mathbb{E}(\xi)\mathbb{E}(\upsilon) + \mathbb{E}(\xi) \mathbb{E}(\upsilon)	\\
+& = \mathbb{E}(\xi\upsilon) - \mathbb{E}(\xi)\mathbb{E}(\upsilon).
+\end{split}
+\end{align}
+:::
+
+Natürlich ist @thm-kovarianzverschiebungssatz nur dann wirklich nützlich, wenn 
+$\mathbb{E}(\xi\upsilon)$ leicht zu berechnen sind. Der Kovarianzverschiebungssatz
+in @thm-varianzverschiebungssatz ergibt sich aus @thm-kovarianzverschiebungssatz
+im Spezialfall, dass $\upsilon := \xi$, da dann gilt
+\begin{equation}
+\mathbb{V}(\xi)
+= \mathbb{C}(\xi,\xi)
+= \mathbb{E}(\xi\xi) - \mathbb{E}(\xi)\mathbb{E}(\xi) 
+= \mathbb{E}(\xi^2) - \mathbb{E}(\xi)\mathbb{E}(\xi) 
+\end{equation}
+
+Mithilfe des Begriffes des Kovarianz ist es möglich eine stärkere Aussage
+über die Varianzen von Summen und Differenzen von Zufallsvariablen zu treffen
+als es in @thm-eigenschaften-der-varianz der Fall war, wo lediglich *unabhängige*
+Zufallsvariablen betrachtetet wurden. Folgende Aussagen gelten generell.
+
+:::{#thm-varianzen-von-summen-und-differenzen-von-zufallsvariablen}
+## Varianzen von Summen und Differenzen von Zufallsvariablen
+$\xi$ und $\upsilon$ seien zwei Zufallsvariablen und es seien $a,b,c \in \mathbb{R}$. Dann gilt
+\begin{equation}
+\mathbb{V}(a\xi + b\upsilon + c) = a^2\mathbb{V}(\xi) + b^2\mathbb{V}(\upsilon) + 2ab\mathbb{C}(\xi,\upsilon).
+\end{equation}
+Speziell gelten
+\begin{equation}
+\mathbb{V}(\xi+\upsilon) = \mathbb{V}(\xi) + \mathbb{V}(\upsilon) + 2 \mathbb{C}(\xi,\upsilon)
+\end{equation}
+und
+\begin{equation}
+\mathbb{V}(\xi-\upsilon) = \mathbb{V}(\xi) + \mathbb{V}(\upsilon) - 2 \mathbb{C}(\xi,\upsilon)
+\end{equation}
+:::
+:::{.proof}
+Wir halten zunächst fest, dass
+\begin{equation}
+\mathbb{E}(a\xi + b\upsilon + c) = a\mathbb{E}(\xi) + b\mathbb{E}(\upsilon) + c.
+\end{equation}
+
+Es ergibt sich also
+\begin{align}
+\begin{split}
+& \mathbb{V}(a\xi + b\upsilon + c)																\\
+& = \mathbb{E}\left((a\xi + b\upsilon + c - a\mathbb{E}(\xi) - b\mathbb{E}(\upsilon) - c)^2\right) 	\\
+& = \mathbb{E}\left((a(\xi  - \mathbb{E}(\xi)) + b(\upsilon  - \mathbb{E}(\upsilon)))^2\right) 		\\
+& = \mathbb{E}\left(a^2(\xi - \mathbb{E}(\xi))^2
+				  + 2ab(\xi - \mathbb{E}(\xi))(\upsilon - \mathbb{E}(\upsilon)))
+				  + b^2(\upsilon - \mathbb{E}(\upsilon))^2
+				  \right) 				\\
+& = a^2\mathbb{E}\left((\xi - \mathbb{E}(\xi))^2\right)
+  + b^2\mathbb{E}\left((\upsilon - \mathbb{E}(\upsilon))^2\right)
+  + 2ab\mathbb{E}\left((\xi - \mathbb{E}(\xi))(\upsilon - \mathbb{E}(\upsilon)))\right) 				\\
+& = a^2\mathbb{V}(\xi)+ b^2\mathbb{V}(\upsilon) + 2ab\mathbb{C}(\xi,\upsilon)
+\end{split}
+\end{align}
+Die Spezialfälle folgen dann direkt mit $a := b := 1$ und $a := 1, b := -1$, respektive.
+:::
+
+Im Gegensatz zu Erwartungswerten addieren sich die Varianzen von Zufallsvariablen
+also nicht einfach, sondern die Varianz der Summe zweier Zufallsvariablen hängt 
+von ihrer Kovarianz ab. Ist diese zum Beispiel im Fall der Summe zweier Zufallsvariablen 
+positiv, so verstärkt sie die Varianz der Zufallsvariable, die sich aus der Addition der
+Zufallsvariablen ergibt. Intuitiv führt hierbei die Realisierung eines Extremwertes
+einer der Zufallvariablen häufigt auch zu der Realisierung eines Extremwertes der
+anderen Zufallsvariablen, so dass die Variabilität der Summe der Zufallsvariablen
+überproportional verstärkt wird.
+
+Schließlich wollen wir mit @thm-korrelation-und-unabhängigkeit einen ersten Eindruck
+zum Zusammenhang von Kovarianz und Korrelation mit dem Begriff der Unabhängigkeit
+von Zufallsvariablen erlangen. Es zeigt sich, dass Kovarianz und Korrelation lediglich
+für bestimmte Formen der Abhängigkeit von Zufallsvariablen sensitiv sind und insbesondere,
+dass von einer Kovarianz von Null *nicht* auf die Unabhängigkeit der Zufallsvariablen 
+geschlossen werden kann. Anderseits impliziert die Unabhängigkeit zweier Zufallsvariablen
+immer, dass ihre Kovarianz Null und sie damit unkorreliert sind. Abhängigkeit und
+Unabhängigkeit von Zufallsvariablen sind also sehr viel allgemeinere Begrifflichkeiten
+zur Beschreibung des Zusammenhangs von Zufallsvariablen als Kovarianz und Korrelation.
+
+:::{#thm-korrelation-und-unabhängigkeit}
+## Korrelation und Unabhängigkeit
+$\xi$ und $\upsilon$ seien zwei Zufallsvariablen. Wenn $\xi$ und $\upsilon$ unabhängig sind, 
+dann ist $\mathbb{C}(\xi,\upsilon) = 0$ und $\xi$ und $\upsilon$ sind unkorreliert. Ist dagegen
+$\mathbb{C}(\xi,\upsilon) = 0$ und sind $\xi$ und $\upsilon$ somit unkorreliert, dann sind $\xi$ 
+und $\upsilon$ nicht notwendigerweise unabhängig.
+:::
+
+:::{.proof}
+Wir zeigen zunächst, dass aus der Unabhängigkeit von $\xi$ und $\upsilon$ 
+$\mathbb{C}(\xi,\upsilon) = 0$ folgt. Hierzu halten wir zunächst fest, dass für 
+unabhängige Zufallsvariablen gilt, dass
+\begin{equation}
+\mathbb{E}(\xi\upsilon) = \mathbb{E}(\xi)\mathbb{E}(\upsilon).
+\end{equation}
+Mit dem Kovarianzverschiebungssatz folgt dann
+\begin{equation}
+\mathbb{C}(\xi,\upsilon)
+= \mathbb{E}(\xi\upsilon) - \mathbb{E}(\xi)\mathbb{E}(\upsilon)
+= \mathbb{E}(\xi)\mathbb{E}(\upsilon) - \mathbb{E}(\xi)\mathbb{E}(\upsilon)
+= 0.
+\end{equation}
+Mit der Definition des Korrelationskoeffizienten folgt dann unmittelbar, 
+dass $\rho(\xi,\upsilon) = 0$ und $\xi$ und $\upsilon$ somit unkorreliert sind.
+
+Wir zeigen nun durch Angabe eines Beispiels, dass die Kovarianz von abhängigen 
+Zufallsvariablen $\xi$ und $\upsilon$ Null sein kann. Zu diesem Zweck betrachten 
+wir den Fall zweier diskreter Zufallsvariablen $\xi$ und $\upsilon$ mit Ergebnisräumen 
+$\mathcal{X} = \{-1,0,1\}$ und $\mathcal{\upsilon} = \{0,1\}$, marginaler WMF von 
+$\xi$ gegeben durch $p_\xi(x) := 1/3$ für $x \in \mathcal{X}$ und der Definition 
+$\upsilon := \xi^2$. Wir halten dann zunächst fest, dass
+\begin{equation}
+\mathbb{E}(\xi)
+= \sum_{x \in \mathcal{X}} x p_\xi(x)
+= -1 \cdot \frac{1}{3} + 0\cdot \frac{1}{3} + 1\cdot\frac{1}{3}
+= 0
+\end{equation}
+und
+\begin{equation}
+\mathbb{E}(\xi\upsilon)
+= \mathbb{E}(\xi\xi^2)
+= \mathbb{E}(\xi^3)
+= \sum_{x \in \mathcal{X}} x^3 p_\xi(x)
+= -1^3 \cdot \frac{1}{3} + 0^3\cdot \frac{1}{3} + 1^3\cdot\frac{1}{3}
+= 0.
+\end{equation}
+Mit dem Kovarianzverschiebungssatz ergibt sich dann
+\begin{equation}
+\mathbb{C}(\xi,\upsilon)
+= \mathbb{E}(\xi\upsilon) - \mathbb{E}(\xi)\mathbb{E}(\upsilon)
+= \mathbb{E}(\xi^3) - \mathbb{E}(\xi)\mathbb{E}(\upsilon)
+= 0 - 0\cdot \mathbb{E}(\upsilon)
+= 0.
+\end{equation}
+Die Kovarianz von $\xi$ und $\upsilon$ ist also Null. Wie unten gezeigt faktorisiert 
+die gemeinsame WMF von $\xi$ und $\upsilon$ jedoch nicht, und somit sind $\xi$ und 
+$\upsilon$ nicht unabhängig. Wir halten zunächst fest, dass die Definition von
+ $\upsilon := \xi^2$ die folgende bedingte WMF von $\upsilon$ gegeben $\xi$ impliziert:
+
+\begin{center}
+\begin{tabular}{c|ccc}
+$p_{\upsilon|\xi}(y|x)$	& 	$x = -1$ 	& 	$x = 0$ 	& 	$x = 1$ \\\hline
+$y = 0$			&	$0$			&	$1$			&	$0$		\\
+$y = 1$			&	$1$			&	$0$			&	$1$		\\
+\end{tabular}
+\end{center}
+
+Die marginale WMF $p_\xi$ und die bedingte WMF $p_{\upsilon|\xi}$ implizieren wiederum
+die gemeinsame WMF
+
+\begin{center}
+\begin{tabular}{c|ccc|c}
+$p_{\xi,\upsilon}(x,y)$	& 	$x = -1$ 	& 	$x = 0$ 	& 	$x = 1$ & $p_\upsilon(y)$		\\\hline
+$y = 0$			&	$0$			&	$1/3$		&	$0$		& $1/3$			\\
+$y = 1$			&	$1/3$		&	$0$			&	$1/3$	& $2/3$			\\\hline
+$p_\xi(x)$ 		&  	$1/3$	 	&  	$1/3$	 	&  	$1/3$
+\end{tabular}
+\end{center}
+
+von $\xi$ und $\upsilon$. Es gilt also zum Beispiel
+\begin{equation}
+p_{\xi,\upsilon}(-1,0) = 0 \neq \frac{1}{9} = \frac{1}{3} \cdot \frac{1}{3} = p_{\xi}(-1)p_{\upsilon}( 0)
+\end{equation}
+und damit sind $\xi$ und $\upsilon$ nicht unabhängig.
+:::
+ 
+## Kovarianzmatrizen
+
+Das multivariate Analogon der Varianz einer Zufallsvariable ist die *Kovarianzmatrix
+eines Zufallsvektors*. Diese enkodiert neben den Varianzen der Komponenten des Zufallsvektors
+auch ihre paarweisen Kovarianzen und ist wie folgt definiert.
+
+:::{#def-kovarianzmatrix-eines-zufallsvektors}
+## Kovarianzmatrix eines Zufallsvektors
+$\xi$ sei ein $n$-dimensionaler Zufallvektor. Dann ist die *Kovarianzmatrix* von 
+$\xi$ definiert als die $n \times n$ Matrix
+\begin{equation}
+\mathbb{C}(\xi) := \mathbb{E}\left((\xi - \mathbb{E}(\xi))(\xi - \mathbb{E}(\xi))^T \right).
+\end{equation}
+:::
+
+Die Kovarianzmatrix ist in @def-kovarianzmatrix-eines-zufallsvektors 
+formal analog zur Kovarianz zweier Zufallsvariablen definiert. Eine direkte Rückführung
+des Begriffs der Kovarianzmatrix eines Zufallsvektors auf den Begriff aus dem
+univariaten Kontext bekannten Begriff der Kovarianz zweier Zufallsvariablen erlaubt folgendes
+Theorem.
+
+
+:::{#thm-kovarianzmatrix-eines-zufallsvektors}
+## Kovarianzmatrix eines Zufallsvektors
+$\xi$ sei ein $n$-dimensionaler Zufallvektor und $\mathbb{C}(\xi)$ sei seine Kovarianzmatrix.
+Dann gilt
+\begin{equation}
+\mathbb{C}(\xi)
+= \left(\mathbb{C}(\xi_i,\xi_j)\right)_{1 \le i,j \le n}
+=
+\begin{pmatrix}
+\mathbb{C}(\xi_1,\xi_1) & \mathbb{C}(\xi_1,\xi_2) & \cdots & \mathbb{C}(\xi_1,\xi_n)    \\
+\mathbb{C}(\xi_2,\xi_1) & \mathbb{C}(\xi_2,\xi_2) & \cdots & \mathbb{C}(\xi_2,\xi_n)    \\
+\vdots                  & \vdots                  & \ddots & \vdots                     \\
+\mathbb{C}(\xi_n,\xi_1) & \mathbb{C}(\xi_n,\xi_2) & \cdots & \mathbb{C}(\xi_n,\xi_n)    \\
+\end{pmatrix}.
+\end{equation}
+:::
+
+:::{.proof}
+Es gilt
+\begin{align}
+\mathbb{C}(\xi)
+& := \mathbb{E}\left((\xi - \mathbb{E}(\xi))(\xi - \mathbb{E}(\xi))^T \right) \\
+& =
+\mathbb{E}
+\left(
+\left(
+\begin{pmatrix}
+\xi_1 \\
+\vdots \\
+\xi_n
+\end{pmatrix}
+-
+\begin{pmatrix}
+\mathbb{E}(\xi_1) \\
+\vdots \\
+\mathbb{E}(\xi_n)
+\end{pmatrix}
+\right)
+\left(
+\begin{pmatrix}
+\xi_1 \\
+\vdots \\
+\xi_n
+\end{pmatrix}
+-
+\begin{pmatrix}
+\mathbb{E}(\xi_1) \\
+\vdots \\
+\mathbb{E}(\xi_n)
+\end{pmatrix}
+\right)^T
+\right)
+\\
+& =
+\mathbb{E}
+\left(
+\begin{pmatrix}
+\xi_1 - \mathbb{E}(\xi_1) \\
+\vdots \\
+\xi_n - \mathbb{E}(\xi_n)
+\end{pmatrix}
+\begin{pmatrix}
+\xi_1 - \mathbb{E}(\xi_1)\\
+\vdots \\
+\xi_n - \mathbb{E}(\xi_n)
+\end{pmatrix}^T
+\right)
+\\
+& =
+\mathbb{E}
+\left(
+\begin{pmatrix}
+\xi_1 - \mathbb{E}(\xi_1) \\
+\vdots \\
+\xi_n - \mathbb{E}(\xi_n)
+\end{pmatrix}
+\begin{pmatrix}
+\xi_1 - \mathbb{E}(\xi_1)
+& \dots
+& \xi_n - \mathbb{E}(\xi_n)
+\end{pmatrix}
+\right) \\
+& =
+\mathbb{E}
+\begin{pmatrix}
+  (\xi_1 - \mathbb{E}(\xi_1))(\xi_1 - \mathbb{E}(\xi_1))
+& \dots
+& (\xi_1 - \mathbb{E}(\xi_1))(\xi_n - \mathbb{E}(\xi_n)
+\\
+\vdots
+& \ddots
+& \vdots
+\\
+  (\xi_n - \mathbb{E}(\xi_n))(\xi_1 - \mathbb{E}(\xi_1))
+& \dots
+& (\xi_n - \mathbb{E}(\xi_n))(\xi_n - \mathbb{E}(\xi_n))
+\\
+\end{pmatrix}
+\\
+& =
+\left(\mathbb{E}\left((\xi_i - \mathbb{E}(\xi_i))(\xi_j - \mathbb{E}(\xi_j)) \right) \right)_{1 \le i,j \le n} \\
+& =
+\left(\mathbb{C}(\xi_i,\xi_j)\right)_{1 \le i,j \le n}. \\
+\end{align}
+:::
+Die Kovarianzmatrix eines Zufallsvektors $\xi$ ist also die Matrix der Kovarianzen 
+der Komponenten von $\xi$. Damit ist auch die Kovarianzmatrix direkt im Sinne 
+des Begriffs der Kovarianz von Zufallsvektoren gegeben. Da die Kovarianz einer
+Zufallsvariable mit sich selbst bekanntlich ihre Varianz ist, enthält die
+Kovarianzmatrix auf ihrer Diagonalen die Varianzen der Komponenten von $\xi$.
+
+Folgendes Theorem dokumentiert eine Schreibweise für die Kovarianzmatrix eines
+partitionierten Zufallsvektors im Sinne von Erwartungswerten von Zufallvektorprodukten
+an, die zum Beispiel im Rahmen der Kanonischen Korrelationsanalyse hilfreich ist.
+
+:::{#thm-kovarianzmatrizen-von-zufallsvektoren}
+## Kovarianzmatrizen von Zufallsvektoren
+
+Es seien
+\begin{equation}
+\zeta = \begin{pmatrix} \xi \\ \upsilon \end{pmatrix}
+\mbox{ mit }
+\mathbb{E}(\zeta)  := 0_m
+\end{equation}
+ein $m_\xi + m_\upsilon$-dimensionaler Zufallsvektor und sein Erwartungswertvektor,
+respektive. Dann kann die $m \times m$ Kovarianzmatrix von $\zeta$ geschrieben werden als
+\begin{equation}
+\mathbb{C}(\zeta) =
+\begin{pmatrix}
+\Sigma_{\xi\xi} & \Sigma_{\xi\upsilon} \\
+\Sigma_{\upsilon\xi} & \Sigma_{\upsilon\upsilon} \\
+\end{pmatrix}
+\in \mathbb{R}^{m \times m}
+\end{equation}
+wobei
+\begin{align}
+\begin{split}
+\Sigma_{\xi\xi}   & := \mathbb{E}\left(\xi\xi^T  \right) \in \mathbb{R}^{m_\xi  \times m_\xi}\\
+\Sigma_{\xi\upsilon}  & := \mathbb{E}\left(\xi\upsilon^T \right) \in \mathbb{R}^{m_\xi  \times m_\upsilon}\\
+\Sigma_{\upsilon\xi}  & := \mathbb{E}\left(\upsilon\xi^T \right) \in \mathbb{R}^{m_\upsilon \times m_\xi}\\
+\Sigma_{\upsilon\upsilon} & := \mathbb{E}\left(\upsilon\upsilon^T\right) \in \mathbb{R}^{m_\xi  \times m_\upsilon}
+\end{split}
+\end{align}
+:::
+
+:::{.proof}
+Nach Definition der Kovarianzmatrix eines Zufallsvektors gilt
+\begin{align}
+\begin{split}
+\mathbb{C}(z)
+& = \mathbb{E}\left((\zeta - \mathbb{E}(\zeta))(\zeta - \mathbb{E}(\zeta))^T \right) \\
+& = \mathbb{E}\left((\zeta - 0_m)(\zeta - 0_m)^T \right) \\
+& = \mathbb{E}\left(\zeta\zeta^T\right)\\
+& = \mathbb{E}\left(\begin{pmatrix} \xi \\ \upsilon \end{pmatrix} \begin{pmatrix} \xi^T & \upsilon^T \end{pmatrix} \right) \\
+& = \mathbb{E}\left(\begin{pmatrix} \xi\xi^T & \xi\upsilon^T \\ \upsilon\xi^T & \upsilon\upsilon^T \end{pmatrix}\right)
+\\
+& =
+\begin{pmatrix}
+\mathbb{E}\left(\xi\xi^T\right)   & \mathbb{E}\left(\xi\upsilon^T\right) \\
+\mathbb{E}\left(\upsilon\xi^T\right)  & \mathbb{E}\left(\upsilon\upsilon^T\right)
+\end{pmatrix}
+\\
+& =
+\begin{pmatrix}
+\Sigma_{\xi\xi}   & \Sigma_{\xi\upsilon}  \\
+\Sigma_{\upsilon\xi}  & \Sigma_{\upsilon\upsilon} \\
+\end{pmatrix}
+\end{split}
+\end{align}
+:::
+
+Schließlich ist man in manchen Anwendungen an einer normalisierten, maßstabsunabhängigen 
+Repräsentation der Kovarianzen eines Zufallsvektors interessiert. Wie im univariaten
+Fall bietet sich hierfür die Normalisierung der Kovarianz zweier Zufallsvariablen
+mithilfe ihrer jeweiligen Varianzen im Sinne einer Korrelation an. Diese Überlegung
+führt auf den Begriff der *Korrelationsmatrix* eines Zufallsvektors. 
+
+:::{#def-korrelationsmatrix}
+## Korrelationsmatrix
+$\xi$ sei ein $n$-dimensionaler Zufallsvektor. Dann ist die *Korrelationsmatrix*
+von $\xi$ definiert als die $n \times n$ Matrix
+\begin{equation}
+\mathbb{R}(\xi)
+:= \left(\rho_{ij} \right)_{1 \le i,j\le n}
+ = \left(\frac{\mathbb{C}(\xi_i,\xi_j)}{\sqrt{\mathbb{V}(\xi_i)}\sqrt{\mathbb{V}(\xi_j)}}\right)_{1 \le i,j\le n}.
+\end{equation}
+:::
+
+Da es sich bei den Varianzen der Komponenten von $\xi$ um die Diagonalelement
+der Kovarianzmatrix von $\xi$ handelt, ist die Korrelationsmatrix natürlich in 
+der Kovarianzmatrix imoplizit. Weiterhin gelten, wie immer für Korrelationen, für
+die Einträge $\rho_{ij}, 1 \le i,j \le n$ der Korrelationsmatrix, dass 
+\begin{equation}
+\rho_{ij} \in [-1,1] \mbox{ für } 1 \le i,j \in n \mbox{ und } \rho_{ii} = 1 \mbox{ für } 1 \le i \le n.
+\end{equation}
+
+
+## Stichprobenkennzahlen von Zufallsvektoren
+
+Die Begriffe des Stichprobenmittels, der Stichprobenvarianz und der Stichprobenkovarianz
+lassen sich auch auf den Fall multivariater Stichproben übertragen. Wir nutzen folgende
+Definition.
+
+:::{#def-stichprobenmittel-stichprobenkovarianmatrix-stichprobenkorrelationsmatrix}
+## Stichprobenmittel, -kovarianmatrix und -korrelationsmatrix
+$\upsilon_1,...,\upsilon_n$ sei eine Menge von $m$-dimensionalen Zufallsvektoren, genannt *Stichprobe*.
+
+* Das *Stichprobenmittel+ der $\upsilon_1,...,\upsilon_n$ ist definiert als der $m$-dimensionale Vektor
+\begin{equation}
+\bar{\upsilon} := \frac{1}{n} \sum_{i=1}^n \upsilon_i.
+\end{equation}
+* Die *Stichprobenkovarianzmatrix* der $\upsilon_1,...,\upsilon_n$ ist definiert als die $m \times m$ Matrix
+\begin{equation}
+C := \frac{1}{n-1}\sum_{i=1}^n (\upsilon_i - \bar{\upsilon})(\upsilon_i - \bar{\upsilon})^T .
+\end{equation}
+* Die *Stichprobenkorrelationsmatrix* der $\upsilon_1,...,\upsilon_n$ ist definiert als die $m \times m$ Matrix
+\begin{equation}
+D := \left(\frac{(C )_{ij}}{\sqrt{ (C )_{ii}}\sqrt{ (C )_{jj}}}\right)_{1 \le i,j \le m}.
+\end{equation}
+:::
+
+Zur konkreten Berechnung von Stichprobenmittel, Stichprobenkovarianzmatrix und 
+Stichprobenkorrrelationsmatrix basierend auf einem multivariaten Datensatz bieten 
+sich die Aussagen des folgenden Theorems an.
+
+:::{#thm-datenmatrix-und-stichprobenstatistiken}
+## Datenmatrix und Stichprobenstatistiken
+Es sei
+\begin{equation}
+\upsilon :=
+\begin{pmatrix}
+\upsilon_1 & \cdots & \upsilon_n
+\end{pmatrix}
+\end{equation}
+eine $m \times n$ \textit{Datenmatrix}, die durch die spaltenweise Konkatenation
+von $n$ $m$-dimensionalen Zufallvektoren $\upsilon_1, ...,\upsilon_n$ gegeben sei. 
+Dann ergeben sich
+\begin{itemize}
+\item für das Stichprobenmittel 
+\begin{equation}
+\bar{\upsilon} =  \frac{1}{n}\upsilon 1_{n},
+\end{equation}
+\item für die Stichprobenkovarianzmatrix 
+\begin{equation}
+C = \frac{1}{n-1}\left(\upsilon\left(I_n - \frac{1}{n}1_{nn}\right)\upsilon^T\right),
+\end{equation}
+\item und für Stichprobenkorrelationsmatrix mit
+\begin{equation}
+D := \mbox{diag}\left(\sqrt{C_{y_{ii}}}^{-1}, i = 1,...,m\right),
+\end{equation}
+dass
+\begin{equation}
+R = DCD.
+\end{equation}
+\end{itemize}
+:::
+
+:::{.proof}
+Die Darstellung des Stichprobenmittels ergibt sich aus
+\begin{align}
+\begin{split}
+\bar{\upsilon} 
+& := \frac{1}{n} \sum_{i=1}^n\upsilon_i \\
+&  = \frac{1}{n}\begin{pmatrix} \sum_{i=1}^n\upsilon_{i1} \\ \vdots \\ \sum_{i=1}^n\upsilon_{im} \end{pmatrix} \\
+&  = \frac{1}{n}\left(\begin{pmatrix}\upsilon_{11}    & \cdots  &\upsilon_{n1} \\
+                                      \vdots    & \ddots  & \vdots     \\
+                                     \upsilon_{1m}    & \cdots  &\upsilon_{nm} \\
+                   \end{pmatrix}
+                   \begin{pmatrix} 1 \\ \vdots \\ 1 \end{pmatrix}
+              \right) \\
+& = \frac{1}{n}\upsilon 1_{n}.
+\end{split}
+\end{align}
+Hinsichtlich der Darstellung der Stichprobenkovarianzmatrix halten wir zunächst fest, dass 
+nach Definition gilt, dass 
+\begin{align}
+\begin{split}
+C  
+& := \frac{1}{n-1}\sum_{i=1}^n (\upsilon_i - \bar{\upsilon})(\upsilon_i - \bar{\upsilon})^T \\
+&  = \frac{1}{n-1}\sum_{i=1}^n \left(\upsilon_i\upsilon_i^T-\upsilon_i\bar{\upsilon}^T - \bar{\upsilon}\upsilon_i^T+ \bar{\upsilon}\bar{\upsilon}^T\right) \\
+&  = \frac{1}{n-1}\left(\sum_{i=1}^n\upsilon_i\upsilon_i^T- \sum_{i=1}^n\upsilon_i\bar{\upsilon}^T - \sum_{i=1}^n \bar{\upsilon}\upsilon_i^T+ \sum_{i=1}^n \bar{\upsilon}\bar{\upsilon}^T\right) \\
+&  = \frac{1}{n-1}\left(\sum_{i=1}^n\upsilon_i\upsilon_i^T- n\bar{\upsilon}\bar{\upsilon}^T - n\bar{\upsilon}\bar{\upsilon}^T + n\bar{\upsilon}\bar{\upsilon}^T\right) \\
+&  = \frac{1}{n-1}\left(\sum_{i=1}^n\upsilon_i\upsilon_i^T- n\bar{\upsilon}\bar{\upsilon}^T\right).
+\end{split}
+\end{align}
+Mit $1_{n}1_{n}^T = 1_{nn}$ ergibt sich dann weiterhin
+\begin{align}
+\begin{split}
+\upsilon\left(I_n - \frac{1}{n}1_{nn}\right)\upsilon^T
+& = \left(\upsilon I_n - \frac{1}{n}\upsilon 1_{nn}\right)\upsilon^T                                         \\
+& = \upsilon\upsilon^T - \frac{1}{n}\upsilon 1_{nn}\upsilon^T                                                      \\
+& = \begin{pmatrix} \upsilon_1 & \cdots & \upsilon_n\end{pmatrix} \begin{pmatrix} \upsilon_1^T \\ \vdots \\ \upsilon_n^T\end{pmatrix} - \frac{1}{n}\upsilon 1_n 1_n^T\upsilon^T    \\
+& = \sum_{i=1}^n\upsilon_i\upsilon_i^T- n\left(\frac{1}{n}\upsilon 1_n\right)\left(\frac{1}{n}1_n^T\upsilon^T\right)              \\
+& = \sum_{i=1}^n\upsilon_i\upsilon_i^T- n\bar{\upsilon}\bar{\upsilon}^T                                                          \\
+& = \frac{1}{n-1}\sum_{i=1}^n (\upsilon_i - \bar{\upsilon})(\upsilon_i - \bar{\upsilon})^T \\
+& = C.
+\end{split}
+\end{align}
+Hinsichtlich der Korrelationsmatrix ergibt sich nach Definition und für ein
+ beliebiges Indexpaar $i,j$ mit $1 \le i,j \le m$ schließlich, dass
+\begin{align}
+\begin{split}
+R_{{y}_{ij}} 
+& = \frac{(C)_{ij}}{\sqrt{ (C)_{ii}}\sqrt{ (C)_{jj}}}             \\
+& = \frac{1}{\sqrt{(C)_{ii}}}(C)_{ij}\frac{1}{\sqrt{(C)_{jj}}}    \\
+& = (DCD)_{ij}.
+\end{split}
+\end{align}
+:::
+
+## Selbstkontrollfragen
+
+\footnotesize
+1. Geben Sie die Definition des Erwartungswerts einer Zufallsvariable wieder.
+1. Geben Sie die Interpretation der Erwartungswerts einer Zufallsvariable wieder
+1. Berechnen Sie den Erwartungswert einer Bernoulli Zufallsvariable.
+1. Geben Sie das Theorem zu den Eigenschaften des Erwartungswerts wieder.
+1. Geben Sie die Definition der Varianz und der Standardabweichung einer Zufallsvariable wieder.
+1. Geben Sie die Interpretation der Varianz einer Zufallsvariable wieder.
+1. Berechnen Sie die Varianz einer Bernoulli Zufallsvariable.
+1. Geben Sie das Theorem zum Varianzverschiebungssatz wieder.
+1. Geben Sie das Theorem zu den Eigenschaften der Varianz wieder.
+1. Geben Sie die Definition des Begriffs einer Stichprobe wieder.
+1. Geben Sie die Definitionen von Stichprobenmittel, -varianz und -standardabweichung wieder.
+1. Geben Sie die Definition von Kovarianz und Korrelation zweier Zufallsvariablen wieder.
+1. Geben Sie das Theorem zum Kovarianzverschiebungssatz wieder.
+1. Geben Sie das Theorem zu Varianzen von Summen und Differenzen von Zufallsvariablen wieder.
+1. Geben Sie das Theorem zur Korrelation und Unabhängigkeit zweier Zufallsvariablen wieder.
+\normalsize

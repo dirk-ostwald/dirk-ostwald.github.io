@@ -1,0 +1,431 @@
+# Grenzwerte {#sec-grenzwerte}
+\normalsize
+
+In diesem Kapitel beschäftigen wir uns mit für die probabilistische Modellbildung
+und Datenanalyse grundlegenden Grenzwertaussagen zu Folgen von Zufallsvariablen. 
+Dabei liefern die *Gesetze der Großen Zahlen* (@sec-gesetze-der-grossen-zahlen) zunächst 
+eine grundlegende Begründung für die Mittelwertbildung im Rahmen der probabilistischen
+Inferenz. Die *Zentralen Grenzwertsätze* liefern dann die Begründung für
+die weite Verbreitung von Normalverteilungsannahmen zu Störvariablen 
+im Rahmen der probabilistischen Modellformulierung (@sec-zentrale-grenzwertsaetze). 
+Die mathematische Tiefe dieser Grenzwertaussagen kann in dieser einführenden 
+Betrachtung nicht ausgeschöpft werden, so dass wir uns mit zahlreichen Vereinfachungen 
+begnügen müssen. Ein minimales Vorwissen zu Funktionenfolgen und ihren Grenzfunktionen 
+liefert @sec-folgen-grenzwerte-stetigkeit. 
+
+## Gesetze der Großen Zahlen {#sec-gesetze-der-grossen-zahlen}
+
+Es gibt ein *Schwaches Gesetz der Großen Zahlen* und ein *Starkes Gesetz der Großen Zahlen*.
+Intuitiv besagen beide Gesetze, dass sich das Stichprobenmittel von unabhängigen 
+und identisch verteilten Zufallsvariablen für eine große Anzahl an Zufallsvariablen 
+dem Erwartungswert der zugrundeliegenden Verteilung nähert. Das Schwache und das 
+Starke Gesetz der Großen Zahlen unterscheiden sich in Hinblick auf die zu 
+ihrer Formulierung benutzen Formen der *Konvergenz von Zufallsvariablen*. Das 
+Schwache Gesetz basiert auf der *Konvergenz in Wahrscheinlichkeit*. Das Starke 
+Gesetz basiert auf der *fast sicheren Konvergenz*. Wir begnügen uns hier mit 
+dem Begriff der Konvergenz in Wahrscheinlichkeit und damit dem Schwachen Gesetz
+der Großen Zahlen.
+
+:::{#def-konvergenz-in-wahrscheinlichkeit}
+## Konvergenz in Wahrscheinlichkeit
+Eine Folge von Zufallsvariablen $\xi_1,\xi_2,...$ *konvergiert gegen eine 
+Zufallsvariable $\xi$ in Wahrscheinlichkeit*, wenn für jedes noch so kleine 
+$\epsilon > 0$ gilt, dass
+\begin{equation}
+\lim_{n \to \infty} \mathbb{P}(|\xi_n - \xi| < \epsilon) 	= 1 \Leftrightarrow
+\lim_{n \to \infty} \mathbb{P}(|\xi_n - \xi| \ge \epsilon) 	= 0.
+\end{equation}
+Die Konvergenz von $\xi_1,\xi_2,....$ gegen $\xi$ in Wahrscheinlichkeit wird 
+geschrieben als
+\begin{equation}
+\xi_n\xrightarrow[n \to \infty]{\mbox{P}} \xi.
+\end{equation}
+:::
+
+$\xi_n\xrightarrow[n \to \infty]{\text{P}} \xi$  heißt also, dass sich die 
+Wahrscheinlichkeit dafür, dass $\xi_n$ in dem zufälligen Intervall
+\begin{equation}
+]\xi-\epsilon, \xi+\epsilon[
+\end{equation}
+liegt, unabhängig davon, wie klein dieses Intervall sein mag, $1$ nähert, wenn 
+$n$ gegen Unendlich geht. Intuitiv heißt das, dass sich für $n \to \infty$ und
+eine  konstante Zufallsvariable $\xi := a$ die Verteilung von $\xi_n$ mehr und 
+mehr um $a$ konzentriert, wenn $n$ gegen Unendlich strebt. Mithilfe der Konvergenz
+in Wahrscheinlichkeit formuliert man das Schwache Gesetz der Großen Zahlen wie folgt.
+
+:::{#thm-schwaches-gesetz-der-großen-zahlen}
+## Schwaches Gesetz der Großen Zahlen
+$\xi_1,...,\xi_n$ seien unabhängig und gleichverteilte Zufallsvariablen mit
+$\mathbb{E}(\xi_i) = \mu$ für alle $i = 1,...,n$. Weiterhin bezeichne
+\begin{equation}
+\bar{\xi}_n := \frac{1}{n}\sum_{i=1}^n \xi_i
+\end{equation}
+das Stichprobenmittel der $\xi_i, i = 1,...,n$. Dann konvergiert $\bar{\xi}_n$ in
+Wahrscheinlichkeit gegen $\mu$,
+\begin{equation}
+\bar{\xi}_n \xrightarrow[n \to \infty]{\mbox{P}} \mu.
+\end{equation}
+:::
+
+Für einen Beweis dieses Theorems verweisen wir auf die weiterführende Literatur, 
+so zum Beispiel auf Abschnitt 5.1 in @georgii2009. Intuitiv heißt 
+\begin{equation}
+\bar{\xi}_n \xrightarrow[n\to\infty]{\mbox{P}} \mu
+\end{equation}
+also, dass die Wahrscheinlichkeit, dass das Stichprobenmittel nahe dem Erwartungswert 
+der zugrundeliegenden Verteilung liegt, sich 1 nähert, wenn $n$ gegen Unendlich strebt.
+
+**Simulation** 
+
+Wir betrachten den Fall von u.i.v. normalverteilten Zufallsvariablen 
+$\xi_1,...,\xi_n \sim N(0,1)$. @fig-schwaches-gesetz A zeigt Realisationen der
+von Stichprobenmitteln $\bar{\xi}_n$ als Funktion von $n$. Man erkennt, dass für
+größeres $n$ mehr Realisierungen von $\bar{\xi}_n$ in der Nähe des Erwartungswerts
+der $\xi_i, i = 1,...,n$ liegen. Basierend auf diesen Stichprobenmittelrealisationen
+zeigt @fig-schwaches-gesetz B Schätzungen der Wahrscheinlichkeit 
+$\mathbb{P}(|\bar{\xi}_n - \mu| \ge \epsilon)$ als Funktionen von $n$ und $\epsilon$.
+Für ein großes $\epsilon$ reicht ein geringes $n$ aus um die Wahrscheinlichkeit
+für eine absolute Abwecihung des Stichprobenmittels vom Erwartungswert klein werden
+zu lassen, für ein kleineres $\epsilon$ ist dafür ein größeres $n$ nötig. In jedem
+Fall sinken die Wahrscheinlichkeiten jedoch mit größerem $n$.
+
+```{r, eval = F, echo = F}
+# Modellformulierung
+s_max   = 100                                                                   # number of simulations
+s_all   = 1:s_max                                                               # simulation index vector
+n_max   = 200                                                                   # maximal n number of variables
+n_all   = 1:n_max                                                               # number of variables vector
+mu      = 0                                                                     # expectation parameter
+sigsqr  = 1                                                                     # variance parameter
+epsilon = c(1,.5,.25,.125)
+
+# Stichprobenmittelwertverteilung
+X_bar    = matrix(rep(NaN, s_max*n_max), nrow = s_max)                          # sample mean array
+for(s in s_all){                                                                # simulation iterations
+    for(n in n_all){                                                            # sample size iterations
+        X_bar[s,n] = mean(rnorm(n,mu,sigsqr))}}                                 # sample mean \xi_n
+                                    
+# geschätzte Überschreitungswahrscheinlichkeiten der Stichprobenmittel
+P_hat       = cbind(matrix(colMeans(abs(X_bar) > epsilon[1])),
+                    matrix(colMeans(abs(X_bar) > epsilon[2])),
+                    matrix(colMeans(abs(X_bar) > epsilon[3])),
+                    matrix(colMeans(abs(X_bar) > epsilon[4])))
+
+# Abbildungsparameter
+library(latex2exp)
+pdf(file    = "./_figures/207-schwaches-gesetz.pdf", width = 10, height =5)                                                                   
+par(                                                                  
+family      = "sans",                                                  
+mfcol       = c(1,2),                                                  
+pty         = "m",                                                    
+bty         = "l",                                                     
+lwd         = 1,                                                      
+las         = 1,                                                       
+mgp         = c(2,1,0),                                               
+xaxs        = "i",                                                     
+yaxs        = "i",                                                     
+cex         = 1.2,                                                    
+font.main   = 1,                                                       
+cex.main    = 1.1)
+
+# Graphen
+matplot(
+n_all,                                                                    
+t(X_bar[1:2,]),                                                          
+type        = "p",                                                        
+pch         = 1,                                                          
+lwd         = 1,                                                          
+col         = c("gray"),                                                  
+ylab        = " ",                                                        
+xlim        = c(0,n_max),                                                 
+ylim        = c(-1.5,1.5),                                                
+xlab        = "n",                                                        
+main        = "Stichprobenmittelrealisationen")                           
+legend(
+140,                                                                       
+1.55,                                                                      
+TeX("$\\bar{\\xi}_n$"),                                                       
+lty          = NA,                                                        
+pch          = 1,                                                          
+cex          = 1,                                                          
+col          = c("gray"),                                                  
+lwd          = 2,                                                          
+x.intersp    = -.2,                                                        
+y.intersp    = 1.5,                                                        
+bty          = "n")     
+mtext(LETTERS[1], adj=0, line=2.1, cex = 2, at = -20)        
+
+matplot(
+n_all,                                                                    
+P_hat,                                                                    
+type        = "l",                                                        
+lty         = 1,
+lwd         = 2,                                                          
+col         = c("gray20","gray40","gray60","gray80"),                     
+ylab        = " ",                                                        
+xlim        = c(0,n_max),                                                 
+ylim        = c(-.01,1),                                                  
+xlab        = "n",                                                        
+main        = "Wahrscheinlichkeitschätzungen")                            
+legend(
+100,                                                                        
+1.00,                                                                      
+c(TeX("$\\epsilon = 1.000$"),
+  TeX("$\\epsilon = 0.500$"),
+  TeX("$\\epsilon = 0.250$"),
+  TeX("$\\epsilon = 0.125$")),                                             
+lty          = 1,                                                          
+cex          = .8,                                                         
+col          = c("gray20","gray40","gray60","gray80"),                     
+lwd          = 2,                                                          
+x.intersp    = .2,                                                         
+y.intersp    = 2,                                                          
+bty          = "n")   
+mtext(LETTERS[2], adj=0, line=2.1, cex = 2, at = -20)                                                         
+dev.off()
+```
+![Simulation des schwachen Gesetz der Großen Zahlen.](./_figures/207-schwaches-gesetz){#fig-schwaches-gesetz fig-align="center" width=100%}
+
+## Zentrale Grenzwertsätze {#sec-zentrale-grenzwertsaetze}
+
+Die Zentralen Grenzwertsätze besagen intuitiv, dass die Summe von unabhängigen
+Zufallsvariablen mit Erwartungswert Null *asymptotisch*, also für unendlich 
+viele Zufallsvariablen, normalverteilt mit Erwartungswertparameter Null ist.
+Modelliert man eine beliebige Messgröße $\upsilon$ also als Summe eines 
+deterministischen Einflusses $\mu$ und der Summe
+\begin{equation}
+\varepsilon := \sum_{i=1}^n \xi_i
+\end{equation}
+einer Vielzahl von unabhängigen Zufallsvariablen $\xi_i, i = 1,...,n$, die
+unbekannte Störeinflüsse modellieren sollen, so ist für großes $n$ die Annahme
+$$
+\upsilon = \mu + \varepsilon \mbox{ mit } \varepsilon \sim N(0,\sigma^2)
+$$ {#eq-standardmodell}
+mathematisch gerechtfertigt. Wie wir später sehen werden, liegt die Annahme
+in Gleichung @eq-standardmodell einer großen Vielzahl von probabilistischen 
+Modellen zugrunde.
+
+Formal werden verschiedene Formen von Zentralen Grenzwertsätzen, je nach
+Ausgestaltung der zugrundeliegenden Annahmen und ihrer Beweisführung unterschieden.
+In der sogenannten *Lindenberg und Lévy Form* des Zentralen Grenzwertsatzes werden
+unabhängig und identische Zufallsvariablen vorausgesetzt. In der *Liapunov
+Form* dagegen werden nur unabhängige Zufallsvariablen voraussetzt. In beiden 
+Formulierungen des Zentralen Grenzwertsatzes ist die betrachtete Konvergenz 
+von Zufallsvariablen die *Konvergenz in Verteilung*, welche wir zunächst einführen.
+
+:::{#def-konvergenz-in-verteilung}
+## Konvergenz in Verteilung
+Eine Folge $\xi_1,\xi_2,...$ von Zufallsvariablen \textit{konvergiert in Verteilung
+gegen eine Zufallsvariable $\xi$}, wenn
+\begin{equation}
+\lim_{n \to \infty} P_{\xi_n}(x) = P_\xi(x)
+\end{equation}
+für alle $\xi$ an denen $P_\xi$ stetig ist.
+Die Konvergenz in Verteilung von $\xi_1,\xi_2,...$ gegen $\xi$ wird geschrieben als
+\begin{equation}
+\xi_n\xrightarrow[n\to \infty]{\text{D}} \xi.
+\end{equation}
+Gilt $\xi_n\xrightarrow[n\to \infty]{\text{D}} \xi$, dann heißt die Verteilung von
+$\xi$ die \textit{asymptotische Verteilung der Folge $\xi_1,\xi_2,...$}.
+:::
+Die Konvergenz in Verteilung ist also eine Aussage zur Konvergenz von Funktionenfolgen,
+speziell von KVFen. Ohne Begründung merken wir an, dass die oben betrachtete Konvergenz 
+in Wahrscheinlichkeit die Konvergenz in Verteilung impliziert. Wir geben nun 
+zunächst den Zentralen Grenzwertsatz nach Lindenberg und Lévy an.
+
+:::{#thm-zentraler-grenzwertsatz-nach-lindenberg-und-levy}
+## Zentraler Grenzwertsatz nach Lindenberg und Lévy
+$\xi_1,...,\xi_n$ seien unabhängig und identisch verteilte Zufallsvariablen mit
+\begin{equation}
+\mathbb{E}(\xi_i) := \mu \mbox{ und }
+\mathbb{V}(\xi_i) := \sigma^2 > 0
+\mbox{ für alle } i = 1,....,n.
+\end{equation}
+Weiterhin sei $\zeta_n$ die Zufallsvariable definiert als
+\begin{equation}
+\zeta_n := \sqrt{n}\left(\frac{\bar{\xi}_n - \mu}{\sigma}\right).
+\end{equation}
+Dann gilt für alle $z \in \mathbb{R}$
+\begin{equation}
+\lim_{n \to \infty} P_{\zeta_n}(z) = \Phi(z),
+\end{equation}
+wobei $\Phi$ die kumulative Verteilungsfunktion der Standardnormalverteilung bezeichnet.
+:::
+Wir zeigen an späterer Stelle, dass damit für $n\to\infty$ auch gilt, dass
+$$
+\sum_{i=1}^n \xi_i \sim N(\mu, n\sigma^2)
+\mbox{ und }
+\bar{\xi}_n \sim N\left(\mu,\frac{\sigma^2}{n}\right).
+$$ {#eq-generalisierung-zentraler-grenzwertsatz-lindenberg-levy}
+
+```{r, eval = F, echo = F}
+# Abbildungsparameter
+pdf(file = "./_figures/207-lindenberg-levy.pdf", width = 15, height = 5)
+library(latex2exp)
+par(                                                                    
+family     = "sans",                                                  
+mfcol      = c(1,3),                                                  
+pty        = "m",                                                     
+bty        = "l",                                                     
+lwd        = 1,                                                       
+las        = 1,                                                       
+mgp        = c(2,1,0),                                                
+xaxs       = "i",                                                     
+yaxs       = "i",                                                     
+cex        = 1.2,                                                    
+font.main  = 1,                                                       
+cex.main   = 1.3)                                                      
+
+# Modellformulierung
+s_max   = 1e3                                                                    # number of samples
+s_all   = 1:s_max                                                                # simulation index vector
+n_all   = c(2e0,2e2)                                                             # number of variables vector
+k       = 3                                                                      # chi^2 variable parameter
+mu      = k                                                                      # expectation
+sigsqr  = 2*k                                                                    # variance
+x_min   = -4                                                                     # minimum Z variable value
+x_max   = 4                                                                      # maximum Z variable value
+x_res   = 1e3                                                                    # Z space resolution
+x       = seq(x_min,x_max,len = x_res)                                           # Z space
+px      = dnorm(x,0,1)                                                           # standard normal density
+Px      = pnorm(x,0,1)                                                           # standard normal cumulative density
+Y       = matrix(rep(NaN, s_max*length(n_all)), nrow = s_max)                    # standardized sample mean array
+
+# Standardisierte Stichprobenmittel
+for(n in seq_along(n_all)){                                                     # sample size iteration
+    for(s in s_all){                                                            # simulation iterations
+        X       = rchisq(n_all[n],k)                                            # sample
+        X_n     = mean(X)                                                       # sample mean 
+        Y[s,n]  = sqrt(n_all[n])*(X_n - mu)/(sqrt(sigsqr))}                     # standardized sample mean                        
+
+    # Histogramm und analytische Dichte bei kleinem n
+    hist(
+    Y[,n],                                                                       
+    breaks = 30,                                                            
+    col   = "gray90",                                                       
+    prob  = TRUE,                                                           
+    xlim  = c(x_min, x_max),
+    xlab  = "",                                                            
+    ylab  = "",                                                             
+    ylim  = c(0,0.6),                                                       
+    main  = sprintf("n = %d", n_all[n]))
+    lines(
+    x,                                                                      
+    px,                                                                     
+    lwd   = 2,                                                              
+    col   = "darkorange")}                                                   
+
+# KVF und empirische KVFen
+plot(
+x,                                                                          
+Px,                                                                        
+col     = "darkorange",                                                     
+ylim    = c(-.1,1.1),                                                       
+xlab    = "",                                                              
+ylab    = "")                                                              
+lines(
+ecdf(Y[,1]),                                                                
+pch     = NA,                                                               
+col     = "Gray70",                                                         
+lwd     = 2,                                                                
+lty     = 1)                                                                
+lines(
+ecdf(Y[,2]),                                                                
+pch     = NA,                                                               
+col     = "Black",                                                          
+lwd     = 2,                                                                
+lty     = 1)                                                                
+legend(
+-4,                                                                      
+1,                                                                       
+c(TeX("$\\Phi(z)"),
+  TeX("$\\hat{P}_{\\zeta_n}(z),\\, n = 2$"),
+  TeX("$\\hat{P}_{\\zeta_n}(z),\\, n = 200$")),                                          
+lty          = 1,                                                          
+cex          = .9,                                                          
+col         = c("darkorange", "Gray70", "Black"),                          
+lwd          = 2,                                                          
+x.intersp    = 0.3,
+y.intersp    = 1.0,                                                        
+seg.len      =  .5,
+bty          = "n")
+dev.off()
+```
+
+
+**Simulation** 
+
+Wir betrachten den Fall von u.i.v. $\chi^2$-Zufallsvariablen 
+$\xi_1,...,\xi_n \sim \chi^2(3)$. Offenbar ist die funktionale Form der 
+$\chi^2(3)$-Verteilung von der Standardnormalverteilung recht verschieden,
+insbesondere nehmen $\chi^2$-Zufallsvariablen mit von Null 
+verschiedener Wahrscheinlichkeit nur nicht-negative Werte an (vgl. @sec-wahrscheinlichkeitsdichtefunktionen) 
+Nichtsdestotrotz resultiert ihre standardisierte Summe asymptotisch in einer
+Normalverteilung, wie in @fig-lindenberg-levy visualisiert. Dazu nutzen wir 
+auf Ebene der Implementation die Tatsache, für die $\chi^2$-Zufallsvariablen 
+$\xi_i, i = 1,...,n$ mit Freiheitsgradparameter $3$ bekanntlich gilt (vgl. @sec-erwartungswert und @sec-varianz-und-standardabweichung) 
+\begin{equation}
+\mathbb{E}(\xi_i) = 3 \mbox{ und }\mathbb{V}(\xi_i) = 6
+\end{equation}
+Die Abbildungen in  @fig-lindenberg-levy A zeigen Histogrammschätzer der 
+Wahrscheinlichkeitsdichte von
+\begin{equation}
+\zeta_n := \sqrt{n}\left(\frac{\bar{\xi}_n - \mu}{\sigma}\right)
+\end{equation}
+basierend auf 1000 Realisationen von $\zeta_n$ für $n = 2$ und $n = 200$, 
+sowie die WDF von $N(0,1)$. Offenbar ist die Verteilung der Realisiationen 
+von $\zeta_2$ der Standardnormalverteilung noch sehr unähnlich, wohingegen
+sich die Verteilung der Realisationen von $\zeta_{200}$ der Standardnormalverteilung
+schon annähert. @fig-lindenberg-levy B zeigt die entsprechenden geschätzten 
+KVFen über die @thm-zentraler-grenzwertsatz-nach-lindenberg-und-levy formal
+eine Aussage trifft.
+
+![Simulation des Zentralen Grenzwertsatzes nach Lindenberg und Lévy.](./_figures/207-lindenberg-levy){#fig-lindenberg-levy fig-align="center" width=100%}
+
+:::{#thm-zentraler-grenzwertsatz-nach-liapounov}
+## Zentraler Grenzwertsatz nach Liapounov
+$\xi_1,...,\xi_n$ seien unabhängige aber nicht notwendigerweise identisch verteilten Zufallsvariablen mit
+\begin{equation}
+\mathbb{E}(\xi_i) := \mu_i \mbox{ und }
+\mathbb{V}(\xi_i) := \sigma^2_i > 0
+\mbox{ für alle } i = 1,....,n.
+\end{equation}
+Weiterhin sollen für $\xi_1,...,\xi_n$ folgende Eigenschaften gelten:
+\begin{equation}
+\mathbb{E}(|\xi_i - \mu_i|^3) < \infty \mbox{ und }
+\lim_{n \to \infty} \frac{\sum_{i=1}^n \mathbb{E}\left(|\xi_i - \mu_i|^3\right)}{(\sum_{i=1}^n \sigma_i^2)^{3/2}} = 0.
+\end{equation}
+Dann gilt für die Zufallsvariable $\zeta_n$ definiert als
+\begin{equation}
+\zeta_n := \frac{\sum_{i=1}^n \xi_i - \sum_{i=1}^n \mu_i}{\sqrt{\sum_{i=1}^n \sigma_i^2}},
+\end{equation}
+für alle $z\in\mathbb{R}$, dass
+\begin{equation}
+\lim_{n \to \infty} P_{\zeta_n}(z) = \Phi(z),
+\end{equation}
+wobei $\Phi$ KVF der Standardnormalverteilung bezeichnet.
+:::
+Wir zeigen an späterer Stelle, dass damit für $n\to\infty$ auch gilt, dass
+$$
+\sum_{i=1}^n \xi_i \sim N\left(\sum_{i=1}^n \mu_i, \sum_{i=1}^n \sigma_i^2\right)
+$$ {#eq-generalisierung-zentraler-grenzwertsatz-liapunov}
+
+## Literaturhinweise
+
+Zur mathematik-geschichtlichen Genese der Zentralen Grenzwertsätze siehe 
+z.B. @fischer2011.
+
+## Selbstkontrollfragen
+
+\footnotesize
+1. Definieren Sie den Begriff der Konvergenz in Wahrscheinlichkeit.
+1. Definieren Sie den Begriff der Konvergenz in Verteilung.
+1. Geben Sie das Schwache Gesetz der Großen Zahlen wieder.
+1. Erläutern Sie den Zentralen Grenzwertsatz nach Lindenberg und Lévy.
+1. Erläutern Sie den Zentralen Grenzwertsatz nach Liapunov.
+1. Warum sind die Zentralen Grenzwertsätze für die probabilistische Modellbildung wichtig?
+\normalsize
+
+
+
+

@@ -1,0 +1,1521 @@
+# Vektoren {#sec-vektoren}
+\normalsize
+
+In der naturwissenschaftlichen Modellbildung betrachtet man häufig Phänomene,
+die sich durch das Vorliegen mehrerer quantitativer Merkmale auszeichnen. So 
+ist zum Beispiel die Position eines Objektes im dreidimensionalen Raum durch
+drei Koordinaten hinsichtlich der drei Achsen eines Kartesischen 
+Koordinatensystems festgelegt. Analog mag der Gesundheitszustand einer Person
+durch das Vorliegen dreier Messwerte, z.B. einen Selbstauskunftscore, einen
+Biomarker und eine Expert:inneneinschätzung charakterisiert sein. Zum modellieren
+und analysieren solcher mehrdimensionalen quantitativen Phänomene stellt die 
+Mathematik mit dem reellen Vektorraum ein vielseitig einsetzbares Hilfsmittel
+bereit. In diesem Kapitel wollen wir zunächst den Begriff des reellen Vektorraums
+und das grundlegende Rechnen mit Vektoren einführen (@sec-reeller-vektorraum). 
+Eine Vektorraumstruktur, die sich stark an der dreidimensionalen räumlichen 
+Intuition orientiert bietet dann der Euklidische Vektorraum (@sec-euklidischer-vektorraum).
+Mithilfe der Vektorrechnung können alle Vektoren eines Vektorraums aus einer 
+kleinen Schar ausgezeichneter Vektoren gebildet werden. Die diesem Prinzip zugrundeliegenden
+Konzepte diskutieren wir in (@sec-lineare-unabhängigkeit und @sec-vektorraumbasen).
+
+## Reeller Vektorraum {#sec-reeller-vektorraum}
+
+Wir beginnen mit der allgemeinen Definition eines Vektorraums, die grundlegende
+Regeln zum Rechnen mit Vektoren festlegt.
+
+:::{#def-vektorraum}
+## Vektorraum
+Es seien $V$ eine nichtleere Menge und $S$ eine Menge von Skalaren. Weiterhin sei
+eine Abbildung
+\begin{equation}
++ : V \times V \to V, (v_1,v_2) \mapsto +(v_1, v_2) =: v_1 + v_2,
+\end{equation}
+genannt *Vektoraddition*, definiert. Schließlich sei eine Abbildung
+\begin{equation}
+\cdot : S \times V \to V, (s,v) \mapsto \cdot(s,v) =: sv,
+\end{equation}
+genannt *Skalarmultiplikation* definiert. Dann wird das Tupel $(V,S,+,\cdot)$
+genau dann *Vektorraum* genannt, wenn für beliebige Elemente
+$v,w,u\in V$ und $a,b \in S$ folgende Bedingungen gelten:
+
+\noindent (1) *Kommutativität der Vektoraddition.*
+$$
+v + w = w + v.
+$$
+(2) *Assoziativität der Vektoraddition.*
+$$
+(v + w) + u = v + (w + u) 
+$$
+(3) *Existenz eines neutralen Elements der Vektoraddition.*
+$$
+\mbox{Es gibt einen Vektor } 0 \in V \mbox{ mit } v + 0 = 0 + v = v. 
+$$
+(4) *Existenz inverser Elemente der Vektoraddition*
+$$
+\mbox{Für alle Vektoren } v \in V \mbox{ gibt es einen Vektor } -v \in V \mbox{ mit } v + (-v) = 0.
+$$
+(5) *Existenz eines neutralen Elements der Skalarmultiplikation.*
+$$
+\mbox{Es gibt einen Skalar } 1 \in S \mbox{ mit } 1 \cdot v = v.
+$$
+(6) *Assoziativität der Skalarmultiplikation.*
+$$
+a \cdot (b \cdot c) = (a \cdot b)\cdot c.
+$$
+(7) *Distributivität hinsichtlich der Vektoraddition.*
+$$ 
+a\cdot (v + w) = a\cdot v + a \cdot w. 
+$$
+(8) *Distributivität hinsichtlich der Skalaraddition.*
+$$
+(a + b)\cdot v = a\cdot v + b\cdot v.
+$$
+:::
+
+Es fällt auf, dass @def-vektorraum zwar festlegt, wie mit Vektoren gerechnet werden
+soll, jedoch keine Aussage darüber macht, was ein Vektor, über ein ein Element einer
+Menge hinaus, eigentlich ist. Dies ist der Tatsache geschuldet, dass es verschiedenste
+mathematische Objekte gibt, für die Vektorraumstrukturen definiert werden können.
+Beispiele dafür sind die Menge der reellen $m$-Tupel, die Menge der Matrizen,
+die Menge der Polynome, die Menge der Lösungen eines linearen Gleichungssystems,
+die Menge der reellen Folgen, die Menge der stetigen Funktionen u.v.a.m. 
+
+Wir sind hier zunächst nur am Vektorraum der Menge reellen $m$-Tupel interessiert. 
+Wir erinnern dazu daran, dass wir die reellen $m$-Tupel mit
+\begin{equation}
+\mathbb{R}^m := \left\lbrace \begin{pmatrix} x_1 \\ \vdots \\ x_m \end{pmatrix} | x_i \in \mathbb{R} \mbox{ für alle } 1 \le i \le m \right\rbrace
+\end{equation}
+bezeichnen und $\mathbb{R}^m$ als "$\mathbb{R}$ hoch m" aussprechen. Die Elemente $x \in \mathbb{R}^m$ 
+nennen wir *reelle Vektoren* oder auch einfach *Vektoren*. Wir wollen nun der Definition
+eines Vektorraums die Menge $\mathbb{R}^m$ zugrunde legen. Dazu definieren wir
+zunächst die Vektoraddition für Elemente von $\mathbb{R}^m$ und die Skalarmultiplikation
+für Elemente von $\mathbb{R}$ und $\mathbb{R}^m$ 
+
+:::{#def-reelle-vektoraddition-skalarmultiplikation}
+## Vektoraddition und Skalarmultiplikation in $\mathbb{R}^m$
+Für alle $x,y \in \mathbb{R}^m$ und $a \in \mathbb{R}$ sei die *Vektoraddition* durch
+\begin{equation}
++ : \mathbb{R}^m \times \mathbb{R}^m \to \mathbb{R}^m, (x,y) \mapsto x + y =
+\begin{pmatrix}
+x_1 \\ \vdots \\ x_m
+\end{pmatrix}
++
+\begin{pmatrix}
+y_1 \\ \vdots \\ y_m
+\end{pmatrix}
+:=
+\begin{pmatrix}
+x_1 + y_1 \\ \vdots \\ x_m + y_m
+\end{pmatrix}
+\end{equation}
+und die *Skalarmultiplikation* durch
+\begin{equation}
+\cdot : \mathbb{R} \times \mathbb{R}^m \to \mathbb{R}^m, (a,x) \mapsto
+ax =
+a
+\begin{pmatrix}
+x_1  \\ \vdots \\ x_m
+\end{pmatrix}
+:=
+\begin{pmatrix}
+ax_1  \\ \vdots \\a x_m
+\end{pmatrix}
+\end{equation}
+definiert.
+:::
+
+Es ergibt sich dann folgendes Resultat.
+
+:::{#thm-reeller-vektorraum}
+## Reeller Vektorraum
+$(\mathbb{R}^m,+,\cdot)$ mit den Rechenregeln der Addition und Multiplikation
+in $\mathbb{R}$ einen Vektorraum.
+:::
+
+Für einen Beweis, auf den wir hier verzichten wollen, muss man die Bedingungen (1) bis (8)
+aus @def-vektorraum für die hier betrachtete Menge und die hier festgelegten
+Formen der Vektoraddition und der Skalarmultiplikation nachweisen. Diese ergeben
+sich aber leicht aus den Rechenregeln von Addition und Multiplikation in $\mathbb{R}$
+und der Tatsache, dass Vektoraddition und Skalarmultiplikation für Elemente von $\mathbb{R}^m$
+in @def-reelle-vektoraddition-skalarmultiplikation komponentenweise definiert wurden.
+Wir definieren damit den Begriff des *reellen Vektorraums*.
+
+:::{#def-reeller-vektorraum}
+## Reeller Vektorraum
+Für $\mathbb{R}^m$ seien $+$ und $\cdot$ die in @def-reelle-vektoraddition-skalarmultiplikation
+definierte Vektoraddition und Skalarmultiplikation. Dann nennen wir auf Grundlage
+von @thm-reeller-vektorraum den Vektorraum $(\mathbb{R}^m,+,\cdot)$ den *reellen Vektorraum*
+:::
+
+Auf Grundlage von @def-reeller-vektorraum wollen wir uns nun das Rechnen mit reellen
+Vektoren anhand einiger Beispiele verdeutlichen. 
+
+**Beispiele**
+
+\noindent (1) Für
+
+$$
+x:=
+\begin{pmatrix}
+1 \\ 2 \\ 3 \\ 4
+\end{pmatrix}
+\in \mathbb{R}^4 
+\mbox{ und }
+y:=
+\begin{pmatrix}
+2 \\ 1 \\ 0 \\ 1
+\end{pmatrix}
+\in \mathbb{R}^4
+$$
+gilt
+$$
+x + y
+=
+\begin{pmatrix}
+1 \\ 2 \\ 3 \\ 4
+\end{pmatrix}
++
+\begin{pmatrix}
+2 \\ 1 \\ 0 \\ 1
+\end{pmatrix}
+=
+\begin{pmatrix}
+1 + 2 \\ 2 + 1 \\ 3 + 0\\ 4 + 1
+\end{pmatrix}
+=
+\begin{pmatrix}
+3 \\ 3\\ 3 \\ 5
+\end{pmatrix}
+\in \mathbb{R}^4.
+$$
+In **R** implementiert dieses Beispiel wie folgt
+
+\footnotesize
+```{r}
+x = matrix(c(1,2,3,4), nrow = 4)      # Vektordefinition
+y = matrix(c(2,1,0,1), nrow = 4)      # Vektordefinition
+x + y                                 # Vektoraddition
+```
+\normalsize
+
+\noindent (2) Für
+$$
+x:=
+\begin{pmatrix}
+2 \\ 3
+\end{pmatrix}
+\in \mathbb{R}^2
+\mbox{ und }
+y:=
+\begin{pmatrix}
+1 \\ 3 \
+\end{pmatrix}
+\in \mathbb{R}^2
+$$
+gilt
+$$
+x - y
+=
+\begin{pmatrix}
+2 \\ 3
+\end{pmatrix}
+-
+\begin{pmatrix}
+1 \\ 3
+\end{pmatrix}
+=
+\begin{pmatrix}
+2 - 1 \\ 3 - 3
+\end{pmatrix}
+=
+\begin{pmatrix}
+1 \\ 0
+\end{pmatrix}
+\in \mathbb{R}^2.
+$$
+In **R** implementiert man dieses Beispiel wie folgt
+\footnotesize
+```{r}
+x = matrix(c(2,3), nrow = 2)         # Vektordefinition
+y = matrix(c(1,3), nrow = 2)         # Vektordefinition
+x - y                                # Vektorsubtraktion
+```
+\normalsize
+
+\noindent (3) Für
+$$
+x:=
+\begin{pmatrix}
+2 \\ 1 \\ 3
+\end{pmatrix}
+\in \mathbb{R}^3
+\mbox{ und }
+a := 3 \in \mathbb{R}
+$$
+gilt
+$$
+ax
+=
+3
+\begin{pmatrix}
+2 \\ 1 \\ 3
+\end{pmatrix}
+=
+\begin{pmatrix}
+3 \cdot 2 \\ 3 \cdot 1 \\ 3 \cdot 3
+\end{pmatrix}
+=
+\begin{pmatrix}
+6 \\ 3 \\ 9
+\end{pmatrix}
+\in \mathbb{R}^3.
+$$
+In **R** implementiert man dieses Beispiel wie folgt
+\footnotesize
+```{r}
+x = matrix(c(2,1,3), nrow = 3)       # Vektordefinition
+a = 3                                # Skalardefinition
+a*x                                  # Skalarmultiplikation
+```
+\normalsize
+
+
+Für $m \in \{1,2,3\}$ kann man sich reelle Vektoren und das Rechnen mit ihnen
+visuell veranschaulichen. Für $m > 3$, wenn also zum Beispiel für eine Person
+mehr als drei quantitative Merkmale zu ihrem Gesundheitszustand vorliegen, was
+in der Anwendung regelmäßig der Fall ist, ist dies nicht möglich. Trotzdem mag
+die visuelle Intuition für $m \le 3$ einen Einstieg in das Verständnis von 
+Vektorräumen erleichtern. Wir fokussieren hier auf den Fall $m := 2$. In diesem
+Fall liegen die betrachteten reellen Vektoren in der zweidimensionalen Ebene
+und werden üblicherweise als Punkte oder Pfeile visualisiert (@fig-vektoren-R2).
+
+```{r, eval = F, echo = F}
+# Visualisierung
+library(latex2exp)
+pdf(
+file        = file.path("./_figures/108-vektoren-R2.pdf"),
+width       = 8,
+height      = 4)
+par(
+family      = "sans",
+mfcol       = c(1,2),
+pty         = "s",
+bty         = "l",
+lwd         = 1,
+las         = 1,
+mgp         = c(2,1,0),
+xaxs        = "i",
+yaxs        = "i",
+font.main   = 1,
+cex         = .95,
+cex.main    = 1.2)
+
+# Vektordefinition
+x           = c(2,4)
+
+# Punktperspektive
+plot(
+x[1],
+x[2],
+type        = "p",
+pch         = 19,
+xlab        = TeX("$x_1$"),
+ylab        = TeX("$x_2$"),
+xlim        = c(0,5),
+ylim        = c(0,5))
+grid()
+text(2.5,4,expression(bgroup("(", atop("2", "4"), ")")), cex = .9)
+
+# Pfeilperspektive
+plot(
+NULL,
+xlab        = TeX("$x_1$"),
+ylab        = TeX("$x_2$"),
+xlim        = c(0,5),
+ylim        = c(0,5))
+grid()
+text(2.5,4,expression(bgroup("(", atop("2", "4"), ")")), cex = .9)
+arrows(
+x0          = 0,
+y0          = 0,
+x1          = x[1],
+y1          = x[2],
+angle       = 30,
+length      = .1)
+dev.off()
+```
+
+![Visualisierung von Vektoren in $\mathbb{R}^2$](./_figures/108-vektoren-R2){#fig-vektoren-R2 fig-align="center"}
+
+@fig-vektoraddition-R2 visualisiert die Vektoraddition 
+\begin{equation}
+\begin{pmatrix}
+1 \\ 2
+\end{pmatrix}
++
+\begin{pmatrix}
+3 \\ 1
+\end{pmatrix}
+=
+\begin{pmatrix}
+4 \\ 3
+\end{pmatrix}.
+\end{equation}
+Der Summenvektor entspricht dabei der Diagonale des von den beiden Summanden
+aufgespannten Parallelogramms.
+
+```{r, eval = F, echo = F}
+# Visualisierung
+library(latex2exp)
+pdf(
+file        = file.path("./_figures/108-vektoraddition-R2.pdf"),
+width       = 4,
+height      = 4)
+par(
+family      = "sans",
+mfcol       = c(1,1),
+pty         = "s",
+bty         = "l",
+lwd         = 1,
+las         = 1,
+mgp         = c(2,1,0),
+xaxs        = "i",
+yaxs        = "i",
+font.main   = 1,
+cex         = 1,
+cex.main    = 1)
+
+# Vektordefinitionen
+x           = c(1,2)
+y           = c(3,1)
+z           = c(4,3)
+
+# Visualisierung
+plot(
+NULL,
+xlab        = TeX("$x_1$"),
+ylab        = TeX("$x_2$"),
+xlim        = c(0,5),
+ylim        = c(0,5))
+grid()
+points(
+c(x[1],y[1],z[1]),
+c(x[2],y[2],z[2]),
+pch = 19)
+text(1.5,2,expression(bgroup("(", atop("1", "2"), ")")), cex = .9)
+text(3.5,1,expression(bgroup("(", atop("3", "1"), ")")), cex = .9)
+text(4.5,3,expression(bgroup("(", atop("4", "3"), ")")), cex = .9)
+arrows(
+x0          = c(0,0,0,x[1],y[1]),
+y0          = c(0,0,0,x[2],y[2]),
+x1          = c(x[1],y[1],z[1],z[1],z[1]),
+y1          = c(x[2],y[2],z[2],z[2],z[2]),
+angle       = 20,
+length      = .1,
+col         = c("black", "black", "black", "gray60", "gray80"))
+dev.off()
+```
+
+![Vektoraddition in $\mathbb{R}^2$](./_figures/108-vektoraddition-R2){#fig-vektoraddition-R2 fig-align="center"}
+
+@fig-vektorsubtraktion-R2 visualisiert die Vektorsubtraktion
+\begin{equation}
+\begin{pmatrix}
+1 \\ 2
+\end{pmatrix}
+-
+\begin{pmatrix}
+3 \\ 1
+\end{pmatrix}
+=
+\begin{pmatrix}
+1 \\ 2
+\end{pmatrix}
++
+\begin{pmatrix}
+-3 \\ -1
+\end{pmatrix}
+=
+\begin{pmatrix}
+-2 \\ \,\, 1
+\end{pmatrix}
+\end{equation}
+Der resultierende Vektor entspricht dabei der Diagonale des von dem ersten Vektors 
+und dem entgegensetzten Vektor des zweiten Vektors aufgespannten Parallelogramms.
+```{r, eval = F, echo = F}
+library(latex2exp)
+pdf(
+file        = file.path("./_figures/108-vektorsubtraktion-R2.pdf"),
+width       = 4,
+height      = 4)
+par(
+family      = "sans",
+mfcol       = c(1,1),
+pty         = "s",
+bty         = "l",
+lwd         = 1,
+las         = 1,
+mgp         = c(2,1,0),
+xaxs        = "i",
+yaxs        = "i",
+font.main   = 1,
+cex         = .95,
+cex.main    = 1.2)
+
+# Vektordefinitionen
+x           = c(1,2)
+y           = c(3,1)
+z           = c(-2,1)
+
+# Punktperspektive
+plot(
+NULL,
+xlab        = TeX("$x_1$"),
+ylab        = TeX("$x_2$"),
+xlim        = c(-4,4),
+ylim        = c(-4,4))
+grid()
+points(
+c(x[1],y[1],z[1]),
+c(x[2],y[2],z[2]),
+pch = 19)
+text(1.5,2,expression(bgroup("(", atop("1", "2"), ")")), cex = .9)
+text(3.5,1,expression(bgroup("(", atop("3", "1"), ")")), cex = .9)
+text(-2.5,1,expression(bgroup("(", atop("-2", "1"), ")")), cex = .9)
+arrows(
+x0          = c(0,0,0,0, -y[1],x[1], y[1]),
+y0          = c(0,0,0,0, -y[2],x[2], y[2]),
+x1          = c(x[1],y[1],z[1],-y[1], z[1], z[1],x[1]),
+y1          = c(x[2],y[2],z[2],-y[2], z[2], z[2],x[2]),
+angle       = 20,
+length      = .1,
+col         = c("black", "black", "black", "gray80", "gray80", "gray80", "gray80"))
+dev.off()
+```
+
+![Vektorsubtraktion in $\mathbb{R}^2$](./_figures/108-vektorsubtraktion-R2){#fig-vektorsubtraktion-R2 fig-align="center"}
+
+@fig-skalarmultiplikation-R2 schließlich visualisiert die Skalarmultiplikation
+\begin{equation}
+3
+\begin{pmatrix}
+1 \\ 1
+\end{pmatrix}
+=
+\begin{pmatrix}
+3 \\ 3
+\end{pmatrix}
+\end{equation}
+Die Multiplikation eines Vektors mit einem Skalar ändert dabei immer nur seine
+Länge, nicht jedoch seine Richtung.
+
+```{r, eval = F, echo = F}
+library(latex2exp)
+pdf(
+file        = file.path("./_figures/108-skalarmultiplikation-R2.pdf"),
+width       = 4,
+height      = 4)
+par(
+family      = "sans",
+mfcol       = c(1,1),
+pty         = "s",
+bty         = "l",
+lwd         = 1,
+las         = 1,
+mgp         = c(2,1,0),
+xaxs        = "i",
+yaxs        = "i",
+font.main   = 1,
+cex         = .95,
+cex.main    = 1.2)
+
+# Vektor- und Skalardefinitionen
+x           = c(1,1)
+a           = 3
+
+# Punktperspektive
+plot(
+NULL,
+xlab        = TeX("$x_1$"),
+ylab        = TeX("$x_2$"),
+xlim        = c(0,4),
+ylim        = c(0,4))
+grid()
+points(
+c(a*x[1],x[1]),
+c(a*x[2],x[2]),
+pch = 19)
+text(1,1.5,expression(bgroup("(", atop("1", "1"), ")")), cex = .9)
+text(3,2.5,expression(bgroup("(", atop("3", "3"), ")")), cex = .9)
+arrows(
+x0          = c(0,0),
+y0          = c(0,0),
+x1          = c(x[1],a*x[1]),
+y1          = c(x[2],a*x[2]),
+angle       = 20,
+length      = .1,
+lwd         = c(4,1),
+col         = c("gray70", "black"))
+dev.off()
+```
+
+![Skalarmultiplikation in $\mathbb{R}^2$](./_figures/108-skalarmultiplikation-R2){#fig-skalarmultiplikation-R2 fig-align="center"}    
+
+## Euklidischer Vektorraum {#sec-euklidischer-vektorraum}
+
+Der reelle Vektorraum kann durch Definition des *Skalarprodukts* im Sinne
+eines *Euklidischen Vektorraums* mit räumlich-geometrischer Intuition versehen werden.
+Diese ermöglicht es insbesondere, Begriffe wie die *Länge eines Vektors*, den 
+*Abstand zwischen zwei Vektoren*, und nicht zuletzt den *Winkel zwischen zwei 
+Vektoren* zu definieren und zu berechnen. Wir führen zunächst das *Skalarprodukt*
+ein.
+
+:::{#def-skalarprodukt}
+## Skalarprodukt auf $\mathbb{R}^m$
+Das *Skalarprodukt auf $\mathbb{R}^m$* ist definiert als die Abbildung
+\begin{equation}
+\langle \rangle : \mathbb{R}^m \times \mathbb{R}^m \to \mathbb{R},
+(x,y) \mapsto \langle (x,y) \rangle := \langle x,y \rangle := \sum_{i=1}^m x_i y_i.
+\end{equation}
+:::
+Das Skalarprodukt heißt Skalarprodukt, weil es einen Skalar ergibt, nicht etwa,
+weil mit Skalaren multipliziert wird. Das Skalarprodukt steht in enger Beziehung
+zum Matrixprodukt, wie wir an späterer Stelle sehen werden. Wir betrachten zunächst
+ein Beispiel und seine Implementation in **R**.
+
+**Beispiel**
+
+Es seien
+\begin{equation}
+x :=
+\begin{pmatrix}
+1 \\ 2 \\ 3
+\end{pmatrix}
+\mbox{ und }
+y :=
+\begin{pmatrix}
+2 \\ 0 \\ 1
+\end{pmatrix}
+\end{equation}
+Dann ergibt sich
+\begin{equation}
+\langle x,y \rangle
+= x_1y_1 + x_2y_2 + x_3y_3
+= 1 \cdot 2 + 2 \cdot 0 + 3 \cdot 1
+= 2 + 0 + 3
+= 5.
+\end{equation}
+
+In **R** gibt es verschiedene Möglichkeiten, ein Skalarprodukt auszuwerten. Wir
+führen zwei von ihnen für das gebebene Beispiel untenstehend auf.
+
+\footnotesize
+```{r}
+# Vektordefinitionen
+x = matrix(c(1,2,3), nrow = 3)
+y = matrix(c(2,0,1), nrow = 3)
+
+# Skalarprodukt mithilfe von R's komponentenweiser Multiplikation und sum() Funktion
+sum(x*y)
+
+# Skalarprodukt mithilfe von R's Matrixtransposition und -multiplikation
+t(x) %*% y
+```
+\normalsize
+
+Mithilfe des Skalarprodukts kann der Begriff des reellen Vektorraums zum Begriff
+des *reellen kanonischen Euklidischen Vektorraums* erweiter werden.
+
+:::{#def-euklidischer-vektorraum}
+## Euklidischer Vektorraum
+Das Tupel $\left((\mathbb{R}^m, +, \cdot), \langle \rangle \right)$ aus dem 
+reellen Vektorraum $(\mathbb{R}^m, +, \cdot)$ und dem Skalarprodukt $\langle \rangle$ auf
+$\mathbb{R}^m$ heißt *reeller kanonischer Euklidischer Vektorraum*.
+:::
+
+Generell heißt jedes Tupel aus einem Vektorraum und einem Skalarprodukt 
+"Euklidischer Vektorraum". Informell sprechen wir aber oft auch einfach von 
+$\mathbb{R}^m$ als "Euklidischer Vektorraum" und insbesondere bei 
+$\left((\mathbb{R}^m, +, \cdot), \langle \rangle \right)$ vom "Euklidischen Vektorraum".
+Ein Euklidischer Vektorraum ist ein Vektorraum mit geometrischer Struktur, die durch
+das Skalarprodukt induziert wird. Insbesondere bekommen im Euklidischen Vektorraum 
+nun die geometrischen Begriffe von *Länge*, *Abstand* und *Winkel* eine Bedeutung.
+Wir definieren sie wie folgt.
+
+:::{#def-länge-abstand-winkel}
+$\left((\mathbb{R}^m, +, \cdot), \langle \rangle \right)$ sei der Euklidische Vektorraum.
+
+\noindent (1) Die *Länge* eines Vektors $x \in \mathbb{R}^m$ ist definiert als
+\begin{equation}
+\Vert x \Vert := \sqrt{\langle x, x \rangle}.
+\end{equation}
+\noindent (2) Der *Abstand* zweier Vektoren $x,y \in \mathbb{R}^m$ ist definiert als
+\begin{equation}
+d(x,y) := \Vert x - y \Vert.
+\end{equation}
+\noindent (3) Der *Winkel* $\alpha$ zwischen zwei Vektoren $x,y \in \mathbb{R}^m$ mit
+$x,y \neq 0$ ist definiert durch
+\begin{equation}
+0 \le \alpha \le \pi \mbox{ und } \cos \alpha
+:= \frac{\langle x, y \rangle}{\Vert x \Vert \Vert y \Vert}
+\end{equation}
+:::
+
+Die Länge $\Vert x \Vert$ eines Vektors $x \in \mathbb{R}^m$ heißt auch *Euklidische 
+Norm von $x$* oder *$\ell_2$-Norm von $x$* oder einfach *Norm von $x$*. Sie wird
+häufig auch mit $\Vert x \Vert_2$ bezeichnet. Wir betrachten drei Beispiele für
+die Bestimmung der Länge eines Vektors und ihre entsprechende **R** Implementation.
+Wir veranschaulichen diese Beispiele in @fig-länge-R2. 
+
+**Beispiel (1)**
+
+\begin{equation}
+\left\lVert \begin{pmatrix} 2 \\ 0 \end{pmatrix} \right\rVert
+= \sqrt{\left\langle \begin{pmatrix} 2 \\ 0 \end{pmatrix}, \begin{pmatrix} 2 \\ 0 \end{pmatrix} \right\rangle}
+= \sqrt{2^2 + 0^2}
+= \sqrt{4}
+= 2.00
+\end{equation}
+
+\footnotesize
+```{r}
+norm(matrix(c(2,0),nrow = 2), type = "2")             # Vektorlänge = l_2 Norm
+```
+\normalsize
+
+**Beispiel (2)**
+
+\begin{equation}
+\left\lVert \begin{pmatrix} 2 \\ 2 \end{pmatrix} \right\rVert
+= \sqrt{\left\langle \begin{pmatrix} 2 \\ 2 \end{pmatrix}, \begin{pmatrix} 2 \\ 2 \end{pmatrix} \right\rangle}
+= \sqrt{2^2 + 2^2}
+= \sqrt{8}
+\approx 2.83
+\end{equation}
+
+\footnotesize
+```{r}
+norm(matrix(c(2,2),nrow = 2), type = "2")             # Vektorlänge = l_2 Norm
+```
+\normalsize
+
+**Beispiel (3)**
+
+\begin{equation}
+\left\lVert \begin{pmatrix} 2 \\ 4 \end{pmatrix} \right\rVert
+= \sqrt{\left\langle \begin{pmatrix} 2 \\ 4 \end{pmatrix}, \begin{pmatrix} 2 \\ 4 \end{pmatrix} \right\rangle}
+= \sqrt{2^2 + 4^2}
+= \sqrt{20}
+\approx 4.47
+\end{equation}
+
+\footnotesize
+```{r}
+norm(matrix(c(2,4),nrow = 2), type = "2")             # Vektorlänge = l_2 Norm
+```
+\normalsize
+
+```{r, eval = F, echo = F}
+library(latex2exp)
+pdf(
+file        = file.path("./_figures/108-länge-R2.pdf"),
+width       = 4,
+height      = 4)
+par(
+family      = "sans",
+mfcol       = c(1,1),
+pty         = "s",
+bty         = "l",
+lwd         = 1,
+las         = 1,
+mgp         = c(2,1,0),
+xaxs        = "i",
+yaxs        = "i",
+font.main   = 1,
+cex         = .95,
+cex.main    = 1.2)
+
+# Vektordefinitionen
+x           = c(2,0)
+y           = c(2,2)
+z           = c(2,4)
+
+# Visualisierung
+plot(
+NULL,
+xlab        = TeX("$x_1$"),
+ylab        = TeX("$x_2$"),
+xlim        = c(0,5),
+ylim        = c(0,5))
+grid()
+points(
+c(x[1],y[1],z[1]),
+c(x[2],y[2],z[2]),
+pch = 19)
+text(2.5,0.5,expression(bgroup("(", atop("2", "0"), ")")), cex = .9)
+text(2.5,2  ,expression(bgroup("(", atop("2", "2"), ")")), cex = .9)
+text(2.5,4  ,expression(bgroup("(", atop("2", "4"), ")")), cex = .9)
+arrows(
+x0          = c(0,0,0),
+y0          = c(0,0,0),
+x1          = c(x[1],y[1],z[1]),
+y1          = c(x[2],y[2],z[2]),
+angle       = 20,
+length      = .1,
+xpd         = TRUE,
+lwd         = 2)
+dev.off()
+```
+
+![Vektorlänge in $\mathbb{R}^2$](./_figures/108-länge-R2){#fig-länge-R2 fig-align="center"}
+
+
+Für den Abstand $d(x,y)$ zweier Vektoren $x,y\in\mathbb{R}^m$ halten wir ohne Beweis 
+fest, dass er zum einen nicht-negativ und symmetrisch ist, also dass
+\begin{equation}
+d(x,y) \ge 0, d(x,x) = 0 \mbox{ und } d(x,y) = d(y,x)
+\end{equation}
+gelten. Zudem erfüllt $d(x,y)$ die sogenannte *Dreiecksungleichung*, die besagt,
+dass die direkte Wegstrecke zwischen zwei Punkten im Raum immer kürzer ist als eine
+indirekte Wegstrecke über einen dritten Punkt,
+\begin{equation}
+d(x,y) \le d(x,z) + d(z,y).
+\end{equation}
+Damit erfüllt $d(x,y)$ wichtige Aspekte der räumlichen Anschauung. Wir geben zwei
+Beispiele für die Bestimmung von Abständen von Vektoren in $\mathbb{R}^2$, die wir
+in @fig-abstand-R2 visualisieren.
+
+**Beispiel (1)**
+
+\begin{equation}
+d\left(\begin{pmatrix} 1 \\ 1 \end{pmatrix}, \begin{pmatrix} 2 \\ 2 \end{pmatrix}\right)
+= \left\lVert \begin{pmatrix}  1 \\ 1 \end{pmatrix} - \begin{pmatrix} 2 \\ 2 \end{pmatrix} \right\rVert
+= \left\lVert \begin{pmatrix} -1 \\ -1 \end{pmatrix}  \right\rVert
+= \sqrt{(-1)^2 + (-1)^2}
+= \sqrt{2}
+\approx 1.41
+\end{equation}
+
+\footnotesize
+```{r}
+norm(matrix(c(1,1),nrow = 2) - matrix(c(2,2),nrow = 2), type = "2")
+```
+\normalsize
+
+**Beispiel (2)**
+
+\begin{equation}
+d\left(\begin{pmatrix} 1 \\ 1 \end{pmatrix}, \begin{pmatrix} 4 \\ 1 \end{pmatrix}\right)
+= \left\lVert \begin{pmatrix}  1 \\ 1 \end{pmatrix} - \begin{pmatrix} 4 \\ 1 \end{pmatrix} \right\rVert
+= \left\lVert \begin{pmatrix} -3 \\ 0 \end{pmatrix} \right\rVert
+= \sqrt{(-3)^2 + 0^2}
+= \sqrt{9}
+= 3
+\end{equation}
+
+\footnotesize
+```{r}
+norm(matrix(c(1,1),nrow = 2) - matrix(c(1,4),nrow = 2), type = "2")
+```
+\normalsize
+
+
+```{r, eval = F, echo = F}
+library(latex2exp)
+pdf(
+file        = file.path("./_figures/108-abstand-R2.pdf"),
+width       = 4,
+height      = 4)
+par(
+family      = "sans",
+mfcol       = c(1,1),
+pty         = "s",
+bty         = "l",
+lwd         = 1,
+las         = 1,
+mgp         = c(2,1,0),
+xaxs        = "i",
+yaxs        = "i",
+font.main   = 1,
+cex         = .95,
+cex.main    = 1.2)
+
+# Vektordefinitionen
+x           = c(1,1)
+y           = c(2,2)
+z           = c(4,1)
+
+# Visualisierung
+plot(
+NULL,
+xlab        = TeX("$x_1$"),
+ylab        = TeX("$x_2$"),
+xlim        = c(0,5),
+ylim        = c(0,5))
+grid()
+points(
+c(x[1],y[1],z[1]),
+c(x[2],y[2],z[2]),
+pch = 19)
+text(.5,1,expression(bgroup("(", atop("1", "1"), ")")), cex = .9)
+text(2,2.75  ,expression(bgroup("(", atop("2", "2"), ")")), cex = .9)
+text(4,1.75  ,expression(bgroup("(", atop("4", "1"), ")")), cex = .9)
+arrows(
+x0          = c(x[1],x[1]),
+y0          = c(x[2],x[2]),
+x1          = c(y[1],z[1]),
+y1          = c(y[2],z[2]),
+angle       = 20,
+length      = .1,
+xpd         = TRUE,
+lwd         = 1,
+col         = "gray80")
+dev.off()
+```
+
+![Vektorabstände in $\mathbb{R}^2$](./_figures/108-abstand-R2){#fig-abstand-R2 fig-align="center"}
+
+Schließlich halten wir fest, dass für die Berechnung des Winkels zwischen 
+zwei Vektoren anhand obiger Definition gilt, dass die Kosinusfunktion $\cos$ 
+auf $[0,\pi]$ bijektiv,  also invertierbar mit der Umkehrfunktion $acos$, 
+der Arkuskosinusfunktion, ist. Auch für den Begriff des Winkels wollen wir 
+zwei Beispiele betrachten. Man beachte dabei insbesondere, dass die @def-länge-abstand-winkel
+den Winkel in Radians angibt. Für eine Angabe in Grad ist eine entsprechende
+Umrechnung erforderlich.
+
+**Beispiel (1)**
+
+\small
+\begin{equation}
+\mbox{acos}
+\left(\frac{\left\langle \begin{pmatrix} 3 \\ 0 \end{pmatrix}, \begin{pmatrix} 3 \\ 3 \end{pmatrix} \right\rangle}
+           {\left\lVert  \begin{pmatrix} 3 \\ 0 \end{pmatrix} \right\rVert \left\lVert \begin{pmatrix} 3 \\ 3 \end{pmatrix} \right\rVert}
+\right)
+= \mbox{acos}
+\left(\frac{3\cdot 3 + 3 \cdot 0}
+           {\sqrt{3^2 + 0^2} \cdot \sqrt{3^2 + 3^2}}
+\right)
+= \mbox{acos}
+\left(\frac{9}
+           {3 \cdot \sqrt{18}}
+\right)
+= \frac{\pi}{4}
+\approx 0.785
+\end{equation}
+\normalsize
+
+Die Umrechnung in Grad ergibt dann
+\begin{equation}
+0.785 \cdot \frac{180°}{\pi} = 45°
+\end{equation}
+In **R** implementiert man dies wie folgt.
+
+\footnotesize
+```{r}
+x = matrix(c(3,0), nrow = 2)                                 # Vektor 1
+y = matrix(c(3,3), nrow = 2)                                 # Vektor 2
+w = acos(sum(x*y)/(sqrt(sum(x*x))*sqrt(sum(y*y)))) * 180/pi  # Winkel in Grad
+print(w)
+```
+\normalsize
+
+Beispiel (2)
+
+\small
+\begin{equation}
+\alpha
+= \mbox{acos}
+\left(\frac{\left\langle \begin{pmatrix} 3 \\ 0 \end{pmatrix}, \begin{pmatrix} 0 \\ 3 \end{pmatrix} \right\rangle}
+           {\left\lVert  \begin{pmatrix} 3 \\ 0 \end{pmatrix} \right\rVert \left\lVert \begin{pmatrix} 0 \\ 3 \end{pmatrix} \right\rVert}
+\right)
+= \mbox{acos}
+\left(\frac{3\cdot 0 + 0 \cdot 3}
+           {\sqrt{3^2 + 0^2} \cdot \sqrt{0^2 + 3^2}}
+\right)
+= \mbox{acos}
+\left(\frac{0}
+           {3 \cdot 3}
+\right)
+= \frac{\pi}{2}
+\approx 1.57
+\end{equation}
+\normalsize
+Die Umrechnung in Grad ergibt dann
+\begin{equation}
+\frac{\pi}{2} \cdot \frac{180°}{\pi} = 90°
+\end{equation}
+Die entsprechende **R** Implementation lautet wie folgt.
+
+\footnotesize
+```{r}
+x = matrix(c(3,0), nrow = 2)                                    # Vektor 1
+y = matrix(c(0,3), nrow = 2)                                    # Vektor 2
+w = acos(sum(x*y)/(sqrt(sum(x*x))*sqrt(sum(y*y)))) * 180/pi     # Winkel in Grad
+print(w)
+```
+\normalsize
+
+```{r, eval = F, echo = F}
+library(latex2exp)
+pdf(
+file        = file.path("./_figures/108-winkel-R2.pdf"),
+width       = 4,
+height      = 4)
+par(
+family      = "sans",
+mfcol       = c(1,1),
+pty         = "s",
+bty         = "l",
+lwd         = 1,
+las         = 1,
+mgp         = c(2,1,0),
+xaxs        = "i",
+yaxs        = "i",
+font.main   = 1,
+cex         = .95,
+cex.main    = 1.2)
+
+# Vektordefinitionen
+x           = c(3,0)
+y           = c(3,3)
+z           = c(0,3)
+
+# Visualisierung
+plot(
+NULL,
+xlab        = TeX("$x_1$"),
+ylab        = TeX("$x_2$"),
+xlim        = c(0,5),
+ylim        = c(0,5))
+grid()
+points(
+c(x[1],y[1],z[1]),
+c(x[2],y[2],z[2]),
+pch = 19,
+xpd = TRUE)
+text(3,.75,expression(bgroup("(", atop("3", "0"), ")")), cex = .9)
+text(3.5,3.5  ,expression(bgroup("(", atop("3", "3"), ")")), cex = .9)
+text(.5,3  ,expression(bgroup("(", atop("0", "3"), ")")), cex = .9)
+arrows(
+x0          = c(0,0,0),
+y0          = c(0,0,0),
+x1          = c(x[1],y[1],z[1]),
+y1          = c(x[2],y[2],z[2]),
+angle       = 20,
+length      = .1,
+xpd         = TRUE,
+lwd         = 2)
+dev.off()
+```
+![Winkel in $\mathbb{R}^2$](./_figures/108-winkel-R2){#fig-winkel-R2 fig-align="center"}
+
+
+
+Die Tatsache, dass zwei Vektoren einen rechten Winkel bilden können, also 
+gewissermaßen maximal nicht-parallel sein können, ist ein wichtiges geometrisches
+Prinzip und wird deshalb mit folgender Definition speziell ausgezeichnet. 
+
+:::{#def-orthogonalität-und-orthonormalität-von-vektoren}
+## Orthogonalität und Orthonormalität von Vektoren
+$\left((\mathbb{R}^m, +, \cdot), \langle \rangle \right)$ sei der Euklidische Vektorraum.
+
+\noindent (1) Zwei Vektoren $x,y \in \mathbb{R}^m$ heißen *orthogonal*, wenn gilt, dass
+\begin{equation}
+\langle x, y \rangle = 0
+\end{equation}
+\noindent (2)  Zwei Vektoren $x,y \in \mathbb{R}^m$ heißen *orthonormal*, wenn gilt, dass
+\begin{equation}
+\langle x, y \rangle = 0 \mbox{ und } \Vert x \Vert = \Vert y \Vert = 1.
+\end{equation}
+:::
+
+Für orthogonale und orthonormale Vektoren gilt also insbesondere auch
+\begin{equation}
+\cos \alpha
+= \frac{\langle x, y \rangle}{\Vert x \Vert \Vert y \Vert}
+= \frac{0}{\Vert x \Vert \Vert y \Vert}
+= 0,
+\end{equation}
+also
+\begin{equation}
+\alpha = \frac{\pi}{2} = 90°.
+\end{equation}
+
+## Lineare Unabhängigkeit {#sec-lineare-unabhängigkeit}
+
+In diesem Abschnitt führen wir den Begriff der *linearen Unabhängigkeit* von 
+Vektoren ein. Wir definieren dazu zunächst den Begriff der *Linearkombination*
+von Vektoren.
+
+:::{#def-linearkombination}
+## Linearkombination
+$\{v_1, v_2, ..., v_k\}$ sei eine Menge von $k$ Vektoren eines Vektorraums $V$
+und $a_1, a_2,...,a_k$ seien Skalare. Dann ist die *Linearkombination* der 
+Vektoren in $\{v_1, v_2, ..., v_k\}$ mit den *Koeffizienten* $a_1, a_2,...,a_k$ 
+definiert als der Vektor
+\begin{equation}
+w := \sum_{i=1}^k a_i v_i \in V.
+\end{equation}
+:::
+
+**Beispiel**
+
+Es seien
+\begin{equation}
+v_1 := \begin{pmatrix} 2 \\ 1 \end{pmatrix},
+v_2 := \begin{pmatrix} 1 \\ 1 \end{pmatrix},
+v_3 := \begin{pmatrix} 0 \\ 1 \end{pmatrix}
+\mbox{ und }
+a_1 := 2, a_2 := 3, a_3 := 0.
+\end{equation}
+Dann ergibt sich die Linearkombination von $v_1,v_2,v_3$ mit den Koeffizienten
+$a_1,a_2,a_3$ zu
+\begin{align}
+\begin{split}
+w
+& = a_1v_1 + a_2v_2 + a_3v_3                        \\
+& =  2 \cdot \begin{pmatrix} 2 \\ 1 \end{pmatrix}
+     + 3 \cdot \begin{pmatrix} 1 \\ 1 \end{pmatrix}
+     + 0 \cdot \begin{pmatrix} 0 \\ 1 \end{pmatrix}   \\
+& =   \begin{pmatrix} 4 \\ 2 \end{pmatrix}
+     + \begin{pmatrix} 3 \\ 3 \end{pmatrix}
+     + \begin{pmatrix} 0 \\ 0 \end{pmatrix}          \\
+& =   \begin{pmatrix} 7 \\ 5 \end{pmatrix}.
+\end{split}
+\end{align}
+
+Basierend auf dem Begriff der Linearkombination kann man nun den Begriff der
+*Linearen Unabhängigkeit* von Vektoren definieren.
+
+:::{#def-lineare-unabhängigkeit}
+## Lineare Unabhängigkeit
+$V$ sei ein Vektorraum. Eine Menge $W := \{w_1, w_2, ...,w_k\}$ von Vektoren in $V$ heißt
+*linear unabhängig*, wenn die einzige Repräsentation des Nullelements
+$0 \in V$ durch eine Linearkombination der $w \in W$ die sogenannte *triviale Repräsentation*
+\begin{equation}
+0 = a_1 w_1 + a_2 w_2 + \cdots + a_k w_k \mbox{ mit } a_1 = a_2 =  \cdots = a_k = 0
+\end{equation}
+ist. Wenn die Menge $W$ nicht linear unabhängig ist, dann heißt sie *linear abhängig*.
+:::
+
+Um zu prüfen, ob eine gegeben Menge von Vektoren linear abhängig oder unabhängig ist
+muss man prinzipiell für jede mögliche Linearkombination der gegebenen Vektoren, 
+ob sie Null ist. @thm-lineare-abhängigkeit-von-zwei-vektoren und @thm-lineare-abhängigkeit-einer-menge-von-vektoren 
+zeigen, wie dies für zwei bzw. endliche viele Vektoren auch mit weniger Aufwand 
+gelingen kann.
+
+:::{#thm-lineare-abhängigkeit-von-zwei-vektoren}
+## Lineare Abhängigkeit von zwei Vektoren
+$V$ sei ein Vektorraum. Zwei Vektoren $v_1, v_2 \in V$ sind linear abhängig,
+wenn einer der Vektoren ein skalares Vielfaches des anderen Vektors ist.
+:::
+
+:::{.proof}
+$v_1$ sei ein skalares Vielfaches von $v_2$, also
+\begin{equation}
+v_1 = \lambda v_2 \mbox{ mit } \lambda \neq 0.
+\end{equation}
+Dann gilt
+\begin{equation}
+v_1 - \lambda v_2 = 0.
+\end{equation}
+Dies aber entspricht der Linearkombination
+\begin{equation}
+a_1v_1 + a_2v_2 = 0
+\end{equation}
+mit $a_1 = 1 \neq 0$ und  $a_2 = -\lambda \neq 0$. Es gibt also eine Linearkombination
+des Nullelementes, die nicht die triviale Repräsentation ist, und damit sind
+$v_1$ und $v_2$ nicht linear unabhängig.
+::: 
+
+:::{#thm-lineare-abhängigkeit-einer-menge-von-vektoren}
+## Lineare Abhängigkeit einer Menge von Vektoren
+$V$ sei ein Vektorraum und $w_1,...,w_k \in V$ sei eine Menge von Vektoren in $V$.
+Wenn einer der Vektoren $w_i$ mit $i = 1,...,k$ eine Linearkombination der anderen
+Vektoren ist, dann ist die Menge der Vektoren linear abhängig.
+:::
+
+
+:::{.proof}
+Die Vektoren $w_1,...,w_k$ sind genau dann linear abhängig, wenn gilt, dass
+$\sum_{i=1}^k a_i w_i = 0$ mit mindestens einem $a_i \neq 0$ . Es sei also zum
+Beispiel $a_j \neq 0$. Dann gilt
+\begin{equation}
+0 = \sum_{i=1}^k a_i w_i = \sum_{i=1, i \neq j}^k a_i w_i + a_jw_j
+\end{equation}
+Also folgt
+\begin{equation}
+a_jw_j  = - \sum_{i=1, i \neq j}^k a_i w_i
+\end{equation}
+und damit
+\begin{equation}
+w_j  = - a_j^{-1}\sum_{i=1, i \neq j}^k a_i w_i = - \sum_{i=1, i \neq j}^k (a_j^{-1}a_i) w_i
+\end{equation}
+Also ist $w_j$ eine Linearkombination der $w_i$ für $i = 1,...,k$ mit $i \neq j$.
+:::
+
+## Vektorraumbasen {#sec-vektorraumbasen}
+
+In diesem Abschnitt wollen wir den Begriff der *Vektorraumbasis* einführen. Eine
+Basis eines Vektorraums ist eine Untermenge von Vektoren des Vektorraums, die 
+zur Darstellung aller Vektoren des Vektorraums genutzt werden kann. Im Sinne 
+der linearen Kombination von Vektoren enthält also eine Vektorraumbasis alle
+nötige Information zur Konstruktion des entsprechenden Vektorraums. Allerdings
+ist eine Vektorraumbasis in der Regel nicht eindeutig und die viele Vektorräume
+haben in der Tat unendlich viele Basen. Die folgenden Definition sagt zunächst aus,
+wie aus einer beschränkten Anzahl von Vektoren mithilfe von Linearkombinationen
+unendlich viele Vektoren gebildet werden können.
+
+:::{#def-lineare-hülle-und-aufspannen}
+## Lineare Hülle und Aufspannen
+$V$ sei ein Vektorraum und es sei $W := \{w_1,...,w_k\} \subset V$. Dann ist die
+*lineare Hülle* von $W$ definiert als die Menge aller Linearkombinationen
+der Elemente von $W$,
+\begin{equation}
+\mbox{Span}(W) := \left\lbrace \sum_{i=1}^k a_iw_i \vert a_1,...,a_k \mbox{ sind skalare Koeffizienten } \right\rbrace
+\end{equation}
+Man sagt, dass eine Menge von Vektoren $W \subseteq V$ *einen Vektorraum $V$ aufspannt*,
+wenn jedes $v \in V$ als eine Linearkombination von Vektoren in $W$ geschrieben werden kann.
+:::
+
+Wir definieren nun den Begriff der *Basis* eines Vektorraums.
+
+:::{#def-basis}
+## Basis
+$V$ sei ein Vektorraum und es sei $B \subseteq V$. $B$ heißt eine *Basis von $V$*, wenn 
+
+(1) die Vektoren in $B$ linear unabhängig sind und 
+(2) die Vektoren in $B$ den Vektorraum $V$ aufspannen.
+:::
+
+Basen von Vektorräumen haben folgende wichtige Eigenschaften.
+
+:::{#thm-eigenschaften-von-basen}
+## Eigenschaften von Basen 
+(1) Alle Basen eines Vektorraums beinhalten die gleiche Anzahl von Vektoren.
+(2) Jede Menge von $m$ linear unabhängigen Vektoren ist Basis eines $m$-dimensionalen Vektorraums.
+:::
+
+Für einen Beweis dieses sehr tiefen Theorems verweisen wir auf die weiterführende
+Literatur. Die mit obigem Theorem benannte eindeutige Anzahl der Vektoren einer 
+Basis eines Vektorraums heißt die *Dimension des Vektorraums*. Da es in der Regel
+unendliche viele Mengen von *m* linear unabhängigen Vektoren in einem Vektorraum gibt
+haben Vektorräume in der Regel unendlich viele Basen. 
+
+Betrachtet man nun einen einzelnen Vektor in einem Vektorraum, so kann man sich
+fragen, wie man diesen mithilfe einer Vektorraumbasis darstellen kann. Dies führt
+auf folgende Begriffsbildungen.
+
+:::{#def-basisdarstellung-und-koordinaten}
+## Basisdarstellung und Koordinaten
+$B := \{b_1,...,b_m\}$ sei eine Basis eines $m$-dimensionalen Vektorraumes $V$
+und es sei $v \in V$. Dann heißt die Linearkombination
+\begin{equation}
+v = \sum_{i = 1}^m c_i b_i
+\end{equation}
+die *Darstellung von $v$ bezüglich der Basis $B$* und die Koeffizienten
+$c_1,...,c_m$ heißen die *Koordinaten von $v$ bezüglich der Basis $B$*.
+:::
+
+Bei fester Basis sind auch die Koordinaten eines Vektors bezüglich dieser Basis
+fest und eindeutig. Dies ist die Aussage folgenden Theorems.
+
+:::{#thm-eindeutigkeit-der-basisdarstellung}
+## Eindeutigkeit der Basisdarstellung
+Die Basisdarstellung eines $v \in V$ bezüglich einer Basis $B$ ist eindeutig.
+:::
+
+:::{.proof}
+Ohne Beschränkung der Allgemeinheit nehmen wir an, dass der Vektorraum von Dimension
+$m$ ist. Nehmen wir an, dass zwei Darstellungen von $v$ bezüglich der Basis $B$
+existieren, also dass
+\begin{align}
+\begin{split}
+v & = a_1 b_1 + \cdots + a_m b_m \\
+v & = c_1 b_1 + \cdots + c_m b_m
+\end{split}
+\end{align}
+Subtraktion der unteren von dern oberen Gleichung ergibt
+\begin{equation}
+0 = (a_1 - c_1) b_1 + \cdots + (a_m - c_m) b_m
+\end{equation}
+Weil die $b_1,...,b_m$ linear unabhängig sind, gilt aber, dass $(a_i - c_i) = 0$
+für alle $i = 1,...,m$ und somit sind die beiden Darstellungen von $v$ bezüglich
+der Basis $B$ identisch.
+:::
+
+Zum Abschluss dieses Abschnitts wollen wir eine spezielle Basis des reellen
+Vektorraums betrachten.
+
+:::{#def-orthonormalbasis-von-Rm}
+## Orthonormalbasis von $\mathbb{R}^m$
+Eine Menge von $m$ Vektoren $v_1,...,v_m \in \mathbb{R}^m$ heißt
+*Orthonormalbasis* von $\mathbb{R}^m$, wenn $v_1,...,v_m$ jeweils die
+Länge 1 haben und wechselseitig orthogonal sind, also wenn
+\begin{equation}
+\langle v_i, v_j \rangle =
+\begin{cases}
+1 	& \mbox{ für } i = j 	\\
+0 	& \mbox{ für } i \neq j
+\end{cases}.
+\end{equation}
+:::
+
+Wir wollen zunächst ein Beispiel für eine Orthonormalbasis betrachten.
+
+**Beispiel (1)**
+
+Es ist
+\begin{equation}
+B_1 :=
+\left\lbrace
+\begin{pmatrix}
+1 \\ 0
+\end{pmatrix},
+\begin{pmatrix}
+0 \\ 1
+\end{pmatrix}
+\right\rbrace
+\end{equation}
+eine Orthonormalbasis von $\mathbb{R}^2$, denn $B_1$ besteht aus zwei Vektoren und es gelten
+\begin{equation}
+\left\langle
+\begin{pmatrix}
+1 \\ 0
+\end{pmatrix},
+\begin{pmatrix}
+1 \\ 0
+\end{pmatrix}
+\right\rangle
+= 1 \cdot 1 + 0 \cdot 0
+= 1 + 0
+= 1
+\end{equation}
+sowie
+\begin{equation}
+\left \langle
+\begin{pmatrix}
+0 \\ 1
+\end{pmatrix},
+\begin{pmatrix}
+0 \\1
+\end{pmatrix}
+\right \rangle
+= 0 \cdot 0 + 1 \cdot 1
+= 0 + 1
+= 1
+\end{equation}
+und
+\begin{equation}
+\left \langle
+\begin{pmatrix}
+1 \\ 0
+\end{pmatrix},
+\begin{pmatrix}
+0 \\ 1
+\end{pmatrix}
+\right \rangle
+=    1 \cdot 0 +  0  \cdot 1
+= 0 + 0
+= 0
+\end{equation}
+
+Für allgemeine reelle Vektorräume werden Basen der Form von $B_1$ mit dem 
+Begriff der *kanonischen Basis* speziell ausgezeichnet.
+
+:::{#def-kanonische-basis-und-kanonische-einheitsvektoren}
+## Kanonische Basis und kanonische Einheitsvektoren
+Die Orthonormalbasis
+\begin{equation}
+B :=
+\left\lbrace
+e_1,...,e_m
+\vert
+e_{i_j} = 1 \mbox{ für } i =  j \mbox{ und } e_{i_j} =  0 \mbox{ für } i \neq j
+\right\rbrace
+\subset \mathbb{R}^m
+\end{equation}
+heißt die *kanonische Basis* von $\mathbb{R}^m$ und die $e_{i_j}$ heißen
+*kanonische Einheitsvektoren*.
+:::
+$B_1$ aus Beispiel (1) ist also die kanonische Basis von $\mathbb{R}^2$. 
+
+Die kanonische Basis von $\mathbb{R}^3$ ist
+\begin{equation}
+B :=
+\left\lbrace
+\begin{pmatrix}
+1 \\ 0 \\ 0
+\end{pmatrix},
+\begin{pmatrix}
+0 \\ 1 \\ 0
+\end{pmatrix},
+\begin{pmatrix}
+0 \\ 0 \\ 1
+\end{pmatrix}
+\right\rbrace.
+\end{equation}
+
+Allerdings gibt es auch nicht kanonische Orthonormalbasen. Dazu betrachten wir
+ein weiteres Beispiel
+
+**Beispiel (2)**
+
+Es ist auch
+\begin{equation}
+B_2 :=
+\left\lbrace
+\begin{pmatrix}
+\frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}}
+\end{pmatrix},
+\begin{pmatrix} - \frac{1}{\sqrt{2}} \\ \quad \frac{1}{\sqrt{2}}
+\end{pmatrix}
+\right\rbrace
+\end{equation}
+eine Orthonormalbasis von $\mathbb{R}^2$, denn $B_2$ besteht aus zwei Vektoren
+und es gelten
+\begin{equation}
+\left \langle
+\begin{pmatrix}
+\frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}}
+\end{pmatrix},
+\begin{pmatrix}
+\frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}}
+\end{pmatrix}
+\right \rangle
+= \frac{1}{\sqrt{2}} \cdot \frac{1}{\sqrt{2}} + \frac{1}{\sqrt{2}} \cdot \frac{1}{\sqrt{2}}
+= \frac{1}{2} + \frac{1}{2}
+= 1,
+\end{equation}
+sowie
+\begin{equation}
+\left \langle
+\begin{pmatrix} - \frac{1}{\sqrt{2}} \\ \quad \frac{1}{\sqrt{2}}
+\end{pmatrix},
+\begin{pmatrix} - \frac{1}{\sqrt{2}} \\ \quad \frac{1}{\sqrt{2}}
+\end{pmatrix}
+\right \rangle
+= \left(- \frac{1}{\sqrt{2}} \right)\cdot \left(- \frac{1}{\sqrt{2}} \right) + \frac{1}{\sqrt{2}} \cdot \frac{1}{\sqrt{2}}
+= \frac{1}{2} + \frac{1}{2}
+= 1
+\end{equation}
+und
+\begin{equation}
+\left \langle
+\begin{pmatrix} - \frac{1}{\sqrt{2}} \\ \quad \frac{1}{\sqrt{2}}
+\end{pmatrix},
+\begin{pmatrix}
+\frac{1}{\sqrt{2}} \\  \frac{1}{\sqrt{2}}
+\end{pmatrix}
+\right \rangle
+= - \frac{1}{\sqrt{2}} \cdot \frac{1}{\sqrt{2}} + \frac{1}{\sqrt{2}}   \cdot \frac{1}{\sqrt{2}}
+= - \frac{1}{2} + \frac{1}{2}
+= 0
+\end{equation}
+
+Wir visualisieren die beiden Orthonormalbasen $B_1$ und $B_2$ von $\mathbb{R}^2$
+in @fig-basen-R2. 
+
+```{r eval = F, echo = F}
+library(latex2exp)
+pdf(
+file        = file.path("./_figures/108-basen-R2.pdf"),
+width       = 6.5,
+height      = 4)
+par(
+family      = "sans",
+mfcol       = c(1,1),
+bty         = "l",
+lwd         = 1,
+las         = 1,
+mgp         = c(2,1,0),
+xaxs        = "i",
+yaxs        = "i",
+font.main   = 1,
+cex         = .95,
+cex.main    = 1.2)
+
+# Vektordefinitionen
+x           = c(1,0)
+y           = c(0,1)
+v           = 1/sqrt(2)*c(1,1)
+w           = 1/sqrt(2)*c(-1,1)
+p           = c(1/3,2/3)
+
+# Visualisierung
+plot(
+NULL,
+xlab        = TeX("$x_1$"),
+ylab        = TeX("$x_2$"),
+xlim        = c(-1.2,1.2),
+ylim        = c(0,1.2))
+grid()
+points(
+c(x[1],y[1],v[1],w[1],p[1]),
+c(x[2],y[2],v[2],w[2],p[2]),
+pch = 19,
+xpd = TRUE,
+col = c("gray40", "gray40", "gray80", "gray80", "blue"))
+text(0.75 ,0.15, TeX("$B_1$"), col = "gray40", cex = 1.5)
+text(-0.45,0.65, TeX("$B_2$"), col = "gray80", cex = 1.5)
+arrows(
+x0          = c(0,0,0,0),
+y0          = c(0,0,0,0),
+x1          = c(x[1],y[1],v[1],w[1]),
+y1          = c(x[2],y[2],v[2],w[2]),
+angle       = 20,
+length      = .1,
+xpd         = TRUE,
+lwd         = 2,
+col         = c("gray40", "gray40", "gray80", "gray80"))
+dev.off()
+```
+
+![Zwei Basen von $\mathbb{R}^2$](./_figures/108-basen-R2){#fig-basen-R2 fig-align="center"}
+
+
+## Selbstkontrollfragen {#sec-selbstkontrollfragen-vektoren}
+
+\small
+1. Geben Sie die Definition eines Vektorraums wieder.
+1. Geben Sie die Definition des reellen Vektorraums wieder.
+1. Es seien 
+\begin{equation}
+x := \begin{pmatrix} 2 \\ 1 \end{pmatrix}, 
+y := \begin{pmatrix} 0 \\ 1 \end{pmatrix}
+\mbox{ und } 
+a := 2. 
+\end{equation}
+Berechnen Sie
+\begin{equation}
+v = a(x+y) \mbox{ und } w = \frac{1}{a}(y-x)
+\end{equation}
+1. Geben Sie die Definition des Skalarproduktes auf $\mathbb{R}^m$ wieder.
+1. Für
+$$
+x := \begin{pmatrix} 2 \\ 1 \\ 3 \end{pmatrix},
+y := \begin{pmatrix} 1 \\ 0 \\ 1 \end{pmatrix},
+z := \begin{pmatrix} 3 \\ 1 \\ 0 \end{pmatrix} 
+$$ {#eq-xyz}
+berechnen Sie
+\begin{equation}
+\langle x,y \rangle, \langle x, z \rangle, \langle y,z \rangle
+\end{equation}
+1. Geben Sie die Definition des Euklidischen Vektorraums wieder.
+1. Geben Sie die Definition der Länge eines Vektors im Euklidischen Vektorraum wieder,
+1. Berechnen Sie die Längen der Vektoren $x,y,z$ aus @eq-xyz.
+1. Geben Sie Definition des Abstands zweier Vektoren im Euklidischen Vektorraum wieder.
+1. Berechnen Sie $d(x,y), d(x,z)$ und $d(y,z)$ für $x,y,z$  aus @eq-xyz.
+1. Geben Sie die Definition des Winkels zwischen zwei Vektoren im Euklidischen Vektorraum wieder.
+1. Berechnen Sie die Winkel zwischen den Vektoren $x$ und $y$, $x$ und $z$, sowie $y$ und $z$ aus @eq-xyz.
+1. Geben Sie die Definitionen der Orthogonalität und Orthonormalität von Vektoren wieder.
+1. Geben Sie die Definition der Linearkombination von Vektoren wieder.
+1. Geben Sie die Definition der linearen Unabhängigkeit von Vektoren wieder.
+1. Woran kann man erkennen, ob zwei reelle Vektoren linear abhängig sind oder nicht?
+1. Geben Sie die Definition der linearen Hülle einer Menge von Vektoren wieder.
+1. Geben Sie die Definition der Basis eines Vektorraums wieder.
+1. Geben Sie das Theorem zu den Eigenschaften von Vektorraumbasen wieder.
+1. Geben Sie die Definition der Basisdarstellung eines Vektors wieder.
+1. Geben Sie die Definition eienr Orthonormalbasis von $\mathbb{R}^m$ wieder.
+1. Geben Sie die Definition der kanonischen Basis von $\mathbb{R}^m$ wieder.  
+\normalsize

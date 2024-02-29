@@ -1,0 +1,1051 @@
+# Kanonische Korrelationsanalyse {#sec-kanonische-korrelationsanalyse}
+\normalsize
+
+## Anwendungsszenario und Grundzüge {#sec-anwendungsszenario}
+
+Ausgangspunkt einer kanonischen Korrelationsanalyse ist die exploratorische Frage nach der Stärke
+des Zusammenhangs einer multivariaten unabhängigen Variablen $x$ und einer multivariaten 
+abhängigen Variable $y$. Im Kontext der kanonischen Korrelationsanalyse werden 
+diese Variablen auch oft als *Prädiktoren* und *Kriterien*, respektive, bezeichnet.
+Dabei werden vorliegende Daten von sowohl der Prädiktoren als auch der Kriterien 
+als Realisierungen von unabhängig und identisch verteilten $m_x$- bzw. $m_y$-dimensionalen 
+Zufallsvektoren betrachtet. Um die Frage nach der Stärke des Zusammenhangs von 
+Prädiktoren und Kriterien zu beantworten, betrachtet die kanonische Korrelationsanalyse 
+Linearkombinationen der Komponenten der Prädiktoren und Kriterien. Wir bezeichnen 
+die Linearkombinationen von $x$ und $y$ mit Parametervektoren $a \in \mathbb{R}^{m_x}$ 
+und $b \in \mathbb{R}^{m_y}$ 
+im Folgenden mit
+\begin{equation}
+\xi  := a^Tx  
+\mbox{ und }
+\upsilon := b^Ty  
+\end{equation}
+$\xi$ und $\upsilon$ sind dann als Linearkombinationen von Zufallsvariablen selbst 
+Zufallsvariablen, deren Korrelation $\rho(\xi,\upsilon)$ berechnet werden kann. Die 
+kanonische Korrelationsanalyse bestimmt dann die Parametervektoren $a$ und $b$
+so, dass die Korrelation von $\xi$ und $\upsilon$ so groß wie möglich wird. Ist
+eine solche Parametervektorkombination und ihre entsprechende Korrelation, die
+dann als kanonische Korrelation bezeichnet gefunden, so kann $\xi$ als bester 
+Prädiktor und $\upsilon$ als "am besten prädizierbares Kriterium" interpretiert werden.
+
+Für Skalare $\alpha$ und $\beta$ sind die Korrelationen $\rho(\xi,\upsilon)$ 
+und $\rho(\alpha\xi,\beta\upsilon)$ allerdings, wie im Theorem zu Kovarianz 
+und Korrelation bei linear-affinen Transformationen gezeigt, identisch. Die 
+kanonische Korrelationsanalyse sucht deshalb speziell Parametervektoren $a$ 
+und $b$, für die $\rho(\xi,\upsilon)$ einerseits maximal ist und für die $\xi$ und 
+$\upsilon$ gleichzeitig jeweils eine standardisierte Varianz von 1 haben. 
+Da aufgrund des Theorem zu Kovarianz und Korrelation bei linear-affinen Transformationen 
+die Varianzen zu verschiedenen skalaren Vielfachen von $\xi$ und $\upsilon$ verschieden sind, 
+legt diese die Parametervektorwerte $a$ und $b$, für die  $\rho(\xi,\upsilon)$ maximal ist, 
+eindeutig fest. Zur Bestimmung einer kanonischen Korrelation und der Parametervektoren 
+von $a$ und $b$ ist man also auf ein Optimierungsproblem mit Nebenbedingungen geführt.
+
+In unser Darstellung kanonischen Korrelationsanalyse folgen wir @mardia1979.
+Dabei werden die Prädiktor- und Kriterienzufallsvektoren $x$ und $y$ in einem 
+Zufallsvektor 
+\begin{equation}
+z := \begin{pmatrix} x \\ y \end{pmatrix}
+\end{equation}
+zusammengefasst, für den wir durchgängig annehmen wollen, dass $\mathbb{E}(z) = 0_{m}$ 
+mit $m = m_x + m_y$ gilt. Im Anwendungskontext entspricht dies der Annahme, dass
+vor Durchführung der kanonischen Korrelationsanalyse die Stichprobenmittel 
+des Stichprobenmittels von den beobachteten Daten vor Durchführung der kanonischen
+Korrelationsanalyse subtrahiert werden. Da, wie wir sehen werden, die Schätzung
+der kanonischen Korrelation allerdings lediglich auf den Stichprobenkovarianzmatrizen
+beruht ist dieser Schritt verzichtbar.
+
+Der mathematische Fokus der Entwicklung der kanonischen Korrelationsanalyse nach 
+@mardia1979 liegt damit auf der Kovarianzmatrix $\mathbb{C}(z)$. Speziell ergeben 
+sich die Kovarianzen von Linearkombinationen von $x$ und $y$ aus Matrixprodukten 
+von $\mathbb{C}(z)$ und es können einige Matrixtheoreme, die in @sec-zufallsvektoren und
+@sec-eigenanalyse dokumentiert sind angewendet werden. Generell wird in der 
+Entwicklung nach @mardia1979 ein Optimierungsansatz mithilfe von Lagrangefunktionen,
+wie in den Originalarbeiten von @hotelling1935 und @hotelling1936 gewählt, zugunsten 
+der Eigenanalyse von Matrixprodukten supprimiert. Für die Entwicklung mit einem 
+Lagrangeansatz verweisen wir auf zum Beispiel @anderson2003.
+
+Im Folgenden diskutieren wir in @sec-mathematischer-hintergrund zunächst zwei
+Theoreme, die direkt durch die kanonische Korrelationsanalyse motiviert sind und
+die, zusammen mit den oben erwähnten Theoremen in @sec-zufallsvektoren und 
+@sec-eigenanalyse das analytische und probabilistische Fundament der kanonischen
+Korrelationsanalyse bilden. In @sec-modellformulierung-kka führen wir mit den 
+*kanonischen Korrelationen*, den *kanonischen Variaten* und den 
+*kanonischen Koeffizientenvektoren* dann die zentralen Begriffe der kanonischen 
+Korrelationsanalyse ein. In @sec-modellschaetzung-kka diskutieren wir dann, wie
+diese Größen auf Basis der Stichprobenkovarianzmatrix eines Datensatzes von 
+Prädiktoren- und Kriterienrealisierungen geschätzt werden können. In @sec-anwendungsbeispiel-kka
+schließlich wenden wir die kanonische Korrelationsanalyse auf das unten skizzierte
+Anwendungsbeispiel an. 
+
+### Anwendungsbeispiel {-}
+
+Als konkretes Anwendungsbeispiel für eine kanonische Korrelationanalyse betrachten 
+wir einen simulierten Datensatz zur Effektivität einer Psychotherapie bei Depressionen. 
+Dabei seien pro Patient:in
+vier Variablen verfügbar: Zum einen als Maße für die Therapiequalität die Dauer 
+der Psychotherapie (`DUR`) und die klinische Erfahrung der behandelnden Psychotherapeut:in (`EXP`);
+zum anderen als Maße für die Reduktion der Depressionssymptomatik sowohl BDI Score 
+und Glukokortikoidplasmalevel  Differenzwerte zwischen Beginn und Ende der Therapie 
+(`dBDI` und `dGLU`), wobei positive Werte eine Verringerung der Depressionssymptomatik 
+anzeigen sollen. Wir stellen uns vor, dass man im Sinne einer exploratorischen Analyse 
+daran interessiert ist, inwieweit die Variablen `DUR` ($x_1$) und `EXP` ($x_2$) 
+als Prädiktoren (unabhängige Variablen) mit den Variablen `dBDI` ($y_1$) und 
+`dGLU` ($y_2$) als Kriterien (abhängige Variablen) zusammenhängen. 
+Im Sinne obiger Bezeichner gilt hier also $m_x = m_y = 2$. @tbl-beispieldatensatz 
+zeigt dazu einen Beispieldatensatz für $n = 20$ Patient:innen.  
+
+
+```{r, echo = F, warning = F}
+library(MixMatrix)                                                              # Normalverteilungen
+set.seed(0)                                                                     # Ergebnisreproduzierbarkeit
+n           = 20                                                                # Anzahl Datenpunkte 
+m_x         = 2                                                                 # Anzahl Prädiktoren
+m_y         = 2                                                                 # Anzahl Kriterien 
+x_1         = runif(n,10,30)                                                    # Therapiedauer
+x_2         = runif(n, 0,10)                                                    # Therapeut:innenerfahrung 
+X           = matrix(c(x_1,x_2), nrow = n)                                      # Designmatrix
+B           = matrix(c(1,.1,                                                    # Wahre, unbekannte, Regressionskoeffizientenmatrix
+                       1,.2), 
+                     nrow  = m_y,
+                     byrow = T)                         
+Y           = rmatrixnorm(n=1, mean = X %*% B)                                  # Datenmatrix
+D           = data.frame(DUR  = X[,1],
+                         EXP  = X[,2],
+                         dBDI = Y[,1],
+                         dGLU = Y[,2])                  # Dataframe
+
+# Datensicherung
+fname       = "./_data/504-kanonische-korrelationsanalyse.csv" 
+write.csv(D, file = fname, row.names = FALSE)
+```
+
+\newpage
+\footnotesize
+```{r echo = F, eval = T}
+#| label: tbl-beispieldatensatz
+#| tbl-cap : "Beispielhafte Prädiktoren- und Kriterienrealisierungen im Kontext der Psychotherapie bei Depressionen"
+library(knitr)
+D           = read.csv("./_data/504-kanonische-korrelationsanalyse.csv")        # Einlesen des Datensatzes
+m           = 2                                                                 # Datendimension von Interesse
+n           = 20                                                                # Anzahl Datenpunkte pro Gruppe
+kable(head(D, n = 20L), digits = 1, align = "c")                                # Markdowntabellenoutput für head(D)
+``` 
+
+## Mathematischer Hintergrund {#sec-mathematischer-hintergrund}
+\normalsize
+
+Folgendes Theorem bildet das analytische Fundament der kanonischen Korrelationsanalyse.
+
+:::{#thm-maximierung-quadratischer-formen-mit-nebenbedingungen}
+## Maximierung quadratischer Formen mit Nebenbedingungen
+
+$A \in \mathbb{R}^{m \times m}, B \in \mathbb{R}^{m \times m}$ pd seien 
+symmetrische Matrizen und $\lambda_1$ sei der größte Eigenwert von $B^{-1}A$
+mit assoziertem Eigenvektor $v_1 \in \mathbb{R}^m$. Dann ist $\lambda_1$ eine Lösung des
+Optimierungsproblems
+\begin{equation}\label{eq:opt_1}
+\max_{x} x^TAx \mbox{ unter der Nebenbedingung } x^TBx = 1.
+\end{equation}
+:::
+
+:::{.proof}
+$B^{1/2}$ sei die symmetrische Quadratwurzel von $B$ und es sei
+\begin{equation}
+y := B^{1/2}x \Leftrightarrow x = B^{-1/2}y
+\end{equation}
+Dann kann mit der symmetrischen Matrix
+\begin{equation}
+K := B^{-1/2}AB^{-1/2} \in \mathbb{R}^{m \times m}
+\end{equation}
+das Optimierungsproblem \eqref{eq:opt_1} geschrieben werden als
+\begin{equation}\label{eq:opt_2}
+\max_{y} y^T K y
+\mbox{ unter der Nebenbedingung }
+y^Ty = 1.
+\end{equation}
+Dies gilt, weil
+\begin{equation}
+\max_{x} x^TAx
+\Leftrightarrow
+\max_{y} \left(B^{-1/2}y\right)^TA\left(B^{-1/2}y\right)
+\Leftrightarrow
+\max_{y} y^TB^{-1/2}AB^{-1/2}y
+\Leftrightarrow
+\max_{y} y^TKy
+\end{equation}
+und
+\begin{equation}
+x^TBx = 1
+\Leftrightarrow y^T B^{-1/2}BB^{-1/2}y = 1
+\Leftrightarrow y^Ty = 1.
+\end{equation}
+Weil $K$ eine symmetrische Matrix ist, existiert die Orthonormalzerlegung (vgl. @sec-eigenanalyse)
+\begin{equation}
+K = Q\Lambda Q^T,
+\end{equation}
+wobei die Spalten der orthogonalen Matrix $Q$ die Eigenvektoren von $K$ und die
+Diagonalemente von $\Lambda$ die zugehörigen Eigenwerte von $K$ sind.
+Mit der orthogonalen Matrix $Q$ aus obiger Orthornomalzerlegung sei nun
+\begin{equation}
+z := Q^Ty \Leftrightarrow y := Qz.
+\end{equation}
+Dann kann das Optimierungsproblem \eqref{eq:opt_2} geschrieben werden als
+\begin{equation}\label{eq:opt_3}
+\max_{z} \sum_{i = 1}^m \lambda_i z_i^2 \mbox{ unter der Nebenbedingung } z^Tz = 1,
+\end{equation}
+weil
+\begin{equation}
+\max_{y} y^TKy
+\Leftrightarrow
+\max_{z} (Qz)^TK(Qz)
+\Leftrightarrow
+\max_{z} z^TQ^TQ\Lambda Q^TQz
+\Leftrightarrow
+\max_{z} z^T\Lambda z
+\Leftrightarrow
+\max_{z} \sum_{i=1}^m \lambda_i z_i^2
+\end{equation}
+und
+\begin{equation}
+y^Ty = 1
+\Leftrightarrow
+(Qz)^T Qz = 1
+\Leftrightarrow
+z^T Q^TQz = 1
+\Leftrightarrow
+z^T z = 1.
+\end{equation}
+Die Eigenwerte von $K$ seien nun absteigend sortiert, also $\lambda_1 \ge \cdots \ge \lambda_m$.
+Dann gilt für das Optimierungsproblem \eqref{eq:opt_3}, dass
+\begin{equation}
+\max_{z} \sum_{i = 1}^m \lambda_i z_i^2 \le \lambda_1,
+\end{equation}
+weil
+\begin{equation}
+\max_{z} \sum_{i = 1}^m \lambda_i z_i^2
+\le
+\max_{z} \sum_{i = 1}^m \lambda_1 z_i^2
+=
+\lambda_1 \max_{z} \sum_{i = 1}^m z_i^2
+=
+\lambda_1
+\end{equation}
+wobei sich die letzte Gleichung aus der Nebenbedingung $z^Tz=1$ ergibt. Schließlich
+gilt
+\begin{equation}
+\max_{z} \sum_{i = 1}^m \lambda_i z_i^2  = \lambda_1,
+\end{equation}
+für $z := e_1 = (1,0,...,0)^T$. Zusammenfassend heißt das, dass $z = e_1$ eine Lösung
+des Optimierungsproblem \eqref{eq:opt_3} ist und das $\lambda_1$ das entsprechende
+Maximum ist. Damit ergibt sich aber sofort, dass dann
+\begin{equation}
+y = Qz = Qe_1 =  q_1 \mbox{ und } x = B^{-1/2}q_1
+\end{equation}
+Lösungen der äquivalenten Optimierungsprobleme \eqref{eq:opt_2} und \eqref{eq:opt_1},
+respektive, sind. Nach Konstruktion ist $q_1$ ein Eigenvektor von $B^{-1/2}AB^{-1/2}$ und nach
+obigem Theorem zu Eigenwerten und Eigenvektoren von Matrixprodukten damit auch
+ein Eigenvektor von
+\begin{equation}
+B^{-1/2}B^{-1/2}A = B^{-1}A
+\end{equation}
+und die zugehörigen Eigenwerte sind gleich. Damit aber folgt, dass der
+größte Eigenwert von $B^{-1}A$ und sein assoziierter Eigenvektor eine Lösung von
+\begin{equation}
+\max_{x} x^TAx \mbox{ unter der Nebenbedingung } x^TBx = 1.
+\end{equation}
+ist.
+:::
+
+Nach Wortlaut des Theorems gilt also für die Funktion
+\begin{equation}
+f : \mathbb{R}^m \to \mathbb{R}, x \mapsto f(x) := x^TAx,
+\end{equation}
+dass
+\begin{equation}
+v_1 = \mbox{argmax}_{x} x^TAx \mbox{ unter der Nebenbedingung } x^TBx = 1
+\end{equation}
+und dass
+\begin{equation}
+\lambda_1 = \mbox{max}_{x} x^TAx \mbox{ unter der Nebenbedingung } x^TBx = 1.
+\end{equation}
+
+Das folgende Theorem setzt die für die kanonischen Korrelationsanalyse zentralen
+Größen der Varianzen von Linearkombinationen von Zufallsvektoren und der Korrelation
+von Linearkombinationen von Zufallsvektoren in Bezug zur Kovarianzmatrix der
+gemeinsamen Verteilung der Zufallsvektoren und bildet das probabilistische 
+Fundament der kanonischen Korrelationsanalyse.
+
+:::{#thm-linearkombinationen-von-zufallsvektorpartitionen}
+## Linearkombinationen von Zufallsvektorpartitionen
+Es sei
+\begin{equation}
+z = \begin{pmatrix} x \\ y \end{pmatrix}
+\mbox{ mit }
+\mathbb{E}(z) = 0_m
+\mbox{ und }
+\mathbb{C}(z) =
+\begin{pmatrix}
+\Sigma_{xx} & \Sigma_{xy} \\
+\Sigma_{yx} & \Sigma_{yy} \\
+\end{pmatrix}
+\end{equation}
+ein $m$-dimensionaler partitionierter Zufallsvektor sowie sein
+Erwartungswertvektor und seine Kovarianzmatrix, respektive. Weiterhin seien für
+$a \in \mathbb{R}^{m_x}$ und $b\in\mathbb{R}^{m_y}$
+die Zufallsvariablen
+\begin{equation}
+\xi := a^T x \mbox{ und } \upsilon := b^T y
+\end{equation}
+als Linearkombinationen der Komponenten von $x$ und $y$ definiert.
+Dann gelten
+\begin{itemize}
+\item[(1)] $\mathbb{V}(\xi) = a^T\Sigma_{xx}a$
+\item[(2)] $\mathbb{V}(\upsilon) = b^T\Sigma_{yy}b$
+\item[(2)] $\rho(\xi,\upsilon) = a^T \Sigma_{xy}b$, wenn  $\mathbb{V}(\xi) = 1$ und $\mathbb{V}(\upsilon) = 1$.
+\end{itemize}
+:::
+
+:::{.proof}
+Wir betrachten zunächst die Varianz von $\xi$. Mit dem Varianzverschiebungssatz 
+gilt
+\begin{align}
+\begin{split}
+\mathbb{V}(\xi)
+& = \mathbb{E}\left(\xi \xi \right) - \mathbb{E}(\xi)\mathbb{E}(\xi) \\
+& = \mathbb{E}\left((a^Tx) (a^Tx)\right) - \mathbb{E}\left(a^Tx\right)\mathbb{E}\left(a^Tx\right) \\
+& = \mathbb{E}\left((a^Tx) (a^Tx)^T\right) - \mathbb{E}\left(a^Tx\right)\mathbb{E}\left(a^Tx\right) \\
+& = \mathbb{E}\left(a^Txx^Ta\right) - \mathbb{E}\left(a^Tx\right)\mathbb{E}\left(a^Tx\right) \\
+& = a^T\mathbb{E}\left(xx^T\right)a - a^T\mathbb{E}(x)a^T\mathbb{E}(x) \\
+& = a^T\mathbb{E}\left(xx^T\right)a - a^T0_{m_x}a^T0_{m_x} \\
+& = a^T\Sigma_{xx}a. \\
+\end{split}
+\end{align}
+Der Beweis zur Varianz von $\upsilon$ folgt dann analog.
+Mit der Definition der Korrelation von Zufallsvariablen und mit $\mathbb{V}(\xi) = \mathbb{V}(\upsilon) = 1$
+und dem Kovarianzverschiebungssatz gilt
+\begin{align}
+\begin{split}
+\rho(\xi,\upsilon)
+& = \frac{\mathbb{C}(\xi,\upsilon)}{\sqrt{\mathbb{V}(\xi)}\sqrt{\mathbb{V}(\upsilon)}} \\
+& = \frac{\mathbb{C}(\xi,\upsilon)}{\sqrt{1}\sqrt{1}} \\
+& = \mathbb{C}(\xi,\upsilon) \\
+& = \mathbb{E}(\xi\upsilon) - \mathbb{E}(\xi)\mathbb{E}(\upsilon) \\
+& = \mathbb{E}\left((a^Tx)(b^Ty)\right) - \mathbb{E}(a^Tx)\mathbb{E}(b^Ty) \\
+& = \mathbb{E}\left((a^Tx)(b^Ty)^T\right) - \mathbb{E}(a^Tx)\mathbb{E}(b^Ty) \\
+& = \mathbb{E}\left(a^T xy^Tb \right) - \mathbb{E}(a^Tx)\mathbb{E}(b^Ty) \\
+& = a^T\mathbb{E}\left(xy^T \right)b - a^T\mathbb{E}(x)b^T\mathbb{E}(y) \\
+& = a^T\mathbb{E}\left(xy^T \right)b - a^T0_{m_x}b^T0_{m_y} \\
+& = a^T\Sigma_{xy}b. \\
+\end{split}
+\end{align}
+:::
+
+Die Varianz der Zufallsvariable $a^Tx$ ergibt sich also als die "quadrierte" Linearkombination 
+von $\Sigma_{xx}$ und  die Varianz der Zufallsvariable $b^Ty$ ergibt sich als 
+die "quadrierte" Linearkombination von $\Sigma_{yy}$. Die Korrelation der
+Zufallsvariablen  $a^Tx$ und $b^Ty$ schließlich ergibt sich  "quadrierte" 
+Linearkombination von $\Sigma_{xy}$.
+
+
+## Modellformulierung {#sec-modellformulierung-kka}
+
+Mit den beiden in @sec-mathematischer-hintergrund diskutierten Theoremen ist es
+nun möglich, die Begriffe der *kanonischen Koeffezientenvektoren*, der *kanonischen Variate*,
+und schließlich der *kanonischen Korrelationen* zu definieren.
+
+:::{#def-kanonische-koeffizientenvektoren-variate-korrelationen}
+## Kanonische Koeffizientenvektoren, Variate, Korrelationen
+Es seien
+\begin{equation}
+z = \begin{pmatrix} x \\ y \end{pmatrix}
+\mbox{ mit }
+\mathbb{E}(z) := 0_m
+\mbox{ und }
+\mathbb{C}(z) :=
+\begin{pmatrix}
+\Sigma_{xx} & \Sigma_{xy} \\
+\Sigma_{yx} & \Sigma_{yy} \\
+\end{pmatrix}
+\in \mathbb{R}^{m \times m}
+\end{equation}
+ein $m$-dimensionaler partitionierter Zufallsvektor sowie sein Erwartungswert
+und seine Kovarianzmatrix, respektive. Weiterhin sei
+\begin{equation}
+K := \Sigma_{xx}^{-1/2}\Sigma_{xy}\Sigma_{yy}^{-1/2} \in \mathbb{R}^{m_x \times m_y}
+\end{equation}
+mit der Singulärwertzerlegung
+\begin{equation}
+K = A \Lambda B^T,
+\end{equation}
+wobei
+\begin{equation}
+A       := \begin{pmatrix} \alpha_1 & \cdots & \alpha_k \end{pmatrix} \in \mathbb{R}^{m_x \times m_y}
+\mbox{ und }
+B       := \begin{pmatrix} \beta_1  & \cdots &  \beta_k \end{pmatrix} \in \mathbb{R}^{m_y \times m_y}
+\end{equation}
+die orthogonalen Matrix der Eigenvektoren von $KK^T$  und die orthogonale Matrix der Eigenvektoren von $K^TK$, respektive, bezeichnen und
+\begin{equation}
+\Lambda := \mbox{diag}\left(\lambda^{1/2}_1,...,\lambda_k^{1/2}\right) \in \mathbb{R}^{m_y \times m_y},
+\end{equation}
+die Diagonalmatrix der Quadratwurzeln der zugehörigen absteigend geordneten Eigenwerte bezeichnet.
+Schließlich seien für $i = 1,...,k$
+\begin{equation}
+a_i := \Sigma_{xx}^{-1/2}\alpha_i  \in \mathbb{R}^{m_x} \mbox{ und } b_i := \Sigma_{yy}^{-1/2}\beta_i \in \mathbb{R}^{m_y}.
+\end{equation}
+Dann heißen für $i = 1,...,k$
+\begin{itemize}
+\itemsep0mm
+\item[(1)] $a_i \in \mathbb{R}^{m_x}$ und $b_i \in \mathbb{R}^{m_y}$ die \textit{$i$ten kanonischen Koeffizientenvektoren},
+\item[(2)] die Zufallsvektoren $\xi_i := a_i^Tx$ und $\upsilon_i := b_i^Ty$ die $i$ten \textit{$i$ten kanonischen Variaten} und
+\item[(3)] $\rho_i := \lambda_i^{1/2}$ die \textit{$i$te kanonische Korrelation}.
+\end{itemize}
+:::
+
+Ihre Bedeutsamkeit erlangen diese Begriffe durch ihre Eigenschaften, die wir
+im folgenden Theorem zusammenfassen.
+
+:::{#thm-eigenschaften-kanonischer-korrelationen-und-variaten}
+## Eigenschaften kanonischer Korrelationen und Variaten
+
+Es seien
+\begin{equation}
+z = \begin{pmatrix} x \\ y \end{pmatrix}
+\mbox{ mit }
+\mathbb{E}(z) := 0_m
+\mbox{ und }
+\mathbb{C}(z) :=
+\begin{pmatrix}
+\Sigma_{xx} & \Sigma_{xy} \\
+\Sigma_{yx} & \Sigma_{yy} \\
+\end{pmatrix}
+\in \mathbb{R}^{m \times m}
+\end{equation}
+ein $m$-dimensionaler partitionierter Zufallsvektor sowie sein Erwartungswert
+und seine Kovarianzmatrix, respektive. Weiterhin seien für $i = 1,...,k$ die kanonischen Koeffizientenvektoren $a_i, b_i$,
+die kanonischen Variaten $\xi,\upsilon_i$ und die kanonischen Korrelationen $\rho_i$
+definiert wie oben. Dann gilt, dass für $1 \le r \le k$ das Maximum des $r$ten
+restringierten Optimierungsproblems
+\begin{equation}
+\phi_r = \max_{a,b} a^T\Sigma_{xy}b
+\end{equation}
+unter den Nebenbedingungen
+\begin{equation}
+a^T\Sigma_{xx}a   = 1,
+\quad
+b^T\Sigma_{yy}b   = 1,
+\quad
+a_i^T\Sigma_{xx}a = 0 \mbox{ für } i = 1,...,r-1
+\end{equation}
+(1) den Wert $\phi_r = \rho_r$ hat und (2) bei $a = a_r$ und $b = b_r$ angenommen wird.
+:::
+
+:::{.proof}
+Wir betrachten das restringierte Optimierungsproblem
+\begin{equation}
+\phi_r^2 = \max_{a,b} \left(a^T\Sigma_{xy}b\right)^2\,
+\mbox{ u.d.N. }
+a^T\Sigma_{xx}a   = 1,\,
+b^T\Sigma_{yy}b   = 1,\,
+a_i^T\Sigma_{xx}a = 0, i = 1,...,r-1
+\end{equation}
+Wir folgen @mardia1979, S. 284 und gehen schrittweise vor, d.h. wir lösen
+das restringierte Optimierungsproblem
+\begin{equation}
+\phi_r^2 = \max_{a} \left(\max_{b} \left(a^T\Sigma_{xy}b\right)^2 \mbox{ u.d.N.} b^T\Sigma_{yy}b   = 1\right)
+\mbox{ u.d.N. } a^T\Sigma_{xx}a   = 1,\, a_i^T\Sigma_{xy}a = 0,  i = 1,...,r-1
+\end{equation}
+von innen nach außen.
+
+Schritt (1)
+
+Wir wählen wir zunächst ein festes $a \in \mathbb{R}^m$ und betrachten das
+restringierte Optimierungsproblem
+\begin{equation}
+\max_{b} \left(a^T\Sigma_{xy}b\right)^2
+\mbox{ u.d.N. }
+b^T\Sigma_{yy}b   = 1
+\end{equation}
+Dieses Optimierungsproblem kann geschrieben werden als
+\begin{equation}\label{eq:kka_opt_1}
+\max_{b} b^T\Sigma_{yx}aa^T\Sigma_{xy}b
+\mbox{ u.d.N. }
+b^T\Sigma_{yy}b = 1,
+\end{equation}
+weil gilt, dass
+\begin{equation}
+\left(a^T\Sigma_{xy}b\right)^2
+= \left(a^T\Sigma_{xy}b\right)\left(a^T\Sigma_{xy}b\right)
+= \left(a^T\Sigma_{xy}b\right)^T a^T\Sigma_{xy}b
+= b^T\Sigma_{yx}aa^T\Sigma_{xy}b.
+\end{equation}
+Das Optimierungsproblem \eqref{eq:kka_opt_1} kann nun mithilfe des Theorems
+zur Maximierung quadratischer Formen mit Nebenbedingen gelöst werden. Im Sinne
+dieses Theorems setzen wir dazu
+\begin{equation}
+A := \Sigma_{yx}aa^T\Sigma_{xy} \mbox{ und } B := \Sigma_{yy}.
+\end{equation}
+Dann hat \eqref{eq:kka_opt_1} die Form
+\begin{equation}\label{eq:kka_opt_2}
+\max_{b} b^TAb
+\mbox{ unter der Nebenbedingung }
+b^TBb = 1,
+\end{equation}
+Das Maximum von \eqref{eq:kka_opt_2} entspricht nach dem Theorem  zur Maximierung
+quadratischer Formen mit Nebenbedingungen dem größten Eigenwert von
+\begin{equation}
+B^{-1}A = \Sigma_{yy}^{-1}\Sigma_{yx}aa^T\Sigma_{xy}
+\end{equation}
+Der größte Eigenwert von $\Sigma_{yy}^{-1}\Sigma_{yx}aa^T\Sigma_{xy}$ wiederum
+kann mithilfe des Theorems zum Eigenwert und Eigenvektor eines Matrixvektorprodukts
+bestimmt werden. Im Sinne dieses Theorems setzen wir dazu
+\begin{equation}
+A := \Sigma_{yy}^{-1}\Sigma_{yx},\quad b := a,\quad B := \Sigma_{xy}
+\end{equation}
+und erhalten für den betreffenden Eigenwert
+\begin{equation}
+\lambda_a = b^TBAa = a^T\Sigma_{xy}\Sigma_{yy}^{-1}\Sigma_{yx}a.
+\end{equation}
+als Lösung (Maximum) des restringierten Optimierungsproblems
+\begin{equation}
+\max_{b} \left(a^T\Sigma_{xy}b\right)^2 \mbox{ u.d.N. } b^T\Sigma_{yy}b = 1
+\end{equation}
+
+Schritt (2)
+
+Basierend auf Schritt (1) verbleibt die Lösung des restringierten Optimierungsproblem
+\begin{equation}\label{eq:kka_opt_3}
+\phi_r^2 = \max_{a} a^T\Sigma_{xy}\Sigma_{yy}^{-1}\Sigma_{yx}a
+\mbox{ u.d.N. }
+a^T\Sigma_{xx}a   = 1,\,
+a_i^T\Sigma_{xx}a = 0,  i = 1,...,r-1
+\end{equation}
+Dazu halten wir zunächst fest, dass \eqref{eq:kka_opt_3} mit den Definitionen
+von $\alpha_i$ und $K$ in der Definition der Kanonischen  Koeffizientenvektoren,
+Variaten, und Korrelationen geschrieben werden kann als
+\begin{equation}\label{eq:kka_opt_4}
+\phi_r^2 = \max_{\alpha} \alpha^T KK^T \alpha
+\mbox{ u.d.N. }
+\alpha^T \alpha   = 1,\,
+\alpha_i^T\alpha  = 0,  i = 1,...,r-1,
+\end{equation}
+denn
+\begin{align}
+\begin{split}
+\phi_r^2 & = \max_{a} a^T\Sigma_{xy}\Sigma_{yy}^{-1}\Sigma_{yx}a
+\mbox{ u.d.N. }
+a^T\Sigma_{xx}a   = 1,
+a_i^T\Sigma_{xx}a = 0 \Leftrightarrow
+\\
+\phi_r^2 & = \max_{\alpha} a^T\Sigma_{xy}\Sigma_{yy}^{-1}\Sigma_{yx}a
+\mbox{ u.d.N. }
+\alpha^T\Sigma_{xx}^{-1/2}\Sigma_{xx}\Sigma_{xx}^{-1/2}\alpha = 1,
+\alpha^T_i\Sigma_{xx}^{-1/2}\Sigma_{xx}\Sigma_{xx}^{-1/2}\alpha = 0
+\\
+\phi_r^2 & = \max_{\alpha} \alpha^T\Sigma_{xx}^{-1/2}\Sigma_{xy}\Sigma_{yy}^{-1}\Sigma_{yx}\Sigma_{xx}^{-1/2}\alpha
+\mbox{ u.d.N. }
+\alpha^T\alpha = 1,
+\alpha^T_i\alpha = 0
+\\
+\phi_r^2 & = \max_{\alpha} \alpha^T\Sigma_{xx}^{-1/2}\Sigma_{xy}\Sigma_{yy}^{-1/2}\Sigma_{yy}^{-1/2}\Sigma_{yx}\Sigma_{xx}^{-1/2}\alpha
+\mbox{ u.d.N. }
+\alpha^T\alpha = 1,
+\alpha^T_i\alpha = 0
+\\
+\phi_r^2 & = \max_{\alpha} \alpha^TKK^T\alpha
+\mbox{ u.d.N. }
+\alpha^T\alpha = 1,
+\alpha^T_i\alpha = 0
+\end{split}
+\end{align}
+
+Dabei sind nach der betreffenden Definition die $\alpha_i$ die Eigenvektoren
+von $KK^T$ mit den $i = 1,...,r-1$ größten Eigenwerten. Nach dem Theorem zur
+Maximierung quadratischer Formen mit Nebenbedingungen ist die Lösung von
+\eqref{eq:kka_opt_4} der größte Eigenwert von $KK^T$ mit seinem assoziierten
+Eigenvektor. Die Nebenbedingung $\alpha_i^T\alpha = 0$ schränkt diese Wahl auf
+den $r$t-größten Eigenwert und seinen assoziierten Eigenvektor $\alpha_r$ ein.
+Mit der Definition von Eigenwerten und Eigenvektoren gilt also
+\begin{equation}
+\phi_r^2 = \alpha_r^T KK^T \alpha_r = \alpha_r^T \lambda_r \alpha_r = \lambda_r \alpha_r^T\alpha_r = \lambda_r.
+\end{equation}
+Wir haben also gezeigt, dass das restringierte Optimierungsproblem des Theorems
+den Maximumwert $\phi_r = \lambda_r^{1/2}$ hat. Es bleibt zu zeigen, dass dieser
+Maximumwert für $a_r$ und $b_r$ angenommen wird.
+
+Schritt (3)
+
+Einsetzen von $a_r$ und $b_r$ in $a^T\Sigma_{xy}b$ ergibt mit
+\begin{equation}
+K = A\Lambda B^T
+\Leftrightarrow KB = A\Lambda B^TB
+\Leftrightarrow KB = A\Lambda
+\Leftrightarrow K\beta_r = \alpha_r\lambda_r^{1/2}
+\end{equation}
+dass
+\begin{equation}
+a^T_r\Sigma_{xy}b_r
+= \alpha_r^T\Sigma_{xx}^{-1/2}\Sigma_{xy}\Sigma_{yy}^{-1/2}\beta_r
+= \alpha_r^TK\beta_r
+= \alpha_r^T\alpha_r\lambda_r^{1/2}
+= \rho_r
+\end{equation}
+Also nimmt $a^T\Sigma_{xy}b$ bei $a_r$ und $b_r$ seinen restringierten Maximalwert $\lambda_r$ an.
+
+:::
+
+$\phi_1$ ist also die größtmögliche Korrelation von 
+\begin{equation}
+\xi = a^Tx \mbox{ und } \upsilon = b^Ty
+\end{equation} 
+unter den Nebenbedingungen 
+\begin{equation}
+\mathbb{V}(\xi) = 1 \mbox{ und } \mathbb{V}(\upsilon) = 1
+\end{equation}
+und erfüllt damit die Forderungen an *die* kanonische Korrelatione. $\phi_r$ mit
+$r > 1$ ist die größtmögliche Korrelation von
+\begin{equation}
+\xi = a^Tx \mbox{ und } \upsilon = b^Ty
+\end{equation} 
+unter den Nebenbedingungen
+\begin{equation}
+\mathbb{V}(\xi)   = 1, 
+\mathbb{V}(\upsilon)  = 1 
+\mbox{ und } \mathbb{C}(\xi_i,\xi) = 0 \mbox{ für die kanonischen Variate } \xi_i \mbox{ mit } i = 1,...,r-1.
+\end{equation}
+
+### Simulationsbeispiel {-}
+
+Wir betrachten das Beispiel (vgl. @uurtio2018)
+\begin{equation}
+p(x) = N(x;0_4,I_4) \mbox{ und } p(y|x) = N(y; Lx, G)
+\end{equation}
+mit
+\begin{equation}
+L := \begin{pmatrix} 0.0 & 0.0 & 1.0 & 0.0 \\ 1.0 & 0.0 & 0.0 & 0.0 \\ 0.0 & 0.0 & 0.0 & -1.0 \end{pmatrix}
+\mbox{ und }
+G := \begin{pmatrix} 0.2 & 0.0 & 0.0 \\ 0.0 & 0.4 & 0.0 \\ 0.0 & 0.0 & 0.3 \end{pmatrix}
+\end{equation}
+Hier gilt offenbar $m_x = 4, m_y = 3, m = 7$ und
+\begin{align}
+\begin{split}
+y_1 & = \,\,\,\, x_3 + \varepsilon_1 \\
+y_2 & = \,\,\,\, x_1 + \varepsilon_2 \\
+y_3 & =        - x_4 + \varepsilon_3 \\
+\end{split}
+\end{align}
+mit
+\begin{equation}
+x_1 \sim N(0,1), x_3 \sim N(0,1), x_4 \sim N(0,1)
+\end{equation}
+und
+\begin{equation}
+\varepsilon_1 \sim N(0,0.2), \varepsilon_2 \sim N(0,0.4), \varepsilon_3 \sim N(0,0.3)
+\end{equation}
+Mit dem Theorem zu gemeinsamen Normalverteilungen (vgl. @sec-normalverteilungen)
+ergibt sich, dass
+\begin{equation}
+\begin{pmatrix} x \\ y \end{pmatrix}
+\sim N(0_7,\Sigma)
+\end{equation}
+mit
+\begin{equation}
+\Sigma
+=
+\begin{pmatrix}
+\Sigma_{xx} & \Sigma_{xy} \\
+\Sigma_{yx} & \Sigma_{yy}
+\end{pmatrix},
+\end{equation}
+wobei
+\begin{equation}
+\Sigma_{xx} = I_4, \quad
+\Sigma_{xy} = L^T, \quad
+\Sigma_{yx} = L \mbox{ und }
+\Sigma_{yy} = G + LL^T.
+\end{equation}
+Explizit ergibt sich also
+\begin{equation}
+\Sigma
+ =
+\begin{pmatrix}
+I_4 &  L^T \\
+L   &  G + LL^T
+\end{pmatrix}
+=
+\begin{pmatrix}
+1.0 & 0.0 & 0.0 &  0.0 & 0.0 & 1.0 &  0.0 \\
+0.0 & 1.0 & 0.0 &  0.0 & 0.0 & 0.0 &  0.0 \\
+0.0 & 0.0 & 1.0 &  0.0 & 1.0 & 0.0 &  0.0 \\
+0.0 & 0.0 & 0.0 &  1.0 & 0.0 & 0.0 & -1.0 \\
+0.0 & 0.0 & 1.0 &  0.0 & 1.2 & 0.0 &  0.0 \\
+1.0 & 0.0 & 0.0 &  0.0 & 0.0 & 1.4 &  0.0 \\
+0.0 & 0.0 & 0.0 & -1.0 & 0.0 & 0.0 &  1.3 \\
+\end{pmatrix}
+\end{equation}
+
+Folgender **R** Code definiert zunächst den Kovarianzmatrixparameter der gemeinsamen
+Verteilung von $x$ und $y$.  
+
+\tiny
+```{r, warning = F, message = F, echo = T}
+# R Pakete für Matrizenrechnung
+library(expm)
+
+# Modellparameter
+L = matrix(c(0,0,1, 0,
+             1,0,0, 0,
+             0,0,0,-1),
+           nrow  = 3,
+           byrow = T)
+G = diag(c(0.2,0.4,0.3))
+
+# Kovarianzmatrixpartition
+Sigma_xx = diag(4)
+Sigma_xy = t(L)
+Sigma_yx = L
+Sigma_yy = G + L %*% t(L)
+Sigma    = rbind(cbind(Sigma_xx, Sigma_xy), cbind(Sigma_yx, Sigma_yy))
+print(Sigma)
+```
+\normalsize
+
+Anhand von @def-kanonische-koeffizientenvektoren-variate-korrelationen bestimmt
+folgender **R** Code dann basierend auf obigem Kovarianzmatrixparameter die kanonischen
+Korrelationen und kanonischen Koeffizientenvektoren.
+
+\tiny
+```{r, echo = T}
+# Evaluation der iten kanonischen Koeffizientenvektoren und Korrelationen
+K      = sqrtm(solve(Sigma_xx)) %*% Sigma_xy %*% sqrtm(solve(Sigma_yy))         # K
+ALB    = svd(K)                                                                 # K = A\LambdaV
+A      = ALB$u                                                                  # A
+Lambda = ALB$d                                                                  # Lambda
+B      = ALB$v                                                                  # B
+rho    = Lambda                                                                 # \rho_i = \lambda_i^{1/2}
+a      = sqrtm(solve(Sigma_xx)) %*% A                                           # a_i = \Sigma_{xx}^{-1/2}\alpha_i
+b      = sqrtm(solve(Sigma_yy)) %*% B                                           # b_i = \Sigma_{yy}^{-1/2}\beta_i
+```
+
+```{r, echo = F}
+# Ausgabe
+cat("rho_1 = ", rho[1],", a_1^T = (", a[,1], "), b_1^T = (", b[,1], ")",
+    "\nrho_2 = ", rho[2]," , a_2^T = (", a[,2],") , b_2^T = (", b[,2], ")",
+    "\nrho_3 = ", rho[3],", a_3^T = (", a[,3], "), b_3^T = (", b[,3], ")")
+
+```
+\normalsize
+
+## Modellschätzung {#sec-modellschaetzung-kka}
+
+Zur Schätzung einer kanonischen Korrelationsanalyse wird die Kovarianzmatrix
+$\mathbb{C}(z)$ des gemeinsamen Zufallsvektors $z$ von Prädiktoren und Kriterien
+durch ihr Stichprobenäquivalent $C$ ersetzt. Dies ist die Aussage 
+folgender Definition.
+
+:::{#def-schätzer-der-kanonischen-korrelationsanalyse}
+## Schätzer der kanonischen Korrelationsanalyse
+Für $i = 1,...,n$ seien
+\begin{equation}
+z_i = \begin{pmatrix} x_i \\ y_i \end{pmatrix}
+\mbox{ mit }
+\mathbb{E}(z_i) := 0_m
+\mbox{ und }
+\mathbb{C}(z_i) :=
+\begin{pmatrix}
+\Sigma_{xx} & \Sigma_{xy} \\
+\Sigma_{yx} & \Sigma_{yy} \\
+\end{pmatrix}
+\in \mathbb{R}^{m \times m}
+\end{equation}
+unabhängig und identisch verteilte  $m$-dimensionale partitionierte
+Zufallsvektoren sowie ihr Erwartungswert und ihre Kovarianzmatrix, respektive, und
+\begin{equation}
+C :=
+\begin{pmatrix}
+C_{xx} & C_{xy} \\
+C_{yx} & C_{yy} \\
+\end{pmatrix}
+\in \mathbb{R}^{m \times m}
+\end{equation}
+sei ihre Stichprobenkovarianzmatrix. Dann sind für $i = 1,...,k := \min \{m_x,m_y\}$
+\begin{equation}
+\hat{a}_i := C_{xx}^{-1/2}\hat{\alpha}_i \in \mathbb{R}^{m_x}, \quad
+\hat{b}_i := C_{yy}^{-1/2}\hat{\beta}_i \in \mathbb{R}^{m_y} \mbox{ und }
+\hat{\rho}_i := \hat{\lambda}_i^{1/2}
+\end{equation}
+Schätzer der $i$ten kanonischen Koeffizientenvektoren und kanonischen Korrelationen,
+respektive. Dabei sind mit
+\begin{equation}
+\hat{K} := C_{xx}^{-1/2}C_{xy}C_{yy}^{-1/2} \in \mathbb{R}^{m_x \times m_y}
+\end{equation}
+$\hat{\alpha}_i$ und $\hat{\lambda}_i$ der $i$te Eigenvektor und sein zugehöriger
+Eigenwert von $\hat{K}\hat{K}^T$ und $\hat{\beta}_i$ der entsprechende Eigenkvektor
+von $\hat{K}^T\hat{K}$.
+:::
+
+Wir verzichten auf eine Diskussion der Güte dieser Schätzung.
+
+### Simulationsbeispiel {-}
+
+Mithilfe folgenden **R** Codes verdeutlichen wir uns die Schätzung kanonischer
+Korrelationen und Koeffizientenvektoren in dem oben betrachteten Beispiel. Dazu
+generieren wir Realisierungen der Prädiktoren und Kriterien bei 
+Stichprobenumfängen zwischen $n = 100$ und $n = 1000$. @fig-modellschätzung-1 visualisiert
+die wahren, aber unbekannten, kanonischen Korrelationen $\rho_1,\rho_2,\rho_3$
+und ihre für jede Simulation basierend auf der Stichprobenkovarianzmatrix des
+realisierten Datensatzes geschätztes Äquivalente $\hat{\rho}_1, \hat{\rho}_2,\hat{\rho}_3$. 
+Die Variabilität der Schätzung nimmt mit zunehmenden Stichprobenumfang ab. @fig-modellschätzung-2 visualisiert
+die Absolutwerte des wahren, aber unbekannten, ersten kanonischen Koeffizientenvektors
+$a_1$ sowie ihre entsprechenden Schätzungen als $\hat{a}_1$. Auch hier nimmt die
+Variabilität der Schätzung mit zunehmenden Stichprobenumfang ab. Allerdings ist
+zu beachten, dass es sich hierbei um die Absolutwerte des kanonischen Koeffizientenvektors
+handelt und das Vorzeichen abhängig von der Schätzung auch im Widerspruch zum
+wahren, aber unbekannten, Wert des kanonischen Koeffizientenvektors stehen kann.
+
+\tiny
+```{r, echo = T}
+# R Pakete
+library(MASS)
+library(expm)
+
+# Modellparameter
+m_x      = 4
+m_y      = 3
+k        = min(m_x,m_y)
+L        = matrix(c(0,0,1,0,1,0,0,0,0,0,0,-1), nrow = 3,byrow = 3)
+G        = diag(c(0.2,0.4,0.3))
+Sigma_xx = diag(4)
+Sigma_xy = t(L)
+Sigma_yx = L
+Sigma_yy = G + L %*% t(L)
+Sigma    = rbind(cbind(Sigma_xx, Sigma_xy), cbind(Sigma_yx, Sigma_yy))
+K        = sqrtm(solve(Sigma_xx)) %*% Sigma_xy %*% sqrtm(solve(Sigma_yy))
+ALB      = svd(K)
+A        = ALB$u
+Lambda   = ALB$d
+B        = ALB$v
+rho      = Lambda
+a        = sqrtm(solve(Sigma_xx)) %*% A
+b        = sqrtm(solve(Sigma_yy)) %*% B
+```
+```{r, echo = T}
+# Simulationen
+n       = 1e1:1e3
+rho_hat = matrix(rep(NaN, length(n)*k)  , nrow = k)
+a_1_hat = matrix(rep(NaN, length(n)*m_x), nrow = m_x)
+for(i in 1:length(n)){
+
+    # Datengeneration
+    Y          = t(mvrnorm(n[i],rep(0, m_x+m_y),Sigma))
+    I_n        = diag(n[i])
+    J_n        = matrix(rep(1,n[i]^2), nrow = n[i])
+
+    # Stichprobenkovarianzmatrixpartition
+    C          = (1/(n[i]-1))*(Y %*% (I_n-(1/n[i])*J_n) %*% t(Y))
+    C_xx       = C[1:m_x,1:m_x]
+    C_xy       = C[1:m_x,(m_x+1):(m_x+m_y)]
+    C_yx       = C[(m_x+1):(m_x+m_y),1:m_x]
+    C_yy       = C[(m_x+1):(m_x+m_y),(m_x+1):(m_x+m_y)]
+
+    # Kanonische Korrelationsanalyse
+    K_hat        = sqrtm(solve(C_xx)) %*% C_xy %*% sqrtm(solve(C_yy))
+    ALB_hat      = svd(K_hat)
+    A_hat        = ALB_hat$u
+    Lambda_hat   = ALB_hat$d
+    B_hat        = ALB_hat$v
+    a_hat        = sqrtm(solve(C_xx)) %*% A_hat
+    b_hat        = sqrtm(solve(C_yy)) %*% B_hat
+    rho_hat[,i]  = as.matrix(Lambda_hat)
+    a_1_hat[,i]  = a_hat[,1]
+}
+```
+\normalsize
+
+```{r, echo = F, eval = F}
+pdf(
+file        = "./_figures/504-modellschätzung-1.pdf",
+width       = 7,
+height      = 5)
+library(latex2exp)
+par(
+family      = "sans",
+mfcol       = c(1,1),
+pty         = "m",
+bty         = "l",
+lwd         = 1,
+las         = 1,
+mgp         = c(2,1,0),
+xaxs        = "i",
+yaxs        = "i",
+font.main   = 1,
+cex         = 1,
+cex.main    = 1.2)
+cols        = c("gray20", "gray50", "gray80")
+matplot(
+n,
+t(rho_hat),
+type = "l",
+col  = cols,
+lty  = 1,
+ylim = c(0.7,1),
+ylab = "",
+main = "Schätzung kanonischer Korrelationen")
+for(i in 1:k){
+  abline(h = rho[i], col = cols[i])
+}
+legend(
+"bottomright",
+c(TeX("$\\rho_1,\\hat{\\rho}_1$"),
+  TeX("$\\rho_2,\\hat{\\rho}_2$"),
+  TeX("$\\rho_3,\\hat{\\rho}_3$")),
+lty = 1,
+col = cols,
+bty = "n")
+dev.off()
+```
+
+![Schätzung kanonischer Korrelationen im Simulationsbeispiel](./_figures/504-modellschätzung-1){#fig-modellschätzung-1 fig-align="center" width=80%}
+
+```{r, echo = F, eval = F}
+library(latex2exp)
+pdf(
+file        = "./_figures/504-modellschätzung-2.pdf",
+width       = 7,
+height      = 5)
+par(
+family      = "sans",
+mfcol       = c(1,1),
+pty         = "m",
+bty         = "l",
+lwd         = 1,
+las         = 1,
+mgp         = c(2,1,0),
+xaxs        = "i",
+yaxs        = "i",
+font.main   = 1,
+cex         = 1,
+cex.main    = 1.2)
+cols        = c("gray20", "gray50", "darkblue","gray80")
+matplot(
+n,
+t(abs(a_1_hat)),
+type = "l",
+col  = cols,
+lty  = 1,
+ylim = c(-.1,1.2),
+ylab = "",
+main = "Schätzung der Absolutwerte des 1. kanonischen Koeffizientenvektors")
+for(i in 1:m_x){
+  abline(h = abs(a[i,1]), col = cols[i])
+}
+legend(
+"right",
+c(TeX("$|a_{11}|, |\\hat{a}_{11}|$"),
+  TeX("$|a_{12}|, |\\hat{a}_{12}|$"),
+  TeX("$|a_{13}|, |\\hat{a}_{13}|$"),
+  TeX("$|a_{14}|, |\\hat{a}_{14}|$")),
+lty = 1,
+col = cols,
+bty = "n")
+dev.off()
+```
+
+![Schätzung der Absolutwerte des ersten kanonischen Koeffizientenvektors im Simulationsbeispiel](./_figures/504-modellschätzung-2){#fig-modellschätzung-2 fig-align="center" width=80%}
+
+## Anwendungsbeispiel {#sec-anwendungsbeispiel-kka}
+
+Zuletzt wollen wir die konkrete Berechnung einer kanonischen Korrelationsanalyse
+im Kontext des in @sec-anwendungsszenario diskutierten Anwendungsbeispiels demonstrieren.
+Folgender **R** Code implementiert die Berechnung der kanonischen Korrelationen
+und kanonischen Koeffizientenvektoren für diesen Datensatz.
+
+\tiny
+```{r, message = F, echo = T}
+# R Paket 
+library(expm)
+
+# Datenpräprozessierung
+fname      = "./_data/504-kanonische-korrelationsanalyse.csv"
+D          = read.table(fname, sep = ",", header = TRUE)
+x          = as.matrix(cbind(D$DUR, D$EXP))
+y          = as.matrix(cbind(D$dBDI, D$dGLU))
+n          = nrow(x)
+m_x        = ncol(x)
+m_y        = ncol(y)
+Y          = t(cbind(x,y))
+
+# Stichprobenkovarianzmatrixpartition
+I_n        = diag(n)
+J_n        = matrix(rep(1,n^2), nrow = n)
+C          = (1/(n-1))*(Y %*% (I_n-(1/n)*J_n) %*% t(Y))
+C_xx       = C[1:m_x,1:m_x]
+C_xy       = C[1:m_x,(m_x+1):(m_x+m_y)]
+C_yx       = C[(m_x+1):(m_x+m_y),1:m_x]
+C_yy       = C[(m_x+1):(m_x+m_y),(m_x+1):(m_x+m_y)]
+
+# Kanonische Korrelationsanalyse
+K_hat      = sqrtm(solve(C_xx)) %*% C_xy %*% sqrtm(solve(C_yy))
+ALB_hat    = svd(K_hat)
+A_hat      = ALB_hat$u
+Lambda_hat = ALB_hat$d
+B_hat      = ALB_hat$v
+a_hat      = sqrtm(solve(C_xx)) %*% A_hat
+b_hat      = sqrtm(solve(C_yy)) %*% B_hat
+rho_hat    = as.matrix(Lambda_hat)
+```
+
+```{r, echo = F}
+# Ausgabe
+cat("rho_hat_1 : "  , rho_hat[1],
+    "\na_hat_1   : ", a_hat[,1],
+    "\nb_hat_1   : ", b_hat[,1],
+    "\nrho_hat_2 : ", rho_hat[2],
+    "\na_hat_2   : ", a_hat[,2],
+    "\nb_hat_2   : ", b_hat[,2])
+```
+
+\normalsize
+
+Neben der Implementation mithilfe einer Singulärwertzerlegung bietet **R** auch
+eine direkte Bestimmung mithilfe der  `cancor()` Funktion an. Folgender **R**
+Code demonstriert das entsprechende Vorgehen.
+
+\tiny
+
+```{r, message = F, echo = T}
+# Datenpräprozessierung
+fname      = "./_data/504-kanonische-korrelationsanalyse.csv"
+D          = read.table(fname, sep = ",", header = TRUE)
+x          = as.matrix(cbind(D$DUR, D$EXP))
+y          = as.matrix(cbind(D$dBDI, D$dGLU))
+cca        = cancor(x,y)
+```
+
+```{r, echo = F}
+cat(  "rho_hat_1 : ", cca$cor[1],
+    "\nrho_hat_2 : ", cca$cor[2])
+```
+
+\normalsize
+
+Man findet also, dass die geschätzte maximale Korrelation einer Linearkombinationen 
+der Prädiktorvariablen `DUR` und `EXP` mit einer Linearkombination der Kriterien
+`dBDI` und `dGLU` mit $\hat{\rho}_1 = 0.99$ sehr hoch ist. Man kann daraus schließen,
+dass in diesem Fall die Prädiktorvariablen gemeinschaftlich hoch mit den Kriterien
+assoziiert sind. Es ergeben sich hier insbesondere die Linearkombinationen
+\begin{equation}
+\xi = 0.16 \mbox{ DUR} + 0.17 \mbox{ EXP}
+\mbox{ und }
+\upsilon  = 0.15 \mbox{ dBDI} + 0.05 \mbox{ dGLU} 
+\end{equation}
+als bester Prädiktor und als am besten prädizierbares Kriterium, respektive.
+Die Dauer der Psychotherapie und die Erfahrung der behandelnden Psychotherapeut:in 
+scheinen, bei der aktuellen Datenskalierung zur bestmöglichen Prädiktion der 
+Therapiegüte also in etwa gleichbedeutend, bei dem bestprädizierbarem
+Kriterium der Therapieeffizienz trägt bei der aktuellen Datenskalierung die BDI 
+Score Reduktion etwas mehr bei als die Glukokortikoidplasmalevel Reduktion bei.
+
+## Literaturhinweise
+
+Die kanonische Korrelationsanalyse geht zurück auf @hotelling1935 und @hotelling1936.
+

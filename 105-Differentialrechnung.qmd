@@ -1,0 +1,1208 @@
+# Differentialrechnung {#sec-differentialrechnung}
+\normalsize
+
+Die Differentialrechnung befasst sich mit der Änderung von Funktionen. Sie bildet
+einerseits die Grundlage für die mathematische Modellierung mithilfe von 
+*Differentialgleichungen*, also der Beschreibung von Funktionen anhand 
+ihrer Änderungsraten. Zum anderen bildet die Differentialrechnung die Grundlage
+der *Optimierung*, also des Bestimmens von Extremstellen von Funktionen.
+In @sec-definitionen-rechenregeln führen wir zunächst den Begriff der Ableitung und 
+mit ihm verbundene elementare Rechenregeln ein. In @sec-analytische-optimierung 
+widmen wir uns dann der Frage, wie man mithilfe von Ableitungen Extremstellen 
+von Funktionen bestimmen kann.
+
+## Definitionen und Rechenregeln {#sec-definitionen-rechenregeln}
+
+Wir beginnen mit folgender Definition.
+
+:::{#def-differenzierbarkeit-und-ableitung}
+## Differenzierbarkeit und Ableitung
+Es sei $I \subseteq \mathbb{R}$ ein Intervall und 
+\begin{equation}
+f : I \to \mathbb{R}, x \mapsto f(x)
+\end{equation}
+eine univariate reellwertige Funktion. $f$ heißt in $a \in I$ *differenzierbar*, 
+wenn der Grenzwert
+\begin{equation}
+f'(a) := \lim_{h\to 0} \frac{f(a+h)-f(a)}{h}
+\end{equation} 
+existiert. $f'(a)$ heißt dann die *Ableitung von $f$ an der Stelle $a$*. Ist $f$
+differenzierbar für alle $x \in I$, so heißt $f$ *differenzierbar* und die Funktion 
+\begin{equation}
+f' : I \to \mathbb{R}, x \mapsto f'(x)
+\end{equation}
+heißt *Ableitung von $f$*.
+:::
+
+Für $h>0$ heißt der Ausdruck 
+\begin{equation}
+\frac{f(a+h)-f(a)}{h}
+\end{equation}
+*Newtonscher Differenzquotient*. Der Newtonsche Differenzquotient misst die 
+Änderung $f(a+h)-f(a)$ von $f$ pro Strecke $h$ auf der $x$-Achse. Wenn also 
+zum Beispiel $f(a)$ und $f(a+h)$ die Position eines Objektes zu einem Zeitpunkt
+$a$ und zu einem späteren Zeitpunkt $a+h$ repräsentieren, dann ist $f(a+h)-f(a)$ 
+die von diesem Objekt in der Zeit $h$ zurückgelegte Strecke, also seine 
+durchschnittliche Geschwindigkeit über den Zeitraum $h$. Für $h\to 0$ misst der 
+Newtonsche Differenzquotient die instantane Änderungsrate von $f$ in $a$, also im 
+Beispiel die Geschwindigkeit des Objektes zu einem Zeitpunkt $a$. 
+
+Aus mathematischer Sicht ist es wichtig, bei der Definition der Ableitung zwischen 
+den Symbolen $f'(a)$ und $f'$ zu unterscheiden. Wie üblich bezeichnet $f'(a)$ den Wert einer
+Funktion, also eine Zahl. $f'$ dagegen bezeichnet eine Funktion, nämlich die Funktion, 
+deren Werte  als $f'(a)$ für alle $a \in \mathbb{R}$ bestimmt sind.
+
+Es existieren in der Literatur verschiedene, historisch gewachsene Notationen 
+für Ableitungen, welche alle das identische Konzept der Ableitung repräsentieren.
+
+:::{#def-notation-für-ableitungen-univariater-reellwertiger-funktionen}
+## Notation für Ableitungen univariater reellwertiger Funktionen
+
+Es sei $f$ eine univariate reellwertige Funktion. Äquivalente Schreibweisen für
+die Ableitung von $f$ und die Ableitung von $f$ an einer Stelle $x$ sind
+
+* die *Lagrange-Notation* $f'$ und $f'(x)$, 
+* die *Leibniz-Notation* $\frac{df}{dx}$ und $\frac{df(x)}{dx}$,
+* die *Newton-Notation* $\dot{f}$ und $\dot{f}(x)$, sowie
+* die *Euler-Notation* $Df$ und $Df(x)$,
+
+respektive
+:::
+
+Wir werden im Folgenden für univariate reellwertige Funktionen vor allem die 
+Lagrange-Notation $f'$ und $f'(x)$ als Bezeichner wählen. In Berechnungen nutzen
+wir auch eine adapatierte Form der Leibniz-Notation und verstehen dort die 
+Schreibweise $\frac{d}{dx}f(x)$ als den Auftrag, die Ableitung von $f$ zu berechnen.
+Die Newton-Notation wird vor allem eingesetzt, wenn das Funktionsargument die
+Zeit repräsentiert und dann üblicherweise mit $t$ für "time" bezeichnet wird.
+$\dot{f}(t)$ bezeichnet dann die Änderungsrate von $f$ zum Zeitpunkt $t$. Die 
+Euler-Notation ist vor allem im Kontext multivariater reell- oder
+vektorwertiger Funktionen nützlich.
+
+Basierend auf der Definition der Ableitung einer univariaten reellwertigen Funktionen
+lassen sich leicht weitere Ableitungen einer solchen Funktion definieren.
+
+:::{#def-höhere-ableitungen}
+## Höhere Ableitungen
+Es sei $f$ eine univariate reellwertige Funktion und
+\begin{equation}
+f^{(1)} := f'
+\end{equation}
+sei die Ableitung von $f$. Die $k$-te Ableitung von $f$ ist rekursiv definiert
+durch
+\begin{equation}
+f^{(k)} := \left(f^{(k-1)}\right)' \mbox{ für } k \ge 0,
+\end{equation}
+unter der Annahme, dass $f^{(k-1)}$ differenzierbar ist. Insbesondere ist die
+*zweite Ableitung von $f$* definiert durch die Ableitung von $f'$, also
+\begin{equation}
+f'' := (f')'
+\end{equation}
+:::
+
+In Analogie zu oben Gesagtem schreiben wir in Berechnungen auch $\frac{d^2}{dx^2}f(x)$ für 
+den Auftrag, die zweite Ableitung einer Funktion $f$ zu bestimmen. Die nullte Ableitung 
+$f^{(0)}$ von $f$ ist $f$ selbst. Der Tradition und Einfachheit halber schreibt 
+man für $k < 4$ gemäß der Lagrange-Notation meist $f',f''$ und $f'''$ anstelle von
+$f^{(1)}, f^{(2)}$ und $f^{(3)}$. 
+
+Zum Bestimmen der Ableitung einer Funktion sind eine Reihe von Rechenregeln hilfreich,
+die es erlauben, die Ableitung einer Funktion aus den Ableitungen ihrer Unterfunktionen
+herzuleiten. Für Beweise der in folgendem Theorem eingeführten Rechenregeln verweisen
+wir auf die weiterführende Literatur
+
+:::{#thm-rechenregeln-für-ableitungen}
+## Rechenregeln für Ableitungen
+Für $i = 1,...,n$ seien $g_i$ reellwertige univariate differenzierbare
+Funktionen. Dann gelten folgende Rechenregeln:
+
+(1) Summenregel
+\begin{equation}
+\mbox{Für } f(x) := \sum_{i=1}^n g_i(x) \mbox{ gilt } f'(x) = \sum_{i=1}^n g_i'(x).
+\end{equation}
+
+(2) Produktregel
+\begin{equation}
+\mbox{Für } f(x) := g_1(x)g_2(x) \mbox{ gilt } f'(x) = g_1'(x)g_2(x) + g_1(x)g_2'(x).
+\end{equation}
+
+(3) Quotientenregel
+\begin{equation}
+\mbox{Für } f(x) := \frac{g_1(x)}{g_2(x)} \mbox{ gilt } f'(x) = \frac{g_1'(x)g_2(x) - g_1(x)g_2'(x)}{g_2^2(x)}.
+\end{equation}
+
+(4) Kettenregel
+\begin{equation}
+\mbox{Für } f(x) := g_1(g_2(x)) \mbox{ gilt } f'(x) = g_1'(g_2(x))g'_2(x).
+\end{equation}
+:::
+
+Erste Beispiele für die Anwendung obiger Rechenregeln lernen wir im Abschnitt
+@sec-analytische-optimierung kennen. Wir setzen eine Reihe von Ableitungen 
+elementarer Funktionen als bekannt voraus, diese sind in Tabelle \textcolor{blue}{5.1}
+zusammengstellt. Für Beweise verweisen wir wiederum auf die weiterführende Literatur.
+
+\footnotesize
+```{r, echo = F}
+D = data.frame(c("Polynomfunktion",
+                 "Konstante Funktion",
+                 "Identitätsfunktion", 
+                 "Linear-affine Funktion", 
+                 "Quadratfunktion",
+                 "Exponentialfunktion",
+                 "Logarithmusfunktion"),
+               c("$f(x) := \\sum_{i=0}^n a_ix^i$",
+                 "$f(x) := a$",
+                 "$f(x) := x$",
+                 "$f(x) := ax + b$",
+                 "$f(x) := x^2$",
+                 "$f(x) := \\exp(x)$",
+                 "$f(x) := \\ln(x)$"),
+               c("$f'(x) = \\sum_{i=1}^n ia_ix^{i-1}$",
+                 "$f'(x) = 0$",
+                 "$f'(x) = 1$",
+                 "$f'(x) = a$",
+                 "$f'(x) = 2x$",
+                 "$f'(x) = \\exp(x)$",
+                 "$f'(x) = \\frac{1}{x}$"))
+knitr::kable(D,
+             caption = "Ableitungen elementarer Funktionen",
+             row.names = FALSE,
+             col.names = c("Name", "Definition", "Ableitung"),
+             align = "lll",
+             "pipe")
+```
+\normalsize
+
+In @fig-elementare-ableitungen-1 visualisieren wir die 
+Identitätsfunktion, eine linearen Funktion und die Quadratfunktion zusammen mit
+ihrer jeweiligen Ableitung. In Abbildung @fig-elementare-ableitungen-2 
+visualisieren wir die Exponential- und Logarithmusfunktionen zusammen mit ihrer 
+jeweiligen Ableitung.
+
+```{r, echo = F, eval = F}
+# Speichern
+dev.new()
+pdf(
+file        = file.path("./_figures/105-elementare-ableitungen-1.pdf"),
+width       = 9,
+height      = 3)
+
+# 1 x 3 Plot Layout
+library(latex2exp)
+par(
+mfcol     = c(1,3),
+family    = "sans",
+pty       = "s",
+bty       = "l",
+lwd       = 1,
+las       = 1,
+mgp       = c(2,1,0),
+font.main = 1,
+cex.main  = 1.2)
+
+# Definitionsmenge
+x_min     = -5                                                                   # minimum x-value
+x_max     = 5                                                                    # maximum x-value
+x_res     = 1e3                                                                  # x space resolution
+x         = seq(x_min,x_max,len = x_res)                                         # x space
+
+# Identitätsfunktion
+fxdx      = cbind(matrix(x), matrix(rep(1,length(x)), nrow = length(x)))          # f(x) := x, f'(x) = 1
+matplot(
+x,
+fxdx,
+type      = "l",
+lty       = 1,
+lwd       = 2,
+col       = c("gray30", "gray70"),
+xlim      = c(-x_max,x_max),
+ylim      = c(-x_max,x_max),
+ylab      = " ",
+xlab      = "x",
+main      = "Identitätsfunktion" )
+grid()
+legend(
+0,
+-2,
+c(TeX("$f(x)  = x$"), TeX("$f'(x) = 1$")),
+cex       = 1,
+lty       = 1,
+col       = c("gray30", "gray70"),
+lwd       = 2,
+y.intersp = 1,
+bty       = "n")
+
+# Linear-affine Funktion
+a         = 1/2
+b         = -1
+fxdx      = cbind(matrix(a*x + b), matrix(a, nrow = length(x)))                  # f(x) := 2x - 3, f'(x) = 2
+matplot(
+x,
+fxdx,
+type      = "l",
+lty       = 1,
+lwd       = 2,
+col       = c("gray30", "gray70"),
+xlim      = c(-x_max,x_max),
+ylim      = c(-x_max,x_max),
+ylab      = " ",
+xlab      = "x",
+main      = "Linear-affine Funktion")
+grid()
+legend(
+-2,
+-2,
+c(TeX("$f(x) = 0.5x - 1$"), TeX("$f'(x) = 0.5$")),
+cex       = 1,
+lty       = 1,
+col       = c("gray30", "gray70"),
+lwd       = 2,
+y.intersp = 1,
+bty       = "n")
+
+
+# Quadratfunktion
+fxdx      = cbind(matrix(x^2),matrix(2*x))                                       # f(x) := x^2 # f'(x) = 2x
+matplot(
+x,
+fxdx,
+type      = "l",
+lty       = 1,
+lwd       = 2,
+col       = c("gray30", "gray70"),
+xlim      = c(-x_max,x_max),
+ylim      = c(-x_max,x_max),
+ylab      = " ",
+xlab      = "x",
+main      = "Quadratfunktion")
+grid()
+legend(
+0,
+-2,
+c(TeX("$f(x)  = x^2$"), TeX("$$f'(x) = 2x$")),
+cex       = 1,
+lty       = 1,
+col       = c("gray30", "gray70"),
+lwd       = 2,
+y.intersp = 1,
+bty       = "n")
+dev.off()
+```
+![Ableitungen dreier elementarer Funktionen](./_figures/105-elementare-ableitungen-1){#fig-elementare-ableitungen-1 fig-align="center" width=80%}
+
+```{r, echo = F, eval = F}
+# Speichern
+dev.new()
+pdf(
+file        = file.path("./_figures/105-elementare-ableitungen-2.pdf"),
+width       = 8,
+height      = 4)
+
+# 1 x 2 Plotlayout
+library(latex2exp)
+par(
+mfcol      = c(1,2),
+family     = "sans",
+pty        = "s",
+bty        = "l",
+lwd        = 1,
+las        = 1,
+mgp        = c(2,1,0),
+font.main  = 1,
+cex.main   = 1.2)
+
+# Exponentialfunktion
+x_min     = -4                                                                   # minimum x-value
+x_max     = 2                                                                    # maximum x-value
+x_res     = 1e3                                                                  # x space resolution
+x         = seq(x_min,x_max,len = x_res)                                         # x space
+fxdx      = cbind(matrix(exp(x)),matrix(exp(x)))                                 # f(x) := exp(x), f'(x) = exp(x)
+matplot(
+x,
+fxdx,
+type      = "l",
+lty       = c(1,2),
+lwd       = 2,
+col       = c("gray30", "gray70"),
+xlim      = c(x_min,x_max),
+ylim      = c(-1,6),
+ylab      = " ",
+xlab      = "x",
+main      = "Exponentialfunktion")
+grid()
+legend(
+-4,
+6,
+c(TeX("$f(x) = exp(x)$"), TeX("$f'(x) = exp(x)$")),
+cex       = 1,
+lty       = 1,
+col       = c("gray30", "gray70"),
+lwd       = 2,
+y.intersp = 1.5,
+bty       = "n")
+
+# Logarithmusfunktion
+x_min     = 1e-3                                                                 # minimum x-value
+x_max     = 4                                                                    # maximum x-value
+x_res     = 1e3                                                                  # x space resolution
+x         = seq(x_min,x_max,len = x_res)                                         # x space
+fxdx      = cbind(matrix(log(x)), matrix(1/x))                                   # f(x) := ln(x), f'(x) = 1/x
+matplot(
+x,
+fxdx,
+type      = "l",
+lty       = 1,
+lwd       = 2,
+col       = c("gray30", "gray70"),
+xlim      = c(0,x_max),
+ylim      = c(-4,5),
+ylab      = " ",
+xlab      = "x",
+main      = "Logarithmusfunktion")
+grid()
+legend(
+ 1,
+-1,
+c(TeX("$f(x) = ln(x)$"), TeX("$f'(x) = 1/x$")),
+cex       = 1,
+lty       = 1,
+col       = c("gray30", "gray70"),
+lwd       = 2,
+y.intersp = 1.5,
+bty       = "n")
+dev.off()
+```
+
+![Ableitungen von Exponentialfunktion und Logarithmusfunktion](./_figures/105-elementare-ableitungen-2){#fig-elementare-ableitungen-2 fig-align="center" width=65%}
+
+## Analytische Optimierung {#sec-analytische-optimierung}
+
+Eine wichtige Anwendung der Differentialrechnung ist das Bestimmen von 
+Extremstellen von Funktionen. Dabei geht es im Kern um die Frage, für welche Werte
+ihrer Definitionsmenge eine Funktion ein Maximum oder ein Minimum annimmt. 
+Bei einfachen Funktionen ist dies analytisch möglich. Die generelle Vorgehensweise 
+dabei ist oft auch unter dem Stichwort "Kurvendiskussion" bekannt. In der 
+Anwendung ist ein analytisches Vorgehen zur Optimierung von Funktionen meist 
+nicht möglich und es werden Computeralgorithmen zur Bestimmung von Extremstellen 
+genutzt. Ein Verständnis dieser Algorithmen setzt allerdings ein Verständnis der 
+Prinzipien der analytischen Optimierung voraus. In diesem Abschnitt geben wir 
+eine Einführung in die analytische Optimierung von univariaten reellwertigen Funktionen. 
+Wir gehen dabei eher informell vor. Einen formaleren Zugang geben wir an 
+späterer Stelle im Kontext der nichtlinearen Optimierung. Wir beginnen damit, 
+die Begriffe der erwähnten Maxima und Minima von univariaten reellwertigen Funktionen 
+zu präzisieren.
+
+:::{#def-extremstellen-und-extremwerte}
+## Extremstellen und Extremwerte
+
+Es seien $U \subseteq \mathbb{R}$ und $f : U \to \mathbb{R}$ eine univariate 
+reellwertige Funktion. $f$ hat an der Stelle $x_0 \in U$
+
+* ein *lokales Minimum*, wenn es ein Intervall $I := ]a,b[$ gibt mit $x_0 \in ]a,b[$ und
+\begin{equation}
+f(x_0) \le f(x) \mbox{ für alle } x\in I\cap U,
+\end{equation}
+* ein *globales Minimum*, wenn gilt, dass
+\begin{equation}
+f(x_0) \le f(x) \mbox{ für alle } x\in U,
+\end{equation}
+* ein *lokales Maximum*, wenn es ein Intervall $I := ]a,b[$ gibt mit $x_0 \in ]a,b[$ und
+\begin{equation}
+f(x_0) \ge f(x) \mbox{ für alle }  x\in I\cap U,
+\end{equation}
+* ein *lokales Maximum*, wenn gilt, dass
+\begin{equation}
+f(x_0) \ge f(x) \mbox{ für alle } x\in U.
+\end{equation}
+
+Der  Wert $x_0 \in U$ der Definitionsmenge von $f$ heißt entsprechend *lokale* 
+oder *globale Minimalstelle* oder *Maximalstelle*, der Funktionswert 
+$f(x_0) \in \mathbb{R}$ heißt entsprechend *lokales* oder *globales Minimum* 
+oder *Maximum*. Generell heißt der Wert $x_0 \in U$ *Extremstelle* und der 
+Funktionswert $f(x_0) \in \mathbb{R}$ *Extremwert*.
+::: 
+
+Extremstellen von Funktionen werden häufig mit
+\begin{equation}
+\underset{x \in I \cap U}{\operatorname{argmin}} f(x) \mbox{ oder }
+\underset{x \in I \cap U}{\operatorname{argmax}} f(x)
+\end{equation}
+bezeichnet und Extremwerte von Funktionen werden häufig mit
+\begin{equation}
+\min_{x \in I \cap U} f(x) \mbox{ oder }
+\max_{x \in I \cap U} f(x)
+\end{equation}
+bezeichnet.
+
+Die analytische Optimierung von univariaten reellwertigen Funktionen basiert 
+auf den sogenannten *notwendigen* und *hinreichenden Bedingungen für Extrema*. 
+Erstere macht eine Aussage über das Verhalten der ersten Ableitung einer 
+Funktion an einer Extremstelle, letztere macht eine Aussage über das Verhalten 
+einer Funktion an einer Stelle, die bestimmten Forderungen an ihre erste und zweite
+Ableitung genügt.
+
+:::{#thm-notwendige-bedingung-für-extrema}
+## Notwendige Bedingung für Extrema
+$f$ sei eine univariate reellwertige Funktion. Dann gilt
+\begin{equation}
+x_0 \mbox{ ist Extremstelle von } f \Rightarrow f'(x_0) = 0.
+\end{equation}
+:::
+
+Wenn $x_0$ eine Extremstelle von $f$ ist, dann ist also die erste Ableitung von
+$f$ in $x_0$ gleich null. Anstelle eines Beweises überlegen wir uns, dass zum
+Beispiel an eine lokaler Maximalstelle $x_0$ von  $f$ gilt: links von $x_0$ 
+steigt $f$ an, rechts von $x_0$ fällt $f$ ab. In $x_0$ aber steigt $f$ weder an, 
+noch fällt $f$ ab, es ist also nachvollziehbar, dass $f'(x_0) = 0$ ist.
+
+
+:::{#thm-hinreichende-bedingungen-für-lokale-extrema}
+## Hinreichende Bedingungen für lokale Extrema
+
+$f$ sei eine zweimal differenzierbare univariate reellwertige Funktion.
+
+* Wenn für $x_0 \in U \subseteq \mathbb{R}$
+\begin{equation}
+f'(x_0) = 0 \mbox{ und } f''(x_0) > 0
+\end{equation}
+gilt, dann hat $f$ an der Stelle $x_0$ ein Minimum.
+
+* Wenn für $x_0 \in U \subseteq \mathbb{R}$
+\begin{equation}
+f'(x_0) = 0 \mbox{ und } f''(x_0) < 0
+\end{equation}
+gilt, dann hat $f$ an der Stelle $x_0$ ein Maximum.
+:::
+
+Wir verzichten wiederum auf einen Beweis und verdeutlichen uns die Bedingung an
+dem in @fig-analytische-optimierung-1 gezeigtem Beispiel. Hier ist offenbar $x_0 = 1$ eine
+lokale Minimalstelle von $f(x) = (x-1)^2$. Man erkennt: links von $x_0$ fällt
+$f$ ab, rechts von $x_0$ steigt $f$ an. In $x_0$ steigt $f$ weder an, noch
+fällt $f$ ab, also ist $f'(x_0) = 0$. Weiter gilt, dass links und rechts von 
+$x_0$ und in $x_0$ die Änderung $f''$ von $f'$ positiv ist: links von $x_0$ 
+schwächt sich die Negativität von $f'$ zu $0$ ab und rechts von $x_0$ verstärkt 
+sich die Positivität von $f'$.
+
+```{r, echo = F, eval = F}
+# Funktionsdefinition
+x_min   = -3                                                                     # minimum x-value
+x_max   = 4                                                                      # maximum x-value
+x_res   = 1e3                                                                    # x space resolution
+x       = seq(x_min,x_max,len = x_res)                                           # x space
+fxdx    = cbind(matrix((x-1)^2),                                                 # f(x) : = (x-1)^2
+                matrix(2*x - 2),                                                 # f'(x)  = 2x - 2
+                matrix(rep(2,x_res), nrow = x_res))                              # f''(x) = 2
+
+# Visualisierung
+dev.new()
+pdf(
+file        = file.path("./_figures/105-analytische-optimierung-1.pdf"),
+width       = 5,
+height      = 5)
+library(latex2exp)
+par(
+mfcol      = c(1,1),
+family     = "sans",
+pty        = "s",
+bty        = "l",
+lwd        = 1,
+las        = 1,
+mgp        = c(2,1,0),
+font.main  = 1,
+cex.main   = 1.2)
+
+matplot(
+x,
+fxdx,
+type        = "l",
+lty         = 1,
+lwd         = 2,
+col         = c("gray20", "gray50", "gray80"),
+xlim        = c(x_min,x_max),
+ylim        = c(-2,6),
+ylab         = " ",
+xlab         = "x")
+grid()
+legend(
+-3.5,
+1,
+c(TeX("$f(x)= (x-1)^2$"), TeX("$f'(x) = 2x - 2$"), TeX("$f''(x) = 2$")),
+cex = .9,
+lty = 1,
+col = c("gray20", "gray50", "gray80"),
+lwd = 2,
+y.intersp = 1.5,
+bty = "n")
+dev.off()
+```
+
+![Analytische Optimierung von $f(x) := (x-1)^2$](./_figures/105-analytische-optimierung-1){#fig-analytische-optimierung-1 fig-align="center" width=50%}
+
+Insbesondere die hinreichende Bedingung für das Vorliegen von Extremstellen legt
+folgendes *Standardverfahren* zur Bestimmung von lokalen Extremstellen nahe.
+
+:::{#thm-standardverfahren-der-analytischen-optimierung}
+## Standardverfahren der analytischen Optimierung
+
+$f$ sei eine univariate reellwertige Funktion. Lokale Extremstellen von $f$
+können mit folgendem *Standardverfahren der analytischen Optimierung*
+identifiziert werden:
+
+1. Berechnen der ersten und zweiten Ableitung von $f$.
+2. Bestimmen von Nullstellen $x^*$ von $f'$ durch Auflösen von $f'(x^*) = 0$
+nach $x^*$. Die Nullstellen von $f'$ sind dann Kandidaten für Extremstellen von $f$.
+3. Evaluation von $f''(x^*)$: Wenn $f''(x^*) > 0$ ist, dann ist $x^*$ lokale
+Minimumstelle von $f$; wenn $f''(x^*) < 0$ ist, dann ist $x^*$ lokale Maximumstelle
+von $f$; wenn $f''(x^*) = 0$ ist, dann ist $x^*$ keine Extremstelle von $f$.
+:::
+
+Anstelle eines Beweises betrachten wir beispielhaft die Funktion
+\begin{equation}
+f : \mathbb{R} \to \mathbb{R}, x \mapsto f(x) := (x - 1)^2.
+\end{equation}
+aus @fig-analytische-optimierung-1. Die erste Ableitung von $f$ ergibt sich 
+mit der Kettenregel zu
+\begin{equation}
+f'(x) = \frac{d}{dx}\left((x-1)^2 \right) = 2(x-1)\cdot \frac{d}{dx}(x-1) = 2x - 2.
+\end{equation}
+Die zweite Ableitung von $f$ ergibt sich zu
+\begin{equation}
+f''(x) = \frac{d}{dx}f'(x) = \frac{d}{dx}(2x - 2) = 2 > 0 \mbox{ für alle }
+x \in \mathbb{R}.
+\end{equation}
+Auflösen von $f'(x^*) = 0$ nach $x^*$ ergibt
+\begin{equation}
+f'(x^*) = 0
+\Leftrightarrow
+2x^* - 2 = 0
+\Leftrightarrow
+2x^* = 2
+\Leftrightarrow
+x^* = 1.
+\end{equation}
+$x^* = 1$ ist folglich eine Minimalstelle von $f$ mit zugehörigen Minimalwert $f(1) = 0$.   
+
+## Differentialrechnung multivariater reellwertiger Funktionen {#sec-differentialrechnung-multivariater-reellwertiger-funktionen}
+
+Wir erinnern zunächst an den Begriff der multivariaten reellwertigen Funktion.
+
+:::{#def-multivariate-reellwertige-funktion}
+## Multivariate reellwertige Funktion
+Eine Funktion der Form
+\begin{equation}
+f : \mathbb{R}^n \to \mathbb{R}, x \mapsto f(x) = f(x_1,...,x_n) 
+\end{equation}
+heißt \textit{multivariate reellwertiger} Funktion. 
+:::
+
+Die Argumente multivariater reellwertiger Funktionen sind also reelle $n$-Tupel
+der Form $x := (x_1,...,x_n)$ während ihre Funktionswerte reelle Zahlen sind.
+Ein Beispiel für eine multivariate reellwertige für $n:=2$ ist 
+\begin{equation}
+f : \mathbb{R}^2 \to \mathbb{R}, x \mapsto f(x) := x_1^2 + x_2^2
+\end{equation}  
+
+Wir visualisieren diese Funktion in @fig-bivariate-funktion. Dabei zeigt die rechte
+Abbildung eine Darstellung mithilfe sogenannter *Isokonturen*, also Linien im 
+Definitionsbereich der Funktion, für die die Funktion identische Werte annimmt.
+Die entsprechenden Werte sind für ausgewählte Isokonturen in der Abbildung vermerkt.
+
+```{r, echo = F, eval = F}
+# Funktionsdefinitionen
+# -----------------------------------------------------------------------------
+# Zielfunktion
+f = function(x) {
+  return(x[1]^2 + x[2]^2)                 # f(x) := x_1^2 + x_2^2
+}
+# Gradient der Zielfunktion
+nabla_f = function(x) {
+  return(matrix(c(2*x[1],2*x[2]),         # \nabla f(x) := (2x_1, 2x_2)^T
+                nrow = 2))
+}
+pdf(
+file        = "./_figures/105-bivariate-funktion.pdf",
+width       = 8,
+height      = 4)
+library(latex2exp)
+par(
+family      = "sans",
+mfcol       = c(1,2),
+pty         = "s",
+bty         = "l",
+lwd         = 1,
+las         = 1,
+xaxs        = "i",
+yaxs        = "i",
+font.main   = 1,
+cex         = 1,
+cex.main    = 1.2)
+
+
+# Bivariate reellwertige Funktion 1
+x_min  = -2                                                                     # x_i Minimum
+x_max  =  2                                                                     # x_i Maximum
+x_res  = 1e2                                                                    # x_i Auflösung
+x_1    = seq(x_min, x_max, length.out = x_res)                                  # x_1 Raum
+x_2    = seq(x_min, x_max, length.out = x_res)                                  # x_2 Raum
+X      = expand.grid(x_1,x_2)                                                   # X = (x_1,x_2)^T Raum
+fX     = matrix(as.matrix(f(X)),nrow = x_res )                                  # f(x)
+persp(
+x_1,
+x_2,
+fX,
+col    = "gray60",
+border = NA,
+theta  = 30,
+phi    = 30,
+ltheta = -120,
+shade  = 0.75,
+zlab   = "",
+main   = TeX("$f(x) := x_1^2 + x_2^2$"))
+
+# Bivariate reellwertige Funktion 2
+contour(
+x_1,
+x_2,
+fX,
+xlim      = c(x_min,x_max),
+ylim      = c(x_min,x_max),
+xlab      = TeX("$x_1$"),
+ylab      = TeX("$x_2$"),
+levels    = c(.1,.5, 1:8),
+main      = TeX("$f(x) := x_1^2 + x_2^2$"))
+g   = grid()
+dev.off()
+```
+![Visualisierungen einer bivariaten Funktion.](./_figures/105-bivariate-funktion){#fig-bivariate-funktion fig-align="center" width=100%}
+
+Wir wollen nun beginnen, die Begriffe der Differenzierbarkeit und der Ableitung
+univariater reellwertiger Funktionen auf den Fall multivariater reellwertiger
+Funktion zu erweitern. Dazu führen wir zunächst die Begriffe der *partiellen 
+Differenzierbarkeit* und der *partiellen Ableitung* ein.
+
+:::{#def-partielle-ableitung}
+## Partielle Differenzierbarkeit und partielle Ableitung
+Es sei $D \subseteq \mathbb{R}^n$ eine Menge und
+\begin{equation}
+f : D \to \mathbb{R}, x \mapsto f(x)
+\end{equation}
+eine multivariate reellwertige  Funktion.
+$f$ heißt in $a \in D$ \textit{nach $x_i$ partiell differenzierbar}, wenn der Grenzwert
+\begin{equation}
+\frac{\partial}{\partial x_i}f(x) := \lim_{h\to 0} \frac{f(a + he_i)-f(a)}{h}
+\end{equation}
+existiert. $\frac{\partial}{\partial x_i}f(a)$ heißt dann die \textit{ partielle Ableitung von $f$ nach $x_i$
+an der Stelle $a$}. Wenn $f$ für alle $x \in D$, nach $x_i$  partiell differenzierbar ist,
+dann heißt $f$ \textit{nach $x_i$  partiell differenzierbar} und die Funktion
+\begin{equation}
+\frac{\partial}{\partial x_i} f: D \to \mathbb{R}, x \mapsto \frac{\partial}{\partial x_i}f(x)
+\end{equation}
+heißt \textit{partielle Ableitung von $f$ nach $x_i$}. $f$ heißt \textit{partiell differenzierbar in $x \in D$}, wenn $f$ für alle $i = 1,...,n$ in $x \in D$ nach $x_i$ partiell differenzierbar ist, und  $f$ heißt partiell differenzierbar, wenn $f$ für alle  $i = 1,...,n$ in allen $x \in D$ nach $x_i$ partiell differenzierbar ist.
+:::
+
+In @def-partielle-ableitung bezeichnet $e_i \in \mathbb{R}^n$ bezeichnet den $i$ten
+kanonischen Einheitsvektor, für den gilt, dass $e_{i_j} = 1$ für $i=j$ und 
+$e_{i_j} = 0$ für $i \neq j$ mit $j = 1,...,n$ (vgl. @def-kanonische-basis-und-kanonische-einheitsvektoren).
+In Analogie und Verallgemeinerung zum Newtonschen Differenzquotienten misst der
+hier auftretende Differenzquotient
+\begin{equation}
+\frac{f(x + he_i)-f(x)}{h}
+\end{equation}
+die Änderung $f(x+he_i)-f(x)$ von $f$ pro Strecke $h$ in Richtung $e_i$. Für 
+$h\to 0$ misst der Differenzquotient entsprechend die *Änderungsrate* von 
+$f$ in $x$ in Richtung $e_i$. Wie bei der Betrachtung von Ableitungen gilt, 
+dass $\frac{\partial}{\partial x_i}f(x)$ eine Zahl, $\frac{\partial}{\partial x_i}f$ 
+dagegen eine Funktion ist. Praktisch berechnet man $\frac{\partial}{\partial x_i}f$ als die (einfache) Ableitung
+\begin{equation}
+\frac{d}{dx_i}\tilde{f}_{x_1,...x_{i-1},x_{i+1}, ...,x_n}(x_i)
+\end{equation}
+der univariaten reellwertigen Funktion
+\begin{equation}
+\tilde{f} : \mathbb{R} \to \mathbb{R}, x_i \mapsto \tilde{f}_{x_1,...x_{i-1},x_{i+1}, ...,x_n}(x_i) := f(x_1,...,x_i, ...,x_n).
+\end{equation}
+Man betrachtet für die $i$te partielle Ableitung also alle $x_j$ mit $j \neq i$ 
+als Konstanten und ist auf das gewohnte Berechnen von Ableitungen von univariaten
+reellwertigen Funktionen geführt. Wir wollen das Vorgehen zum Berechnen von 
+partiellen Ableitungen an einem ersten Beispiel verdeutlichen.
+
+**Beispiel (1)**
+
+Wir betrachten die Funktion
+\begin{equation}
+f:\mathbb{R}^2\to \mathbb{R}, x\mapsto f(x):=x_1^2+x_2^2.
+\end{equation}
+Weil die Definitionsmenge dieser Funktion zweidimensional ist, kann man zwei
+partielle Ableitungen berechnen
+\begin{equation}\label{eq:pdex_1}
+\frac{\partial }{\partial x_1}f:\mathbb{R}^2 \to \mathbb{R},
+x\mapsto \frac{\partial}{\partial x_{1}} f(x)
+\mbox{ und }
+\frac{\partial}{\partial x_2} f:\mathbb{R}^2\to \mathbb{R},
+x\mapsto \frac{\partial }{\partial x_2}f(x).
+\end{equation}
+Um die erste dieser partiellen Ableitungen zu berechnen, betrachtet man die Funktion
+\begin{equation}
+f_{x_2}:\mathbb{R} \to \mathbb{R}, x_1 \mapsto f_{x_2}(x_1):=x_1^2+x_2^2,
+\end{equation}
+wobei $x_2$ hier die Rolle einer Konstanten einnimmt. Um explizit zu machen, dass $x_2$
+kein Argument der Funktion ist, die Funktion aber weiterhin von $x_2$ abhängt haben
+wir die Subskriptnotation $f_{x_2}(x_1)$ verwendet. Um nun die partielle Ableitung
+zu berechnen, berechnen wir die (einfache) Ableitung von $f_{x_2}$,
+\begin{equation}
+f_{x_2}'(x)=2x_{1}.
+\end{equation}
+Es ergibt sich also
+\begin{equation}
+\frac{\partial}{\partial x_1}f:\mathbb{R}^2\to \mathbb{R},
+x\mapsto \frac{\partial}{\partial x_1}f(x)
+=\frac{\partial}{\partial x_1}(x_1^2+x_2^2)
+=f_{x_2}'(x)=2x_1.
+\end{equation}
+Analog gilt mit der entsprechenden Formulierung von $f_{x_1}$, dass
+\begin{equation}
+\frac{\partial}{\partial x_2}f:\mathbb{R}^2\to \mathbb{R},
+x\mapsto \frac{\partial}{\partial x_2}f(x)
+=\frac{\partial}{\partial x_2}(x_1^2+x_2^2)
+=f_{x_1}'(x)=2x_2.
+\end{equation}
+
+Wie bei der Ableitung einer univariaten reellwertigen Funktion ist es auch
+für eine multivariate reellwertige Funktion möglich, rekursiv eine höhere
+Ableitung zu definieren.
+
+:::{#def-zweite-partielle-ableitungen}
+## Zweite partielle Ableitungen
+$f: \mathbb{R}^n \to \mathbb{R}$ sei eine multivariate reellwertige Funktion und
+$\frac{\partial}{\partial x_i}f$  sei die partielle Ableitung von $f$ nach $x_i$.
+Dann ist die zweite partielle
+Ableitung von $f$ nach $x_i$ und $x_j$ definiert als
+\begin{equation}
+\frac{\partial^2}{\partial x_j x_i} f(x)
+:= \frac{\partial}{\partial x_j}\left(\frac{\partial}{\partial x_i}f\right).
+\end{equation}
+:::
+
+Man beachte, dass es zu jeder partiellen Ableitung $\frac{\partial}{\partial x_i}f$ 
+für $i = 1,...,n$ insgesamt $n$ zweite partiellen Ableitungen $\frac{\partial^2}{\partial x_j\partial x_i}f$ 
+für $j = 1,...,n$ gibt. Die so resultierenden $n^2$ zweiten partiellen Ableitungen
+sind jedoch nicht alle verschieden. Dies ist eine wesentliche Aussage des
+*Satzes von Schwarz*
+
+
+:::{#thm-satz-von-schwarz}
+## Satz von Schwarz
+$f: \mathbb{R}^n \to \mathbb{R}$ sei eine partiell differenzierbare multivariate reellwertige Funktion.
+Dann gilt
+\begin{equation}
+  \frac{\partial^2}{\partial x_j\partial x_i}f(x)
+= \frac{\partial^2}{\partial x_i\partial x_j}f(x)
+	\mbox{ für alle }  1 \le i,j \le n.
+\end{equation}
+:::
+
+Für einen Beweis verweisen wir auf die weiterführende Literatur. Der Satz von 
+Schwarz besagt insbesondere also auch, dass bei Bildung der zweiten partiellen
+Ableitungen die Reihenfolge des partiellen Ableitens irrelevant ist. Das Theorem 
+erleichtert auf diese Weise die Berechnung von zweiten partiellen Ableitungen und
+hilft zudem, analytische Fehler bei der Berechnung zweiter partieller Ableitungen 
+aufzudecken. Wir verdeutlichen dies in Fortführung obigen Beispiels.
+
+**Beispiel (1)**
+
+Wir wollen die partiellen Ableitungen zweiter Ordnung der Funktion
+\begin{equation}
+f:\mathbb{R}^{2}\to \mathbb{R}, x\mapsto f(x):=x_1^2+x_2^2.
+\end{equation}
+berechnen. Mit den Ergebnissen für die partiellen Ableitungen erster Ordnung dieser Funktion ergibt sich
+\begin{align}
+\begin{split}
+\frac{\partial^2}{\partial x_1 x_1} f(x)
+& = \frac{\partial}{\partial x_1}\left(\frac{\partial}{\partial x_1} f(x)\right)
+  = \frac{\partial}{\partial x_1}(2x_1)
+  = 2
+\\
+\frac{\partial^2}{\partial x_1 x_2} f(x)
+& = \frac{\partial}{\partial x_1}\left(\frac{\partial}{\partial x_2} f(x)\right)
+  = \frac{\partial}{\partial x_1}(2x_2)
+  = 0
+\\
+\frac{\partial^2}{\partial x_2 x_1} f(x)
+& = \frac{\partial}{\partial x_2}\left(\frac{\partial}{\partial x_1} f(x)\right)
+  = \frac{\partial}{\partial x_2}(2x_1)
+  = 0
+  \\
+\frac{\partial^2}{\partial x_2 x_2} f(x)
+& = \frac{\partial}{\partial x_2}\left(\frac{\partial}{\partial x_2} f(x)\right)
+  = \frac{\partial}{\partial x_2}(2x_2)
+  = 2
+\end{split}
+\end{align}
+Offenbar gilt
+\begin{equation}
+\frac{\partial^2}{\partial x_1 x_2} f(x) = \frac{\partial^2}{\partial x_2 x_1} f(x).
+\end{equation}
+
+**Beispiel (2)**
+
+Als weiteres Beispiel wollen wird die partiellen Ableitungen erster und zweiter 
+Ordnung der Funktion
+\begin{equation}
+f:\mathbb{R}^{3}\to \mathbb{R}, x\mapsto f(x):=x_1^2+x_1x_2+x_2\sqrt{x_3}.
+\end{equation}
+berechnen. Mit den Rechenregeln für Ableitungen ergibt sich für die partiellen Ableitungen erster Ordnung
+\begin{align}
+\begin{split}
+& \frac{\partial}{\partial x_1}f(x)
+= \frac{\partial}{\partial x_1}\left(x_1^2+x_1x_2+x_2\sqrt{x_3} \right) = 2x_1+x_2,                   \\
+& \frac{\partial}{\partial x_2}f(x)
+= \frac{\partial}{\partial x_2}\left(x_1^2+x_1x_2+x_2\sqrt{x_3} \right) = x_1+\sqrt{x_3},             \\
+& \frac{\partial}{\partial x_3}f(x)
+= \frac{\partial}{\partial x_3}\left(x_1^2+x_1x_2+x_2\sqrt{x_3} \right) = \frac{x_{2}}{2\sqrt{x_3}}.
+\end{split}
+\end{align}
+Für die zweiten partiellen Ableitungen hinsichtlich $x_1$ ergibt sich
+\begin{align}
+\begin{split}
+    \frac{\partial^2}{\partial x_1 \partial x_1}f(x)
+& = \frac{\partial}{\partial x_1} \left(\frac{\partial}{\partial x_1} f(x) \right)
+  = \frac{\partial}{\partial x_1}\left(2x_1+x_2\right) = 2, \\
+    \frac{\partial^2}{\partial x_2\partial x_1}f(x)
+& = \frac{\partial}{\partial x_2} \left(\frac{\partial}{\partial x_1} f(x) \right)
+  = \frac{\partial}{\partial x_2}\left(2x_1+x_2 \right) = 1, \\
+    \frac{\partial^2}{\partial x_3\partial x_1} f(x)
+& = \frac{\partial}{\partial x_3}\left(\frac{\partial}{\partial x_{1}} f(x) \right)
+  = \frac{\partial}{\partial x_3}\left(2x_1+x_2\right)=0.
+\end{split}
+\end{align}
+Für die zweiten partiellen Ableitungen hinsichtlich $x_2$ ergibt sich
+\begin{align}
+\begin{split}
+    \frac{\partial^2}{\partial x_1\partial x_2}f(x)
+& = \frac{\partial}{\partial x_1}\left(\frac{\partial}{\partial x_2}f(x) \right)
+  = \frac{\partial}{\partial x_{1}}\left(x_1+ \sqrt{x_3} \right) = 1, \\
+    \frac{\partial^2}{\partial x_2 \partial x_2}f(x)
+& = \frac{\partial}{\partial x_2}\left(\frac{\partial}{\partial x_2}f(x) \right)
+  = \frac{\partial}{\partial x_2}\left(x_1 + \sqrt{x_3} \right) = 0, \\
+    \frac{\partial^2}{\partial x_3\partial x_2}f(x)
+& = \frac{\partial}{\partial x_3}\left(\frac{\partial}{\partial x_2}f(x) \right)
+  = \frac{\partial}{\partial x_3}\left(x_1+\sqrt{x_3} \right) =\frac{1}{2\sqrt{x_3}}.
+\end{split}
+\end{align}
+Beispiel (2)
+Für die zweiten partiellen Ableitungen hinsichtlich $x_3$ ergibt sich
+\begin{align}
+\begin{split}
+    \frac{\partial^{2}}{\partial x_1\partial x_3}f(x)
+& = \frac{\partial}{\partial x_1}\left(\frac{\partial}{\partial x_3} f(x) \right)
+  = \frac{\partial}{\partial x_1}\left(\frac{x_2}{2}\sqrt{x_3}\right) = 0, \\
+    \frac{\partial^2}{\partial x_2\partial x_3}f(x)
+& = \frac{\partial}{\partial x_2}\left(\frac{\partial}{\partial x_3}f(x) \right)
+  = \frac{\partial}{\partial x_2}\left(\frac{x_2}{2 \sqrt{x_3}} \right)
+  = \frac{1}{2\sqrt{x_3}}, \\
+    \frac{\partial^2}{\partial x_3 \partial x_3}f(x)
+& = \frac{\partial}{\partial x_3}\left(\frac{\partial}{\partial x_3}f(x) \right)
+  = \frac{\partial}{\partial x_3}\left(x_2\frac{1}{2}x_3^{-\frac{1}{2}}\right)
+  = -\frac{1}{4}x_2x_3^{-\frac{3}{2}}.
+\end{split}
+\end{align}
+Weiterhin erkennt man, dass die Reihenfolge der partiellen Ableitungen irrelevant ist, denn es gilt
+\begin{align}
+\begin{split}
+& \frac{\partial^{2}}{\partial x_{1}\partial x_{2}}f(x)
+= \frac{\partial^{2}}{\partial x_{2}\partial x_{1}}f(x) = 1, \\
+& \frac{\partial^{2}}{\partial x_{1}\partial x_{3}}f(x)
+= \frac{\partial^{2}}{\partial x_{3}\partial x_{1}}f(x) = 0, \\
+& \frac{\partial^{2}}{\partial x_{2}\partial x_{3}}f(x)
+= \frac{\partial^{2}}{\partial x_{3}\partial x_{2}}f(x) = \frac{1}{2\sqrt{x_3}}.
+\end{split}
+\end{align}
+
+Wie oben gesehen gibt es für eine multivariate reellwertige Funktion $f:\mathbb{R}^n \to \mathbb{R}$
+insgesamt $n$ erste partielle Ableitungen und $n^2$ zweite partielle Ableitungen.
+Diese werden im *Gradienten* und der *Hesse-Matrix* einer multivariaten reellwertigen
+Funktion zusammengefasst.
+
+:::{#def-gradient}
+## Gradient
+$f : \mathbb{R}^n \to \mathbb{R}$ sei eine multivariate reellwertige Funktion.
+Dann ist der \textit{Gradient} $\nabla f(x)$ von $f$ an der Stelle $x \in \mathbb{R}^n$
+definiert als
+\begin{equation}
+\nabla f(x) :=
+\begin{pmatrix}
+\frac{\partial}{\partial x_1} f(x) 	\\
+\frac{\partial}{\partial x_2} f(x) 	\\
+\vdots								              \\
+\frac{\partial}{\partial x_n} f(x) 	\\
+\end{pmatrix} \in \mathbb{R}^n.
+\end{equation}
+:::
+Man beachte, dass Gradienten multivariate vektorwertige Funktionen der
+\begin{equation}
+\nabla f: \mathbb{R}^n \to \mathbb{R}^n, x \mapsto \nabla f(x)
+\end{equation}
+sind. Für $n = 1$ gilt $\nabla f(x) = f'(x)$. Eine wichtige Eigenschaften des
+Gradienten ist, dass $-\nabla f(x)$ die Richtung des steilsten Abstiegs 
+von $f$ in $\mathbb{R}^n$ anzeigt. Diese Einsicht ist aber nicht trivial und soll
+an späterer Stelle vertieft werden. Als Beispiele betrachten wir die Gradienten
+der oben analysierten Funktionen
+
+**Beispiel (1)**
+
+Für die in Beispiel (1) betrachtete Funktion $f: \mathbb{R}^2 \to \mathbb{R}$ gilt
+\begin{equation}
+\nabla f(x) :=
+\begin{pmatrix}
+\frac{\partial}{\partial x_1} f(x) 	\\
+\frac{\partial}{\partial x_2} f(x) 	\\
+\end{pmatrix}
+=
+\begin{pmatrix}
+2x_1                    \\
+2x_2
+\end{pmatrix}
+\in \mathbb{R}^2.
+\end{equation}
+
+In @fig-gradientbeispiel visualisieren wir ausgewählte Werte dieses Gradienten für
+
+\begin{center}
+\textcolor{black}{      $x := \begin{pmatrix*}[r]  0.7 \\  0.7 \end{pmatrix*},\quad\quad\quad$},
+\textcolor{blue}{       $x := \begin{pmatrix*}[r] -0.3 \\  0.1 \end{pmatrix*},\quad\quad\quad$}
+\textcolor{red}{        $x := \begin{pmatrix*}[r] -0.5 \\ -0.4 \end{pmatrix*},\quad\quad\quad$}
+\textcolor{gray}{       $x := \begin{pmatrix*}[r]  0.1 \\ -1.0 \end{pmatrix*}$}
+\end{center}
+
+```{r, echo = F, eval = F}
+# Funktion
+f = function(x) {
+  return(x[1]^2 + x[2]^2)                 # f(x) := x_1^2 + x_2^2
+}
+# Gradient
+nabla_f = function(x) {
+  return(matrix(c(2*x[1],2*x[2]),         # \nabla f(x) := (2x_1, 2x_2)^T
+                nrow = 2))
+}
+
+# Bivariate reellwertige Funktion 1
+x_min  = -2                                                                     # x_i Minimum
+x_max  =  2                                                                     # x_i Maximum
+x_res  = 1e2                                                                    # x_i Auflösung
+x_1    = seq(x_min, x_max, length.out = x_res)                                  # x_1 Raum
+x_2    = seq(x_min, x_max, length.out = x_res)                                  # x_2 Raum
+X      = expand.grid(x_1,x_2)                                                   # X = (x_1,x_2)^T Raum
+fX     = matrix(as.matrix(f(X)),nrow = x_res )                                  # f(x)
+
+# Visualisierung
+pdf(
+file        = "./_figures/105-gradientbeispiel.pdf",
+width       = 5,
+height      = 5)
+library(latex2exp)
+par(
+family      = "sans",
+mfcol       = c(1,1),
+pty         = "s",
+bty         = "l",
+lwd         = 1,
+las         = 1,
+xaxs        = "i",
+yaxs        = "i",
+font.main   = 1,
+cex         = 1.1,
+cex.main    = 1.3)
+
+# Funktion
+contour(
+x_1,
+x_2,
+fX,
+xlim      =  c(x_min,x_max),
+ylim      =  c(x_min,x_max),
+xlab      = TeX("$x_1$"),
+ylab      = TeX("$x_2$"),
+levels    = c(.1,.5, 1:8),
+main      = "")
+
+# Gradientenbeispiele
+A         = matrix(c(.7, -.5, -.3, .1,
+                     .7, -.4,  .1, -1),
+                   nrow   = 2,
+                   byrow = T)
+
+cols      = c("black", "red", "blue", "gray")
+for(i in 1:ncol(A)){
+  points(
+  A[1,i],
+  A[2,i],
+  col     = cols[i]
+  )
+  arrows(
+  x0      = A[1,i],
+  y0      = A[2,i],
+  x1      = nabla_f(A[,i])[1],
+  y1      = nabla_f(A[,i])[2],
+  col     = cols[i],
+  angle   = 30,
+  length  = .1,
+  lwd     = 2)
+}
+dev.off()
+```
+![Exemplarische Gradientenwerte der bivariaten Funktion $f(x) = x_1^2 + x_2^2$.](./_figures/105-gradientbeispiel){#fig-gradientbeispiel fig-align="center" width=60%}
+
+
+**Beispiel (2)**
+
+Für die in Beispiel (2) betrachtete Funktion $f: \mathbb{R}^3 \to \mathbb{R}$ gilt
+\begin{equation}
+\nabla f(x) :=
+\begin{pmatrix}
+\frac{\partial}{\partial x_1} f(x) 	\\
+\frac{\partial}{\partial x_2} f(x) 	\\
+\frac{\partial}{\partial x_3} f(x) 	\\
+\end{pmatrix}
+=
+\begin{pmatrix}
+2x_1+x_2                    \\
+x_1+\sqrt{x_3}              \\
+\frac{x_{2}}{2\sqrt{x_3}}   \\
+\end{pmatrix}
+\in \mathbb{R}^3.
+\end{equation}
+
+Schließlich widmen wir uns der Zusammenfassung der zweiten partiellen Ableitungen 
+einer multivariaten reellwertigen Funktion in der *Hesse-Matrix*. 
+
+:::{#def-hesse-matrix}
+## Hesse-Matrix
+$f : \mathbb{R}^n \to \mathbb{R}$ sei ein multivariate reellwertige Funktion.
+Dann ist die \textit{Hesse-Matrix} $\nabla^2 f(x)$ von $f$ an der Stelle $x \in \mathbb{R}^n$
+definiert als
+\begin{equation}
+\nabla^2 f(x) :=
+\begin{pmatrix}
+	\frac{\partial^2}{\partial x_1 x_1} f(x)
+& 	\frac{\partial^2}{\partial x_1 x_2} f(x)
+& 	\cdots
+& 	\frac{\partial^2}{\partial x_1 x_n} f(x)  \\
+	\frac{\partial^2}{\partial x_2 x_1} f(x)
+& 	\frac{\partial^2}{\partial x_2 x_2} f(x)
+& 	\cdots
+& 	\frac{\partial^2}{\partial x_2 x_n} f(x)  \\
+	\vdots
+& 	\vdots
+& 	\ddots
+& 	\vdots 									 	\\
+	\frac{\partial^2}{\partial x_n x_1} f(x)
+& 	\frac{\partial^2}{\partial x_n x_2} f(x)
+& 	\cdots
+& 	\frac{\partial^2}{\partial x_n x_n} f(x)  \\
+\end{pmatrix} \in \mathbb{R}^{n \times n}.
+\end{equation}
+:::
+
+Man beachte, dass Hesse-Matrizen multivariate matrixwertige Abbildungen der Form 
+\begin{equation}
+\nabla^2 f: \mathbb{R}^n \to \mathbb{R}^{n\times n}, x \mapsto \nabla^2 f(x)
+\end{equation}
+sind. Für $n = 1$ gilt $\nabla^2 f(x) = f''(x)$. Weiterhin folgt aus
+\begin{equation}
+\frac{\partial^2}{\partial x_i\partial x_j}f(x) = \frac{\partial^2}{\partial x_j\partial x_i}f(x) \mbox{ für } 1 \le i,j\le n
+\end{equation}
+dass die Hesse-Matrix symmetrisch ist, dass also
+\begin{equation}
+\left(\nabla^2f(x)\right)^T = \nabla^2f(x)
+\end{equation}
+gilt.
+
+**Beispiel (1)**
+
+Für die in Beispiel (1) betrachtete Funktion $f: \mathbb{R}^2 \to \mathbb{R}$ gilt
+\begin{equation}
+\nabla^2 f(x) 
+:=
+\begin{pmatrix}
+\frac{\partial^2}{\partial x_1x_1} f(x) & \frac{\partial^2}{\partial x_1x_2}	f(x) \\
+\frac{\partial^2}{\partial x_2x_1} f(x) & \frac{\partial^2}{\partial x_2x_2}	f(x) \\
+\end{pmatrix}
+=
+\begin{pmatrix}
+2 & 0	\\
+0 & 2	\\
+\end{pmatrix}
+\in \mathbb{R}^{2 \times 2}
+\end{equation}
+Die Hesse-Matrix dieser Funktion ist also eine konstante Funktion, die nicht von 
+$x$ abhängt.
+
+**Beispiel (2)**
+
+Für die in Beispiel (2) betrachtete Funktion $f: \mathbb{R}^3 \to \mathbb{R}$ gilt
+
+\begin{equation}
+\nabla^2 f(x)
+:=
+\begin{pmatrix}
+  \frac{\partial^2}{\partial x_1x_1}  f(x)
+& \frac{\partial^2}{\partial x_1x_2}	f(x)
+& \frac{\partial^2}{\partial x_1x_3}	f(x)
+\\
+  \frac{\partial^2}{\partial x_2x_1}  f(x)
+& \frac{\partial^2}{\partial x_2x_2}	f(x)
+& \frac{\partial^2}{\partial x_2x_3}	f(x)
+\\
+  \frac{\partial^2}{\partial x_3x_1}  f(x)
+& \frac{\partial^2}{\partial x_3x_2}	f(x)
+& \frac{\partial^2}{\partial x_3x_3}	f(x)
+\end{pmatrix}
+=
+\begin{pmatrix}
+  2
+& 1
+& 0
+\\
+  1
+& 0
+& \frac{1}{2\sqrt{3}}
+\\
+  0
+& \frac{1}{2\sqrt{3}}
+& -\frac{1}{4}x_2x_3^{-3/2}
+\end{pmatrix}.
+\end{equation}
+Im Gegensatz zu Beispiel (1) ist die Hesse-Matrix der hier betrachteten Funktion
+keine konstante Funktion und ihr Wert hängt vom Wert des Funktionsarguments 
+$x \in \mathbb{R}^3$ ab.
+
+## Selbstkontrollfragen {#sec-selbskontrollfragen-differentialrechnung}
+\footnotesize
+1. Geben Sie die Definition des Begriffs der Ableitung $f'(a)$ einer Funktion $f$ an einer Stelle $a$ wieder.
+1. Geben Sie die Definition des Begriffs der Ableitung $f'$ einer Funktion $f$.
+1. Erläutern Sie die Symbole $f'(x), \dot{f}(x)$, $\frac{df(x)}{dx}$, und $\frac{d}{dx}f(x)$.
+1. Geben Sie die Definition des Begriffs der zweiten Ableitung $f''$ einer Funktion $f$ wieder.
+1. Geben Sie die Summenregel für Ableitungen wieder.
+1. Geben Sie die Produktregel für Ableitungen wieder.
+1. Geben Sie die Quotientenregel für Ableitungen wieder.
+1. Geben Sie die Kettenregel für Ableitungen wieder.
+1. Bestimmen Sie die erste Ableitung der Funktion $f(x) := 3x^2 + \exp\left(-x^2\right) - x \ln(x)$.
+1. Bestimmen Sie die erste Ableitung der Funktion $f(x) :=\frac{1}{2}\sum_{i=1}^n (x_i - \mu)^2$ für $\mu \in \mathbb{R}$.
+1. Geben Sie die Definition der Begriffe des globalen und lokalen Maximums/Minimums einer univariaten reellwertigen Funktion wieder.
+1. Geben Sie die notwendige Bedingung für ein Extremum einer Funktion wieder.
+1. Geben Sie die hinreichende Bedingung für ein lokales Extremum einer Funktion wieder.
+1. Geben Sie das Standardverfahren der analytischen Optimierung wieder.
+1. Bestimmen Sie einen Extremwert von $f(x) := \exp\left(-\frac{1}{2}(x - \mu)^2\right)$ für $\mu \in \mathbb{R}$.
+1. Berechnen Sie die partiellen Ableitungen der Funktion 
+$$
+f : \mathbb{R}^2 \to \mathbb{R}, x \mapsto f(x) := \exp\left(-\frac{1}{2}\left(x_1^2 + x_2^2\right)\right).
+$$ {#eq-pa-bsp}
+1. Berechnen Sie die zweiten partiellen Ableitungen obiger Funktion $f$.
+1. Geben Sie den Satz von Schwarz wieder.
+1. Geben Sie die Definition des Gradienten einer multivariaten reellwertigen Funktion wieder.
+1. Geben Sie den Gradienten der Funktion in @eq-pa-bsp an und werten Sie ihn in $x = (1,2)^T$ aus.
+1. Geben Sie die Definition der  Hesse-Matrix einer multivariaten reellwertigen Funktion wieder.
+1. Geben Sie die Hesse-Matrix der Funktion in @eq-pa-bsp an und werten Sie sie in $x = (1,2)^T$ aus.
+
+
+
