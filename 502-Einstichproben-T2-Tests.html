@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.550">
+<meta name="generator" content="quarto-1.4.551">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -166,7 +166,7 @@ window.Quarto = {
     <span class="navbar-title">Probabilistische Datenwissenschaft für die Psychologie</span>
     </a>
   </div>
-        <div class="quarto-navbar-tools">
+        <div class="quarto-navbar-tools tools-end">
     <a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages" title="Quellcode" class="quarto-navigation-tool px-1" aria-label="Quellcode"><i class="bi bi-github"></i></a>
     <a href="./Probabilistische-Datenwissenschaft-für-die-Psychologie.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
 </div>
@@ -996,7 +996,7 @@ m := 2, n := 15, \mu := \mu0 := \begin{pmatrix} 1 \\ 1 \end{pmatrix}
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Kritischer Wert              =  8.196602 
-Geschätzter Testumfang alpha =  0.0478</code></pre>
+Geschätzter Testumfang alpha =  0.0467</code></pre>
 </div>
 </div>
 <p>In der Praxis entsPrächen obige Ergebnisse dann folgendem Vorgehen bei der Durchführung eines Einstichproben-T<span class="math inline">\(^2\)</span>-Tests. Man unterstellt, dass ein vorliegender Datensatz von <span class="math inline">\(m\)</span>-dimensionalen Datenvektoren eine Realisation von <span class="math inline">\(n\)</span> u.i.v. <span class="math inline">\(m\)</span>-dimensionalen Zufallsvektoren <span class="math inline">\(\upsilon_1,...,\upsilon_n \sim N(\mu,\Sigma)\)</span> mit unbekannten Parametern <span class="math inline">\(\mu \in \mathbb{R}^m\)</span> und <span class="math inline">\(\Sigma \in \mathbb{R}^{m \times m} \mbox{ pd }\)</span> ist und möchte entscheiden, ob für ein <span class="math inline">\(\mu_0 \in \mathbb{R}^m\)</span> eher die Nullhypothese <span class="math inline">\(H_0 : \mu = \mu_0\)</span> oder die Alternativhypothese <span class="math inline">\(H_1: \mu \neq \mu_0\)</span> zutrifft. Zu diesem Zweck wählt man zunächst ein Signifikanzlevel <span class="math inline">\(\alpha_0\)</span> und bestimmt dann den zugehörigen kritischen Wert <span class="math inline">\(k_{\alpha_0}\)</span>. Beispielsweise gilt für <span class="math inline">\(m = 2\)</span> und <span class="math inline">\(n=15\)</span> bei Wahl von <span class="math inline">\(\alpha_0 := 0.05\)</span>, dass <span class="math inline">\(k_{0.05}=\nu^{-1}F^{-1}(1 - 0.05;2,13) \approx 8.2\)</span> ist. Anhand von <span class="math inline">\(m, n, \mu_0\)</span>, dem Stichprobenmittel <span class="math inline">\(\bar{\upsilon}\)</span> und der Stichprobenkovarianzmatrix <span class="math inline">\(C\)</span> berechnet man dann die Realisierung der Einstichproben-T<span class="math inline">\(^2\)</span>-Teststatistik <span class="math display">\[\begin{equation}
@@ -1299,6 +1299,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -1333,7 +1351,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');

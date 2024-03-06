@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.550">
+<meta name="generator" content="quarto-1.4.551">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -166,7 +166,7 @@ window.Quarto = {
     <span class="navbar-title">Probabilistische Datenwissenschaft für die Psychologie</span>
     </a>
   </div>
-        <div class="quarto-navbar-tools">
+        <div class="quarto-navbar-tools tools-end">
     <a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages" title="Quellcode" class="quarto-navigation-tool px-1" aria-label="Quellcode"><i class="bi bi-github"></i></a>
     <a href="./Probabilistische-Datenwissenschaft-für-die-Psychologie.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
 </div>
@@ -742,9 +742,9 @@ z^{T}X^{T}Xz \geq 0 \mbox{ für alle } z \in \mathbb{R}^{p}.
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>beta       :  2 
-hat{beta}  :  1.586043 
+hat{beta}  :  2.229141 
 sigsqr     :  1 
-hat{sigsqr}:  0.9544949</code></pre>
+hat{sigsqr}:  0.4436364</code></pre>
 </div>
 </div>
 <p>Die Frequentistische Bedeutung der Schätzerunverzerrtheit in diesem Szenario simuliert folgender <strong>R</strong> Code.</p>
@@ -772,9 +772,9 @@ hat{sigsqr}:  0.9544949</code></pre>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>Wahrer, aber unbekannter, Betaparameter                  :  2 
-Geschätzter Erwartungswert des Betaparameterschätzers    :  1.997895 
+Geschätzter Erwartungswert des Betaparameterschätzers    :  1.998779 
 Wahrer, aber unbekannter, Varianzparameter               :  1 
-Geschätzter Erwartungswert des Varianzparameterschätzers :  0.9949753</code></pre>
+Geschätzter Erwartungswert des Varianzparameterschätzers :  0.9962584</code></pre>
 </div>
 </div>
 </section>
@@ -953,9 +953,9 @@ n \bar{\upsilon} \\
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>beta       :  0 1 
-hat{beta}  :  0.09305011 0.9604927 
+hat{beta}  :  -0.08683546 0.9142618 
 sigsqr     :  1 
-hat{sigsqr}:  1.154403</code></pre>
+hat{sigsqr}:  0.6820804</code></pre>
 </div>
 </div>
 <p>Analog zum Szenario der unabhängig und identisch normalverteilten Zufallsvariablen kann auch hier die Frequentistische Bedeutung der Schätzerunverzerrtheit simuliert werden.</p>
@@ -984,9 +984,9 @@ hat{sigsqr}:  1.154403</code></pre>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>Wahrer, aber unbekannter, Betaparameter                  :  0 1 
-Geschätzter Erwartungswert des Betaparameterschätzers    :  0.01213279 0.9980532 
+Geschätzter Erwartungswert des Betaparameterschätzers    :  -0.003916086 1.000818 
 Wahrer, aber unbekannter, Varianzparameter               :  1 
-Geschätzter Erwartungswert des Varianzparameterschätzers :  0.9955767</code></pre>
+Geschätzter Erwartungswert des Varianzparameterschätzers :  1.010089</code></pre>
 </div>
 </div>
 </section>
@@ -1229,6 +1229,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -1263,7 +1281,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');
