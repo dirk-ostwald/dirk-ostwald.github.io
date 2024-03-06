@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.549">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Probabilistische Datenwissenschaft für die Psychologie - 17&nbsp; Grenzwerte</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./208-Transformationstheoreme.html" rel="next">
+<link href="./206-Ungleichungen.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Keine Treffer",
+    "search-matching-documents-text": "Treffer",
+    "search-copy-link-title": "Link in die Suche kopieren",
+    "search-hide-matches-text": "Zusätzliche Treffer verbergen",
+    "search-more-match-text": "weitere Treffer in diesem Dokument",
+    "search-more-matches-text": "weitere Treffer in diesem Dokument",
+    "search-clear-button-title": "Zurücksetzen",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Abbrechen",
+    "search-submit-button-title": "Abschicken",
+    "search-label": "Suchen"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Probabilistische Datenwissenschaft für die Psychologie</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools">
+    <a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages" title="Quellcode" class="quarto-navigation-tool px-1" aria-label="Quellcode"><i class="bi bi-github"></i></a>
+    <a href="./Probabilistische-Datenwissenschaft-für-die-Psychologie.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+          <div id="quarto-search" class="" title="Suchen"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./200-Wahrscheinlichkeitstheorie.html">Wahrscheinlichkeitstheorie</a></li><li class="breadcrumb-item"><a href="./207-Grenzwerte.html"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Grenzwerte</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Willkommen</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./100-Mathematische-Grundlagen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Mathematische Grundlagen</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./101-Sprache-und-Logik.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Sprache und Logik</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./102-Mengen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Mengen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./103-Summen-Produkte-Potenzen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Summen, Produkte, Potenzen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./104-Funktionen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Funktionen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./105-Differentialrechnung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Differentialrechnung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./106-Folgen-Grenzwerte-Stetigkeit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Folgen, Grenzwerte, Stetigkeit</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./107-Integralrechnung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Integralrechnung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./108-Vektoren.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Vektoren</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./109-Matrizen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Matrizen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./110-Eigenanalyse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Eigenanalyse</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./200-Wahrscheinlichkeitstheorie.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Wahrscheinlichkeitstheorie</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./201-Wahrscheinlichkeitsräume.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Wahrscheinlichkeitsräume</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./202-Elementare-Wahrscheinlichkeiten.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Elementare Wahrscheinlichkeiten</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./203-Zufallsvariablen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Zufallsvariablen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./204-Zufallsvektoren.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Zufallsvektoren</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./205-Erwartungswerte.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Erwartungswerte</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./206-Ungleichungen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Ungleichungen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./207-Grenzwerte.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Grenzwerte</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./208-Transformationstheoreme.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Transformationstheoreme</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./209-Normalverteilungstransformationen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Normalverteilungstransformationen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./210-Multivariate-Normalverteilungen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Multivariate Normalverteilungen</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Frequentistische Inferenz</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./301-Grundbegriffe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Grundbegriffe</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./302-Punktschätzung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Punktschätzung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./303-Konfidenzintervalle.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Konfidenzintervalle</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./304-Hypothesentests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Hypothesentests</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Das Allgemeine Lineare Modell</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./401-Regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Regression</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./402-Korrelation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Korrelation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./403-Modellformulierung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Modellformulierung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./404-Parameterschätzung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Parameterschätzung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./405-T-Statistiken.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">T-Statistiken</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./406-F-Statistiken.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">F-Statistiken</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./407-T-Tests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">T-Tests</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./408-Einfaktorielle-Varianzanalyse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Einfaktorielle Varianzanalyse</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./409-Zweifaktorielle-Varianzanalyse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Zweifaktorielle Varianzanalyse</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./410-Partielle-Korrelation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Partielle Korrelation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./411-Multiple-Regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Multiple Regression</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Multivariate Inferenz</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./501-Datendeskription.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Datendeskription</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./502-Einstichproben-T2-Tests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Einstichproben-T<span class="math inline">\(^2\)</span>-Tests</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./503-Einfaktorielle-Varianzanalyse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Einfaktorielle Varianzanalyse</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./504-Kanonische-Korrelationsanalyse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">Kanonische Korrelationsanalyse</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Referenzen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Referenzen</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Inhaltsverzeichnis</h2>
+   
+  <ul>
+  <li><a href="#sec-gesetze-der-grossen-zahlen" id="toc-sec-gesetze-der-grossen-zahlen" class="nav-link active" data-scroll-target="#sec-gesetze-der-grossen-zahlen"><span class="header-section-number">17.1</span> Gesetze der Großen Zahlen</a></li>
+  <li><a href="#sec-zentrale-grenzwertsaetze" id="toc-sec-zentrale-grenzwertsaetze" class="nav-link" data-scroll-target="#sec-zentrale-grenzwertsaetze"><span class="header-section-number">17.2</span> Zentrale Grenzwertsätze</a></li>
+  <li><a href="#literaturhinweise" id="toc-literaturhinweise" class="nav-link" data-scroll-target="#literaturhinweise"><span class="header-section-number">17.3</span> Literaturhinweise</a></li>
+  <li><a href="#selbstkontrollfragen" id="toc-selbstkontrollfragen" class="nav-link" data-scroll-target="#selbstkontrollfragen"><span class="header-section-number">17.4</span> Selbstkontrollfragen</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/207-Grenzwerte.qmd" class="toc-action"><i class="bi bi-github"></i>Seite editieren</a></li></ul></div></nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./200-Wahrscheinlichkeitstheorie.html">Wahrscheinlichkeitstheorie</a></li><li class="breadcrumb-item"><a href="./207-Grenzwerte.html"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Grenzwerte</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-grenzwerte" class="quarto-section-identifier"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Grenzwerte</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>In diesem Kapitel beschäftigen wir uns mit für die probabilistische Modellbildung und Datenanalyse grundlegenden Grenzwertaussagen zu Folgen von Zufallsvariablen. Dabei liefern die <em>Gesetze der Großen Zahlen</em> (<a href="#sec-gesetze-der-grossen-zahlen" class="quarto-xref"><span>Kapitel 17.1</span></a>) zunächst eine grundlegende Begründung für die Mittelwertbildung im Rahmen der probabilistischen Inferenz. Die <em>Zentralen Grenzwertsätze</em> liefern dann die Begründung für die weite Verbreitung von Normalverteilungsannahmen zu Störvariablen im Rahmen der probabilistischen Modellformulierung (<a href="#sec-zentrale-grenzwertsaetze" class="quarto-xref"><span>Kapitel 17.2</span></a>). Die mathematische Tiefe dieser Grenzwertaussagen kann in dieser einführenden Betrachtung nicht ausgeschöpft werden, so dass wir uns mit zahlreichen Vereinfachungen begnügen müssen. Ein minimales Vorwissen zu Funktionenfolgen und ihren Grenzfunktionen liefert <a href="106-Folgen-Grenzwerte-Stetigkeit.html" class="quarto-xref"><span>Kapitel 6</span></a>.</p>
+<section id="sec-gesetze-der-grossen-zahlen" class="level2" data-number="17.1">
+<h2 data-number="17.1" class="anchored" data-anchor-id="sec-gesetze-der-grossen-zahlen"><span class="header-section-number">17.1</span> Gesetze der Großen Zahlen</h2>
+<p>Es gibt ein <em>Schwaches Gesetz der Großen Zahlen</em> und ein <em>Starkes Gesetz der Großen Zahlen</em>. Intuitiv besagen beide Gesetze, dass sich das Stichprobenmittel von unabhängigen und identisch verteilten Zufallsvariablen für eine große Anzahl an Zufallsvariablen dem Erwartungswert der zugrundeliegenden Verteilung nähert. Das Schwache und das Starke Gesetz der Großen Zahlen unterscheiden sich in Hinblick auf die zu ihrer Formulierung benutzen Formen der <em>Konvergenz von Zufallsvariablen</em>. Das Schwache Gesetz basiert auf der <em>Konvergenz in Wahrscheinlichkeit</em>. Das Starke Gesetz basiert auf der <em>fast sicheren Konvergenz</em>. Wir begnügen uns hier mit dem Begriff der Konvergenz in Wahrscheinlichkeit und damit dem Schwachen Gesetz der Großen Zahlen.</p>
+<div id="def-konvergenz-in-wahrscheinlichkeit" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 17.1 (Konvergenz in Wahrscheinlichkeit)</strong></span> Eine Folge von Zufallsvariablen <span class="math inline">\(\xi_1,\xi_2,...\)</span> <em>konvergiert gegen eine Zufallsvariable <span class="math inline">\(\xi\)</span> in Wahrscheinlichkeit</em>, wenn für jedes noch so kleine <span class="math inline">\(\epsilon &gt; 0\)</span> gilt, dass <span class="math display">\[\begin{equation}
+\lim_{n \to \infty} \mathbb{P}(|\xi_n - \xi| &lt; \epsilon)    = 1 \Leftrightarrow
+\lim_{n \to \infty} \mathbb{P}(|\xi_n - \xi| \ge \epsilon)  = 0.
+\end{equation}\]</span> Die Konvergenz von <span class="math inline">\(\xi_1,\xi_2,....\)</span> gegen <span class="math inline">\(\xi\)</span> in Wahrscheinlichkeit wird geschrieben als <span class="math display">\[\begin{equation}
+\xi_n\xrightarrow[n \to \infty]{\mbox{P}} \xi.
+\end{equation}\]</span></p>
+</div>
+<p><span class="math inline">\(\xi_n\xrightarrow[n \to \infty]{\text{P}} \xi\)</span> heißt also, dass sich die Wahrscheinlichkeit dafür, dass <span class="math inline">\(\xi_n\)</span> in dem zufälligen Intervall <span class="math display">\[\begin{equation}
+]\xi-\epsilon, \xi+\epsilon[
+\end{equation}\]</span> liegt, unabhängig davon, wie klein dieses Intervall sein mag, <span class="math inline">\(1\)</span> nähert, wenn <span class="math inline">\(n\)</span> gegen Unendlich geht. Intuitiv heißt das, dass sich für <span class="math inline">\(n \to \infty\)</span> und eine konstante Zufallsvariable <span class="math inline">\(\xi := a\)</span> die Verteilung von <span class="math inline">\(\xi_n\)</span> mehr und mehr um <span class="math inline">\(a\)</span> konzentriert, wenn <span class="math inline">\(n\)</span> gegen Unendlich strebt. Mithilfe der Konvergenz in Wahrscheinlichkeit formuliert man das Schwache Gesetz der Großen Zahlen wie folgt.</p>
+<div id="thm-schwaches-gesetz-der-großen-zahlen" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 17.1 (Schwaches Gesetz der Großen Zahlen)</strong></span> <span class="math inline">\(\xi_1,...,\xi_n\)</span> seien unabhängig und gleichverteilte Zufallsvariablen mit <span class="math inline">\(\mathbb{E}(\xi_i) = \mu\)</span> für alle <span class="math inline">\(i = 1,...,n\)</span>. Weiterhin bezeichne <span class="math display">\[\begin{equation}
+\bar{\xi}_n := \frac{1}{n}\sum_{i=1}^n \xi_i
+\end{equation}\]</span> das Stichprobenmittel der <span class="math inline">\(\xi_i, i = 1,...,n\)</span>. Dann konvergiert <span class="math inline">\(\bar{\xi}_n\)</span> in Wahrscheinlichkeit gegen <span class="math inline">\(\mu\)</span>, <span class="math display">\[\begin{equation}
+\bar{\xi}_n \xrightarrow[n \to \infty]{\mbox{P}} \mu.
+\end{equation}\]</span></p>
+</div>
+<p>Für einen Beweis dieses Theorems verweisen wir auf die weiterführende Literatur, so zum Beispiel auf Abschnitt 5.1 in <span class="citation" data-cites="georgii2009">Georgii (<a href="#ref-georgii2009" role="doc-biblioref">2009</a>)</span>. Intuitiv heißt <span class="math display">\[\begin{equation}
+\bar{\xi}_n \xrightarrow[n\to\infty]{\mbox{P}} \mu
+\end{equation}\]</span> also, dass die Wahrscheinlichkeit, dass das Stichprobenmittel nahe dem Erwartungswert der zugrundeliegenden Verteilung liegt, sich 1 nähert, wenn <span class="math inline">\(n\)</span> gegen Unendlich strebt.</p>
+<p><strong>Simulation</strong></p>
+<p>Wir betrachten den Fall von u.i.v. normalverteilten Zufallsvariablen <span class="math inline">\(\xi_1,...,\xi_n \sim N(0,1)\)</span>. <a href="#fig-schwaches-gesetz" class="quarto-xref">Abbildung&nbsp;<span>17.1</span></a> A zeigt Realisationen der von Stichprobenmitteln <span class="math inline">\(\bar{\xi}_n\)</span> als Funktion von <span class="math inline">\(n\)</span>. Man erkennt, dass für größeres <span class="math inline">\(n\)</span> mehr Realisierungen von <span class="math inline">\(\bar{\xi}_n\)</span> in der Nähe des Erwartungswerts der <span class="math inline">\(\xi_i, i = 1,...,n\)</span> liegen. Basierend auf diesen Stichprobenmittelrealisationen zeigt <a href="#fig-schwaches-gesetz" class="quarto-xref">Abbildung&nbsp;<span>17.1</span></a> B Schätzungen der Wahrscheinlichkeit <span class="math inline">\(\mathbb{P}(|\bar{\xi}_n - \mu| \ge \epsilon)\)</span> als Funktionen von <span class="math inline">\(n\)</span> und <span class="math inline">\(\epsilon\)</span>. Für ein großes <span class="math inline">\(\epsilon\)</span> reicht ein geringes <span class="math inline">\(n\)</span> aus um die Wahrscheinlichkeit für eine absolute Abwecihung des Stichprobenmittels vom Erwartungswert klein werden zu lassen, für ein kleineres <span class="math inline">\(\epsilon\)</span> ist dafür ein größeres <span class="math inline">\(n\)</span> nötig. In jedem Fall sinken die Wahrscheinlichkeiten jedoch mit größerem <span class="math inline">\(n\)</span>.</p>
+<div id="fig-schwaches-gesetz" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-schwaches-gesetz-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/207-schwaches-gesetz.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-schwaches-gesetz-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;17.1: Simulation des schwachen Gesetz der Großen Zahlen.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="sec-zentrale-grenzwertsaetze" class="level2" data-number="17.2">
+<h2 data-number="17.2" class="anchored" data-anchor-id="sec-zentrale-grenzwertsaetze"><span class="header-section-number">17.2</span> Zentrale Grenzwertsätze</h2>
+<p>Die Zentralen Grenzwertsätze besagen intuitiv, dass die Summe von unabhängigen Zufallsvariablen mit Erwartungswert Null <em>asymptotisch</em>, also für unendlich viele Zufallsvariablen, normalverteilt mit Erwartungswertparameter Null ist. Modelliert man eine beliebige Messgröße <span class="math inline">\(\upsilon\)</span> also als Summe eines deterministischen Einflusses <span class="math inline">\(\mu\)</span> und der Summe <span class="math display">\[\begin{equation}
+\varepsilon := \sum_{i=1}^n \xi_i
+\end{equation}\]</span> einer Vielzahl von unabhängigen Zufallsvariablen <span class="math inline">\(\xi_i, i = 1,...,n\)</span>, die unbekannte Störeinflüsse modellieren sollen, so ist für großes <span class="math inline">\(n\)</span> die Annahme <span id="eq-standardmodell"><span class="math display">\[
+\upsilon = \mu + \varepsilon \mbox{ mit } \varepsilon \sim N(0,\sigma^2)
+\tag{17.1}\]</span></span> mathematisch gerechtfertigt. Wie wir später sehen werden, liegt die Annahme in Gleichung <a href="#eq-standardmodell" class="quarto-xref">Gleichung&nbsp;<span>17.1</span></a> einer großen Vielzahl von probabilistischen Modellen zugrunde.</p>
+<p>Formal werden verschiedene Formen von Zentralen Grenzwertsätzen, je nach Ausgestaltung der zugrundeliegenden Annahmen und ihrer Beweisführung unterschieden. In der sogenannten <em>Lindenberg und Lévy Form</em> des Zentralen Grenzwertsatzes werden unabhängig und identische Zufallsvariablen vorausgesetzt. In der <em>Liapunov Form</em> dagegen werden nur unabhängige Zufallsvariablen voraussetzt. In beiden Formulierungen des Zentralen Grenzwertsatzes ist die betrachtete Konvergenz von Zufallsvariablen die <em>Konvergenz in Verteilung</em>, welche wir zunächst einführen.</p>
+<div id="def-konvergenz-in-verteilung" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 17.2 (Konvergenz in Verteilung)</strong></span> Eine Folge <span class="math inline">\(\xi_1,\xi_2,...\)</span> von Zufallsvariablen , wenn <span class="math display">\[\begin{equation}
+\lim_{n \to \infty} P_{\xi_n}(x) = P_\xi(x)
+\end{equation}\]</span> für alle <span class="math inline">\(\xi\)</span> an denen <span class="math inline">\(P_\xi\)</span> stetig ist. Die Konvergenz in Verteilung von <span class="math inline">\(\xi_1,\xi_2,...\)</span> gegen <span class="math inline">\(\xi\)</span> wird geschrieben als <span class="math display">\[\begin{equation}
+\xi_n\xrightarrow[n\to \infty]{\text{D}} \xi.
+\end{equation}\]</span> Gilt <span class="math inline">\(\xi_n\xrightarrow[n\to \infty]{\text{D}} \xi\)</span>, dann heißt die Verteilung von <span class="math inline">\(\xi\)</span> die .</p>
+</div>
+<p>Die Konvergenz in Verteilung ist also eine Aussage zur Konvergenz von Funktionenfolgen, speziell von KVFen. Ohne Begründung merken wir an, dass die oben betrachtete Konvergenz in Wahrscheinlichkeit die Konvergenz in Verteilung impliziert. Wir geben nun zunächst den Zentralen Grenzwertsatz nach Lindenberg und Lévy an.</p>
+<div id="thm-zentraler-grenzwertsatz-nach-lindenberg-und-levy" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 17.2 (Zentraler Grenzwertsatz nach Lindenberg und Lévy)</strong></span> <span class="math inline">\(\xi_1,...,\xi_n\)</span> seien unabhängig und identisch verteilte Zufallsvariablen mit <span class="math display">\[\begin{equation}
+\mathbb{E}(\xi_i) := \mu \mbox{ und }
+\mathbb{V}(\xi_i) := \sigma^2 &gt; 0
+\mbox{ für alle } i = 1,....,n.
+\end{equation}\]</span> Weiterhin sei <span class="math inline">\(\zeta_n\)</span> die Zufallsvariable definiert als <span class="math display">\[\begin{equation}
+\zeta_n := \sqrt{n}\left(\frac{\bar{\xi}_n - \mu}{\sigma}\right).
+\end{equation}\]</span> Dann gilt für alle <span class="math inline">\(z \in \mathbb{R}\)</span> <span class="math display">\[\begin{equation}
+\lim_{n \to \infty} P_{\zeta_n}(z) = \Phi(z),
+\end{equation}\]</span> wobei <span class="math inline">\(\Phi\)</span> die kumulative Verteilungsfunktion der Standardnormalverteilung bezeichnet.</p>
+</div>
+<p>Wir zeigen an späterer Stelle, dass damit für <span class="math inline">\(n\to\infty\)</span> auch gilt, dass <span id="eq-generalisierung-zentraler-grenzwertsatz-lindenberg-levy"><span class="math display">\[
+\sum_{i=1}^n \xi_i \sim N(\mu, n\sigma^2)
+\mbox{ und }
+\bar{\xi}_n \sim N\left(\mu,\frac{\sigma^2}{n}\right).
+\tag{17.2}\]</span></span></p>
+<p><strong>Simulation</strong></p>
+<p>Wir betrachten den Fall von u.i.v. <span class="math inline">\(\chi^2\)</span>-Zufallsvariablen <span class="math inline">\(\xi_1,...,\xi_n \sim \chi^2(3)\)</span>. Offenbar ist die funktionale Form der <span class="math inline">\(\chi^2(3)\)</span>-Verteilung von der Standardnormalverteilung recht verschieden, insbesondere nehmen <span class="math inline">\(\chi^2\)</span>-Zufallsvariablen mit von Null verschiedener Wahrscheinlichkeit nur nicht-negative Werte an (vgl. <a href="203-Zufallsvariablen.html#sec-wahrscheinlichkeitsdichtefunktionen" class="quarto-xref"><span>Kapitel 13.3</span></a>) Nichtsdestotrotz resultiert ihre standardisierte Summe asymptotisch in einer Normalverteilung, wie in <a href="#fig-lindenberg-levy" class="quarto-xref">Abbildung&nbsp;<span>17.2</span></a> visualisiert. Dazu nutzen wir auf Ebene der Implementation die Tatsache, für die <span class="math inline">\(\chi^2\)</span>-Zufallsvariablen <span class="math inline">\(\xi_i, i = 1,...,n\)</span> mit Freiheitsgradparameter <span class="math inline">\(3\)</span> bekanntlich gilt (vgl. <a href="205-Erwartungswerte.html#sec-erwartungswert" class="quarto-xref"><span>Kapitel 15.1</span></a> und <a href="205-Erwartungswerte.html#sec-varianz-und-standardabweichung" class="quarto-xref"><span>Kapitel 15.2</span></a>) <span class="math display">\[\begin{equation}
+\mathbb{E}(\xi_i) = 3 \mbox{ und }\mathbb{V}(\xi_i) = 6
+\end{equation}\]</span> Die Abbildungen in <a href="#fig-lindenberg-levy" class="quarto-xref">Abbildung&nbsp;<span>17.2</span></a> A zeigen Histogrammschätzer der Wahrscheinlichkeitsdichte von <span class="math display">\[\begin{equation}
+\zeta_n := \sqrt{n}\left(\frac{\bar{\xi}_n - \mu}{\sigma}\right)
+\end{equation}\]</span> basierend auf 1000 Realisationen von <span class="math inline">\(\zeta_n\)</span> für <span class="math inline">\(n = 2\)</span> und <span class="math inline">\(n = 200\)</span>, sowie die WDF von <span class="math inline">\(N(0,1)\)</span>. Offenbar ist die Verteilung der Realisiationen von <span class="math inline">\(\zeta_2\)</span> der Standardnormalverteilung noch sehr unähnlich, wohingegen sich die Verteilung der Realisationen von <span class="math inline">\(\zeta_{200}\)</span> der Standardnormalverteilung schon annähert. <a href="#fig-lindenberg-levy" class="quarto-xref">Abbildung&nbsp;<span>17.2</span></a> B zeigt die entsprechenden geschätzten KVFen über die <a href="#thm-zentraler-grenzwertsatz-nach-lindenberg-und-levy" class="quarto-xref">Theorem&nbsp;<span>17.2</span></a> formal eine Aussage trifft.</p>
+<div id="fig-lindenberg-levy" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-lindenberg-levy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/207-lindenberg-levy.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-lindenberg-levy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;17.2: Simulation des Zentralen Grenzwertsatzes nach Lindenberg und Lévy.
+</figcaption>
+</figure>
+</div>
+<div id="thm-zentraler-grenzwertsatz-nach-liapounov" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 17.3 (Zentraler Grenzwertsatz nach Liapounov)</strong></span> <span class="math inline">\(\xi_1,...,\xi_n\)</span> seien unabhängige aber nicht notwendigerweise identisch verteilten Zufallsvariablen mit <span class="math display">\[\begin{equation}
+\mathbb{E}(\xi_i) := \mu_i \mbox{ und }
+\mathbb{V}(\xi_i) := \sigma^2_i &gt; 0
+\mbox{ für alle } i = 1,....,n.
+\end{equation}\]</span> Weiterhin sollen für <span class="math inline">\(\xi_1,...,\xi_n\)</span> folgende Eigenschaften gelten: <span class="math display">\[\begin{equation}
+\mathbb{E}(|\xi_i - \mu_i|^3) &lt; \infty \mbox{ und }
+\lim_{n \to \infty} \frac{\sum_{i=1}^n \mathbb{E}\left(|\xi_i - \mu_i|^3\right)}{(\sum_{i=1}^n \sigma_i^2)^{3/2}} = 0.
+\end{equation}\]</span> Dann gilt für die Zufallsvariable <span class="math inline">\(\zeta_n\)</span> definiert als <span class="math display">\[\begin{equation}
+\zeta_n := \frac{\sum_{i=1}^n \xi_i - \sum_{i=1}^n \mu_i}{\sqrt{\sum_{i=1}^n \sigma_i^2}},
+\end{equation}\]</span> für alle <span class="math inline">\(z\in\mathbb{R}\)</span>, dass <span class="math display">\[\begin{equation}
+\lim_{n \to \infty} P_{\zeta_n}(z) = \Phi(z),
+\end{equation}\]</span> wobei <span class="math inline">\(\Phi\)</span> KVF der Standardnormalverteilung bezeichnet.</p>
+</div>
+<p>Wir zeigen an späterer Stelle, dass damit für <span class="math inline">\(n\to\infty\)</span> auch gilt, dass <span id="eq-generalisierung-zentraler-grenzwertsatz-liapunov"><span class="math display">\[
+\sum_{i=1}^n \xi_i \sim N\left(\sum_{i=1}^n \mu_i, \sum_{i=1}^n \sigma_i^2\right)
+\tag{17.3}\]</span></span></p>
+</section>
+<section id="literaturhinweise" class="level2" data-number="17.3">
+<h2 data-number="17.3" class="anchored" data-anchor-id="literaturhinweise"><span class="header-section-number">17.3</span> Literaturhinweise</h2>
+<p>Zur mathematik-geschichtlichen Genese der Zentralen Grenzwertsätze siehe z.B. <span class="citation" data-cites="fischer2011">Fischer (<a href="#ref-fischer2011" role="doc-biblioref">2011</a>)</span>.</p>
+</section>
+<section id="selbstkontrollfragen" class="level2" data-number="17.4">
+<h2 data-number="17.4" class="anchored" data-anchor-id="selbstkontrollfragen"><span class="header-section-number">17.4</span> Selbstkontrollfragen</h2>
+<ol type="1">
+<li>Definieren Sie den Begriff der Konvergenz in Wahrscheinlichkeit.</li>
+<li>Definieren Sie den Begriff der Konvergenz in Verteilung.</li>
+<li>Geben Sie das Schwache Gesetz der Großen Zahlen wieder.</li>
+<li>Erläutern Sie den Zentralen Grenzwertsatz nach Lindenberg und Lévy.</li>
+<li>Erläutern Sie den Zentralen Grenzwertsatz nach Liapunov.</li>
+<li>Warum sind die Zentralen Grenzwertsätze für die probabilistische Modellbildung wichtig? </li>
+</ol>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-fischer2011" class="csl-entry" role="listitem">
+Fischer, H. (2011). <em>A <span>History</span> of the <span>Central Limit Theorem</span></em>. <span>Springer New York</span>. <a href="https://doi.org/10.1007/978-0-387-87857-7">https://doi.org/10.1007/978-0-387-87857-7</a>
+</div>
+<div id="ref-georgii2009" class="csl-entry" role="listitem">
+Georgii, H.-O. (2009). <em><span>Stochastik: Einf<span>ü</span>hrung in die Wahrscheinlichkeitstheorie und Statistik</span></em> (4., <span>ü</span>berarb. und erw. Aufl). <span>de Gruyter</span>.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Kopiert");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Kopiert");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./206-Ungleichungen.html" class="pagination-link  aria-label=" &lt;span="">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Ungleichungen</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./208-Transformationstheoreme.html" class="pagination-link" aria-label="<span class='chapter-number'>18</span>&nbsp; <span class='chapter-title'>Transformationstheoreme</span>">
+        <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Transformationstheoreme</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/207-Grenzwerte.qmd" class="toc-action"><i class="bi bi-github"></i>Seite editieren</a></li></ul></div></div></div></footer></body></html>

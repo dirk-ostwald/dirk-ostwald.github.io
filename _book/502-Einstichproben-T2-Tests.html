@@ -1,0 +1,1627 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.549">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Probabilistische Datenwissenschaft für die Psychologie - 37&nbsp; Einstichproben-T\(^2\)-Tests</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./503-Einfaktorielle-Varianzanalyse.html" rel="next">
+<link href="./501-Datendeskription.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Keine Treffer",
+    "search-matching-documents-text": "Treffer",
+    "search-copy-link-title": "Link in die Suche kopieren",
+    "search-hide-matches-text": "Zusätzliche Treffer verbergen",
+    "search-more-match-text": "weitere Treffer in diesem Dokument",
+    "search-more-matches-text": "weitere Treffer in diesem Dokument",
+    "search-clear-button-title": "Zurücksetzen",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Abbrechen",
+    "search-submit-button-title": "Abschicken",
+    "search-label": "Suchen"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Probabilistische Datenwissenschaft für die Psychologie</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools">
+    <a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages" title="Quellcode" class="quarto-navigation-tool px-1" aria-label="Quellcode"><i class="bi bi-github"></i></a>
+    <a href="./Probabilistische-Datenwissenschaft-für-die-Psychologie.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+          <div id="quarto-search" class="" title="Suchen"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./501-Datendeskription.html">Multivariate Inferenz</a></li><li class="breadcrumb-item"><a href="./502-Einstichproben-T2-Tests.html"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Einstichproben-T<span class="math inline">\(^2\)</span>-Tests</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Willkommen</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./100-Mathematische-Grundlagen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Mathematische Grundlagen</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./101-Sprache-und-Logik.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Sprache und Logik</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./102-Mengen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Mengen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./103-Summen-Produkte-Potenzen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Summen, Produkte, Potenzen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./104-Funktionen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Funktionen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./105-Differentialrechnung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Differentialrechnung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./106-Folgen-Grenzwerte-Stetigkeit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Folgen, Grenzwerte, Stetigkeit</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./107-Integralrechnung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Integralrechnung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./108-Vektoren.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Vektoren</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./109-Matrizen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Matrizen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./110-Eigenanalyse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Eigenanalyse</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./200-Wahrscheinlichkeitstheorie.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Wahrscheinlichkeitstheorie</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./201-Wahrscheinlichkeitsräume.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Wahrscheinlichkeitsräume</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./202-Elementare-Wahrscheinlichkeiten.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Elementare Wahrscheinlichkeiten</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./203-Zufallsvariablen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Zufallsvariablen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./204-Zufallsvektoren.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Zufallsvektoren</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./205-Erwartungswerte.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Erwartungswerte</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./206-Ungleichungen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Ungleichungen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./207-Grenzwerte.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Grenzwerte</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./208-Transformationstheoreme.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Transformationstheoreme</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./209-Normalverteilungstransformationen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Normalverteilungstransformationen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./210-Multivariate-Normalverteilungen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Multivariate Normalverteilungen</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Frequentistische Inferenz</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./301-Grundbegriffe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Grundbegriffe</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./302-Punktschätzung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Punktschätzung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./303-Konfidenzintervalle.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Konfidenzintervalle</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./304-Hypothesentests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Hypothesentests</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Das Allgemeine Lineare Modell</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./401-Regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Regression</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./402-Korrelation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Korrelation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./403-Modellformulierung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Modellformulierung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./404-Parameterschätzung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Parameterschätzung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./405-T-Statistiken.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">T-Statistiken</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./406-F-Statistiken.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">F-Statistiken</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./407-T-Tests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">T-Tests</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./408-Einfaktorielle-Varianzanalyse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Einfaktorielle Varianzanalyse</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./409-Zweifaktorielle-Varianzanalyse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Zweifaktorielle Varianzanalyse</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./410-Partielle-Korrelation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Partielle Korrelation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./411-Multiple-Regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Multiple Regression</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Multivariate Inferenz</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./501-Datendeskription.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Datendeskription</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./502-Einstichproben-T2-Tests.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Einstichproben-T<span class="math inline">\(^2\)</span>-Tests</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./503-Einfaktorielle-Varianzanalyse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Einfaktorielle Varianzanalyse</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./504-Kanonische-Korrelationsanalyse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">Kanonische Korrelationsanalyse</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Referenzen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Referenzen</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Inhaltsverzeichnis</h2>
+   
+  <ul>
+  <li><a href="#sec-anwendungsszenario" id="toc-sec-anwendungsszenario" class="nav-link active" data-scroll-target="#sec-anwendungsszenario"><span class="header-section-number">37.1</span> Anwendungsszenario</a></li>
+  <li><a href="#sec-modellformulierung-modellevaluation" id="toc-sec-modellformulierung-modellevaluation" class="nav-link" data-scroll-target="#sec-modellformulierung-modellevaluation"><span class="header-section-number">37.2</span> Modellformulierung und Modellevaluation</a></li>
+  <li><a href="#sec-modellevaluation" id="toc-sec-modellevaluation" class="nav-link" data-scroll-target="#sec-modellevaluation"><span class="header-section-number">37.3</span> Modellevaluation</a>
+  <ul class="collapse">
+  <li><a href="#teststatistik-und-test" id="toc-teststatistik-und-test" class="nav-link" data-scroll-target="#teststatistik-und-test">Teststatistik und Test</a></li>
+  <li><a href="#analyse-der-testgütefunktion" id="toc-analyse-der-testgütefunktion" class="nav-link" data-scroll-target="#analyse-der-testgütefunktion">Analyse der Testgütefunktion</a></li>
+  <li><a href="#testumfangkontrolle" id="toc-testumfangkontrolle" class="nav-link" data-scroll-target="#testumfangkontrolle">Testumfangkontrolle</a></li>
+  <li><a href="#p-wert" id="toc-p-wert" class="nav-link" data-scroll-target="#p-wert">p-Wert</a></li>
+  <li><a href="#analyse-der-powerfunktion" id="toc-analyse-der-powerfunktion" class="nav-link" data-scroll-target="#analyse-der-powerfunktion">Analyse der Powerfunktion</a></li>
+  </ul></li>
+  <li><a href="#anwendungsbeispiel" id="toc-anwendungsbeispiel" class="nav-link" data-scroll-target="#anwendungsbeispiel"><span class="header-section-number">37.4</span> Anwendungsbeispiel</a></li>
+  <li><a href="#sec-literaturhinweise" id="toc-sec-literaturhinweise" class="nav-link" data-scroll-target="#sec-literaturhinweise"><span class="header-section-number">37.5</span> Literaturhinweise</a></li>
+  <li><a href="#sec-selbskontrollfragen" id="toc-sec-selbskontrollfragen" class="nav-link" data-scroll-target="#sec-selbskontrollfragen"><span class="header-section-number">37.6</span> Selbstkontrollfragen</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/502-Einstichproben-T2-Tests.qmd" class="toc-action"><i class="bi bi-github"></i>Seite editieren</a></li></ul></div></nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./501-Datendeskription.html">Multivariate Inferenz</a></li><li class="breadcrumb-item"><a href="./502-Einstichproben-T2-Tests.html"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Einstichproben-T<span class="math inline">\(^2\)</span>-Tests</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-t2-tests" class="quarto-section-identifier"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Einstichproben-T<span class="math inline">\(^2\)</span>-Tests</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="sec-anwendungsszenario" class="level2" data-number="37.1">
+<h2 data-number="37.1" class="anchored" data-anchor-id="sec-anwendungsszenario"><span class="header-section-number">37.1</span> Anwendungsszenario</h2>
+<p>Wie im univariaten Fall ist das Anwendungsszenario eines Einstichproben-T<span class="math inline">\(^2\)</span>-Tests dadurch gekennzeichnet, dass <span class="math inline">\(n\)</span> Datenpunkte einer Stichprobe (Gruppe) randomisierter experimenteller Einheiten betrachtet werden. In Generalisierung des univariaten Falls sind die <span class="math inline">\(n\)</span> Datenpunkte allerdings multivariat, jeder Datenpunkt besteht also aus zwei oder mehr Zahlen und kann als Vektor in <span class="math inline">\(\mathbb{R}^m\)</span> mit <span class="math inline">\(m&gt;1\)</span> betrachtet werden. In Analogie zum univariaten Fall wird von den <span class="math inline">\(n\)</span> Datenpunkten angenommen, dass sie Realisierungen von <span class="math inline">\(n\)</span> unabhängigen und identisch multivariat normalverteilten Zufallsvektoren sind. Hinsichtlich der identischen multivariaten Normalverteilung <span class="math inline">\(N(\mu,\Sigma)\)</span> dieser Zufallsvektoren wird angenommen, dass sowohl der wahre Erwartungswertparameter <span class="math inline">\(\mu\)</span> als auch der wahre Kovarianzmatrixparameter <span class="math inline">\(\Sigma\)</span> unbekannt sind. Schließlich wird voraussgesetzt, dass ein Interesse an einem inferentiellen Vergleich des wahren, aber unbekannten, Erwartungswertparameters <span class="math inline">\(\mu\)</span> mit einem vorgegebenen Wert <span class="math inline">\(\mu_0\)</span>, beispielsweise <span class="math inline">\(\mu_0 := 0_m\)</span>, besteht. Wie im univariaten Fall ergeben sich auch in diesem Anwendungsszenario eine Reihe möglicher Hypothesenszenarien mit jeweils unterschiedlichen Testgütefunktionen und damit Herangehensweisen an Testumfangkontrolle und Stichprobengrößenoptimierung. Wir wollen im Rahmen dieser Einführung nur das Szenario einer einfachen Nullhypothese und einer zusammengesetzten Alternativhypothese, <span id="eq-t2-nullhypothese"><span class="math display">\[
+H_0 :\mu = \mu_0 \Leftrightarrow \Theta_0 :=  \{\mu_0\}
+\mbox{ und }
+H_1 : \mu \neq \mu_0 \Leftrightarrow \Theta_1 :=  \mathbb{R}^m \setminus \{\mu_0\}
+\tag{37.1}\]</span></span> genauer untersuchen.</p>
+<p><strong>Anwendungsbeispiel</strong></p>
+<p>Für ein konkretes Anwendungsbeispiel betrachten wir die Analyse simulierter<br>
+Prä-Post-Interventions-Differenzwerte von BDI Scores (<code>dBDI</code>) und Glukokortikoidplasmaleveln (<code>dGLU</code>), die, wie in <a href="503-Einfaktorielle-Varianzanalyse.html#tbl-bdi-glu" class="quarto-xref">Tabelle&nbsp;<span>38.1</span></a> dargestellt, an einer Gruppe von <span class="math inline">\(n = 20\)</span> Patient:innen erhoben worden sein könnten. Positive Werte von <code>dBDI</code> und <code>dGLU</code> entsprächen dabei einer Reduktion der Depressionssymptomatik, negative Werte zeigen eine Verschlechterung des Depressionszustandes an.</p>
+<p>Bei der Anwendung eines Einstichproben-T<span class="math inline">\(^2\)</span>-Tests auf die Daten dieses simulierten Datensatzes nehmen wir an, dass die zweidimensionalen Datenvektoren (<code>dBDI</code>, <code>dGLU</code>) Realisierungen von <span class="math inline">\(n = 20\)</span> unabhängig normalverteilten zweidimensionalen Zufallsvektoren <span class="math inline">\(\upsilon_i \sim N(\mu,\Sigma)\)</span> sind. Wir nehmen weiterhin an, dass wir daran interessiert sind, unsere Unsicherheit beim inferentiellen Vergleich des wahren, aber unbekannten, Erwartungswertparameters <span class="math inline">\(\mu \in \mathbb{R}^2\)</span> mit einem Vergleichswert <span class="math inline">\(\mu_0 \in \mathbb{R}^2\)</span>, etwa einem Therapieerfolgsnormwert, zu quantifizieren.</p>
+<div class="cell">
+<div id="tbl-bdi-glu" class="cell quarto-float anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-bdi-glu-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabelle&nbsp;37.1: Prä-Post-Interventions-Differenzwerte von BDI Scores und Glukokortikoidplasmaleveln von <span class="math inline">\(n = 20\)</span> Patient:innen
+</figcaption>
+<div aria-describedby="tbl-bdi-glu-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: center;">dBDI</th>
+<th style="text-align: center;">dGLU</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">35</td>
+<td style="text-align: center;">6.1</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">25</td>
+<td style="text-align: center;">4.0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">20</td>
+<td style="text-align: center;">1.7</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">29</td>
+<td style="text-align: center;">2.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">29</td>
+<td style="text-align: center;">1.9</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">17</td>
+<td style="text-align: center;">0.9</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">33</td>
+<td style="text-align: center;">2.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">28</td>
+<td style="text-align: center;">4.1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">26</td>
+<td style="text-align: center;">3.9</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">31</td>
+<td style="text-align: center;">3.8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">14</td>
+<td style="text-align: center;">2.1</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">18</td>
+<td style="text-align: center;">2.0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">19</td>
+<td style="text-align: center;">5.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">28</td>
+<td style="text-align: center;">2.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">20</td>
+<td style="text-align: center;">2.1</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">35</td>
+<td style="text-align: center;">4.4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">28</td>
+<td style="text-align: center;">4.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">32</td>
+<td style="text-align: center;">3.9</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">32</td>
+<td style="text-align: center;">1.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">25</td>
+<td style="text-align: center;">1.9</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>Unabhängig von diesem inferenzstatistischen Vorgehen betrachten wir zunächst zu diesem Datensatz einige Deskriptivstatistiken wie durch folgenden <strong>R</strong> Code ausgewertet und in <a href="#fig-einstichproben-t2-deskription" class="quarto-xref">Abbildung&nbsp;<span>37.1</span></a> dargestellt. Verglichen mit einem Therapienormwert von <span class="math inline">\(\mu_0 := (30,3.5)^T\)</span> fallen die Komponenten des Stichprobenmittels mit <span class="math inline">\(\bar{\upsilon} = (26.3, 3.0)^T\)</span> etwas geringer aus, allerdings bei einer nicht zu vernachlässigen Datenvariabilität, die sich in einer Mahalanobisdistanz von <span class="math inline">\(D = 0.4\)</span> des Stichprobenmittels vom Therapienormwert in bezug auf die Stichprobenkovarianzmatrix des Datensatzes wiederspiegelt.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># Datendeskription</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a>D      <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"_data/502-einstichproben-t2-tests.csv"</span>)                      <span class="co"># Daten einlesen</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a>Y      <span class="ot">=</span> <span class="fu">rbind</span>(D<span class="sc">$</span>y_1i, D<span class="sc">$</span>y_2i)                                                  <span class="co"># Datenmatrix               </span></span>
+<span id="cb1-4"><a href="#cb1-4"></a>mu_0   <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">30</span>,<span class="fl">3.5</span>), <span class="at">nrow =</span> <span class="dv">2</span>)                                            <span class="co"># Normwert</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a>n      <span class="ot">=</span> <span class="fu">ncol</span>(Y)                                                                <span class="co"># Anzahl Datenpunkte</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a>j_n    <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="dv">1</span>,n), <span class="at">nrow =</span> n)                                             <span class="co"># 1_n</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a>I_n    <span class="ot">=</span> <span class="fu">diag</span>(n)                                                                <span class="co"># I_n</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a>J_n    <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="dv">1</span>,n<span class="sc">^</span><span class="dv">2</span>), <span class="at">nrow =</span> n)                                           <span class="co"># 1_{nn}</span></span>
+<span id="cb1-9"><a href="#cb1-9"></a>Y_bar  <span class="ot">=</span> (<span class="dv">1</span><span class="sc">/</span>n)<span class="sc">*</span>(Y <span class="sc">%*%</span> j_n)                                                      <span class="co"># Stichprobenmittel  </span></span>
+<span id="cb1-10"><a href="#cb1-10"></a>C      <span class="ot">=</span> (<span class="dv">1</span><span class="sc">/</span>(n<span class="dv">-1</span>))<span class="sc">*</span>(Y <span class="sc">%*%</span> (I_n<span class="sc">-</span>(<span class="dv">1</span><span class="sc">/</span>n)<span class="sc">*</span>J_n) <span class="sc">%*%</span> <span class="fu">t</span>(Y))                             <span class="co"># Stichprobenkovarianzmatrix  </span></span>
+<span id="cb1-11"><a href="#cb1-11"></a>D      <span class="ot">=</span> <span class="fu">t</span>(Y_bar <span class="sc">-</span> mu_0) <span class="sc">%*%</span> <span class="fu">solve</span>(C) <span class="sc">%*%</span> (Y_bar <span class="sc">-</span> mu_0)                        <span class="co"># Mahalanobis Distanz</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Y_bar = 26.25615 2.991039 
+D     = 0.3773184</code></pre>
+</div>
+</div>
+<div id="fig-einstichproben-t2-deskription" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-einstichproben-t2-deskription-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/502-einstichproben-t2-deskription.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-einstichproben-t2-deskription-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;37.1: Deskriptivstatisken der <code>dBDI</code>, <code>dGLU</code> Daten des Beispieldatensatzes. Jeder Punkt visualisiert die Daten einer Patient:in, die Stichprobenkovarianz ist durch die 0.4 Isokontur einer zweidimensionalen Normalverteilung mit Erwartungswertparameter und Kovarianzmatrixparameter entsPrächend dem Stichprobenmittel und der Stichprobenkovarianz dargestellt
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="sec-modellformulierung-modellevaluation" class="level2" data-number="37.2">
+<h2 data-number="37.2" class="anchored" data-anchor-id="sec-modellformulierung-modellevaluation"><span class="header-section-number">37.2</span> Modellformulierung und Modellevaluation</h2>
+<p>Wir definieren zunächst das Einstichproben-T<span class="math inline">\(^2\)</span>-Test-Modell wie folgt.</p>
+<div id="def-einstichproben-t2-test-modell" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 37.1 (Einstichproben-T<span class="math inline">\(^2\)</span>-Test-Modell)</strong></span> Für <span class="math inline">\(i = 1,...,n\)</span> seien <span class="math inline">\(\upsilon_i\)</span> <span class="math inline">\(m\)</span>-dimensionale Zufallsvektoren, die die <span class="math inline">\(n\)</span> Datenpunkte eines Einstichproben-T<span class="math inline">\(^2\)</span>-Test Szenarios modellieren. Dann hat das <em>Einstichproben-T<span class="math inline">\(^2\)</span>-Test-Modell</em> die strukturelle Form <span id="eq-einstichproben-t2-test-strukturelle-form"><span class="math display">\[
+\upsilon_i = \mu + \varepsilon_i
+\mbox{ mit } \varepsilon_i \sim N(0_m, \Sigma) \mbox{ u.i.v. für } i = 1,...,n
+\mbox{ mit } \mu \in \mathbb{R}^m,  \Sigma \in \mathbb{R}^{m \times m} \mbox{ pd}
+\tag{37.2}\]</span></span> und die Datenverteilungsform <span class="math display">\[\begin{equation}
+\upsilon_i \sim N(\mu, \Sigma) \mbox{ u.i.v. für } i = 1,...,n
+\mbox{ mit } \mu \in \mathbb{R}^m, \Sigma \in \mathbb{R}^{m \times m} \mbox{ pd}.
+\end{equation}\]</span></p>
+</div>
+<p>Die Äquivalenz von struktureller Form und Datenverteilungsform des Einstichproben-T<span class="math inline">\(^2\)</span>-Test-Modells folgt dabei direkt mit <a href="210-Multivariate-Normalverteilungen.html#thm-linear-affine-transformation" class="quarto-xref">Theorem&nbsp;<span>20.4</span></a> durch Transformation der Zufallsvektoren <span class="math inline">\(\varepsilon_i\)</span> anhand von <a href="#eq-einstichproben-t2-test-strukturelle-form" class="quarto-xref">Gleichung&nbsp;<span>37.2</span></a>.</p>
+</section>
+<section id="sec-modellevaluation" class="level2" data-number="37.3">
+<h2 data-number="37.3" class="anchored" data-anchor-id="sec-modellevaluation"><span class="header-section-number">37.3</span> Modellevaluation</h2>
+<section id="teststatistik-und-test" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="teststatistik-und-test">Teststatistik und Test</h3>
+<p>Wir definieren als nächstes eine Teststatistik für das Einstichproben-T<span class="math inline">\(^2\)</span>-Test Szenario.</p>
+<div id="def-einstichproben-t2-test-teststatistik" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 37.2 (Einstichproben-T<span class="math inline">\(^2\)</span>-Teststatistik)</strong></span> Gegeben seien das Einstichproben-T<span class="math inline">\(^2\)</span>-Test-Modell und ein Nullhypothesenparameter <span class="math inline">\(\mu_0 \in \mathbb{R}^m\)</span>. Dann ist die Einstichproben-T<span class="math inline">\(^2\)</span>-Teststatistik definiert als <span class="math display">\[\begin{equation}
+T^2 := n(\bar{\upsilon} - \mu_0)^T C^{-1}(\bar{\upsilon} - \mu_0),
+\end{equation}\]</span> wobei <span class="math inline">\(\bar{\upsilon}\)</span> und <span class="math inline">\(C\)</span> das Stichprobenmittel und die Stichprobenkovarianzmatrix der <span class="math inline">\(\upsilon_1,...,\upsilon_n\)</span> bezeichnen.</p>
+</div>
+<p>Die Einstichproben-T<span class="math inline">\(^2\)</span>-Teststatistik ist offenbar die mit dem Stichprobenumfang <span class="math inline">\(n\)</span> skalierte Mahalanobis-Distanz von <span class="math inline">\(\bar{\upsilon}\)</span> und <span class="math inline">\(\mu_0\)</span> hinsichtlich <span class="math inline">\(C\)</span> (vgl. <a href="501-Datendeskription.html#sec-deskriptivstatistiken" class="quarto-xref"><span>Kapitel 36.2</span></a>). Damit gilt entsprechend, dass bei konstanter Stichprobenkovarianzmatrix die Einstichproben-T<span class="math inline">\(^2\)</span>-Test Teststatistik <span class="math inline">\(T^2\)</span> größere Werte für eine größere Euklidische Distanz von <span class="math inline">\(\bar{\upsilon}\)</span> und <span class="math inline">\(\mu_0\)</span> annimmt und bei konstanter Euklidischer Distanz von <span class="math inline">\(\bar{\upsilon}\)</span> und <span class="math inline">\(\mu_0\)</span> der Wert der Teststatistik <span class="math inline">\(T^2\)</span> von der Höhe der Datenvariabilität abhängt. Hinsichtlich der Verteilung der Einstichproben-T<span class="math inline">\(^2\)</span>-Teststatistik halten wir zunächst folgendes Theorem fest, das wir nicht beweisen wollen.</p>
+<div id="thm-verteilung-der-skalierten-einstichproben-t2-teststatistik" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 37.1 (Verteilung der skalierten Einstichproben-T<span class="math inline">\(^2\)</span>-Teststatistik)</strong></span> Es seien <span class="math inline">\(\upsilon_1,...,\upsilon_n \sim N(\mu,\Sigma)\)</span> mit <span class="math inline">\(\mu \in \mathbb{R}^m\)</span> und <span class="math inline">\(\Sigma \in \mathbb{R}^{m\times m} \mbox{pd}\)</span>, <span id="eq-nu"><span class="math display">\[
+\nu:= \frac{n-m}{(n-1)m}
+\tag{37.3}\]</span></span> und für <span class="math inline">\(\mu \in \mathbb{R}^m\)</span> sei die Einstichproben-T<span class="math inline">\(^2\)</span>-Teststatistik definiert als <span class="math display">\[\begin{equation}
+T^2 := n(\bar{\upsilon} - \mu_0)^T C^{-1} (\bar{\upsilon} - \mu_0).
+\end{equation}\]</span> Dann gilt <span id="eq-nuT2"><span class="math display">\[
+\nu T^2 \sim f(\delta, m, n-m),
+\tag{37.4}\]</span></span> wobei <span class="math inline">\(f(\delta,m,n-m)\)</span> die nichtzentrale <span class="math inline">\(f\)</span>-Verteilung mit Nichtzentralitätsparameter <span id="eq-delta"><span class="math display">\[
+\delta := n(\mu - \mu_0)^T\Sigma^{-1}(\mu - \mu_0)
+\tag{37.5}\]</span></span> sowie mit Freiheitsgradparametern <span class="math inline">\(m\)</span> und <span class="math inline">\(n-m\)</span> bezeichnet.</p>
+</div>
+<p>Für einen Beweis von <a href="#thm-verteilung-der-skalierten-einstichproben-t2-teststatistik" class="quarto-xref">Theorem&nbsp;<span>37.1</span></a> verweisen wir auf <span class="citation" data-cites="hotelling1931">Hotelling (<a href="#ref-hotelling1931" role="doc-biblioref">1931</a>)</span> und <span class="citation" data-cites="anderson2003">Anderson (<a href="#ref-anderson2003" role="doc-biblioref">2003</a>)</span>. Wir erinnern in diesem Zusammenhang an die Begriffe der <span class="math inline">\(f\)</span>-Zufallsvariable und der nichtzentralen <span class="math inline">\(f\)</span>-Zufallsvariable, für die wir exemplarische WDFen in <a href="#fig-f-zufallsvariable" class="quarto-xref">Abbildung&nbsp;<span>37.2</span></a> und <a href="#fig-nichtzentrale-f-zufallsvariable" class="quarto-xref">Abbildung&nbsp;<span>37.3</span></a> darstellen.</p>
+<div id="def-f-zufallsvariable" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 37.3 (<span class="math inline">\(f\)</span>-Zufallsvariable)</strong></span> <span class="math inline">\(\xi\)</span> sei eine Zufallsvariable mit Ergebnisraum <span class="math inline">\(\mathbb{R}_{&gt;0}\)</span> und WDF <span class="math display">\[\begin{equation}
+p_\xi : \mathbb{R} \to \mathbb{R}_{&gt;0}, x \mapsto p_\xi(x)
+:= \nu_1^{\frac{\nu_1}{2}}\nu_2^{\frac{\nu_2}{2}}
+   \frac{\Gamma\left(\frac{\nu_1+\nu_2}{2}\right)}{\Gamma\left(\frac{\nu_1}{2}\right)\Gamma\left(\frac{\nu_2}{2}\right)}
+   \frac{x^{\frac{\nu_1}{2}-1}}{\left(\nu_1 x  + \nu_2 \right)^{\frac{\nu_1+\nu_2}{2}}},
+\end{equation}\]</span> wobei <span class="math inline">\(\Gamma\)</span> die Gammafunktion bezeichne. Dann sagen wir, dass <span class="math inline">\(\xi\)</span> einer <span class="math inline">\(f\)</span>-Verteilung mit Freiheitsgradparametern <span class="math inline">\(\nu_1\)</span> und <span class="math inline">\(\nu_2\)</span> unterliegt und nennen <span class="math inline">\(\xi\)</span> eine <span class="math inline">\(f\)</span>-Zufallsvariable mit Freiheitsgradparametern <span class="math inline">\(\nu_1\)</span> und <span class="math inline">\(\nu_2\)</span>. Wir kürzen dies mit <span class="math inline">\(\xi \sim f(\nu_1,\nu_2)\)</span> ab. Die WDF einer <span class="math inline">\(f\)</span>-Zufallsvariable bezeichnen wir mit <span class="math inline">\(f(x;\nu_1,\nu_2)\)</span>, die KVF einer <span class="math inline">\(f\)</span>-Zufallsvariable bezeichnen wir mit <span class="math inline">\(F(x;\nu_1,\nu_2)\)</span>, und die inverse KVF einer <span class="math inline">\(f\)</span>-Zufallsvariable bezeichnen wir mit <span class="math inline">\(F^{-1}(x;\nu_1,\nu_2)\)</span>.</p>
+</div>
+<div id="fig-f-zufallsvariable" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-f-zufallsvariable-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/502-f-zufallsvariable.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-f-zufallsvariable-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;37.2: Exemplarische WDFen einer <span class="math inline">\(f\)</span>-Zufallsvariable
+</figcaption>
+</figure>
+</div>
+<div id="def-nichtzentrale-f-zufallsvariable" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 37.4 (Nichtzentrale <span class="math inline">\(f\)</span>-Zufallsvariable)</strong></span> <span class="math inline">\(\xi\)</span> sei eine Zufallsvariable mit Ergebnisraum <span class="math inline">\(\mathbb{R}_{&gt;0}\)</span> und WDF <span class="math display">\[\begin{multline}
+p_\xi : \mathbb{R} \to \mathbb{R}_{&gt;0}, x \mapsto \\
+p_\xi(x)
+:= \sum_{k=0}^\infty \frac{e^{-\delta/2}(\delta/2)^k}{\frac{\Gamma(\nu_2/2)\Gamma(\nu_1/2 + k)}{\Gamma(\nu_2/2 + \nu_1/2 + k)}k!}
+    \left(\frac{\nu_1}{\nu_2}\right)^{\nu_1/2 + k}
+    \left(\frac{\nu_2}{\nu_2+\nu_1x}\right)^{(\nu_1+\nu_2)/2 + k}
+    x^{\nu_1/2 - 1 + k}
+\end{multline}\]</span> wobei <span class="math inline">\(\Gamma\)</span> die Gammafunktion bezeichne. Dann sagen wir, dass <span class="math inline">\(\xi\)</span> einer nichtzentralen <span class="math inline">\(f\)</span>-Verteilung mit Nichtzentralitätsparameter <span class="math inline">\(\delta\)</span> und Freiheitsgradparametern <span class="math inline">\(\nu_1\)</span> und <span class="math inline">\(\nu_2\)</span> unterliegt und nennen <span class="math inline">\(\xi\)</span> eine nichtzentrale <span class="math inline">\(f\)</span>-Zufallsvariable mit Nichtzentralitätsparameter <span class="math inline">\(\delta\)</span> und Freiheitsgradparametern <span class="math inline">\(\nu_1\)</span> und <span class="math inline">\(\nu_2\)</span>. Wir kürzen dies mit <span class="math inline">\(\xi \sim f(\delta,\nu_1,\nu_2)\)</span> ab. Die WDF einer <span class="math inline">\(f\)</span>-Zufallsvariable bezeichnen wir mit <span class="math inline">\(f(x;\delta,\nu_1,\nu_2)\)</span>, die KVF einer nichtzentralen <span class="math inline">\(f\)</span>-Zufallsvariable bezeichnen wir mit <span class="math inline">\(F(x;\delta,\nu_1,\nu_2)\)</span>, und die inverse KVF einer nichtzentralen <span class="math inline">\(f\)</span>-Zufallsvariable bezeichnen wir mit <span class="math inline">\(F^{-1}(x;\delta,\nu_1,\nu_2)\)</span>.</p>
+</div>
+<div id="fig-nichtzentrale-f-zufallsvariable" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-nichtzentrale-f-zufallsvariable-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/502-nichtzentrale-f-zufallsvariable.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nichtzentrale-f-zufallsvariable-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;37.3: Exemplarische WDFen einer nichtzentralen <span class="math inline">\(f\)</span>-Zufallsvariable
+</figcaption>
+</figure>
+</div>
+<p>Im univariaten Fall sind bekanntlich die <span class="math inline">\(F\)</span>-Statistiken der Varianzanalyse bei Zutreffen der Nullhypothese <span class="math inline">\(f\)</span>-verteilt und bei Zutreffen der Alternativhypothese nichtzentral-<span class="math inline">\(f\)</span>-verteilt. Für den Fall <span class="math inline">\(\mu = \mu_0\)</span>, dass also der wahre, aber unbekannte Erwartungswertparameter mit dem Nullhypothesenparameter identisch ist, gilt nach <a href="#eq-delta" class="quarto-xref">Gleichung&nbsp;<span>37.5</span></a> <span class="math inline">\(\delta = 0\)</span> und <span class="math inline">\(f(\delta,m,n-m)\)</span> entspricht der <span class="math inline">\(f\)</span>-Verteilung <span class="math inline">\(f(m,n-m)\)</span>.</p>
+<p>Wir halten weiterhin fest, dass aus <a href="#thm-verteilung-der-skalierten-einstichproben-t2-teststatistik" class="quarto-xref">Theorem&nbsp;<span>37.1</span></a> im univariaten Fall <span class="math inline">\(m := 1\)</span> aus <a href="#eq-nu" class="quarto-xref">Gleichung&nbsp;<span>37.3</span></a> folgt, dass <span class="math display">\[\begin{equation}
+\nu = \frac{n-1}{(n-1)\cdot 1} = 1
+\end{equation}\]</span> und mit der Stichprobenvarianz <span class="math inline">\(S^2\)</span> einer univariaten Stichprobe entsPrächend folgt, dass <span class="math display">\[\begin{equation}
+T^2 = n\frac{(\bar{\upsilon} - \mu_0)^2}{S^2} = \left(\sqrt{n}\frac{\bar{\upsilon} - \mu_0}{S} \right)^2.
+\end{equation}\]</span> Dies ist offenbar das Quadrat der bekannten univariaten Einstichproben-T-Test Teststatistik. Damit ist nach <a href="#thm-verteilung-der-skalierten-einstichproben-t2-teststatistik" class="quarto-xref">Theorem&nbsp;<span>37.1</span></a> das Quadrat der univariaten Einstichproben-T-Test Teststatistik nach <span class="math inline">\(f(\delta,1,n-1)\)</span> verteilt. Intuitiv und verkürzt ausgedrückt ist also eine quadrierte <span class="math inline">\(t\)</span>-Zufallsvariable eine <span class="math inline">\(f\)</span>-Zufallsvariable.</p>
+<p>Aus <a href="#thm-verteilung-der-skalierten-einstichproben-t2-teststatistik" class="quarto-xref">Theorem&nbsp;<span>37.1</span></a> folgen nun für Einstichproben-T<span class="math inline">\(^2\)</span>-Teststatistik unmittelbar folgende Formen für ihre WDF und KVF.</p>
+<div id="thm-wdf-und-kdf-der-einstichproben-t2-Ttststatistik" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 37.2 (WDF und KDF der Einstichproben-T<span class="math inline">\(^2\)</span>-Teststatistik)</strong></span> Im Einstichproben-T<span class="math inline">\(^2\)</span>-Test Szenario sei <span class="math display">\[\begin{equation}
+\nu:= \frac{n-m}{(n-1)m}
+\end{equation}\]</span> Dann ist eine WDF der Einstichproben-T<span class="math inline">\(^2\)</span>-Teststatistik gegeben durch <span class="math display">\[\begin{equation}\label{eq:pT1}
+p_{T^2} : \mathbb{R}_{\ge 0} \to \mathbb{R},
+t^2 \mapsto p_{T^2}(t^2) := \nu f(\nu t^2;\delta, m,n-m)
+\end{equation}\]</span> und eine KVF der Einstichproben-T<span class="math inline">\(^2\)</span>-Teststatistik ist gegeben durch <span class="math display">\[\begin{equation}\label{eq:PT2}
+P_{T^2} : \mathbb{R}_{\ge 0} \to [0,1],
+t^2 \mapsto P_{T^2}(t^2) := F(\nu t^2;\delta, m,n-m)
+\end{equation}\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Beweis</em>. </span>Wir halten zunächst fest, dass das Theorem zur univariaten WDF Transformation bei linear-affinen Abbildungen besagt, dass für eine Zufallsvariable <span class="math inline">\(\xi\)</span> mit WDF <span class="math inline">\(p_\xi\)</span> und der Definition <span class="math inline">\(\upsilon = f(\xi)\)</span> mit <span class="math inline">\(f(\xi) := a\xi + b\)</span> für <span class="math inline">\(a\neq 0\)</span> eine WDF von <span class="math inline">\(\upsilon\)</span> definiert ist durch <span class="math inline">\(p_\upsilon(y) := (1/|a|)p_\xi((y-b)/a)\)</span>. Im vorliegenden Fall ist <span class="math inline">\(\xi = \nu T^2\)</span> mit WDF <span class="math inline">\(f(\delta,m,n-m)\)</span> und <span class="math inline">\(\upsilon := T^2 = \frac{1}{\nu}\nu T^2\)</span>, also <span class="math inline">\(a = 1/\nu\)</span> und <span class="math inline">\(b = 0\)</span>. Mit <span class="math inline">\(\nu &gt; 0\)</span> ergibt sich <span class="math inline">\(\eqref{eq:pT1}\)</span> also aus <span class="math display">\[\begin{equation}
+p_{T^2}(t^2) = \frac{1}{a}p_{\nu T^2}\left(\frac{t^2}{a}\right) = \nu f(\nu t^2; m, n-m).
+\end{equation}\]</span> <span class="math inline">\(\eqref{eq:PT2}\)</span> folgt dann damit, dass WDFen bei kontinuierlichen Zufallsvariablen die Ableitungen der entsprechenden KVFen sind. Mit der Kettenregel der Differentiation ergibt sich <span class="math display">\[\begin{align}
+\begin{split}
+\frac{d}{dt^2}P_{T^2}\left(t^2\right)
+&amp; = \frac{d}{dt^2}\left(F(\nu t^2;m,n-m,\delta)\right) \\
+&amp; = \frac{d}{dt^2}F(\nu t^2;m,n-m,\delta)\frac{d}{dt^2}\left(\nu t^2 \right) \\
+&amp; = \nu f(\nu t^2;m,n-m,\delta) \\
+&amp; = p_{T^2}(t^2).
+\end{split}
+\end{align}\]</span></p>
+</div>
+<p>Wir halten fest, dass die skalierte Einstichproben-T<span class="math inline">\(^2\)</span>-Test Teststatitik <span class="math inline">\(\nu T^2\)</span> nach <span class="math inline">\(f(\delta,m,n-m)\)</span> nichtzentral <span class="math inline">\(f\)</span>-verteilt ist, die WDF der Einstichproben-T<span class="math inline">\(^2\)</span>-Test Teststatitik <span class="math inline">\(T^2\)</span> selbst dagegen durch <span class="math inline">\(\nu f(\nu t^2;\delta, m,n-m)\)</span> geben ist. Wir simulieren diese Verteilung mithilfe folgenden <strong>R</strong> Codes und visualisieren diese Simulation in <a href="#fig-einstichproben-t2-teststatistik" class="quarto-xref">Abbildung&nbsp;<span>37.4</span></a>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># Modellparameter</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>m     <span class="ot">=</span> <span class="dv">2</span>                                                                       <span class="co"># Dimensionalität der Zufallsvektoren/Daten</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a>n     <span class="ot">=</span> <span class="dv">15</span>                                                                      <span class="co"># Anzahl der Datenpunkte</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a>mu_0  <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>) , <span class="at">nrow =</span> <span class="dv">2</span>)                                               <span class="co"># Nullhypothesenparameter</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a>mu    <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>) , <span class="at">nrow =</span> <span class="dv">2</span>)                                               <span class="co"># wahrer, aber unbekannter, Erwartungswertparameter</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a>Sigma <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fl">0.5</span>,<span class="fl">0.3</span>, <span class="fl">0.3</span>,<span class="fl">0.5</span>), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)                     <span class="co"># wahrer, aber unbekannter, Kovarianzmatrixparameter</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a></span>
+<span id="cb3-8"><a href="#cb3-8"></a><span class="co"># Simulation</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a><span class="fu">library</span>(MASS)                                                                   <span class="co"># R Paket für multivariate Normalverteilungen</span></span>
+<span id="cb3-10"><a href="#cb3-10"></a>nsim  <span class="ot">=</span> <span class="fl">1e4</span>                                                                     <span class="co"># Anzahl Simulationen/Datensatzrealisierungen</span></span>
+<span id="cb3-11"><a href="#cb3-11"></a>Yb    <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="cn">NaN</span>,m<span class="sc">*</span>nsim), <span class="at">nrow =</span> <span class="dv">2</span>)                                       <span class="co"># Stichprobenmittelarray</span></span>
+<span id="cb3-12"><a href="#cb3-12"></a>T2    <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,nsim)                                                           <span class="co"># Einstichproben-T$^2$-Teststatistik Array</span></span>
+<span id="cb3-13"><a href="#cb3-13"></a>j_n   <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="dv">1</span>,n), <span class="at">nrow =</span> n)                                              <span class="co"># 1_n</span></span>
+<span id="cb3-14"><a href="#cb3-14"></a>I_n   <span class="ot">=</span> <span class="fu">diag</span>(n)                                                                 <span class="co"># I_n</span></span>
+<span id="cb3-15"><a href="#cb3-15"></a>J_n   <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="dv">1</span>,n<span class="sc">^</span><span class="dv">2</span>), <span class="at">nrow =</span> n)                                            <span class="co"># 1_{nn}</span></span>
+<span id="cb3-16"><a href="#cb3-16"></a><span class="cf">for</span>(s <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nsim){                                                               <span class="co"># Simulationsiterationen</span></span>
+<span id="cb3-17"><a href="#cb3-17"></a>    Y      <span class="ot">=</span> <span class="fu">t</span>(<span class="fu">mvrnorm</span>(n,mu,Sigma))                                             <span class="co"># \upsilon_i \sim N(\mu,\Sigma), i = 1,...,n</span></span>
+<span id="cb3-18"><a href="#cb3-18"></a>    Y_bar  <span class="ot">=</span> (<span class="dv">1</span><span class="sc">/</span>n)<span class="sc">*</span>(Y <span class="sc">%*%</span> j_n)                                                  <span class="co"># Stichprobenmittel</span></span>
+<span id="cb3-19"><a href="#cb3-19"></a>    C      <span class="ot">=</span> (<span class="dv">1</span><span class="sc">/</span>(n<span class="dv">-1</span>))<span class="sc">*</span>(Y <span class="sc">%*%</span> (I_n<span class="sc">-</span>(<span class="dv">1</span><span class="sc">/</span>n)<span class="sc">*</span>J_n) <span class="sc">%*%</span> <span class="fu">t</span>(Y))                         <span class="co"># Stichprobenkovarianzmatrix</span></span>
+<span id="cb3-20"><a href="#cb3-20"></a>    T2[s]  <span class="ot">=</span> n<span class="sc">*</span><span class="fu">t</span>(Y_bar <span class="sc">-</span> mu_0) <span class="sc">%*%</span> <span class="fu">solve</span>(C) <span class="sc">%*%</span> (Y_bar <span class="sc">-</span> mu_0)                  <span class="co"># Einstichproben-T$^2$-Teststatistik</span></span>
+<span id="cb3-21"><a href="#cb3-21"></a>    Yb[,s] <span class="ot">=</span> Y_bar                                                              <span class="co"># Stichprobenmittel für Visualisierung</span></span>
+<span id="cb3-22"><a href="#cb3-22"></a>}</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="fig-einstichproben-t2-teststatistik" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-einstichproben-t2-teststatistik-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/502-einstichproben-t2-teststatistik.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-einstichproben-t2-teststatistik-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;37.4: Verteilung der Einstichproben-T<span class="math inline">\(^2\)</span>-Teststatistik. <strong>A</strong> Stichprobenmittel von 10.000 Realisierungen eines Einstichproben-T<span class="math inline">\(^2\)</span>-Test-Modells mit <span class="math inline">\(m:=2\)</span> und <span class="math inline">\(n:=15\)</span> und wahren, aber unbekannten, Parametern <span class="math display">\[\begin{equation}
+\mu := (2,2)^T \mbox{ und } \Sigma = \begin{pmatrix} 0.5 &amp; 0.3 \\ 0.3 &amp; 0.5 \end{pmatrix}.
+\end{equation}\]</span> <strong>B</strong> Histogramm der entsprechenden Realisierungen der skalierten Einstichproben-T<span class="math inline">\(^2\)</span>-Teststatistik für <span class="math inline">\(\mu_0 := (1,1)^T\)</span> (grau) und analytische Form dieser Verteilung (orange). <strong>C</strong> Histogramm der entsprechenden Realisierungen der Einstichproben-T<span class="math inline">\(^2\)</span>-Teststatistik (grau) und ihre analytische Form (orange). <strong>D</strong> Empirische KVF der entsprechenden Realisierungen der Einstichproben-T<span class="math inline">\(^2\)</span>-Teststatistik (grau) und ihre analytische Form (orange).
+</figcaption>
+</figure>
+</div>
+<p>Den Einstichproben-T<span class="math inline">\(^2\)</span>-Test definieren wir schließlich als einen kritischen Wert-basierten Test wie folgt.</p>
+<div id="def-einstichproben-t2-test" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 37.5 (Einstichproben-T<span class="math inline">\(^2\)</span>-Test)</strong></span> Gegeben seien das Einstichproben-T<span class="math inline">\(^2\)</span>-Modell und die Einstichproben-T<span class="math inline">\(^2\)</span>-Teststatistik. Dann ist für einen kritischen Wert <span class="math inline">\(k\ge 0\)</span> der Einstichproben-T<span class="math inline">\(^2\)</span>-Test definiert als der kritische Wert-basierte Test <span class="math display">\[\begin{equation}
+\phi(\upsilon) := 1_{\{T^2 &gt; k\}} := \begin{cases} 1 &amp; T^2  &gt; k \\ 0 &amp; T^2 \le k \end{cases}.
+\end{equation}\]</span></p>
+</div>
+<p>In <a href="#def-einstichproben-t2-test" class="quarto-xref">Definition&nbsp;<span>37.5</span></a> repräsentiert wie üblich <span class="math inline">\(\phi(\upsilon) = 1\)</span> den Vorgang des Ablehnens von <span class="math inline">\(H_0\)</span> und <span class="math inline">\(\phi(\upsilon) = 0\)</span> den Vorgang des Nichtablehnens von <span class="math inline">\(H_0\)</span>.</p>
+</section>
+<section id="analyse-der-testgütefunktion" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="analyse-der-testgütefunktion">Analyse der Testgütefunktion</h3>
+<p>Um für den in <a href="#def-einstichproben-t2-test" class="quarto-xref">Definition&nbsp;<span>37.5</span></a> definierten Test Prozeduren zur Testumfangkontrolle (Typ I Fehlerbegrenzung) und zur Stichprobengrößenoptimierung (Typ II Fehlerbegrenzung) zu entwickeln, betrachten wir zunächst seine Testgütefunktion. Es gilt folgendes Theorem.</p>
+<div id="thm-testgütefunktion-des-einstichproben-t2-tests" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 37.3 (Testgütefunktion des Einstichproben-T<span class="math inline">\(^2\)</span>-Tests)</strong></span> <span class="math inline">\(\phi\)</span> sei der Einstichproben-T<span class="math inline">\(^2\)</span>-Test. Dann ist die Testgütefunktion von <span class="math inline">\(\phi\)</span> gegeben durch <span class="math display">\[\begin{equation}
+q_\phi : \mathbb{R}^m \to [0,1], \mu \mapsto q_\phi(\mu) := 1 - F(\nu k;\delta_\mu,m,n-m)
+\end{equation}\]</span> wobei <span class="math inline">\(F(\cdot;\delta_\mu, m,n-m)\)</span> die KVF der nichtzentralen <span class="math inline">\(f\)</span>-Verteilung mit Freiheitsgradparametern<span class="math inline">\(m\)</span> und <span class="math inline">\(n-m\)</span> sowie mit Nichtzentralitätsparameter <span class="math display">\[\begin{equation}
+\delta_\mu := n(\mu - \mu_0)^T\Sigma^{-1}(\mu - \mu_0)
+\end{equation}\]</span> bezeichnet.</p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Beweis</em>. </span>Die Testgütefunktion des betrachteten Tests ist definiert als <span class="math display">\[\begin{equation}
+q_\phi : \mathbb{R}^m \to [0,1], \mu \mapsto q_\phi(\mu) := \mathbb{P}_{\mu}(\phi = 1).
+\end{equation}\]</span> Da die Wahrscheinlichkeiten für <span class="math inline">\(\phi = 1\)</span> und dafür, dass die zugehörige Teststatistik im Ablehnungsbereich des Tests liegt, gleich sind, benötigen wir also zunächst die Verteilung der Teststatistik. Wir haben oben aber bereits gesehen, dass <span class="math display">\[\begin{equation}
+\frac{n-m}{m(n-1)}T^2 \sim f(m,n-m,\delta_\mu) \mbox{ mit } \delta_\mu := n(\mu -\mu_0)^T\Sigma^{-1}(\mu-\mu_0)
+\end{equation}\]</span> gilt. Der Ablehnungsbereich des betrachteten Tests ist <span class="math inline">\(A := ]k,\infty[\)</span>. Also ergibt sich <span class="math display">\[\begin{align}
+\begin{split}
+q_\phi(\mu)
+&amp;  = \mathbb{P}_\mu(\phi = 1) \\
+&amp;  = \mathbb{P}_\mu\left(T^2 \in \,\,]k,\infty[\right) \\
+&amp;  = \mathbb{P}_\mu\left(T^2 &gt; k \right) \\
+&amp;  = 1 - \mathbb{P}_\mu\left(T^2 \le k \right) \\
+&amp;  = 1 - F(\nu k; \delta_\mu,m, m-n)
+\end{split}
+\end{align}\]</span></p>
+</div>
+<p>Wir wollen diese Testgütefunktion beispielhaft für zwei Szenarien mit <span class="math inline">\(m := 2\)</span> und <span class="math inline">\(n := 15\)</span> in Abhängigkeit des kritischen Wertes <span class="math inline">\(k\)</span> betrachten. <a href="#fig-einstichproben-t2-gütefunktion-1" class="quarto-xref">Abbildung&nbsp;<span>37.5</span></a> und <a href="#fig-einstichproben-t2-gütefunktion-2" class="quarto-xref">Abbildung&nbsp;<span>37.6</span></a> visualisieren <span class="math inline">\(q_\phi\)</span> in diesen Szenarien für einen Nullhypothesenparameter <span class="math inline">\(\mu_0 := (1,1)^T\)</span> und die wahren, aber unbekannten, Kovarianzmatrixparameter <span class="math display">\[\begin{equation}
+\Sigma_1 := \begin{pmatrix} 1.0 &amp; 0.0  \\ 0.0 &amp; 1.0 \end{pmatrix}
+\mbox{ und }
+\Sigma_2 := \begin{pmatrix} 1.0 &amp; 0.9  \\ 0.9 &amp; 1.0 \end{pmatrix},
+\end{equation}\]</span> respektive. In beiden Fällen und unabhängig von <span class="math inline">\(k\)</span> resultiert eine größere Distanz des wahren, aber unbekannten, Erwartungswertparameters <span class="math inline">\(\mu\)</span> vom Nullhypothesenparamter <span class="math inline">\(\mu_0\)</span> in einer höhereren Wahrscheinlichkeit dafür, dass der Test <span class="math inline">\(\phi\)</span> den Wert <span class="math inline">\(1\)</span> annimmt, also die Nullhypothese abgelehnt wird. Die Zunahme dieser Wahrscheinlichkeit ist im ersten Szenario isotropisch, im zweiten dagegen aufgrund der Form des wahren, aber unbekannten, Kovarianzparameters nicht. Bei einem kleinen kritischen Wert <span class="math inline">\(k\)</span> werden hohe Wahrscheinlichkeiten für eine Ablehnung der Nullhypothese schon bei geringen Distanzen zwischen <span class="math inline">\(\mu\)</span> und <span class="math inline">\(\mu_0\)</span> erreicht, bei einem größeren kritischen Wert <span class="math inline">\(k\)</span> dagegen erst für größere Distanzen. Untenstehender <strong>R</strong> Code demonstriert das Vorgehen zur Evaluation dieser Testgütefunktionen</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># Modellparameter</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a>m           <span class="ot">=</span> <span class="dv">2</span>                                                                 <span class="co"># m</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a>n           <span class="ot">=</span> <span class="dv">15</span>                                                                <span class="co"># n</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a>nu          <span class="ot">=</span> (n<span class="sc">-</span>m)<span class="sc">/</span>((n<span class="dv">-1</span>)<span class="sc">*</span>m)                                                   <span class="co"># \nu</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a>Sigma       <span class="ot">=</span> <span class="fu">diag</span>(m)                                                           <span class="co"># \Sigma = I_2</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a>iSigma      <span class="ot">=</span> <span class="fu">solve</span>(Sigma)                                                      <span class="co"># \Sigma^{-1}</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a></span>
+<span id="cb4-8"><a href="#cb4-8"></a><span class="co"># Testparameter</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a>mu_0        <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>), <span class="at">nrow =</span> <span class="dv">2</span>)                                          <span class="co"># \mu_0</span></span>
+<span id="cb4-10"><a href="#cb4-10"></a>k_all       <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">6</span>)                                                          <span class="co"># k &lt;-&gt; \phi</span></span>
+<span id="cb4-11"><a href="#cb4-11"></a>n_k         <span class="ot">=</span> <span class="fu">length</span>(k_all)                                                     <span class="co"># Anzahl k Werte/Tests</span></span>
+<span id="cb4-12"><a href="#cb4-12"></a></span>
+<span id="cb4-13"><a href="#cb4-13"></a><span class="co"># q_\phi(\mu) Evaluation</span></span>
+<span id="cb4-14"><a href="#cb4-14"></a>mu_min      <span class="ot">=</span> <span class="dv">0</span>                                                                 <span class="co"># \mu_i Minimum</span></span>
+<span id="cb4-15"><a href="#cb4-15"></a>mu_max      <span class="ot">=</span> <span class="dv">2</span>                                                                 <span class="co"># \mu_i Maximum</span></span>
+<span id="cb4-16"><a href="#cb4-16"></a>mu_res      <span class="ot">=</span> <span class="fl">1e3</span>                                                               <span class="co"># \mu_i Auflösung</span></span>
+<span id="cb4-17"><a href="#cb4-17"></a>mu_i        <span class="ot">=</span> <span class="fu">seq</span>(mu_min,mu_max,<span class="at">len =</span> mu_res)                                   <span class="co"># mu_i</span></span>
+<span id="cb4-18"><a href="#cb4-18"></a>q_phi       <span class="ot">=</span> <span class="fu">array</span>(<span class="at">dim =</span> <span class="fu">c</span>(mu_res, mu_res, <span class="fu">length</span>(k_all)))                     <span class="co"># q_\phi Array</span></span>
+<span id="cb4-19"><a href="#cb4-19"></a><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_k){</span>
+<span id="cb4-20"><a href="#cb4-20"></a>    <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>mu_res){</span>
+<span id="cb4-21"><a href="#cb4-21"></a>        <span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>mu_res){</span>
+<span id="cb4-22"><a href="#cb4-22"></a>            mu           <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(mu_i[i],mu_i[j]), <span class="at">nrow =</span> <span class="dv">2</span>)                 <span class="co"># \mu</span></span>
+<span id="cb4-23"><a href="#cb4-23"></a>            delta_mu     <span class="ot">=</span> n<span class="sc">*</span><span class="fu">t</span>(mu <span class="sc">-</span> mu_0) <span class="sc">%*%</span> iSigma <span class="sc">%*%</span> (mu <span class="sc">-</span>mu_0)             <span class="co"># \delta_\mu</span></span>
+<span id="cb4-24"><a href="#cb4-24"></a>            q_phi[i,j,k] <span class="ot">=</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">pf</span>(nu<span class="sc">*</span>k_all[k], m, n<span class="sc">-</span>m, delta_mu)}}}             <span class="co"># q_\phi(\mu)</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="fig-einstichproben-t2-gütefunktion-1" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-einstichproben-t2-gütefunktion-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/502-einstichproben-t2-gütefunktion-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-einstichproben-t2-gütefunktion-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;37.5: Einstichproben-T<span class="math inline">\(^2\)</span>-Test Testgütefunktionen für kritische Werte <span class="math inline">\(k = 2\)</span>, <span class="math inline">\(k = 4\)</span> und <span class="math inline">\(k = 6\)</span> im Szenario <span class="math display">\[\begin{equation}
+m:=2,
+n:=15,
+\mu_0 := (1,1)^T,
+\Sigma_1 :=   \begin{pmatrix} 1.0 &amp; 0.0  \\ 0.0 &amp; 1.0 \end{pmatrix}
+\end{equation}\]</span>
+</figcaption>
+</figure>
+</div>
+<div id="fig-einstichproben-t2-gütefunktion-2" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-einstichproben-t2-gütefunktion-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/502-einstichproben-t2-gütefunktion-2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-einstichproben-t2-gütefunktion-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;37.6: Einstichproben-T<span class="math inline">\(^2\)</span>-Test Testgütefunktionen für kritische Werte <span class="math inline">\(k = 2\)</span>, <span class="math inline">\(k = 4\)</span> und <span class="math inline">\(k = 6\)</span> im Szenario <span class="math display">\[\begin{equation}
+m:=2,
+n:=15,
+\mu_0 := (1,1)^T,
+\Sigma_1 :=   \begin{pmatrix} 1.0 &amp; 0.9  \\ 0.9 &amp; 1.0 \end{pmatrix}
+\end{equation}\]</span>
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="testumfangkontrolle" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="testumfangkontrolle">Testumfangkontrolle</h3>
+<p>Bekanntlich erlaubt die Testumfangkontrolle die Begrenzung der größtmöglichen Wahrscheinlichkeit für einen Typ I Fehler. Im aktuellen Testszenario haben wir folgendes Theorem.</p>
+<div id="thm-testumfangkontrolle-des-einstichproben-t2-tests" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 37.4 (Testumfangkontrolle des Einstichproben-T<span class="math inline">\(^2\)</span>- Tests)</strong></span> <span class="math inline">\(\phi\)</span> sei der im obigen Testszenario definierte Test. Dann ist <span class="math inline">\(\phi\)</span> ein Level-<span class="math inline">\(\alpha_0\)</span>-Test mit Testumfang <span class="math inline">\(\alpha_0\)</span>, wenn der kritische Wert definiert ist durch <span class="math display">\[\begin{equation}
+k_{\alpha_0} := \nu^{-1}F^{-1}\left(1-\alpha_0; m, n-m \right),
+\end{equation}\]</span> wobei <span class="math inline">\(\nu := (n-m)/((n-1)m)\)</span> und <span class="math inline">\(F^{-1}(\cdot;m,n-m)\)</span> die inverse KVF der <span class="math inline">\(f\)</span>-Verteilung mit Freiheitsgradparametern <span class="math inline">\(m\)</span> und <span class="math inline">\(n-m\)</span> ist.</p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Beweis</em>. </span>Damit der betrachtete Test ein Level-<span class="math inline">\(\alpha_0\)</span>-Test ist, muss bekanntlich <span class="math inline">\(q_\phi(\mu)\le \alpha_0\)</span> für alle <span class="math inline">\(\mu \in \{\mu_0\}\)</span>, also hier <span class="math inline">\(q_\phi(\mu_0)\le \alpha_0\)</span> gelten. Weiterhin ist der Testumfang des betrachteten Tests durch <span class="math inline">\(\alpha = \max_{\mu \in \{\mu_0\}} q_\phi(\mu)\)</span>, also hier durch <span class="math inline">\(\alpha = q_\phi(\mu_0)\)</span> gegeben. Wir müssen also zeigen, dass die Wahl von <span class="math inline">\(k_{\alpha_0}\)</span> garantiert, dass <span class="math inline">\(\phi\)</span> ein Level-<span class="math inline">\(\alpha_0\)</span>-Test mit Testumfang <span class="math inline">\(\alpha_0\)</span> ist. Dazu merken wird zunächst an, dass für <span class="math inline">\(\mu = \mu_0\)</span> gilt, dass <span class="math display">\[\begin{equation}
+q_\phi(\mu_0) = 1 - F(\nu k;\delta, m, n-m ) = 1 - F(\nu k;0, m,n-m)  = 1 - F(\nu k;m,n-m),
+\end{equation}\]</span> wobei <span class="math inline">\(F(\nu k; \delta, m, n-m)\)</span> und <span class="math inline">\(F(\nu k;m,n-m)\)</span> die KVF der nichtzentralen <span class="math inline">\(f\)</span>-Verteilung mit Nichtzentralitätsparameter <span class="math inline">\(\delta\)</span> und Freiheitsgradparametern <span class="math inline">\(m\)</span> und <span class="math inline">\(n-m\)</span> sowie der <span class="math inline">\(f\)</span>-Verteilung mit Freiheitsgradparametern <span class="math inline">\(m\)</span> und <span class="math inline">\(n-m\)</span>, respektive, bezeichnen. Sei nun also <span class="math inline">\(k := k_{\alpha_0}\)</span>. Dann gilt <span class="math display">\[\begin{align}
+\begin{split}
+q_\phi(\mu_0)
+&amp; = 1 - F(\nu k_{\alpha_0};m,n-m) \\
+&amp; = 1 - F\left(\nu \nu^{-1}F^{-1}\left(1-\alpha_0; m, n-m \right);m,n-m\right) \\
+&amp; = 1 - F\left(F^{-1}\left(1-\alpha_0; m, n-m \right);m,n-m\right) \\
+&amp; = 1 - (1 - \alpha_0)  = \alpha_0.
+\end{split}
+\end{align}\]</span> Es folgt also direkt, dass bei der Wahl von <span class="math inline">\(k = k_{\alpha_0}, q_\phi(\mu_0) \le \alpha_0\)</span> gilt und der betrachtete Test somit ein Level-<span class="math inline">\(\alpha_0\)</span>-Test ist. Weiterhin folgt direkt, dass der Testumfang des betrachteten Tests bei Wahl von <span class="math inline">\(k = k_{\alpha_0}\)</span> gleich <span class="math inline">\(\alpha_0\)</span> ist.</p>
+</div>
+<div id="fig-einstichproben-t2-testumfangkontrolle" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-einstichproben-t2-testumfangkontrolle-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/502-einstichproben-t2-testumfangkontrolle.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-einstichproben-t2-testumfangkontrolle-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;37.7: Testumfangkontrolle durch Selektion eines <span class="math inline">\(\alpha_0\)</span>-abhängigen kritischen Wertes für den Einstichproben-T<span class="math inline">\(^2\)</span>-Test anhand von KVF unf WDF der Einstichproben-T<span class="math inline">\(^2\)</span>-Teststatistik.
+</figcaption>
+</figure>
+</div>
+<p>Wir visualisieren die Wahl von <span class="math display">\[\begin{equation}
+k_{\alpha_0} = \nu^{-1}F^{-1}\left(1-\alpha_0; m, n-m \right)
+\end{equation}\]</span> für den Fall <span class="math inline">\(m = 2, n = 15\)</span> und ein Signifikanzlevel von <span class="math inline">\(\alpha_0 := 0.05\)</span> in <a href="#fig-einstichproben-t2-testumfangkontrolle" class="quarto-xref">Abbildung&nbsp;<span>37.7</span></a>. Untenstehender <strong>R</strong> Code simuliert die Testumfangkontrolle für ein Einstichproben-T<span class="math inline">\(^2\)</span>-Test Szenario mit <span class="math display">\[\begin{equation}
+m := 2, n := 15, \mu := \mu0 := \begin{pmatrix} 1 \\ 1 \end{pmatrix}
+\mbox{ und }
+\Sigma :=\begin{pmatrix} 0.5 &amp; 0.3 \\ 0.3 &amp; 0.5 \end{pmatrix}.
+\end{equation}\]</span> Der auf Grundlage von <span class="math inline">\(10^4\)</span> Datensatzrealisationen geschätzte Testumfang stimmt gut mit dem Signifikanzlevel überein.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># Modellparameter</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>m         <span class="ot">=</span> <span class="dv">2</span>                                                                   <span class="co"># Dimensionalität der Zufallsvektoren/Daten</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a>n         <span class="ot">=</span> <span class="dv">15</span>                                                                  <span class="co"># Anzahl der Datenpunkte</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>nu        <span class="ot">=</span> (n<span class="sc">-</span>m)<span class="sc">/</span>(m<span class="sc">*</span>(n<span class="dv">-1</span>))                                                     <span class="co"># Parameter</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a>mu_0      <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>) , <span class="at">nrow =</span> <span class="dv">2</span>)                                           <span class="co"># Nullhypothesenparameter</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a>mu        <span class="ot">=</span> mu_0                                                                <span class="co"># w.a.u. Erwartungswertparameter bei Zutreffen von H0</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a>Sigma     <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fl">0.5</span>,<span class="fl">0.3</span>, <span class="fl">0.3</span>,<span class="fl">0.5</span>), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)                 <span class="co"># wahrer, aber unbekannter, Kovarianzmatrixparameter</span></span>
+<span id="cb5-8"><a href="#cb5-8"></a></span>
+<span id="cb5-9"><a href="#cb5-9"></a><span class="co"># Testparameter</span></span>
+<span id="cb5-10"><a href="#cb5-10"></a>alpha_0   <span class="ot">=</span> <span class="fl">0.05</span>                                                                <span class="co"># Signifikanzlevel</span></span>
+<span id="cb5-11"><a href="#cb5-11"></a>k_alpha_0 <span class="ot">=</span> (<span class="dv">1</span><span class="sc">/</span>nu)<span class="sc">*</span><span class="fu">qf</span>(<span class="dv">1</span><span class="sc">-</span>alpha_0, m,n<span class="sc">-</span>m)                                         <span class="co"># kritischer Wert</span></span>
+<span id="cb5-12"><a href="#cb5-12"></a></span>
+<span id="cb5-13"><a href="#cb5-13"></a><span class="co"># Simulation der Testumfangkontrolle</span></span>
+<span id="cb5-14"><a href="#cb5-14"></a><span class="fu">library</span>(MASS)                                                                   <span class="co"># R Paket für multivariate Normalverteilungen</span></span>
+<span id="cb5-15"><a href="#cb5-15"></a>nsim  <span class="ot">=</span> <span class="fl">1e4</span>                                                                     <span class="co"># Testentscheidungsarray</span></span>
+<span id="cb5-16"><a href="#cb5-16"></a>phi   <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,nsim)                                                           <span class="co"># Testentscheidungsarray</span></span>
+<span id="cb5-17"><a href="#cb5-17"></a>j_n   <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="dv">1</span>,n), <span class="at">nrow =</span> n)                                              <span class="co"># 1_n</span></span>
+<span id="cb5-18"><a href="#cb5-18"></a>I_n   <span class="ot">=</span> <span class="fu">diag</span>(n)                                                                 <span class="co"># I_n</span></span>
+<span id="cb5-19"><a href="#cb5-19"></a>J_n   <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="dv">1</span>,n<span class="sc">^</span><span class="dv">2</span>), <span class="at">nrow =</span> n)                                            <span class="co"># 1_{nn}</span></span>
+<span id="cb5-20"><a href="#cb5-20"></a><span class="cf">for</span>(s <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nsim){                                                               <span class="co"># Simulationsiterationen</span></span>
+<span id="cb5-21"><a href="#cb5-21"></a>    Y      <span class="ot">=</span> <span class="fu">t</span>(<span class="fu">mvrnorm</span>(n,mu,Sigma))                                             <span class="co"># Y_i \sim N(\mu,\Sigma), i = 1,...,n</span></span>
+<span id="cb5-22"><a href="#cb5-22"></a>    Y_bar  <span class="ot">=</span> (<span class="dv">1</span><span class="sc">/</span>n)<span class="sc">*</span>(Y <span class="sc">%*%</span> j_n)                                                  <span class="co"># Stichprobenmittel</span></span>
+<span id="cb5-23"><a href="#cb5-23"></a>    C      <span class="ot">=</span> (<span class="dv">1</span><span class="sc">/</span>(n<span class="dv">-1</span>))<span class="sc">*</span>(Y <span class="sc">%*%</span> (I_n<span class="sc">-</span>(<span class="dv">1</span><span class="sc">/</span>n)<span class="sc">*</span>J_n) <span class="sc">%*%</span> <span class="fu">t</span>(Y))                         <span class="co"># Stichprobenkovarianzmatrix</span></span>
+<span id="cb5-24"><a href="#cb5-24"></a>    T2     <span class="ot">=</span> n<span class="sc">*</span><span class="fu">t</span>(Y_bar <span class="sc">-</span> mu_0) <span class="sc">%*%</span> <span class="fu">solve</span>(C) <span class="sc">%*%</span> (Y_bar <span class="sc">-</span> mu_0)                  <span class="co"># Einstichproben-T$^2$-Test Statistik</span></span>
+<span id="cb5-25"><a href="#cb5-25"></a>    <span class="cf">if</span>(T2 <span class="sc">&gt;</span> k_alpha_0){                                                         <span class="co"># Test 1_{T^2 &gt;= k_alpha_0}</span></span>
+<span id="cb5-26"><a href="#cb5-26"></a>        phi[s] <span class="ot">=</span> <span class="dv">1</span>                                                              <span class="co"># Ablehnen von H_0</span></span>
+<span id="cb5-27"><a href="#cb5-27"></a>    } <span class="cf">else</span> {</span>
+<span id="cb5-28"><a href="#cb5-28"></a>        phi[s] <span class="ot">=</span> <span class="dv">0</span>}}                                                            <span class="co"># Nicht Ablehnen von H_0</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Kritischer Wert              =  8.196602 
+Geschätzter Testumfang alpha =  0.0496</code></pre>
+</div>
+</div>
+<p>In der Praxis entsPrächen obige Ergebnisse dann folgendem Vorgehen bei der Durchführung eines Einstichproben-T<span class="math inline">\(^2\)</span>-Tests. Man unterstellt, dass ein vorliegender Datensatz von <span class="math inline">\(m\)</span>-dimensionalen Datenvektoren eine Realisation von <span class="math inline">\(n\)</span> u.i.v. <span class="math inline">\(m\)</span>-dimensionalen Zufallsvektoren <span class="math inline">\(\upsilon_1,...,\upsilon_n \sim N(\mu,\Sigma)\)</span> mit unbekannten Parametern <span class="math inline">\(\mu \in \mathbb{R}^m\)</span> und <span class="math inline">\(\Sigma \in \mathbb{R}^{m \times m} \mbox{ pd }\)</span> ist und möchte entscheiden, ob für ein <span class="math inline">\(\mu_0 \in \mathbb{R}^m\)</span> eher die Nullhypothese <span class="math inline">\(H_0 : \mu = \mu_0\)</span> oder die Alternativhypothese <span class="math inline">\(H_1: \mu \neq \mu_0\)</span> zutrifft. Zu diesem Zweck wählt man zunächst ein Signifikanzlevel <span class="math inline">\(\alpha_0\)</span> und bestimmt dann den zugehörigen kritischen Wert <span class="math inline">\(k_{\alpha_0}\)</span>. Beispielsweise gilt für <span class="math inline">\(m = 2\)</span> und <span class="math inline">\(n=15\)</span> bei Wahl von <span class="math inline">\(\alpha_0 := 0.05\)</span>, dass <span class="math inline">\(k_{0.05}=\nu^{-1}F^{-1}(1 - 0.05;2,13) \approx 8.2\)</span> ist. Anhand von <span class="math inline">\(m, n, \mu_0\)</span>, dem Stichprobenmittel <span class="math inline">\(\bar{\upsilon}\)</span> und der Stichprobenkovarianzmatrix <span class="math inline">\(C\)</span> berechnet man dann die Realisierung der Einstichproben-T<span class="math inline">\(^2\)</span>-Teststatistik <span class="math display">\[\begin{equation}
+T^2 := n(\bar{\upsilon} - \mu_0)^T C^{-1}(\bar{\upsilon} - \mu_0).
+\end{equation}\]</span> Wenn das berechnete <span class="math inline">\(T^2\)</span> größer als <span class="math inline">\(k_{\alpha_0}\)</span> ist, lehnt man die Nullhypothese ab, andernfalls nicht. Die oben entwickelte Theorie zur Testumfangkontrolle des Einstichproben-T<span class="math inline">\(^2\)</span>-Test garantiert dann, dass man in höchstens <span class="math inline">\(\alpha_0 \cdot 100\)</span> von <span class="math inline">\(100\)</span> Fällen die Nullhypothese fälschlicherweise ablehnt.</p>
+</section>
+<section id="p-wert" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="p-wert">p-Wert</h3>
+<p>Wir erinnern daran, dass per Definition der p-Wert das kleinste Signifikanzlevel <span class="math inline">\(\alpha_0\)</span> ist, bei welchem man die Nullhypothese basierend auf einem vorliegenden Wert der Teststatistik ablehnen würde. Wir haben folgendes Theorem</p>
+<div id="thm-p-wert" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 37.5</strong></span> Für den p-Wert des in <a href="#def-einstichproben-t2-test" class="quarto-xref">Definition&nbsp;<span>37.5</span></a> definierten Test gilt <span class="math display">\[\begin{equation}
+\mbox{ p-Wert } = \mathbb{P}\left(T^2 \ge t^2\right) = 1 - F(\nu t^2;m,n-m).
+\end{equation}\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Beweis</em>. </span>Bei einem beobachteten Wert <span class="math inline">\(t^2\)</span> der Einstichproben-T<span class="math inline">\(^2\)</span>-Teststatistik <span class="math inline">\(T^2\)</span> würde <span class="math inline">\(H_0\)</span> für jedes <span class="math inline">\(\alpha_0\)</span> mit <span class="math inline">\(t^2 \ge \nu^{-1}F^{-1}(1-\alpha_0;m,n-m)\)</span> abgelehnt werden. Für diese <span class="math inline">\(\alpha_0\)</span> gilt, wie unten gezeigt <span class="math display">\[\begin{equation}
+\alpha_0 \ge \mathbb{P}\left(T^2 \ge t^2\right).
+\end{equation}\]</span> Das kleinste <span class="math inline">\(\alpha_0 \in [0,1]\)</span> mit <span class="math inline">\(\alpha_0 \ge \mathbb{P}\left(T^2 \ge t^2\right)\)</span> ist dann <span class="math inline">\(\alpha_0 = \mathbb{P}(T^2 \ge t^2)\)</span>, also folgt <span class="math display">\[\begin{equation}
+\mbox{ p-Wert } = \mathbb{P}\left(T^2 \ge t^2\right) = 1 - F(\nu t^2;m,n-m).
+\end{equation}\]</span> Es bleibt zu zeigen, dass gilt <span class="math display">\[\begin{align}
+\begin{split}
+t^2 \ &amp; \ge \nu^{-1}F^{-1}(1-\alpha_0;m,n-m) \\
+\Leftrightarrow
+\nu t^2 &amp; \ge F^{-1}(1-\alpha_0;m,n-m) \\
+\Leftrightarrow
+\alpha_0 &amp; \ge \mathbb{P}\left(T^2 \ge t^2\right).
+\end{split}
+\end{align}\]</span> Dies aber folgt aus <span class="math display">\[\begin{align}
+\begin{split}
+t^2
+&amp; \ge \nu^{-1}F^{-1}(1-\alpha_0;m,n-m) \\
+\nu t^2
+&amp; \ge F^{-1}(1-\alpha_0;m,n-m) \\
+F(\nu t^2; m,n-m)
+&amp; \ge F\left(F^{-1}(1-\alpha_0;m,n-m); m,n - m\right) \\
+F(\nu t^2; m,n-m)
+&amp; \ge 1 -\alpha_0\\
+\mathbb{P}\left(T^2 \le t^2\right)
+&amp; \ge 1-\alpha_0 \\
+\alpha_0
+&amp; \ge 1-\mathbb{P}\left(T^2 \le t^2\right).
+\end{split}
+\end{align}\]</span></p>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.07168146 0.03968271 0.03521954 0.30464619</code></pre>
+</div>
+</div>
+<p>Zum Beispiel ergeben sich bei <span class="math inline">\(m = 2\)</span> und <span class="math inline">\(n=15\)</span> der p-Wert für <span class="math inline">\(t^2 = 7.00\)</span> zu 0.071 und bei <span class="math inline">\(m = 4\)</span> und <span class="math inline">\(n=15\)</span> der p-Wert für <span class="math inline">\(t^2 = 7.00\)</span> zu 0.304. Die gleiche Anzahl an Datenpunkten resultiert bei höherer Datendimensionalität also in einem höheren p-Wert. Weiterhin ergeben sich bei <span class="math inline">\(m = 2\)</span> und <span class="math inline">\(n=15\)</span> der p-Wert für <span class="math inline">\(t^2 = 9.00\)</span> zu 0.040 und bei <span class="math inline">\(m = 2\)</span> und <span class="math inline">\(n=99\)</span> der p-Wert für <span class="math inline">\(t^2 = 7.00\)</span> zu 0.035. Geringere Verhältnisse von geschätzter Nullhypothesenabweichung und geschätzter Daten(ko)varianz können also hinsichtlich des p-Wertes durch eine höhere Anzahl an Datenpunkten ausgeglichen werden.</p>
+</section>
+<section id="analyse-der-powerfunktion" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="analyse-der-powerfunktion">Analyse der Powerfunktion</h3>
+<p>Bekanntlich ist man manchmal an der Optimierung der Stichprobengröße vor der Durchführung einer Studie interessiert. Zu diesem Zweck betrachtet man die Testgütefunktion <span class="math display">\[\begin{equation}
+q_\phi : \mathbb{R}^m \to [0,1], \mu \mapsto q_\phi(\mu) := 1 - F(\nu k;\delta_\mu,m,n-m)
+\end{equation}\]</span> bei kontrolliertem Testumfang, also für <span class="math display">\[\begin{equation}
+k_{\alpha_0} := \nu^{-1}F^{-1}\left(1-\alpha_0; m, n-m \right)
+\end{equation}\]</span> mit festem <span class="math inline">\(\alpha_0\)</span> als Funktion des Nichtzentralitätsparameters, also der wahren, aber unbekannten, Effektstärke und des Stichprobenumfangs. Insbesondere hängt hier <span class="math inline">\(k_{\alpha_0}\)</span> auch von <span class="math inline">\(n\)</span> ab. Es ergibt sich dabei die bivariate reellwertige Funktion <span class="math display">\[\begin{equation}
+\pi : \mathbb{R} \times \mathbb{N} \to [0,1],
+(\delta_\mu,n) \mapsto
+\pi(\delta_\mu,n) :=  1 - F(\nu k_{\alpha_0};\delta_\mu,m,n-m).
+\end{equation}\]</span> Bei festgelegtem <span class="math inline">\(\alpha_0\)</span> hängt diese sogenannten <em>Powerfunktion des Einstichproben-T<span class="math inline">\(^2\)</span>-Tests</em> also vom wahren, aber unbekannten, Nichtzentralitätsparameter <span class="math inline">\(\delta_\mu\)</span>, der Datendimensionalität <span class="math inline">\(m\)</span> und von der Stichprobengröße <span class="math inline">\(n\)</span> ab. Wir evaluieren diese Abhängigkeiten mithilfe untenstehenden <strong>R</strong> Codes und visualisieren sie exemplarisch in <a href="#fig-einstichproben-t2-pi" class="quarto-xref">Abbildung&nbsp;<span>37.8</span></a>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co"># Szenariospezifikationen</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a>a_0_all   <span class="ot">=</span> <span class="fu">c</span>(<span class="fl">0.05</span>,<span class="fl">0.01</span>)                                                        <span class="co"># \alpha_0 Raum</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a>d_mu_min  <span class="ot">=</span> <span class="dv">0</span>                                                                   <span class="co"># \delta_\mu Minimum</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a>d_mu_max  <span class="ot">=</span> <span class="dv">20</span>                                                                  <span class="co"># \delta_\mu Maximum</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a>d_mu_res  <span class="ot">=</span> <span class="dv">30</span>                                                                  <span class="co"># \delta_\mu Auflösung</span></span>
+<span id="cb8-6"><a href="#cb8-6"></a>d_mu_all  <span class="ot">=</span> <span class="fu">seq</span>(d_mu_min, d_mu_max, <span class="at">len =</span> d_mu_res)                             <span class="co"># \delta_\mu d Raum</span></span>
+<span id="cb8-7"><a href="#cb8-7"></a>n_min     <span class="ot">=</span> <span class="dv">5</span>                                                                   <span class="co"># n Minimum</span></span>
+<span id="cb8-8"><a href="#cb8-8"></a>n_max     <span class="ot">=</span> <span class="dv">20</span>                                                                  <span class="co"># n Maximum</span></span>
+<span id="cb8-9"><a href="#cb8-9"></a>n_res     <span class="ot">=</span> <span class="dv">30</span>                                                                  <span class="co"># n Auflösung</span></span>
+<span id="cb8-10"><a href="#cb8-10"></a>n_all     <span class="ot">=</span> <span class="fu">seq</span>(n_min,n_max, <span class="at">len =</span> n_res)                                       <span class="co"># n Raum</span></span>
+<span id="cb8-11"><a href="#cb8-11"></a>m_all     <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">4</span>)                                                              <span class="co"># m Raum</span></span>
+<span id="cb8-12"><a href="#cb8-12"></a></span>
+<span id="cb8-13"><a href="#cb8-13"></a><span class="co"># Evaluation der Powerfunktion</span></span>
+<span id="cb8-14"><a href="#cb8-14"></a>pi        <span class="ot">=</span> <span class="fu">array</span>(<span class="at">dim =</span> <span class="fu">c</span>(d_mu_res, n_res, <span class="dv">2</span>,<span class="dv">2</span>))                                <span class="co"># Powerfunktionsarray</span></span>
+<span id="cb8-15"><a href="#cb8-15"></a><span class="cf">for</span> (a <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(a_0_all)){</span>
+<span id="cb8-16"><a href="#cb8-16"></a>    <span class="cf">for</span> (l <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(m_all)){                                                 <span class="co"># m Iterationen</span></span>
+<span id="cb8-17"><a href="#cb8-17"></a>        <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(d_mu_all)){                                           <span class="co"># \delta_\mu Iterationen</span></span>
+<span id="cb8-18"><a href="#cb8-18"></a>            <span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(n_all)){                                          <span class="co"># n Iterationen</span></span>
+<span id="cb8-19"><a href="#cb8-19"></a>                m           <span class="ot">=</span> m_all[l]                                          <span class="co"># Datendimensionalität</span></span>
+<span id="cb8-20"><a href="#cb8-20"></a>                n           <span class="ot">=</span> n_all[j]                                          <span class="co"># Stichprobenumfang</span></span>
+<span id="cb8-21"><a href="#cb8-21"></a>                d_mu        <span class="ot">=</span> d_mu_all[i]                                       <span class="co"># wahrer, aber unbekannter, Parameter</span></span>
+<span id="cb8-22"><a href="#cb8-22"></a>                nu          <span class="ot">=</span> (n<span class="sc">-</span>m)<span class="sc">/</span>(m<span class="sc">*</span>(n<span class="dv">-1</span>))                                   <span class="co"># Parameter</span></span>
+<span id="cb8-23"><a href="#cb8-23"></a>                alpha_0     <span class="ot">=</span> a_0_all[a]                                        <span class="co"># Signifikanzlevel</span></span>
+<span id="cb8-24"><a href="#cb8-24"></a>                k_alpha_0   <span class="ot">=</span> (<span class="dv">1</span><span class="sc">/</span>nu)<span class="sc">*</span><span class="fu">qf</span>(<span class="dv">1</span><span class="sc">-</span>alpha_0,m,n<span class="sc">-</span>m)                        <span class="co"># kritischer Wert</span></span>
+<span id="cb8-25"><a href="#cb8-25"></a>                pi[i,j,l,a] <span class="ot">=</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">pf</span>(nu<span class="sc">*</span>k_alpha_0, m, n<span class="sc">-</span>m, d_mu)}}}}            <span class="co"># Powerfunktionswert</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="fig-einstichproben-t2-pi" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-einstichproben-t2-pi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/502-einstichproben-t2-pi.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-einstichproben-t2-pi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;37.8: Powerfunktionen des Einstichproben-T<span class="math inline">\(^2\)</span>-Tests. Die Abbildungen zeigen die Wahrscheinlichkeit dafür, dass der Einstichproben-T<span class="math inline">\(^2\)</span>-Test den Wert 1 annimmt, dass also die Nullhypothese abgelehnt wird, als Funktion des wahren, aber unbekannten, Nichtzentralitätsparameters <span class="math inline">\(\delta_\mu\)</span> sowie des Stichprobenumfangs <span class="math inline">\(n\)</span>. Dabei bilden die Abbildungen der ersten Zeile die Powerfunktionen des Einstichproben-T<span class="math inline">\(^2\)</span>-Tests für das Signifikanzlevel <span class="math inline">\(\alpha_0 = 0.05\)</span> und die Abbildungen der zweiten Zeile die Powerfunktionen des Einstichproben-T<span class="math inline">\(^2\)</span>-Tests für das Signifikanzlevel <span class="math inline">\(\alpha_0 = 0.01\)</span> ab. Ein niedrigeres Signifikanzlevel resultiert wie üblich in einer geringeren Wahrscheinlichkeit für die Ablehung der Nullhypothese über den gesamten Bereich von <span class="math inline">\(\delta_\mu\)</span> und <span class="math inline">\(n\)</span>. Die erste Spalte der Abbildung zeigt die beiden Signifikanzlevelszenarien für eine Datendimensionalität von <span class="math inline">\(m := 2\)</span>, die zweite Spalte für eine Datendimensionalität von <span class="math inline">\(m := 4\)</span>. Eine Erhöhung der Datendimensionalität führt, bei Konstanthalten aller weiteren Parameter, zu einer Reduktion der Wahrscheinlichkeit für das Ablehnen der Nullhypothese. Äquivalent sind bei höherer Datendimensionalität höhere Stichprobenumfänge nötig um bei vergleichbarem Nichtzentraltitätsparameter die Nullhypothese gleichwahrscheinlich abzulehnen.
+</figcaption>
+</figure>
+</div>
+<p>Generell lässt sich aus der Perspektive der Anwendung festhalten, dass <span class="math inline">\(\pi\)</span> als Funktion von <span class="math inline">\(n\)</span> monoton steig. Ein größerer Stichprobenumfang resultiert damit also im Allgemeinem in einer kleineren Wahrscheinlichkeit für einen Typ II Fehler. Dabei bleiben allerdings mögliche weitere Kosten für die Erhöhung des Stichprobenumfangs unberücksichtigt. Weiterhin hängen die Werte der Powerfunktion <span class="math inline">\(\pi\)</span> offensichtlich vom wahren, aber unbekannten, Nichtzentralitätsparameterwert <span class="math display">\[\begin{equation}
+\delta_\mu = n(\mu-\mu_0)^T\Sigma^{-1}(\mu-\mu_0)
+\end{equation}\]</span> ab. Würde man diesen Wert schon mit großer Präzision kennen, so gäbe es keinen Grund eine Studie und ihren Stichprobenumfang zu planen. Es wird deshalb zur Stichprobengrößenoptimierung im Vorfeld einer Studie im Allgemeinen folgendes Vorgehen favorisiert:</p>
+<ol type="1">
+<li>Man legt zunächst das Signifikanzlevel <span class="math inline">\(\alpha_0\)</span> zur Kontrolle der Wahrscheinlichkeit eines Typ 1 Fehlers fest und evaluiert die entsprechende Powerfunktion.</li>
+<li>Man wählt einen Mindestparameterwert <span class="math inline">\(\delta_\mu^*\)</span>, den man mit einer Wahrscheinlichkeit von <span class="math display">\[\begin{equation}
+\pi(\delta_\mu,n) = \beta
+\end{equation}\]</span> detektieren möchte, bei dem man also die Nullhypothese ablehnen möchte. Der Wert von <span class="math inline">\(\delta_\mu^*\)</span> ergibt sich dabei aus problemspezifischen Überlegungen, wie zum Beispiel der Frage nach einem klinisch bedeutsamen Wert. Ein konventioneller Wert für die gewünschte Detektionswahrscheinlichkeit ist <span class="math inline">\(\beta := 0.8\)</span>.</li>
+<li>Basierend auf der evaluierten Powerfunktion liest man die für <span class="math display">\[\begin{equation}
+\pi(\delta_\mu = \delta_\mu^*,n) = \beta
+\end{equation}\]</span> minimal nötige Stichprobengröße <span class="math inline">\(n\)</span> ab. Größere Stichprobengrößen führen aufgrund der Monotonie von <span class="math inline">\(\pi\)</span> als Funktion von <span class="math inline">\(n\)</span> sicher zu einer gleichen oder höheren Wahrscheinlichkeit für das Ablehnen der Nullhypothese.</li>
+</ol>
+<p>Für eine Datendimensionalität von <span class="math inline">\(m := 2\)</span> und Mindestparameterwert von <span class="math inline">\(\delta_\mu^* = 12\)</span> evaluiert untenstehender <strong>R</strong> Code wie in <a href="#fig-einstichproben-t2-stichprobenumfang" class="quarto-xref">Abbildung&nbsp;<span>37.9</span></a> dargestellt die minimale Stichprobengröße um mit einer Wahrscheinlichkeit von <span class="math inline">\(\beta = 0.8\)</span> die Nullhypothese abzulehnen.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># Szenariospezifikation</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a>n_min      <span class="ot">=</span> <span class="dv">5</span>                                                                  <span class="co"># n Minimum</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a>n_max      <span class="ot">=</span> <span class="dv">20</span>                                                                 <span class="co"># n Maximum</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a>n_res      <span class="ot">=</span> <span class="fl">1e2</span>                                                                <span class="co"># n Auflösung</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a>n          <span class="ot">=</span> <span class="fu">seq</span>(n_min,n_max, <span class="at">len =</span> n_res)                                      <span class="co"># n Raum</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a>alpha_0    <span class="ot">=</span> <span class="fl">0.05</span>                                                               <span class="co"># Signifikanzlevel</span></span>
+<span id="cb9-7"><a href="#cb9-7"></a></span>
+<span id="cb9-8"><a href="#cb9-8"></a><span class="co"># Poweranalyse</span></span>
+<span id="cb9-9"><a href="#cb9-9"></a>m          <span class="ot">=</span> <span class="dv">2</span>                                                                  <span class="co"># Datendimensionalität</span></span>
+<span id="cb9-10"><a href="#cb9-10"></a>d_mu_fix   <span class="ot">=</span> <span class="dv">12</span>                                                                 <span class="co"># fester Nichtzentralitätsparameter</span></span>
+<span id="cb9-11"><a href="#cb9-11"></a>nu         <span class="ot">=</span> (n<span class="sc">-</span>m)<span class="sc">/</span>(m<span class="sc">*</span>(n<span class="dv">-1</span>))                                                    <span class="co"># Parameter</span></span>
+<span id="cb9-12"><a href="#cb9-12"></a>k_alpha_0  <span class="ot">=</span> (<span class="dv">1</span><span class="sc">/</span>nu)<span class="sc">*</span><span class="fu">qf</span>(<span class="dv">1</span><span class="sc">-</span>alpha_0,m,n<span class="sc">-</span>m)                                         <span class="co"># kritischer Wert</span></span>
+<span id="cb9-13"><a href="#cb9-13"></a>pi_n       <span class="ot">=</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">pf</span>(nu<span class="sc">*</span>k_alpha_0, m, n<span class="sc">-</span>m, d_mu_fix)                             <span class="co"># Powerfunktionswert</span></span>
+<span id="cb9-14"><a href="#cb9-14"></a>beta       <span class="ot">=</span> <span class="fl">0.8</span>                                                                <span class="co"># gewünschter Powerfunktionswert</span></span>
+<span id="cb9-15"><a href="#cb9-15"></a>i          <span class="ot">=</span> <span class="dv">1</span>                                                                  <span class="co"># Indexinitialisierung</span></span>
+<span id="cb9-16"><a href="#cb9-16"></a>n_min      <span class="ot">=</span> <span class="cn">NaN</span>                                                                <span class="co"># minimales n Initialisierung</span></span>
+<span id="cb9-17"><a href="#cb9-17"></a><span class="cf">while</span>(pi_n[i] <span class="sc">&lt;</span> beta){                                                          <span class="co"># Solange \pi(\delta_\mu*,n) &lt; \beta</span></span>
+<span id="cb9-18"><a href="#cb9-18"></a>    n_min <span class="ot">=</span> n[i]                                                                <span class="co"># Aufnahme des minimal nötigen ns</span></span>
+<span id="cb9-19"><a href="#cb9-19"></a>    i     <span class="ot">=</span> i <span class="sc">+</span> <span class="dv">1</span>                                                               <span class="co"># und Erhöhung des Indexes</span></span>
+<span id="cb9-20"><a href="#cb9-20"></a>}</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Minimal nötiges n = 17</code></pre>
+</div>
+</div>
+<div id="fig-einstichproben-t2-stichprobenumfang" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-einstichproben-t2-stichprobenumfang-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/502-einstichproben-t2-stichprobenumfang.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-einstichproben-t2-stichprobenumfang-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;37.9: Bestimmung eines minimalen Stichprobenumfangs zur Detektion eines Nichtzentralitätsmindestparameterwert von <span class="math inline">\(\delta_\mu = 12\)</span>. Die Abbildung zeigt die entsprechende Schnittfunktion der in <a href="#fig-einstichproben-t2-pi" class="quarto-xref">Abbildung&nbsp;<span>37.8</span></a> dargestellten Funktion.
+</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="anwendungsbeispiel" class="level2" data-number="37.4">
+<h2 data-number="37.4" class="anchored" data-anchor-id="anwendungsbeispiel"><span class="header-section-number">37.4</span> Anwendungsbeispiel</h2>
+<p>Wir betrachten das eingangs diskutierte Anwendungsbeispiel eines simulierten zweidimensionalen Datensatzes dreier Studiengruppen. Wir wollen abschließen für diesen Datensatz die Nullhypothese z für ein Abweichen des wahren, aber unbekannten, Erwartungswertparameters der Daten von <span class="math inline">\(\mu_0\)</span> ist. Wir betrachten also weiterhin die einfache Nullhypothese <span class="math inline">\(H_0 :\mu = \mu_0\)</span> und die zusammegesetzte Alternativhypothese <span class="math inline">\(H_1 :\mu \neq \mu_0\)</span>. Folgender <strong>R</strong> Code implementiert das praktische Vorgehen für ein Signifikanzlevel von <span class="math inline">\(\alpha_0 := 0.05\)</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co"># Datenbereitstellung</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a>D         <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"./_data/502-einstichproben-t2-tests.csv"</span>)                 <span class="co"># Datensatzeinlesen </span></span>
+<span id="cb11-3"><a href="#cb11-3"></a>Y         <span class="ot">=</span> <span class="fu">rbind</span>(D<span class="sc">$</span>y_1i, D<span class="sc">$</span>y_2i)                                               <span class="co"># Datenmatrix</span></span>
+<span id="cb11-4"><a href="#cb11-4"></a></span>
+<span id="cb11-5"><a href="#cb11-5"></a><span class="co"># Testparameter</span></span>
+<span id="cb11-6"><a href="#cb11-6"></a>m         <span class="ot">=</span> <span class="fu">nrow</span>(Y)                                                             <span class="co"># Dimensionalität der Zufallsvektoren/Daten</span></span>
+<span id="cb11-7"><a href="#cb11-7"></a>n         <span class="ot">=</span> <span class="fu">ncol</span>(Y)                                                             <span class="co"># Anzahl der Datenpunkte</span></span>
+<span id="cb11-8"><a href="#cb11-8"></a>nu        <span class="ot">=</span> (n<span class="sc">-</span>m)<span class="sc">/</span>(m<span class="sc">*</span>(n<span class="dv">-1</span>))                                                     <span class="co"># Parameter</span></span>
+<span id="cb11-9"><a href="#cb11-9"></a>mu_0      <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">30</span>,<span class="fl">3.5</span>) , <span class="at">nrow =</span> <span class="dv">2</span>)                                        <span class="co"># H0 Hypothesenparameter ("Normwert")</span></span>
+<span id="cb11-10"><a href="#cb11-10"></a>alpha_0   <span class="ot">=</span> <span class="fl">0.05</span>                                                                <span class="co"># Signifikanzlevel</span></span>
+<span id="cb11-11"><a href="#cb11-11"></a>k_alpha_0 <span class="ot">=</span> (<span class="dv">1</span><span class="sc">/</span>nu)<span class="sc">*</span><span class="fu">qf</span>(<span class="dv">1</span><span class="sc">-</span>alpha_0,m,n<span class="sc">-</span>m)                                          <span class="co"># kritischer Wert</span></span>
+<span id="cb11-12"><a href="#cb11-12"></a></span>
+<span id="cb11-13"><a href="#cb11-13"></a><span class="co"># Testevaluation</span></span>
+<span id="cb11-14"><a href="#cb11-14"></a>j_n       <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="dv">1</span>,n), <span class="at">nrow =</span> n)                                          <span class="co"># 1_n</span></span>
+<span id="cb11-15"><a href="#cb11-15"></a>I_n       <span class="ot">=</span> <span class="fu">diag</span>(n)                                                             <span class="co"># I_n</span></span>
+<span id="cb11-16"><a href="#cb11-16"></a>J_n       <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="dv">1</span>,n<span class="sc">^</span><span class="dv">2</span>), <span class="at">nrow =</span> n)                                        <span class="co"># 1_{nn}</span></span>
+<span id="cb11-17"><a href="#cb11-17"></a>Y_bar     <span class="ot">=</span> (<span class="dv">1</span><span class="sc">/</span>n)<span class="sc">*</span>(Y <span class="sc">%*%</span> j_n)                                                   <span class="co"># Stichprobenmittel</span></span>
+<span id="cb11-18"><a href="#cb11-18"></a>C         <span class="ot">=</span> (<span class="dv">1</span><span class="sc">/</span>(n<span class="dv">-1</span>))<span class="sc">*</span>(Y <span class="sc">%*%</span> (I_n<span class="sc">-</span>(<span class="dv">1</span><span class="sc">/</span>n)<span class="sc">*</span>J_n) <span class="sc">%*%</span> <span class="fu">t</span>(Y))                          <span class="co"># Stichprobenkovarianzmatrix</span></span>
+<span id="cb11-19"><a href="#cb11-19"></a>T2        <span class="ot">=</span> n<span class="sc">*</span><span class="fu">t</span>(Y_bar <span class="sc">-</span> mu_0) <span class="sc">%*%</span> <span class="fu">solve</span>(C) <span class="sc">%*%</span> (Y_bar <span class="sc">-</span> mu_0)                   <span class="co"># T^2 Statistik</span></span>
+<span id="cb11-20"><a href="#cb11-20"></a><span class="cf">if</span>(T2 <span class="sc">&gt;</span> k_alpha_0){                                                             <span class="co"># Test 1_{T^2 &gt;= k_alpha_0}</span></span>
+<span id="cb11-21"><a href="#cb11-21"></a>    phi <span class="ot">=</span> <span class="dv">1</span>                                                                     <span class="co"># Ablehnen von H_0</span></span>
+<span id="cb11-22"><a href="#cb11-22"></a>} <span class="cf">else</span> {</span>
+<span id="cb11-23"><a href="#cb11-23"></a>    phi <span class="ot">=</span> <span class="dv">0</span>                                                                     <span class="co"># Nicht Ablehnen von H_0</span></span>
+<span id="cb11-24"><a href="#cb11-24"></a>}</span>
+<span id="cb11-25"><a href="#cb11-25"></a>p         <span class="ot">=</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">pf</span>(nu<span class="sc">*</span>T2,m,n<span class="sc">-</span>m)                                                 <span class="co"># p-Wert</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Y_bar   =  26.25615 2.991039 
+C       =  38.8981 3.549813 3.549813 1.972143 
+T^2     =  7.546368 
+alpha_0 =  0.05 
+k       =  7.504065 
+phi     =  1 
+p       =  0.04928746</code></pre>
+</div>
+</div>
+<p>Im vorliegenden Fall nimmt die Einstichproben-T<span class="math inline">\(^2\)</span>-Teststatistik einen größeren Wert als der kritische Wert an, es gilt damit <span class="math inline">\(\phi(\Upsilon) = 1\)</span> und man lehnt die Nullhypothese ab. Der korrespondiere p-Wert ist durch 0.049 gegeben.</p>
+</section>
+<section id="sec-literaturhinweise" class="level2" data-number="37.5">
+<h2 data-number="37.5" class="anchored" data-anchor-id="sec-literaturhinweise"><span class="header-section-number">37.5</span> Literaturhinweise</h2>
+<p>Die Theorie des Einstichproben-T<span class="math inline">\(^2\)</span>-Tests geht zurück auf <span class="citation" data-cites="hotelling1931">Hotelling (<a href="#ref-hotelling1931" role="doc-biblioref">1931</a>)</span>.</p>
+</section>
+<section id="sec-selbskontrollfragen" class="level2" data-number="37.6">
+<h2 data-number="37.6" class="anchored" data-anchor-id="sec-selbskontrollfragen"><span class="header-section-number">37.6</span> Selbstkontrollfragen</h2>
+<ol type="1">
+<li>Beschreiben Sie das Anwendungsszenario für einen Einstichproben-T<span class="math inline">\(^2\)</span>-Test.</li>
+<li>Geben Sie die Definition des Einstichproben-T<span class="math inline">\(^2\)</span>-Test Modells wieder</li>
+<li>Geben Sie die Definition der Einstichproben-T<span class="math inline">\(^2\)</span>-Teststatistik wieder.</li>
+<li>Erläutern Sie, wann die Einstichproben-T<span class="math inline">\(^2\)</span>-Teststatistik hohe Werte annimmt.</li>
+<li>Geben Sie das Theorem zu WDF und KDF der Einstichproben-T<span class="math inline">\(^2\)</span>-Teststatistik wieder.</li>
+<li>Geben Sie das Theorem zur Testumfangkontrolle eins Einstichproben-T<span class="math inline">\(^2\)</span>-Tests wieder.</li>
+<li>Erläutern Sie das praktische Vorgehen bei der Durchführung eines Einstichproben-T<span class="math inline">\(^2\)</span>-Tests.</li>
+<li>Geben Sie das Theorem zum p-Wert eines Einstichproben-T<span class="math inline">\(^2\)</span>-Test an und erläutern Sie die Komponenten des entsprechenden Ausdrucks. </li>
+</ol>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-anderson2003" class="csl-entry" role="listitem">
+Anderson, T. W. (2003). <em>An Introduction to Multivariate Statistical Analysis</em> (3rd ed). <span>Wiley-Interscience</span>.
+</div>
+<div id="ref-hotelling1931" class="csl-entry" role="listitem">
+Hotelling, H. (1931). The <span>Generalization</span> of <span>Student</span>’s <span>Ratio</span>. <em>The Annals of Mathematical Statistics</em>, <em>2</em>(3), 360–378. <a href="https://doi.org/10.1214/aoms/1177732979">https://doi.org/10.1214/aoms/1177732979</a>
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Kopiert");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Kopiert");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./501-Datendeskription.html" class="pagination-link  aria-label=" &lt;span="">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Datendeskription</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./503-Einfaktorielle-Varianzanalyse.html" class="pagination-link" aria-label="<span class='chapter-number'>38</span>&nbsp; <span class='chapter-title'>Einfaktorielle Varianzanalyse</span>">
+        <span class="nav-page-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Einfaktorielle Varianzanalyse</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/502-Einstichproben-T2-Tests.qmd" class="toc-action"><i class="bi bi-github"></i>Seite editieren</a></li></ul></div></div></div></footer></body></html>

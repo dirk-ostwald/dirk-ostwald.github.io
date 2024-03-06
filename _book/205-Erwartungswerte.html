@@ -1,0 +1,1798 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.549">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Probabilistische Datenwissenschaft für die Psychologie - 15&nbsp; Erwartungswerte</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./206-Ungleichungen.html" rel="next">
+<link href="./204-Zufallsvektoren.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Keine Treffer",
+    "search-matching-documents-text": "Treffer",
+    "search-copy-link-title": "Link in die Suche kopieren",
+    "search-hide-matches-text": "Zusätzliche Treffer verbergen",
+    "search-more-match-text": "weitere Treffer in diesem Dokument",
+    "search-more-matches-text": "weitere Treffer in diesem Dokument",
+    "search-clear-button-title": "Zurücksetzen",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Abbrechen",
+    "search-submit-button-title": "Abschicken",
+    "search-label": "Suchen"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Probabilistische Datenwissenschaft für die Psychologie</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools">
+    <a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages" title="Quellcode" class="quarto-navigation-tool px-1" aria-label="Quellcode"><i class="bi bi-github"></i></a>
+    <a href="./Probabilistische-Datenwissenschaft-für-die-Psychologie.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+          <div id="quarto-search" class="" title="Suchen"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./200-Wahrscheinlichkeitstheorie.html">Wahrscheinlichkeitstheorie</a></li><li class="breadcrumb-item"><a href="./205-Erwartungswerte.html"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Erwartungswerte</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Willkommen</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./100-Mathematische-Grundlagen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Mathematische Grundlagen</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./101-Sprache-und-Logik.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Sprache und Logik</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./102-Mengen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Mengen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./103-Summen-Produkte-Potenzen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Summen, Produkte, Potenzen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./104-Funktionen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Funktionen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./105-Differentialrechnung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Differentialrechnung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./106-Folgen-Grenzwerte-Stetigkeit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Folgen, Grenzwerte, Stetigkeit</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./107-Integralrechnung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Integralrechnung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./108-Vektoren.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Vektoren</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./109-Matrizen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Matrizen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./110-Eigenanalyse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Eigenanalyse</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./200-Wahrscheinlichkeitstheorie.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Wahrscheinlichkeitstheorie</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./201-Wahrscheinlichkeitsräume.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Wahrscheinlichkeitsräume</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./202-Elementare-Wahrscheinlichkeiten.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Elementare Wahrscheinlichkeiten</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./203-Zufallsvariablen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Zufallsvariablen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./204-Zufallsvektoren.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Zufallsvektoren</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./205-Erwartungswerte.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Erwartungswerte</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./206-Ungleichungen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Ungleichungen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./207-Grenzwerte.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Grenzwerte</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./208-Transformationstheoreme.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Transformationstheoreme</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./209-Normalverteilungstransformationen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Normalverteilungstransformationen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./210-Multivariate-Normalverteilungen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Multivariate Normalverteilungen</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Frequentistische Inferenz</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./301-Grundbegriffe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Grundbegriffe</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./302-Punktschätzung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Punktschätzung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./303-Konfidenzintervalle.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Konfidenzintervalle</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./304-Hypothesentests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Hypothesentests</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Das Allgemeine Lineare Modell</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./401-Regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Regression</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./402-Korrelation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Korrelation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./403-Modellformulierung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Modellformulierung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./404-Parameterschätzung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Parameterschätzung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./405-T-Statistiken.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">T-Statistiken</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./406-F-Statistiken.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">F-Statistiken</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./407-T-Tests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">T-Tests</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./408-Einfaktorielle-Varianzanalyse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Einfaktorielle Varianzanalyse</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./409-Zweifaktorielle-Varianzanalyse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Zweifaktorielle Varianzanalyse</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./410-Partielle-Korrelation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Partielle Korrelation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./411-Multiple-Regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Multiple Regression</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Multivariate Inferenz</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./501-Datendeskription.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Datendeskription</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./502-Einstichproben-T2-Tests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Einstichproben-T<span class="math inline">\(^2\)</span>-Tests</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./503-Einfaktorielle-Varianzanalyse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Einfaktorielle Varianzanalyse</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./504-Kanonische-Korrelationsanalyse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">Kanonische Korrelationsanalyse</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Referenzen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Referenzen</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Inhaltsverzeichnis</h2>
+   
+  <ul>
+  <li><a href="#sec-erwartungswert" id="toc-sec-erwartungswert" class="nav-link active" data-scroll-target="#sec-erwartungswert"><span class="header-section-number">15.1</span> Erwartungswert</a>
+  <ul class="collapse">
+  <li><a href="#beispiele" id="toc-beispiele" class="nav-link" data-scroll-target="#beispiele">Beispiele</a></li>
+  </ul></li>
+  <li><a href="#sec-varianz-und-standardabweichung" id="toc-sec-varianz-und-standardabweichung" class="nav-link" data-scroll-target="#sec-varianz-und-standardabweichung"><span class="header-section-number">15.2</span> Varianz und Standardabweichung</a>
+  <ul class="collapse">
+  <li><a href="#beispiele-1" id="toc-beispiele-1" class="nav-link" data-scroll-target="#beispiele-1">Beispiele</a></li>
+  </ul></li>
+  <li><a href="#sec-stichprobenkennzahlen" id="toc-sec-stichprobenkennzahlen" class="nav-link" data-scroll-target="#sec-stichprobenkennzahlen"><span class="header-section-number">15.3</span> Kennzahlen univariater Stichproben</a></li>
+  <li><a href="#sec-kovarianz-und-korrelation" id="toc-sec-kovarianz-und-korrelation" class="nav-link" data-scroll-target="#sec-kovarianz-und-korrelation"><span class="header-section-number">15.4</span> Kovarianz und Korrelation</a></li>
+  <li><a href="#kovarianzmatrizen" id="toc-kovarianzmatrizen" class="nav-link" data-scroll-target="#kovarianzmatrizen"><span class="header-section-number">15.5</span> Kovarianzmatrizen</a></li>
+  <li><a href="#stichprobenkennzahlen-von-zufallsvektoren" id="toc-stichprobenkennzahlen-von-zufallsvektoren" class="nav-link" data-scroll-target="#stichprobenkennzahlen-von-zufallsvektoren"><span class="header-section-number">15.6</span> Stichprobenkennzahlen von Zufallsvektoren</a></li>
+  <li><a href="#selbstkontrollfragen" id="toc-selbstkontrollfragen" class="nav-link" data-scroll-target="#selbstkontrollfragen"><span class="header-section-number">15.7</span> Selbstkontrollfragen</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/205-Erwartungswerte.qmd" class="toc-action"><i class="bi bi-github"></i>Seite editieren</a></li></ul></div></nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./200-Wahrscheinlichkeitstheorie.html">Wahrscheinlichkeitstheorie</a></li><li class="breadcrumb-item"><a href="./205-Erwartungswerte.html"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Erwartungswerte</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-erwartungswerte" class="quarto-section-identifier"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Erwartungswerte</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>In diesem Kapitel führen wir mit den Begriffen des <em>Erwartungswerts</em> und der <em>Varianz</em> einer Zufallsvariable skalare Zusammenfassungen von Verteilungen ein, die häufig als charakteristische Kennzahlen von Wahrscheinlichkeitsverteilungen dienen. Dabei ist der Erwartungswert als ein Maß der “durchschnittlichen Realisierung” und die Varianz als Maß der “durchschnittlichen Variabilität” einer Wahrscheinlichkeitsverteilung zu verstehen. Weiterhin führen wir mit der <em>Kovarianz</em> zweier Zufallsvariablen ein Maß für linear-affine Abhängigkeiten zwischen Zufallsvariablen ein. Wir ergänzen diese Begriffe um ihre Analoga in Bezug auf Zufallsvektoren (<em>Erwartungswert</em> und <em>Kovarianzmatrix</em>) und ihre deskriptiv-statistischen Äquivalente, das <em>Stichprobenmittel</em>, die <em>Stichprobenvarianz</em>, und die <em>Stichprobenkovarianz</em>.</p>
+<section id="sec-erwartungswert" class="level2" data-number="15.1">
+<h2 data-number="15.1" class="anchored" data-anchor-id="sec-erwartungswert"><span class="header-section-number">15.1</span> Erwartungswert</h2>
+<div id="def-erwartungswert" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 15.1 (Erwartungswert)</strong></span> <span class="math inline">\((\Omega, \mathcal{A},\mathbb{P})\)</span> sei ein Wahrscheinlichkeitsraum und <span class="math inline">\(\xi\)</span> sei eine Zufallsvariable. Dann ist der <em>Erwartungswert von <span class="math inline">\(\xi\)</span></em> definiert als</p>
+<ul>
+<li><span class="math inline">\(\mathbb{E}(\xi) := \sum_{x \in \mathcal{X}} x\,p_\xi(x)\)</span>, wenn <span class="math inline">\(\xi : \Omega \to \mathcal{X}\)</span> diskret mit WMF <span class="math inline">\(p_\xi\)</span> ist,</li>
+<li><span class="math inline">\(\mathbb{E}(\xi) := \int_{-\infty}^\infty x \,p_\xi(x)\,dx\)</span>, wenn <span class="math inline">\(\xi : \Omega \to \mathbb{R}\)</span> kontinuierlich mit WDF <span class="math inline">\(p_\xi\)</span> ist.</li>
+</ul>
+<p>Man sagt, dass der Erwartungswert einer Zufallsvariable <em>existiert</em>, wenn er endlich ist.</p>
+</div>
+<p>Der Erwartungswert ist also eine skalare Zusammenfassung der Verteilung einer Zufallsvariable. Eine integrierte Definition des Erwartungswertes, die ohne eine Fallunterscheidung in kontinuierliche und diskrete Zufallsvariablen auskommt, ist möglich, erfordert aber mit der Einführung des Lebesgue-Integrals einigen technischen Aufwand. Wir verweisen dahingehend auf die weiterführende Literatur (vgl. <span class="citation" data-cites="schmidt2009">Schmidt (<a href="#ref-schmidt2009" role="doc-biblioref">2009</a>)</span>, <span class="citation" data-cites="meintrup2005">Meintrup &amp; Schäffler (<a href="#ref-meintrup2005" role="doc-biblioref">2005</a>)</span>). Intuitiv entspricht der Erwartungswert einer Zufallsvariable dem im langfristigen Mittel zu erwartenden Wert der Zufallsvariable, also etwa <span class="math display">\[\begin{equation}
+\mathbb{E}(\xi) \approx \frac{1}{n}\sum_{i=1}^n \xi_i
+\end{equation}\]</span> für eine große Zahl <span class="math inline">\(n\)</span> von Kopien <span class="math inline">\(\xi_i\)</span> von <span class="math inline">\(\xi\)</span>. Wir werden diese Intuition im Kontext der Gesetze der großen Zahl in <a href="207-Grenzwerte.html" class="quarto-xref"><span>Kapitel 17</span></a> weiter ausarbeiten.</p>
+<section id="beispiele" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="beispiele">Beispiele</h3>
+<p>Mit dem Erwartungswert einer Bernoulli-Zufallsvariable und dem Erwartungswert einer normalverteilten Zufallsvariable wollen wir nun zwei erste Beispiele für den Erwartungswert einer diskreten und einer kontinuierlichen Zufallsvariable betrachten.</p>
+<div id="thm-erwartungwert-einer-bernoulli-zufallsvariable" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 15.1 (Erwartungswert einer Bernoulli Zufallsvariable)</strong></span> Es sei <span class="math inline">\(\xi \sim \mbox{Bern}(\mu)\)</span>. Dann gilt <span class="math inline">\(\mathbb{E}(\xi) = \mu\)</span>.</p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Beweis</em>. </span><span class="math inline">\(\xi\)</span> ist diskret mit <span class="math inline">\(\mathcal{X} = \{0,1\}\)</span>. Also gilt <span class="math display">\[\begin{align}
+\begin{split}
+\mathbb{E}(\xi)
+&amp; = \sum_{x \in \{0,1\}} x\,\mbox{Bern}(x;\mu) \\
+&amp; = 0\cdot \mu^0 (1 - \mu)^{1-0} + 1\cdot \mu^1 (1 - \mu)^{1-1} \\
+&amp; = 1\cdot \mu^1 (1 - \mu)^{0} \\
+&amp; = \mu.
+\end{split}
+\end{align}\]</span></p>
+</div>
+<p>Es ergibt sich hier also, dass der Parameter <span class="math inline">\(\mu \in [0,1]\)</span> der Verteilung einer Bernoulli-Zufallsvariable gleichzeitig auch ihr Erwartungswert ist.</p>
+<div id="thm-erwartungwert-einer-normalverteilten-zufallsvariable" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 15.2 (Erwartungswert einer normalverteilten Zufallsvariable)</strong></span> Es sei <span class="math inline">\(\xi \sim N(\mu,\sigma^2)\)</span>. Dann gilt <span class="math inline">\(\mathbb{E}(\xi) = \mu\)</span>.</p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Beweis</em>. </span>Die Herleitung des Erwartungswerts einer normalverteilten Zufallsvariable ist überraschend aufwändig. Wir müssen in diesem Fall einige grundlegende Eigenschaften der Exponentialfunktion als gegeben annehmen. Dazu halten wir zunächst ohne Beweis fest, dass <span id="eq-gauss-integral"><span class="math display">\[
+\int_{-\infty}^\infty \exp\left(-x^2\right)\,dx = \sqrt{\pi}
+\tag{15.1}\]</span></span> und dass <span id="eq-exp-limits"><span class="math display">\[
+\lim_{x \to -\infty} \exp\left(-x^2\right) = 0 \mbox{ und } \lim_{x \to \infty}\exp\left(-x^2\right) = 0.
+\tag{15.2}\]</span></span> <a href="#eq-gauss-integral" class="quarto-xref">Gleichung&nbsp;<span>15.1</span></a> ist unter der Bezeichnung <em>Gauss-</em> oder <em>Euler-Poisson-Integral</em> bekannt. Mit der Definition des Erwartungswerts für kontinuierliche Zufallsvariablen gilt dann zunächst <span class="math display">\[\begin{equation}
+\mathbb{E}(\xi)
+= \int_{-\infty}^\infty x \frac{1}{\sqrt{2\pi\sigma^2}}\exp\left(-\frac{1}{2\sigma^2}(x - \mu)^2\right) \,dx.
+\end{equation}\]</span> Mit der allgemeinen Substitutionsregel (vgl. <a href="107-Integralrechnung.html#thm-rechenregeln-für-stammfunktionen" class="quarto-xref">Theorem&nbsp;<span>7.1</span></a>) <span class="math display">\[\begin{equation}
+\int_{g(a)}^{g(b)} f(x)\,dx = \int_a^b f(g(x))g'(x)\,dx
+\end{equation}\]</span> und der Definition von <span class="math display">\[\begin{equation}
+g : \mathbb{R} \to \mathbb{R}, x \mapsto g(x) := \sqrt{2\sigma^2}x + \mu
+\mbox{ with } g'(x) = \sqrt{2\sigma^2},
+\end{equation}\]</span> gilt dann <span class="math display">\[\begin{align}
+\begin{split}
+\mathbb{E}(\xi)
+&amp; = \frac{1}{\sqrt{2\pi\sigma^2}}
+\int_{-\infty}^\infty x
+\exp\left(-\frac{1}{2\sigma^2}(x - \mu)^2\right) \,dx \\
+&amp; = \frac{1}{\sqrt{2\pi\sigma^2}}
+\int_{-\infty}^\infty (\sqrt{2\sigma^2}x + \mu)
+\exp\left(-\frac{1}{2\sigma^2}\left(\left(\sqrt{2\sigma^2}x + \mu \right) - \mu\right)^2\right)
+\sqrt{2\sigma^2}\,dx \\
+&amp; = \frac{\sqrt{2\sigma^2}}{\sqrt{2\pi\sigma^2}}
+\int_{-\infty}^\infty (\sqrt{2\sigma^2}x + \mu)
+\exp\left(-x^2\right) \,dx \\
+&amp; = \frac{1}{\sqrt{\pi}}
+\left(\sqrt{2\sigma^2} \int_{-\infty}^\infty x \exp\left(-x^2\right) \,dx
+      + \mu \int_{-\infty}^\infty \exp\left(-x^2\right) \,dx \right) \\
+&amp; = \frac{1}{\sqrt{\pi}}
+\left(\sqrt{2\sigma^2} \int_{-\infty}^\infty x \exp\left(-x^2\right) \,dx
+      + \mu \sqrt{\pi} \right).
+\end{split}
+\end{align}\]</span> Eine Stammfunktion von <span class="math inline">\(x \exp\left(-x^2\right)\)</span> ist <span class="math inline">\(-\frac{1}{2}\exp\left(-x^2\right)\)</span>, weil <span class="math display">\[\begin{equation}
+\frac{d}{dx}\left(-\frac{1}{2}\exp\left(-x^2\right)\right)
+= -\frac{1}{2} \frac{d}{dx}\exp\left(-x^2\right)
+= -\frac{1}{2}\exp\left(-x^2\right)(-2x)
+= x\exp\left(-x^2\right)
+\end{equation}\]</span> Mit <a href="#eq-exp-limits" class="quarto-xref">Gleichung&nbsp;<span>15.2</span></a> und der Definition des uneigentlichen Integrals (vgl. <a href="107-Integralrechnung.html#def-uneigentliche-integrale" class="quarto-xref">Definition&nbsp;<span>7.5</span></a>) verschwindet der Integralterm <span class="math inline">\(\int_{-\infty}^\infty x \exp\left(-x^2\right) \,dx\)</span> damit und wir erhalten <span class="math display">\[\begin{align}
+\mathbb{E}(\xi)
+= \frac{1}{\sqrt{\pi}}\left(\mu \sqrt{\pi}\right)
+= \mu.
+\end{align}\]</span></p>
+</div>
+<p>Der Erwartungswert einer univariaten Normalverteilung ist also durch ihren Parameter <span class="math inline">\(\mu\in \mathbb{R}\)</span> gegeben.</p>
+<p>In Verallgemeinerung von <a href="#def-erwartungswert" class="quarto-xref">Definition&nbsp;<span>15.1</span></a> geben wir folgende Definition für den Erwartungswert einer Funktion einer Zufallsvariable</p>
+<div id="def-erwartungswert-einer-funktion-einer-zufallsvariable" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 15.2 (Erwartungswert einer Funktion einer Zufallsvariable)</strong></span> <span class="math inline">\((\Omega, \mathcal{A},\mathbb{P})\)</span> sei ein Wahrscheinlichkeitsraum, <span class="math inline">\(\xi\)</span> sei eine Zufallsvariable mit Ergebnisraum <span class="math inline">\(\mathcal{X}\)</span> und <span class="math inline">\(f: \mathcal{X} \to \mathcal{Z}\)</span> sei eine Funktion mit Zielmenge <span class="math inline">\(\mathcal{Z}\)</span>. Dann ist der <em>Erwartungswert der Funktion <span class="math inline">\(f\)</span> der Zufallsvariable <span class="math inline">\(\xi\)</span></em> definiert als</p>
+<ul>
+<li><span class="math inline">\(\mathbb{E}(f(\xi)) := \sum_{x \in \mathcal{X}} f(x)\,p_\xi(x)\)</span>, wenn <span class="math inline">\(\xi : \Omega \to \mathcal{X}\)</span> diskret mit WMF <span class="math inline">\(p_\xi\)</span> ist,</li>
+<li><span class="math inline">\(\mathbb{E}(f(\xi)) := \int_{-\infty}^\infty f(x) \,p_\xi(x)\,dx\)</span>, wenn <span class="math inline">\(\xi : \Omega \to \mathbb{R}\)</span> kontinuierlich mit WDF <span class="math inline">\(p_\xi\)</span> ist.</li>
+</ul>
+</div>
+<p>Der Erwartungswert einer Zufallsvariable ergibt sich anhand von <a href="#def-erwartungswert-einer-funktion-einer-zufallsvariable" class="quarto-xref">Definition&nbsp;<span>15.2</span></a> als der Spezialfall, in dem gilt, dass <span class="math display">\[\begin{equation}
+f : \mathcal{X} \to \mathcal{Z}, x \mapsto f(x) := x.
+\end{equation}\]</span> In der englischsprachigen Literatur ist <a href="#def-erwartungswert-einer-funktion-einer-zufallsvariable" class="quarto-xref">Definition&nbsp;<span>15.2</span></a> auch als “Law of the unconscious statistician” bekannt und wird oft auch direkt zur Definition des Erwartungswertes herangezogen.</p>
+<p>Weiterhin ist man wie im univariaten Fall manchmal darum bemüht, die Verteilung eines Zufallsvektors mit einigen wenigen Maßzahlen zu charakterisieren. Das multivariate Analogon des des Erwartungswerts einer Zufallsvariablen ist der <em>Erwartungswert eines Zufallsvektors</em>, der wie folgt definiert ist.</p>
+<div id="def-erwartungswert-eines-zufallsvektors" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 15.3 (Erwartungswert eines Zufallsvektors)</strong></span> <span class="math inline">\(\xi\)</span> sei ein <span class="math inline">\(n\)</span>-dimensionaler Zufallvektor. Dann ist der <em>Erwartungwert</em> von <span class="math inline">\(\xi\)</span> definiert als der <span class="math inline">\(n\)</span>-dimensionale reelle Vektor <span class="math display">\[\begin{equation}
+\mathbb{E}(\xi) :=
+\begin{pmatrix}
+\mathbb{E}(\xi_1) \\
+\vdots            \\
+\mathbb{E}(\xi_n)
+\end{pmatrix}
+\end{equation}\]</span></p>
+</div>
+<p>Der Erwartungswert eines Zufallsvektors <span class="math inline">\(\xi\)</span> ist also der Vektor der Erwartungswerte der Komponenten <span class="math inline">\(\xi_1, ...,\xi_n\)</span> von <span class="math inline">\(\xi\)</span>, ist also direkt im Sinne von Erwartungswerten von Zufallsvariablen definiert. In Analogie zu <a href="#def-erwartungswert-einer-funktion-einer-zufallsvariable" class="quarto-xref">Definition&nbsp;<span>15.2</span></a> definiert man für die Funktion eines Zufallsvektors den Erwartungswert dieser Transformation wie folgt.</p>
+<div id="def-erwartungswert-einer-funktion-einer-zufallsvektors" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 15.4 (Erwartungswert einer Funktion eines Zufallsvektors)</strong></span> <span class="math inline">\((\Omega, \mathcal{A},\mathbb{P})\)</span> sei ein Wahrscheinlichkeitsraum, <span class="math inline">\(\xi\)</span> sei ein Zufallsvektor mit Ergebnisraum <span class="math inline">\(\mathcal{X}\)</span> und <span class="math inline">\(f: \mathcal{X} \to \mathcal{Z}\)</span> sei eine Funktion mit Zielmenge <span class="math inline">\(\mathcal{Z}\)</span>. Dann ist der <em>Erwartungswert der Funktion <span class="math inline">\(f\)</span> des Zufallsvektors <span class="math inline">\(\xi\)</span></em> definiert als</p>
+<ul>
+<li><span class="math inline">\(\mathbb{E}(f(\xi)) := \sum_{x \in \mathcal{X}} f(x)\,p_\xi(x)\)</span>, wenn <span class="math inline">\(\xi : \Omega \to \mathcal{X}\)</span> diskret mit WMF <span class="math inline">\(p_\xi\)</span> ist,</li>
+<li><span class="math inline">\(\mathbb{E}(f(\xi)) := \int_{-\infty}^\infty f(x) \,p_\xi(x)\,dx\)</span>, wenn <span class="math inline">\(\xi : \Omega \to \mathbb{R}\)</span> kontinuierlich mit WDF <span class="math inline">\(p_\xi\)</span> ist.</li>
+</ul>
+</div>
+<p>Folgendes Theorem gibt nun einige Rechenregeln im Umgang mit Erwartungswerten an, die uns an vielen Stellen begegnen werden. Diese Rechenregeln folgen direkt aus der Summen- bzw. Integraldefinition des Erwartungswertes, im Beweis des Theorems betrachten wir dementsprechend lediglich den Fall kontinuierlicher Zufallsvariablen.</p>
+<div id="thm-eigenschaften-des-erwartungswerts" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 15.3 (Eigenschaften des Erwartungswerts)</strong></span> &nbsp;</p>
+<ol type="1">
+<li>(Linear-affine Transformation) Für eine Zufallsvariable <span class="math inline">\(\xi\)</span> und <span class="math inline">\(a,b\in \mathbb{R}\)</span> gilt <span class="math display">\[\begin{equation}
+\mathbb{E}(a\xi + b) = a\mathbb{E}(\xi) + b.
+\end{equation}\]</span></li>
+<li>(Linearkombination) Für Zufallsvariablen <span class="math inline">\(\xi_1,...,\xi_n\)</span> und <span class="math inline">\(a_1,...,a_n \in \mathbb{R}\)</span> gilt <span class="math display">\[\begin{equation}
+\mathbb{E}\left(\sum_{i=1}^n a_i\xi_i \right) = \sum_{i = 1}^n a_i \mathbb{E}(\xi_i).
+\end{equation}\]</span></li>
+<li>(Faktorisierung bei Unabhängigkeit) Für unabhängige Zufallsvariablen <span class="math inline">\(\xi_1,...,\xi_n\)</span> gilt <span class="math display">\[\begin{equation}
+\mathbb{E}\left(\prod_{i=1}^n \xi_i \right) = \prod_{i = 1}^n \mathbb{E}(\xi_i).
+\end{equation}\]</span></li>
+</ol>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Beweis</em>. </span>Eigenschaft (1) folgt aus den Linearitätseigenschaften von Summen und Integralen. Wir betrachten nur den Fall einer kontinuierlichen Zufallsvariable <span class="math inline">\(\xi\)</span> mit WDF <span class="math inline">\(p_\xi\)</span> genauer und definieren zunächst <span class="math inline">\(\upsilon := a\xi + b\)</span>. Dann gilt</p>
+<p><span class="math display">\[\begin{align}
+\begin{split}
+\mathbb{E}(\upsilon)
+&amp; = \mathbb{E}(a\xi + b)                                        \\
+&amp; = \int_{-\infty}^\infty (ax + b)p_\xi(x) \,dx                             \\
+&amp; = \int_{-\infty}^\infty  axp_\xi(x)  + b p_\xi(x) \,dx                        \\
+&amp; = a\int_{-\infty}^\infty xp_\xi(x) \,dx + b \int_{-\infty}^\infty p_\xi(x) \,dx           \\
+&amp; = a\mathbb{E}(\xi) + b.
+\end{split}
+\end{align}\]</span> Eigenschaft (2) folgt gleichfalls aus den Linearitätseigenschaften von Summen und Integralen. Wir wollen nur den Fall von zwei kontinuierlichen Zufallsvariablen <span class="math inline">\(\xi_1\)</span> und <span class="math inline">\(\xi_2\)</span> mit bivariater WDF <span class="math inline">\(p_{\xi_1,\xi_2}\)</span> genauer betrachten. In diesem Fall gilt <span class="math display">\[\begin{align}
+\begin{split}
+\mathbb{E}\left(\sum_{i=1}^2 a_i\xi_i\right)
+&amp; = \mathbb{E}(a_1\xi_1 + a_2\xi_2) \\
+&amp; = \iint_{\mathbb{R}^2} (a_1x_1 + a_2x_2)p_{\xi_1,\xi_2}(x_1,x_2)\,dx_1\,dx_2  \\
+&amp; = \iint_{\mathbb{R}^2} a_1x_1 p_{\xi_1,\xi_2}(x_1,x_2)
+                                   + a_2x_2 p_{\xi_1,\xi_2}(x_1,x_2)\,dx_1\,dx_2            \\
+&amp; =  a_1\iint_{\mathbb{R}^2} x_1 p_{\xi_1,\xi_2}(x_1,x_2) \,dx_1\,dx_2
+  +  a_2\iint_{\mathbb{R}^2} x_2 p_{\xi_1,\xi_2}(x_1,x_2)\,dx_1\,dx_2           \\
+&amp; =  a_1\int_{-\infty}^\infty x_1 \left(\int_{-\infty}^\infty p_{\xi_1,\xi_2}(x_1,x_2) \,dx_2 \right)\,dx_1
+  +  a_2\int_{-\infty}^\infty x_2 \left(\int_{-\infty}^\infty p_{\xi_1,\xi_2}(x_1,x_2) \,dx_1 \right) \,dx_2 \\
+&amp; =  a_1\int_{-\infty}^\infty x_1 p_{\xi_1}(x_1) \,dx_1
+  +  a_2\int_{-\infty}^\infty x_2 p_{\xi_2}(x_2) \,dx_2 \\
+&amp; =  a_1 \mathbb{E}(\xi_1) +  a_2\mathbb{E}(\xi_2) \\
+&amp; = \sum_{i=1}^2 a_i \mathbb{E}(\xi_i).
+\end{split}
+\end{align}\]</span> Ein Induktionsbeweis erlaubt dann die Generalisierung vom bivariaten auf den <span class="math inline">\(n\)</span>-variaten Fall.</p>
+<p>Zu Eigenschaft (3) betrachten wir den Fall von <span class="math inline">\(n\)</span> kontinuierlichen Zufallsvariablen mit gemeinsamer WDF <span class="math inline">\(p_{\xi_1,...,\xi_n}\)</span>. Weil als <span class="math inline">\(\xi_1,...,\xi_n\)</span> unabhängig vorausgesetzt sind, gilt <span class="math display">\[\begin{equation}
+p_{\xi_1,...,\xi_n}(x_1,...,x_n) = \prod_{i=1}^n p_{\xi_i}(x_i).
+\end{equation}\]</span> Weiterhin gilt also <span class="math display">\[\begin{align}
+\begin{split}
+\mathbb{E}\left(\prod_{i=1}^n \xi_i \right)
+&amp; = \int_{-\infty}^\infty\cdots\int_{-\infty}^\infty \left(\prod_{i=1}^n x_i\right)
+        p_{\xi_1,...,\xi_n}(x_1,...,x_n) \,dx_1...\,dx_n    \\
+&amp; = \int_{-\infty}^\infty\cdots\int_{-\infty}^\infty  \prod_{i=1}^n x_i
+         \prod_{i=1}^n p_{\xi_i}(x_i)\,dx_1...\,dx_n    \\
+&amp; = \int_{-\infty}^\infty\cdots \int_{-\infty}^\infty  \prod_{i=1}^n x_i p_{\xi_i}(x_i) \,dx_1...\,dx_n \\
+&amp; = \prod_{i=1}^n \int_{-\infty}^\infty x_i p_{\xi_i}(x_i) \,dx_i   \\
+&amp; = \prod_{i=1}^n \mathbb{E}(\xi_i).
+\end{split}
+\end{align}\]</span></p>
+</div>
+</section>
+</section>
+<section id="sec-varianz-und-standardabweichung" class="level2" data-number="15.2">
+<h2 data-number="15.2" class="anchored" data-anchor-id="sec-varianz-und-standardabweichung"><span class="header-section-number">15.2</span> Varianz und Standardabweichung</h2>
+<p>Häufig genutzte Maße für die Streuung von Verteilungen von Zufallsvariablen sind die Varianz und die Standardabweichung. Diese sind wie folgt definiert.</p>
+<div id="def-varianz-und-standardabweichung" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 15.5 (Varianz und Standardabweichung)</strong></span> <span class="math inline">\(\xi\)</span> sei eine Zufallsvariable mit existierendem Erwartungswert <span class="math inline">\(\mathbb{E}(\xi)\)</span>.</p>
+<ul>
+<li>Die ist definiert als <span class="math display">\[\begin{equation}
+\mathbb{V}(\xi) := \mathbb{E}\left((\xi - \mathbb{E}(\xi))^2\right).
+\end{equation}\]</span></li>
+<li>Die ist definiert als <span class="math display">\[\begin{equation}
+\mathbb{S}(\xi) := \sqrt{\mathbb{V}(\xi)}.
+\end{equation}\]</span></li>
+</ul>
+</div>
+<p>Inwiefern die Varianz und ihre Quadratwurzel als Maße für die Streuung einer Zufallsvariable dienen, werden wir in <a href="206-Ungleichungen.html#thm-chebyshev-ungleichung" class="quarto-xref">Theorem&nbsp;<span>16.2</span></a> begründen. Die Quadrierung der Abweichung der Zufallsvariable von ihrem Erwartungswert in der Definition der Varianz ist nötig, da andernfalls mit <a href="#thm-eigenschaften-des-erwartungswerts" class="quarto-xref">Theorem&nbsp;<span>15.3</span></a> immer gelten würde, dass <span class="math display">\[\begin{equation}
+\mathbb{E}(\xi-\mathbb{E}(\xi)) = \mathbb{E}(\xi) - \mathbb{E}(\xi) = 0.
+\end{equation}\]</span> Allerdings gibt es neben der Varianz durchaus weitere Maße der Streuung von Zufallsvariablen, hier seien beispielsweise die erwartete absolute Abweichung einer Zufallsvariable von ihrem Erwartungswert, <span class="math inline">\(\mathbb{E}(|\xi - \mathbb{E}(\xi)|)\)</span> und die sogenannte <em>Entropie</em> <span class="math inline">\(-\mathbb{E}(\ln p_\xi)\)</span> genannt. Im Sinne von <a href="#def-erwartungswert-einer-funktion-einer-zufallsvariable" class="quarto-xref">Definition&nbsp;<span>15.2</span></a> ist die Varianz der Zufallsvariable <span class="math inline">\(\xi: \Omega \to \mathcal{X}\)</span> der Erwartungswert der Funktion <span class="math display">\[\begin{equation}
+f : \mathcal{X} \to \mathcal{Z}, x \mapsto f(x) := (x - \mathbb{E}(\xi))^2.
+\end{equation}\]</span> Das Berechnen von Varianzen wird durch folgendes Theorem, den sogenannten <em>Varianzverschiebungssatz</em> oft erleichtert, insbesondere, wenn der Erwartungswert der quadrierten Zufallsvariable leicht zu bestimmen oder bekannt ist.</p>
+<div id="thm-varianzverschiebungssatz" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 15.4 (Varianzverschiebungssatz)</strong></span> <span class="math inline">\(\xi\)</span> sei eine Zufallsvariable. Dann gilt <span class="math display">\[\begin{equation}
+\mathbb{V}(\xi) = \mathbb{E}\left(\xi^2 \right) - \mathbb{E}(\xi)^2.
+\end{equation}\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Beweis</em>. </span>Mit der Definition der Varianz und der Linearität des Erwartungswerts gilt <span class="math display">\[\begin{align}
+\begin{split}
+\mathbb{V}(\xi)
+&amp; = \mathbb{E}\left((\xi - \mathbb{E}(\xi))^2\right) \\
+&amp; = \mathbb{E}\left(\xi^2 - 2\xi\mathbb{E}(\xi) + \mathbb{E}(\xi)^2 \right) \\
+&amp; =    \mathbb{E}(\xi^2)
+    - 2\mathbb{E}(\xi)\mathbb{E}(\xi)
+    + \mathbb{E}\left(\mathbb{E}(\xi)^2\right)   \\
+&amp; = \mathbb{E}(\xi^2) - 2\mathbb{E}(\xi)^2 + \mathbb{E}(\xi)^2  \\
+&amp; = \mathbb{E}(\xi^2) - \mathbb{E}(\xi)^2.
+\end{split}
+\end{align}\]</span></p>
+</div>
+<p>Wie für den Erwartungswert gibt es auch für die Varianz einige Rechenregeln, die den Umgang mit ihr oft erleichtern. Wir fassen sie in folgendem Theorem zusammen.</p>
+<div id="thm-eigenschaften-der-varianz" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 15.5 (Eigenschaften der Varianz)</strong></span> &nbsp;</p>
+<ol type="1">
+<li>(Linear-affine Transformation) Für eine Zufallsvariable <span class="math inline">\(\xi\)</span> und <span class="math inline">\(a,b\in \mathbb{R}\)</span> gelten <span class="math display">\[\begin{equation}
+\mathbb{V}(a\xi + b) = a^2 \mathbb{V}(\xi)
+\mbox{ und }
+\mathbb{S}(a\xi + b) = |a|\mathbb{S}(\xi).
+\end{equation}\]</span></li>
+<li>(Linearkombination bei Unabhängigkeit) Für unabhängige Zufallsvariablen <span class="math inline">\(\xi_1,...,\xi_n\)</span> und <span class="math inline">\(a_1,...,a_n \in \mathbb{R}\)</span> gilt <span class="math display">\[\begin{equation}
+\mathbb{V}\left(\sum_{i=1}^n a_i\xi_i\right) = \sum_{i=1}^n a_i^2 \mathbb{V}(\xi_i).
+\end{equation}\]</span></li>
+</ol>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Beweis</em>. </span>Um Eigenschaft (1) zu zeigen, definieren wir zunächst <span class="math inline">\(\upsilon := a\xi + b\)</span> und halten fest, dass <span class="math inline">\(\mathbb{E}(\upsilon) = a\mathbb{E}(\xi) + b\)</span>. Für die Varianz von <span class="math inline">\(\upsilon\)</span> ergibt sich dann <span class="math display">\[\begin{align}
+\begin{split}
+\mathbb{V}(\upsilon)
+&amp; = \mathbb{E}\left((\upsilon - \mathbb{E}(\upsilon))^2\right)      \\
+&amp; = \mathbb{E}\left((a\xi+b-a\mathbb{E}(\xi)-b)^2\right)    \\
+&amp; = \mathbb{E}\left((a\xi-a\mathbb{E}(\xi))^2\right)        \\
+&amp; = \mathbb{E}\left((a(\xi - \mathbb{E}(\xi))^2\right)      \\
+&amp; = \mathbb{E}\left(a^2(\xi - \mathbb{E}(\xi))^2\right)     \\
+&amp; = a^2\mathbb{E}\left((\xi - \mathbb{E}(\xi))^2\right)     \\
+&amp; = a^2\mathbb{V}(\xi)                                  \\
+\end{split}
+\end{align}\]</span> Wurzelziehen ergibt dann das Resultat für die Standardabweichung.</p>
+<p>Für Eigenschaft (2) betrachten wir den Fall zweier unabhängiger Zufallsvariablen <span class="math inline">\(\xi_1\)</span> und <span class="math inline">\(\xi_2\)</span> genauer. Wir halten zunächst fest, dass in diesem Fall gilt, dass <span class="math display">\[\begin{equation}
+\mathbb{E}\left(a_1\xi_1 + a_2\xi_2\right) = a_1\mathbb{E}(\xi_1) + a_2\mathbb{E}(\xi_2).
+\end{equation}\]</span> Es ergibt sich also <span class="math display">\[\begin{align}
+\begin{split}
+\mathbb{V}\left(\sum_{i=1}^2 a_i \xi_i\right)                                                
+&amp; = \mathbb{V}(a_1\xi_1 + a_2\xi_2)                                                               \\
+&amp; = \mathbb{E}\left((a_1\xi_1 + a_2\xi_2 - \mathbb{E}\left(a_1\xi_1 + a_2\xi_2\right))^2\right)   \\
+&amp; = \mathbb{E}\left((a_1\xi_1 + a_2\xi_2 - a_1\mathbb{E}(\xi_1) - a_2\mathbb{E}(\xi_2))^2\right)  \\
+&amp; = \mathbb{E}\left((a_1\xi_1 - a_1\mathbb{E}(\xi_1) + a_2\xi_2  - a_2\mathbb{E}(\xi_2))^2\right) \\
+&amp; = \mathbb{E}\left(((a_1(\xi_1 - \mathbb{E}(\xi_1)) + (a_2(\xi_2 - \mathbb{E}(\xi_2)))^2\right)  \\
+&amp; = \mathbb{E}\left((a_1(\xi_1 - \mathbb{E}(\xi_1)))^2
+                   + 2(a_1(\xi_1 - \mathbb{E}(\xi_1))(a_2(\xi_2 - \mathbb{E}(\xi_2))
+                   + (a_2(\xi_2 - \mathbb{E}(\xi_2)))^2\right) \\
+&amp; = \mathbb{E}\left((a_1^2(\xi_1 - \mathbb{E}(\xi_1))^2
+                   + 2a_1a_2(\xi_1 - \mathbb{E}(\xi_1))(\xi_2 - \mathbb{E}(\xi_2))
+                   + a_2^2(\xi_2 - \mathbb{E}(\xi_2))^2\right) \\
+&amp; = a_1^2\mathbb{E}\left((\xi_1 - \mathbb{E}(\xi_1))^2\right)
+   + 2a_1a_2\mathbb{E}\left((\xi_1 - \mathbb{E}(\xi_1))(\xi_2 - \mathbb{E}(\xi_2))\right)
+   + a_2^2\mathbb{E}\left((\xi_2 - \mathbb{E}(\xi_2))^2\right) \\
+&amp; = a_1^2\mathbb{V}(\xi_1)
+   + 2a_1a_2\mathbb{E}\left((\xi_1 - \mathbb{E}(\xi_1))(\xi_2 - \mathbb{E}(\xi_2))\right)
+   + a_2^2\mathbb{V}(\xi_2) \\
+&amp; = \sum_{i=1}^2 a_i^2\mathbb{V}(\xi_i)
+   + 2a_1a_2\mathbb{E}\left((\xi_1 - \mathbb{E}(\xi_1))(\xi_2 - \mathbb{E}(\xi_2))\right).
+\end{split}.
+\end{align}\]</span> Weil <span class="math inline">\(\xi_1\)</span> und <span class="math inline">\(\xi_2\)</span> unabhängig sind, ergibt sich mit den Eigenschaften des Erwartungswerts für unabhängige Zufallsvariablen, dass <span class="math display">\[\begin{align}
+\begin{split}
+\mathbb{E}\left((\xi_1 - \mathbb{E}(\xi_1))(\xi_2 - \mathbb{E}(\xi_2))\right)
+&amp; = \mathbb{E}\left((\xi_1 - \mathbb{E}(\xi_1))\right)
+    \mathbb{E}\left((\xi_2 - \mathbb{E}(\xi_2))\right) \\
+&amp; = (\mathbb{E}(\xi_1) - \mathbb{E}(\xi_1))
+    (\mathbb{E}(\xi_2) - \mathbb{E}(\xi_2)) \\
+&amp; = 0
+\end{split}
+\end{align}\]</span> ist. Damit folgt also <span class="math display">\[\begin{equation}
+\mathbb{V}\left(\sum_{i=1}^2 a_i \xi_i\right)
+=  \sum_{i=1}^2 a_i^2\mathbb{V}(\xi_i).
+\end{equation}\]</span> Ein Induktionsbeweis erlaubt dann die Generalisierung vom bivariaten zum <span class="math inline">\(n\)</span>-variaten Fall.</p>
+</div>
+<section id="beispiele-1" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="beispiele-1">Beispiele</h3>
+<p>Mit der Varianz einer Bernoulli-Zufallsvariable und der Varianz einer normalverteilten Zufallsvariable wollen wir auch hier zwei erste Beispiele für die Varianz einer diskreten und einer kontinuierlichen Zufallsvariable betrachten.</p>
+<div id="thm-varianz-einer-bernoulli-zufallsvariable" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 15.6 (Varianz einer Bernoulli Zufallsvariable)</strong></span> Es sei <span class="math inline">\(\xi \sim \mbox{Bern}(\mu)\)</span>. Dann ist die Varianz von <span class="math inline">\(\xi\)</span> gegeben durch <span class="math display">\[\begin{equation}
+\mathbb{V}(\xi) = \mu(1-\mu).
+\end{equation}\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Beweis</em>. </span><span class="math inline">\(\xi\)</span> ist eine diskrete Zufallsvariable und es gilt <span class="math inline">\(\mathbb{E}(\xi) = \mu\)</span>. Also gilt <span class="math display">\[\begin{align}
+\begin{split}
+\mathbb{V}(\xi)
+&amp; = \mathbb{E}\left((\xi - \mu)^2\right) \\
+&amp; = \sum_{x \in \{0,1\}} (x - \mu)^2 \mbox{Bern}(x;\mu) \\
+&amp; = (0 - \mu)^2 \mu^0(1-\mu)^{1-0}  + (1 - \mu)^2\mu^1(1-\mu)^{1-1}  \\
+&amp; = \mu^2 (1-\mu)  + (1 - \mu)^2\mu  \\
+&amp; = \left(\mu^2  + (1 - \mu)\mu\right)(1-\mu)  \\
+&amp; = \left(\mu^2 + \mu - \mu^2\right)(1 - \mu) \\
+&amp; = \mu(1-\mu).
+\end{split}
+\end{align}\]</span></p>
+</div>
+<div id="thm-varianz-einer-normalverteilten-zufallsvariable" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 15.7 (Varianz einer normalverteilten Zufallsvariable)</strong></span> Es sei <span class="math inline">\(\xi \sim N(\mu,\sigma^2)\)</span>. Dann ist die Varianz von <span class="math inline">\(\xi\)</span> gegeben durch <span class="math display">\[\begin{equation}
+\mathbb{V}(\xi) = \sigma^2.
+\end{equation}\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Beweis</em>. </span>Die Herleitung der Varianz einer normalverteilten Zufallsvariable ist nicht unaufwändig, so dass wir hier auch wieder unbewiesen die Gültigkeit von <a href="#eq-gauss-integral" class="quarto-xref">Gleichung&nbsp;<span>15.1</span></a> und <a href="#eq-exp-limits" class="quarto-xref">Gleichung&nbsp;<span>15.2</span></a> sowie weiterhin von <span id="eq-gauss-zero"><span class="math display">\[
+\int_{-\infty}^\infty x \exp(-x^2)\,dx = 0
+\tag{15.3}\]</span></span> annehmen wollen. Wir halten zunächst fest, dass mit dem Varianzverschiebungssatz gilt, dass <span class="math display">\[\begin{align}\label{eq:var_gauss_1}
+\begin{split}
+\mathbb{V}(\xi)
+= \mathbb{E}(\xi^2) - \mathbb{E}(\xi)^2
+= \frac{1}{2\pi\sigma^2}\int_{-\infty}^\infty x^2 \exp\left(-\frac{1}{2\sigma^2}(x-\mu)^2 \right)\,dx - \mu^2.
+\end{split}
+\end{align}\]</span> Mit der allgemeinen Substitutionsregel (<a href="107-Integralrechnung.html#thm-rechenregeln-für-stammfunktionen" class="quarto-xref">Theorem&nbsp;<span>7.1</span></a>) <span class="math display">\[\begin{equation}
+\int_{a}^{b} f(g(x))g'(x)\,dx = \int_{g(a)}^{g(b)} f(x)\,dx
+\end{equation}\]</span> und der Definition von <span class="math display">\[\begin{equation}
+g:\mathbb{R} \to \mathbb{R}, x \mapsto \sqrt{2\sigma^2}x + \mu,
+g(-\infty) := -\infty, g(\infty) := \infty,
+\mbox{ mit }
+g'(x) = \sqrt{2\sigma^2}
+\end{equation}\]</span> kann das Integral auf der rechten Seite von Gleichung <span class="math inline">\(\eqref{eq:var_gauss_1}\)</span> dann als <span class="math display">\[\begin{align}
+\begin{split}
+\int_{-\infty}^\infty x^2 \exp\left(-\frac{1}{2\sigma^2}(x - \mu)^2 \right) \,dx
+&amp; = \int_{-\infty}^\infty (\sqrt{2\sigma^2}x + \mu)^2 \exp\left(-\frac{1}{2\sigma^2}((\sqrt{2\sigma^2}x + \mu)-\mu)^2 \right)\sqrt{2\sigma^2}\,dx \\
+&amp; = \sqrt{2\sigma^2}\int_{-\infty}^\infty (\sqrt{2\sigma^2}x + \mu)^2 \exp\left(-\frac{2\sigma^2 x^2}{2\sigma^2} \right)\,dx \\
+&amp; = \sqrt{2\sigma^2}\int_{-\infty}^\infty (\sqrt{2\sigma^2}x + \mu)^2 \exp\left(-x^2\right)\,dx
+\end{split}
+\end{align}\]</span> geschrieben werden. Also gilt <span class="math display">\[\begin{align}
+\begin{split}
+\mathbb{V}(\xi)
+&amp; =
+\frac{\sqrt{2\sigma^2}}{\sqrt{2\pi\sigma^2}}
+\int_{-\infty}^\infty (\sqrt{2\sigma^2}x + \mu)^2 \exp\left(-x^2 \right)\,dx
+- \mu^2
+\\
+&amp;
+= \frac{1}{\sqrt{\pi}}
+\int_{-\infty}^\infty(\sqrt{2\sigma^2}x)^2 + 2\sqrt{2\sigma^2}x\mu + \mu^2) \exp\left(-x^2 \right)\,dx
+- \mu^2
+\\
+&amp;
+= \frac{1}{\sqrt{\pi}}
+\left(
+        2\sigma^2\int_{-\infty}^\infty x^2 \exp\left(-x^2 \right)\,dx +
+        2\sqrt{2\sigma^2}\mu\int_{-\infty}^\infty x\exp\left(-x^2 \right)\,dx +
+        \mu^2\int_{-\infty}^\infty \exp\left(-x^2 \right)\,dx
+\right)
+- \mu^2.
+\end{split}
+\end{align}\]</span> Mit <a href="#eq-gauss-zero" class="quarto-xref">Gleichung&nbsp;<span>15.3</span></a> ergibt sich dann <span class="math display">\[\begin{align}
+\begin{split}
+\mathbb{V}(\xi)
+&amp; = \frac{1}{\sqrt{\pi}}
+\left(2\sigma^2\int_{-\infty}^\infty x^2 \exp\left(-x^2 \right)\,dx + \mu^2\sqrt{\pi} \right)
+- \mu^2
+\\
+&amp; = \frac{2\sigma^2}{\sqrt{\pi}}
+\int_{-\infty}^\infty x^2 \exp\left(-x^2 \right)\,dx
++ \mu^2 - \mu^2
+\\
+&amp; = \frac{2\sigma^2}{\sqrt{\pi}} \int_{-\infty}^\infty x^2 \exp\left(-x^2 \right)\,dx.
+\end{split}
+\end{align}\]</span> Mit der allgemeinen Form der partiellen Integrationsregel (<a href="107-Integralrechnung.html#thm-rechenregeln-für-stammfunktionen" class="quarto-xref">Theorem&nbsp;<span>7.1</span></a>) <span class="math display">\[\begin{equation}
+\int_{a}^{b} f'(x)g(x)\,dx =
+f(x)g(x)|_{a}^{b} - \int_{a}^{b} f(x)g'(x)\,dx
+\end{equation}\]</span> und der Definition von <span class="math display">\[\begin{equation}
+f : \mathbb{R} \to \mathbb{R}, x \mapsto f(x) := \exp\left(-x^2\right) \mbox{ mit } f'(x) = -2\exp\left(-x^2\right)
+\end{equation}\]</span> und <span class="math display">\[\begin{equation}
+g : \mathbb{R} \to \mathbb{R}, x\mapsto g(x) := -\frac{1}{2}x \mbox{ mit } g'(x) = -\frac{1}{2},
+\end{equation}\]</span> so dass <span class="math display">\[\begin{equation}
+f'(x)g(x) = -2\exp\left(-x^2\right)\left(-\frac{1}{2}x \right) = x^2\exp\left(-x^2\right),
+\end{equation}\]</span> gilt, ergibt sich dann <span class="math display">\[\begin{align}
+\begin{split}
+\mathbb{V}(\xi)
+&amp; = \frac{2\sigma^2}{\sqrt{\pi}} \int_{-\infty}^\infty x^2 \exp\left(-x^2 \right)\,dx  \\
+&amp; = \frac{2\sigma^2}{\sqrt{\pi}}
+\left( -\frac{1}{2}x\exp\left(-x^2\right)|_{-\infty}^{\infty}
+- \int_{-\infty}^\infty \exp\left(-x^2 \right)\left(-\frac{1}{2} \right)\,dx \right)  \\
+&amp; = \frac{2\sigma^2}{\sqrt{\pi}}
+\left(
+-\frac{1}{2}x\exp\left(-x^2\right)|_{-\infty}^{\infty}
++ \frac{1}{2}\int_{-\infty}^\infty \exp\left(-x^2 \right)\,dx
+\right).
+\end{split}
+\end{align}\]</span> Aus <a href="#eq-exp-limits" class="quarto-xref">Gleichung&nbsp;<span>15.2</span></a> schließen wir dann, dass der erste Term in den Klammern auf der rechten Seite der obigen Gleichung gleich <span class="math inline">\(0\)</span> ist. Schließlich ergibt sich damit <span class="math display">\[\begin{align}
+\begin{split}
+\mathbb{V}(\xi)
+= \frac{2\sigma^2}{\sqrt{\pi}} \left(\frac{1}{2}\int_{-\infty}^\infty \exp\left(-x^2 \right)\,dx\right)
+= \frac{\sigma^2}{\sqrt{\pi}} \sqrt{\pi}
+= \sigma^2.
+\end{split}
+\end{align}\]</span></p>
+</div>
+<p>Allgemein ergeben sich die Erwartungswerte und Varianzen parametrischer Verteilungen als Funktionen ihrer Parameter. Wir fassen die Erwartungswerte uns bekannter Verteilungen in <a href="#thm-erwartungswerte-varianzen" class="quarto-xref">Theorem&nbsp;<span>15.8</span></a> zusammen.</p>
+<div id="thm-erwartungswerte-varianzen" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 15.8 (Erwartungswerte und Varianzen einiger Wahrscheinlichkeitsverteilungen)</strong></span> &nbsp;</p>
+</div>
+<p>Wir verzichten auf einen Beweis.</p>
+</section>
+</section>
+<section id="sec-stichprobenkennzahlen" class="level2" data-number="15.3">
+<h2 data-number="15.3" class="anchored" data-anchor-id="sec-stichprobenkennzahlen"><span class="header-section-number">15.3</span> Kennzahlen univariater Stichproben</h2>
+<p>Wie wir <a href="301-Grundbegriffe.html" class="quarto-xref"><span>Kapitel 21</span></a> noch ausführlich diskutieren, werden ist eine Charakteristikum der probabilistischen Modellierung, beobachtete Daten als Realisierungen von Zufallsvariablen zu verstehen. Hat meine Menge <span class="math inline">\(\xi_1,...,\xi_n\)</span> von Zufallsvariablen, so nennt man diese auch eine <em>Stichprobe</em>. Basierend auf einer Stichprobe kann man nun Kennzahlen berechnen, die auf den ersten Blick den Begriffen von Erwartungswert, Varianz und Standardabweichung ähneln, mit diesen aber keinesfalls zu verwechseln sind. Defacto dienen die in folgender Definition aufgeführten Stichprobenkennzahlen oft als <em>Schätzer</em> für die Kennzahlen von Zufallsvariablen, wie wir in <a href="302-Punktschätzung.html" class="quarto-xref"><span>Kapitel 22</span></a> ausführlich darlegen wollen. Gewissermaßen Vorgriff zur Abgrenzung der Begrifflichkeiten und auch als Grundlage für <a href="207-Grenzwerte.html" class="quarto-xref"><span>Kapitel 17</span></a> definieren wir hier einige deskriptive Stichprobenkennzahlen.</p>
+<div id="def-stichprobenkennzahlen" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 15.6 (Stichprobenmittel, Stichprobenvarianz, Stichprobenstandardabweichung)</strong></span> <span class="math inline">\(\xi_1,...,\xi_n\)</span> sei eine Menge von Zufallsvariablen, genannt <em>Stichprobe</em>.</p>
+<ul>
+<li>Das <em>Stichprobenmittel</em> von <span class="math inline">\(\xi_1,...,\xi_n\)</span> ist definiert als <span class="math display">\[\begin{equation}
+\bar{\xi} := \frac{1}{n}\sum_{i=1}^n \xi_i.
+\end{equation}\]</span></li>
+<li>Die <em>Stichprobenvarianz</em> von <span class="math inline">\(\xi_1,...,\xi_n\)</span> ist definiert als <span class="math display">\[\begin{equation}
+S^2 := \frac{1}{n-1}\sum_{i=1}^n (\xi_i - \bar{\xi})^2.
+\end{equation}\]</span></li>
+<li>Die <em>Stichprobenstandardabweichung</em> ist definiert als <span class="math display">\[\begin{equation}
+S := \sqrt{S^2}.
+\end{equation}\]</span></li>
+</ul>
+</div>
+<p>Zur Abgrenzung erinnern wir noch einmal daran, dass Erwartungswert <span class="math inline">\(\mathbb{E}(\xi)\)</span>, Varianz <span class="math inline">\(\mathbb{V}(\xi)\)</span> und Standardabweichung <span class="math inline">\(\mathbb{S}(\xi)\)</span> Kennzahlen einer Zufallsvariable <span class="math inline">\(\xi\)</span> sind, wohingegen <span class="math inline">\(\bar{\xi}, S^2\)</span>, und <span class="math inline">\(S\)</span> Kennzahlen einer Stichprobe <span class="math inline">\(\xi_1,...,\xi_n\)</span> sind.</p>
+<p><strong>Beispiel</strong></p>
+<p>Wir wollen die Bestimmung der in <a href="#def-stichprobenkennzahlen" class="quarto-xref">Definition&nbsp;<span>15.6</span></a> eingeführten Stichprobenkennzahlen an einem Beispiel erläutern. Dazu halten wir nochmals fest, dass <span class="math inline">\(\bar{\xi}, S^2\)</span>, <span class="math inline">\(S\)</span> Zufallsvariablen sind und wollen ihre Realisationen im Folgenden mit <span class="math inline">\(\bar{x}, s^2\)</span> und <span class="math inline">\(s\)</span> bezeichnen. Nehmen wir also an, wir haben für <span class="math inline">\(n := 10\)</span> die in folgender Tabelle gezeigten Realisationen von u.i.v. nach <span class="math inline">\(N(1,2)\)</span> verteilten Zufallsvariable <span class="math inline">\(\xi_1,...,\xi_{10}\)</span>, wobei für <span class="math inline">\(i = 1,...,10\)</span> die Realisation von <span class="math inline">\(\xi_i\)</span> mit <span class="math inline">\(x_i\)</span> bezeichnen ist:</p>
+<p>Nach <a href="#def-stichprobenkennzahlen" class="quarto-xref">Definition&nbsp;<span>15.6</span></a> ist die Stichprobenmittelrealisation dann gegeben durch <span class="math display">\[\begin{equation}
+\bar{x}
+= \frac{1}{10}\sum_{i = 1}^{10}x_i
+= \frac{6.88}{10}
+= 0.68,
+\end{equation}\]</span> die Stichprobenvarianzrealisation gegeben durch <span class="math display">\[\begin{equation}
+s^2
+= \frac{1}{9}\sum_{i=1}^{10} (x_i - \bar{x})^2
+= \frac{1}{9}\sum_{i=1}^{10} (x_i - 0.68)^2
+= \frac{25.37}{9}
+= 2.82.
+\end{equation}\]</span> und die Stichprobenstandardabweichungrealisation gegeben durch <span class="math display">\[\begin{equation}
+s = \sqrt{s^2} = \sqrt{2.82} = 1.68.
+\end{equation}\]</span></p>
+</section>
+<section id="sec-kovarianz-und-korrelation" class="level2" data-number="15.4">
+<h2 data-number="15.4" class="anchored" data-anchor-id="sec-kovarianz-und-korrelation"><span class="header-section-number">15.4</span> Kovarianz und Korrelation</h2>
+<p>Häufig genutzte Maße für den Zusammenhang zweier Zufallsvariablen sind die <em>Kovarianz</em> und die <em>Korrelation</em>. Diese sind wie folgt definiert.</p>
+<div id="def-kovarianz-und-korrelation" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 15.7 (Kovarianz und Korrelation)</strong></span> Die <em>Kovarianz</em> zweier Zufallsvariablen <span class="math inline">\(\xi\)</span> und <span class="math inline">\(\upsilon\)</span> ist definiert als <span class="math display">\[\begin{equation}
+\mathbb{C}(\xi,\upsilon) :=
+\mathbb{E}\left(\left(\xi-\mathbb{E}(\xi)\right)\left(\upsilon-\mathbb{E}(\upsilon)\right)\right).
+\end{equation}\]</span> Die <em>Korrelation</em> zweier Zufallsvariablen <span class="math inline">\(\xi\)</span> und <span class="math inline">\(\upsilon\)</span> ist definiert als <span class="math display">\[\begin{equation}
+\rho(\xi,\upsilon)
+:= \frac{\mathbb{C}(\xi,\upsilon)}{\sqrt{\mathbb{V}(\xi)}\sqrt{\mathbb{V}(\upsilon)}}
+= \frac{\mathbb{C}(\xi,\upsilon)}{\mathbb{S}(\xi){\mathbb{S}(\upsilon)}}.
+\end{equation}\]</span></p>
+</div>
+<p>Die Kovarianz einer Zufallsvariable <span class="math inline">\(\xi\)</span> mit sich entspricht ihrer Varianz, da <span class="math display">\[\begin{equation}
+\mathbb{C}(\xi,\xi) =
+\mathbb{E}\left(\left(\xi - \mathbb{E}(\xi) \right)^2\right) =
+\mathbb{V}(\xi).
+\end{equation}\]</span> Im Gegensatz zur Varianz kann die Kovarianz aber auch negative Werte annehmen.</p>
+<p><strong>Beispiel</strong></p>
+Wir wollen beispielgebend für zwei Zufallsvariablen mit gemeinsamer diskreter Verteilung ihre Kovarianz berechnen. Dazu sei <span class="math inline">\(\zeta := (\xi, \upsilon)\)</span> ein Zufallsvektor mit WMF <span class="math inline">\(p_{\xi,\upsilon}\)</span> definiert durch
+<p>und damit <span class="math inline">\(\xi\)</span>, <span class="math inline">\(\upsilon\)</span> zwei Zufallsvariablen mit einer bekannten bivariaten Verteilung. Um <span class="math inline">\(\mathbb{C}(\xi,\upsilon)\)</span> zu berechnen, halten wir zunächst fest, dass <span class="math display">\[\begin{equation}
+\mathbb{E}(\xi) = \sum_{x=1}^2 x p_{\xi}(x) = 1\cdot 0.3 + 2\cdot 0.7 = 1.7
+\end{equation}\]</span> und <span class="math display">\[\begin{equation}
+\mathbb{E}(\upsilon) = \sum_{y=1}^3 y p_{\upsilon}(y) = 1\cdot 0.7 + 2\cdot 0.1 + 3\cdot 0.2 = 1.5.
+\end{equation}\]</span> Mit der Definition der Kovarianz von <span class="math inline">\(\xi\)</span> und <span class="math inline">\(\upsilon\)</span> gilt dann</p>
+<p><span class="math display">\[\begin{align}
+\begin{split}
+\mathbb{C}(\xi,\upsilon)                                                                                     
+&amp; = \mathbb{E}((\xi - \mathbb{E}(\xi))(\upsilon - \mathbb{E}(\upsilon)))                                \\
+&amp; = \sum_{x = 1}^2 \sum_{y = 1}^3 (x - \mathbb{E}(\xi))(y - \mathbb{E}(\upsilon))p_{\xi,\upsilon}(x,y)  \\
+&amp; = \sum_{x = 1}^2 \sum_{y = 1}^3 (x - 1.7)(y - 1.5)p_{\xi,\upsilon}(x,y)                           \\
+&amp; = \sum_{x = 1}^2 (x - 1.7)(1 - 1.5)p_{\xi,\upsilon}(x,1) +
+                   (x - 1.7)(2 - 1.5)p_{\xi,\upsilon}(x,2) +    
+                   (x - 1.7)(3 - 1.5)p_{\xi,\upsilon}(x,3)                                          \\
+&amp; = \quad   
+        (1 - 1.7)(1 - 1.5)p_{\xi,\upsilon}(1,1)
+    +   (1 - 1.7)(2 - 1.5)p_{\xi,\upsilon}(1,2)
+    +   (1 - 1.7)(3 - 1.5)p_{\xi,\upsilon}(1,3)                                                     \\
+&amp; \quad
+    +   (2 - 1.7)(1 - 1.5)p_{\xi,\upsilon}(2,1)
+    +   (2 - 1.7)(2 - 1.5)p_{\xi,\upsilon}(2,2)
+    +   (2 - 1.7)(3 - 1.5)p_{\xi,\upsilon}(2,3)                                                     \\
+&amp; = \quad
+    (-0.7)\cdot(-0.5)   \cdot 0.10       
+    + (-0.7)\cdot 0.5   \cdot 0.05       
+    + (-0.7)\cdot 1.5   \cdot 0.15                                                              \\
+&amp; \quad                                                               
+    + 0.3   \cdot (-0.5) \cdot 0.60     
+    + 0.3   \cdot   0.5  \cdot 0.05      
+    + 0.3   \cdot   1.5  \cdot 0.05                                                             \\
+&amp; = 0.035
+    - 0.0175
+    - 0.1575
+    - 0.09
+    + 0.0075
+    + 0.0225                                                                                    \\
+&amp; = - 0.2.
+\end{split}
+\end{align}\]</span> </p>
+<p>Die Kovarianz der Zufallsvariablen <span class="math inline">\(\xi\)</span> und <span class="math inline">\(\upsilon\)</span> mit der in obiger Tabelle festgelegter Verteilung ist also <span class="math inline">\(\mathbb{C}(\xi,\upsilon) = -0.2\)</span>.</p>
+<p>Die Korrelation <span class="math inline">\(\rho(\xi,\upsilon)\)</span> zweier Zufallsvariablen entspricht ihrer anhand der Standardabweichungen der jeweiligen Zufallsvariablen standardisierten Kovarianz und wird manchmal auch als <em>Korrelationskoeffizient</em> von <span class="math inline">\(\xi\)</span> und <span class="math inline">\(\upsilon\)</span> bezeichnet. Ist die Korrelation <span class="math inline">\(\rho(\xi,\upsilon) = 0\)</span>, so werden <span class="math inline">\(\xi\)</span> und <span class="math inline">\(\upsilon\)</span> <em>unkorreliert</em> genannt. Insbesondere ist die Korrelation im Gegensatz zur Kovarianz <em>normalisiert</em>, d.h. es gilt, wie wir an späterer Stellte mithilfe der Cauchy-Schwarz Ungleichung (<a href="206-Ungleichungen.html#thm-cauchy-schwarz-ungleichung" class="quarto-xref">Theorem&nbsp;<span>16.3</span></a>) zeigen gilt <span class="math display">\[\begin{equation}
+-1 \le \rho(\xi,\upsilon) \le 1.
+\end{equation}\]</span> Man sagt in diesem Kontext auch, dass die Korrelation im Gegensatz zur Kovarianz maßstabsunabhängig sei: wendet man auf eine Zufallsvariable eine linear-affine Transformation an, so ändert sich die Kovarianz der Zufallsvariablen, nicht aber ihre Korrelation. Das ist die Kernaussage folgenden Theorems.</p>
+<div id="thm-kovarianz-und-korrelation-bei-linear-affinen-transformationen-von-zufallsvariablen" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 15.9 (Kovarianz und Korrelation bei linear affinen Transformationen von Zufallsvariablen)</strong></span> <span class="math inline">\(\xi\)</span> und <span class="math inline">\(\upsilon\)</span> seien Zufallsvariablen und es seien <span class="math inline">\(a,b,c,d \in \mathbb{R}\)</span>. Dann gelten <span class="math display">\[\begin{equation}
+\mathbb{C}(a\xi + b, c\upsilon + d) = ac\mathbb{C}(\xi,\upsilon)
+\end{equation}\]</span> und <span class="math display">\[\begin{equation}
+\rho(a\xi + b, c\upsilon + d) = \rho(\xi,\upsilon).
+\end{equation}\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Beweis</em>. </span>Es gilt zunächst <span class="math display">\[\begin{align}
+\begin{split}
+\mathbb{C}(a\xi+b,c\upsilon+d)
+&amp; = \mathbb{E}((a\xi+b-\mathbb{E}(a\xi+b))(c\upsilon+d-\mathbb{E}(c\upsilon+d)))    \\
+&amp; = \mathbb{E}((a\xi+b-a\mathbb{E}(\xi)-b)(c\upsilon+d-c\mathbb{E}(c\upsilon)-d))   \\
+&amp; = \mathbb{E}(a(\xi-\mathbb{E}(\xi))(c(\upsilon -c\mathbb{E}(\upsilon)))             \\
+&amp; = \mathbb{E}(ac((\xi-\mathbb{E}(\xi))(\upsilon -c\mathbb{E}(\upsilon))))            \\
+&amp;  = ac\mathbb{C}(\xi,\upsilon)
+\end{split}
+\end{align}\]</span> Also folgt <span class="math display">\[\begin{align}
+\begin{split}
+\rho(a\xi + b, c\upsilon + d)
+&amp; = \frac{\mathbb{C}(a\xi+b,c\upsilon+d)}{\sqrt{\mathbb{V}(a\xi+b)}\sqrt{\mathbb{V}(c\upsilon+d)}} \\
+&amp; = \frac{ac\mathbb{C}(\xi,\upsilon)}{\sqrt{a^2\mathbb{V}(\xi)}\sqrt{c^2\mathbb{V}(\upsilon)}}     \\
+&amp; = \frac{ac\mathbb{C}(\xi,\upsilon)}{a\mathbb{S}(\xi)c\mathbb{S}(\upsilon)}         \\
+&amp; = \frac{\mathbb{C}(\xi,\upsilon)}{\mathbb{S}(\xi)\mathbb{S}(\upsilon)}             \\
+&amp; = \rho(\xi,\upsilon).
+\end{split}
+\end{align}\]</span></p>
+</div>
+<p>Wie das Berechnen von Varianzen wird auch das Berechnen von Kovarianzen manchmal durch folgendes Theorem, den sogenannten <em>Kovarianzverschiebungssatz</em> erleichtert.</p>
+<div id="thm-kovarianzverschiebungssatz" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 15.10 (Kovarianzverschiebungssatz)</strong></span> <span class="math inline">\(\xi\)</span> und <span class="math inline">\(\upsilon\)</span> seien Zufallsvariablen. Dann gilt <span class="math display">\[\begin{equation}
+\mathbb{C}(\xi,\upsilon) = \mathbb{E}(\xi\upsilon) - \mathbb{E}(\xi)\mathbb{E}(\upsilon).
+\end{equation}\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Beweis</em>. </span>Mit der Definition der Kovarianz gilt <span class="math display">\[\begin{align}
+\begin{split}
+\mathbb{C}(\xi,\upsilon)
+&amp; = \mathbb{E}\left((\xi - \mathbb{E}(\xi))(\upsilon - \mathbb{E}(\upsilon))\right)                                             \\
+&amp; = \mathbb{E}\left(\xi\upsilon - \xi\mathbb{E}(\upsilon) - \mathbb{E}(\xi)\upsilon  + \mathbb{E}(\xi) \mathbb{E}(\upsilon)\right)          \\
+&amp; = \mathbb{E}(\xi\upsilon) - \mathbb{E}(\xi)\mathbb{E}(\upsilon) - \mathbb{E}(\xi)\mathbb{E}(\upsilon) + \mathbb{E}(\xi) \mathbb{E}(\upsilon)  \\
+&amp; = \mathbb{E}(\xi\upsilon) - \mathbb{E}(\xi)\mathbb{E}(\upsilon).
+\end{split}
+\end{align}\]</span></p>
+</div>
+<p>Natürlich ist <a href="#thm-kovarianzverschiebungssatz" class="quarto-xref">Theorem&nbsp;<span>15.10</span></a> nur dann wirklich nützlich, wenn <span class="math inline">\(\mathbb{E}(\xi\upsilon)\)</span> leicht zu berechnen sind. Der Kovarianzverschiebungssatz in <a href="#thm-varianzverschiebungssatz" class="quarto-xref">Theorem&nbsp;<span>15.4</span></a> ergibt sich aus <a href="#thm-kovarianzverschiebungssatz" class="quarto-xref">Theorem&nbsp;<span>15.10</span></a> im Spezialfall, dass <span class="math inline">\(\upsilon := \xi\)</span>, da dann gilt <span class="math display">\[\begin{equation}
+\mathbb{V}(\xi)
+= \mathbb{C}(\xi,\xi)
+= \mathbb{E}(\xi\xi) - \mathbb{E}(\xi)\mathbb{E}(\xi)
+= \mathbb{E}(\xi^2) - \mathbb{E}(\xi)\mathbb{E}(\xi)
+\end{equation}\]</span></p>
+<p>Mithilfe des Begriffes des Kovarianz ist es möglich eine stärkere Aussage über die Varianzen von Summen und Differenzen von Zufallsvariablen zu treffen als es in <a href="#thm-eigenschaften-der-varianz" class="quarto-xref">Theorem&nbsp;<span>15.5</span></a> der Fall war, wo lediglich <em>unabhängige</em> Zufallsvariablen betrachtetet wurden. Folgende Aussagen gelten generell.</p>
+<div id="thm-varianzen-von-summen-und-differenzen-von-zufallsvariablen" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 15.11 (Varianzen von Summen und Differenzen von Zufallsvariablen)</strong></span> <span class="math inline">\(\xi\)</span> und <span class="math inline">\(\upsilon\)</span> seien zwei Zufallsvariablen und es seien <span class="math inline">\(a,b,c \in \mathbb{R}\)</span>. Dann gilt <span class="math display">\[\begin{equation}
+\mathbb{V}(a\xi + b\upsilon + c) = a^2\mathbb{V}(\xi) + b^2\mathbb{V}(\upsilon) + 2ab\mathbb{C}(\xi,\upsilon).
+\end{equation}\]</span> Speziell gelten <span class="math display">\[\begin{equation}
+\mathbb{V}(\xi+\upsilon) = \mathbb{V}(\xi) + \mathbb{V}(\upsilon) + 2 \mathbb{C}(\xi,\upsilon)
+\end{equation}\]</span> und <span class="math display">\[\begin{equation}
+\mathbb{V}(\xi-\upsilon) = \mathbb{V}(\xi) + \mathbb{V}(\upsilon) - 2 \mathbb{C}(\xi,\upsilon)
+\end{equation}\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Beweis</em>. </span>Wir halten zunächst fest, dass <span class="math display">\[\begin{equation}
+\mathbb{E}(a\xi + b\upsilon + c) = a\mathbb{E}(\xi) + b\mathbb{E}(\upsilon) + c.
+\end{equation}\]</span></p>
+<p>Es ergibt sich also <span class="math display">\[\begin{align}
+\begin{split}
+&amp; \mathbb{V}(a\xi + b\upsilon + c)                                                              \\
+&amp; = \mathbb{E}\left((a\xi + b\upsilon + c - a\mathbb{E}(\xi) - b\mathbb{E}(\upsilon) - c)^2\right)  \\
+&amp; = \mathbb{E}\left((a(\xi  - \mathbb{E}(\xi)) + b(\upsilon  - \mathbb{E}(\upsilon)))^2\right)      \\
+&amp; = \mathbb{E}\left(a^2(\xi - \mathbb{E}(\xi))^2
+                  + 2ab(\xi - \mathbb{E}(\xi))(\upsilon - \mathbb{E}(\upsilon)))
+                  + b^2(\upsilon - \mathbb{E}(\upsilon))^2
+                  \right)               \\
+&amp; = a^2\mathbb{E}\left((\xi - \mathbb{E}(\xi))^2\right)
+  + b^2\mathbb{E}\left((\upsilon - \mathbb{E}(\upsilon))^2\right)
+  + 2ab\mathbb{E}\left((\xi - \mathbb{E}(\xi))(\upsilon - \mathbb{E}(\upsilon)))\right)                 \\
+&amp; = a^2\mathbb{V}(\xi)+ b^2\mathbb{V}(\upsilon) + 2ab\mathbb{C}(\xi,\upsilon)
+\end{split}
+\end{align}\]</span> Die Spezialfälle folgen dann direkt mit <span class="math inline">\(a := b := 1\)</span> und <span class="math inline">\(a := 1, b := -1\)</span>, respektive.</p>
+</div>
+<p>Im Gegensatz zu Erwartungswerten addieren sich die Varianzen von Zufallsvariablen also nicht einfach, sondern die Varianz der Summe zweier Zufallsvariablen hängt von ihrer Kovarianz ab. Ist diese zum Beispiel im Fall der Summe zweier Zufallsvariablen positiv, so verstärkt sie die Varianz der Zufallsvariable, die sich aus der Addition der Zufallsvariablen ergibt. Intuitiv führt hierbei die Realisierung eines Extremwertes einer der Zufallvariablen häufigt auch zu der Realisierung eines Extremwertes der anderen Zufallsvariablen, so dass die Variabilität der Summe der Zufallsvariablen überproportional verstärkt wird.</p>
+<p>Schließlich wollen wir mit <a href="#thm-korrelation-und-unabhängigkeit" class="quarto-xref">Theorem&nbsp;<span>15.12</span></a> einen ersten Eindruck zum Zusammenhang von Kovarianz und Korrelation mit dem Begriff der Unabhängigkeit von Zufallsvariablen erlangen. Es zeigt sich, dass Kovarianz und Korrelation lediglich für bestimmte Formen der Abhängigkeit von Zufallsvariablen sensitiv sind und insbesondere, dass von einer Kovarianz von Null <em>nicht</em> auf die Unabhängigkeit der Zufallsvariablen geschlossen werden kann. Anderseits impliziert die Unabhängigkeit zweier Zufallsvariablen immer, dass ihre Kovarianz Null und sie damit unkorreliert sind. Abhängigkeit und Unabhängigkeit von Zufallsvariablen sind also sehr viel allgemeinere Begrifflichkeiten zur Beschreibung des Zusammenhangs von Zufallsvariablen als Kovarianz und Korrelation.</p>
+<div id="thm-korrelation-und-unabhängigkeit" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 15.12 (Korrelation und Unabhängigkeit)</strong></span> <span class="math inline">\(\xi\)</span> und <span class="math inline">\(\upsilon\)</span> seien zwei Zufallsvariablen. Wenn <span class="math inline">\(\xi\)</span> und <span class="math inline">\(\upsilon\)</span> unabhängig sind, dann ist <span class="math inline">\(\mathbb{C}(\xi,\upsilon) = 0\)</span> und <span class="math inline">\(\xi\)</span> und <span class="math inline">\(\upsilon\)</span> sind unkorreliert. Ist dagegen <span class="math inline">\(\mathbb{C}(\xi,\upsilon) = 0\)</span> und sind <span class="math inline">\(\xi\)</span> und <span class="math inline">\(\upsilon\)</span> somit unkorreliert, dann sind <span class="math inline">\(\xi\)</span> und <span class="math inline">\(\upsilon\)</span> nicht notwendigerweise unabhängig.</p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Beweis</em>. </span>Wir zeigen zunächst, dass aus der Unabhängigkeit von <span class="math inline">\(\xi\)</span> und <span class="math inline">\(\upsilon\)</span> <span class="math inline">\(\mathbb{C}(\xi,\upsilon) = 0\)</span> folgt. Hierzu halten wir zunächst fest, dass für unabhängige Zufallsvariablen gilt, dass <span class="math display">\[\begin{equation}
+\mathbb{E}(\xi\upsilon) = \mathbb{E}(\xi)\mathbb{E}(\upsilon).
+\end{equation}\]</span> Mit dem Kovarianzverschiebungssatz folgt dann <span class="math display">\[\begin{equation}
+\mathbb{C}(\xi,\upsilon)
+= \mathbb{E}(\xi\upsilon) - \mathbb{E}(\xi)\mathbb{E}(\upsilon)
+= \mathbb{E}(\xi)\mathbb{E}(\upsilon) - \mathbb{E}(\xi)\mathbb{E}(\upsilon)
+= 0.
+\end{equation}\]</span> Mit der Definition des Korrelationskoeffizienten folgt dann unmittelbar, dass <span class="math inline">\(\rho(\xi,\upsilon) = 0\)</span> und <span class="math inline">\(\xi\)</span> und <span class="math inline">\(\upsilon\)</span> somit unkorreliert sind.</p>
+<p>Wir zeigen nun durch Angabe eines Beispiels, dass die Kovarianz von abhängigen Zufallsvariablen <span class="math inline">\(\xi\)</span> und <span class="math inline">\(\upsilon\)</span> Null sein kann. Zu diesem Zweck betrachten wir den Fall zweier diskreter Zufallsvariablen <span class="math inline">\(\xi\)</span> und <span class="math inline">\(\upsilon\)</span> mit Ergebnisräumen <span class="math inline">\(\mathcal{X} = \{-1,0,1\}\)</span> und <span class="math inline">\(\mathcal{\upsilon} = \{0,1\}\)</span>, marginaler WMF von <span class="math inline">\(\xi\)</span> gegeben durch <span class="math inline">\(p_\xi(x) := 1/3\)</span> für <span class="math inline">\(x \in \mathcal{X}\)</span> und der Definition <span class="math inline">\(\upsilon := \xi^2\)</span>. Wir halten dann zunächst fest, dass <span class="math display">\[\begin{equation}
+\mathbb{E}(\xi)
+= \sum_{x \in \mathcal{X}} x p_\xi(x)
+= -1 \cdot \frac{1}{3} + 0\cdot \frac{1}{3} + 1\cdot\frac{1}{3}
+= 0
+\end{equation}\]</span> und <span class="math display">\[\begin{equation}
+\mathbb{E}(\xi\upsilon)
+= \mathbb{E}(\xi\xi^2)
+= \mathbb{E}(\xi^3)
+= \sum_{x \in \mathcal{X}} x^3 p_\xi(x)
+= -1^3 \cdot \frac{1}{3} + 0^3\cdot \frac{1}{3} + 1^3\cdot\frac{1}{3}
+= 0.
+\end{equation}\]</span> Mit dem Kovarianzverschiebungssatz ergibt sich dann <span class="math display">\[\begin{equation}
+\mathbb{C}(\xi,\upsilon)
+= \mathbb{E}(\xi\upsilon) - \mathbb{E}(\xi)\mathbb{E}(\upsilon)
+= \mathbb{E}(\xi^3) - \mathbb{E}(\xi)\mathbb{E}(\upsilon)
+= 0 - 0\cdot \mathbb{E}(\upsilon)
+= 0.
+\end{equation}\]</span> Die Kovarianz von <span class="math inline">\(\xi\)</span> und <span class="math inline">\(\upsilon\)</span> ist also Null. Wie unten gezeigt faktorisiert die gemeinsame WMF von <span class="math inline">\(\xi\)</span> und <span class="math inline">\(\upsilon\)</span> jedoch nicht, und somit sind <span class="math inline">\(\xi\)</span> und <span class="math inline">\(\upsilon\)</span> nicht unabhängig. Wir halten zunächst fest, dass die Definition von <span class="math inline">\(\upsilon := \xi^2\)</span> die folgende bedingte WMF von <span class="math inline">\(\upsilon\)</span> gegeben <span class="math inline">\(\xi\)</span> impliziert:</p>
+<p>Die marginale WMF <span class="math inline">\(p_\xi\)</span> und die bedingte WMF <span class="math inline">\(p_{\upsilon|\xi}\)</span> implizieren wiederum die gemeinsame WMF</p>
+<p>von <span class="math inline">\(\xi\)</span> und <span class="math inline">\(\upsilon\)</span>. Es gilt also zum Beispiel <span class="math display">\[\begin{equation}
+p_{\xi,\upsilon}(-1,0) = 0 \neq \frac{1}{9} = \frac{1}{3} \cdot \frac{1}{3} = p_{\xi}(-1)p_{\upsilon}( 0)
+\end{equation}\]</span> und damit sind <span class="math inline">\(\xi\)</span> und <span class="math inline">\(\upsilon\)</span> nicht unabhängig.</p>
+</div>
+</section>
+<section id="kovarianzmatrizen" class="level2" data-number="15.5">
+<h2 data-number="15.5" class="anchored" data-anchor-id="kovarianzmatrizen"><span class="header-section-number">15.5</span> Kovarianzmatrizen</h2>
+<p>Das multivariate Analogon der Varianz einer Zufallsvariable ist die <em>Kovarianzmatrix eines Zufallsvektors</em>. Diese enkodiert neben den Varianzen der Komponenten des Zufallsvektors auch ihre paarweisen Kovarianzen und ist wie folgt definiert.</p>
+<div id="def-kovarianzmatrix-eines-zufallsvektors" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 15.8 (Kovarianzmatrix eines Zufallsvektors)</strong></span> <span class="math inline">\(\xi\)</span> sei ein <span class="math inline">\(n\)</span>-dimensionaler Zufallvektor. Dann ist die <em>Kovarianzmatrix</em> von <span class="math inline">\(\xi\)</span> definiert als die <span class="math inline">\(n \times n\)</span> Matrix <span class="math display">\[\begin{equation}
+\mathbb{C}(\xi) := \mathbb{E}\left((\xi - \mathbb{E}(\xi))(\xi - \mathbb{E}(\xi))^T \right).
+\end{equation}\]</span></p>
+</div>
+<p>Die Kovarianzmatrix ist in <a href="#def-kovarianzmatrix-eines-zufallsvektors" class="quarto-xref">Definition&nbsp;<span>15.8</span></a> formal analog zur Kovarianz zweier Zufallsvariablen definiert. Eine direkte Rückführung des Begriffs der Kovarianzmatrix eines Zufallsvektors auf den Begriff aus dem univariaten Kontext bekannten Begriff der Kovarianz zweier Zufallsvariablen erlaubt folgendes Theorem.</p>
+<div id="thm-kovarianzmatrix-eines-zufallsvektors" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 15.13 (Kovarianzmatrix eines Zufallsvektors)</strong></span> <span class="math inline">\(\xi\)</span> sei ein <span class="math inline">\(n\)</span>-dimensionaler Zufallvektor und <span class="math inline">\(\mathbb{C}(\xi)\)</span> sei seine Kovarianzmatrix. Dann gilt <span class="math display">\[\begin{equation}
+\mathbb{C}(\xi)
+= \left(\mathbb{C}(\xi_i,\xi_j)\right)_{1 \le i,j \le n}
+=
+\begin{pmatrix}
+\mathbb{C}(\xi_1,\xi_1) &amp; \mathbb{C}(\xi_1,\xi_2) &amp; \cdots &amp; \mathbb{C}(\xi_1,\xi_n)    \\
+\mathbb{C}(\xi_2,\xi_1) &amp; \mathbb{C}(\xi_2,\xi_2) &amp; \cdots &amp; \mathbb{C}(\xi_2,\xi_n)    \\
+\vdots                  &amp; \vdots                  &amp; \ddots &amp; \vdots                     \\
+\mathbb{C}(\xi_n,\xi_1) &amp; \mathbb{C}(\xi_n,\xi_2) &amp; \cdots &amp; \mathbb{C}(\xi_n,\xi_n)    \\
+\end{pmatrix}.
+\end{equation}\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Beweis</em>. </span>Es gilt <span class="math display">\[\begin{align}
+\mathbb{C}(\xi)
+&amp; := \mathbb{E}\left((\xi - \mathbb{E}(\xi))(\xi - \mathbb{E}(\xi))^T \right) \\
+&amp; =
+\mathbb{E}
+\left(
+\left(
+\begin{pmatrix}
+\xi_1 \\
+\vdots \\
+\xi_n
+\end{pmatrix}
+-
+\begin{pmatrix}
+\mathbb{E}(\xi_1) \\
+\vdots \\
+\mathbb{E}(\xi_n)
+\end{pmatrix}
+\right)
+\left(
+\begin{pmatrix}
+\xi_1 \\
+\vdots \\
+\xi_n
+\end{pmatrix}
+-
+\begin{pmatrix}
+\mathbb{E}(\xi_1) \\
+\vdots \\
+\mathbb{E}(\xi_n)
+\end{pmatrix}
+\right)^T
+\right)
+\\
+&amp; =
+\mathbb{E}
+\left(
+\begin{pmatrix}
+\xi_1 - \mathbb{E}(\xi_1) \\
+\vdots \\
+\xi_n - \mathbb{E}(\xi_n)
+\end{pmatrix}
+\begin{pmatrix}
+\xi_1 - \mathbb{E}(\xi_1)\\
+\vdots \\
+\xi_n - \mathbb{E}(\xi_n)
+\end{pmatrix}^T
+\right)
+\\
+&amp; =
+\mathbb{E}
+\left(
+\begin{pmatrix}
+\xi_1 - \mathbb{E}(\xi_1) \\
+\vdots \\
+\xi_n - \mathbb{E}(\xi_n)
+\end{pmatrix}
+\begin{pmatrix}
+\xi_1 - \mathbb{E}(\xi_1)
+&amp; \dots
+&amp; \xi_n - \mathbb{E}(\xi_n)
+\end{pmatrix}
+\right) \\
+&amp; =
+\mathbb{E}
+\begin{pmatrix}
+  (\xi_1 - \mathbb{E}(\xi_1))(\xi_1 - \mathbb{E}(\xi_1))
+&amp; \dots
+&amp; (\xi_1 - \mathbb{E}(\xi_1))(\xi_n - \mathbb{E}(\xi_n)
+\\
+\vdots
+&amp; \ddots
+&amp; \vdots
+\\
+  (\xi_n - \mathbb{E}(\xi_n))(\xi_1 - \mathbb{E}(\xi_1))
+&amp; \dots
+&amp; (\xi_n - \mathbb{E}(\xi_n))(\xi_n - \mathbb{E}(\xi_n))
+\\
+\end{pmatrix}
+\\
+&amp; =
+\left(\mathbb{E}\left((\xi_i - \mathbb{E}(\xi_i))(\xi_j - \mathbb{E}(\xi_j)) \right) \right)_{1 \le i,j \le n} \\
+&amp; =
+\left(\mathbb{C}(\xi_i,\xi_j)\right)_{1 \le i,j \le n}. \\
+\end{align}\]</span></p>
+</div>
+<p>Die Kovarianzmatrix eines Zufallsvektors <span class="math inline">\(\xi\)</span> ist also die Matrix der Kovarianzen der Komponenten von <span class="math inline">\(\xi\)</span>. Damit ist auch die Kovarianzmatrix direkt im Sinne des Begriffs der Kovarianz von Zufallsvektoren gegeben. Da die Kovarianz einer Zufallsvariable mit sich selbst bekanntlich ihre Varianz ist, enthält die Kovarianzmatrix auf ihrer Diagonalen die Varianzen der Komponenten von <span class="math inline">\(\xi\)</span>.</p>
+<p>Folgendes Theorem dokumentiert eine Schreibweise für die Kovarianzmatrix eines partitionierten Zufallsvektors im Sinne von Erwartungswerten von Zufallvektorprodukten an, die zum Beispiel im Rahmen der Kanonischen Korrelationsanalyse hilfreich ist.</p>
+<div id="thm-kovarianzmatrizen-von-zufallsvektoren" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 15.14 (Kovarianzmatrizen von Zufallsvektoren)</strong></span> Es seien <span class="math display">\[\begin{equation}
+\zeta = \begin{pmatrix} \xi \\ \upsilon \end{pmatrix}
+\mbox{ mit }
+\mathbb{E}(\zeta)  := 0_m
+\end{equation}\]</span> ein <span class="math inline">\(m_\xi + m_\upsilon\)</span>-dimensionaler Zufallsvektor und sein Erwartungswertvektor, respektive. Dann kann die <span class="math inline">\(m \times m\)</span> Kovarianzmatrix von <span class="math inline">\(\zeta\)</span> geschrieben werden als <span class="math display">\[\begin{equation}
+\mathbb{C}(\zeta) =
+\begin{pmatrix}
+\Sigma_{\xi\xi} &amp; \Sigma_{\xi\upsilon} \\
+\Sigma_{\upsilon\xi} &amp; \Sigma_{\upsilon\upsilon} \\
+\end{pmatrix}
+\in \mathbb{R}^{m \times m}
+\end{equation}\]</span> wobei <span class="math display">\[\begin{align}
+\begin{split}
+\Sigma_{\xi\xi}   &amp; := \mathbb{E}\left(\xi\xi^T  \right) \in \mathbb{R}^{m_\xi  \times m_\xi}\\
+\Sigma_{\xi\upsilon}  &amp; := \mathbb{E}\left(\xi\upsilon^T \right) \in \mathbb{R}^{m_\xi  \times m_\upsilon}\\
+\Sigma_{\upsilon\xi}  &amp; := \mathbb{E}\left(\upsilon\xi^T \right) \in \mathbb{R}^{m_\upsilon \times m_\xi}\\
+\Sigma_{\upsilon\upsilon} &amp; := \mathbb{E}\left(\upsilon\upsilon^T\right) \in \mathbb{R}^{m_\xi  \times m_\upsilon}
+\end{split}
+\end{align}\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Beweis</em>. </span>Nach Definition der Kovarianzmatrix eines Zufallsvektors gilt <span class="math display">\[\begin{align}
+\begin{split}
+\mathbb{C}(z)
+&amp; = \mathbb{E}\left((\zeta - \mathbb{E}(\zeta))(\zeta - \mathbb{E}(\zeta))^T \right) \\
+&amp; = \mathbb{E}\left((\zeta - 0_m)(\zeta - 0_m)^T \right) \\
+&amp; = \mathbb{E}\left(\zeta\zeta^T\right)\\
+&amp; = \mathbb{E}\left(\begin{pmatrix} \xi \\ \upsilon \end{pmatrix} \begin{pmatrix} \xi^T &amp; \upsilon^T \end{pmatrix} \right) \\
+&amp; = \mathbb{E}\left(\begin{pmatrix} \xi\xi^T &amp; \xi\upsilon^T \\ \upsilon\xi^T &amp; \upsilon\upsilon^T \end{pmatrix}\right)
+\\
+&amp; =
+\begin{pmatrix}
+\mathbb{E}\left(\xi\xi^T\right)   &amp; \mathbb{E}\left(\xi\upsilon^T\right) \\
+\mathbb{E}\left(\upsilon\xi^T\right)  &amp; \mathbb{E}\left(\upsilon\upsilon^T\right)
+\end{pmatrix}
+\\
+&amp; =
+\begin{pmatrix}
+\Sigma_{\xi\xi}   &amp; \Sigma_{\xi\upsilon}  \\
+\Sigma_{\upsilon\xi}  &amp; \Sigma_{\upsilon\upsilon} \\
+\end{pmatrix}
+\end{split}
+\end{align}\]</span></p>
+</div>
+<p>Schließlich ist man in manchen Anwendungen an einer normalisierten, maßstabsunabhängigen Repräsentation der Kovarianzen eines Zufallsvektors interessiert. Wie im univariaten Fall bietet sich hierfür die Normalisierung der Kovarianz zweier Zufallsvariablen mithilfe ihrer jeweiligen Varianzen im Sinne einer Korrelation an. Diese Überlegung führt auf den Begriff der <em>Korrelationsmatrix</em> eines Zufallsvektors.</p>
+<div id="def-korrelationsmatrix" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 15.9 (Korrelationsmatrix)</strong></span> <span class="math inline">\(\xi\)</span> sei ein <span class="math inline">\(n\)</span>-dimensionaler Zufallsvektor. Dann ist die <em>Korrelationsmatrix</em> von <span class="math inline">\(\xi\)</span> definiert als die <span class="math inline">\(n \times n\)</span> Matrix <span class="math display">\[\begin{equation}
+\mathbb{R}(\xi)
+:= \left(\rho_{ij} \right)_{1 \le i,j\le n}
+= \left(\frac{\mathbb{C}(\xi_i,\xi_j)}{\sqrt{\mathbb{V}(\xi_i)}\sqrt{\mathbb{V}(\xi_j)}}\right)_{1 \le i,j\le n}.
+\end{equation}\]</span></p>
+</div>
+<p>Da es sich bei den Varianzen der Komponenten von <span class="math inline">\(\xi\)</span> um die Diagonalelement der Kovarianzmatrix von <span class="math inline">\(\xi\)</span> handelt, ist die Korrelationsmatrix natürlich in der Kovarianzmatrix implizit. Weiterhin gelten, wie immer für Korrelationen, für die Einträge <span class="math inline">\(\rho_{ij}, 1 \le i,j \le n\)</span> der Korrelationsmatrix, dass <span class="math display">\[\begin{equation}
+\rho_{ij} \in [-1,1] \mbox{ für } 1 \le i,j \in n \mbox{ und } \rho_{ii} = 1 \mbox{ für } 1 \le i \le n.
+\end{equation}\]</span></p>
+</section>
+<section id="stichprobenkennzahlen-von-zufallsvektoren" class="level2" data-number="15.6">
+<h2 data-number="15.6" class="anchored" data-anchor-id="stichprobenkennzahlen-von-zufallsvektoren"><span class="header-section-number">15.6</span> Stichprobenkennzahlen von Zufallsvektoren</h2>
+<p>Die Begriffe des Stichprobenmittels, der Stichprobenvarianz und der Stichprobenkovarianz lassen sich auch auf den Fall multivariater Stichproben übertragen. Wir nutzen folgende Definition.</p>
+<div id="def-stichprobenmittel-stichprobenkovarianmatrix-stichprobenkorrelationsmatrix" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 15.10 (Stichprobenmittel, -kovarianmatrix und -korrelationsmatrix)</strong></span> <span class="math inline">\(\upsilon_1,...,\upsilon_n\)</span> sei eine Menge von <span class="math inline">\(m\)</span>-dimensionalen Zufallsvektoren, genannt <em>Stichprobe</em>.</p>
+<ul>
+<li>Das <em>Stichprobenmittel</em> der <span class="math inline">\(\upsilon_1,...,\upsilon_n\)</span> ist definiert als der <span class="math inline">\(m\)</span>-dimensionale Vektor <span class="math display">\[\begin{equation}
+\bar{\upsilon} := \frac{1}{n} \sum_{i=1}^n \upsilon_i.
+\end{equation}\]</span></li>
+<li>Die <em>Stichprobenkovarianzmatrix</em> der <span class="math inline">\(\upsilon_1,...,\upsilon_n\)</span> ist definiert als die <span class="math inline">\(m \times m\)</span> Matrix <span class="math display">\[\begin{equation}
+C := \frac{1}{n-1}\sum_{i=1}^n (\upsilon_i - \bar{\upsilon})(\upsilon_i - \bar{\upsilon})^T .
+\end{equation}\]</span></li>
+<li>Die <em>Stichprobenkorrelationsmatrix</em> der <span class="math inline">\(\upsilon_1,...,\upsilon_n\)</span> ist definiert als die <span class="math inline">\(m \times m\)</span> Matrix <span class="math display">\[\begin{equation}
+D := \left(\frac{(C )_{ij}}{\sqrt{ (C )_{ii}}\sqrt{ (C )_{jj}}}\right)_{1 \le i,j \le m}.
+\end{equation}\]</span></li>
+</ul>
+</div>
+<p>Zur konkreten Berechnung von Stichprobenmittel, Stichprobenkovarianzmatrix und Stichprobenkorrrelationsmatrix basierend auf einem multivariaten Datensatz bieten sich die Aussagen des folgenden Theorems an.</p>
+<div id="thm-datenmatrix-und-stichprobenstatistiken" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 15.15 (Datenmatrix und Stichprobenstatistiken)</strong></span> &nbsp;</p>
+Es sei <span class="math display">\[\begin{equation}
+\upsilon :=
+\begin{pmatrix}
+\upsilon_1 &amp; \cdots &amp; \upsilon_n
+\end{pmatrix}
+\end{equation}\]</span> eine <span class="math inline">\(m \times n\)</span> , die durch die spaltenweise Konkatenation von <span class="math inline">\(n\)</span> <span class="math inline">\(m\)</span>-dimensionalen Zufallvektoren <span class="math inline">\(\upsilon_1, ...,\upsilon_n\)</span> gegeben sei. Dann ergeben sich
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Beweis</em>. </span>Die Darstellung des Stichprobenmittels ergibt sich aus <span class="math display">\[\begin{align}
+\begin{split}
+\bar{\upsilon}
+&amp; := \frac{1}{n} \sum_{i=1}^n\upsilon_i \\
+&amp;  = \frac{1}{n}\begin{pmatrix} \sum_{i=1}^n\upsilon_{i1} \\ \vdots \\ \sum_{i=1}^n\upsilon_{im} \end{pmatrix} \\
+&amp;  = \frac{1}{n}\left(\begin{pmatrix}\upsilon_{11}    &amp; \cdots  &amp;\upsilon_{n1} \\
+                                      \vdots    &amp; \ddots  &amp; \vdots     \\
+                                     \upsilon_{1m}    &amp; \cdots  &amp;\upsilon_{nm} \\
+                   \end{pmatrix}
+                   \begin{pmatrix} 1 \\ \vdots \\ 1 \end{pmatrix}
+              \right) \\
+&amp; = \frac{1}{n}\upsilon 1_{n}.
+\end{split}
+\end{align}\]</span> Hinsichtlich der Darstellung der Stichprobenkovarianzmatrix halten wir zunächst fest, dass nach Definition gilt, dass <span class="math display">\[\begin{align}
+\begin{split}
+C  
+&amp; := \frac{1}{n-1}\sum_{i=1}^n (\upsilon_i - \bar{\upsilon})(\upsilon_i - \bar{\upsilon})^T \\
+&amp;  = \frac{1}{n-1}\sum_{i=1}^n \left(\upsilon_i\upsilon_i^T-\upsilon_i\bar{\upsilon}^T - \bar{\upsilon}\upsilon_i^T+ \bar{\upsilon}\bar{\upsilon}^T\right) \\
+&amp;  = \frac{1}{n-1}\left(\sum_{i=1}^n\upsilon_i\upsilon_i^T- \sum_{i=1}^n\upsilon_i\bar{\upsilon}^T - \sum_{i=1}^n \bar{\upsilon}\upsilon_i^T+ \sum_{i=1}^n \bar{\upsilon}\bar{\upsilon}^T\right) \\
+&amp;  = \frac{1}{n-1}\left(\sum_{i=1}^n\upsilon_i\upsilon_i^T- n\bar{\upsilon}\bar{\upsilon}^T - n\bar{\upsilon}\bar{\upsilon}^T + n\bar{\upsilon}\bar{\upsilon}^T\right) \\
+&amp;  = \frac{1}{n-1}\left(\sum_{i=1}^n\upsilon_i\upsilon_i^T- n\bar{\upsilon}\bar{\upsilon}^T\right).
+\end{split}
+\end{align}\]</span> Mit <span class="math inline">\(1_{n}1_{n}^T = 1_{nn}\)</span> ergibt sich dann weiterhin <span class="math display">\[\begin{align}
+\begin{split}
+\upsilon\left(I_n - \frac{1}{n}1_{nn}\right)\upsilon^T
+&amp; = \left(\upsilon I_n - \frac{1}{n}\upsilon 1_{nn}\right)\upsilon^T                                         \\
+&amp; = \upsilon\upsilon^T - \frac{1}{n}\upsilon 1_{nn}\upsilon^T                                                      \\
+&amp; = \begin{pmatrix} \upsilon_1 &amp; \cdots &amp; \upsilon_n\end{pmatrix} \begin{pmatrix} \upsilon_1^T \\ \vdots \\ \upsilon_n^T\end{pmatrix} - \frac{1}{n}\upsilon 1_n 1_n^T\upsilon^T    \\
+&amp; = \sum_{i=1}^n\upsilon_i\upsilon_i^T- n\left(\frac{1}{n}\upsilon 1_n\right)\left(\frac{1}{n}1_n^T\upsilon^T\right)              \\
+&amp; = \sum_{i=1}^n\upsilon_i\upsilon_i^T- n\bar{\upsilon}\bar{\upsilon}^T                                                          \\
+&amp; = \frac{1}{n-1}\sum_{i=1}^n (\upsilon_i - \bar{\upsilon})(\upsilon_i - \bar{\upsilon})^T \\
+&amp; = C.
+\end{split}
+\end{align}\]</span> Hinsichtlich der Korrelationsmatrix ergibt sich nach Definition und für ein beliebiges Indexpaar <span class="math inline">\(i,j\)</span> mit <span class="math inline">\(1 \le i,j \le m\)</span> schließlich, dass <span class="math display">\[\begin{align}
+\begin{split}
+R_{{y}_{ij}}
+&amp; = \frac{(C)_{ij}}{\sqrt{ (C)_{ii}}\sqrt{ (C)_{jj}}}             \\
+&amp; = \frac{1}{\sqrt{(C)_{ii}}}(C)_{ij}\frac{1}{\sqrt{(C)_{jj}}}    \\
+&amp; = (DCD)_{ij}.
+\end{split}
+\end{align}\]</span></p>
+</div>
+</section>
+<section id="selbstkontrollfragen" class="level2" data-number="15.7">
+<h2 data-number="15.7" class="anchored" data-anchor-id="selbstkontrollfragen"><span class="header-section-number">15.7</span> Selbstkontrollfragen</h2>
+<ol type="1">
+<li>Geben Sie die Definition des Erwartungswerts einer Zufallsvariable wieder.</li>
+<li>Geben Sie die Interpretation der Erwartungswerts einer Zufallsvariable wieder</li>
+<li>Berechnen Sie den Erwartungswert einer Bernoulli Zufallsvariable.</li>
+<li>Geben Sie das Theorem zu den Eigenschaften des Erwartungswerts wieder.</li>
+<li>Geben Sie die Definition der Varianz und der Standardabweichung einer Zufallsvariable wieder.</li>
+<li>Geben Sie die Interpretation der Varianz einer Zufallsvariable wieder.</li>
+<li>Berechnen Sie die Varianz einer Bernoulli Zufallsvariable.</li>
+<li>Geben Sie das Theorem zum Varianzverschiebungssatz wieder.</li>
+<li>Geben Sie das Theorem zu den Eigenschaften der Varianz wieder.</li>
+<li>Geben Sie die Definition des Begriffs einer Stichprobe wieder.</li>
+<li>Geben Sie die Definitionen von Stichprobenmittel, -varianz und -standardabweichung wieder.</li>
+<li>Geben Sie die Definition von Kovarianz und Korrelation zweier Zufallsvariablen wieder.</li>
+<li>Geben Sie das Theorem zum Kovarianzverschiebungssatz wieder.</li>
+<li>Geben Sie das Theorem zu Varianzen von Summen und Differenzen von Zufallsvariablen wieder.</li>
+<li>Geben Sie das Theorem zur Korrelation und Unabhängigkeit zweier Zufallsvariablen wieder. </li>
+</ol>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-meintrup2005" class="csl-entry" role="listitem">
+Meintrup, D., &amp; Schäffler, S. (2005). <em><span>Stochastik: Theorie und Anwendungen</span></em>. <span>Springer</span>.
+</div>
+<div id="ref-schmidt2009" class="csl-entry" role="listitem">
+Schmidt, K. D. (2009). <em><span>Ma<span>ß</span> und Wahrscheinlichkeit</span></em>. <span>Springer</span>.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Kopiert");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Kopiert");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./204-Zufallsvektoren.html" class="pagination-link  aria-label=" &lt;span="">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Zufallsvektoren</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./206-Ungleichungen.html" class="pagination-link" aria-label="<span class='chapter-number'>16</span>&nbsp; <span class='chapter-title'>Ungleichungen</span>">
+        <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Ungleichungen</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/205-Erwartungswerte.qmd" class="toc-action"><i class="bi bi-github"></i>Seite editieren</a></li></ul></div></div></div></footer></body></html>
