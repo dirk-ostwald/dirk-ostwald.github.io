@@ -1,0 +1,1798 @@
+# Univariate Deskriptivstatistiken {#sec-univariate-deskriptivstatistiken}
+
+Ziel der Auswertung von Deskriptivstatistiken ist es, Datensätze möglichst effizient 
+der menschlichen Betrachtung zugänglich zu machen. Sobald die Anzahl der Datenpunkte 
+eines Datensatzes eine gewisse Anzahl überschreitet, sind reine Zahlendarstellungen 
+für die menschliche Kognition meist eher schwer zu erfassen. Hier setzt die Deskriptivstatistik 
+an und bietet neben graphischen Darstellungen größerer Datensätze auch Maßzahlen an, 
+die im Sinne der Datenreduktion bestimmte charakteristische Aspekte eines Datensatzes, 
+wie seinen "durchschnittlichen" Wert oder seine Variabilität beschreiben. In diesem
+Abschnitt wollen wir mit den univariaten Deskriptivstatistiken erste Verfahren
+und Maße kennenlernen, die es erlauben, Datensätze, in denen pro Studieneinheit
+eine Zahl vorliegt, zusammenzufassen. Wir betrachten dabei insbesonder *Häufigkeitsverteilungen* 
+und *Histogramme*, *Verteilungsfunktionen* und *Quantile*, sowie *Maße der zentralen
+Tendenz*, die Aussagen über "durchschnittliche" Datenwerte erlauben und 
+*Maße der Datenvariabilität*, die Aussagen über die Streuung der Datenwerte erlauben. 
+
+In Abgrenzung zur probabilistischen Modellierung im Rahmen der Frequentistischen
+und Bayesianischen Inferenz basiert die deskriptive Statistik nicht auf der
+Wahrscheinlichkeitstheorie, kann also losgelöst von dieser betrachtet werden.
+Allerdings ergeben viele Aspekte der Deskriptivstatistik letztlich nur vor dem Hintergrund 
+wahrscheinlichkeitstheoretischer Betrachtungen Sinn und umgekehrt sind viele Begriffe
+der Wahrscheinlichkeitstheorie durch deskriptivstatistische Konzepte motiviert.
+Wenn also der vorliegende Abschnitt ohne einen wahrscheinlichkeitstheoretischen
+Hintergrund auskommt, so erschließt sich seine volle Bedeutung sicherlich
+erst im Kontext der Begriffe der Wahrscheinlichkeitstheorie.
+
+Wir fokussieren in diesem Abschnitt auf Deskriptivstatistiken zur Beschreibung eines
+Datensatzes der Form
+\begin{equation}
+y := (y_1,...,y_n) \mbox{ mit } y_i \in \mathbb{R} \mbox{ für } i = 1,...,n.
+\end{equation}
+Dabei ist es zunächst unerheblich, ob ein solcher Datensatz in Form eines Spaltenvektors 
+$y \in \mathbb{R}^{n \times 1}$ oder eines Zeilenvektors $y \in \mathbb{R}^{1 \times n}$
+vorliegt. Weiterhin fokussieren wir auf die praktische Auswertung der betrachteten
+Deskriptivstatistiken, geben also viele Beispiele für ihre Berechnung mit **R**. 
+
+
+### Anwendungsbeispiel {-}
+
+Als Anwendungsbeispiel betrachten wir durchgängig einen Datensatz zur evidenzbasierten 
+Evaluation von Psychotherapie bei Depression. Dazu nehmen wir an, dass $n = 100$
+Patient:innen zufällig auf eine Treatment- und eine Kontrollstudienbedingung aufgeteilt
+wurden und zu Beginn der jeweiligen Intervention mithilfe des BDI-II Fragebogens
+zu ihrer Depressionsschwere befragt wurden. Die nach den Interventionen erhobenen
+BDI-II Werte wollen wir in diesem Kapitel nicht betrachten. Wir nehmen also an, 
+dass wir einen Datensatz wie durch folgenden **R** Code in @tbl-datensatz dargestellt 
+vorliegen haben.  
+
+```{r, echo = F, eval = F}
+# Simulation
+set.seed(5)
+n           = 50                                                                # Proband:innnen pro Gruppe
+mu          = c(18, 12, 19, 14)                                                 # \mu PRE F2F, PRE ONL, POS F2F, POS ONL
+sigsqr      = 3                                                                 # Varianzparameter    
+D           = data.frame(                                                       # Dataframe    
+                c(rep("T",n), rep("C", n)),
+                c(round(rnorm(n, mu[1], sqrt(sigsqr))), round(rnorm(n, mu[3], sqrt(sigsqr)))),
+                c(round(rnorm(n, mu[2], sqrt(sigsqr))), round(rnorm(n, mu[4], sqrt(sigsqr)))))
+colnames(D)  = c("GROUP", "PRE", "POS")
+write.csv(D, "./_data/111-deskriptive-statistik.csv", row.names = FALSE)
+```
+
+\tiny
+```{r}
+#| label: tbl-datensatz
+#| tbl-cap: "BDI-II Werte (PRE) von n = 100 Patient:innen in einer Treatment (T) und einer Kontrollstudiengruppe (C) vor Beginn einer psychologischen Intervention"
+D  = read.csv("./_data/111-deskriptive-statistik.csv")                          # Laden des Datensatzes
+knitr::kable(D[,1:2], digits = 2, align = "c")                                  # RMarkdowntabellenoutput  
+``` 
+
+\normalsize
+
+## Häufigkeitsverteilungen {#sec-haeufigkeitsverteilungen}
+Wir beginnen mit den Begriffen der *absoluten* und der *relativen Häufigkeitsverteilung*. 
+Für Datensätze mit Werten, in denen der gleiche Wert mehrfach auftritt, können 
+Häufigkeitsverteilungen einen ersten Eindruck von der Beschaffenheit des Datensatzes
+liefern. 
+
+:::{#def-absolute-und-relative-haeufigkeitsverteilungen}
+## Absolute und relative Häufigkeitsverteilungen
+$y := (y_1,...,y_n)$ sei ein Datensatz und $W := \{w_1,...,w_k\}$ mit $k \le n$ 
+seien die im Datensatz vorkommenden Werte. Dann heißt die Funktion
+\begin{equation}
+h : W \to \mathbb{N}, w \mapsto h(w) := \mbox{Anzahl der } y_i \mbox{ aus } y \mbox{ mit } y_i = w
+\end{equation}
+die *absolute Häufigkeitsverteilung* der Werte von $y$ und die Funktion
+\begin{equation}
+r : W \to [0,1], w \mapsto r(w) := \frac{h(w)}{n}
+\end{equation}
+heißt die *relative Häufigkeitsverteilung* der Werte von $y$.
+:::
+
+Häufigkeitsverteilungen können in **R** durch Kombination der `table()`und 
+`barplot()` Funktion ausgewertet und dargestellt werden. Folgender **R** Code
+erzeugt zunächst die absolute und relative Häufigkeitsverteilungen der Pre-Interventions-BDI-II 
+Daten des Beispieldatensatzes.
+
+\tiny
+```{r}
+D           = read.csv("./_data/111-deskriptive-statistik.csv")                 # Laden des Datensatzes
+y 			= D$PRE                                         					# Double vector der PRE Werte
+n 			= length(y)						                                    # Anzahl der Datenwerte (100)
+H 			= as.data.frame(table(y))	                                        # absolute Häufigkeitsverteilung (dataframe)
+names(H)    = c("w", "ah")					                                    # Spaltenbenennung
+H$rh 		= H$ah/n 						                                    # relative Häufigkeitsverteilung
+print(H, digits = 1)						                                    # Ausgabe
+```
+\normalsize
+
+An der Ausgabe des Dataframes `H` können wir ablesen, dass im betrachteten Datensatz
+10 verschiedene Werte `w` zwischen 14 und 23 vorkommen, wobei zum Beispiel 
+die Werte 18 und 22 jeweils 21 bzw. 2 mal auftreten. Sowohl die absolute als auch
+die relative Häufigkeitsverteilung zeigen, dass Werte um 18 im vorliegenden
+Datensatz gehäuft auftreten, Extremwerte wie 13 oder 23 dagegen eher selten.
+Man beachte, dass es sich bei der relativen Häufigkeitsverteilung lediglich um 
+eine skalierte Form der absoluten Häufigkeitsverteilung handelt. Qualitativ, also
+hinsichtlich des gehäuften oder selteneren Vorkommens bestimmter Werte, unterscheiden
+sich beide Häufigkeitsverteilungen nicht. Dies wird insbesondere auch 
+deutlich, wenn man wie in @fig-haeufigkeitsverteilungen beide Häufigkeitsverteilungen 
+visualisiert. Folgender **R** nutzt zu diesem Zweck die Funktion `barplot()`. 
+Die Höhe des über einem Wert $w$ aufgetragenen Balkens entspricht dabei den 
+Funktionswerten $h(w)$ bzw. $r(w)$. Die visuelle Einsicht entspricht
+natürlich der Inspektion des Dataframew `H`. Beide Häufigkeitsverteilungen
+zeigen, dass Werte um 18 im vorliegenden Datensatz gehäuft auftreten, wohingegen
+niedrigere oder höhere Werte wie 13 bzw. 23 dagegen eher selten sind.
+
+\tiny
+```{r eval = F, message = F, warning = F}
+pdf(								                                            # PDF Kopiefunktion
+file  		= "./_figures/111-haeufigkeitsverteilungen.pdf",                    # Dateiname
+width 		= 7, 							                                    # Breite (inch)
+height 		= 4)        					                                    # Höhe (inch)
+par(                                                                            # Abbildungsparameter    
+mfcol       = c(1,2),                                                           # Zeilen und Spaltenlayout 
+las         = 1,                                                                # x-Tick Orientierung
+cex         = 0.7,                                                              # Annotationsvergrößerung    
+cex.main    = 1.3)                                                              # Titelvergrößerung
+h 		    = H$ah                      	                                    # h(w) Werte
+r 		    = H$rh                      	                                    # r(w) Werte
+names(h)    = H$w         					                                    # barplot braucht w Werte als names
+names(r)    = H$w         					                                    # barplot braucht w Werte als names
+barplot( 									                                    # Balkendiagramm
+h,     										                                    # absolute Haeufigkeiten
+col   	    = "gray90",        			 	                                    # Balkenfarbe
+xlab  		= "w",          				                                    # x Achsenbeschriftung
+ylab  		= "h(w)",     					                                    # y Achsenbeschriftung
+ylim        = c(0,25),                                                          # y Achsengrenzen
+main  		= "Absolute Häufigkeitsverteilung")        			                # Titel
+barplot( 									                                    # Balkendiagramm
+r,     										                                    # absolute Haeufigkeiten
+col   	    = "gray90",        			 	                                    # Balkenfarbe
+xlab  		= "w",          				                                    # x Achsenbeschriftung
+ylab  		= "r(w)",     					                                    # y Achsenbeschriftung
+ylim        = c(0,.25),                                                         # y Achsengrenzen
+main  		= "Relative Häufigkeitsverteilung")          		                # Titel
+dev.off()                                                                       # Beenden der Abbildungsbearbeitung
+```
+\normalsize
+![Absolute und relative Häufigkeitsverteilungen der Pre-Interventions-BDI-II-Werte .](./_figures/111-haeufigkeitsverteilungen){#fig-haeufigkeitsverteilungen fig-align="center" width=80%}
+
+
+## Histogramme {#sec-histogramme}
+
+Wenn in einem Datensatz keine Werte mehrfach vorkommen, nehmen die 
+absoluten und relativen Häufigkeitsverteilungen für jeden dieser Werte den Wert 
+$1$ bzw. $1/n$ an und bieten dann keinen Mehrwert über die visuelle Inspektion des
+Datensatzes hinaus. Die in diesem Abschnitt vorgestellten Histogramme 
+bieten jedoch eine Möglichkeit, auch in diesem Fall visuelle Darstellungen von 
+Häufigkeitsverteilungen zu generieren. Dabei werden verschiedene Werte, die in einem
+wohldefinierten Sinne "nah beieinander" liegen, zu Klassen zusammengefasst und die
+absoluten oder relativen Häufigkeiten dieser Klassen bestimmt. Da bei Datensätzen, 
+in denen die gleichen Werte mehrfach vorkommen, diese Werte der Natur nach in 
+der gleichen Klasse liegen, können Histogramme auch in dem in 
+@sec-haeufigkeitsverteilungen betrachten Fall sinnvoll angewendet werden. 
+Histogramme verallgemeinern also die im vorherigen Abschnitt betrachteten 
+Häufigkeitsverteilungen bei Datensätzen mit mehrfach auftretenen Werten.
+
+Wir geben zunächst eine Definition des Histogrammbegriffs. Man beachte, 
+dass in dieser Definition der Vorgang der Klassenbildung, die Bestimmung ihrer 
+absoluten und relativen Häufigkeiten, sowie die Visualisierung dieser Häufigkeiten
+eng verzahnt sind. Dies ist der Konvention geschuldet, dass der Begriff des Histogramms
+sowohl eine bestimmte Form der Datenanalyse als auch ihre Visualisierung beschreibt.
+
+:::{#def-histogramm}
+## Histogramm
+Ein *Histogramm* ist ein Diagramm, in dem zu einem Datensatz $y = (y_1,...,y_n)$ 
+mit Werten $W := \{w_1,...,w_m\}$ mit $m \le n$ für $j = 1,...,k$ über 
+benachbarten Intervallen $[b_{j-1},b_j[$ mit $b_0 := \min W$ und $b_k := \max W$ 
+Rechtecke mit der *Breite* $d_j := b_j - b_{j-1}$ und der *Höhe* $h(w)$ oder $r(w)$ 
+für $w \in [b_{j-1}, b_{j}[$ abgebildet sind. Dabei werden die Intervalle $[b_{j-1},b_j[$ 
+*Klassen* (engl. *bins*) genannt.
+:::
+
+Natürlich ist das visuelle Erscheinungsbild eines Histogramms stark davon abhängig, wie 
+genau die Werte eines Datensatzes zu Klassen zusammengefasst werden. Der entscheidene
+Parameter dafür ist nach @def-histogramm die Anzahl der Klassen $k$, die zwischen
+dem Minimalwert $b_0$ und dem Maximalwert $b_k$ des Datensatzes gewählt werden.
+Im Folgenden stellen wir einige konventionelle Werte für die Anzahl der Klassen 
+$k$ vor und berechnen und visualisieren sie am Beispiel des Beispieldatensatzes. 
+Dabei gehen wir durchgängig davon aus, dass die benachbarten Intervalle $[b_{j-1},b_j[$ 
+mit $j = 1,...,k$ für die Anzahl von Klassen $k$ mit konstanter Breite $d = b_j - b_{j-1}$ 
+gewählt werden. 
+
+Zur Berechnung und Visualisierung von Histogrammen nutzen wir die **R** Funktion 
+`hist()`. Bei dieser werden die Klassen $[b_{j-1}, b_{j}[$ für $j = 1,...,k$ als 
+das Argument `breaks` festgelegt. Speziell ist `breaks` der **R** Vector 
+`c(b_0,b_1,...,b_k)` mit Länge $k + 1$. Um den Effekt verschiedener Wahlen der
+Anzahl der Klassen zu veranschaulichen, lesen wir zunächst den Datensatz ein 
+und bestimmen seine minimalen und maximalen Werte $b_0$ und $b_k$. 
+
+\tiny
+```{r}
+# Datensatz
+D       = read.csv("./_data/111-deskriptive-statistik.csv")                     # Laden des Datensatzes
+y       = D$PRE                                                                 # Pre-Interventions-BDI-II-Daten
+b_0     = min(y)                                                                # b_0
+b_k     = max(y)                                                                # b_k
+```
+
+```{r, echo = F}
+ds      = rep(NaN,5)                                                            # Vektorinitialisierung für Klassenbreiten
+ks      = rep(NaN,5)                                                            # Vektorinitialisierung für Anzahl der Klassen
+bs      = list()                                                                # Listeninitialisierung für breaks Argumente
+cat("\nMinimum b_0                : " , b_0, 
+    "\nMaximum b_k                : " , b_k)
+```
+
+\normalsize 
+
+Eine erste Möglichkeit der Wahl der Klassen $k$ besteht darin, möglichst genau 
+eine gewünschte konstante Breite $d$ zu erzielen. Hierzu setzt man
+\begin{equation}
+k := \lceil (b_k - b_0)d \rceil.
+\end{equation}
+Man beachte, dass die Anwendung der Aufrundungsfunktion impliziert, dass die so 
+resultierende Klassenbreite höchstens dem gewünschten Wert entspricht, aber
+auch kleiner sein kann. Folgender **R** Code verdeutlich diesen Effekt.
+
+\tiny
+```{r}
+# Histogramm mit gewünschter Klassenbreite d = 2
+d       = 2                                                                     # gewünschte Klassenbreite
+b_0     = min(y)                                                                # b_0
+b_k     = max(y)                                                                # b_k
+k       = ceiling((b_k - b_0)/d)                                                # Anzahl der Klassen
+b       = seq(b_0, b_k, length.out = k + 1)                                     # Klassen [b_{j-1}, b_j[ (breaks)
+```
+
+```{r, echo = F}
+ks[1]   = k                                                                     # Speicherung in Klassenanzahlvektor     
+ds[1]   = b[2]-b[1]                                                             # Speicherung in Klassenbreitenvektor           
+bs[[1]] = b                                                                     # Speicherung in breaks Liste
+```
+```{r, echo = F}
+cat("\nGewünschte Klassenbreite d : " , d,
+    "\nKlassenanzahl k            : " , k, 
+    "\nIntervalle [b_j-1, b_j]    : " , b,
+    "\nErzielte Klassenbreite  d  : " , b[2]-b[1])
+```
+\normalsize
+
+Die Wahl einer gewünschten Klassenbreite von $d = 1.5$ dagegen führt für den
+vorliegenden Datensatz auf eine resultierende Klassenbreite, die dem Wunsch 
+entspricht.
+
+\tiny
+```{r}
+# Histogramm mit gewünschter Klassenbreite d = 1.5
+d       = 1.5                                                                   # gewünschte Klassenbreite
+k       = ceiling((b_k - b_0)/d)                                                # Anzahl der Klassen
+b       = seq(b_0, b_k, length.out = k + 1)                                     # Klassen [b_{j-1}, b_j[ (breaks)
+```
+
+```{r, echo = F}
+ks[2]   = k                                                                     # Speicherung in Klassenanzahlvektor     
+ds[2]   = b[2]-b[1]                                                             # Speicherung in Klassenbreitenvektor           
+bs[[2]] = b                                                                     # Speicherung in breaks Liste
+```
+```{r, echo = F}
+cat("\nGewünschte Klassenbreite d : " , d,
+     "\nKlassenanzahl k            : " , k, 
+    "\nIntervalle [b_j-1, b_j]    : " , b,
+    "\nErzielte Klassenbreite  d  : " , b[2]-b[1])
+```
+\normalsize
+
+Eine weitere Möglichkeit ist es, die Anzahl der Klassen abhängig von der Anzahl
+der Datenpunkte im Datensatz zu machen. Die Excelstandardwahl ist dabei  
+\begin{equation}
+k := \lceil \sqrt{n} \rceil.  		
+\end{equation}
+Folgender **R** Code implementiert diese Wahl für den den vorliegenden Datensatz. 
+\tiny
+```{r}
+# Histogramm mit Excelstandard
+n       = length(y)                                                             # Anzahl Datenpunkte
+k       = ceiling(sqrt(n))                                                      # Anzahl der Klassen
+b       = seq(b_0, b_k, length.out = k + 1)                                     # Klassen [b_{j-1}, b_j[ (breaks)
+```
+
+```{r, echo = F}
+ks[3]   = k                                                                     # Speicherung in Klassenanzahlvektor       
+ds[3]   = b[2]-b[1]                                                             # Speicherung in Klassenbreitenvektor        
+bs[[3]] = b                                                                     # Speicherung in breaks Liste
+```
+```{r, echo = F}
+cat("\nAnzahl Datenpunkte n       : " , n,
+    "\nKlassenanzahl k            : " , k, 
+    "\nIntervalle [b_j-1, b_j]    : " , b,
+    "\nErzielte Klassenbreite  d  : " , b[2]-b[1])
+```
+\normalsize
+
+Ähnlich gelagert wie der Excelstandard ist die von @sturges1926 vorgeschlagene
+Klassenanzahl, welche die Darstellung unter einer impliziten Normalverteilungsannahme
+optimiert und durch
+\begin{equation}
+k := \lceil \log_2 n + 1\rceil  	
+\end{equation}
+gegeben ist. Im vorliegenden Fall resultiert hier:
+
+\tiny
+```{r}
+# Klassenanzahl nach Sturges (1926) 
+n       = length(y)                                                             # Anzahl Datenpunkte
+k       = ceiling(log2(n)+1)                                                    # Anzahl der Klassen
+b       = seq(b_0, b_k, length.out = k + 1)                                     # Klassen [b_{j-1}, b_j[ (breaks)
+```
+
+```{r, echo = F}
+ks[4]   = k                                                                     # Speicherung in Klassenanzahlvektor       
+ds[4]   = b[2]-b[1]                                                             # Speicherung in Klassenbreitenvektor        
+bs[[4]] = b                                                                     # Speicherung in breaks Liste
+```
+```{r, echo = F}
+cat("\nAnzahl Datenpunkte n       : " , n,
+    "\nKlassenanzahl k            : " , k, 
+    "\nIntervalle [b_j-1, b_j]    : " , b,
+    "\nErzielte Klassenbreite  d  : " , b[2]-b[1])
+```
+\normalsize
+
+Eine weitere Möglichkeit ist es, Deskriptivstatistiken des Datensatzes in 
+die Wahl der Klassenanzahl einfließen zu lassen. Als Maß für die Streuung der
+Daten im Datensatz nutzt die Klassenanzahl nach @scott1979 die empirische 
+Standardabweichung (cf. @sec-masse-der-variabilitaet), um durch das Histogramm
+eine Dichteschätzung bei Normalverteilung zu realisieren. Wir wollen den 
+nichtparametrischen Hintergrund dieses Vorgehens hier nicht vertiefen,
+sondern halten lediglich fest, dass die Wahl der Klassenanzahl nach @scott1979
+durch Festlegung der Klassenbreite zu 
+\begin{equation}
+d := 3.49 S/\sqrt[3]{n} 		    
+\end{equation}
+und die anschließende Wahl der Klassenanzahl durch
+\begin{equation}
+k := \lceil (b_k - b_0)d \rceil
+\end{equation}
+gegeben ist, wobei $S$ die Standardabweichung des Datensatzes bezeichnet. Im 
+vorliegenden Fall resultieren hier:
+
+\tiny
+```{r}
+# Klassenanzahl nach Scott (1979) 
+n       = length(y)                                                             # Anzahl Datenwerte
+S       = sd(y)                                                                 # Stichprobenstandardabweichung
+d       = ceiling(3.49*S/(n^(1/3)))                                             # Klassenbreite
+k       = ceiling((b_k - b_0)/d)                                                # Anzahl der Klassen
+b       = seq(b_0, b_k, length.out = k + 1)                                     # Klassen [b_{j-1}, b_j[ (breaks)
+```
+
+```{r, echo = F}
+ks[5]   = k                                                                     # Speicherung in Klassenanzahlvektor       
+ds[5]   = b[2]-b[1]                                                             # Speicherung in Klassenbreitenvektor        
+bs[[5]] = b                                                                     # Speicherung in breaks Liste
+```
+```{r, echo = F}
+cat("\nAnzahl Datenpunkte n       : " , n,
+    "\nStandardabweichung         : " , S, 
+    "\nKlassenbreite nach Scott d : " , d,
+    "\nKlassenanzahl k            : " , k, 
+    "\nIntervalle [b_j-1, b_j]    : " , b,
+    "\nErzielte Klassenbreite  d  : " , b[2]-b[1])
+```
+\normalsize
+
+Per Default nutzt die in **R** implementierte `hist()` Funktion eine Modifikation 
+der von @sturges1926 vorgeschlagenen Klassenanzahl und bietet eine Reihe von 
+weiteren Möglichkeiten zur Wahl der Klassen. Einen Überblick dazu 
+liefert `?hist`.  Folgender **R** Code visualisiert die absoluten Häufigkeiten 
+der Werte des Beispieldatensatzes anhand der oben spezifierten Klassen.
+
+\tiny
+```{r, eval = F}
+# Abbildungsparameter
+pdf(								                                            # PDF Kopiefunktion
+file        = "./_figures/111-histogramme.pdf",                                 # Dateiname
+width       = 6, 							                                    # Breite (inch)
+height      = 9)        					                                    # Höhe (inch)
+par(                                                                            # Abbildungsparameter    
+mfcol       = c(3,2),                                                           # Zeilen und Spaltenlayout 
+las         = 1,                                                                # x-Tick Orientierung
+cex         = .7,                                                               # Annotationsvergrößerung
+cex.main    = .9)                                                               # Titelvergrößerung
+x_min       = 12                                                                # x-Achsenlimit
+x_max       = 25                                                                # x-Achsenlimit
+y_min       = 0                                                                 # y-Achsenlimit
+y_max       = 45                                                                # y-Achsenlimit
+label       = c("", "", "Excel", "Sturges", "Scott")                            # Titel
+
+# Histogramme mit vordefinierter Klassenanzahl und Klassenbreite
+for(i in 1:5){
+    hist(                                                                       # Histogramm
+    y,                                                                          # Datensatz
+    breaks  = bs[[i]],                                                          # breaks Argument
+    xlim    = c(x_min, x_max),                                                  # x-Achsenlimits
+    ylim    = c(y_min, y_max),                                                  # y-Achsenlimits
+    ylab    = "Häufigkeit",                                                     # y-Achsenbezeichnung
+    xlab    = "BDI",                                                            # x-Achsenbezeichnung
+    main    = sprintf(paste(label[i], "k = %.0f, d = %.2f"), ks[i],ds[i]))      # Titel
+}
+
+# R Default Histogramm
+hist(                                                                           # Histogramm
+y,                                                                              # Datensatz
+xlim    = c(x_min, x_max),                                                      # x-Achsenlimits
+ylim    = c(y_min, y_max),                                                      # y-Achsenlimits
+ylab    = "Häufigkeit",                                                         # y-Achsenbezeichnung
+xlab    = "",                                                                   # x-Achsenbezeichnung
+main    = "R Default")                                                          # Titel
+mtext(LETTERS[6], adj=0, line=2, cex = 1.2, at = 8)                             # Subplot Buchs
+dev.off()                                                                       # Beenden der Abbildungsbearbeitung
+```
+\normalsize
+
+![Histogramme der absoluten Häufigkeiten der Pre-Interventions-BDI-II-Werte. Man beachte,
+dass der qualitative Eindruck, dass im Datensatz Werte um 18 gehäuft auftreten und niedrigere
+und höhere Werte seltener sind, über alle Wahlen der Klassenanzahl konstant ist. Das
+genaue quantitative Erscheinungsbild ist dagegen von der exakten Wahl der Klassenanzahl
+und Klassenbreite abhängig.](./_figures/111-histogramme){#fig-histogramme fig-align="center" width=90%}
+
+## Empirische Verteilungsfunktionen {#sec-empirische-verteilungsfunktionen}
+
+Neben der Frage, wie häufig in einem Datensatz bestimmte Werte oder Klassen von 
+Werten vorkommen, kann es interessant sein, zu untersuchen, wie häufig Werte vorkommen,
+die kleiner als ein bestimmter Wert sind. Obwohl die Antwort auf diese Frage natürlich
+in den absoluten und relativen Häufigkeiten bzw. den entsprechenden Histogrammen
+implizit ist, ist es manchmal von Vorteil, diese Information direkt verfügbar zu haben.
+Die in diesem Abschnitt eingeführten Begriffe der *kumulativen absoluten 
+und relativen Häufigkeitsverteilung* sowie der *empirischen Verteilungsfunktion*
+bezeichnen die entsprechenden Analoga zu den in @sec-haeufigkeitsverteilungen
+und @sec-histogramme diskutierten Begriffen. Wir beginnen mit der Definition 
+der *kumulativen absoluten* und *kumulativen relativen Häufigkeitsverteilungen*. 
+
+:::{#def-kumulative-absolute-und-relative-haeufigkeitsverteilungen}
+## Kumulative absolute und relative Häufigkeitsverteilungen
+$y = (y_1,...,y_n)$ sei ein Datensatz, $W := \{w_1,...,w_k\}$ mit $k \le n$ die 
+im Datensatz vorkommenden Zahlenwerte und $h$ und $r$ die absoluten und 
+relativen Häufigkeitsverteilungen der Werte von $y$, respektive. 
+Dann heißt die Funktion
+\begin{equation}
+H : W \to \mathbb{N}, w \mapsto H(w) := \sum_{w' \le w} h(w')
+\end{equation}
+die *kumulative absolute Häufigkeitsverteilung* von $y$ und die Funktion
+\begin{equation}
+R : W \to [0,1], w \mapsto R(w) : =\sum_{w' \le w} r(w')
+\end{equation}
+die *kumulative relative Häufigkeitsverteilung* der Zahlwerte von $y$.
+:::
+
+Im Sinne der Definition @def-absolute-und-relative-haeufigkeitsverteilungen gilt
+für die kumulativen Häufigkeitsverteilungen also 
+\begin{equation}
+H(w) = \mbox{Anzahl der } y_i \mbox{ aus } y \mbox{ mit } y_i \le w
+\end{equation}
+und
+\begin{equation}
+R(w) = \mbox{Anzahl der } y_i \mbox{ aus } y \mbox{ mit } y_i \le w \mbox{ geteilt durch } n.
+\end{equation}
+
+In **R** erlaubt die Funktion `cumsum()` die Berechnung kumulativer Summen und 
+ermöglicht damit die Auswertung kumulativer Häufigkeitsverteilungen, wie folgender
+**R** Code anhand des Beispieldatensatzes demonstriert.
+
+\tiny
+```{r}
+D           = read.csv("./_data/111-deskriptive-statistik.csv")                 # Laden des Datensatzes
+y           = D$PRE                                                             # Pre-Interventions-BDI-II-Daten
+n           = length(y)                                                         # Anzahl der Datenwerte
+H           = as.data.frame(table(y))                                           # absolute Häufigkeitsverteilung als Dataframe
+names(H)    = c("w", "h")                                                       # Spaltenbenennung
+H$H         = cumsum(H$h)                                                       # kumulative absolute Häufigkeitsverteilung
+H$r         = H$h/n                                                             # relative Häufigkeitsverteilung
+H$R         = cumsum(H$r)                                                       # kumulative relative Häufigkeitsverteilung
+print(H, digits = 1)
+```
+\normalsize
+
+Man beachte dabei insbesondere die Gegenüberstellung von `h` und `H` sowie
+von `r` und `R`, die die kumulativen Summen in @def-kumulative-absolute-und-relative-haeufigkeitsverteilungen
+verdeutlichen. Folgender **R** Code ermöglicht die Darstellung der so bestimmten
+kumulativen Häufigkeitsverteilungen wie in @fig-kumulative-haeufigkeitsverteilungen
+gezeigt. Offensichtlich ist die absolute und die relative Häufigkeit von Werten
+kleiner als der kleinste Wert im Datensatz Null. Die absolute und relative Häufigkeit
+von Werten kleiner als der größte Wert im Datensatz ist dagegen $n$ bzw. $n/n = 1$.
+
+\tiny
+```{r, eval = F}
+pdf(								                                            # PDF Kopiefunktion
+file        = "./_figures/111-kumulative-haeufigkeitsverteilungen.pdf",         # Dateiname
+width       = 10, 							                                    # Breite (inch)
+height      = 5)        					                                    # Höhe (inch)
+H           = H$H                                                               # H(w) Werte
+R           = H$R                                                               # R(w) Werte
+names(Hw)   = H$w                                                               # barplot braucht w Werte als names
+names(Rw)   = H$w                                                               # barplot braucht w Werte als names
+par(                                                                            # Abbildungsparameter    
+mfcol   = c(1,2),                                                               # Zeilen und Spaltenlayout 
+las     = 1,                                                                    # x-Tick Orientierung
+cex     = 1)                                                                    # Annotationsvergrößerung
+barplot(                                                                        # Balkendiagramm
+H,                                                                              # H(w) Werte
+col         = "gray90",                                                         # Balkenfarbe
+xlab        = "w",                                                              # x-Achsenbeschriftung
+ylab        = "H(w)",                                                           # y-Achsenbeschriftung
+ylim        = c(0,110),                                                         # y-Achsenlimits
+las         = 1,                                                                # Achsenticklabelorientierung 
+main        = "Absolute kumulative Häufigkeit PRE")                             # Titel
+barplot(                                                                        # Balkendiagramm
+R,                                                                              # R(w) Werte
+col         = "gray90",                                                         # Balkenfarbe
+xlab        = "w",                                                              # x-Achsenbeschriftung
+ylab        = "R(w)",                                                           # y-Achsenbeschriftung
+ylim        = c(0,1),                                                           # y-Achsenlimits
+las         = 1,                                                                # Achsenticklabelorientierung 
+main        = "Relative kumulative Häufigkeit PRE")                             # Titel
+dev.off()                                                                       # Beenden der Abbildungsbearbeitung
+```
+\normalsize 
+
+![Absolute und relative kumulative Häufigkeitsverteilungen der Pre-Interventions-BDI-II-Werte .](./_figures/111-kumulative-haeufigkeitsverteilungen){#fig-kumulative-haeufigkeitsverteilungen fig-align="center" width=80%}
+
+Das kumulative Analogon zu einem Histogramm ist die *empirische Verteilungsfunktion*.
+Im Unterschied zu einem Histogramm ist für die Bestimmung einer empirischen
+Verteilungsfunktion allerdings keine Definition von Klassen erforderlich. An die
+Stelle der Intervalleinteilung der reellen Zahlen zwischen dem Minimum und dem 
+Maximum eines Datensatz treten bei der empirischen Verteilungsfunktion einfach
+die reellen Zahlen, wie folgende Definition verdeutlicht.
+
+:::{#def-empirische-verteilungsfunktion}
+## Empirische Verteilungsfunktion
+$y = (y_1,...,y_n)$ sei ein Datensatz. Dann heißt die Funktion
+\begin{equation}
+F : \mathbb{R} \to [0,1], x \mapsto F(x)
+:= \frac{\mbox{Anzahl der } y_i \mbox{ aus } y \mbox{ mit } y_i \le x}{n}
+\end{equation}
+die empirische Verteilungsfunktion (EVF) von $y$.
+:::
+
+Die empirische Verteilungsfunktion wird manchmal auch die *empirische kumulative 
+Verteilungsfunktion* genannt. Allgemein beschränkt man sich bei der empirischen
+Verteilungsfunktion wie in @def-empirische-verteilungsfunktion auf die Angabe
+der relativen Häufigkeiten. Natürlichweise kommen in Datensätzen nicht alle reellen
+Zahlen vor. Dies impliziert, dass die relative Häufigkeit, die reellen Zahlen zugeordnet
+wird, die zwischen zwei benachbarten Werten des Datensatzes liegen, derjenigen 
+des kleineren der beiden Werte entspricht. Typischerweise sind empirische Verteilungsfunktionen 
+also Treppenfunktionen. In **R** kann die Funktion `ecdf()` zur Evaluation und
+Visualisierung der empirischen Verteilungsfunktion eingesetzt werden, wie folgender
+**R** Code anhand des Beispieldatensatzes demonstriert und in @fig-ecdf visualisiert
+ist.  Man liest aus @fig-ecdf zum Beispiel ab, dass die relative Häufigkeit von 
+Werten kleiner als 17.9 etwa 0.3 ist. Die gleiche relative Häufigkeit haben 
+Werte kleiner als 17.8. 
+
+\tiny
+```{r, eval = F}        
+D       = read.csv("./_data/111-deskriptive-statistik.csv")                     # Laden des Datensatzes
+y       = D$PRE                                                                 # Pre-Interventions-BDI-II-Daten 
+evf	    = ecdf(y)                                                               # Evaluation der EVF
+pdf(								                                            # PDF Kopiefunktion
+file    = "./_figures/111-ecdf.pdf",                                            # Dateiname
+width   = 8, 							                                        # Breite (inch)
+height  = 5)        					                                        # Höhe (inch)
+plot(                                                                           # plot() weiß mit ecdf object umzugehen
+evf,                                                                            # ecdf Objekt
+xlab    = "BDI",                                                                # x-Achsenbeschriftung
+ylab    = "Relative Häufigkeit",                                                # y-Achsenbeschriftung
+main    = "Empirische Verteilungsfunktion")                                     # Titel
+dev.off()                                                                       # Beenden der Abbildungsbearbeitung      
+```
+\normalsize
+
+![Empirische Verteilungsfunktion der PRE Werte.](./_figures/111-ecdf){#fig-ecdf fig-align="center" width=80%}
+
+## Quantile und Boxplots {#sec-quantile-und-boxplots}
+
+Die empirische Verteilungsfunktion gibt eine zumindest graphisch dargestellte
+Antwort auf die Frage, wie groß der relative Anteil der Werte eines Datensatzes ist,
+die kleiner als ein gegebener Wert sind. Die in diesem Abschnitt eingeführten 
+Quantile können als Inversion dieser Datensatzinterrogation verstanden werden. 
+Speziell gibt man bei Quantilen einen relativen Anteil $0 \le p \le 1$ der Werte 
+eines Datensatzes vor und fragt, welcher Wert des Datensatzes so beschaffen ist,
+dass eben $p \cdot 100 \%$ der Werte des Datensatzes kleiner als oder gleich diesem
+Wert sind. Wir nutzen folgende Definition des Begriffs des *$p$-Quantils*.
+
+:::{#def-p-quantil}
+## $p$-Quantil
+$y = (y_1,...,y_n)$ sei ein Datensatz und
+\begin{equation}
+y_s = \left(y_{(1)}, y_{(2)}, ...,y_{(n)}\right) \mbox{ mit }
+\min_{1 \le i \le n} y_i = y_{(1)} \le y_{(2)} \le \cdots \le y_{(n)} = \max_{1 \le i \le n} y_i
+\end{equation}
+sei der zugehörige aufsteigend sortierte Datensatz. Weiterhin bezeichne $\lfloor \cdot \rfloor$ 
+die Abrundungsfunktion. Dann heißt für ein $p \in [0,1]$ die Zahl
+\begin{equation}
+y_p :=
+\begin{cases}
+y_{(\lfloor np + 1 \rfloor)} & \mbox{ falls } np \neq \mathbb{N} \\
+\frac{1}{2}\left(y_{(np)} +  y_{(np + 1)}\right) & \mbox{ falls } np \in \mathbb{N} \\
+\end{cases}
+\end{equation}
+das *$p$-Quantil* des Datensatzes $y$.
+:::
+Man beachte, dass das $p$-Quantil $y_p$ nach @def-p-quantil entweder ein Wert 
+des Datensatzes oder ein Wert zwischen zwei Werten des Datensatzes ist. Nach Konstruktion
+von $y_p$ gilt dabei insbesondere, dass mindestens $p \cdot 100\%$ aller Werte 
+des Datensatzes kleiner oder gleich $y_p$ und mindestens $(1-p) \cdot 100\%$ aller 
+Werte des Datensatzes größer als $y_p$ sind. Das $p$-Quantil teilt den geordneten 
+Datensatz $y_s$ also im Verhältnis $p$ zu $(1-p)$ auf. Je nach Wahl von $p$
+erhalten die $p$-Quantile spezielle Bezeichnungen: 
+
+* $y_{0.25}, y_{0.50}, y_{0.75}$ heißen *unteres Quartil*, *Median* und *oberes Quartil*, respektive,
+* $y_{j\cdot 0.10}$ für $j = 1,...,9$ heißen *Dezile* und
+* $y_{j\cdot 0.01}$ für $j = 1,...,99$ heißen *Percentile*.
+
+Um den Begriff des $p$-Quantils zu verdeutlichen, betrachten wir ein an 
+@henze2018, Kapitel 5 orientiertes Beispiel. Dazu seien zunächst der in 
+untenstehender Tabelle dargestellte Datensatz und seine aufsteigend sortierte Version gegeben.
+
+\begin{center}
+\begin{tabular}{c|ccccccccccc}
+$i$
+& 1
+& 2
+& 3
+& 4
+& 5
+& 6
+& 7
+& 8
+& 9
+& 10
+\\\hline
+$y_i$
+& 8.5
+& 1.5
+& 75
+& 4.5
+& 6.0
+& 3.0
+& 3.0
+& 2.5
+& 6.0
+& 9.0
+\\
+$y_{(i)}$
+& 1.5
+& 2.5
+& 3.0
+& 3.0
+& 4.5
+& 6.0
+& 6.0
+& 8.5
+& 9.0
+& 75
+\end{tabular}
+\end{center}
+
+Wir wollen als erstes das untere Quartil, also das $0.25$-Quantil, dieses Datensatzes
+bestimmen. Es ist offenbar $n = 10$ und wir haben $p := 0.25$ gewählt. Basierend auf
+@def-p-quantil finden wir, dass 
+\begin{equation}
+np = 10 \cdot 0.25 = 2.5 \notin \mathbb{N}.
+\end{equation}
+Also gilt nach @def-p-quantil, dass
+\begin{equation}
+y_{0.25} = x_{(\lfloor 2.5 + 1\rfloor)} = x_{(3)} = 3.0.
+\end{equation}
+Das untere Quartil des betrachteten Datensatzes ist also der Wert $3.0$
+des Datensatzes.
+
+Als zweites wollen wir das $0.80$-Quantil des Datensatzes bestimmten. Es ist 
+offenbar weiterhin $n = 10$ und wir haben nun $p := 0.80$ gewählt. Wir finden 
+in diesem Fall, dass  
+\begin{equation}
+np = 10 \cdot 0.80 = 8 \in \mathbb{N}. 
+\end{equation}
+Also folgt nach @def-p-quantil
+\begin{equation}
+y_{0.80} 
+= \frac{1}{2} \left(y_{(8)} + y_{(8 + 1)}\right) 
+= \frac{1}{2}\left(y_{(8)} + y_{(9)}\right)
+= \frac{8.5 + 9.0}{2} 
+= 8.75.
+\end{equation}
+Das $y_{0.80}$-Quantil des betrachteten Datensatzes ist mit $8.75$ also der Wert
+zwischen den Werten $8.5$ und $9$ des Datensatzes. In **R** wertet man die so 
+bestimmten Quantile wie folgt aus. 
+
+\tiny
+```{r}
+y   = c(8.5,1.5,12,4.5,6.0,3.0,3.0,2.5,6.0,9.0)                                 # Beispieldaten
+n   = length(y)                                                                 # Anzahl Datenwerte
+y_s = sort(y)                                                                   # sortierter Datensatz
+p   = 0.25                                                                      # np \notin \mathbb{N}
+y_p = y_s[floor(n*p + 1)]                                                       # 0.25 Quantil
+cat("0.25 Quantil: ", round(y_p,2))                                             # Ausgabe
+p   = 0.80                                                                      # np \in \mathbb{N}
+y_p = (1/2)*(y_s[n*p] + y_s[n*p + 1])                                           # 0.80 Quantil
+cat("0.80 Quantil: ", round(y_p,2))                                             # Ausgabe
+```
+\normalsize
+
+Mit `quantile()` stellt **R** auch eine Funktion bereit, die die Quantilbestimmung 
+eines  Datensatzes automatisiert. Dabei ist allerdings zu beachten, dass die in @def-p-quantil 
+gegebene Definition des Quantilsbegriffs nur eine von mindestens neun verschiedenen
+Quantildefinitionen ist und die genauen Werte sich von Definition zu Definition 
+unterscheiden können. Die spezielle Quantildefinition, die von `quantile()` 
+genutzt wird, wird über das Funktionsargument `type` ausgewählt. Auf theoretischer
+Ebene geben @hyndman1996 dazu einen Überblick, auf Implementationsebene `?quantile`.
+Wir betrachten exemplarisch die Bestimmung des $0.25$-Quantils Pre-Interventions
+BDI Beispieldatensatzes anhand von `type = 8`.
+
+\tiny
+```{r}
+D       = read.csv("./_data/111-deskriptive-statistik.csv")                     # Laden des Datensatzes
+y       = D$PRE                                                                 # Pre-Interventions-BDI-II-Daten 
+y_p     = quantile(y, 0.25, type = 8)                                           # 0.25 Quantil, Definition 1
+```
+```{r, echo = F}
+cat("0.25 Quantil (Type = 8): ", y_p)                                           # Ausgabe
+```
+\normalsize
+
+Ein *Boxplot* schließlich visualisiert eine Quantil-basierte Zusammenfassung 
+eines Datensatzes, wobei typischerweise das Minimum und das Maximum eines Datensatzes
+sowie das untere Quartil, der Median und das obere Quartil visualisiert werden.
+In **R** erstellt man einen Boxplot mithilfe der `boxplot()` Funktion, wie folgender
+**R** Code anhand des Pre-Interventions-BDI-II-Datensatzes demonstriert.
+
+
+\tiny
+```{r, eval = F}
+D           = read.csv("./_data/111-deskriptive-statistik.csv")                 # Laden des Datensatzes
+pdf(                                                                            # PDF Kopiefunktion
+file        = "./_figures/111-boxplot.pdf",                                     # Dateiname
+width       = 8, 							                                    # Breite (inch)
+height      = 5)                                                                # Höhe (inch) 
+boxplot(                                                                        # Boxplot
+D$PRE,                                                                          # Datensatz
+horizontal  = T,                                                                # horizontale Darstellung
+range       = 0,                                                                # Whiskers bis zu min y und max y
+xlab        = "BDI",                                                            # x Achsenbeschriftung
+main        = "Boxplot")                                                        # Titel
+dev.off()                                                                       # Beenden der Abbildungsbearbeitung
+```
+\normalsize
+![Boxplot der Pre-Interventions-BDI-Werte des Beispieldatensatzes.](./_figures/111-boxplot){#fig-boxplot fig-align="center" width=80%}  
+
+In @fig-boxplot werden $\min y$ und $\max y$ als sogenannte "Whiskerendpunkte" dargestellt, 
+$y_{0.25}$  und $y_{0.75}$ bilden die unteren und oberen Grenze der zentralen grauen Box und 
+der Median $y_{0.50}$ wird als Strich in der zentralen grauen Box abgebildet. Auch hier
+gilt, dass es sehr viele Boxplotvariationen gibt, vgl. @mcgill1978. Eine genaue
+Erläuterung der graphisch dargestellten Datensatzeigenschaften ist also folglich
+immer nötig. Schließlich sei angemerkt, dass die Darstellung von Datensätzes 
+mithilfe von Boxplots in den letzten zwanzig Jahren etwas aus der Mode gekommen
+ist und man sie nur noch sehr selten in aktuellen wissenschaftlichen Publikationen findet.
+
+
+## Maße der Zentralen Tendenz {#sec-masse-der-zentralen-tendenz}
+
+In diesem Abschnitt betrachten wir einige grundlegende Kennzahlen von Datensätzen,
+die für die deskriptive Statistik zentral sind und Aussagen zu dem "durchschnittlichen"
+Wert eines Datensatzes machen. Wir beginnen mit der Definition des Mittelwerts.
+
+### Mittelwert {#sec-mittelwert}
+:::{#def-mittelwert}
+## Mittelwert
+$y = (y_1,...,y_n)$ sei ein Datensatz. Dann heißt
+\begin{equation}
+\bar{y} := \frac{1}{n}\sum_{i=1}^n y_i
+\end{equation}
+der *Mittelwert* von $y$.
+:::
+
+Der Mittelwert eines Datensatzes ist also die Summe der Datenwerte geteilt durch
+die Anzahl der Datenwerte. Der hier definierte Mittelwert wir auch als *arithmetisches Mittel*
+oder *Durchschnitt* bezeichnet. Im Kontext der Frequentistischen Inferenz werden 
+wir den Mittelwert vor dem Hintergrund des Modells der Zufallsstichprobe als 
+*Stichprobenmittel* bezeichnen. Insbesondere erlauben die Modelle der Frequentistischen
+Inferenz auch, die funktionale Form des Mittelwertes tiefer zu begründen, wie wir
+an gegebener Stelle sehen werden. Mithilfe der Summenfunktion berechnet man den 
+Mittelwert eines Datensatzes in **R** wie folgt.
+
+\tiny
+```{r}
+D       = read.csv("./_data/111-deskriptive-statistik.csv")                     # Laden des Datensatzes
+y 		= D$PRE 			                                                    # Pre-Interventions-BDI-II-Daten
+n 	    = length(y)	    		                                                # Anzahl der Werte
+y_bar   = (1/n)*sum(y)			                                                # Mittelwertsberechnung
+```
+```{r, echo  = F}
+cat("Mittelwert der Pre-BDI-Interventions Daten ", y_bar)                       # Ausgabe
+```
+\normalsize 
+
+Mit der `mean()` Funktion stellt **R** natürlich auch eine Funktion zur 
+automatisierten Berechnung des Mittelwerts bereit.
+
+\tiny
+```{r}
+cat("Mittelwert der PRE-BDI-II-Daten ", mean(y))                                   # Ausgabe
+```
+\normalsize
+
+In folgendem Theorem halten wir zunächst zwei Eigenschaften des Mittelwerts eines
+Datensatzes fest, die seine Einordung als Maß der zentralen Tendenz eines Datensatzes
+plausibel machen.
+
+:::{#thm-zentralitaetseigenschaften-des-mittelwerts}
+## Zentralitätseigenschaften des Mittelwerts
+$y = (y_1,...,y_n)$ sei ein Datensatz und $\bar{y}$ sei der Mittelwert von $y$.
+Dann gelten
+
+(1) Die Summe der Abweichungen vom Mittelwert ist Null,
+\begin{equation}
+\sum_{i=1}^n (y_i - \bar{y}) = 0.
+\end{equation}
+(2) Die absoluten Summen negativer und positiver Abweichungen vom Mittelwert 
+sind gleich, d.h. wenn $j = 1,...,n_j$ die Datenpunktindizes mit $(y_j - \bar{y}) < 0$ 
+und $k = 1,...,n_k$ die Datenpunktindizes mit $(y_k - \bar{y}) \ge$ bezeichnen, 
+dann gilt mit $n_j + n_k$, dass
+\begin{equation}
+\vert\sum_{j = 1}^{n_j} (y_j - \bar{y})\vert = \vert\sum_{k = 1}^{n_k} (y_k - \bar{y})\vert.
+\end{equation}
+::: 
+
+:::{.proof}
+\noindent (1) Es gilt
+\begin{align}
+\begin{split}
+\sum_{i=1}^n (y_i - \bar{y})
+& = \sum_{i=1}^n y_i - \sum_{i=1}^n \bar{y}                 \\
+& = \sum_{i=1}^n y_i - n\bar{y}                             \\
+& = \sum_{i=1}^n y_i - \frac{n}{n}\sum_{i=1}^n y_i          \\
+& = \sum_{i=1}^n y_i - \sum_{i=1}^n y_i                     \\
+& = 0.
+\end{split}
+\end{align}
+
+\noindent (2) Seien $j = 1,...,n_j$ die Indizes mit $(y_j - \bar{y}) < 0$ und
+$k = 1,...,n_k$ die Indizes mit $(y_k - \bar{y}) \ge 0$, so dass $n = n_j + n_k$.
+Dann gilt
+\begin{align}
+\begin{split}
+\sum_{i=1}^n (y_i - \bar{y}) & = 0 \\
+\Leftrightarrow
+\sum_{j=1}^{n_j} (y_j - \bar{y})  + \sum_{k=1}^{n_k} (y_k - \bar{y}) & = 0 \\
+\Leftrightarrow
+\sum_{k=1}^{n_k} (y_k - \bar{y})  & =  - \sum_{j=1}^{n_j} (y_j - \bar{y}) \\   
+\Leftrightarrow
+\vert\sum_{j = 1}^{n_j} (y_j - \bar{y})\vert & = \vert\sum_{k = 1}^{n_k} (y_k - \bar{y})\vert.
+\end{split}
+\end{align}
+::: 
+
+Nach @thm-zentralitaetseigenschaften-des-mittelwerts liegt der Mittelwert eines
+Datensatzes also gerade so, dass sich in Summe die Abweichungen der Datenpunkte von 
+diesem Wert zu Null ausgleichen und dass sich positive und negative Abweichungen
+vom Mittelwert die Waage halten. In **R** kann man @thm-zentralitaetseigenschaften-des-mittelwerts
+am Beispieldatensatz wie folgt verifizieren.
+
+\tiny
+```{r}
+# Datensatz
+D       = read.csv("./_data/111-deskriptive-statistik.csv")                     # Laden des Datensatzes
+y 		= D$PRE 			                                                    # Pre-Interventions-BDI-II-Daten
+s	    = sum(y - mean(y))				                                        # Summe der Abweichungen vom Mittelwert
+s_1     = sum(y[y <= mean(y)] - mean(y))	                                    # Summe aller negativen Abweichungen
+s_2     = sum(y[y > mean(y)]  - mean(y)) 	                                    # Summe aller positiven Abweichungen
+```
+```{r, echo  = F}
+# Ausgabe
+cat("Summe der Abweichungen vom Mittelwert           : ", round(s,2),
+    "\nSummen der positiven und negativen Abweichungen : ", round(s_1,2), round(s_2,2))	
+```
+\normalsize
+
+
+:::{#thm-summationseigenschaften-des-mittelwerts}
+## Summationsseigenschaften des Mittelwerts
+Gegeben seien zwei Datensätze $y = (y_1,...,y_n)$ und $z = (z_1,...,z_n)$ gleichen
+Umfangs und es sei durch
+\begin{equation}
+y + z := (y_1 + z_1,...,y_n + z_n)
+\end{equation}
+die Summe dieser Datensätze definiert. Weiterhin seien $\bar{y}$ und $\bar{z}$ 
+die Mittelwerte der Datensätze $y$ und $z$, respektive. Dann gilt \begin{equation}
+\overline{y + z} = \bar{y} + \bar{z}
+\end{equation}
+::: 
+
+:::{.proof}
+\noindent Es gilt
+\begin{align}
+\begin{split}
+\overline{y + z}
+& := \frac{1}{n}\sum_{i=1}^n (y_i + z_i)                            \\
+& = \frac{1}{n}\sum_{i = 1}^n y_i + \frac{1}{n}\sum_{i = 1}^n z_i   \\
+& =: \bar{y} + \bar{z}.
+\end{split}
+\end{align}
+::: 
+
+Betrachtet man die Summe zweier Datensätze, so ist es für die Bestimmung ihres
+Mittelwerts also unerheblich, ob man zunächst die Datensätze aufaddiert und dann
+den Mittelwert des summierten Datensatzes bestimmt oder ob man für jeden der
+beiden Datensätze den Mittelwert bestimmt und diese aufaddiert. Wir verifizieren
+dieses Ergebnis exemplarisch mithilfe der Pre- und Post-Interventions BDI-II-Daten
+des Beispieldatensatzes in **R** wie folgt.
+
+\tiny
+```{r}
+D           = read.csv("./_data/111-deskriptive-statistik.csv")                 # Laden des Datensatzes
+y 		    = D$PRE 					                                        # Pre-Interventions-BDI-II-Daten
+y_bar       = mean(y)					                                        # Mittelwert der Pre-Interventions-BDI-II-Daten
+z 		    = D$POS    			                                                # Post-Interventions BDI-II-Daten
+z_bar       = mean(z)					                                        # Mittelwert der Post-Interventions BDI-II-Daten
+yz_bar_1    = mean(y + z)			                                            # Mittelwert der summierten Pre- und Post-Daten 
+yz_bar_2 	= y_bar + z_bar	                                                    # Summe der Mittelwerte der Pre- und Post-Date
+```
+```{r, echo  = F}
+cat("Mittelwert von z                  : " , yz_bar_1, 
+    "\nSumme der Mittelwerte von x und y : " , yz_bar_2)
+```
+\normalsize
+
+
+:::{#thm-mittelwert-bei-linear-affiner-transformation}
+## Mittelwert bei linear-affiner Transformation
+$y = (y_1,...,y_n)$ sei ein Datensatz und $\bar{y}$ sei der Mittelwert von $y$.
+Weiterhin sei für $a,b \in \mathbb{R}$  mit 
+\begin{equation}
+ay + b := (ay_1 + b,...,ay_n + b)
+\end{equation}
+ein linear-affin transformierter Datensatz von $y$ definiert. Dann gilt, dass
+\begin{equation}
+\overline{ay + b} = a\bar{y} + b
+\end{equation}
+::: 
+
+:::{.proof}
+Es gilt
+\begin{align}
+\begin{split}
+\overline{ay + b}
+& := \frac{1}{n}\sum_{i=1}^n (ay_i + b) \\
+& = \sum_{i=1}^n \left(\frac{1}{n}ay_i + \frac{1}{n}b\right) \\
+& = \left(\sum_{i=1}^n \frac{1}{n}ay_i\right) + \left(\sum_{i=1}^n \frac{1}{n}b\right) \\
+& = a\left(\frac{1}{n}\sum_{i=1}^n y_i\right) + \frac{1}{n} \sum_{i=1}^n b \\
+& = a\bar{y} + \frac{1}{n} nb \\
+& = a\bar{y} + b.
+\end{split}
+\end{align}
+::: 
+
+Eine linear-affine Transformation eines Datensatz transformiert den Mittelwert 
+des Datensatzes also linear-affin. Dies kann man sich zunutze machen, wenn 
+man sich überlegt, wie der Mittelwert lauten sollte, wenn man einen Datensatz 
+neu skaliert, also z.B. von Gramm in Kilogramm umrechnet. Natürlich kann man 
+zur Sicherheit aber auch einfach den Mittelwert des neu skalierten Datensatzes
+bestimmen. Wir demonstrieren diese Eigenschaft exemplarisch durch Reskalierung 
+des Pre-Interventions-BDI-II-Datensatzes mit dem Wert $a = 2$ unter gleichzeitiger
+Addition der Konstante $b := 5$. 
+
+\tiny
+```{r}
+D           = read.csv("./_data/111-deskriptive-statistik.csv")                 # Laden des Datensatzes
+y 		    = D$PRE 					                                        # Pre-Interventions-BDI-II-Daten
+y_bar       = mean(y)						                                    # Mittelwert der Pre-Interventions-BDI-II-Daten
+a 		    = 2							                                        # Multiplikationskonstante
+b 		    = 5 							                                    # Additionskonstante
+z 		    = a*y + b						                                    # linear-affine Transformation der PRE Daten
+z_bar       = mean(z)					                                        # Mittelwert der transfomierten PRE Daten
+ay_bar_b    = a*y_bar + b      			                                        # Transformation des PRE Daten Mittelwerts
+```
+```{r, echo  = F}
+cat("Mittelwert des transformierten Datensatzes : ", z_bar, 
+    "\nTransformation des Mittelwertes            :", ay_bar_b)
+```
+\normalsize
+
+### Median {#sec-median}
+
+In den oben definierten Mittelwert geht jeder Wert eines Datensatzes summativ
+mit gleichem Gewicht $1/n$ ein. Dies betrifft insbesondere auch solche Werte,
+die im Vergleich zu den übrigen Werten des Datensatzes sehr untypisch sind. Eine
+Möglichkeit, die "Mitte" eines Datensatzes unabhängig von solchen untypischen Werten zu 
+bestimmen, besteht in der Bestimmung seines Medians, den wir nachfolgend definieren.
+Wir haben den Median bereits in Abschnitt @sec-quantile-und-boxplots als das 
+0.5-Quantil kennengelernt, mit dem er identisch ist. 
+
+:::{#def-median}
+## Median
+$y = (y_1,...,y_n)$ sei ein Datensatz und $y_{s} = (y_{(1)},...,y_{(n)})$ der
+zugehörige aufsteigend sortierte Datensatz. Dann ist der Median von $y$ definiert als
+\begin{equation}
+\tilde{y} :=
+\begin{cases}
+y_{((n+1)/2)}
+& \mbox{ falls } n \mbox{ ungerade},
+\\
+\frac{1}{2}\left(y_{(n/2)} + y_{(n/2 + 1)}\right)
+& \mbox{ falls } n \mbox{ gerade}.
+\end{cases}
+\end{equation}
+:::
+
+
+@def-median impliziert, dass mindestens 50% aller Datenwerte $y_i$ des Datensatzes 
+kleiner oder gleich $\tilde{y}$ sind und dass gleichzeitig mindestens 50% aller 
+Datenwerte $y_i$ des Datensatzes größer oder gleich $\tilde{y}$ sind. Anstelle 
+eines formalen Beweises dieser Aussagen verweisen wir auf @fig-median. Wie in der
+Definition des Medians unterscheiden wir dort die Fälle, dass die Anzahl der Datenpunkte
+ungerade ist (hier $n = 5$, @fig-median A) oder gerade ist ($n = 6$, @fig-median B).
+Im Fall der ungeraden Anzahl an Datenpunkten ist der Median der Datenwert mit der
+Indexzahl, die in der Mitte der Indexzahlen des sortierten Datensatzes liegt, im 
+Beispiel @fig-median A also der Wert $y_{(3)}$. Damit sind im vorliegenden Fall
+$3/5$, also $60\%$ der Datenwerte (speziell $y_{(1)}$, $y_{(2)}$ und $y_{(3)}$) 
+kleiner oder gleich dem Median, gleichzeitig aber auch  $3/5$, also $60\%$ der 
+Datenwerte (speziell $y_{(3)}$, $y_{(4)}$ und $y_{(5)}$) größer oder gleich dem Median.
+Im Fall einer geraden Anzahl von Datenpunkten ist die Lage des Medians etwas intuitiver:
+Der Median liegt in der Mitte der beiden mittleren Werte des sortierten Datensatzes
+(in @fig-median B speziell in der Mitte der Werte $_{(3)}$ und  $y_{(4)}$). Damit sind
+dann $3/6$, also $50\%$ der Datenwerte (speziell $y_{(1)}$, $y_{(2)}$ und $y_{(3)}$) 
+kleiner als der Median und $3/6$, also $50\%$ der Datenwerte 
+(speziell $y_{(4)}$, $y_{(5)}$ und $y_{(6)}$) größer als der Median.
+
+![Bestimmung und Eigenschaften des Medians.](./_figures/111-median){#fig-median fig-align="center" width=80%}
+
+
+Folgender **R** Code bestimmt den Median des Beispieldatensatzes anhand von @def-median
+
+\tiny
+```{r}
+D           = read.csv("./_data/111-deskriptive-statistik.csv")                 # Laden des Datensatzes
+y 		    = D$PRE 					                                        # Pre-Interventions-BDI-II-Daten
+n 			= length(y)                                                         # Anzahl der Werte
+y_s  		= sort(y)                                                           # aufsteigend sortierter Vektor
+if(n %% 2 == 1){                                                                # n ungerade, n mod 2 == 1    
+   y_tilde = y_s[(n+1)/2]                                                       # Medianformel, Fall n ungerade
+} else {                                                                        # n gerade, n mod 2 == 0
+   y_tilde = (y_s[n/2] + y_s[n/2 + 1])/2}                                       # Medianformel, Fall n gerade
+```
+```{r, echo = F}
+cat("Median der PRE-BDI-II-Daten: ", y_tilde)                                    # Ausgabe
+```
+\normalsize
+Natürlich stellt **R** mit  `median()` auch eine Funktion zur direkten Bestimmung,
+wie folgender **R** Code demonstriert.
+
+\tiny
+```{r}
+cat("Median der PRE-BDI-II-Daten: ", median(y))                                  # Ausgabe
+```
+\normalsize
+
+Folgende Simulation zeigt beispielhaft, dass der Median als Maß der Mitte eines
+Datensatzes weniger anfällig für Ausreißer ist als der Mittelwert.
+
+\tiny
+```{r}
+D           = read.csv("./_data/111-deskriptive-statistik.csv")                  # Laden des Datensatzes
+y 		    = D$PRE 					                                         # Pre-Interventions-BDI-II-Daten
+```
+```{r, echo = F}
+cat("Mittelwert und Median für Datensatz ohne Ausreißer: ", mean(y), median(y))    # Ausgabe
+```
+```{r}
+z 		    = y							                                         # neuer simulierter Datensatz 
+z[1] 	    = 10000 					                                         # ... mit einem Extremwert
+```
+```{r, echo = F}
+cat("Mittelwert und Median für Datensatz mit Ausreißer: ", mean(z), median(z))     # Ausgabe
+```
+\normalsize
+
+Obwohl der Median also als robusteres Maß für die zentrale Tendenz eines Datensatzes
+als der Mittelwert erscheint, ist die Bestimmung von Mittelwerten sicherlich das
+üblichere Vorgehen. Dies ist einerseits dadurch begründet, dass sich der Mittelwert
+aufgrund seiner mathematisch weniger komplexen Definition einfacher im analytischen
+Kontext zur Gestaltung von probabilistischen Modellen eignet. Andererseits ist 
+das Auftreten von Extremwerten üblicherweise ein Anzeichen von Datenerhebungsfehlern
+(z.B. sollte eine BDI-II Wert von 10.000 schlicht nicht vorkommen) oder großen
+unterschieden zwischen den betrachteten experimentellen Einheiten, die durch visuelle
+Inspektion des Datensatzes meist vor der Bestimmung von Maßen der zentralen Tendenz
+auffallen. Es gibt allerdings ein ganzes Unterfeld der Statistik, dass sich mit - 
+im weitesten Sinne - Ausreißer unabhängigen Maßen beschäftigt, vgl. z.B. @huber1981.  
+
+### Modalwert {#sec-modalwert}
+
+Wenn in einem Datensatz manche Werte wiederholt auftreten, ist mit dem *Modalwert* als
+dem in einem Datensatz am häufigsten vorkommenden Wert ein drittes Maß der zentralen
+Tendenz gegeben. Wir nutzen folgende Definition.
+
+:::{#def-modalwert}
+## Modalwert
+$y := (y_1,...,y_n)$ mit $y_i \in \mathbb{R}$ sei ein Datensatz, $W := \{w_1,...,w_k\}$ 
+mit $k \le n$ seien die im Datensatz vorkommenden verschiedenen Zahlenwerte und
+$h : W \to \mathbb{N}$ sei die absolute Häufigkeitsverteilung der Zahlwerte von $y$.
+Dann ist der *Modalwert (oder Modus)* von $y$ definiert als
+\begin{equation}
+\mbox{argmax}_{w \in W} h(w),
+\end{equation}
+also als der im Datensatz am häufigsten vorkommende Wert.
+:::
+
+In **R** kann man den Modalwert eines entsprechenden Datensatzes wie folgt bestimmen.
+
+\tiny
+```{r}
+D           = read.csv("./_data/111-deskriptive-statistik.csv")                 # Laden des Datensatzes
+y 		    = D$PRE 					                                        # Pre-Interventions-BDI-II-Daten
+n           = length(y)                                                         # Anzahl der Datenwerte (100)
+H           = as.data.frame(table(y))                                           # absolute Haeufigkeitsverteilung (dataframe)
+names(H)    = c("a", "w")                                                       # konsistente Benennung
+mode        = H$w[which.max(H$w)]                                               # Modalwert
+```
+```{r}
+cat("Modalwert der PRE-BDI-II-Daten: ", as.numeric(as.vector(mode)))            # Ausgabe als numeric vector, nicht factor
+```
+\normalsize
+
+### Datenverteilungsformen und Maße zentraler Tendenz
+
+Wie sinnhaft es ist, mit dem Mittelwert, dem Median oder dem Modalwert eine
+Angabe über die zentrale Tendenz eines Datensatzes zu geben, hängt stark von 
+der Beschaffenheit des Datensatzes ab. Hat man beispielsweise einen Datensatz
+hochaufgelöster Daten vorliegen, in dem kein Datenwert mehrfach auftaucht, eignet sich
+der Modalwert sicherlich nicht, um eine quantitative Aussage über die zentrale Tendenz
+des Datensatzes zu machen. Man sollte die Angabe eines Maßes der zentralen Tendenz
+also immer im Kontext der Gesamtbeschaffenheit des Datensatzes sowie, wenn zutreffend, 
+des inferenzstatistischen Modells, das man zur Interrogation des 
+Datensatzes nutzt, betrachten. In @fig-visuelle-intuition geben wir vier Beispiele, 
+wie sich die oben betrachteten Maße der zentralen Tendenz in verschiedenen Szenarien 
+der Datenwertverteilung verhalten können, Diese vier Szenarien sind natürlich 
+nicht erschöpfend und jeder Datensatz ist in Hinblick auf ein sinnvolles Maß 
+der zentralen Tendenz kritisch zu betrachten.
+
+@fig-visuelle-intuition A visualisiert die Lage von Mittelwert, Median und Modalwert 
+in einem Datenzatz, der sich symmetrisch um einen Wert von etwa $y = 50$ verteilt 
+und für den Werte nah bei diese zentralen Wert häufig
+vorkommen und Werte fern von diesem zentralen Wert eher selten. Wie wir später
+sehen, entspricht dies den typischen Charakteristika normalverteilter Datenwerte.
+In diesem Fall liegen Mittelwert, Median und Modalwert recht nahe beieinander
+und jedes dieser Maße beschreibt in der Tat die zentrale Tendenz des Datensatzes.
+
+@fig-visuelle-intuition B visualisiert die Lage von Mittelwert, Median und Modalwert 
+in einem Datenzatz, in dem die Datenwerte um zwei Werte von 
+von etwa $y = 25$ und $y = 75$ gehäuft auftreten und jeweils in positive 
+und negative Richtung von diesen Werten entfernt eher selten auftreten. So liegen
+zum Beispiel um  $y = 50$ recht wenige Datenpunkte dieses Datensatzes. Mittelwert
+und Median nehmen nun aber gerade Werte um $y = 50$ an. Als solche tragen sie
+bei diesem Datensatz also keine Bedeutungdarüber, welche Werte besonders häufig vorkommen, 
+sondern lediglich darüber, wo sich der mittlere "physikalische Schwerpunkt" des 
+Datensatzes befindet. Der Modalwert hingegen liegt, aufgrund
+des etwas häufigeren Auftretens von Werten um $y = 75$, bei dem größeren der
+beiden Datenhäufungspunkte. Insgesamt betrachtet beschreibt keines der drei Maße
+bei einem solchen Datensatz, den man auch *bimodal* nennt, die zentrale Tendenz
+der Datenwerte wirklich zufriedenstellend.
+
+@fig-visuelle-intuition C visualisiert die Lage von Mittelwert, Median und Modalwert 
+in einem Datenzatz, in dem die Datenwerte in der betrachteten Breite
+etwa durchgängig gleichhäufig auftreten. Hier liegt der Modalwert relativ arbiträr
+bei etwa $y = 15$, da sich dort eine minimale Häufung von Datenwerten zeigt. 
+Mittelwert und Median liegen wiederrum im Sinne des "physikalischen Schwerpunkts"
+des Datensatzes bei etwa $y = 50$, auch wenn die Werte dieses Datensatzes dort
+keinerlei Tendenz haben, häufiger als anderorts aufzutreten. Wirklich zufriedenstellend 
+ist auch hier die Beschreibung der zentralen Tendenz des Datensatzes durch die 
+betrachteten Maße nicht. Zusammen betrachtet kann man anhand
+von @fig-visuelle-intuition B und @fig-visuelle-intuition C vielleicht festhalten,
+dass wenn ein Datensatz keine klare zentrale Tendenz hat, die Maße der zentralen
+Tendenz diese auch nicht abbilden können.
+
+
+@fig-visuelle-intuition D schließlich zeigt die Lage von Mittelwert, Median, und 
+Modalwert für einen Datensatz, der schiefsymmetrisch um Werte von etwa $y = 0.5$ 
+erteilt ist. Die Daten dieses Datensatzes nehmen nur positive Werte an, viele
+Datenwerte liegen in der Tat um $y = 0.5$, aber es kommen auch höhere Datenwerte 
+vor. Wir werden an späterer Stelle sehen, dass dieses Erscheinungsbild für quadrierte 
+normalverteilte Datenwerte typisch ist. Im psychologischen Kontext haben 
+insbesondere Reaktionszeiten oft eine ähnliche Verteilung, da sie nicht negativ 
+sein können, in den meisten Fällen etwa im Bereich von 0.3 bis 0.6 Sekunden liegen, 
+aber in manchen Fällen durch Unaufmerksamkeit oder Stimulusvariabilität auch
+sehr viel länger sein können. In diesem Fall beschreibt der Median die tatsächliche 
+zentrale Tendenz der Datenwerte etwas besser als der Mittelwert, da dieser durch die 
+selten vorkommenden Ausreißerwerte etwas zu höheren Werten verschoben ist.
+
+Insgesamt ist die Angabe eines oder mehrerer Maße der zentralen Tendenz also 
+immer kritisch vor dem Hintergrund der Verteilung der Werte eines Datensatzes 
+zu betrachten und qualitativ einzuordnen. 
+
+
+```{r, echo = F, eval = F}
+pdf(
+file   = "./_figures/111-visuelle-intuition.pdf",
+width  = 12,
+height = 12)
+par(
+family     = "sans",
+mfcol      = c(2,2),
+pty        = "m",
+bty        = "l",
+lwd        = 1,
+las        = 1,
+mgp        = c(2,1,0),
+xaxs       = "i",
+yaxs       = "i",
+cex        = 1.1,
+font.main  = 1,
+cex.main   = 1.2)
+n           = 1e3
+
+# Normalverteilung
+y           = round(rnorm(n, 50, 10))
+H           = as.data.frame(table(y))
+y_mean      = mean(y)
+y_median    = median(y)
+y_mode      = as.numeric(as.vector(H$y[which.max(H$Freq)]))
+hist(
+y,
+breaks = 40,
+col   = "gray90",
+lwd   = 0.5,
+prob  = TRUE,
+ylim  = c(0,.06),
+xlim  = c(0, 100),
+xlab  = "y",
+ylab  = "",
+main  = sprintf("Mittelwert = %.1f, Median = %.1f, Modalwert = %.1f", y_mean, y_median, y_mode))
+points(
+c(y_mean, y_median, y_mode),
+rep(0,3),
+pch = 21,
+col = "White",
+bg = c("Blue", "Red", "Green"),
+cex = 2,
+xpd = TRUE)
+legend(
+"topleft",
+c("Histogramm", "Mittelwert", "Median", "Modalwert"),
+pch  = 16,
+col  = c("gray90", "Blue", "Red", "Green"),
+bty  = "n")
+mtext(LETTERS[1], adj=0, line=2, cex = 2, at = -14)
+
+
+# Bimodalverteilung
+y           = round(c(rnorm(n/2, 25, 10), rnorm(n/2,75, 10)))
+H           = as.data.frame(table(y))
+y_mean      = mean(y)
+y_median    = median(y)
+y_mode      = as.numeric(as.vector(H$y[which.max(H$Freq)]))
+hist(
+y,
+breaks = 40,
+col   = "gray90",
+lwd   = 0.5,
+prob  = TRUE,
+ylim  = c(0,.06),
+xlim  = c(0, 100),
+xlab  = "y",
+ylab  = "",
+main  = sprintf("Mittelwert = %.1f, Median = %.1f, Modalwert = %.1f", y_mean, y_median, y_mode))
+points(
+c(y_mean, y_median, y_mode),
+rep(0,3),
+pch = 21,
+col = "White",
+bg = c("Blue", "Red", "Green"),
+cex = 2,
+xpd = TRUE)
+legend(
+"topleft",
+c("Histogramm", "Mittelwert", "Median", "Modalwert"),
+pch  = 16,
+col  = c("gray90", "Blue", "Red", "Green"),
+bty  = "n")
+mtext(LETTERS[2], adj=0, line=2, cex = 2, at = -14)
+
+# Gleichverteilung
+y           = round(runif(n, 0, 100))
+H           = as.data.frame(table(y))
+y_mean      = mean(y)
+y_median    = median(y)
+y_mode      = as.numeric(as.vector(H$y[which.max(H$Freq)]))
+hist(
+y,
+breaks = 40,
+col   = "gray90",
+lwd   = 0.5,
+prob  = TRUE,
+ylim  = c(0,.06),
+xlim  = c(0, 100),
+xlab  = "y",
+ylab  = "",
+main  = sprintf("Mittelwert = %.1f, Median = %.1f, Modalwert = %.1f", y_mean, y_median, y_mode))
+points(
+c(y_mean, y_median, y_mode),
+rep(0,3),
+pch = 21,
+col = "White",
+bg = c("Blue", "Red", "Green"),
+cex = 2,
+xpd = TRUE)
+legend(
+"topleft",
+c("Histogramm", "Mittelwert", "Median", "Modalwert"),
+pch  = 16,
+col  = c("gray90", "Blue", "Red", "Green"),
+bty  = "n")
+mtext(LETTERS[3], adj=0, line=2, cex = 2, at = -14)
+
+# Gammaverteilung
+y           = round(rgamma(n,2,2), digits = 2)
+H           = as.data.frame(table(y))
+y_mean      = mean(y)
+y_median    = median(y)
+y_mode      = as.numeric(as.vector(H$y[which.max(H$Freq)]))
+hist(
+y,
+breaks = 50,
+col   = "gray90",
+lwd   = 0.5,
+prob  = TRUE,
+ylim  = c(0,0.9),
+xlim  = c(0, 5),
+xlab  = "y",
+ylab  = "",
+main  = sprintf("Mittelwert = %.1f, Median = %.1f, Modalwert = %.1f", y_mean, y_median, y_mode))
+points(
+c(y_mean, y_median, y_mode),
+rep(0,3),
+pch = 21,
+col = "White",
+bg = c("Blue", "Red", "Green"),
+cex = 2,
+xpd = TRUE)
+legend(
+"topright",
+c("Histogramm", "Mittelwert", "Median", "Modalwert"),
+pch  = 16,
+col  = c("gray90", "Blue", "Red", "Green"),
+bty  = "n")
+mtext(LETTERS[4], adj=0, line=2, cex = 2, at = -.7)
+dev.off()
+```
+
+![Visuelle Intuition zu Maßen zentraler Tendenz bei verschiedenen Datenverteilungsformen](./_figures/111-visuelle-intuition){#fig-visuelle-intuition fig-align="center" width=100%}  
+
+
+## Maße der Variabilität {#sec-masse-der-variabilitaet}
+Neben der Frage, welchen "durchschnittlichen Wert" ein Datensatz annimmt, ist es 
+oft von Interesse zu quantifizieren, wie sehr die Werte im Datensatz streuen oder
+anders ausgedrückt, wie "variabel" sie sind. Als quantitative Maße für die 
+Variabilität eines Datensatzes betrachten wir hier die *Spannbreite*, die 
+*empirische Varianz* und die *empirische Standardabweichung*. Wie auch für den 
+Mittelwert erschließt sich die volle Bedeutung insbesondere letztere Maße vor 
+allem im Kontext inferenzstatistischer Verfahren. 
+
+### Spannbreite {#sec-spannbreite}
+
+Die Spannbreite eines Datensatzes ist die Differenz zwischen seinem größten und 
+seinem kleinsten Wert. 
+
+:::{#def-spannbreite}
+## Spannbreite
+$y = (y_1,...,y_n)$ sei ein Datensatz. Dann ist die \textit{Spannbreite} von $y_1,...,y_n$ definiert als
+\begin{equation}
+r := \max(y_1,...,y_n) - \min(y_1,...,y_n).
+\end{equation}
+:::
+
+In **R** bestimmt man die Spannbreite entweder durch Evaluation des Maximums und 
+des Minimums des Datensatzes mithilfe der `max()` und `min()` Funktionen oder 
+direkt mithilfe der `range()` Funktion. Folgender **R** Code demonstriert die 
+Anwendung der `max()` und `min()` Funktionen.
+
+\tiny 
+```{r}
+D           = read.csv("./_data/111-deskriptive-statistik.csv")                 # Laden des Datensatzes
+y 		    = D$PRE 					                                        # Pre-Interventions-BDI-II-Daten
+y_max 	    = max(y)							                                # Maximum der PRE Werte
+y_min 	    = min(y)							                                # Mininum der PRE Werte
+r 	        = y_max - y_min 					                                # Spannbreite
+```
+
+```{r, echo = F}
+cat("Spannbreite der PRE-BDI-II-Daten: ", r)                                    # Ausgabe
+```
+\normalsize
+
+Folgender **R** Code demonstriert die Anwendung der `range()` Funktion.
+
+\tiny
+```{r}
+MinMax	= range(y)							                                    # "automatische" Berechnung von min(x), max(x)
+r 		= MinMax[2] - MinMax[1]		                                            # Spannbreite
+```
+
+```{r, echo = F}
+cat("Spannbreite der PRE-BDI-II-Daten: ", r)                                    # Ausgabe
+```
+\normalsize
+
+### Empirische Varianz {#sec-empirische-varianz}
+
+Ein typisches statistisches Maß für die Variabilität von Datensätzen ist die 
+standardisierte Summe der quadrierten Differenzen zwischen den einzelnen 
+Datensatzwerten und ihrem Mittelwert. Die quadrierten Differenzen zwischen den
+einzelnen Datensatzwerten und ihrem Mittelwert werden auch als *Abweichungsquadrate*
+bezeichnet. Je nach Form der Standardisierung, also der Bildung eines Durchschnitts
+der Abweichungsquadrate, unterscheidet man eine *unkorrigierte empirische Varianz*
+und eine *empirische Varianz*, wie folgende Definition festsetzt.
+
+:::{#def-empirische-varianz-und-korrigierte-empirische-varianz}
+## Unkorrigierte empirische Varianz und empirische Varianz
+$y = (y_1,...,y_n)$ sei ein Datensatz mit $n>1$ und $\bar{y}$ sei sein Mittelwert.
+Dann ist die *unkorrigierte empirische Varianz* von $y$ definiert als 
+\begin{equation}
+\tilde{s}^2 := \frac{1}{n}\sum_{i=1}^n (y_i - \bar{y})^2
+\end{equation}
+und die *empirische Varianz* von $y$ ist definiert als
+\begin{equation}
+s^2 := \frac{1}{n-1}\sum_{i=1}^n (y_i - \bar{y})^2.
+\end{equation}
+::: 
+
+Wir haben in @thm-zentralitaetseigenschaften-des-mittelwerts gesehen, dass die Summe
+der Differenzen zwischen den Datenwerten und ihrem Mittelwert immer gleich Null ist.
+Die Quadrierung der Differenzen 
+\begin{equation}
+y_i - \bar{y} \mbox{ für } i = 1,...,n
+\end{equation}
+in @def-empirische-varianz-und-korrigierte-empirische-varianz führt nun gerade 
+dazu, dass sich negative und positive Differenzen von Datenpunkten nicht 
+ausgleichen und, je nach Höhe der positiven und negativen Differenzen, mit
+\begin{equation}
+\sum_{i=1}^n (y_i - \bar{y})^2
+\end{equation}
+ein höheres oder geringeres Maß für die Gesamtabweichung der Datenwerte von ihrem Mittelwert
+bestimmt werden kann. Dabei ist die Summe der Abweichungsquadrate gerade dann Null,
+wenn alle Datenwerte identisch und damit auch identisch mit ihrem Mittelwert sind.
+Alternativ wäre zum Beispiel auch die Bestimmung der Absolutbeträge $|y_i - \bar{y}|$ 
+denkbar, allerdings erfüllt das so entstehende Maß der Variabilität andere Eigenschaften 
+als das Maß der quadrierten Abweichungen in @def-empirische-varianz-und-korrigierte-empirische-varianz, 
+weshalb dieses, auch in Hinblick auf seine Nähe zu probabilistischen Normalverteilungsmodellen in der
+Regel bevorzugt wird. Die unkorrigierte empirische Varianz $\tilde{s}^2$  und die (korrigierte)
+empirische Varianz $s^2$ unterscheiden sich dann hinsichtlich der Form der Durchschnittsbildung
+der quadrierten Abweichungsquadrate. Für $\tilde{s}^2$ wird die Summe der Abweichungsquadrate
+durch $n$, für $s^2$  durch $n-1$ geteilt. $\tilde{s}^2$ ist also immer etwas kleiner
+als $s^2$. Allerdings wird dieser Unterschied für großes $n$ eher gering ausfallen,
+man denke beispielsweise an den numerischen Unterschied zwischen $\frac{1}{3}$ und
+$\frac{1}{2}$ bei kleinem $n$ sowie zwischen $\frac{1}{1001}$ und $\frac{1}{1000}$
+bei großem $n$. Man beachte, dass die empirische Varianz für $n = 1$ nicht definiert ist,
+die unkorrigierte empirische Varianz jedoch auch in diesem Spezialfall prinzipiell
+bestimmt werden kann. Der Begriff *unkorrigiert* (und implizit *korrigiert*) kann sich
+an dieser Stelle noch nicht erschließen, sondern ergibt nur vor dem Hintegrund
+eines Frequentischen Inferenzmodells Sinn und wird in @sec-parameterschaetzung erläutert werden.
+
+Wir fassen die obige Diskussion in folgendem Theorem zusammen
+
+:::{#thm-verhältnis-von-unkorrigierter-empirischer-varianz-und-empirischer-varianz}
+## Verhältnis von unkorrigierter empirischer Varianz und empirischer Varianz
+$y = (y_1,...,y_n)$ sei ein Datensatz und $\tilde{s}^2$  und $s^2$  seien seine
+unkorrigierte empirische Varianz und empirische Varianz, respektive. Dann gelten
+
+(1) (Umrechnung)
+\begin{equation}
+\tilde{s}^2 = \frac{n-1}{n}s^2 \mbox{ und } s^2 = \frac{n}{n-1}\tilde{s}^2.
+\end{equation}
+
+(2) (Ungleichung)
+\begin{equation}
+0 \le \tilde{s}^2 \le s^2.
+\end{equation}
+::: 
+
+:::{.proof}
+\noindent(1) Nach @def-empirische-varianz-und-korrigierte-empirische-varianz gilt zum einen
+\begin{align}
+\begin{split}
+\tilde{s}^2 & = \frac{1}{n}\sum_{i=1}^n (y_i - \bar{y})^2 \\
+\Leftrightarrow
+\frac{n-1}{n-1}\tilde{s}^2 & = \frac{n-1}{n-1}\frac{1}{n}\sum_{i=1}^n (y_i - \bar{y})^2 \\
+\Leftrightarrow
+\tilde{s}^2 & = \frac{n-1}{n}\frac{1}{n-1}\sum_{i=1}^n (y_i - \bar{y})^2\\
+\Leftrightarrow
+\tilde{s}^2 & = \frac{n-1}{n}s^2
+\end{split}
+\end{align}
+und zum anderen
+\begin{align}
+\begin{split}
+s^2 & = \frac{1}{n-1}\sum_{i=1}^n (y_i - \bar{y})^2 \\
+\Leftrightarrow
+\frac{n}{n}s^2 & = \frac{n}{n}\frac{1}{n-1}\sum_{i=1}^n (y_i - \bar{y})^2 \\
+\Leftrightarrow
+s^2 & = \frac{n}{n-1}\frac{1}{n}\sum_{i=1}^n (y_i - \bar{y})^2\\
+\Leftrightarrow
+s^2 & = \frac{n}{n-1}\tilde{s}^2.
+\end{split}
+\end{align}
+
+\noindent (2) Mit der Nichtnegativität der Quadratfunktion sowie $\frac{1}{n} > 0$ 
+und  $\frac{1}{n-1} > 0$ für $n > 1$ ergeben sich $\tilde{s}^2 \ge 0$ und $\tilde{s}^2 > 0$
+direkt. Schließlich gilt für $\sum_{i=1}^n (y_i - \bar{y})^2 \neq 0$
+\begin{equation}
+\frac{1}{n} < \frac{1}{n-1} \Leftrightarrow
+\frac{1}{n}\sum_{i=1}^n (y_i - \bar{y})^2 < \frac{1}{n-1}\sum_{i=1}^n (y_i - \bar{y})^2 \Leftrightarrow
+\tilde{s}^2 < s^2.
+\end{equation}
+und für $\sum_{i=1}^n (y_i - \bar{y})^2 = 0$ offenbar $\tilde{s}^2 = s^2$. Insgesamt
+gilt also
+\begin{equation}
+0 \le \tilde{s}^2 \le s^2.
+\end{equation}
+::: 
+
+Folgender **R** Code demonstriert die Bestimmung der unkorrigierten empirischen
+Varianz und der empirischen Varianz anhand der in @def-empirische-varianz-und-korrigierte-empirische-varianz
+festgelegten Formeln.
+
+\tiny
+```{r}
+D           = read.csv("./_data/111-deskriptive-statistik.csv")                 # Laden des Datensatzes
+y 		    = D$PRE 					                                        # Pre-Interventions-BDI-II-Daten										
+n 			= length(y)							                                # Anzahl der Werte
+S2_tilde 	= (1/n)*sum((y - mean(y))^2)		                                # unkorrigierte empirische Varianz
+S2 			= (1/(n-1))*sum((y - mean(y))^2)	                                # empirische Varianzz
+```
+```{r, echo = F}
+cat("Unkorrigierte empirische Varianz der PRE-BDI-II-Daten : ", round(S2_tilde,3), # Ausgabe
+    "\nEmpirische Varianz der PRE-BDI-II-Daten               : ", round(S2,3))  # Ausgabe
+```
+\normalsize
+
+Die **R** Funktion `var()` bestimmt per default die empirische Varianz. Mithilfe
+von Aussage (1) in @thm-verhältnis-von-unkorrigierter-empirischer-varianz-und-empirischer-varianz
+kann basierend auf dieser Funktion auch die unkorrigierte empirische Varianz bestimmt werden.
+
+\tiny
+```{r}
+s2 			= var(y)							                                # empirische Varianzz
+s2_tilde 	= ((n-1)/n)*var(y)					                                # unkorrigierte empirische Varianz
+```
+```{r, echo = F}
+cat("Unkorrigierte empirische Varianz der PRE-BDI-II-Daten: ", round(s2_tilde,3), # Ausgabe
+    "\nEmpirische Varianz der PRE-BDI-II-Daten              : ", round(s2,3))   # Ausgabe
+```
+
+
+
+\normalsize
+Folgendes Theorem besagt, wie sich die empirische Varianz bei linear-affiner
+Transformation eines Datensatzes verhält.
+
+:::{#thm-varianz-bei-linear-affinen-transformationen}
+## Varianz bei linear-affinen Transformationen
+$y = (y_1,...,y_n)$ sei ein Datensatz mit empirischer Varianz $S_y^2$ 
+und $z = (ay_1+b, ..., ay_n+b)$ sei der mit $a,b \in \mathbb{R}$ linear-affin
+transformierte Datensatz mit empirischer Varianz $S_z^2$. Dann gilt
+\begin{equation}
+s^2_z = a^2 s^2_y.
+\end{equation}
+:::
+
+:::{.proof}
+\begin{align}
+\begin{split}
+s^2_z 
+&  = \frac{1}{n-1}\sum_{i=1}^n (z_i - \bar{z})^2                \\
+&  = \frac{1}{n-1}\sum_{i=1}^n (ay_i + b - (a\bar{y} + b))^2    \\
+&  = \frac{1}{n-1}\sum_{i=1}^n (ay_i + b - a\bar{y} - b)^2      \\
+&  = \frac{1}{n-1}\sum_{i=1}^n (a(y_i - \bar{y}))^2             \\
+&  = \frac{1}{n-1}\sum_{i=1}^n a^2(y_i - \bar{y})^2             \\     
+&  = a^2\frac{1}{n-1}\sum_{i=1}^n (y_i - \bar{y})^2             \\
+&  = a^2S_y^2.                                                   \\ 
+\end{split}
+\end{align}
+:::  
+
+Beispielsweise ändert also das Umrechnen eines Datensatzes von Meter in Zentimeter
+die Varianz des Ausgangsdatensatzes um den Faktor $100^2$. Wir reproduzieren 
+@thm-varianz-bei-linear-affinen-transformationen beispielhaft mithilfe folgenden **R** Codes.
+
+\tiny
+```{r}
+y		= D$PRE 	  				                                             # Pre-Interventions-BDI-II-Daten
+s2y		= var(y)								                                 # Empirische Varianz von y_1,...,y_n
+a		= 2 									                                 # Multiplikationskonstante
+b 		= 5 									                                 # Additionskonstante
+z 		= a*y + b							                                     # z_i = az_i + b
+s2z		= var(z)	                                							 # Empirische Varianz von z_1,...,z_n
+cat("Empirische Varianz von z_1,...,z_n durch direkte Berechung : ", round(s2z,3))                       # Ausgabe
+s2z 	= a^2*s2y    							                                 # Empirische Varianz von z_1,...,z_n
+cat("Empirische Varianz von z_1,...,z_n nach Theorem            : ", round(s2z,3))      # Ausgabe
+```
+
+\normalsize
+
+Folgendes Theorem zeigt eine Möglichkeit auf, die unkorrigierte empirische Varianz 
+eines Datensatzes allein durch die Bestimmung von Mittelwerten zu bestimmen. Das
+Theorem findet seine analytische Entsprechung im Verschiebungssatz der Varianz,
+@thm-varianzverschiebungssatz. 
+
+:::{#thm-verschiebungssatz-der-unkorrigierten-empirische-varianz}
+## Verschiebungssatz zur unkorrigierten empirischen Varianz
+$y = (y_1,...,y_n)$ sei ein Datensatz, $y^2 := (y_1^2, ..., y_n^2)$ sei sein
+elementweises Quadrat und $\bar{y}$ und $\overline{y^2}$ seien die respektiven
+Mittelwerte. Dann gilt
+\begin{equation}
+\tilde{s}^2 = \overline{y^2} - \bar{y}^2
+\end{equation}
+:::
+
+:::{.proof}
+\begin{align}
+\begin{split}
+\tilde{s}^2
+& := \frac{1}{n}\sum_{i=1}^n (y_i - \bar{y})^2 \\
+&  = \frac{1}{n}\sum_{i=1}^n \left(y_i^2 - 2y_i \bar{y} +  \bar{y}^2\right) \\
+&  = \frac{1}{n}\sum_{i=1}^n y_i^2  - 2  \bar{y} \frac{1}{n}\sum_{i=1}^n y_i + \frac{1}{n}\sum_{i=1}^n \bar{y}^2 \\
+&  = \overline{y^2} - 2\bar{y}\bar{y} + \frac{1}{n}n\bar{y}^2 \\
+&  = \overline{y^2}	- 2\bar{y}^2 + \bar{y}^2 \\
+&  = \overline{y^2} - \bar{y}^2.
+\end{split}
+\end{align}
+:::
+
+Wir reproduzieren @thm-verschiebungssatz-der-empirischen-varianz beispielhaft 
+mithilfe folgenden **R** Codes.
+
+\tiny
+```{r}
+y 			= D$PRE      	   	            	                                 # Pre-Interventions-BDI-II-Daten
+s2_tilde 	= mean(y^2) - (mean(y))^2				                             # \bar{y^2} - \bar{y}^2
+cat("Korrigierte empirische Varianz nach Transformation : ", round(s2z,3))       # Ausgabe
+```
+\normalsize
+
+Man beachte, dass dass der Verschiebungssatz der unkorrigierten empirischen
+Varianz für die empirische Varianz nicht zutrifft, da in diesem Fall der
+Multiplikationsfactor $\frac{1}{n-1}$ nicht auf die entsprechenden Mittelwerte führt.
+Insbesondere haben wir oben schon gesehen, dass für den betreffenden Beispieldatensatz
+gilt, dass $s^2  = 3.028$.
+
+### Empirische Standardabweichung {#sec-empirische-standardabweichung}
+
+Die empirische Varianz ergibt sich wie oben gesehen als durchschnittliches
+Abweichungsquadrat eines Datensatzwerte von seinem Mittelwert. Ist die Einheit
+des Datensatzes dabei zum Beispiel in einer Reaktionsszeitaufgabe die Millisekunde,
+so ergibt sich durch Differenzbildung und anschließende Quadrierung die Einheit
+Millisekunde$^2$, eine nicht sehr intuitive Einheit. Um ein Streuungsmaß zu erhalten,
+dessen Einheit der Einheit des Ausgangsdatensatzes entspricht, wird auf die empirische
+Varianz häufig noch die Quadratwurzelfunktion angewendet. Dies führt auf den Begriff
+der *empirischen Standardabweichung*.
+
+
+:::{#def-empirische-standardabweichung}
+## Empirische Standardabweichung
+$y = (y_1,...,y_n)$ sei ein Datensatz. Die *empirische Standardabweichung* von
+$y$ ist definiert als  
+\begin{equation}
+s := \sqrt{s^2}
+\end{equation}
+und die *unkorrigierte empirische Stichprobenstandardabweichung* von $y$ ist 
+definiert als \begin{equation}
+\tilde{s} := \sqrt{\tilde{s}^2}.
+\end{equation}
+:::
+In Analogie zu den Eigenschaften der empirischen Varianz und ihrer unkorrigierten
+Version kann auch die unkorrigierte empirischen Standardabweichung leicht in die
+empirischen Standardabweichung umgerechnet werden und umgekehrt, es gelten hier offenbar  
+\begin{equation}
+\tilde{s} = \sqrt{\frac{n-1}{n}}s \mbox{ und } s = \sqrt{\frac{n}{n-1}}\tilde{s}. 
+\end{equation}
+
+Folgender **R** Code demonstriert die Bestimmung der unkorrigierten empirischen 
+Varianz und der empirischen Varianz anhand der in @def-empirische-standardabweichung 
+festgelegten Formeln.
+
+\tiny
+```{r}
+y   = D$PRE      	   	            	                                        # Pre-Interventions-BDI-II-Daten
+n 	= length(y)								                                    # Anzahl der Werte
+s 	= sqrt((1/(n-1))*sum((y - mean(y))^2))	                                    # Standardabweichung
+```
+
+```{r, echo = F}
+cat("Empirische Standardabweichung : ", round(s,3))                             # Ausgabe
+```
+\normalsize
+
+Die **R** Funktion `sd()` bestimmt per default die empirische Varianz.
+
+\tiny
+```{r}
+s 	= sd(y)   
+```
+
+```{r, echo = F}                                                                  
+cat("Empirische Standardabweichung : ", round(s,3))                              # Ausgabe
+```
+\normalsize
+
+
+Transformiert man einen Datensatz linear-affin, so geht die Multiplikationskonstante
+der Transformation lediglich im Sinne ihres Betrages in die Transformation 
+der empirischen Standardabweichung ein. Dies ist die Aussage des folgenden Theorems.
+
+
+:::{#thm-empirische-standardabweichung-bei-linear-affinen-transformationen}
+## Empirische Standardabweichung bei linear-affinen Transformationen 
+$y = (y_1,...,y_n)$ sei ein Datensatz mit empirischer Standardabweichung $s_y$ und
+$z = (az_1+b, ..., az_n+b)$ sei der mit $a,b \in \mathbb{R}$ linear-affin
+transformierte Datensatz mit empirischer Standardabweichung $s_z$. Dann gilt
+\begin{equation}
+s_z = |a| s_y.
+\end{equation}
+:::
+
+:::{.proof}
+\begin{align}
+\begin{split}
+S_y
+& := \left(\frac{1}{n-1}\sum_{i=1}^n (y_i - \bar{y})^2\right)^{1/2}                         \\
+&  = \left(\frac{1}{n-1}\sum_{i=1}^n \left(ay_i + b - (a\bar{x} + b)\right)^2\right)^{1/2}  \\
+&  = \left(\frac{1}{n-1}\sum_{i=1}^n \left(a(y_i - \bar{x})\right)^2\right)^{1/2}			\\
+&  = \left(\frac{1}{n-1}\sum_{i=1}^n a^2(y_i - \bar{x})^2\right)^{1/2}                      \\
+&  = \left(a^2\right)^{1/2}\left(\frac{1}{n-1}\sum_{i=1}^n (y_i - \bar{x})^2\right)^{1/2}.
+\end{split}
+\end{align}
+Also gilt $S_z = aS_y$, wenn $a \ge 0$ und $S_z = -aS_y$, wenn $a < 0$. Dies aber entspricht $S_z = |a|S_y$.
+:::
+
+Wir reproduzieren @thm-empirische-standardabweichung-bei-linear-affinen-transformationen 
+beispielhaft mithilfe folgenden **R** Codes einmal für den Fall $a \ge 0$ und einmal
+für den Fall $a < 0$
+
+\tiny
+```{r}
+# a >= 0
+D       = read.csv("./_data/111-deskriptive-statistik.csv")                     # Laden des Datensatzes
+y		= D$PRE 					                                            # Pre-Interventions-BDI-II-Daten
+a	    = 2 			                                                        # Multiplikationskonstante
+b 	    = 5 				                                                    # Additionskonstante
+z 	    = a*y + b			                                                    # y_i = ax_i + b
+sz	    = sd(z)				                                                    # Korrigierte empirische Standardabweichung von y
+```
+```{r, echo = F} 
+cat("Empirische Standardabweichung von z_1,...z_n durch direkte Berechnung : ", round(sz,3))         # Ausgabe
+```
+```{r}
+sz	    = a*sd(y)  			                                                    # Korrigierte empirische Standardabweichung von y
+```
+```{r, echo = F} 
+cat("Empirische Standardabweichung von z_1,...z_n nach Theorem : ", round(sz,3)) # Ausgabe
+```
+```{r}
+# a < 0
+D       = read.csv("./_data/111-deskriptive-statistik.csv")                     # Laden des Datensatzes
+y		= D$PRE 					                                            # Pre-Interventions-BDI-II-Daten
+a	    = -3 			                                                        # Multiplikationskonstante
+b 	    = 10 				                                                    # Additionskonstante
+z 	    = a*y + b			                                                    # y_i = ax_i + b
+sz	    = sd(z)				                                                    # Korrigierte empirische Standardabweichung von y
+```
+```{r, echo = F} 
+cat("Empirische Standardabweichung nach Transformation : ", round(sz,3))        # Ausgabe
+```
+```{r}
+sz	    = -a*sd(y)  			                                                # Korrigierte empirische Standardabweichung von y
+```
+```{r echo = F}
+cat("Empirische Standardabweichung nach Transformation : ", round(sz,3))        # Ausgabe
+```
+
+
