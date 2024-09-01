@@ -1,0 +1,516 @@
+
+## Varianz und Standardabweichung {#sec-varianz-und-standardabweichung}
+
+Häufig genutzte Maße für die Streuung von Verteilungen von Zufallsvariablen sind
+die Varianz und die Standardabweichung. Diese sind wie folgt definiert.
+
+:::{#def-varianz-und-standardabweichung}
+## Varianz und Standardabweichung
+$\xi$ sei eine Zufallsvariable mit existierendem Erwartungswert $\mathbb{E}(\xi)$. 
+
+* Die \textit{Varianz von $\xi$} ist definiert als
+\begin{equation}
+\mathbb{V}(\xi) := \mathbb{E}\left((\xi - \mathbb{E}(\xi))^2\right).
+\end{equation}
+* Die \textit{Standardabweichung von $\xi$} ist definiert als
+\begin{equation}
+\mathbb{S}(\xi) := \sqrt{\mathbb{V}(\xi)}.
+\end{equation}
+:::
+
+Inwiefern die Varianz und ihre Quadratwurzel als Maße für die Streuung einer 
+Zufallsvariable dienen, werden wir in @thm-chebyshev-ungleichung begründen.
+Die Quadrierung der Abweichung der Zufallsvariable von ihrem Erwartungswert
+in der Definition der Varianz ist nötig, da andernfalls mit @thm-eigenschaften-des-erwartungswerts
+immer gelten würde, dass
+\begin{equation}
+\mathbb{E}(\xi-\mathbb{E}(\xi)) = \mathbb{E}(\xi) - \mathbb{E}(\xi) = 0.
+\end{equation}
+Allerdings gibt es neben der Varianz durchaus weitere Maße der Streuung von Zufallsvariablen,
+hier seien beispielsweise die erwartete absolute Abweichung einer Zufallsvariable von
+ihrem Erwartungswert, $\mathbb{E}(|\xi - \mathbb{E}(\xi)|)$ und die sogenannte *Entropie*
+$-\mathbb{E}(\ln p_\xi)$ genannt. Im Sinne von @def-erwartungswert-einer-funktion-einer-zufallsvariable ist die Varianz der Zufallsvariable $\xi: \Omega \to \mathcal{X}$ der Erwartungswert 
+der Funktion
+\begin{equation}
+f : \mathcal{X} \to \mathcal{Z}, x \mapsto f(x) := (x - \mathbb{E}(\xi))^2.
+\end{equation}
+Das Berechnen von Varianzen wird durch folgendes Theorem, den sogenannten *Varianzverschiebungssatz*
+oft erleichtert, insbesondere, wenn der Erwartungswert der quadrierten Zufallsvariable
+leicht zu bestimmen oder bekannt ist.
+
+:::{#thm-varianzverschiebungssatz}
+## Varianzverschiebungssatz
+$\xi$ sei eine Zufallsvariable. Dann gilt
+\begin{equation}
+\mathbb{V}(\xi) = \mathbb{E}\left(\xi^2 \right) - \mathbb{E}(\xi)^2.
+\end{equation}
+:::
+
+:::{.proof}
+Mit der Definition der Varianz und der Linearität des Erwartungswerts gilt
+\begin{align}
+\begin{split}
+\mathbb{V}(\xi)
+& = \mathbb{E}\left((\xi - \mathbb{E}(\xi))^2\right) \\
+& = \mathbb{E}\left(\xi^2 - 2\xi\mathbb{E}(\xi) + \mathbb{E}(\xi)^2 \right) \\
+& =    \mathbb{E}(\xi^2)
+    - 2\mathbb{E}(\xi)\mathbb{E}(\xi)
+    + \mathbb{E}\left(\mathbb{E}(\xi)^2\right)   \\
+& = \mathbb{E}(\xi^2) - 2\mathbb{E}(\xi)^2 + \mathbb{E}(\xi)^2  \\
+& = \mathbb{E}(\xi^2) - \mathbb{E}(\xi)^2.
+\end{split}
+\end{align}
+:::
+
+Wie für den Erwartungswert gibt es auch für die Varianz einige Rechenregeln,
+die den Umgang mit ihr oft erleichtern. Wir fassen sie in folgendem Theorem
+zusammen.
+
+:::{#thm-eigenschaften-der-varianz}
+## Eigenschaften der Varianz
+(1) (Linear-affine Transformation) Für eine Zufallsvariable $\xi$ und 
+$a,b\in \mathbb{R}$ gelten
+\begin{equation}
+\mathbb{V}(a\xi + b) = a^2 \mathbb{V}(\xi)
+\mbox{ und }
+\mathbb{S}(a\xi + b) = |a|\mathbb{S}(\xi).
+\end{equation}
+(2) (Linearkombination bei Unabhängigkeit) Für unabhängige 
+Zufallsvariablen $\xi_1,...,\xi_n$ und $a_1,...,a_n \in \mathbb{R}$ gilt
+\begin{equation}
+\mathbb{V}\left(\sum_{i=1}^n a_i\xi_i\right) = \sum_{i=1}^n a_i^2 \mathbb{V}(\xi_i).
+\end{equation}
+:::
+
+:::{.proof}
+Um Eigenschaft (1) zu zeigen, definieren wir zunächst $\upsilon := a\xi + b$ und halten
+fest, dass $\mathbb{E}(\upsilon) = a\mathbb{E}(\xi) + b$. Für die Varianz von $\upsilon$ ergibt
+sich dann
+\begin{align}
+\begin{split}
+\mathbb{V}(\upsilon)
+& = \mathbb{E}\left((\upsilon - \mathbb{E}(\upsilon))^2\right) 		\\
+& = \mathbb{E}\left((a\xi+b-a\mathbb{E}(\xi)-b)^2\right) 	\\
+& = \mathbb{E}\left((a\xi-a\mathbb{E}(\xi))^2\right) 		\\
+& = \mathbb{E}\left((a(\xi - \mathbb{E}(\xi))^2\right) 		\\
+& = \mathbb{E}\left(a^2(\xi - \mathbb{E}(\xi))^2\right) 	\\
+& = a^2\mathbb{E}\left((\xi - \mathbb{E}(\xi))^2\right) 	\\
+& = a^2\mathbb{V}(\xi) 									\\
+\end{split}
+\end{align}
+Wurzelziehen ergibt dann das Resultat für die Standardabweichung.
+
+Für Eigenschaft (2) betrachten wir den Fall zweier unabhängiger Zufallsvariablen
+$\xi_1$ und $\xi_2$ genauer. Wir halten zunächst fest, dass in diesem Fall gilt, dass
+\begin{equation}
+\mathbb{E}\left(a_1\xi_1 + a_2\xi_2\right) = a_1\mathbb{E}(\xi_1) + a_2\mathbb{E}(\xi_2).
+\end{equation}
+Es ergibt sich also
+\begin{align}
+\begin{split}
+\mathbb{V}\left(\sum_{i=1}^2 a_i \xi_i\right) 											     
+& = \mathbb{V}(a_1\xi_1 + a_2\xi_2)                                                               \\
+& = \mathbb{E}\left((a_1\xi_1 + a_2\xi_2 - \mathbb{E}\left(a_1\xi_1 + a_2\xi_2\right))^2\right)   \\
+& = \mathbb{E}\left((a_1\xi_1 + a_2\xi_2 - a_1\mathbb{E}(\xi_1) - a_2\mathbb{E}(\xi_2))^2\right)  \\
+& = \mathbb{E}\left((a_1\xi_1 - a_1\mathbb{E}(\xi_1) + a_2\xi_2  - a_2\mathbb{E}(\xi_2))^2\right) \\
+& = \mathbb{E}\left(((a_1(\xi_1 - \mathbb{E}(\xi_1)) + (a_2(\xi_2 - \mathbb{E}(\xi_2)))^2\right)  \\
+& = \mathbb{E}\left((a_1(\xi_1 - \mathbb{E}(\xi_1)))^2
+				   + 2(a_1(\xi_1 - \mathbb{E}(\xi_1))(a_2(\xi_2 - \mathbb{E}(\xi_2))
+				   + (a_2(\xi_2 - \mathbb{E}(\xi_2)))^2\right) \\
+& = \mathbb{E}\left((a_1^2(\xi_1 - \mathbb{E}(\xi_1))^2
+				   + 2a_1a_2(\xi_1 - \mathbb{E}(\xi_1))(\xi_2 - \mathbb{E}(\xi_2))
+				   + a_2^2(\xi_2 - \mathbb{E}(\xi_2))^2\right) \\
+& = a_1^2\mathbb{E}\left((\xi_1 - \mathbb{E}(\xi_1))^2\right)
+   + 2a_1a_2\mathbb{E}\left((\xi_1 - \mathbb{E}(\xi_1))(\xi_2 - \mathbb{E}(\xi_2))\right)
+   + a_2^2\mathbb{E}\left((\xi_2 - \mathbb{E}(\xi_2))^2\right) \\
+& = a_1^2\mathbb{V}(\xi_1)
+   + 2a_1a_2\mathbb{E}\left((\xi_1 - \mathbb{E}(\xi_1))(\xi_2 - \mathbb{E}(\xi_2))\right)
+   + a_2^2\mathbb{V}(\xi_2) \\
+& = \sum_{i=1}^2 a_i^2\mathbb{V}(\xi_i)
+   + 2a_1a_2\mathbb{E}\left((\xi_1 - \mathbb{E}(\xi_1))(\xi_2 - \mathbb{E}(\xi_2))\right).
+\end{split}.
+\end{align}
+Weil $\xi_1$ und $\xi_2$ unabhängig sind, ergibt sich mit den Eigenschaften des
+Erwartungswerts für unabhängige Zufallsvariablen, dass
+\begin{align}
+\begin{split}
+\mathbb{E}\left((\xi_1 - \mathbb{E}(\xi_1))(\xi_2 - \mathbb{E}(\xi_2))\right)
+& = \mathbb{E}\left((\xi_1 - \mathbb{E}(\xi_1))\right)
+	\mathbb{E}\left((\xi_2 - \mathbb{E}(\xi_2))\right) \\
+& = (\mathbb{E}(\xi_1) - \mathbb{E}(\xi_1))
+  	(\mathbb{E}(\xi_2) - \mathbb{E}(\xi_2)) \\
+& = 0
+\end{split}
+\end{align}
+ist. Damit folgt also
+\begin{equation}
+\mathbb{V}\left(\sum_{i=1}^2 a_i \xi_i\right)
+=  \sum_{i=1}^2 a_i^2\mathbb{V}(\xi_i).
+\end{equation}
+Ein Induktionsbeweis erlaubt dann die Generalisierung vom bivariaten zum $n$-variaten Fall.
+:::
+
+### Beispiele {-}
+
+Mit der Varianz einer Bernoulli-Zufallsvariable und der Varianz einer normalverteilten
+Zufallsvariable wollen wir auch hier zwei erste Beispiele für die Varianz
+einer diskreten und einer kontinuierlichen Zufallsvariable betrachten.
+
+:::{#thm-varianz-einer-bernoulli-zufallsvariable}
+## Varianz einer Bernoulli Zufallsvariable
+Es sei $\xi \sim \mbox{Bern}(\mu)$. Dann ist die Varianz von $\xi$ gegeben durch
+\begin{equation}
+\mathbb{V}(\xi) = \mu(1-\mu).
+\end{equation}
+:::
+
+:::{.proof}
+$\xi$ ist eine diskrete Zufallsvariable und es gilt $\mathbb{E}(\xi) = \mu$. Also gilt
+\begin{align}
+\begin{split}
+\mathbb{V}(\xi)
+& = \mathbb{E}\left((\xi - \mu)^2\right) \\
+& = \sum_{x \in \{0,1\}} (x - \mu)^2 \mbox{Bern}(x;\mu) \\
+& = (0 - \mu)^2 \mu^0(1-\mu)^{1-0}  + (1 - \mu)^2\mu^1(1-\mu)^{1-1}  \\
+& = \mu^2 (1-\mu)  + (1 - \mu)^2\mu  \\
+& = \left(\mu^2  + (1 - \mu)\mu\right)(1-\mu)  \\
+& = \left(\mu^2 + \mu - \mu^2\right)(1 - \mu) \\
+& = \mu(1-\mu).
+\end{split}
+\end{align}
+:::
+
+:::{#thm-varianz-einer-normalverteilten-zufallsvariable}
+## Varianz einer normalverteilten Zufallsvariable
+Es sei $\xi \sim N(\mu,\sigma^2)$. Dann ist die Varianz von $\xi$ gegeben durch
+\begin{equation}
+\mathbb{V}(\xi) = \sigma^2.
+\end{equation}
+:::
+
+:::{.proof}
+
+Die Herleitung der Varianz einer normalverteilten Zufallsvariable ist nicht unaufwändig,
+so dass wir hier auch wieder unbewiesen die Gültigkeit von @eq-gauss-integral und
+@eq-exp-limits sowie weiterhin von 
+$$
+\int_{-\infty}^\infty x \exp(-x^2)\,dx = 0
+$$ {#eq-gauss-zero}
+annehmen wollen. Wir halten zunächst fest, dass mit dem Varianzverschiebungssatz gilt, dass
+\begin{align}\label{eq:var_gauss_1}
+\begin{split}
+\mathbb{V}(\xi)
+= \mathbb{E}(\xi^2) - \mathbb{E}(\xi)^2
+= \frac{1}{2\pi\sigma^2}\int_{-\infty}^\infty x^2 \exp\left(-\frac{1}{2\sigma^2}(x-\mu)^2 \right)\,dx - \mu^2.
+\end{split}
+\end{align}
+Mit der allgemeinen Substitutionsregel (@thm-rechenregeln-für-stammfunktionen)
+\begin{equation}
+\int_{a}^{b} f(g(x))g'(x)\,dx = \int_{g(a)}^{g(b)} f(x)\,dx
+\end{equation}
+und der Definition von
+\begin{equation}
+g:\mathbb{R} \to \mathbb{R}, x \mapsto \sqrt{2\sigma^2}x + \mu,
+g(-\infty) := -\infty, g(\infty) := \infty,
+\mbox{ mit }
+g'(x) = \sqrt{2\sigma^2}
+\end{equation}
+kann das Integral auf der rechten Seite von Gleichung \eqref{eq:var_gauss_1} dann als
+\begin{align}
+\begin{split}
+\int_{-\infty}^\infty x^2 \exp\left(-\frac{1}{2\sigma^2}(x - \mu)^2 \right) \,dx 
+& = \int_{-\infty}^\infty (\sqrt{2\sigma^2}x + \mu)^2 \exp\left(-\frac{1}{2\sigma^2}((\sqrt{2\sigma^2}x + \mu)-\mu)^2 \right)\sqrt{2\sigma^2}\,dx \\
+& = \sqrt{2\sigma^2}\int_{-\infty}^\infty (\sqrt{2\sigma^2}x + \mu)^2 \exp\left(-\frac{2\sigma^2 x^2}{2\sigma^2} \right)\,dx \\
+& = \sqrt{2\sigma^2}\int_{-\infty}^\infty (\sqrt{2\sigma^2}x + \mu)^2 \exp\left(-x^2\right)\,dx
+\end{split}
+\end{align}
+geschrieben werden. Also gilt
+\begin{align}
+\begin{split}
+\mathbb{V}(\xi)
+& =
+\frac{\sqrt{2\sigma^2}}{\sqrt{2\pi\sigma^2}}
+\int_{-\infty}^\infty (\sqrt{2\sigma^2}x + \mu)^2 \exp\left(-x^2 \right)\,dx
+- \mu^2
+\\
+&
+= \frac{1}{\sqrt{\pi}}
+\int_{-\infty}^\infty(\sqrt{2\sigma^2}x)^2 + 2\sqrt{2\sigma^2}x\mu + \mu^2) \exp\left(-x^2 \right)\,dx
+- \mu^2
+\\
+&
+= \frac{1}{\sqrt{\pi}}
+\left(
+		2\sigma^2\int_{-\infty}^\infty x^2 \exp\left(-x^2 \right)\,dx +
+		2\sqrt{2\sigma^2}\mu\int_{-\infty}^\infty x\exp\left(-x^2 \right)\,dx +
+		\mu^2\int_{-\infty}^\infty \exp\left(-x^2 \right)\,dx
+\right)
+- \mu^2.
+\end{split}
+\end{align}
+Mit @eq-gauss-zero ergibt sich dann
+\begin{align}
+\begin{split}
+\mathbb{V}(\xi)
+& = \frac{1}{\sqrt{\pi}}
+\left(2\sigma^2\int_{-\infty}^\infty x^2 \exp\left(-x^2 \right)\,dx + \mu^2\sqrt{\pi} \right)
+- \mu^2
+\\
+& = \frac{2\sigma^2}{\sqrt{\pi}}
+\int_{-\infty}^\infty x^2 \exp\left(-x^2 \right)\,dx
++ \mu^2 - \mu^2
+\\
+& = \frac{2\sigma^2}{\sqrt{\pi}} \int_{-\infty}^\infty x^2 \exp\left(-x^2 \right)\,dx.
+\end{split}
+\end{align}
+Mit der allgemeinen Form der partiellen Integrationsregel (@thm-rechenregeln-für-stammfunktionen)
+\begin{equation}
+\int_{a}^{b} f'(x)g(x)\,dx =
+f(x)g(x)|_{a}^{b} - \int_{a}^{b} f(x)g'(x)\,dx
+\end{equation}
+und der Definition von
+\begin{equation}
+f : \mathbb{R} \to \mathbb{R}, x \mapsto f(x) := \exp\left(-x^2\right) \mbox{ mit } f'(x) = -2\exp\left(-x^2\right)
+\end{equation}
+und
+\begin{equation}
+g : \mathbb{R} \to \mathbb{R}, x\mapsto g(x) := -\frac{1}{2}x \mbox{ mit } g'(x) = -\frac{1}{2},
+\end{equation}
+so dass
+\begin{equation}
+f'(x)g(x) = -2\exp\left(-x^2\right)\left(-\frac{1}{2}x \right) = x^2\exp\left(-x^2\right),
+\end{equation}
+gilt, ergibt sich dann
+\begin{align}
+\begin{split}
+\mathbb{V}(\xi)
+& = \frac{2\sigma^2}{\sqrt{\pi}} \int_{-\infty}^\infty x^2 \exp\left(-x^2 \right)\,dx  \\
+& = \frac{2\sigma^2}{\sqrt{\pi}}
+\left( -\frac{1}{2}x\exp\left(-x^2\right)|_{-\infty}^{\infty}
+- \int_{-\infty}^\infty \exp\left(-x^2 \right)\left(-\frac{1}{2} \right)\,dx \right)  \\
+& = \frac{2\sigma^2}{\sqrt{\pi}}
+\left(
+ -\frac{1}{2}x\exp\left(-x^2\right)|_{-\infty}^{\infty}
++ \frac{1}{2}\int_{-\infty}^\infty \exp\left(-x^2 \right)\,dx
+\right).
+\end{split}
+\end{align}
+Aus @eq-exp-limits schließen wir dann, dass der erste Term in den Klammern auf der
+ rechten Seite der obigen Gleichung gleich $0$ ist. Schließlich ergibt sich damit
+\begin{align}
+\begin{split}
+\mathbb{V}(\xi)
+= \frac{2\sigma^2}{\sqrt{\pi}} \left(\frac{1}{2}\int_{-\infty}^\infty \exp\left(-x^2 \right)\,dx\right)
+= \frac{\sigma^2}{\sqrt{\pi}} \sqrt{\pi}
+= \sigma^2.
+\end{split}
+\end{align}
+:::
+
+Allgemein ergeben sich die Erwartungswerte und Varianzen parametrischer
+Verteilungen als Funktionen ihrer Parameter. Wir fassen die 
+Erwartungswerte uns bekannter Verteilungen in @thm-erwartungswerte-varianzen
+zusammen.
+
+:::{#thm-erwartungswerte-varianzen}
+## Erwartungswerte und Varianzen einiger Wahrscheinlichkeitsverteilungen
+\center
+\begin{tabular}{l|c|c}
+Zufallsvariable 							&	Erwartungswert					&	Varianz														\\\hline
+$\xi \sim \mbox{B}(\mu)$ 					& 	$\mu$							&	$\mu(1-\mu)$ 												\\
+$\xi \sim \mbox{Bin}(\mu,n)$ 				& 	$n\mu$							&	$n\mu(1-\mu)$  												\\
+$\xi \sim N(\mu,\sigma^2)$ 					& 	$\mu$							&	$\sigma^2$  												\\
+$\xi \sim G(\alpha,\beta)$					& 	$\alpha\beta$ 					&	$\alpha\beta^2$												\\
+$\xi \sim \mbox{Beta}(\alpha,\beta)$		& 	$\frac{\alpha}{\alpha+\beta}$ 	&	$\frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)}$ 		\\
+$\xi \sim \mbox{U}(a,b)$					& 	$\frac{a+b}{2}$ 				&	$\frac{(b-a)^2}{12}$  										\\
+\end{tabular}
+:::
+
+Wir verzichten auf einen Beweis.
+
+## Kennzahlen univariater Stichproben {#sec-stichprobenkennzahlen}
+
+Wie wir @sec-grundbegriffe-frequentistischer-inferenz noch ausführlich diskutieren, 
+werden ist eine Charakteristikum der probabilistischen Modellierung, beobachtete 
+Daten als Realisierungen von Zufallsvariablen zu verstehen. Hat meine Menge 
+$\xi_1,...,\xi_n$ von Zufallsvariablen, so nennt man diese auch eine *Stichprobe*. 
+Basierend auf einer Stichprobe kann man nun Kennzahlen berechnen, die auf den 
+ersten Blick den Begriffen von Erwartungswert, Varianz und Standardabweichung
+ähneln, mit diesen aber keinesfalls zu verwechseln sind. Defacto dienen die
+in folgender Definition aufgeführten Stichprobenkennzahlen oft als *Schätzer* für
+die Kennzahlen von Zufallsvariablen, wie wir in @sec-punktschaetzung ausführlich
+darlegen wollen. Gewissermaßen Vorgriff zur Abgrenzung der Begrifflichkeiten 
+und auch als Grundlage für @sec-grenzwerte definieren wir hier einige deskriptive
+Stichprobenkennzahlen.
+
+:::{#def-stichprobenkennzahlen}
+## Stichprobenmittel, Stichprobenvarianz, Stichprobenstandardabweichung
+$\xi_1,...,\xi_n$ sei eine Menge von Zufallsvariablen, genannt *Stichprobe*.
+
+* Das *Stichprobenmittel* von $\xi_1,...,\xi_n$ ist definiert als 
+\begin{equation}
+\bar{\xi} := \frac{1}{n}\sum_{i=1}^n \xi_i.
+\end{equation}
+* Die *Stichprobenvarianz* von $\xi_1,...,\xi_n$ ist definiert als
+\begin{equation}
+S^2 := \frac{1}{n-1}\sum_{i=1}^n (\xi_i - \bar{\xi})^2.
+\end{equation}
+* Die *Stichprobenstandardabweichung* ist definiert als
+\begin{equation}
+S := \sqrt{S^2}.
+\end{equation}
+:::
+
+Zur Abgrenzung erinnern wir noch einmal daran, dass Erwartungswert $\mathbb{E}(\xi)$,
+Varianz $\mathbb{V}(\xi)$ und Standardabweichung $\mathbb{S}(\xi)$ Kennzahlen 
+einer Zufallsvariable $\xi$ sind, wohingegen $\bar{\xi}, S^2$, und $S$ 
+Kennzahlen einer Stichprobe $\xi_1,...,\xi_n$ sind. 
+
+**Beispiel**
+
+Wir wollen die Bestimmung der in @def-stichprobenkennzahlen eingeführten 
+Stichprobenkennzahlen an einem Beispiel erläutern. Dazu halten wir nochmals fest, dass
+$\bar{\xi}, S^2$, $S$ Zufallsvariablen sind und wollen ihre Realisationen im 
+Folgenden mit $\bar{x}, s^2$ und $s$ bezeichnen. Nehmen wir also an, wir haben für
+$n := 10$ die in folgender Tabelle gezeigten Realisationen von u.i.v. 
+nach $N(1,2)$ verteilten Zufallsvariable $\xi_1,...,\xi_{10}$, wobei für 
+$i = 1,...,10$ die Realisation von $\xi_i$ mit $x_i$ bezeichnen ist:
+
+\begin{center}
+\begin{tabular}{ccccccccccc}
+   $x_1$
+&  $x_2$
+&  $x_3$
+&  $x_4$
+&  $x_5$
+&  $x_6$
+&  $x_7$
+&  $x_8$
+&  $x_9$
+&  $x_{10}$ \\\hline
+   0.54
+&  1.01
+& -3.28
+&  0.35
+&  2.75
+& -0.51
+&  2.32
+&  1.49
+&  0.96
+&  1.25
+\end{tabular}
+\end{center}
+
+Nach @def-stichprobenkennzahlen ist die Stichprobenmittelrealisation dann gegeben durch
+\begin{equation}
+\bar{x}
+= \frac{1}{10}\sum_{i = 1}^{10}x_i
+= \frac{6.88}{10}
+= 0.68,
+\end{equation}
+die Stichprobenvarianzrealisation gegeben durch
+\begin{equation}
+s^2
+= \frac{1}{9}\sum_{i=1}^{10} (x_i - \bar{x})^2
+= \frac{1}{9}\sum_{i=1}^{10} (x_i - 0.68)^2
+= \frac{25.37}{9}
+= 2.82.
+\end{equation}
+und die Stichprobenstandardabweichungrealisation gegeben durch
+\begin{equation}
+s = \sqrt{s^2} = \sqrt{2.82} = 1.68.
+\end{equation}
+
+
+## Kennzahlen univariater Stichproben {#sec-stichprobenkennzahlen}
+
+Wie wir @sec-grundbegriffe-frequentistischer-inferenz noch ausführlich diskutieren, 
+werden ist eine Charakteristikum der probabilistischen Modellierung, beobachtete 
+Daten als Realisierungen von Zufallsvariablen zu verstehen. Hat meine Menge 
+$\xi_1,...,\xi_n$ von Zufallsvariablen, so nennt man diese auch eine *Stichprobe*. 
+Basierend auf einer Stichprobe kann man nun Kennzahlen berechnen, die auf den 
+ersten Blick den Begriffen von Erwartungswert, Varianz und Standardabweichung
+ähneln, mit diesen aber keinesfalls zu verwechseln sind. Defacto dienen die
+in folgender Definition aufgeführten Stichprobenkennzahlen oft als *Schätzer* für
+die Kennzahlen von Zufallsvariablen, wie wir in @sec-punktschaetzung ausführlich
+darlegen wollen. Gewissermaßen Vorgriff zur Abgrenzung der Begrifflichkeiten 
+und auch als Grundlage für @sec-grenzwerte definieren wir hier einige deskriptive
+Stichprobenkennzahlen.
+
+:::{#def-stichprobenkennzahlen}
+## Stichprobenmittel, Stichprobenvarianz, Stichprobenstandardabweichung
+$\xi_1,...,\xi_n$ sei eine Menge von Zufallsvariablen, genannt *Stichprobe*.
+
+* Das *Stichprobenmittel* von $\xi_1,...,\xi_n$ ist definiert als 
+\begin{equation}
+\bar{\xi} := \frac{1}{n}\sum_{i=1}^n \xi_i.
+\end{equation}
+* Die *Stichprobenvarianz* von $\xi_1,...,\xi_n$ ist definiert als
+\begin{equation}
+S^2 := \frac{1}{n-1}\sum_{i=1}^n (\xi_i - \bar{\xi})^2.
+\end{equation}
+* Die *Stichprobenstandardabweichung* ist definiert als
+\begin{equation}
+S := \sqrt{S^2}.
+\end{equation}
+:::
+
+Zur Abgrenzung erinnern wir noch einmal daran, dass Erwartungswert $\mathbb{E}(\xi)$,
+Varianz $\mathbb{V}(\xi)$ und Standardabweichung $\mathbb{S}(\xi)$ Kennzahlen 
+einer Zufallsvariable $\xi$ sind, wohingegen $\bar{\xi}, S^2$, und $S$ 
+Kennzahlen einer Stichprobe $\xi_1,...,\xi_n$ sind. 
+
+**Beispiel**
+
+Wir wollen die Bestimmung der in @def-stichprobenkennzahlen eingeführten 
+Stichprobenkennzahlen an einem Beispiel erläutern. Dazu halten wir nochmals fest, dass
+$\bar{\xi}, S^2$, $S$ Zufallsvariablen sind und wollen ihre Realisationen im 
+Folgenden mit $\bar{x}, s^2$ und $s$ bezeichnen. Nehmen wir also an, wir haben für
+$n := 10$ die in folgender Tabelle gezeigten Realisationen von u.i.v. 
+nach $N(1,2)$ verteilten Zufallsvariable $\xi_1,...,\xi_{10}$, wobei für 
+$i = 1,...,10$ die Realisation von $\xi_i$ mit $x_i$ bezeichnen ist:
+
+\begin{center}
+\begin{tabular}{ccccccccccc}
+   $x_1$
+&  $x_2$
+&  $x_3$
+&  $x_4$
+&  $x_5$
+&  $x_6$
+&  $x_7$
+&  $x_8$
+&  $x_9$
+&  $x_{10}$ \\\hline
+   0.54
+&  1.01
+& -3.28
+&  0.35
+&  2.75
+& -0.51
+&  2.32
+&  1.49
+&  0.96
+&  1.25
+\end{tabular}
+\end{center}
+
+Nach @def-stichprobenkennzahlen ist die Stichprobenmittelrealisation dann gegeben durch
+\begin{equation}
+\bar{x}
+= \frac{1}{10}\sum_{i = 1}^{10}x_i
+= \frac{6.88}{10}
+= 0.68,
+\end{equation}
+die Stichprobenvarianzrealisation gegeben durch
+\begin{equation}
+s^2
+= \frac{1}{9}\sum_{i=1}^{10} (x_i - \bar{x})^2
+= \frac{1}{9}\sum_{i=1}^{10} (x_i - 0.68)^2
+= \frac{25.37}{9}
+= 2.82.
+\end{equation}
+und die Stichprobenstandardabweichungrealisation gegeben durch
+\begin{equation}
+s = \sqrt{s^2} = \sqrt{2.82} = 1.68.
+\end{equation}

@@ -1,0 +1,146 @@
+# Die `lm()` Funktion
+
+Die `lm()` Funktion der Base R Distribution erlaubt es, die in diesem Abschnitt
+behandelten Modelle zu formulieren, zu schätzen und zu evaluieren. Die Funktion
+wird dabei üblicherweise in der Form `alm = lm(formula, data)` aufgerufen und formuliert
+und schätzt dann automatisiert dass durch den Ausdruck `formula` spezifierte Modell
+anhand der in dem Dataframe `data` gespeicherten Daten. Die Analyseresultate können dann
+auf verschiedene Art und Weisen aus dem Objekt `alm` ausgelesen werden, z.B. mithilfe
+der `print()` und `summary()` Funktionen. Um uns mit der Arbeit mit `lm()` vetraut
+zu machen, wollen wir in @sec-modellformulierung zunächst klären, wie die in 
+diesem Abschnitt betrachteten Anwendungsbeispiele mithilfe der `formula` und `data`
+Ausdrücke formuliert werden können. In @sec-modellschätzung betrachten wir dann
+die Optionen zur Parameterschätzung in `lm()` und in in @sec-modellevaluation betrachten
+wir die Evaluation von Konfidenzintervallen und T- und F-Tests basierend auf einem
+durch `lm()` geschätzten Objekts.
+
+## Modellformulierung {#sec-modellformulierung}
+
+Grundlage der Formulierung eines Modells der Form
+\begin{equation}
+y = X\beta + \varepsilon \mbox{ mit } \varepsilon \sim N(0_n,\sigma^2I_n)
+\end{equation}
+mithilfe der Funktion `lm()` ist die Spezifikation einer **R** `formula` der Form
+
+```{r, eval = F, error = F}
+Daten ~ Term 1 + Term 2 + ... + Term k
+```
+
+In dieser Syntax trennt der `~` Operator die linke Seite `Daten`, die zur Identifikation
+der abhängigen Variable $y$ genutzt wird von der rechten Seite `Term 1 + Term 2 + ... + Term k`,
+die zur Spezifikation der Spalten der Designmatrix $X$ genutzt wird. 
+
+
+Nach erfolgreicher Modellformulierung kann die Designmatrix des formulierten Modells
+mithilfe der `model.matrix()` Funktion dargestellt werden. 
+
+## Modellschätzung {#sec-modellschätzung}
+
+## Modellevaluation {#sec-modellevaluation}
+
+## Anwendungsbeispiele {#sec-anwendungsbeispiele}
+
+### Einfache lineare Regression {-}
+
+Wir betrachten den Beispieldatensatz zum Zusammenhang von Psychotherapiedauer 
+und Symptomreduktion aus @sec-regression. Folgender **R** Code demonstriert
+seine Analyse mithilfe der `lm()` Funktion.
+
+\tiny
+```{r}       
+D               = read.csv("_data/501-regression.csv")                  # Einlesen des Datensatzes
+data            = data.frame(y = D$y_i, x1 = D$x_i)                     # Datenspezifikation für lm()
+formula         = y ~ 1 + x1                                            # Modell der einfachen linearen Regression
+alm             = lm(formula, data)                                     # Modellformulierung und Modellschätzung
+sum             = summary(alm)                                          # Auslesen wesentlicher Modellbestandteile   
+X               = model.matrix(alm)                                     # Designmatrix
+n               = nrow(X)                                               # Anzahl Datenpunkte
+p               = ncol(X)                                               # Anzahl Betaparameter  
+beta_hat        = coef(alm)                                             # Betaparameterschätzer    
+sigsqr_hat      = sum$sigma**2                                          # Varianzparameterschätzer
+cov_beta_hat    = vcov(alm)                                             # geschätzte Betaparameterkovarianzmatrix  
+ci_beta_hat     = confint(alm)                                          # 95%-Konfidenzintervall für beta  
+```
+\normalsize
+
+Die Designmatrix $X \in \mathbb{R}^{n \times 2}$ (`X`) hat die Form
+
+\footnotesize
+```{r, echo = F}
+print(X)
+```
+\normalsize
+
+Der Betaparameterschätzer (`beta_hat`) ergibt sich zu
+
+\footnotesize
+```{r, echo = F}
+print(beta_hat,3)
+```
+\normalsize
+
+und der Varianzparameterschätzer (`sigsqr_hat`) ergibt sich zu
+
+\footnotesize
+```{r, echo = F}
+print(sigsqr_hat,3)
+```
+\normalsize
+
+Die geschätzte Kovarianzmatrix des Betaparameters (`cov_beta_hat`) ergibt sich zu
+
+\footnotesize
+```{r, echo = F}
+print(cov_beta_hat,3)
+```
+
+\normalsize
+Damit ergeben sich die Konfidenzintervalle der Betaparameterkomponenten mithilfe von 
+
+\tiny
+```{r}
+delta       = 0.95                                                              # Konfidenzlevel 
+t_delta     = qt((1 + delta)/2, n - p)                                          # t-Konfidenzwert
+beta_0_cil  = beta_hat[1]-sqrt(cov_beta_hat[1,1])*t_delta                       # untere KI Grenze
+beta_0_ciu  = beta_hat[1]+sqrt(cov_beta_hat[1,1])*t_delta                       # obere  KI Grenze
+beta_1_cil  = beta_hat[2]-sqrt(cov_beta_hat[2,2])*t_delta                       # untere KI Grenze    
+beta_1_ciu  = beta_hat[2]+sqrt(cov_beta_hat[2,2])*t_delta                       # obere  KI Grenze    
+```
+\normalsize
+zu
+\footnotesize
+```{r, echo = F}
+cat("95%-Konfidentintervall für beta_0 : [", round(beta_0_cil,3), "," , round(beta_0_ciu,3), "]", 
+    "\n95%-Konfidenzintervall für beta_1 : [ ", round(beta_1_cil,3), ", " , round(beta_1_ciu,3), "]")
+```
+\normalsize
+wie sich auch durch Ausgabe von `ci_beta_hat`
+\footnotesize
+```{r, echo = F}
+print(ci_beta_hat,4)
+```
+\normalsize
+bestätigen lässt.
+
+
+### T-Tests {-}
+
+### Einfaktorielle Varianzanalyse {-}
+
+### Zweifaktorielle Varianzanalyse {-}
+
+### Multiple Regression {-}
+
+### Kovarianzanalyse {-}
+
+
+
+
+## Literaturhinweise
+
+Die Konventionen zur Spezifikation von linearen Modellen mithilfe der symbolischen
+`formula` Darstellungen gehen auf @wilkinson1973 zurück. @chambers1992 geben eine
+ausführliche Einführung in die Syntax von `lm()`. @galecki2013 und @fox2019 
+geben exzellente Einführungen in die Arbeit mit `lm()`.
+
+## Selbstkontrollfragen

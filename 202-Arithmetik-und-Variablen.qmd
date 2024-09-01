@@ -1,0 +1,438 @@
+
+
+# Arithmetik und Variablen {#sec-arithmetik-und-variablen}
+## Arithmetik {#sec-arithmetik}
+
+Öffnet man ein **R** Terminal, so kann man dieses zunächst einmal als Taschenrechner 
+nutzen, wie folgendes Beispiele zeigt
+
+\footnotesize
+```{r}
+1+1                                                     # Addition
+```
+\normalsize
+Im Terminal erscheint dabei einerseits das Ergebnis $2$, andererseits mit `[1]`
+ein Hinweis darauf, dass das Ergebnis der erste Eintrag in dem von **R** erzeugten
+Ergebnisvektor ist. Vektoren werden wir in @sec-vektoren im Detail behandeln. Weitere
+Beispiele für den Gebrauch eines **R** Terminals als Taschenrechner sind folgende.
+
+\footnotesize
+```{r}
+2*3                                                     # Multiplikation
+```
+```{r}
+sqrt(2)                                                 # Quadratwurzel (square root)
+```
+```{r}
+exp(0)                                                  # Exponentialfunktion
+```
+```{r}
+log(1)                                                  # Logarithmusfunktion
+```
+\normalsize
+
+
+@tbl-arithmetische-operatoren gibt einen ersten Überblick über die in **Base R** verfügbaren
+arithmetischen Operatoren. Neben den vertrauten Operationen der Addition, Subtraktion,
+Multiplikation, Division und Potenz hält  **Base R** zum Beispiel mit der Matrixmultiplikation,
+der ganzzahligen Teilung (`5 %\% 2 = 2`) und der Modulooperation, die den ganzzahligen Rest bei
+ganzzahliger Teilung ausgibt  (`5 %% 2 = 2`), auch Operatoren für spezielle arithmetische Operationen
+bereit. 
+
+
+| Operation             | Operator      |  
+|-----------------------|---------------|  
+| Addition              | `+`           | 
+| Subtraktion           | `-`           |  
+| Multiplikation        | `*`           |  
+| Division              | `\`           |
+| Potenz                | `^`           |
+| Matrimultiplikation   | `%*%`         |
+| Ganzzahlige Teilung   | `%/%`         |
+| Modulo                | `%%`          |
+
+: Beispiele arithmetischer Operatoren in **Base R**  {#tbl-arithmetische-operatoren}
+
+Neben den arithmetischen Operatoren zur Verknüpfung zweier Zahlen bietet  **Base R** natürlich
+auch die Möglichkeit mathematische Standardfunktionen auszuwerten, einen ersten
+Überblick gibt @tbl-mathematische-funktionen.
+
+
+| Funktion              | Aufruf        |            
+| ----------------------|---------------|
+| Exponentialfunktion   | `exp(x)` 	    | 						  
+| Logarithmusfunktion   | `log(x)`	    | 	
+| Betrag 				| `abs(x)`	    |								 
+| Wurzel 			    | `sqrt(x)`	    |							 
+| Aufrunden			    | `ceiling(x)`  |  
+| Abrunden 		   	    | `floor(x)`    |           	 
+| Mathematisches Runden | `round(x)`    |	 
+					 
+: Beispiele mathematischer Funktionen in  **Base R**  {#tbl-mathematische-funktionen}
+
+Wenn auch die in @tbl-arithmetische-operatoren aufgeführten Operatoren und die 
+in @tbl-mathematische-funktionen aufgeführten Funktionen auf den ersten Blick 
+einen etwas anderen Charakter haben, so unterscheidet **Base R** formal nicht 
+zwischen Operatoren und Funktionen. Insbesondere können Operatoren mithilfe
+der sogenannten *Infixnotation* auch also Funktionen mehrer Argumente genutzt
+und verstanden werden. Untenstehender **R** Code zeigt, wie die arithmetische
+Verknüpfung $2 + 3$ als Ausführung einer Funktion der Form $+ : \mathbb{R}^2 \to \mathbb{R}$
+mit dem Namen "+" verstanden werden kann
+
+\footnotesize
+```{r}
+`+`(2,3)                                                # Infixnotation für 2 + 3
+```
+\normalsize
+
+Schließlich bietet **Base R** wie jede Programmiersprache auch die Möglichkeit Ausdrücke
+auf ihren logischen Gehalt hin auszuwerten. Dabei ist Logik hier im Sinne der
+aus @sec-sprache-und-logik Aussagenlogik zu verstehen, in der Aussagen einen
+von zwei Werten annehmen können, wahr (TRUE) oder falsch (FALSE). Die in @tbl-logische-operatoren
+aufgeführten Relationsoperatoren `<`, `<=` ,`>`, und `>=` werden zumeist auf
+numerische Werte angewendet, die Gleichheitsoperatoren `==` und `!=` können auf
+beliebige Datenstrukturen angewendet werden und die Operatoren zur Verknüpfung
+logischer Werte `&` und `|` entsprechen den aus @sec-sprache-und-logik bekannten
+Begiffen der logischen Konjunktion ("und") und Disjunktion ("nicht-exklusive oder")
+
+
+| Logische Verknüpfung  | Operator  |	
+| ----------------------|-----------|					 
+| Gleich 		        | `==`	    |						 
+| Ungleich			    | `!=` 	    |							 
+| Konjunktion           | `&`       |       					 
+| Disjunktion           | `|`       |          						 
+| Kleiner 			    | `<`       |
+| Kleiner-gleich        | `<=`      |						 
+
+: Beispiele logischer Operatoren in **R**  {#tbl-logische-operatoren}
+
+
+
+Die in @tbl-arithmetische-operatoren, @tbl-mathematische-funktionen und 
+@tbl-logische-operatoren aufgelisteten Operatoren znd Funktionen stellen
+nur einen kleinen Auszug der von **Base R** bereitgestellten Operatoren und Funktionen
+dar. Einen vollständigen Überblick bietet folgender **R** Aufruf, der die Namen
+aller von **Base R** bereitgestellten Funktionen auflistet. Wir werden viele dieser
+Funktionen im weiteren Verlauf kennenlernen.
+
+
+\tiny
+```{r}
+names(methods:::.BasicFunsList)
+```
+\normalsize
+
+
+## Präzedenz {#sec-praezedenz}
+
+Eine wichtige Eigenschaft bei der Benutzung von Operatoren in der Programmierung ist
+ihre durch die jeweilige Programmiersprache festgelegte *Präzedenz*. Dabei handelt
+es sich um von den Entwicklern der Programmiersprache festgelegten Regeln, in welcher
+Rangfolge Operatoren in Ausdrücken, in denen mehrere von ihnen vorkommen, ausgeführt werden.
+Aus der Mathematik ist man insbesondere die Präzedenzregel "Punktrechnung geht vor Strichrechnung"
+gewöhnt. Diese besagt, dass in Ausdrücken, in denen sowohl Produkte oder Divisionen
+als auch Summen oder Differenzen vorkommen, die Produkte oder Divisionen zunächst
+ausgeführt werden und ihre Ergebnisse dann in die Summen- oder Differenzbildung eingehen.
+So ergibt sich zum Beispiel
+$$
+2 \cdot 5 - 3 = 10 - 3 = 7
+$$ {#eq-punkt-strich-1}
+und nicht etwa
+$$
+2 \cdot 5 - 3 \neq 2 \cdot 2 = 4.
+$$ {#eq-punkt-strich-2}
+Wir setzen als bekannt voraus, dass die Präzedenzregeln durch Klammerbildung 
+betont bzw. überschrieben werden können. So ist beispielsweise der Ausdruck in
+@eq-punkt-strich-1 äquivalent zu
+$$
+(2 \cdot 5) - 3 = 10 - 3 = 7
+$$ {#eq-punkt-strich-3}
+und die in @eq-punkt-strich-2 beabsichtigte Rechnung kann durch Klammersetzung
+als
+$$
+2 \cdot (5 - 3) = 2 \cdot 2 = 4
+$$ {#eq-punkt-strich-4}
+richtig gestellt werden. Diese vertrauten Rechenregeln und ihre Überschreibung
+durch Klammern finden sich in **R** entsprechend implementiert:
+
+\footnotesize
+```{r}
+2*5 - 3
+2*(5 - 3)
+```
+
+\normalsize
+Eine weitere als bekannt voraussgesetzte Präzendenzregel ist, dass Potenzen eine
+höhere Präzedenz als Produkte oder Divisionen und Summen oder Differenzen haben. Es ergibt
+sich also beispielsweise
+\begin{equation}
+2^3 + 3 = (2\cdot 2 \cdot 2) + 3 = 8 + 3 = 11 
+\end{equation}
+und nicht etwa
+\begin{equation}
+2^3 + 3 \neq  2^{3 + 3} = 2^6 = 64
+\end{equation}
+Entsprechend gelten  in **R**
+
+\footnotesize
+```{r}
+2^3 + 3
+2^(3 + 3)
+```
+\normalsize
+
+Eine wichtige Besonderheit hinsichtlich der Präzedenzregeln in **R** ist, das 
+auch unitäre Vorzeichen, also Vorzeichen, die eine Zahl als eine negative Zahl
+identifizieren in den Bereich der Operatorpräzedenz fallen. Wenn man geneigt sein
+sollte, einen Ausdruck der Form $-1^2$ als $(-1)^2 = 1$ zu interpretieren, so folgt
+**R** der Regel, dass in $-1^2$ zunächst die Potenz und dann das Vorzeichen ausgewertet
+werden, dass also $-1^2 = -(1^2) = -1$ gilt, wie folgender **R** Code demonstriert.
+
+\footnotesize
+```{r}
+-1^2 			                    # -(1^2)   	= -1
+(-1)^2 			                    # (-1)^2   	=  1
+```
+\normalsize
+
+Weiterhin werden in **R** Potenzen von rechts nach links abgearbeitet, Produkte, Divisionen,
+Summen und Differenzen dagegen von links nach rechts. So gelten beispielsweise
+
+\footnotesize
+```{r}
+2^2^3 		                        # 2^(2^3)  	= 2^8 = 256
+(2^2)^3			                    # (2^2)^3  	= 4^3 = 64
+
+```
+\normalsize
+
+und
+
+\footnotesize
+```{r}
+2+3/4*5 		                    # 2+(3/4)*5 = 2+(0.75*5) = 2+3.75 = 5.75
+2+3/(4*5)		                    # 2+3/(4*5) = 2+3/20 = 2+0.15 = 2.15
+```
+\normalsize
+
+Generell gilt, dass man in der Programmierung Präzedenzregeln nicht raten sollte
+oder versuchen sollte, sie logisch herzuleiten, und dann darauf vertrauen sollte,
+dass die Entwickler der Programmiersprache die Präzedenzregeln schon gemäß des eigenen
+Verständnisses implementiert haben werden. Stattdessen sollte man Berechnungen immer 
+kritisch prüfen und zur Sicherheit die beabsichtigte Rechnung lieber einmal zuviel 
+mit Klammern betonen als zu wenig. 
+
+Neben den hier betrachteten Präzedenzregeln für die Grundrechenarten gibt es
+in **R** eine ganze Reihe weiterer Regeln zum Umgang mit vielen weiteren Operatoren,
+von denen wir bisher nur sehr wenige kennengelernt haben. Wenn man sich beim
+Erlernen einer Programmiersprache mit einem neuen Operator vertraut macht, sollte
+man also für sich auch unbedingt die Präzedenz dieses Operators klären. Der in @fig-r-precedence
+gezeigte und mit dem Befehl `?Syntax` aufzurufende Text der **R** Dokumentation diskutiert die
+in **R** geltenden Präzedenzregeln vollumfänglich und sollte bei der Arbeit mit
+**R** häufig konsultiert werden.
+
+![**R** Präzedenzregeln](./_figures/202-r-precedence){#fig-r-precedence fig-align="center" width=100%}
+
+<!-- ## Variablen {#sec-variablen}
+\normalsize
+
+Definition 
+
+In der Programmierung ist eine Variable ein abstrakter Behälter für eine Größe,
+welche im Verlauf eines Rechenprozesses auftritt. Im Normalfall wird eine Variable
+im Quelltext durch einen Namen bezeichnet und hat eine Adresse im Speicher
+einer Maschine. Der durch eine Variable repräsentierte Wert kann – im Unterschied
+zu einer Konstante – zur Laufzeit des Rechenprozesses verändert werden. (Wikipedia)
+
+Grundlagen 
+
+Variablen sind vom Programmierenden benannte Platzhalter für Werte
+
+In 3GL Sprachen wird der Variablentyp durch eine Initialisierungsanweisung festgelegt:
+
+```{r, eval = F}
+VAR A : INTEGER     # A ist eine Variable vom Typ Integer (ganze Zahl)
+```
+
+In 3GL Sprachen wird Variablen durch eine Zuweisungsanweisung ein Wert zugeschrieben:
+
+```{r, eval = F}
+A := 1              # Der Variable A wird der numerische Wert 1 zugewiesen
+```
+
+In 4GL Sprachen wie Matlab, Python, R werden Variablen durch Zuweisung initialisiert:
+```{r, eval = F}
+a = 1               # a ist eine Variable vom Typ double, ihr Wert ist 1
+```
+
+Der Zuweisungsbefehl in Matlab und Python ist `=`, der Zuweisungsbefehl in R ist `<-`  oder `=`.
+
+Offiziell empfohlen für R ist `<-`, aus Kohärenzgründen benutzen wir hier `=`.
+
+Beispiel 
+
+Lina geht ins Schreibwarengeschäft und kauft vier Hefte, zwei Stifte und einen Füller. 
+Wie viele analoge Gegenstände kauft Lina insgesamt?
+
+```{r}
+hefte  = 4		# Definition der Variable 'hefte'  und Wertzuweisung 4
+stifte = 2		# Definition der Variable 'stifte' und Wertzuweisung 2
+fuller = 1		# Definition der Variable 'fuller' und Wertzuweisung 1
+```
+
+Nach Zuweisung existieren die Variablen im Arbeitsspeicher, dem sogenannten Workspace}
+
+Die Variablen können jetzt wie Zahlen in Berechnungen genutzt werden
+
+```{r}
+gesamt  = hefte + stifte + fuller                    # Berechnung der Gegenstandsanzahl
+print(gesamt)
+```
+
+Ein Heft kostet einen Euro, ein Stift kostet zwei Euro, und ein Füller kostet 10 Euro. Wie viel Euro muss Lina insgesamt bezahlen?
+```{r}
+gesamtpreis	= hefte*1 + stifte*2 + fuller*10         # Berechung des Preises
+print(gesamtpreis)
+```
+
+`print()` gibt Variablenwerte in der R Konsole aus.
+
+Workspace 
+
+`ls()` zeigt die existierenden benutzbaren Variablen im Arbeitsspeicher an
+
+```{r}
+ls()						# Anzeigen aller Variablennamen im Workspace
+```
+
+`rm()` erlaubt das Löschen von Variablen
+
+```{r}
+rm(gesamtpreis)		        # Löschen der Variable Gesamtpreis
+ls()
+```
+
+
+`rm(list=ls())` löscht alle Variablen
+```{r}
+rm(list = ls()) 	        # Löschen aller Variablen
+ls()
+```
+
+Variablennamen 
+
+Zulässige Variablennamen
+
+* bestehen aus Buchstaben, Zahlen, Punkten (.) und Unterstrichen (\_)
+* beginnen mit einem Buchstaben oder . nicht gefolgt von einer Zahl
+* dürfen keine reserverd words wie `for`, `if`, `NaN`, usw. sein ($>$?reserved)
+* werden unter `?make.names() beschrieben
+
+
+Sinnvolle Variablennamen
+
+* sind kurz ($\approx$ 1 bis 7 Zeichen) und aussagekräftig
+* bestehen nur aus Kleinbuchstaben und Unterstrichen
+
+Variablenrepräsentation $\vert$ Binding 
+
+```{r, eval = F}
+x = 1
+```
+
+Intuitiv wird eine Variable genannt x mit dem Wert 1 erzeugt.
+
+De-facto geschehen zwei Dinge:
+
+1. R erzeugt ein Objekt (Vektor mit Wert 1) mit Speicheradresse `lobstr::obj_addr(x).
+2. R verbindet dieses Objekt mit dem Namen x, der das Objekt im Speicher referenziert.
+
+
+![Binding](./_figures/005-binding-1.pdf){#fig-binding-1 fig-align="center" width=100%}
+
+```{r, eval = F}
+y = x
+```
+
+Intuitiv wird eine Variable genannt y mit Wert gleich dem Wert von x erzeugt.
+
+De-facto wird ein neuer Name y erzeugt, der dasselbe Objekt referenziert wie x:
+
+```{r, echo = FALSE, out.width="22%"}
+knitr::include_graphics("_figures/005-binding-2.pdf")
+```
+
+
+Man überzeuge sich mit `lobstr::obj_addr(x)` und `lobstr::obj_addr(y).
+
+Das Objekt (Vektor mit Wert 1) wird nicht kopiert, R spart Arbeitsspeicher.
+
+Variablenrepräsentation $\vert$ Copy-on-modify 
+
+
+
+```{r}
+x = 1 		# Objekt (0x74b) erzeugt, x referenziert Speicheradresse  des Objektes
+y = x		# y referenziert dieselbe Speicheradresse wie x (0x74b)
+y = 3 		# y modifiziert, modifizierte Kopie (0xcd2) wird gespeichert
+y        	# y referenziert jetzt (0xcd2)
+```
+
+```{r}
+x           # x referenziert weiterhin (0x74b)
+```
+
+
+```{r, echo = FALSE, out.width="70%"}
+knitr::include_graphics("_figures/005-copy-on-modify.pdf")
+```
+
+R Objekte sind *immutable*, können also nicht verändert werden.
+
+Variablenrepräsentation $\vert$ Copy-on-modify 
+
+Zur Immutability gibt allerdings zwei Ausnahmen, genannt Modifications-in-place
+
+1. Objekte mit nur einem gebundenem Namen werden in-place modifiziert
+
+    *  Dieses Verhalten ist allerdings nur in R, nicht innerhalb RStudios reproduzierbar.
+
+```{r}
+x = 1 		# Objekt (0x74b) erzeugt, x referenziert Speicheradresse des Objektes
+x[1] = 2 	# Objekt (0x74b) veraendert
+```
+
+
+2.  Environments werden in-place modifiziert ($\rightarrow$ Environments und Funktionen).
+
+
+Variablenrepräsentation $\vert$ Unbinding und Carbage Collection 
+
+Copy-on-modify gilt auch in umgekehrter Reihenfolge
+
+
+```{r}
+x = 1 		# Objekt (0x74b) erzeugt, x referenziert Speicheradresse  des Objektes
+y = x		# y referenziert dieselbe Speicheradresse wie x (0x74b)
+x = 3 		# Ein neues Objekt (0x2a08) wird erzeugt, x referenziert (0x2a08)
+y           # y referenziert weiterhin  Objekt (0x74b)
+```
+
+```{r, echo = FALSE, out.width="56%"}
+knitr::include_graphics("_figures/005-unbinding.pdf")
+```
+
+Unbinding
+
+```{r}
+x = 1		#  x referenziert Objekt (0x74b)
+x = "a"		#  x referenziert Objekt (0x2a08), Objekt (0x74b) jetzt ohne Referenz
+```
+
+Carbage collection
+
+
+* Nicht referenzierte Objekte im Arbeitsspeicher werden automatisch gelöscht.
+* Das Löschen geschieht meist erst dann, wenn es wirklich nötig ist.
+* Es ist nicht nötig, aktiv die Garbage Collection Funktion `gc()` zu benutzen. -->

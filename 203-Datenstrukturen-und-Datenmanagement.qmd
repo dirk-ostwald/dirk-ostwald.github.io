@@ -1,0 +1,1964 @@
+
+
+
+### Datenstrukturen und Datenmanagement {#sec-datenstrukturen-und-datenmanagement}
+
+Klassische Datenstrukturen einer 3GL Programmiersprache 
+
+Fundamentale Datenstrukturen 
+
+* Vordefiniert innerhalb der Programmiersprache
+* Logische Werte (logical): TRUE, FALSE
+* Ganze Zahlen (integer): int8 (-128,...,127), int16 (–32768,..., 32767)
+* Gleitkommazahlen (single, double): 1.23456, 12.3456, 123.456, ...
+* Zeichen (character): "a", "b", "c", "!"
+* Datentyp-spezifische assoziierte Operationen
+    *  AND, OR (logical) +, - (integer) +,-,*, / (single), Zeichenkonkatenation (character)
+
+Zusammengesetzte Datenstrukturen 
+
+* Vordefinierte Container zur Zusammenfassung mehrerer Variablen gleichen Datentyps
+* Zum Beispiel Vektoren, Listen, Arrays, Matrizen, ...
+* Container-spezifische Operationen (Z.B. Vektorindizierung, Matrixmultiplikation, ...)
+
+Selbstdefinierte Datenstrukturen 
+
+* Definition eigener Datenstrukturen aus vordefinierten Datenstrukturen und Containern
+* Definition eigener Operationen
+
+Datenstrukturenkennenlernen beim Erlernen einer Programmiersprache 
+Fundamentale Datenstrukturen 
+
+* Welche fundamentalen Datenstrukturen bietet die Sprache an?
+* Welche Operationen darauf sind bereits definiert?
+* Wie lautet die Syntax zur Definition einer Variable eines fundamentalen Datentyps?
+* Wie lautet die Syntax, um vordefinierte Operationen aufzurufen?
+
+Zusammengesetzte Datenstrukturen 
+
+* Welche Container und zugehörige Operationen bietet die Programmiersprache?
+* Wie lautet die Syntax zum Umgang mit einem Containers?
+
+Selbstdefinierte Datenstrukturen 
+
+* Wie erzeugt man selbstdefinierte Datenstrukturen und zugehörige Operationen?
+* Wie lautet die Syntax zum Umgang mit einer selbstdefinierten Datenstruktur?
+
+
+Organisation von Daten in R 
+
+* Alles, was in R vorkommt, ist ein **Objekt**
+
+
+Jedem Objekt kann eindeutig zugeordnet werden
+
+* ein **Modus**
+    * Atomar  $\,\,\vert$ Komponenten sind vom gleichen Datentyp.
+    * Rekursiv $\vert$ Komponenten können von unterschiedlichem Datentyp sein.
+* eine **Länge**
+* optional weitere **Attribute**
+
+
+```{r, echo = FALSE, out.width="80%"}
+knitr::include_graphics("./_figures/005-r-objektstruktur.pdf")
+```
+
+
+Übersicht der R Datentypen 
+
+\begin{center}
+\begin{tabular}{l|l}
+Datentyp
+& Erläuterung
+\\\hline
+logical
+& Die beiden logischen Werte TRUE und FALSE
+\\
+double
+&
+Gleitkommazahlen
+\\
+integer
+& Ganze Zahlen
+\\
+complex
+& Komplexe Zahlen, hier nicht weiter besprochen
+\\
+character
+& Zeichen und Zeichenketten (strings), 'x' oder ``Hallo Welt!''
+\\
+raw
+& Bytes, hier nicht weiter besprochen
+\\
+\end{tabular}
+\end{center}
+
+
+Double und integer werden zusammen auch als numeric bezeichnet.
+
+Viele weitere Typen, hier relevant sind **logical**, **double**, **integer**, **character**.
+
+Übersicht der R Datentypen 
+
+Automatische Festlegung von Datentypen durch Zuweisung
+
+
+```{r}
+b = TRUE					# logical
+x = 2.5 					# double
+y = 1L						# (long) integer
+c = 'a' 					# character
+```
+
+Testen von Datentypen durch `typeof()`
+
+```{r}
+typeof(b)
+```
+
+```{r}
+typeof(x)
+```
+
+```{r}
+typeof(y)
+```
+
+```{r}
+typeof(c)
+```
+
+Testen von Datetypen durch `is.*()`
+
+
+```{r}
+is.logical(x)
+```
+
+```{r}
+is.double(x)
+```
+
+
+
+Übersicht atomare Datenstrukturen in R 
+
+
+\begin{center}
+\begin{tabular}{l|l}
+Datenstruktur
+& Erläuterung
+\\\hline
+
+Vektor
+& Container von indizierte Komponenten identischen Typs
+\\
+
+Matrix
+& Interpretation eines Vektors als zweidimensionaler Container
+\\
+
+Array
+&  Interpretation eines Vektors als mehrdimensionaler Container
+
+\end{tabular}
+\end{center}
+
+$\Rightarrow$ Vektoren, Matrizen, Arrays
+
+
+Übersicht rekursive Datenstrukturen in R 
+
+
+\begin{center}
+\begin{tabular}{l|l}
+Datenstruktur
+& Erläuterung
+\\\hline
+
+Liste
+& Container von indizierten Komponenten beliebigen Datentyps
+\\
+& Insbesondere auch rekursive Struktur, z.B. Liste von Listen
+\\
+
+Dataframe
+& Symbiose aus Liste und Matrix
+\\
+& Jede Komponente ist Vektor beliebigen Datentyps identischer Länge
+\\
+\end{tabular}
+\end{center}
+
+
+# Vektoren, Matrizen, Arrays und Faktoren {#sec-vektoren-matrizen-array-und-faktoren}
+### Vektoren 
+
+\normalsize
+
+* Vektoren sind geordnete Folgen von Datenwerten.
+* Die einzelnen Datenwerte eines Vektors heißen Elemente des Vektors.
+* Vektoren, deren Elemente alle vom gleichen Datentyp sind, heißen **atomar**.
+* Die zentralen Datentypen sind **numeric**, (**double**, **integer**),  **logical**,  **character** 
+
+
+```{r, echo = FALSE, out.width = "90%"}
+knitr::include_graphics("./_figures/005-atomic-vectors.pdf")
+```
+
+* Mit dem Begriff **Vektor** ist hier immer ein **atomarer Vektor** gemeint.
+
+
+**Erzeugung**
+
+Elementarwerte
+
+*Numeric* 
+
+Double wird in Dezimalnotation oder wissenschaftlicher Notation spezifiziert
+
+Weitere mögliche Werte sind Inf, -Inf, und NaN (Not-a-Number)
+
+```{r, eval = F}
+x = 1   						# Einelementiger Vektor vom Typ double
+y = 2.1e2 						# Einelementiger Vektor vom Typ double
+z = Inf 					    # Einelementiger Vektor vom Typ double
+```
+
+Integer wird wie double ohne Dezimalstellen spezifiziert, gefolgt von L (long integer)
+
+```{r, eval = F}
+x = 1L							# Einelementiger Vektor vom Typ integer
+y = 200L 		     			# Einelementiger Vektor vom Typ integer
+```
+
+*Logical*
+
+TRUE oder FALSE, abgekürzt T oder F
+
+```{r, eval = F}
+x = TRUE						# Einelementiger Vektor vom Typ logical
+y = F 							# Einelementiger Vektor vom Typ logical
+```
+
+*Character*
+
+Anführungszeichen ("a") oder Hochkommata ('a')
+
+```{r, eval = F}
+x = "a"							# Einelementiger Vektor vom Typ character
+y = 'test' 						# Einelementiger Vektor vom Typ character
+```
+
+Direkte Konkatenation von Elementarwerten mit `c()`
+
+
+```{r, eval = F}
+x = c(1,2,3) 						# numeric vector [1,2,3]
+y = c(0,x,4)						# numeric vector [0,1,2,3,4]
+s = c("a", "b", "c")				# character vector ["a", "b", "c"]
+l = c(TRUE, FALSE)					# logical  vector [TRUE, FALSE]
+```
+
+`c()` konkateniert die Eingabeargumente und erzwingt einen einheitlichen Datentyp
+
+```{r, eval = F}
+x = c(1, "a", TRUE) 				# character vector ["1", "a", "TRUE"]
+```
+
+Erzeugen "leerer" Vektoren mit `vector()`
+
+```{r, eval = F}
+v = vector("double",3)			    # double vector [0,0,0]
+w = vector("integer",3)			    # integer vector [0,0,0]
+l = vector("logical",2)			    # logical vector [FALSE, FALSE]
+s = vector("character",4)		    # character vector ["", "", "", ""]
+```
+
+
+Erzeugen "leerer" Vektoren mit double(), integer(), logical(), character()
+
+
+```{r, eval = F}
+v = double(3)						# double vector [0,0,0]
+w = integer(3)						# integer vector [0,0,0]
+l = logical(2)						# logical vector [FALSE, FALSE]
+s = character(4)					# character vector ["", "", "", ""]
+```
+
+Erzeugen von ganzzahligen Sequenzen mithilfe des *Colonoperators* `:`
+
+`a:b` erzeugt ganzzahlige Sequenzen von a (inklusive) bis b (maximal)
+
+
+```{r, eval = F}
+x = 0:5							# [0,1,2,3,4,5]
+y = 1.5:6.1 					# [1.5, 2.5, 3.5, 4.5, 5.5]
+```
+
+
+Erzeugen von Sequenzen mit `seq()`
+
+`seq(from, to, by = ((to - from)/(len - 1), len = NULL, ...)`
+
+
+```{r, eval = F}
+x_1	= seq(0,5)					# wie 0:5, [0,1,2,3,4,5]
+x_2 = seq(0,1,len = 5)			# 5 Zahlen zwischen 0 (inkl.) und 1 (inkl.)
+								# [0.00, 0.25, 0.50, 0.75, 1.00]
+x_3 = seq(0,2,by = .15)			# 0.15 Schritte zwischen 0 (inkl.) und 2 (max.)
+								# [0.00, 0.15, 0.30, ..., 1.50 1.65 1.80 1.95]
+x_4	= seq(1,0,by = -.1)			# -0.1 Schritte zwischen 1 (inkl.) und 0 (min.)
+```
+
+
+`seq.int()`, `seq_len()`, `seq_along()`  als weitere Varianten
+
+
+```{r, eval = F}
+x_1	= seq.int(0,5)				# wie 0:5, [0,1,2,3,4,5]
+x_2 = seq_len(5)				# Natuerliche Zahlen bis 5, [1,2,3,4,5]
+x_3 = seq_along(c("a","b"))	    # wie seq_len(length(c("a", "b")))
+```
+
+
+**Charakterisierung**
+
+`length()` gibt die Anzahl der Elemente eines Vektors aus
+```{r, eval = T}
+x = 0:10					# Vektor
+length(x)					# Anzahl der Elemente des Vektors
+```
+`typeof()` gibt den elementaren Datentyp eines Vektors aus
+```{r, eval = T}
+x = 1:3L					# Vektor
+typeof(x)					# Datentyp des atomic vectors
+```
+```{r, eval = T}
+y = c(T,F,T)				# Vektor
+typeof(y)				    # Der Datentyp des atomic vectors
+```
+`mode()` und `storage.mode()` werden nicht empfohlen, sie existieren für S Kompatibilität
+
+`is.logical()`, `is.double()`, `is.integer()`, `is.character()` testen den Datentyp
+```{r, eval = T}
+is.double(x)				# Testen obigen Vektors
+```
+```{r, eval = T}
+is.logical(y)			    # Testen obigen Vektors
+```
+
+
+
+Datentypangleichung (Coercion)
+
+Bei Konkatenation verschiedener Datentypen wird ein einheitlicher Datentyp erzwungen. Es gilt 
+
+character $>$ double $>$ integer $>$ logical
+
+
+
+```{r, eval = T}
+x = c(1.2,"a")			# Kombination gemischter Datentypen (character schlaegt double)
+x
+typeof(x)				# Erzeugter Vektor ist vom Datentyp character
+```
+
+```{r, eval = T}
+y = c(1L, TRUE)			# Kombination  gemischter Datentypen (integer schlaegt logical)
+y
+typeof(y)				# Erzeugter Vektor ist vom Typ integer
+```
+
+
+Datentypangleichung (Coercion)
+
+Bei Konkatenation verschiedener Datentypen wird ein einheitlicher Datentyp erzwungen. Es gilt 
+
+character $>$ double $>$ integer $>$ logical
+
+
+`as.logical()`, `as.integer()`, `as.double()`, `as.character()` erlauben explizite Coercion:
+
+
+
+```{r, eval = F}
+x = c(0,1,1,0)			# double Vektor
+y = as.logical(x)	    # ... umgewandelt in logical
+y
+```
+
+Coercion geschieht aber auch oft implizit:
+
+```{r, eval = T}
+x = c(T, F, T, T)		# logical Vektor
+s = sum(x)				# Summation in integer gewandelter logical Elemente
+s			
+```
+
+
+**Indizierung**
+
+Einzelne oder mehrere Vektorkomponenten werden durch Indizierung adressiert.
+
+Indizierung wird auch Indexing, Subsetting, oder Slicing genannt.
+
+Zur Indizierung werden eckige Klammern [$\,\,$] benutzt.
+
+Indizierung kann zur Kopie oder Manipulation von Komponenten benutzt werden.
+
+Der Index des ersten Elements ist 1 (nicht 0, wie in anderen Sprachen).
+
+
+```{r, eval = F}
+x		= c("a", "b", "c")		# character vector ["a", "b", "c"]
+y 		= x[2]					# Kopie von "b" in y
+x[3]	= "d" 					# Aenderung von x zu x = ["a", "b", "d"]
+```
+
+
+Prinzipien der Indizierung in **R**
+
+
+Indizierung mit ...
+
+... einem Vektor positiver Zahlen adressiert entsprechende Komponenten.
+
+... mit einem Vektor negativer Zahlen adressiert komplementäre Komponenten.
+
+... einem logischen Vektor adressiert die Komponenten mit TRUE.
+
+... einem character Vektor adressiert benannte Komponenten.
+
+
+Beispiele
+
+Indizierung mit einem Vektor positiver Zahlen
+```{r, eval = F}
+x = c(1,4,9,16,25)	    # [1,4,9,16,25] = [1^2, 2^2, 3^2, 4^2, 5^2]
+y = x[1:3]			    # 1:3 erzeugt Vektor [1,2,3], x[1:3] = [1,4,9]
+z = x[c(1,3,5)]		    # c(1,3,5) erzeugt Vektor [1,3,5], x[c(1,3,5)] = [1,9,25]
+```
+
+Indizierung mit einem Vektor negativer Zahlen
+```{r, eval = F}
+x = c(1,4,9,16,25)	    # [1,4,9,16,25] = [1^2, 2^2, 3^2, 4^2, 5^2]
+y = x[c(-2,-4)]		    # Alle Komponenten ausseer 2 und 4, x[c(-2,-4)] = [1,9,25]
+z = x[c(-1,2)] 		    # Gemischte Indizierung nicht erlaubt (Fehlermeldung)
+```
+
+Indizierung mit einem logischen Vektor
+```{r, eval = F}
+x = c(1,4,9,16,25)	    # [1,4,9,16,25] = [1^2, 2^2, 3^2, 4^2, 5^2]
+y = x[c(T,T,F,F,T)]	    # TRUE Komponenten,  x[c(T,T,F,F,T)] = [1,4,25]
+z = x[x > 5] 		    # x > 5 = [F,F,T,T,T], x[x > 5] = [9,16,25]
+```
+
+Indizierung mit einem character Vektor
+```{r, eval = F}
+x = c(1,4,9,16,25)	    # [1,4,9,16,25] = [1^2, 2^2, 3^2, 4^2, 5^2]
+names(x) = c("a","b")	# Benennung der Komponenten als [a  b <NA> <NA> <NA>]
+y = x["a"]				# x["a"] = 1
+```
+
+
+**R** hat eine (zu) hohe Flexibilität bei Indizierung
+
+
+
+Out-of-range Indizes verursachen keine Fehler, sondern geben NA aus
+```{r, eval = F}
+x = c(1,4,9,16,25)		# [1,4,9,16,25] = [1^2, 2^2, 3^2, 4^2, 5^2]
+y = x[10]				# x[10] = NA (Not Applicable)
+```
+
+
+
+Nichtganzzahlige Indizes verursachen keine Fehler, sondern werden abgerundet
+```{r, eval = F}
+y = x[4.9]				# x[4.9] 	= x[4] 	= 16
+z = x[-4.9]				# x[-4.9] = x[-4] = [1,4,9,25]
+```
+
+
+Leere Indizes indizieren den gesamten Vektor
+```{r, eval = F}
+y = x[]					# y = x
+```
+
+**Arithmetik**
+
+Unitäre arithmetische Operatoren und Funktionen werden elementweise ausgewertet
+
+
+```{r, eval = F}
+a 	= seq(0,1,len=11)	# a = [ 0.0   ,  0.1   , ...,  0.9    , 1.0    ]
+b 	= -a				# b = [-0.0   , -0.1   , ..., -0.9    ,-1.0    ]
+v	= a^2			    # v = [ 0.0^2 ,  0.1^2 , ...,  0.9^2  , 1.0^2  ]
+w 	= log(a)			# w = [ln(0.0), ln(0.1), ...,  ln(0.9), ln(1.0)]
+```
+
+
+Binäre arithmetische Operatoren werden elementweise ausgewertet
+
+Vektoren gleicher Länge
+
+```{r, eval = F}
+a = c(1,2,3)			# a = [1,2,3]
+b = c(2,1,4)			# b = [2,1,4]
+v = a + b				# v = [1,2,3] + [2,1,4] = [1+2,2+1,3+4] = [   3,  3,    7]
+w = a - b 			    # w = [1,2,3] - [2,1,4] = [1-2,2-1,3-4] = [  -1,  1,   -1]
+x = a * b 				# x = [1,2,3] * [2,1,4] = [1*2,2*1,3*4] = [   2,  2,   12]
+y = a / b 				# y = [1,2,3] / [2,1,4] = [1/2,2/1,3/4] = [0.50,  2, 0.75]
+```
+
+
+Vektoren und Skalare (= Vektoren der Länge 1)
+
+```{r, eval = F}
+a = c(1,2,3)			# a = [1,2,3]
+b = 2					# b = [2]
+v = a + b			    # v = [1,2,3] + [2,2,2] = [1+2,2+2,3+2] = [  3,  4,   5]
+w = a - b 				# w = [1,2,3] - [2,2,2] = [1-2,2-2,3-2] = [ -1,  2,   1]
+x = a * b 				# x = [1,2,3] * [2,2,2] = [1*2,2*2,3*2] = [  2,  4,   6]
+y = a / b 				# y = [1,2,3] / [2,2,2] = [1/2,2/2,3/2] = [0.5,  1, 1.5]
+```
+
+
+*Recycling*
+
+R erlaubt (leider) auch Arithmetik mit Vektoren unterschiedlicher Länge
+
+
+Bei ganzzahligen Vielfachen der Länge wird der kürzere Vektor wiederholt
+```{r, eval = F}
+x = 1:2					# x = [1,2], length(x) = 2
+y = 3:6					# y = [3,4,5,6], length(y) = 4
+v = x + y			    # v = [1,2,1,2] + [3,4,5,6] = [4,6,6,8]
+```
+
+Arithmetik von Vektoren und Skalaren ist ein Spezialfall dieses Prinzips
+
+Andernfalls werden die ersten Komponenten des kürzeren Vektors wiederholt
+
+```{r, eval = F}
+x = c(1,3,5)			# x = [1,3,5], length(x) = 3
+y = c(2,4,6,8,10)		# y = [2,4,6,8,10], length(y) = 5
+v = x + y				# v = [1,3,5,1,3] + [2,4,6,8,10] = [3,7,11,9,13]
+```
+
+
+Generell sollten nur Vektoren gleicher Länge arithmetisch verknüpft werden!
+
+*Fehlende Werte (NA)*
+
+Fehlende Werte werden in R mit NA (not applicable) repräsentiert
+
+Das Rechnen mit NAs ergibt (meist) wieder NA
+
+```{r}
+3 * NA					# Multiplikation eines NA Wertes ergibt NA
+```
+
+```{r}
+NA < 2					# Relationaler Vergleich eines NA Wertes ergibt NA
+```
+
+```{r}
+NA^0					# NA hoch 0 ergibt 1, weil jeder Wert hoch 0 eins ergibt (?)
+```
+
+```{r}
+NA & FALSE 				# NA UND FALSE  ergibt FALSE, weil jeder Wert UND FALSE FALSE ergibt
+```
+
+Auf NA testet man mit `is.na()`
+```{r, eval = F}
+x = c(NA, 5, NA, 10)	# Vektor mit NAs
+x == NA					# Kein Testen auf NAs : 5 == NA ist NA, nicht FALSE
+``` 
+
+```{r}
+is.na(x)				# Logisches Testen auf NA
+```
+
+
+**Attribute**
+
+Attribute sind Metadaten von R Objekten in Form von Schlüssel-Wert-Paaren
+
+`attributes() ruft alle Attribute eines Objektes auf
+
+Perse haben  atomic vectors keine Attribute
+
+```{r, eval = T}
+a = 1:3				# ein numerischer Vektor
+attributes(a)		# Aufrufen aller Attribute
+```
+
+`attr()` kann zum Aufrufen und Definieren von Attributen genutzt werden
+```{r, eval = T}
+attr(a, "S") = "W"	# a bekommt Attribut mit Schluessel S und Wert W
+attr(a, "S")		# Das Attribut mit Schluessel S hat den Wert W
+```
+
+Attribute werden bei Operationen oft entfernt (Ausnahmen sind `names` und `dim`)
+```{r, eval = F}
+b = a[1]			# Kopie des ersten Elements von a in Vektor b
+attributes(b)		# Aufrufen aller Attribute von b
+```
+
+
+Spezifikation des Attributs `names` gibt den Elementen eines Vektors Namen
+
+
+```{r, eval = T}
+v = c(x=1,y=2,z=3)		    # Elementnamengeneration bei Vektorerzeugung
+v                           # Vektorausgabe
+```
+
+Die Namen können zur Indizierung benutzt werden
+
+```{r, eval = T}
+v["y"]					    # per Namen
+```
+
+`names()` kann zum Definieren und Aufrufen von Namen benutzt werden
+
+```{r, eval = T}
+y = 4:6					    # Erzeugung eines Vektors
+names(y) = c("a","b","c")   # Definition von Namen
+names(y)				    # Elementnamenaufruf
+```
+
+Benannte Namen können hilfreich sein, wenn der Vektor eine Sinneinheit bildet
+
+```{r, eval = F}
+p = c(age    = 31,         # Alter (Jahre), Groesse (cm), Gewicht (kg) einer Person
+      height = 198, 
+      weight = 75)
+p                          # Vektorausgabe
+```
+
+### Matrizen
+
+Matrizen sind zweidimensionale, rechteckige Datenstrukturen der Form
+
+\begin{equation}
+M = \begin{pmatrix}
+m_{11} 		& m_{12} 	& \cdots 	& m_{1n_c} 			\\
+m_{21} 		& m_{22} 	& \cdots	& m_{2n_c} 			\\
+\vdots		& \vdots 	& \ddots	& \vdots			\\
+m_{n_r1} 	& m_{n_r2} 	& \cdots	& {m_{n_rn_c}} 			\\
+\end{pmatrix}
+\end{equation}
+
+
+* Die Elemente $m_{ij}, i = 1,...,n_r, j = 1,...,n_c$ sind vom gleichen Typ.
+* $n_r$ ist die Anzahl der Zeilen (rows), $n_c$ ist die Anzahl der Spalten (columns).
+* Jedes Element einer Matrix hat einen Zeilenindex $i$ und einen Spaltenindex $j$.
+* Intuitiv sind Matrizen numerisch indizierte Tabellen.
+* Formal sind Matrizen in R zweidimensional interpretierte atomare Vektoren.
+* Matrizen in R sind nicht identisch mit dem mathematischen Matrixbegriff.
+* Matrizen in R können allerdings für Lineare Algebra verwendet werden.
+* Lineare Algebra ist die Sprache (linearer) statistischer Modelle.
+
+**Erzeugung**
+
+Die `matrix()` Funktion befüllt Matrizen mit Vektorelementen
+
+`matrix(data, nrow, ncol, byrow)`
+
+
+```{r}
+matrix(c(1:12), nrow = 3)             # 3 x 4 Matrix der Zahlen 1,...,12, byrow = F
+matrix(c(1:12), ncol = 4)             # 3 x 4 Matrix der Zahlen 1,...,12, byrow = F
+matrix(c(1:12), nrow = 3, byrow = T)  # 3 x 4 Matrix der Zahlen 1,...,12, byrow = T
+```
+
+
+Die Funktion `cbind()` konkateniert passende Matrizen spaltenweise
+
+```{r, echo = TRUE}
+A = matrix(c(1:4) , nrow = 2)		# 2 x 2 Matrix der Zahlen 1,...,4
+print(A)
+B = matrix(c(5:10), nrow = 2)		# 2 x 3 Matrix der Zahlen 5,...,10
+print(B)
+C = cbind(A,B)					    # spaltenweise Konkatenierung von A und B
+print(C)
+```
+
+Die Funktion `rbind()` konkateniert passende Matrizen reihenweise
+
+```{r}
+A = matrix(c(1:6) , nrow = 2, byrow = T)  # 2 x 3 Matrix der Zahlen 1,...,6
+print(A)
+B = matrix(c(7:9), nrow = 1)			  # 1 x 3 Matrix der Zahlen 5,...,10
+print(B)
+C = rbind(A,B)						      # reihenweise Konkatenierung von A und B
+print(C)
+```
+
+**Charakterisierung**
+
+`typeof()`gibt den elementaren Datentyp einer Matrix aus
+
+
+```{r}
+A = matrix(c(T,T,F,F), nrow = 2)		  # 2 x 2 Matrix von Elementen vom Typ logical
+typeof(A)
+B = matrix(c("a","b","c"), nrow = 1)	  # 1 x 3 Matrix von Elementen vom Typ character
+typeof(B)
+```
+
+
+`nrow()` und `ncol()` geben die Zeilen- bzw. Spaltenanzahl aus
+
+
+```{r}
+C = matrix(1:12, nrow = 3)                # 3 x 4 Matrix
+nrow(C)                                   # Anzahl Zeilen
+ncol(C)                                   # Anzahl Spalten
+```
+
+**Indizierung**
+
+Generell gilt
+
+
+* Matrixelemente werden mit einen Zeilenindex und einem Spaltenindex indiziert.
+* Die Indexreihenfolge ist immer 1. Zeile, 2. Spalte.
+* Die Prinzipien der Indizierung entsprechen der Vektorindizierung.
+* Indizes verschiedener Dimensionen können unterschiedlich indiziert werden.
+* Eindimensionale Resultate liegen als Vektor, nicht als Matrix vor.
+
+
+```{r, eval = F}
+A = matrix(c(2:7)^2, nrow = 2)		# 2 x 3 Matrix der Zahlen 2^2,...,7^2
+print(A)
+a_13  = A[1,3]						# Element in 1. Zeile, 3. Spalte von A [36]
+a_22  = A[2,2]						# Element in 2. Zeile, 2. Spalte von A [35]
+a_2.  = A[2,]					    # Alle Elemente der 2. Zeile [9,25,49]
+a_.3  = A[,3] 						# Alle Elemente der 3. Spalte [36,49]
+A_12  = A[1:2,1:2]					# Submatrix der ersten zwei Zeilen und Spalten
+A10   = A[A>10]						# Elemente von A groesser 10 [16,25,36,49]
+A_13  = A[1,c(F,F,T)]				# Element in 1. Zeile, 3. Spalte von A [36]
+```
+
+**Arithmetik**
+
+Unitäre arithmetische Operatoren und Funktionen werden elementweise ausgewertet
+
+
+```{r, eval = F}
+A = matrix(c(1:4), nrow = 2)	# 2 x 2 Matrix der Zahlen 1,2,3,4
+     [,1] [,2]
+[1,]    1    3
+[2,]    2    4
+
+B = A^2							# B[i,j]  = A[i,j]^2,  1 <= i,j <= 2
+     [,1] [,2]
+[1,]    1    9			        # 1^2, 3^2
+[2,]    4   16					# 2^2, 4^2
+
+C = sqrt(B)						# C[i,j]  = sqrt(A[i,j]^2),  1 <= i,j <= 2
+     [,1] [,2]
+[1,]    1    3					# sqrt(1^2), sqrt(3^2)
+[2,]    2    4					# sqrt(2^2), sqrt(4^2)
+
+D = exp(A)						# D[i,j] = exp(A[i,j]),  1 <= i,j <= 2
+     [,1] [,2]
+[1,]  2.7  20.0					# exp(1), exp(3)
+[2,]  7.4  54.6					# exp(2), exp(4)
+```
+
+
+Matrizen passender Größe können mit binären arithmetischen Operatoren verknüpft werden
+
+Binäre arithmetische Operatoren +,-,*,\textbackslash werden bei gleicher Größe elementweise ausgewertet
+
+
+```{r, eval = F}
+A = matrix(c(1:4), nrow = 2)	# 2 x 2 Matrix der Zahlen 1,2,3,4
+     [,1] [,2]
+[1,]    1    3
+[2,]    2    4
+
+B = matrix(c(5:8), nrow = 2) 	# 2 x 2 Matrix der Zahlen 5,6,7,8
+     [,1] [,2]
+[1,]    5    7
+[2,]    6    8
+
+C = A + B						# C[i,j] = A[i,j] + B[i,j], 1 <= i,j <= 2
+     [,1] [,2]
+[1,]    6   10					# 1 + 5, 3 + 7
+[2,]    8   12 					# 2 + 6, 4 + 8
+
+D = A * B
+     [,1] [,2]
+[1,]    5   21					# 1 * 5, 3 * 7
+[2,]   12   32					# 2 * 6, 4 * 8
+```
+
+
+
+Mit **R** Matrizen kann Lineare Algebra betrieben werden
+
+* Addition, Subtraktion, Hadamardprodukt elementweise definiert wie oben
+* Matrixmultiplikation, Transposition, Inversion, Determinante
+
+
+```{r, eval = F}
+C = A  % * % B				    # 2 x 2 Matrixprodukt
+      [,1] [,2]
+[1,]   23   31					# 1*5 + 3*6, 1*7+3*8
+[2,]   34   46					# 2*5 + 4*6, 2*7+4*8
+
+A_T = t(A)						# Transposition von A
+      [,1] [,2]
+[1,]   1   2					# A[1,1], A[2,1]
+[2,]   3   4					# A[1,2], A[2,2]
+
+A_inv = solve(A)				# Inverse von A
+     [,1] [,2]
+[1,]   -2  1.5
+[2,]    1 -0.5
+
+A_det = det(A)					# Determinante von A
+[1] -2	 						# 1*4 - 2*3
+```
+
+**Attribute**
+
+Formal sind Matrizen atomare Vektoren  mit einem `dim` Attribut
+```{r}
+A = matrix(1:12, nrow = 4 )		         #  4 x 3 Matrix
+attributes(A)				             # Aufrufen der Attribute von A
+```
+
+`rownames()` und `colnames()` spezifizieren das Attribut `dimnames`
+```{r}
+rownames(A) = c("P1","P2","P3","P4")	 # Benennung der Zeilen von A
+colnames(A) = c("Age", "Hgt", "Wgt")	 # Benennung der Spalten von A
+A										 # A mit Attribut dimnames
+attr(A, "dimnames")					     # Aufrufen des Attributs dimnames
+```
+
+Bei Matrizen ist die Benennung von Zeilen und Spalten eher ungewöhnlich.
+
+### Arrays
+
+* Arrays sind $d$-dimensionale, hyperrechteckige Datenstrukturen. 
+* Arrays sind die Generalisierung von Matrizen auf mehr als zwei Dimensionen.
+* Für $d = 1$ entspricht ein Array einem Vektor, für $d = 2$ einer Matrix.
+* Die Elemente eines Arrays sind vom gleichen Typ.
+* $d_i, i = 1,...,d$ ist die maximalen Anzahl von Elementen der $i$ten Dimension.
+* Jedes Element eines Arrays hat einen $d$-dimensionalen Index $i_1,i_2,...,i_d$.
+* Formal sind Arrays in R $d$-dimensional interpretierte atomic vectors.
+
+*Erzeugung*
+
+Die `array()` Funktion befüllt Arrays mit Vektorelementen
+
+* `array(data, dim,...)` 
+* `dim` enkodiert den maximalen Index in jeder der `length(dim)` Dimensionen 
+
+
+```{r}
+A = array(1:12, dim = c(2,2,3))				# 2 x 2 x 3 Array der Zahlen 1,...,12
+```
+
+
+
+* Es ist sinnvoll, sich von "räumlichen Vorstellungen" höherdimensionaler Arrays zu lösen.
+* Arrays sind Datencontainer, Elemente werden durch Indexkombinationen addressiert.
+
+*Charakterisierung*
+
+`length()` gibt die Anzahl der Elemente eines Arrays aus
+```{r}
+A = array(1:12, dim = c(2,2,3))				# 2 x 2 x 3 Array der Zahlen 1,...,12
+length(A)								    # Die Anzahl der Elemente des Arrays
+```
+
+`typeof()` gibt den elementaren Datentyp eines Arrays aus
+```{r}
+typeof(A)						            # Der Typ des Arrays
+```
+
+`dim()` gibt die Dimensionen eines Arrays aus
+```{r}
+dim(A)								    # Dimension des Arrays
+```
+
+*Indizierung*
+
+
+Arrayindizierung erfolgt analog zu Vektor- und Matrixindizierung
+
+```{r}
+A 		= array(1:12, dim = c(2,2,3))		# 2 x 2 x 3 Array der Zahlen 1,...,12
+a_223   = A[2,2,3]											# Arrayelement mit Indexaddresse [2,2,3] (12)
+```
+
+*Attribute* 
+
+
+
+Formal sind Arrays atomic vectors mit einem `dim` Attribut
+```{r}
+A = array(1:12, dim = c(2,2,3))				    # 2 x 2 x 3 Array der Zahlen 1,...,12
+attributes(A)								    # Aufrufen der Attribute von A
+```
+
+`dimnames()` kann zur Benennung der Arraydimensionen mit einer Liste benutzt werden.
+
+Die Benennung von Arraydimensionen ist aber eher ungewöhnlich.
+
+*Arithmetik* 
+
+Unitäre arithmetische Operatoren werden elementweise ausgewertet
+
+Binäre arithmetische Operatoren werden bei Arraykonformität elementweise ausgwertet
+
+
+```{r, eval = F}
+A 		= array(1:4, dim = c(1,2,2))		# 1 x 2 x 2 Array der Zahlen 1,...,4
+B 		= array(5:8, dim = c(1,2,2))		# 1 x 2 x 2 Array der Zahlen 5,...,8
+C 		= A^2							    # elementweise Potenzierung
+```
+
+
+### Faktoren
+
+
+* Faktoren sind Vektoren, die nur vorab festgelegte Werte enthalten können.
+* Faktoren können zum Speichern kategorialer Daten benutzt werden.
+* Formal basieren Faktoren auf integer Vektoren.
+* Faktoren haben die Attribute class ``factor'' und levels.
+* Faktoren werden häufig beim Einlesen von Daten automatisch generiert.
+
+*Erzeugung*
+
+
+Faktoren können mit `factor()` aus Vektoren erzeugt werden.
+
+`factor(x = character(), \{levels, labels = levels, exclude = NA\}, ...)`
+
+
+
+```{r}
+x = factor(c("a", "b", "b", "a"))		# Umwandlung eines character vectors  
+y = factor(c(1,2,1,2,1,1)) 					# Umwandlung eines numerischen vectors  
+v = c("a","b","b","a")							# Vektor zur Konversion in factor
+z = factor(v,levels=c("a","c"))			# andere Levels als Werte in Vektor
+```
+
+
+*Indizierung*
+
+
+Faktorindizierung geschieht analog zur Vektorindizierung
+
+*Attribute* 
+
+Durch das `class` Attribut verhalten sich Faktoren nicht wie integer Vektoren
+
+```{r}
+f = factor(c("f", "m", "m", "f"))		# Faktordefinition
+attributes(f)												# Attribute
+typeof(f)														# elementarer Datentyp
+```
+
+
+
+## Listen und Dataframes {#sec-listen-und-dataframes}
+
+
+## Datenmanagement {#sec-datenmanagement}
+
+
+## Selbstkontrollfragen
+
+\footnotesize
+
+1. Geben Sie die typische Struktur einer computergestützten Datenanalyse wieder.
+1. Erläutern Sie den Begriff "Datenanalyseskript".
+1. Definieren Sie den Begriff "Informatik".
+1. Erläutern Sie die Akronyme CPU, RAM, SSD, und GPU.
+1. Nennen Sie wesentliche Aspekte der Von-Neumann Rechnerarchitektur.
+1. Definieren Sie den Begriff des Algorithmus.
+1. Erläutern Sie den Zusammenhang von Algorithmen und Programmen.
+1. Was bezeichnen die Syntax und Semantik einer Programmiersprache?
+1. Differenzieren Sie die Begriffe "Maschinensprache" und "höhere Programmiersprache".
+1. Skizzieren Sie Prinzipien der prozeduralen und objektorientierten imperativen Programmierung.
+1. Skizzieren Sie die Entwicklung der Programmiersprachen der ersten bis vierten Generation.
+1. Differenzieren Sie die Begriffe der kompilierten und der interpretierten Programmiersprachen.
+1. Installieren Sie R und RStudio auf Ihrem Rechner.
+1. Führen Sie die Befehlssequenz auf Folie R Skripte $\vert$ Executing and Editing Code} aus.
+1. Dokumentieren Sie die in dieser Einheit eingeführten R Befehle in einem kommentierten R Skript.
+1. Erläutern Sie den Begriff der Operatorpräzedenz.
+1. Definieren Sie den Begriff der Variable im Kontext der Programmierung.
+1. Erläutern Sie die Begriffe Initialisierungsanweisung und Zuweisungsanweisung für Variablen.
+1. Erläutern Sie den Begriff Workspace.
+1. Geben Sie jeweils ein Beispiel für einen zulässigen und einen unzulässigen Variablennamen in R.
+1. Erläutern Sie die Prozesse, die R im Rahmen einer Zuweisungsanweisung der Form x = 1 durchführt.
+1. Erläutern Sie den Begriffe Copy-on-modify und Modify-in-place.
+1. Diskutieren Sie die klassischen Datenstrukturen einer 3GL Programmiersprache.
+1. Diskutieren Sie die Organisation von Datenstrukturen in R.
+1. Wodurch unterscheiden sich eine atomare und ein rekursive Datenstruktur in R?
+1. Nennen und erläutern Sie vier zentrale Datentypen in R.
+1. Nennen und erläutern Sie vier zentrale atomare Datenstrukturen in R.
+1. Nennen und erläutern Sie zwei zentrale rekursive Datenstrukturen in R.
+1. Beschreiben Sie in einer Übersicht die R Datenstruktur "Atomarer Vektor".
+1. Erläutern Sie die Funktion des Colonoperators in R.
+1. Nennen Sie vier Prinzipien der Indizierung in R.
+1. Erzeugen Sie einen Vektor der Dezimalzahlen 0.0, 0.05, 0.10 , 0.15, ..., 0.90, 0.95, 1.0.  
+1. Wählen Sie mithilfe positiver Indices die Elemente 0.0, 0.1,..., 0.9, 1.0 dieses Vektors aus.  
+1. Wählen Sie mithilfe negativer Indices die Elemente 0.0, 0.1,..., 0.9, 1.0 dieses Vektors aus.  
+1. Wählen Sie die letzten 10 Elemente dieses Vektors aus. 
+1. Erläutern Sie den Begriff der Datentypangleichung (Coercion).
+1. Erläutern Sie den Begriff des (Vektor)Recylings.
+1. Erläutern Sie die Bedeutung des R Datentyps `NA`.
+1. Erläutern Sie das Konzept der Attribute in R.
+1. Dokumentieren Sie alle in dieser Einheit eingeführten Befehle in einem R Skript.
+1. Erzeugen Sie in R die Matrizen
+\begin{equation*}
+A = 
+\begin{pmatrix}
+4 & 3 & 2 & 1 \\
+3 & 2 & 1 & 4 \\
+2 & 1 & 4 & 3
+\end{pmatrix}
+\mbox{ und }
+B = 
+\begin{pmatrix}
+1 & 0 & 1 & 0 \\
+0 & 1 & 0 & 1 \\
+1 & 0 & 1 & 0
+\end{pmatrix}
+\end{equation*}
+1. Kopieren Sie die zweite Zeile von $A$ in einen Vektor.
+1. Kopieren Sie die erste und dritte Spalte von $B$ in eine 3 $\times$ 2 Matrix
+1. Setzen Sie alle Nullen in $B$ auf -1.
+1. Setzen Sie die zweite Zeile von $A$ auf $(1\,2\,3\,4)$.
+1. Addieren Sie die Matrizen $A$ und $B$.
+1. Multiplizieren Matrix $A$ mit 3.
+1. Konkatenieren Sie die Matrizen $A$ und $B$ zeilenweise.
+1. Konkatenieren Sie die Matrizen $A$ und $B$ spaltenweise.
+
+
+
+
+
+
+
+
+
+
+# Listen und Dataframes {#sec-listen-und-dataframes}
+## Listen {#sec-listen}
+\normalsize
+
+Übersicht 
+
+* Listen sind geordnete Folgen von R Objekten.
+* Listen sind rekursiv, können also Objekte verschiedenen Datentyps enthalten.
+* Defacto enthalten Listen keine Objekte, sondern Referenzen zu Objekten.
+
+```{r, echo = FALSE, out.width = "30%"}
+knitr::include_graphics("./_figures/005-list-representation.pdf")
+```
+
+* Listen sind ein wesentlicher Baustein von Dataframes.
+
+
+*Erzeugung* 
+
+
+Direkte Konkatenation von Listenelementen mit `list()`
+
+
+```{r, eval = F}
+L = list(c(1,4,5),							# Liste mit einem Vektor,
+		 		 matrix(1:8, nrow = 2),		# einer Matrix und
+		 		 exp)						# einer Funktion
+[[1]]									    # 1. Listenelement
+[1] 1 4 5
+[[2]]										# 2. Listenelement
+     [,1] [,2] [,3] [,4]
+[1,]    1    3    5    7
+[2,]    2    4    6    8
+[[3]]
+function (x)  .Primitive("exp")				# 3. Listenelement
+```
+
+
+Listen können Elemente von Listen sein
+
+
+```{r, eval = F}
+L = list(list(1))							# Liste mit Element 1 in einer Liste
+[[1]]
+[[1]][[1]]
+[1] 1
+```
+
+`c()` kann zum Verbinden von Listen genutzt werden
+
+
+```{r, eval = F}
+L = c(list(pi), list("a"))					# Konkatenation zweier Listen
+[[1]]									    # 1. Listenelement
+[1] 3.141593
+[[2]]										# 2. Listenelement
+[1] "a"
+```
+
+
+Charakterisierung 
+
+
+Der Datentyp von Listen ist `list`
+```{r}
+L = list(1:2, "a", log)				# Erzeugung einer Liste
+typeof(L)							# Typenbestimmung
+```
+
+
+`length()` gibt die Anzahl der Toplevel Listenelemente aus
+```{r}
+L = list(1:2, list("a", pi), exp)	# Liste mit drei Toplevelelementen
+length(L)							# length() ignoriert Elementinhalte, length() von L ist also 3
+```
+
+Die Dimension, Zeilen-, und Spaltenanzahl von Listen ist `NULL`
+```{r}
+L = list(1:2, "a", sin)				# eine Liste
+dim(L)							    # Die Dimension von Listen ist NULL
+nrow(L)							    # Die Zeilenanzahl von Listen ist NULL
+ncol(L)								# Die Spaltenanzahl von Listen ist NULL
+```
+
+
+*Indizierung *
+
+
+Einfache eckige Klammern [ ] indizieren Listenelemente als Listen
+
+
+```{r, eval = F}
+L  = list(1:3, "a", exp)			# eine Liste
+l1 = L[1]							# Indizierung eines Listenelements
+[[1]]								# das Listenelement l1
+[1] 1 2 3							# der Inhalt von Listenelement l1
+typeof(l1)							# Typbestimmung von l1
+[1] "list"						    # L[] gibt eine Liste aus
+```
+
+
+Doppelte eckige Klammern [[ ]] indizieren den Inhalt von Listenelementen
+
+
+```{r, eval = F}
+L  = list(1:3, "a", exp)			# eine Liste
+i2 = L[[2]]							# Indizierung des Listenelementinhalts
+[1] "a"								# der Inhalt von Listenelement L[2]
+typeof(i2)						    # Typbestimmung von i2
+[1] "character"						# L[[]] gibt den Listenelementinhalt aus
+```
+
+
+Ersetzen von Listenelement(inhalt)en
+
+
+```{r, eval = F}
+L  		= list(1:3, "a", exp)		# eine Liste
+L[1]	= 4:6						# keine Typkonversion, Fehlermeldung
+L[1]	= list(4:6)				    # Ersetzung des 1. Listenelementes
+L[[3]]	= "c"						# Ersetzung des 3. Listenelementinhaltes
+```
+
+
+
+*Indizierung'
+
+
+Die Prinzipien der Listenindizierung sind analog zur Vektorindizierung
+
+
+Vektoren positiver Zahlen adressieren entsprechende Elemente
+
+```{r,eval = F}
+L = list(1:3, "a", pi)				# eine Liste
+l = L[c(1,3)] 					    # 1. und 3. Listenelement
+[[1]]								# 1. Listenelement
+[1] 1 2 3
+[[2]]								# 2. Listenelement
+[1] 3.141593
+```
+
+Vektoren negativer Zahlen adressieren komplementäre Elemente
+```{r, eval = F}
+L = list(1:3, "a", pi)				# eine Liste
+l = L[-c(1,3)] 						# 2. Listenelement
+[1] "a"
+```
+
+Logische Vektoren adressieren Elemente mit TRUE.
+```{r, eval = F}
+L = list(1:3, "a", pi)				# eine Liste
+l = L[c(T,T,F)]						# 1. und 2. Listenelement
+[[1]]							    # 1. Listenelement
+[1] 1 2 3
+[[2]]								# 2. Listenelement
+[1] "a"
+```
+
+
+Listenelementen können bei Erzeugung Namen gegeben werden
+
+
+```{r, eval = F}
+L = list(greta  = 1:3,				# eine Liste mit benannten Elementen
+ 	 	 luisa 	= "a",
+		 carla 	= exp)
+$greta								# 1. Listenelement
+[1] 1 2 3
+$luisa 								# 2. Listenelement
+[1] "a"
+$carla							    # 3. Listenelement
+function (x)  .Primitive("exp")
+```
+
+
+Listenelementen können mit `names()` Namen gegeben werden
+
+
+```{r, eval = F}
+K 		 = list(1:2, TRUE)			# eine unbenannte Liste
+names(K) = c("Frodo", "Sam")		# Namensgebung mit names()
+$Frodo  							# 1.Listenelement
+[1] 1 2
+$Sam      							# 2. Listelement
+[1] TRUE
+```
+
+
+Listenelemente und Listenelementinhalte können mit Namen indiziert werden
+
+
+```{r, eval = F}
+L = list(greta  = 1:3,	   # eine Liste mit benannten Elementen
+  	     luisa  = "a",
+		 carla = exp)
+L["carla"]				   # Listenelementindizierung
+L[["carla"]]			   # Listenelementinhaltsinindizierung
+```
+
+
+Listenelementinhalte können mit dem `$` Operator indiziert werden
+
+
+```{r}
+L = list(greta  = 1:3,		# eine Liste mit benannten Elementen
+  	     luisa  = "a",
+		 carla = exp)
+L$greta						# Listenelementinhalt
+L$luisa						# Listenelementinhalt
+L$carla						# Listenelementinhalt
+```
+
+
+
+*Arithmetik*
+
+
+Listenarithmetik ist nicht definiert, da Listenelemente unterschiedlichen Typs sein können
+
+
+```{r, error = TRUE}
+L1 = list(1:3, "a" )		# eine Liste
+L2 = list(T, exp )		    # eine Liste
+L1+L2						# Versuch der Listenaddition
+```
+
+
+Listenelementinhalte können bei Passung jedoch arithmetisch verknüpft werden
+
+
+```{r}
+L1 = list(1:3, pi )	   		# eine Liste
+L2 = list(4:6, exp )	    # eine Liste
+L1[[1]] + L2[[1]]			# Addition  der 1. Listenelementinhalte,  [1+4, 2+5,3+6]
+L2[[2]](1)					# Anwendung des 2. Listenelementinhalts, exp(1)
+```
+
+
+
+
+*Copy-on-modify*
+
+
+Wie bei Vektoren gilt bei Listen das Copy-on-Modify Prinzip.
+
+"Shallow copy": Listenobjekt wird kopiert, aber nicht die gebundenen Objekte.
+
+`lobstr::ref()` erlaubt es, dieses Verhalten zu studieren.
+
+```{r, echo = FALSE, out.width = "55%"}
+knitr::include_graphics("./_figures/005-list-copy-on-modify.pdf")
+```
+
+
+```{r}
+L1 = list(1,2,3)			# Erzeugen einer Liste als Objekt (0x1a3)
+L2 = L1						# L1 und L2 referenzieren das Objekt (0x1a3)
+L2[[3]] = 4					# Copy-on-Modify mit shallow Objekt Kopie
+lobstr::ref(L1,L2)			# Ausgabe der Referenzen
+```
+
+## Dataframes {#sec-dataframes}
+
+Übersicht 
+
+* Dataframes sind die zentrale Datenstruktur in R.
+* Dataframes stellt man sich am besten als Tabelle vor.
+* Die Zeilen und Spalten der Tabelle haben Namen.
+* Formal ist ein Dataframe eine Liste, deren Elemente Vektoren gleicher Länge sind.
+* Die Listenelemente entsprechen den Spalten einer Tabelle.
+* Die Vektorelement gleicher Position entsprechen den Zeilen einer Tabelle.
+
+```{r, echo = FALSE, out.width = "50%"}
+knitr::include_graphics("./_figures/005-dataframe-representation.pdf")
+```
+
+*Erzeugung* 
+
+
+`data.frame()` erzeugt einen Dataframe
+
+```{r}
+D = data.frame(x = letters[1:4],	# 1. Spalte mit Name x
+			   y = 1:4, 			# 2. Spalte mit Name y
+			   z = c(T,T,F,T))		# 3. Spalte mit Name z
+print(D)
+```
+
+
+Die Spalten des Dataframes müssen gleiche Länge haben
+
+
+```{r, error = TRUE}
+D = data.frame(x = letters[1:4], 	# 1. Spalte mit Name x
+			   y = 1:4, 			# 2. Spalte mit Name y
+			   z = c(T,T,F))		# 3. Spalte mit Name z
+
+```
+
+
+Die Spalten eines Dataframes können offenbar unterschiedlichen Typs sein.
+
+Charakterisierung 
+
+Ein Dataframe hat `names()`, `rownames()`, `colnames()`
+
+
+```{r}
+D = data.frame(age    = c(30,35,40,45), 	# 1. Spalte
+			   height = c(178,189,165,171),	# 2. Spalte
+			   weight = c(67, 76, 81, 92))	# 3. Spalte
+names(D)									# names gibt die Spaltennamen aus
+colnames(D)									# colnames entspricht names
+rownames(D)                                 # default rownames sind 1,2,...
+												
+```
+
+Ein Dataframe `nrow()` Zeilen und `length()` bzw. `ncol()` Spalten
+
+```{r}
+nrow(D)										# Zeilenanzahl
+ncol(D)									    # Spaltenanzahl
+length(D)									# Länge ist die Spaltenanzahl
+```
+
+
+
+`str()` zeigt in kompakter Form wesentliche Aspekte eines Dataframes an.
+
+```{r}
+str(D)
+```
+Allgemein zeigt `str()` in kompakter Form wesentliche Aspekte eines R Objektes an.
+
+
+*Attribute* 
+
+
+* Dataframes sind Listen mit Attributen für (column) `names` und `row.names`
+* Dataframes haben `class` "data.frame"
+
+
+```{r}
+typeof(D)
+attributes(D)
+```
+
+*Indizierung*
+
+Die Prinzipien der Indizierung für Vektoren und Matrizen gelten auch für Dataframes
+
+$\Rightarrow$ Bei einem Index verhalten sich Dataframes wie Listen
+
+
+```{r}
+D = data.frame(x = letters[1:4],	# 1. Spalte mit Name x
+			   y = 1:4, 			# 2. Spalte mit Name y
+			   z = c(T,T,F,T))		# 3. Spalte mit Name z
+class(D)                            # D ist ein Dataframe
+v = D[1]							# 1. Listenelement als Dataframe
+v
+class(v)							# v ist ein Dataframe
+```
+
+
+Die Prinzipien der Indizierung für Vektoren und Matrizen gelten auch für Dataframes
+
+$\Rightarrow$ Bei einem Index verhalten sich Dataframes wie Listen
+
+```{r}
+D = data.frame(x = letters[1:4],	# 1. Spalte mit Name x
+			   y = 1:4, 			# 2. Spalte mit Name y
+			   z = c(T,T,F,T))		# 3. Spalte mit Name z
+w = D[[1]]			                # Inhalt des 1. Listenelements										
+w
+class(w)							# w ist ein character vector
+y = D$y								# $ zur Indizierung der y Spalte
+y
+class(y)							# v ist ein Vektor vom Typ "integer" (!)
+```
+
+Die Prinzipien der Indizierung für Vektoren und Matrizen gelten auch für Dataframes
+
+$\Rightarrow$ Bei zwei Indices verhalten sich Dataframes wie Matrizen
+
+```{r}
+D = data.frame(x = letters[1:4],	# 1. Spalte mit Name x
+			   y = 1:4, 			# 2. Spalte mit Name y
+			   z = c(T,T,F,T))		# 3. Spalte mit Name z
+```
+
+```{r}
+D[2:3,-2]	    					# 1. Index fuer Zeilen, 2. Index fuer Spalten
+D[c(T,F,T,F),] 		                # 1. Index fuer Zeilen, 2. Index fuer Spalten
+D[,c("x", "z")]						# 1. Index fuer Zeilen, 2. Index fuer Spalten
+```
+
+*Copy-on-modify*
+
+
+* Die Copy-on-Modify Prinzipien für Listen gelten auch für Dataframes
+* Modifikation einer Spalte führt zur Kopie der entsprechenden Spalte
+* Modifikation einer Zeile führt zur Kopie des gesamten Dataframes
+
+```{r, echo = FALSE, out.width = "90%"}
+knitr::include_graphics("./_figures/005-dataframe-copy-on-modify.pdf")
+```
+
+
+1. Beschreiben Sie in einer Übersicht die R Datenstruktur `list`.
+1. Erzeugen Sie eine Liste mit vier Elementen.
+1. L sei eine Liste. Was ist der Unterschied zwischen L[1] und L[[1]]?
+1. Erzeugen Sie zwei Listen und fügen Sie diese zusammen.
+1. L sei eine Liste. Was gibt length(L) an?
+1. L sei eine Liste. Was bedeutet dann L\$Student?
+1. Erläutern Sie den Begriff ``Shallow Copy'' einer Liste.
+1. Beschreiben Sie in einer Übersicht die R Datenstruktur "Dataframe".
+1. Erzeugen Sie einen Dataframe mit vier Spalten.
+1. D sei ein Dataframe. Was geben rownames(D) und colnames(D) an?
+1. D sei ein Dataframe. Was ist der Unterschied zwischen D[1] und D[1,1]?
+1. D sei ein Dataframe. Was bedeutet dann D\$Student?
+1. Erläutern Sie das Copy-on-modify Prinzip für Dataframes.
+
+
+
+
+# Datenmanagement {#sec-datenmanagement}
+## FAIR Prinzipien {#sec-fair-prinzipien}
+Daten 
+
+* Zahlenarrays
+* Characterarrays
+* Software
+* Digitale Werkzeuge
+* Workflows
+* Analysispipelines
+* u.v.a.m.
+
+Forschungsdaten 
+
+
+"Grundsätzlich handelt es sich bei Forschungsdaten um elektronisch repräsentierte
+analoge oder digitale Daten, die im Zuge wissenschaftlicher Vorhaben
+entstehen oder genutzt werden, z.B. durch Beobachtungen, Experimente,
+Simulationsrechnungen, Erhebungen, Befragungen, Quellenforschungen,
+Aufzeichnungen von Audio- und Videosequenzen, Digitalisierung von Objekten, und Auswertungen."''"
+\vspace{.7cm}
+
+
+\flushright
+Rat für Informationsinfrastrukturen
+
+[Empfehlungen zur Nutzung und Verwertung von Daten im wissenschaftlichen Raum  (09/2021)}](https://rfii.de/download/nutzung-und-verwertung-von-daten-im-wissenschaftlichen-raum-september-2021/)
+
+[Herausforderung Datenqualität (11/2019)}](https://www.rfii.de/download/herausforderung-datenqualitaet-november-2019/)
+
+[Digitale Kompetenzen – dringend gesucht! (07/2019)}](https://www.rfii.de/download/digitale-kompetenzen-dringend-gesucht/)
+
+[Aktuelle Empfehlungen zu Datenschutz und Forschungsdaten (03/2017)}](https://www.rfii.de/download/rfii-empfehlungen-2017-datenschutz-und-forschungsdaten/)
+
+
+Metadaten 
+
+Metadaten repräsentieren Information über Daten
+
+**Deskriptive Metadaten** dienen dem Auffinden und der Identifikation einer
+Datenquelle. Beispiele für deskriptive Metadaten sind Titel, Abstrakt, Autor:in,
+oder Keywords einer wissenschaftlichen Publikationen.
+
+
+**Strukturelle Metadaten** sind Metadaten über Datencontainer und
+repräsentieren den strukturellen Aufbau einer Datenquelle. Beispiele sind die
+Ordnung der Seiten eines Buches, oder die Schleifenenkodierung dreidimensionaler Datenobjekte.
+
+
+**Administrative Metadaten** sind Daten, die das Management einer Datenquelle
+erleichtern. Beispiele sind die Provenienz, das Dateiformat, die Zugangsrechte,
+oder weitere technische Informationen zu einer Datenquelle.
+
+
+Das FAIR Datenideal
+
+Findable, Accessible, Interoperable, Reusable
+
+für Menschen und Maschinen
+
+
+Ursprünge und Dokumentation 
+
+
+
+[„Jointly designing a data fairport“ workshop in Leiden 2014}](https://www.dtls.nl/2014/01/20/jointly-designing-data-fairport/)
+[FORCE11}](https://www.force11.org/)
+[Wilkinson et al.(2016) The FAIR Guiding Principles for scientific data management and stewardship Scientific Data 160018}](https://www.nature.com/articles/sdata201618)
+[go-fair.org/FAIR Principles}](https://www.go-fair.org/fair-principles/)
+
+
+
+
+Findability (Auffindbarkeit) 
+
+
+F1. (Meta)Daten haben einen persistenten global einzigartigen Identifikator.
+F2. Daten werden mit Metadaten angereichert.
+F3. Metadaten sind zweifelsfrei einem Datensatz zuzuordnen.
+F4. (Meta)Daten sind in einer durchsuchbaren Ressource indexiert.
+
+
+
+
+
+Accessibility (Zugänglichkeit)
+
+
+A1. (Meta)Daten sind mit standardisierten Protokollen abrufbar.
+A1.1. Das genutzte Protokoll ist offen, kostenlos und nutzbar.
+A1.2. Das Protokoll ermöglicht Authentifizierung und Rechtevergabe.
+A2. Metadaten bleiben zugänglich, auch wenn Daten nicht mehr vorliegen.
+
+
+
+Interoperability (Interoperabilität)}
+
+
+
+I1. (Meta)Daten nutzen eine formale, zugängliche, gemeinsam genutzte
+     und breit anwendbare Sprache zur Wissensrepräsentation.
+I2. (Meta)Daten nutzen Vokabularien, die den FAIR-Prinzipien folgen.
+I3. (Meta)Daten enthalten qualifizierte Referenzen auf andere (Meta)Daten.
+
+
+Reusability (Wiederverwendbarkeit)
+
+R1. (Meta)Daten haben eine Vielzahl genauer und relevanter Attribute.
+R1.1. (Meta)Daten enthalten eine eindeutige Nutzungslizenz.
+R1.2. (Meta)Daten enthalten detaillierte Provenienz-Informationen.
+R1.3. (Meta)Daten genügen den Standards der jeweiligen Fachcommunity.
+
+
+Fazit
+
+* Die FAIR Prinzipien sind ein anzustrebendes Datenmanagementideal.
+* Der Umgang mit digitalen Forschungsdaten ist oft noch sehr unstrukturiert.
+* Die Universitäten begreifen das digitale Datenmanagement nur sehr langsam.
+* Die Digitalisierung bleibt eine gesellschaftliche Hauptaufgabe.
+* Die [NFDI Initiative}](https://www.nfdi.de/) versucht, deutsches Wissenschaftsdatenmanagement zu verbessern.
+* Beteiligung von OVGU // CBBS an [NFDI Neurowissenschaft}](https://nfdi-neuro.de/).
+* NFDI ist dezentral, community, und Drittmittelprojekt-basiert $\Rightarrow$ Nicht nachhaltig.
+* Nicht alle Wissenschaftler:innen wollen ihre Daten organisieren und teilen.
+* [Open Science}](https://en.wikipedia.org/wiki/Open_science) bleibt eine wichtige Initiative verantwortungsvoller Wissenschaftler:innen.
+
+## Datenformate {#sec-datenformate}
+
+
+* Ein Dateiformat definiert Syntax und Semantik von Daten innerhalb einer Datei.
+* Dateiformate sind bijektive Abbildungen von Information auf binären Speicher.
+* Allgemein unterscheidet man
+  *  Daten- gegenüber Softwareformaten,
+  * textuelle gegenüber binären Dateiformaten, und
+  * offene gegenüber propietären (urheberrechtlich geschützten) Dateiformaten.
+
+Binäre Dateiformate 
+
+* Einlesen, Inspektion, und Manipulation ist nur mit spezieller Software möglich.
+*  .pdf, .xlsx, .jpg, .mp4 sind binäre Dateiformate.
+* Binäre Dateiformate sind oft propietär.
+* Binäre Dateiformate wurden früher aufgrund ihrer kleineren Größe bevorzugt eingesetzt.
+
+Textuelle Dateiformate 
+
+* Einlesen, Inspektion, und Manipulation ist mit einfachen allgemeinen Editoren möglich.
+* .txt, .csv., .tsv, .json  sind textuelle Dateiformate.
+* Textuelle Dateiformate sind generell offene Dateiformate.
+
+Binäres Dateiformat 
+
+
+```{r, echo = FALSE, out.width = "60%"}
+knitr::include_graphics("./_figures/005-binäres-dateiformat.pdf")
+```
+
+Textuelles Dateiformat 
+
+Textuelle Dateiformate $\vert$ CSV
+
+* CSV = Comma- (oder auch character)-separated values, Dateiendung .csv
+* Zentrales Format zur Speicherung einfach strukturierter Daten
+* Repräsentation zeilenweise miteinander verknüpfter Datensätze
+  *  Trennung von Datenfeldern (Spalten) durch Komma oder Tab (TSV, .tsv)
+  * Trennung von Datensätzen (Zeilen) durch Zeilenumbruch
+* Erster Datensatz typischerweise Kopfdatensatz (Header) mit Spaltennamendefinition
+
+Beispiel
+
+* Einheit (experimental unit) repräsentiert z.B. eine Versuchsperson
+
+
+TABELLE
+
+Textuelle Dateiformate $\vert$ CSV 
+
+
+
+**Wide Format**: Alle Variablen einer Einheit in einer Zeile
+
+
+TABELLE
+
+**Long Format**: Variablen einer Einheit über Zeilen verteilt
+
+TABELLE
+
+Das Wide Format ist generell übersichtlicher als das Long Format
+
+Textuelle Dateiformate $\vert$ JSON 
+
+Übersicht
+
+
+* JSON = JavaScript Object Notation
+* Textuelles Datenformat zum Speichern strukturierter Daten in Key-Value Form.
+* Ähnlichkeit mit R Listen mit benannten Listenelementen.
+* Sinnvolles Format für das Speichern von Metadaten.
+
+Elemente von JSON Dateien
+
+* *Objekte* enthalten durch Kommata geteilte Liste von *Eigenschaften* in \{ \}
+* *Eigenschaften* bestehen aus Key-Value Paaren
+* *Key* ist immer ein String mit Hochkommata `` ''
+* *Value* ist ein Objekt, ein Array, ein String, ein Boolean, oder eine Zahl
+
+
+Textuelle Dateiformate $\vert$ JSON 
+
+
+
+Beispiel
+
+ABBILDUNG
+
+
+## Verzeichnismanagement {#sec-verzeichnismanagement}
+
+Arbeiten mit Strings 
+
+Die Grundeinheit für Text in R sind atomic vectors vom Typ character.
+
+Die Elemente von character vectors sind strings, nicht einzelne characters.
+
+Der Begriff "String" in R ist also nur informeller Natur.
+
+Strings werden mit Anführungszeichen oder Hochkommata erzeugt
+
+```{r}
+c("Dies ist ein character vector")	# Anfuehrungszeichen sind  der String Standard
+c('Dies ist ein "string"')			# Hochkommata koennen bei  Anfuehrungszeichen im String helfen
+```
+
+`paste()` konvertiert Vektoren in character und fügt sie elementweise zusammen.
+
+```{r}
+paste(1,2)							# Konvertierung und Konkatenation .einelementiger double vectors
+paste("Dies ist", "ein String")		# Konkatenation einelementiger character strings
+```
+
+Arbeiten mit Strings 
+
+`paste()` hat eine Reihe von weiteren Funktionalitäten
+
+```{r}
+paste(c("Rote", "Gelbe"), "Blume")				     # Vector recylcing, elementweise Veknuepfungen
+paste(c("Rote", "Gelbe"), "Blume", 	sep = "-")	     # Separatorspezifkation
+paste(c("Rote", "Gelbe"), "Blume",  collapse = ", ") # Zusammenfuegen mit spezifiziertem  Separator
+```
+
+``toString()` ist eine `paste()` Variation für numerische Vektoren
+
+```{r}
+toString(1:10)						 # Konversion eines double Vektors in formatierten String
+toString(1:10, width = 10)			 # mit  Moeglichkeit der Beschraenkung auf width Zeichen 
+```
+
+Dateipfade
+
+* Daten sind üblicherweise in Dateien im permanenten Speicher (SSD, HD) abgelegt
+* Zum Dateneinlesen benötig man ihre Addresse in der Verzeichnisstruktur des Rechners.
+* Die Addressen von Dateien in der Verzeichnisstruktur heißen Dateipfade}.
+* Ein Pfad besteht aus einer durch Schrägstriche getrennten Liste von Verzeichnisnamen. 
+
+
+```{r, eval = F}
+D:\Lehre\Daten              Pfad der auf einem Verzeichnisnamen endet 
+D:\Lehre\Daten\cushny.csv   Pfad der auf einem Dateinamen endet 
+```
+
+*   Relative Dateipfade} bezieht sich auf einen Speicherort in Relation zum aktuellen Verzeichnis.
+* Bei relativen Dateipfaden bezeichnen . und .. aktuelles und übergeordnetes Verzeichnis.
+*  Absolute Dateipfade} gegeben die Addresse in der Gesamtverzeichnisstruktur der Festplatte an.
+* Absolute Dateipfade sind weniger anfällig für Dateiverwechselungen.
+* Die Verwendung adaptiv generierter absoluter Pfade wird stark empfohlen.
+
+```{r, eval = F}
+fname =  "D:\Lehre\Daten\cushny.csv"       # Dateiname in absoluter Pfadform  
+```
+
+
+Working directory
+
+
+R hat ein working directory aus dem per default Dateien gelesen werden.
+
+In RStudio wird das working directory unter Tools $\rightarrow$ Global Options ... spezifiziert.
+
+
+`getwd()` gibt das working directory an.
+
+```{r}
+getwd()
+```
+
+
+ `setwd()` ändert das working directory
+
+
+* Windowspfade haben backward slashes \textbackslash, R arbeitet mit forward slashes $/$.
+* Manuelle Spezifikation von Windowspfaden benötigt doppelte backward slashes \textbackslash\textbackslash.
+
+
+
+```{r, eval = F}
+setwd("D:\\Forschung und Lehre\\Lehre\\2022")
+getwd()
+```
+
+
+
+Dateipfadspezifikation 
+
+
+`file.path()` konstruiert Verzeichnis- und Dateipfade.
+
+
+```{r}
+file.path("D:", "Google Drive", "Lehre", "2022")
+```
+
+
+
+`dirname()`gibt das Verzeichnis an, das ein Verzeichnis oder eine Datei enthält.
+
+
+```{r}
+getwd()
+dirname(getwd())
+```
+
+
+
+`basename()` gibt die unterste Ebene eines Datei- oder Verzeichnispfades an.
+
+
+```{r}
+getwd()
+basename(getwd())
+```
+
+## Datenimport und Datenexport {#sec-datenimport-und-datenexport}
+
+Datenimport mit `read.table()`
+
+
+`read.table()` ist die zentrale Funktion zum Einlesen von CSV Dateien.
+
+`read.table()` liest eine Datei ein und speichert ihre Inhalte in einem Dataframe.
+
+`read.table()` bietet eine Vielzahl weiterer Spezifikationsmöglichkeiten
+
+
+
+```{r}
+wdir    = getwd()                     # Working directory
+ddir    = file.path(wdir, "6_Data")   # Datenverzeichnispfad
+fname   = "cushny.csv"                # (base) filename
+fpath   = file.path(ddir, fname)      # filepath 
+D       = read.table(fpath)           # Einlesen der Datei
+print(D)
+```
+
+Einige weitere Spezifikationen bei Anwendung von `read.table()` sind
+
+* `sep` für die Auswahl des Separators
+* `dec` für die Auswahl des Dezimalpunktes
+* `nrow` für die Anzahl der einzulesenden Zeilen
+* `skip` für die Anzahl der am Anfang der Datei zu überspringenden Zeilen
+
+
+
+```{r}
+D = read.table(file.path(fpath), nrow = 2)
+print(D)
+D = read.table(fpath, skip = 7)
+print(D)
+```
+
+
+Import interner R Datensätze 
+
+
+R und R packages beinhalten eine Vielzahl von Beispieldatensätzen
+
+Die Core R Datensätze werden aus der R Konsole mit `data()` angezeigt.
+
+Die Datensätze in Paket P werden mit `data(package =  "P")` angezeigt.
+
+
+```{r, eval = F}
+install.packages("psychTools")	# Installation des Pakets psychTools
+data(package = "psychTools") 	# Anzeige der psychTools Datensaetze
+```
+
+```{r, echo = FALSE, out.width = "100%"}
+knitr::include_graphics("./_figures/pds_6_r_datasets.pdf")
+```
+
+Alle Datensätze werden mit `data(package = .packages(TRUE))` angezeigt.
+
+Nach Installation und Laden eines Pakets werden Datensätze mit `data()` geladen.
+
+
+```{r}
+library(psychTools)				# Laden des Paktes psychTools
+data(cushny)					# Laden des cushny Datensatzes aus psychTools
+```
+
+
+
+Beispiele für weitere Möglichkeiten des Datenimports 
+
+
+CSV und Text Dateien
+
+*  `read.csv()`, `read.csv2()`, `read.delim()`, `read.delim2()` als `read.table()` Varianten.
+* `readlines` für low-level Textdateiimport.
+* `fromJSON()` aus dem Paket `rjson` für .json Dateien.
+
+
+
+Binäre Dateien
+
+*  `read.xlsx()` und  `read.xlsx2()` aus dem Paket `xlsx` für Excel .xlsx Dateien.
+* `read.spss()` aus dem Paket `foreign` für SPSS .sav Dateien.
+* `readMat` aus dem Paket `R.matlab` für Matlab .mat Dateien.
+
+
+
+Webdaten und Datenbanken
+
+*  Twitterdaten können mithilfe der Pakete `rtweet` oder `twitteR` eingelesen werden.
+* SQL Datenbanken können mithilfe der Pakete `DBI` und `RSQLite` abgefragt werden.
+
+
+Datenexport mit write.table()  
+
+`write.table()` ist die zentrale Funktion zum Speichern von Daten in CSV Dateien.
+`write.table()` erzeugt eine Datei und schreibt Daten eines Dataframes hinein.
+Der Dateiname wird mit dem Argument `file` angegeben, der Werteseparator mit `sep`
+Das Argument `row.names = FALSE` unterdrückt das Schreiben von Zeilennahmen
+
+
+```{r}
+fname       = "cushny.csv"                          # Dateiname (input)
+rname   	  = "student.csv"                         # Dateiname (output)
+D           = read.table(file.path(ddir, fname))    # Dateneinlesen
+D           = D[,5:6]                               # Reduktion des Dataframes
+R           = write.table(							# .csv Schreibfunktion
+				D,                                  # Zu speichernder Dataframe
+			    file = file.path(ddir, rname), 		# Dateinname
+                sep = ",",                          # Werteseparator fuer .csv
+                row.names = F)                      # keine Zeilennamen
+```
+
+Ergebnisdatei student.csv
+
+```{r, echo = FALSE, out.width = "30%"}
+knitr::include_graphics("./_figures/pds_6_writetable.pdf")
+```
+
+## Selbstkontrollfragen
+
+1. Dokumentieren Sie die in dieser Einheit eingeführten R Befehle in einem R Skript.
+1. Erläutern Sie den Begriff ``Forschungsdaten''.
+1. Erläutern Sie den Begriff ``Metadaten''.
+1. Erläutern Sie das FAIR Datenideal.
+1. Diskutieren Sie Unterschiede und Gemeinsamkeiten von binären und textuellen Dateien.
+1. Nennen und erläutern Sie zwei textuelle Dateiformate.
+1. Erläutern Sie den Unterschied zwischen dem Wide und Long Format von Tabellen.
+1. Erläutern Sie den Unterschied zwischen absoluten und relativen Dateipfaden.
+1. Erläutern Sie den Begriff des ``Working Directories'' in R.
+1. Beschreiben Sie die Funktion von RStudio Projekten.
+1. Nennen Sie eine R Funktion zum Einlesen von .csv Dateien.
+1. Nennen Sie eine R Funktion zum Schreiben von .csv Dateien.
+
+
+
+

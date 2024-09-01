@@ -1,0 +1,1175 @@
+# Konfirmatorische Faktorenanalyse {#sec-konfirmatorische-faktorenanalyse}
+
+Charakteristisch für datenanalytische Verfahren die unter dem Begriff der 
+*konfirmatorischen Faktorenanalyse* zusammengefasst werden ist die Konzeption
+des Faktoranalysemodells vor dem Hintergrund Frequentistischer Modellbildung.
+Dazu gehören unter anderem die Annahme normalverteilten Zustands- und 
+Beobachtungsrauschens, die die Möglichkeit der Maximum-Likelihood-basierten
+Schätzung der Modellparameter erlauben und die Relaxation der der Diagonaliät 
+des Zustandsrauschenkovarianzmatrixparameters. Weiterhin sind konfirmatorische
+Faktoranalyseverfahren durch eine erhöhte Aufmerksamkeit auf die Identifizierbarkeit
+der betrachteten Modelle gekennzeichnet und führen in der Regel Parameterrestriktionen
+ein, um Möglichkeiten der Frequentistischer Parameterinferenz identifizierbarer
+Parameter zu eröffnen.
+
+
+<!-- ## Anwendungsszenario
+
+### Anwendungssbeispiel (1) {-}
+
+Intelligenzforschungsdatensatz nach @holzinger1939
+
+Visualisierungsaufgaben
+
+1. Visual Perception
+2. Cubes
+3. Lozenges
+
+Verbalisierungsaufgaben
+
+4. Paragraph Comprehension
+5. Sentence Completion
+6. Word Meaning
+
+Schnelligkeitsaufgaben
+
+7. Addition
+8. Counting dots
+9. Straight-Curved Capitals
+
+
+Beobachteter Datensatz (n = 301)
+
+* 301 Proband:innen | 11 - 16 Jahre
+* Probandin:innen 1 - 10
+
+```{r, echo = F, message = F}
+# Datensatz
+library(lavaan)                                      # Lavaan SEM Paket
+data(HolzingerSwineford1939)                         # Datensatz
+Y             = t(HolzingerSwineford1939[,7:15])     # Datenmatrix
+m             = nrow(Y)                              # Anzahl Tests/Variablen
+n             = ncol(Y)                              # Anzahl Proband:innen
+tests         = c("Perception",                      # Variablennamen
+                  "Cubes",
+                  "Lozenges",
+                  "Comprehension",
+                  "Completion",
+                  "Word Meaning",
+                  "Addition",
+                  "Counting",
+                  "Capitals")
+rownames(Y)   = tests
+colnames(Y)   = 1:ncol(Y)
+
+# Tabellevisualisierung
+knitr::kable(Y[,1:10], digits = 2, "pipe")
+```
+\normalsize
+Beobachteter Datensatz (n = 301)
+
+```{r, eval = F, echo = F}
+# Beobachteter Datensatz (n = 301)
+library(plot.matrix)
+library(RColorBrewer)
+library(latex2exp)
+pdf(
+file         = "./_figures/804-holzinger-Y.pdf",
+width        = 12,
+height       = 6)
+par(
+family       = "sans",
+mfcol        = c(1,1),
+pty          = "m",
+bty          = "l",
+lwd          = 1,
+las          = 1,
+mgp          = c(3,1,0),
+xaxs         = "i",
+yaxs         = "i",
+font.main    = 1,
+cex          = 1.2,
+cex.main     = 1.7,
+mar          = c(2,7,3,4))  
+plot(
+Y,
+border       = NA,
+breaks       = seq(0,9,len = 11),
+col          = rev(brewer.pal(n = 11, name = "RdBu")),
+key          = list(side     = 4,
+                    font     = 1,
+                    cex.axis = 1),
+fmt.key      = "%.2f",
+polygon.key  = NULL,
+axis.key     = NULL,
+spacing.key  = c(3,2,2),
+cex          = 0.8,
+xlab         = "Realisierungen",
+ylab         = "",
+main         = TeX("$Y \\in R^{m \\times n}$"))
+dev.off()
+```
+
+```{r, echo = FALSE, out.width = "90%"}
+knitr::include_graphics("./_figures/804-holzinger-Y.pdf")
+```
+
+Stichprobenkovarianzmatrix und Stichprobenkorrelationsmatrix
+
+```{r, eval = F, echo = F}
+# Stichprobenkovarianzmatrix und Stichprobenkorrelationsmatrix
+library(plot.matrix)
+library(RColorBrewer)
+I_n         = diag(n)                                     # Einheitsmatrix I_n
+J_n         = matrix(rep(1,n^2), nrow = n)                # 1_{nn}
+C           = (1/(n-1))*(Y %*% (I_n-(1/n)*J_n) %*% t(Y))  # Stichprobenkovarianzmatrix
+D           = diag(1/sqrt(diag(C)))                       # Kov-Korr-Transformationsmatrix
+R           = D %*% C %*% D                               # Stichprobenkorrelationsmatrix
+pdf(
+file        = "./_figures/804-holzinger-C-R.pdf",
+width       = 12,
+height      =  6)
+par(
+family      = "sans",
+mfcol       = c(1,2),
+pty         = "s",
+bty         = "l",
+lwd         = 1,
+las         = 2,
+mgp         = c(3,1,0),
+xaxs        = "i",
+yaxs        = "i",
+font.main   = 1,
+cex         = 1,
+cex.main    = 2,
+mar         = c(2,8,3,2))  
+plot(
+C,
+breaks      = seq(-2.1,2.1,len = 11),
+col         = rev(brewer.pal(n = 11, name = "RdBu")),
+digits      = 1,
+key         = NULL,
+cex         = 0.8,
+polygon.key = NULL,
+axis.key    = NULL,
+xlab        = "",
+ylab        = "",
+main        = TeX("$C$"))
+rownames(R) = row.names(C)
+colnames(R) = row.names(C)
+plot(
+R,
+digits      = 1,
+breaks      = seq(-1.2,1.2,len = 11),
+col         = rev(brewer.pal(n = 11, name = "RdBu")),
+key         = NULL,
+cex         = 0.8,
+polygon.key = NULL,
+axis.key    = NULL,
+xlab        = "",
+ylab        = "",
+main        = TeX("$R$"))
+dev.off()
+```
+
+```{r, echo = FALSE, out.width = "90%"}
+knitr::include_graphics("./_figures/804-holzinger-C-R.pdf")
+```
+
+### Anwendungsbeispiel (2) {-}
+
+@keller2008 -->
+
+##  Modellformulierung {#sec-modellformulierung}
+
+Wir beginnen mit folgender Definition.
+
+:::{#def-modell-der-konfirmatorischen-faktorenanalyse}
+## Modell der konfirmatorischen Faktorenanalyse
+Es sei
+\begin{equation}\label{eq:cfa_modell}
+\upsilon = L\xi + \varepsilon
+\end{equation}
+wobei für $m > k$
+
+* $\upsilon$ ein $m$-dimensionaler beobachtbarer Zufallsvektor von Daten ist,
+* $L = (l_{ij})\in \mathbb{R}^{m \times k}$ eine Matrix, die *Faktorladungsmatrix* genannt wird,
+* $\xi$ ein $k$-dimensionaler latenter Zufallvektor von *Faktoren* ist, für den gilt, dass
+\begin{equation}
+\xi  \sim N(0_k,\Phi), 
+\end{equation}
+* und $\varepsilon$ ein $m$-dimensionaler latenter und von $\xi$ unabhängiger Zufallsvektor ist, 
+der *Beobachtungsfehler* genannt wird und für den gilt, dass 
+\begin{equation}
+\varepsilon \sim N(0_m, \Psi) \mbox{ mit } \Psi := \mbox{diag}\left(\psi_1,...,\psi_m\right)
+\end{equation}
+Dann wird \eqref{eq:cfa_modell} *Modell der konfirmatorischen Faktorenanalyse (CFA-Modell)* genannt.
+:::
+
+Wir bezeichnen Werte von $\upsilon$ mit $y \in \mathbb{R}^m$, von $\xi$ mit 
+$x \in \mathbb{R}^k$ und von $\varepsilon$ mit $e \in \mathbb{R}^m$. Die Interpretationen 
+der Modellbestandteile des CFA-Modell entsprechen denen des EFA Modells. Neben
+der offensichtlichen Normalverteilungsannahme unterscheiden sich das CFA- und das
+EFA-Modell auch durch die Annahme, dass die Kovarianzmatrix von $\xi$ nicht notwendigerweise
+die Identitätsmatrix sein muss.
+
+Basierend auf @thm-gemeinsame-normalverteilungen ergibt sich für das CFA-Modell
+folgende gemeinsame Verteilung von Faktoren und Daten.
+
+:::{#thm-gemeinsame-verteilung-von-faktoren-und-daten}
+## Gemeinsame Verteilung von Faktoren und Daten
+Gegeben sei ein CFA-Modell
+\begin{equation}
+\upsilon = L\xi + \varepsilon \mbox{ mit } \xi \sim N(0_k,\Phi) \mbox{ und } \varepsilon \sim N(0_m,\Psi).
+\end{equation}
+Dann gilt
+\begin{equation}
+\begin{pmatrix} \xi \\ \upsilon \end{pmatrix}
+\sim N\left(\begin{pmatrix} 0_k \\ 0_m \end{pmatrix}, \begin{pmatrix} \Phi & \Phi L^T \\ L\Phi & L\Phi L^T +\Psi \end{pmatrix}\right).
+\end{equation}
+:::
+
+:::{.proof}
+Nach @def-modell-der-konfirmatorischen-faktorenanalyse gilt offenbar
+\begin{equation}
+\xi \sim N(0_k,\Phi) \mbox{ und } \upsilon\, |\, \xi \sim N(L\xi,\Psi)
+\end{equation}
+Damit folgt das Theorem dann aber schon direkt.
+:::
+
+Wie immer im Kontext von Modellen mit latenten Variablen ist die gemeinsame 
+Verteilung der latenten und beobachtbaren Variablen für die Theorie des Modells 
+zentral. So bildet die gemeinsame Verteilung von $\xi$ und $\upsilon$ des CFA-Modells
+die Grundlage für die Form der marginalen Datenkovarianzmatrix dieses Modells,
+der entsprechenden  marginalen Log-Likelihood-Funktion, der daraus resultierenden 
+Diskrepanzfunktion der CFA Parameterschätzung, und schließich auch der Evaluation 
+von Faktorscores. In diesem Sinne betrachten wir als nächstes die in 
+@def-modell-der-konfirmatorischen-faktorenanalyse implizite marginale Verteilung
+des Datenvektors. 
+
+:::{#thm-marginale-datenverteilung}
+## Marginale Datenverteilung
+Gegeben sei ein CFA-Modell
+\begin{equation}
+\upsilon = L\xi + \varepsilon \mbox{ mit } \xi \sim N(0_k,\Phi) \mbox{ und } \varepsilon \sim N(0_m,\Psi).
+\end{equation}
+Dann gilt
+\begin{equation}
+\upsilon
+\sim N\left(0_m, L\Phi L^T +\Psi \right).
+\end{equation}
+:::
+
+:::{.proof}
+Das Theorem ergibt sich direkt mit @thm-marginale-normalverteilungen aus @thm-gemeinsame-verteilung-von-faktoren-und-daten.
+:::
+
+Offenbar ergibt sich für $\Phi := I_k$ mit
+\begin{equation}
+\mathbb{C}(\ups) =  LL^T + \Psi
+\end{equation}
+die gleiche marginale Datenkovarianzmatrix wie beim EFA-Modell.
+
+### Beispiel {-}
+
+Für das Anwendungsbeispiel nach @holzinger1939 gilt $m = 9$ und $C \in \mathbb{R}^{9 \times 9}$.
+Die drei Aufgabentypen legen jeweils einen gemeinsamen Faktor für jedes Aufgabentripel, also $k = 3$, nahe.
+Ein (naives) konfirmatorisches Faktorenanalysemodell für diesen Datensatz hat damit also die Form
+\begin{equation}
+\upsilon = L\xi + \varepsilon \Leftrightarrow
+\begin{pmatrix}
+\upsilon_1
+\\
+\upsilon_2
+\\
+\upsilon_3
+\\
+\upsilon_4
+\\
+\upsilon_5
+\\
+\upsilon_6
+\\
+\upsilon_7
+\\
+\upsilon_8
+\\
+\upsilon_9
+\\
+\end{pmatrix}
+=
+\begin{pmatrix}
+l_{11} & l_{12} & l_{13} \\
+l_{21} & l_{22} & l_{23} \\
+l_{31} & l_{32} & l_{33} \\
+l_{41} & l_{42} & l_{43} \\
+l_{51} & l_{52} & l_{53} \\
+l_{61} & l_{62} & l_{63} \\
+l_{71} & l_{72} & l_{73} \\
+l_{81} & l_{82} & l_{83} \\
+l_{91} & l_{92} & l_{93} \\
+\end{pmatrix}
+\begin{pmatrix}
+\xi_1
+\\
+\xi_2
+\\
+\xi_3
+\end{pmatrix}
++
+\begin{pmatrix}
+\varepsilon_1
+\\
+\varepsilon_2
+\\
+\varepsilon_3
+\\
+\varepsilon_4
+\\
+\varepsilon_5
+\\
+\varepsilon_6
+\\
+\varepsilon_7
+\\
+\varepsilon_8
+\\
+\varepsilon_9
+\\
+\end{pmatrix}
+\end{equation}
+mit
+\begin{equation}
+\xi \sim N(0_3,\Phi) \mbox{ und } \varepsilon \sim N(0_9,\Psi)
+\end{equation}
+und
+\begin{equation}
+\Phi
+:=
+\begin{pmatrix}
+\phi_{11} & \phi_{12} & \phi_{13} \\
+\phi_{21} & \phi_{22} & \phi_{23} \\
+\phi_{31} & \phi_{32} & \phi_{33} \\
+\end{pmatrix}
+\mbox{ und }
+\Psi
+:=
+\mbox{diag}\left(\psi_1,\psi_2,\psi_3,\psi_4,\psi_5,\psi_6,\psi_7,\psi_8, \psi_9\right).
+\end{equation}
+
+### Modellidentifizierbarkeit und Modellrestriktionen {-}
+
+Die Frage nach der Identifizierbarkeit eines Modells stellt ist die Frage, ob
+basierend auf beobachtbaren Daten wahre, aber unbekannten, Parameterwerte eines Modells
+prinzipiell eindeutig geschätzt werden können. Wenn unterschiedliche wahre,
+aber unbekannte, Parameterwerte in den gleichen Datenverteilungen resultieren,
+dann sind sie und das Modell nicht identifizierbar. Für die konfirmatorische 
+Faktorenanalyse sind allgemeine hinreichende und notwendige Bedingungen für die 
+Modellidentifizierbarkeit nicht vollumfänglich bekannt, die Modellidentifizierbarkeit 
+im Bereich der Faktorenanalyse und dem eng verwandten Feld der Strukturgleichungsmodelle 
+bleibt also in aktives Forschungsfeld. In der Anwendungspraxis sind deshalb 
+simulationsbasierte Parameterrecoverystudien sicherlich eine gute Forschungspraxis.
+
+Im Folgenden definieren wir zunächst die Identifizierbarkeit eines Faktorenanalysemodells
+und führen dann mit der *Ordnungsbedingung der konfirmatorischen Faktorenanalyse*
+eine häufig verwendete Heuristik zur Modellidentifizierbarkeit ein, die die Intuition
+formalisiert, dass ein Modell im Sinne der datenanalytischen Datenreduktion nicht
+mehr Parameter haben sollte als Datenstatistiken betrachtet werden. Dazu zählen
+wir dabei zunächst die Anzahl der unikalen Parameter und der Statistiken eines
+konfirmatorischen Faktorenanalysemodells.
+
+:::{#def-identifizierbares-faktorenanalysemodell}
+## Identifizierbares Faktorenanalysemodell
+Gegeben sei ein CFA-Modell
+\begin{equation}
+\upsilon = L\xi + \varepsilon \mbox{ mit } \xi \sim N(0_k,\Phi) \mbox{ und } \varepsilon \sim N(0_m,\Psi).
+\end{equation}
+Weiterhin sei der \textit{Parametervektor} dieses Modells definiert als die
+spaltenweise Konkatenierung der Parametermatrizen $L,\Phi,\Psi$, also
+\begin{equation}
+\theta := \mbox{vec}(L,\Phi,\Psi),
+\end{equation}
+so dass die marginale Datenkovarianz geschrieben werden kann als
+\begin{equation}
+\Sigma_\theta := L\Phi L^T + \Psi.
+\end{equation}
+Dann heißen das Faktorenanalysemodell und der Parametervektor $\theta$ 
+*identifizierbar*, wenn für alle $\theta_1,\theta_2 \in \Theta$ gilt, dass
+\begin{equation}
+\Sigma_{\theta_1} = \Sigma_{\theta_2} \Leftrightarrow \theta_1 = \theta_2.
+\end{equation}
+Wenn für $\theta_1 \neq \theta_2$ gilt, dass $\Sigma_{\theta_1} = \Sigma_{\theta_2}$,
+so heißen das Modell und $\theta$ *nicht identifizierbar*.
+:::
+
+Bei nicht identifizierbaren Modellen ergeben unterschiedliche Parameterwerte also 
+die gleiche Datenverteilung und es kann folglich aus Daten nicht eindeutig auf 
+Parameterwerte zurückgeschlossen werden. Allerdings gibt es bis data keine 
+allgemein gültigen notwendigen und hinreichenden Bedingungen für die Identifizierbarkeit
+von CFA-Modellen Die unten vorgestellte *Ordnungsbedingung* ist lediglich 
+eine notwendige Bedingung für die Identifizierbarkeit eines CFA-Modells. Um sie
+diskutieren zu können, zählen wir zunächst die Anzahl an einzelnen (unikalen)
+skalaren Parametern und Stichprobenstatistiken eines CFA-Modells. Dabei ist 
+zentral, dass die Symmetrie von Kovarianzmatrizen bedeutet, dass nur die Einträge 
+über und inklusive ihrer Hauptdiagonale unikal sind. 
+
+
+
+:::{#thm-anzahl-unikaler-skalarer-parameter-und-statistiken}
+## Anzahl unikaler skalarer Parameter und Statistiken
+Gegeben sei ein CFA-Modell
+\begin{equation}
+\upsilon = L\xi + \varepsilon \mbox{ mit } \xi \sim N(0_k,\Phi) \mbox{ und } \varepsilon \sim N(0_m,\Psi).
+\end{equation}
+ein konfirmatorisches Faktorenanalysemodell. Dann gilt für die Anzahl an unikalen skalaren
+Parametern des Modells
+\begin{equation}
+n_\theta = mk + \frac{k(k+1)}{2} + m
+\end{equation}
+Weiterhin sei $C$ sei die Stichprobenkovarianzmatrix eines Datensatzes von $n$
+unabhängigen Beobachtungen von $\upsilon$. Dann gilt für die Anzahl an unikalen 
+skalaren Stichprobenstatistiken des CFA-Modells
+\begin{equation}
+n_c = \frac{m(m+1)}{2}.
+\end{equation}
+:::
+
+:::{.proof}
+Die Anzahl der Einträge der Faktorladungsmatrix $L \in \mathbb{R}^{m \times k}$ ist $mk$.
+
+Die Anzahl der Einträge einer symmetrischen Matrix $S \in \mathbb{R}^{k \times k}$ ist $k^2$.
+Aufgrund der Symmetrie von $S$ sind dabei allerdings nur die $k$ Einträge der Hauptdiagonale
+und die Einträge oberhalb (oder unterhalb) der Hauptdiagonalen unikal. Die Anzahl der
+Einträge oberhalb (oder unterhalb) der Hauptdiagonalen ist die Hälfte aller $k^2-k$ nicht-diagonalen
+Einträge von $S$, also $(k^2 - k)/2$. Zusammen mit den Einträgen auf der Hauptdiagonalen ergibt
+sich damit für die Anzahl unikaler Einträge einer symmetrischen Matrix
+\begin{equation}
+\frac{k^2 - k}{2} + k = \frac{k^2 - k}{2} + \frac{2k}{2}  = \frac{k^2 + k}{2} = \frac{k(k + 1)}{2}.
+\end{equation}
+Als Kovarianzmatrix ist $\Phi \in \mathbb{R}^{k \times k}$ symmetrisch und hat damit $\frac{k(k + 1)}{2}$ unikale Einträge.
+Die Anzahl der von Null verschiedenden Einträge der Beobachtungsrauschematrix $\Psi \in \mathbb{R}^{m \times m}$ ist $m$.
+
+Für die Anzahl an unikalen skalaren Parametern des Faktorenanalysemodells ergibt sich also zusammenfassend
+\begin{equation}
+n_\theta = mk + \frac{k(k+1)}{2} + m.
+\end{equation}
+Die Stichprobenkovarianzmatrix $C\in \mathbb{R}^{m \times m}$ eines Datensatzes ist symmetrisch. Mit
+obigen Überlegungen zu den unikalen Einträgen einer symmetrischen Matrix ergibt sich also direkt
+\begin{equation}
+n_c = \frac{m(m+1)}{2}.
+\end{equation}
+:::
+
+Nach @thm-anzahl-unikaler-skalarer-parameter-und-statistiken bezeichnet $n_\theta$ 
+also die Dimension des unikalen Parametervektors $\theta$, es gilt also $\theta \in \mathbb{R}^{n_\theta}$
+und $n_c$ ist die Anzahl der unikalen skalaren Einträge von $C$. Das Verhältnis
+von $n_\theta$ und $n_c$ ist die Grundlage der Ordnungsbedingung der konfirmatorischen
+Faktorenanalyse.
+
+:::{#def-ordnungsbedingung}
+## Ordnungsbedingung
+Gegeben sei ein CFA-Modell
+\begin{equation}
+\upsilon = L\xi + \varepsilon \mbox{ mit } \xi \sim N(0_k,\Phi) \mbox{ und } \varepsilon \sim N(0_m,\Psi)
+\end{equation}
+Dann sagt man, dass das Modell der *Ordnungsbedingung* genügt, wenn für die
+Anzahl $n_\theta$ der unikalen skalaren Parameter und für die Anzahl $n_c$ der
+unikalen skalaren Statistiken gilt, dass
+\begin{equation}
+n_\theta \le n_c.
+\end{equation}
+:::
+
+Die Ordnungsbedingung besagt also, dass die Anzahl der unbekannten und
+damit zu schätzenden Parameter des betrachteten Modells kleiner oder gleich der 
+unikalen Einträge der Stichprobenkovarianzmatrix ist. Softwarelösungen wie 
+implementieren die Ordnungsbedingung meist per default.
+
+**Anwendungsbeispiele** 
+
+Für das Anwendungsbeispiel nach @holzinger1939 gilt mit $m = 9$, dass $n_c = 9(9+1)/2=45$.
+Das restringierte Modell für diesen Datensatz nach @rosseel2012 hat die Form
+\begin{equation}
+\upsilon = L\xi + \varepsilon \Leftrightarrow
+\begin{pmatrix}
+\upsilon_1
+\\
+\upsilon_2
+\\
+\upsilon_3
+\\
+\upsilon_4
+\\
+\upsilon_5
+\\
+\upsilon_6
+\\
+\upsilon_7
+\\
+\upsilon_8
+\\
+\upsilon_9
+\\
+\end{pmatrix}
+=
+\begin{pmatrix}
+1      & 0      & 0 \\
+l_{21} & 0      & 0 \\
+l_{31} & 0      & 0 \\
+0      & 1      & 0 \\
+0      & l_{52} & 0 \\
+0      & l_{62} & 0 \\
+0      & 0      & 1 \\
+0      & 0      & l_{83} \\
+0      & 0      & l_{93} \\
+\end{pmatrix}
+\begin{pmatrix}
+\xi_1
+\\
+\xi_2
+\\
+\xi_3
+\end{pmatrix}
++
+\begin{pmatrix}
+\varepsilon_1
+\\
+\varepsilon_2
+\\
+\varepsilon_3
+\\
+\varepsilon_4
+\\
+\varepsilon_5
+\\
+\varepsilon_6
+\\
+\varepsilon_7
+\\
+\varepsilon_8
+\\
+\varepsilon_9
+\\
+\end{pmatrix}
+\end{equation}
+mit
+\begin{equation}
+\xi \sim N(0_3,\Phi) \mbox{ und } \varepsilon \sim N(0_9,\Psi)
+\end{equation}
+und
+\begin{equation}
+\Phi
+:=
+\begin{pmatrix}
+\phi_{11} & \phi_{12} & \phi_{13} \\
+\phi_{21} & \phi_{22} & \phi_{23} \\
+\phi_{31} & \phi_{32} & \phi_{33} \\
+\end{pmatrix}
+\mbox{ und }
+\Psi
+:=
+\mbox{diag}\left(\psi_1,\psi_2,\psi_3,\psi_4,\psi_5,\psi_6,\psi_7,\psi_8, \psi_9\right).
+\end{equation}
+Für die Anzahl der als unbekannt voraussgesetzten Parameter in diesem Modell ergibt sich also
+\begin{equation}
+n_\theta = 6  + 6  + 9 = 21 < 45 = n_c
+\end{equation}
+und die Ordnungsbedingung ist erfüllt. Nach  @rosseel2012 spezifieziert man 
+das obige Modell für den Datensatz nach @holzinger1939 mithilfe des Lavaan Pakets
+wie in folgendem **R** Code gezeigt. Dabei repräsentieren Einträge ungleich 0 
+als unbekannt angenommene und damit zu schätzende Parameter.
+
+\tiny
+```{r,message = F}
+library(lavaan)                                                                 # Lavaan SEM Paket
+data(HolzingerSwineford1939)                                                    # Datensatz
+YT           = HolzingerSwineford1939[,7:15]                                    # transponierte Datenmatrix
+colnames(YT) = paste("y", 1:9, sep = "")                                        # Variablennamen
+rownames(YT) = paste("i =", 1:nrow(YT))                                         # Variablennamen
+cfa_mod      = 'x_1 =~  y1 + y2 + y3                                            # Nicht-Null-Ladungen für y_1,y_2,y_3
+                x_2 =~  y4 + y5 + y6                                            # Nicht-Null-Ladungen für y_4,y_5,y_6
+                x_3 =~  y7 + y8 + y9'                                           # Nicht-Null-Ladungen für y_7,y_8,y_9
+cfa_mod      = cfa(cfa_mod, data = YT)                                          # CFA Modellformulierung
+theta        = lavInspect(cfa_mod, what = "free")                               # Parameterinspektion
+L            = theta$lambda                                                     # Faktorladungsmatrix
+Phi          = theta$psi                                                        # Fehlerkovarianzmatrix
+Psi          = theta$theta                                                      # Faktorkovarianzmatrix
+```
+
+\tiny
+```{r, echo = F}
+cat("L = \n")
+print(L)
+cat("\n")
+cat("Psi = \n")
+print(Psi)
+cat("\n")
+cat("Phi = \n")
+print(Phi)
+```
+\normalsize
+
+## Modellschätzung {#sec-modellschätzung}
+
+Traditionell werden die Parameter der konfirmatorischen Faktorenanalyse durch
+Minimierung der sogenannten  *Diskrepanzfunktion*, geschätzt, vgl.
+@lawley1940, @joreskog1967 und @joreskog1969. Die funktionale Form der Diskrepanzfunktion
+ist dabei durch ein Log-Likelihood-Kriterium bei Betrachtung der Frequentistischen
+Verteilung der Stichprobenkovarianz motiviert. Diese ist nach @wishart1928 benannt.
+Neuere Sichtweisen im Kontext von Strukturgleichungsmodellen motivieren die
+funktionale Form der Diskrepanzfunktion allerdings direkt durch ein Log-Likelihood-Kriterium
+bei Betrachtung der multivariaten Datennormalverteilung, vgl. z.B. @bollen1989 und
+@rosseel2021. Wir wollen hier diesen neueren Weg nachzeichnen und somit auch auf eine Einführung
+der Wishart-Verteilung verzichten. Zu diesem Zweck nehmen wir durchgängig die
+*Zentrierung* des betrachteten Datensatzes $Y \in \mathbb{R}^{m \times n}$, also $\bar{y} = 0_m$,
+sowie die Identifizierbarkeit des Modells an. Zur Diskussion der Modellschätzung 
+der konfirmatorischen Faktorenanalyse gehen wir hier dabei wie folgt vor: Wir evaluieren zunächst 
+die Log-Likelihood-Funktion der konfirmatorischen Faktorenanalyse und definieren
+dann die funktionale Form der Diskrepanzfunktion. Schließlich zeigen wir, 
+dass Minimumstellen der Diskrepanzfunktion Maximum-Likelihood-Schätzer sind.
+
+Dabei wird die Minimierung der Diskrepanzfunktionheutzutage mithilfe von Standardverfahren
+der nichtlinearen Optimierung durchgeführt (vgl. z.B. @rosseel2012, @rosseel2021).
+Die Motivation der funktionalen Form der Diskrepanzfunktion selbst ergibt sich 
+dann im Kontext der Modellevaluation.
+
+Für einen gänzlich alternativen Zugang zur Schätzung des konfirmatorischen
+Faktorenanalysemodells mithilfe des Expectation-Maximization Algorithmus im Rahmen
+der variationalen Inferenz, siehe z.B. @rubin1982 und insbesondere @roweis1999. 
+Die genauen Bezüge zwischen den traditionellen und modernen Schätzverfahren für 
+die konfirmatorische Faktorenanalyse sind dabei eine offene Forschungsfrage.
+
+Wir beginnen mit der Form der Log-Likelihood-Funktion des CFA-Modells.
+
+:::{#thm-log-likelihood-funktion-der-konfirmatorischen-faktorenanalyse}
+## Log-Likelihood-Funktion der konfirmatorischen Faktorenanalyse
+Gegeben sei ein CFA-Modell
+\begin{equation}
+\upsilon = L\xi + \varepsilon \mbox{ mit } \xi \sim N(0_k,\Phi) \mbox{ und } \varepsilon \sim N(0_m,\Psi)
+\end{equation}
+mit Parametervektor $\theta$ und marginalen Kovarianzmatrixparameter $\Sigma_\theta$.
+Weiterhin sei $Y := (y_1,...,y_n) \in \mathbb{R}^{m \times n}$ ein zentrierter Datensatz von
+$n$ unabhängigen Beobachtungen von $\upsilon$, $C$ seine Stichprobenkovarianzmatrix und
+\begin{equation}
+S := \frac{n-1}{n}C
+\end{equation}
+seine verzerrte Stichprobenkovarianzmatrix. Dann kann die Log-Likelihood-Funktion
+von $Y$ geschrieben werden als
+\begin{equation}
+\ell_{Y} : \Theta \to \mathbb{R}, \theta \mapsto
+\ell_{Y}(\theta) :=
+- \frac{n}{2}\ln |\Sigma_\theta| - \frac{n}{2} \mbox{tr}\left(S\Sigma_\theta^{-1}\right) - \frac{nm}{2}\ln(2\pi)
+\end{equation}
+Eine Maximumstelle von $\ell_{Y}$, also ein Wert $\hat{\theta}_{\mbox{\tiny ML}} \in \Theta$ mit
+\begin{equation}
+\hat{\theta}_{\mbox{\tiny ML}} = \argmax_{\theta \in \Theta} \ell_Y(\theta),
+\end{equation}
+heißt *Maximum-Likelihood-Schätzer der konfirmatorischen Faktorenanalyse*.
+:::
+
+:::{.proof}
+Mit der Definition der Log-Likelihood-Funktion und der marginalen Datenverteilung
+des CFA-Modells ergibt sich 
+\begin{align}\label{eq:cfa_llh}
+\begin{split}
+\ell_{Y}(\theta)
+& = \ln \prod_{i=1}^n p_\theta(y_i)                                                                                                                    \\
+& = \prod_{i=1}^n \ln N\left(y_i; 0_m, L\Phi L^T +\Psi \right)                                                                                         \\
+& = \ln \left(\prod_{i=1}^n (2\pi)^{-m/2} |\Sigma_\theta|^{-1/2}\exp\left(-\frac{1}{2}(y_i - 0_m)^T\Sigma_\theta^{-1}(y_i - 0_m))\right)\right) \\
+& = -\frac{mn}{2}\ln 2\pi - \frac{n}{2} \ln |\Sigma_\theta| - \frac{1}{2}\sum_{i=1}^n y_i^T\Sigma_\theta^{-1}y_i .
+\end{split}
+\end{align}
+Um die Gleicheit des letzten Terms auf der rechten Seite mit dem letzten Term
+in der postulierten Funktionsform zu zeigen, halten wir zunächst fest,
+dass mit elementaren Eigenschaften der Matrixspur gilt, dass
+\begin{equation}
+\mbox{tr}\left(\sum_{i=1}^n y_i^T \Sigma_\theta^{-1} y_i \right)
+= \sum_{i=1}^n \mbox{tr}\left(y_i^T \Sigma_\theta^{-1} y_i \right)
+= \sum_{i=1}^n \mbox{tr}\left(\Sigma_\theta^{-1} y_i y_i^T\right)
+= \mbox{tr}\left(\Sigma_\theta^{-1} \sum_{i=1}^n  y_i y_i^T \right).
+\end{equation}
+Weiterhin gilt mit dem Binomischen Lehrsatz
+\begin{align}
+\begin{split}
+\sum_{i=1}^n y_i^T\Sigma_\theta^{-1}y_i
+& = \sum_{i=1}^n (y_i-\bar{y}+\bar{y})^T\Sigma_\theta^{-1}(y_i-\bar{y}+\bar{y}) \\
+& = \sum_{i=1}^n (y_i-\bar{y})^T\Sigma_\theta^{-1} (y_i-\bar{y}) +
+    \sum_{i=1}^n \bar{y}^T\Sigma_\theta^{-1}\bar{y} +
+     2\sum_{i=1}^n (y_i-\bar{y})^T\Sigma_\theta^{-1}\bar{y} \\
+& = \sum_{i=1}^n (y_i-\bar{y})^T\Sigma_\theta^{-1} (y_i-\bar{y}) +
+    \sum_{i=1}^n \bar{y}^T\Sigma_\theta^{-1}\bar{y} +
+    2\left(\sum_{i=1}^n \left(y_i-\frac{1}{n}\sum_{i=1}^n y_i\right)^T\right)\Sigma_\theta^{-1} \bar{y} \\
+& = \sum_{i=1}^n (y_i-\bar{y})^T\Sigma_\theta^{-1} (y_i-\bar{y}) +
+    \sum_{i=1}^n \bar{y}^T\Sigma_\theta^{-1}\bar{y} +
+    2\left(\sum_{i=1}^n y_i^T -\frac{n}{n}\sum_{i=1}^n y_i^T\right)\Sigma_\theta^{-1} \bar{y} \\
+& = \sum_{i=1}^n (y_i-\bar{y})^T\Sigma_\theta^{-1} (y_i-\bar{y}) +
+    \sum_{i=1}^n \bar{y}^T\Sigma_\theta^{-1}\bar{y} +
+    2\left(0_m^T\Sigma_\theta^{-1} \bar{y}\right) \\
+& = \sum_{i=1}^n (y_i-\bar{y})^T\Sigma_\theta^{-1} (y_i-\bar{y}) +
+    \sum_{i=1}^n \bar{y}^T\Sigma_\theta^{-1}\bar{y}
+\end{split}
+\end{align}
+Also folgt mit obiger Eigenschaft der Matrixspur, der Zentrierung des Datensatzes 
+$\bar{y} = 0_m$ und der Definition von $S$
+\begin{align}
+\begin{split}
+\sum_{i=1}^n y_i^T\Sigma_\theta^{-1}y_i
+& = \sum_{i=1}^n (y_i-\bar{y})^T\Sigma_\theta^{-1} (y_i-\bar{y}) + \sum_{i=1}^n \bar{y}^T\Sigma_\theta^{-1}\bar{y}                      \\
+& = \sum_{i=1}^n y_i^T\Sigma_\theta^{-1} y_i                                                                                            \\
+& = \mbox{tr}\left(\sum_{i=1}^n y_i^T\Sigma_\theta^{-1} y_i\right)                                                                      \\
+& = \mbox{tr}\left(\Sigma_\theta^{-1} \sum_{i=1}^n  y_i y_i^T \right)                                                                   \\
+& = \mbox{tr}\left(\Sigma_\theta^{-1} n S\right)                                                                                        \\
+& = n\,\mbox{tr}\left(S\Sigma_\theta^{-1}\right)
+\end{split}
+\end{align}
+Substitution in $\ell_Y(\theta)$ von oben ergibt dann die postulierte funktionale Form 
+der Log-Likelihood Funktion.
+:::
+
+Wir betrachten als nächstes die *Diskrepanzfunktion* konfirmatorischen Faktorenanalyse
+und die auf ihr basierten Schätzer der konfirmatorischen Faktorenanalyse.
+
+:::{#def-diskrepanzfunktion-und-schätzer}
+## Diskrepanzfunktions und Schätzer
+Gegeben sei ein CFA-Modell
+\begin{equation}
+\upsilon = L\xi + \varepsilon \mbox{ mit } \xi \sim N(0_k,\Phi) \mbox{ und } \varepsilon \sim N(0_m,\Psi)
+\end{equation}
+mit Parametervektor $\theta$ und marginalen Kovarianzmatrixparameter $\Sigma_\theta$, respektive.
+Weiterhin sei für einen Datensatz $Y \in \mathbb{R}^{m \times n}$  von $n$ unabhängigen
+Beobachtungen von $\upsilon$ $S$ die verzerrte Stichprobenkovarianzmatrix von $Y$.
+Dann heißt die Funktion
+\begin{equation}
+F_{Y} : \Theta \to \mathbb{R}, \theta \mapsto
+F_{Y}(\theta) := n\ln |\Sigma_\theta| + n\mbox{tr}\left(S\Sigma_\theta^{-1}\right) - n\ln |S| - nm
+\end{equation}
+die *Diskrepanzfunktion* der konfirmatorischen Faktorenanalyse. Weiterhin heißt 
+ein Wert $\hat{\theta} \in \Theta$ mit
+\begin{equation}
+\hat{\theta} = \argmin_{\theta \in \Theta} F_Y(\theta),
+\end{equation}
+also eine Minimumstelle von $F_{Y}$, ein *Parameterschätzer* der konfirmatorischen Faktorenanalyse
+:::
+
+Der Vergleich von @thm-log-likelihood-funktion-der-konfirmatorischen-faktorenanalyse
+und @def-diskrepanzfunktion-und-schätzer zeigt, dass die Log-Likelihood-Funktion
+und die Diskrepanzfunktion der konfirmatorischen Fayktorenanalyse nicht identisch
+sind. Allerdings zeigen wir im Folgenden, dass Minimumstellen von $F_{Y}$ 
+Maximumstellen von $\ell_Y$ sind und die Minimierung der Diskrepanzfunktion 
+damit Maximum-Likelihood-Schätzer sind. Der Fokus der konfimatorischen Faktorenanalyseliteratur
+auf dem Begriff der Diskrepanzfunktion erschließt sich im Folgenden dann im
+Kontext der Modellevaluation.
+
+:::{#thm-maximum-likelihood-schätzer-der-konfirmatorischen-faktorenanalyse}
+## Maximum-Likelihood-Schätzer der konfirmatorischen Faktorenanalyse
+Eine Minimumstelle $\hat{\theta}$ der CFA Diskrepanzfunktion $F_Y$ maximiert die
+Log-Likelihood-Funktion $\ell_Y$ der konfirmatorischen Faktorenanalyse, ein
+CFA Parameterschätzer ist also ein Maximum-Likelihood-Schätzer $\hat{\theta}_{\mbox{\tiny ML}}$.
+:::
+
+:::{.proof}
+Wir halten zunächst fest, dass mit von $\theta$ unabhängigen Konstanten $a,b \in \mathbb{R}$ gilt, dass
+\begin{equation}
+\ell_Y(\theta) = a\left(-F_Y(\theta)\right) + b.
+\end{equation}
+Die Log-Likelihood-Funktion ist also eine linear-affine und damit insbesondere
+monotone Transformation von $F_Y$. Da monotone Transformation Extremstellen unverändert
+lassen und ein negatives Vorzeichen eine Minimumstelle in eine Maximumstelle transformiert,
+ergibt sich das Theorem direkt.
+:::
+
+Minima von $F_{Y}$ werden in populären Analyseprogrammen zur konfirmatorischen
+Faktorenanalyse mit iterativen Standardverfahren der nichtlinearen Optimierung
+bestimmt. Allgemein gehen diese Verfahren von einem Startwert $\hat{\theta}^{(0)}$
+aus und evaluieren weitere Iteranden rekursiv durch
+\begin{equation}
+\hat{\theta}^{(i+1)} = f\left(\hat{\theta}^{(i)},Y\right) \mbox{ für } i = 0,1,...
+\end{equation}
+mit einer entsprechend gewählten Funktion $f$ des vorherigen Iteranden
+$\hat{\theta}^{(i)}$ und des Datensatzes $Y$ solange, bis ein entsprechend
+gewähltes Abbruchkriterium erfüllt ist. Einen Überblick über die zum Beispiel im
+populären CFA Analyseprogramm [lavaan](https://lavaan.ugent.be/)
+implementierten Optimierungsalgorithmen geben @rosseel2012 und @rosseel2021.
+
+**Simulationsbeispiel**
+
+Wir wollen die numerische Minimierung der Diskrepanzfunktion hier nicht weiter vertiefen
+und betrachten stattdessen das Simulationsbeispiel in untenstehendem **R** Code. 
+In diesem Beispiel geben wir für ein CFA-Modell mit $m = 3$ und $k = 1$ wahre, aber
+unbekannte, Parameterwerte des Modells vor und generieren durch Samplen der
+multivariaten Normalverteilung einen Datensatz. Wir betrachten dann den Schätzfehler,
+also die Abweichung zwischen geschätzten und wahrem Parameterwert basierend auf
+der lavaan Parameterschätzung für steigenden Stichprobenumfang. Wir bestimmen
+den Schätzfehler dabei als die Euklidische Distanz zwischen wahren, aber unbekanntem,
+und geschätztem Parameterwert.
+
+\tiny
+```{r, message=FALSE}
+# Modellformulierung
+set.seed(2)
+k      = 1                                                                      # Anzahl Faktoren
+m      = 3                                                                      # Anzahl Items
+L      = matrix(c(1,2,3), nrow = m)                                             # Faktorladungsmatrix
+Phi    = 2                                                                      # Faktorkovarianzmatrix
+Psi    = diag(c(1,2,3))                                                         # Fehlerkovarianmatrix
+theta  = c(as.vector(L),diag(Psi),as.vector(Phi))                               # w.a.u. Parametervektor \theta
+p      = length(theta)                                                          # Anzahl Parameter
+
+# Modellrealisierungen
+library(MASS)                                                                   # Normalverteilungspaket
+n      = 100                                                                    # Beobachtungsanzahl
+Y      = matrix(rep(NaN,m*n), nrow = m)                                         # Simulierte beobachtete Datenmatrix
+for(i in 1:n){                                                                  # Beobachtungsiterationen
+  x      = mvrnorm(1,rep(0,k),Phi)                                              # Faktorrealisierung 
+  eps    = mvrnorm(1,rep(0,m),Psi)                                              # Fehlerrealisierung
+  Y[,i]  = L %*% x + eps                                                        # Datenrealisierung
+}
+
+# Datenformatierung für lavaan
+Y            = as.data.frame(t(Y))                                              # Dataframekonversion
+colnames(Y)  = c(paste("y", 1:m, sep = ""))                                     # Indikatorvariablennamen
+rownames(Y)  = 1:n                                                              # Beobachtungslabels
+
+# Modellschätzung
+library(lavaan)                                                                 # lavaan Paket
+na           = seq(1e1,n,1e0)                                                   # analysierte Stichprobenumfänge
+ns           = length(na)                                                       # Stichprobensampleanzahl
+cfa_mod      = 'x1 =~ y1 + y2 + y3'                                             # CFA-Model Spezifikation
+cfa_est      = matrix(rep(NaN,ns*p), nrow = p)                                  # CFA-Parameterschätzer
+cfa_err      = rep(NaN,ns)                                                      # CFA-Schätzfehler
+for(i in 1:length(na)){                                                         # Datensatziterationen
+  cfa_fit     = cfa(cfa_mod, data = Y[1:na[i],])                                # CFA Modellschätzung
+  cfa_sta     = parameterestimates(cfa_fit)                                     # CFA Parameterschätzer
+  cfa_est[,i] = cfa_sta$est                                                     # CFA Parameterschätzer
+  cfa_err[i]  = norm(cfa_est[,i]-theta, type = "2")                             # CFA Schätzfehler
+}
+```
+
+\normalsize
+@fig-cfa-schätzfehler zeigt, wie der Schätzfehler in obigber Simulation als Funktion des Stichprobenumfangs abnimmt.
+
+
+```{r, echo = F, eval = F}
+library(latex2exp)
+pdf(
+file        = "./_figures/804-cfa-schätzfehler.pdf",
+width       = 5,
+height      = 4)
+par(
+family      = "sans",
+pty         = "m",
+bty         = "l",
+lwd         = 1,
+las         = 1,
+mgp         = c(2,1,0),
+xaxs        = "i",
+yaxs        = "i",
+font.main   = 3,
+cex.main    = 3)
+plot(na,
+cfa_err,
+type        = "b",
+pch         = 20,
+xlab        = "n",
+ylab        = "",
+ylim        = c(0,4.5),
+xlim        = c(0,n+1))
+dev.off()
+```
+
+![Schätzfehler $||\theta - \hat{\theta}||_2$ als Funktion des Stichprobenumfangs](./_figures/804-cfa-schätzfehler.pdf){#fig-cfa-schätzfehler fig-align="center" width=90%}
+
+\normalsize
+**Anwendungsbeispiel**
+
+Wir wollen schließlich die CFA-Parameterschätzung anhand des restringierten Modells 
+nach @rosseel2012 für den @holzinger1939 Datensatz anhand untenstehenden **R** Codes
+demonstrieren
+
+\tiny
+```{r, message = F}
+library(lavaan)                                                                 # Lavaan SEM Paket
+data(HolzingerSwineford1939)                                                    # Datensatz
+YT           = HolzingerSwineford1939[,7:15]                                    # transponierte Datenmatrix
+colnames(YT) = paste("y", 1:9, sep = "")                                        # Variablennamen
+rownames(YT) = paste("i =", 1:nrow(YT))                                         # Variablennamen
+cfa_mod      = 'x_1 =~  y1 + y2 + y3                                            # Nicht-Null Ladungen für y_1,y_2,y_3
+                x_2 =~  y4 + y5 + y6                                            # Nicht-Null Ladungen für y_4,y_5,y_6
+                x_3 =~  y7 + y8 + y9'                                           # Nicht-Null Ladungen für y_7,y_8,y_9
+cfa_mod      = cfa(cfa_mod, data = YT)                                          # CFA Modellformulierung und -schätzung
+theta_hat    = lavInspect(cfa_mod, what = "est")                                # Inspektion der geschätzten Parameter
+L_hat        = theta_hat$lambda                                                 # Geschätzte Faktorladungsmatrix
+Psi_hat      = theta_hat$theta                                                  # Geschätzte Fehlerkovarianzmatrix
+Phi_hat      = theta_hat$psi                                                    # Geschätzte Faktorkovarianzmatrix
+```
+
+\normalsize
+Es ergeben sich folgende geschätzte Parameterwerte
+
+\tiny
+```{r, echo = F}
+cat("L_hat = \n")
+print(L_hat)
+cat("\n")
+cat("Psi_hat = \n")
+print(Psi_hat)
+cat("\n")
+cat("Phi_hat = \n")
+print(Phi_hat)
+```
+
+\normalsize
+Das geschätzte restringierte Modell für den @holzinger1939 Datensatz hat also die Form
+
+\begin{equation}
+\upsilon = \hat{L}\xi + \varepsilon \Leftrightarrow
+\begin{pmatrix}
+\upsilon_1
+\\
+\upsilon_2
+\\
+\upsilon_3
+\\
+\upsilon_4
+\\
+\upsilon_5
+\\
+\upsilon_6
+\\
+\upsilon_7
+\\
+\upsilon_8
+\\
+\upsilon_9
+\\
+\end{pmatrix}
+=
+\begin{pmatrix}
+1.00  & 0.00  & 0.00 \\
+0.55  & 0.00  & 0.00 \\
+0.73  & 0.00  & 0.00 \\
+0.00  & 1.00  & 0.00 \\
+0.00  & 1.11  & 0.00 \\
+0.00  & 0.92  & 0.00 \\
+0.00  & 0.00  & 1.00 \\
+0.00  & 0.00  & 1.18 \\
+0.00  & 0.00  & 1.08 \\
+\end{pmatrix}
+\begin{pmatrix}
+\xi_1
+\\
+\xi_2
+\\
+\xi_3
+\end{pmatrix}
++
+\begin{pmatrix}
+\varepsilon_1
+\\
+\varepsilon_2
+\\
+\varepsilon_3
+\\
+\varepsilon_4
+\\
+\varepsilon_5
+\\
+\varepsilon_6
+\\
+\varepsilon_7
+\\
+\varepsilon_8
+\\
+\varepsilon_9
+\\
+\end{pmatrix}
+\end{equation}
+mit
+\begin{equation}
+\xi \sim N(0_3,\hat{\Phi}) \mbox{ und } \varepsilon \sim N(0_9,\hat{\Psi})
+\end{equation}
+und
+\begin{equation}
+\hat{\Phi}
+:=
+\begin{pmatrix}
+0.81 & 0.41 & 0.26 \\
+0.41 & 0.97 & 0.17 \\
+0.26 & 0.17 & 0.38 \\
+\end{pmatrix}
+\mbox{ und }
+\hat{\Psi}
+:=
+\mbox{diag}\left(0.55,1.13,0.84,0.37,0.45,0.36,0.80,0.49,0.57\right).
+\end{equation}
+
+
+## Modellevaluation {#sec-modellevaluation}
+
+$Y := (y_1,...,y_n) \in \mathbb{R}^{m \times n}$ sei ein Datensatz von $n$
+unabhängigen Beobachtungen von $\upsilon$ mit $\bar{y} = 0_m$ und $\mbox{uvec}(A,B,...)$
+sei die konkatenisierte Vektorisierung der unikalen Werte der Matrizen $A,B,...$
+sowie $\mbox{uvec}^{-1}(A,B,...)$ ihre Umkehrung. Häufig möchte man bei der 
+konfirmatorischen Faktorenanalyse basierend auf $Y$ zwei Modelle vergleichen:
+
+(M1) Ein CFA-Modell, das die Ordnungsrelation erfüllt und identifizierbar ist,
+\begin{equation}
+\upsilon \sim N(0,\Sigma_\theta) \mbox{ mit } \Sigma_\theta = L\Phi L^T+\Psi, \theta = \mbox{uvec}(L,\Phi,\Psi) \in \Theta, \Theta\subset\mathbb{R}^p \mbox{ und } p \le m(m+1)/2.
+\end{equation}
+(M2) Ein multivariates Normalverteilungsmodell mit beliebigem Kovarianzmatrixparameter,
+\begin{equation}
+\upsilon \sim N(0,\Sigma_\gamma) \mbox{ mit } \Sigma_\gamma = \mbox{uvec}^{-1}(\gamma), \gamma \in \Gamma \mbox{ und } \Gamma \subset \mathbb{R}^{m(m+1)/2}.
+\end{equation}
+Ein häufig genutztes Kriterium für diesen Modellvergleich ist das Log-Likelihood-Ratio-Kriterium
+\begin{equation}
+\Lambda_Y := \ln\left(\frac{\max_{\theta \in \Theta} \prod_{i=1}^n N(y_i;0_m,\Sigma_\theta)}{\max_{\gamma \in \Gamma}\prod_{i=1}^n N(y_i;0_m,\Sigma_\gamma)}\right)
+\end{equation}
+
+Das $\Lambda_Y \in \mathbb{R}$ setzt die maximierten Wahrscheinlichkeitsdichten
+von $Y$ unter (M1) und (M2) ins Verhältnis. Große Werte von $\Lambda_Y$ bedeuten,
+dass $Y$ unter (M1) eine größere Wahrscheinlichkeit(sdichte) besitzt als unter (M2).
+Dies wird allgemein als Evidenz dafür verstanden, dass $Y$ eher von (M1) als
+von (M2) generiert wurden. Dabei ist $\Lambda_Y$ letztlich die zentrale Motivation
+für die funktionale Form der Diskrepanzfunktion (cf. @lawley1940).
+
+:::{#thm-diskrepanzfunktion}
+## Diskrepanzfunktion
+Für einen Datensatz $Y := (y_1,...,y_n) \in \mathbb{R}^{m \times n}$ mit $\bar{y} = 0_m$
+von $n$  unabhängigen Beobachtungen eines Zufallsvektors $\upsilon$ sei das
+\textit{Log-Likelihood-Ratio-Kriterium der konfirmatorischen Faktorenanalyse} gegeben durch
+\begin{equation}
+\Lambda_Y := \ln \left(\frac{\max_{\theta \in \Theta} \prod_{i=1}^n N(y_i;0_m,\Sigma_\theta)}{\max_{\gamma \in \Gamma}\prod_{i=1}^n N(y_i;0_m,\Sigma_\gamma)}\right),
+\end{equation}
+wobei
+\begin{equation}
+\Sigma_\theta = L\Phi L^T+\Psi, \theta = \mbox{uvec}(L,\Phi,\Psi) \in \Theta, \Theta\subset\mathbb{R}^p \mbox{ und } p \le m(m+1)/2
+\end{equation}
+und
+\begin{equation}
+\Sigma_\gamma = \mbox{uvec}^{-1}(\gamma), \gamma \in \Gamma \mbox{ und } \Gamma \subset \mathbb{R}^{m(m+1)/2}
+\end{equation}
+seien. Weiterhin sei für die verzerrte Stichprobenkovarianzmatrix $S$ von $Y$
+\begin{equation}
+F_{Y}(\theta) := n\ln |\Sigma_\theta| + n\mbox{tr}\left(S\Sigma_\theta^{-1}\right) - n\ln|S| - nm
+\end{equation}
+die Diskrepanzfunktion der CFA und $\hat{\theta}$ eine Minimumstelle von $F_{Y}$. Dann gilt
+\begin{equation}
+-2\Lambda_Y = F_Y(\hat{\theta})
+\end{equation}
+:::
+
+:::{.proof}
+Wir halten zunächst fest, dass
+\begin{equation}
+\max_{\theta \in \Theta} \prod_{i=1}^n N(y_i;0_m,\Sigma_\theta) = \prod_{i=1}^n N\left(y_i;0_m,\Sigma_{\hat{\theta}}\right)
+\end{equation}
+weil eine Minimumstelle $\hat{\theta}$ von $F_Y$ wie oben gesehen die Log-Likelihood-Funktion und damit auch
+die Likelihood-Funktion der exploratorischen Faktorenanalyse maximiert. Weiterhin halten wir
+fest, dass
+\begin{equation}
+\max_{\gamma \in \Gamma}\prod_{i=1}^n N(y_i;0_m,\Sigma_\gamma) = \prod_{i=1}^n N(y_i;0_m,S)
+\end{equation}
+weil die verzerrte Stichprobenkovarianz der Maximum-Likelihood-Schätzer des Kovarianzmatrixparameters
+einer multivariaten Normalverteilung ist.
+Die Logarithmuseigenschaften ergeben dann
+\begin{align}
+\begin{split}
+\Lambda_Y
+= \ln \left(\frac{\prod_{i=1}^n N\left(y_i;0_m,\Sigma_{\hat{\theta}}\right)}{\prod_{i=1}^n N(y_i;0_m,S)}\right)
+= \sum_{i=1}^n \ln N\left(y_i;0_m,\Sigma_{\hat{\theta}}\right) - \sum_{i=1}^n \ln N(y_i;0_m,S)
+\end{split}
+\end{align}
+Substition der funktionalen Form der Log-Likelihood-Funktion der konfirmatorischen Faktorenanalyse
+und der funktionalen Form der WDF der multivariaten Normalverteilung ergibt
+\begin{align}
+\begin{split}
+\Lambda_Y
+= & \sum_{i=1}^n \ln N\left(y_i;0_m,\Sigma_{\hat{\theta}}\right) - \sum_{i=1}^n \ln N(y_i;0_m,S) \\
+= & - \frac{mn}{2}\ln(2\pi)
+    - \frac{n}{2} \ln |\Sigma_\theta|
+    - \frac{n}{2} \mbox{tr}\left(S\Sigma_\theta^{-1}\right)
+    - \frac{n}{2}\bar{y}^T\Sigma_\theta^{-1}\bar{y} \\
+  & + \frac{mn}{2}\ln(2\pi)
+    + \frac{n}{2} \ln |S|
+    + \frac{n}{2} \mbox{tr}\left(SS^{-1}\right)
+    + \frac{n}{2}\bar{y}^TS^{-1}\bar{y} \\
+= & - \frac{n}{2} \ln |\Sigma_\theta|
+    - \frac{n}{2} \mbox{tr}\left(S\Sigma_\theta^{-1}\right)
+    - \frac{n}{2}0_m^T\Sigma_\theta^{-1}0_m \\
+  & + \frac{n}{2} \ln |S|
+    + \frac{n}{2} \mbox{tr}\left(SS^{-1}\right)
+    + \frac{n}{2}0_m^TS^{-1}0_m \\
+= & - \frac{n}{2} \ln |\Sigma_\theta| - \frac{n}{2} \mbox{tr}\left(S\Sigma_\theta^{-1}\right) + \frac{n}{2} \ln |S| + \frac{mn}{2} \\
+\end{split}
+\end{align}
+Multiplikation mit -2 ergibt schließlich
+\begin{equation}
+-2\Lambda_Y = n \ln|\Sigma_\theta| + n\,\mbox{tr}\left(S\Sigma_\theta^{-1}\right) - n \ln |S| - mn = F_{Y}(\theta).
+\end{equation}
+:::
+
+Anwendungsbeispiel 
+
+
+Evaluation des retringierten Modells nach @rosseel2012 für den @holzinger1939 Datensatz
+
+\tiny
+```{r, message = F}
+library(lavaan)                                     # Lavaan SEM Paket
+data(HolzingerSwineford1939)                        # Datensatz
+YT           = HolzingerSwineford1939[,7:15]        # transponierte Datenmatrix
+m            = ncol(YT)                             # Datendimension
+n            = nrow(YT)                             # Stichprobenumfang
+colnames(YT) = paste("y", 1:9, sep = "")            # vorlesungskonsistente Variablennamen
+rownames(YT) = paste("i =", 1:nrow(YT))             # vorlesungskonsistente Variablennamen
+cfa_mod      = 'x_1 =~  y1 + y2 + y3                # Faktor x_1 mit Nicht-null Ladungen für y_1,y_2,y_3
+                x_2 =~  y4 + y5 + y6                # Faktor x_2 mit Nicht-null Ladungen für y_4,y_5,y_6
+                x_3 =~  y7 + y8 + y9'               # Faktor x_3 mit Nicht-null Ladungen für y_7,y_8,y_9
+cfa_mod      = cfa(cfa_mod, data = YT)              # CFA Modellformulierung und -schätzung
+theta_hat    = lavInspect(cfa_mod, what = "est")    # Inspektion der geschätzten Parameter
+L_hat        = theta_hat$lambda                     # Geschätzte Faktorladungsmatrix
+Phi_hat      = theta_hat$psi                        # Geschätzte Beobachtungsrauschenmatrix
+Psi_hat      = theta_hat$theta                      # Geschätzte Faktorrauschenmatrix
+Sigma_hat    = L_hat%*%Phi_hat%*%t(L_hat)+Psi_hat   # Geschätzte marginale Datenkovarianzmatrix
+S            = (n-1)/n*cov(YT)                      # Verzerrte Stichprobenkovarianzmatrix
+F_Y          = n*(  log(det(Sigma_hat))             # Diskrepanzfunktionsevaluation
+                  + sum(diag(S%*%solve(Sigma_hat)))
+                  - log(det(S))
+                  - m)
+```
+
+
+Evaluation des retringierten Modells nach @rosseel2012 für den @holzinger1939 Datensatz
+
+
+```{r, echo = F}
+cat("n             :", n,
+    "\nF_Y_theta_hat :", F_Y)
+```
+
+Lavaan Output
+
+```{r}
+show(cfa_mod)
+```
+
+## Literaturhinweise
+
+## Selbstkontrollfragen
+\footnotesize
+
+1. Geben Sie die Definition des Modells der konfirmatorischen Faktorenanalyse (CFA) wieder.
+1. Erläutern Sie das Modell der CFA.
+1. Geben Sie das Theorem zur WDF der gemeinsamen Verteilung von Faktoren und Daten wieder.
+1. Geben Sie das Theorem zur WDF und Eigenschaften der marginalen Datenverteilung wieder.
+1. Erläutern Sie den Begriff der Modellidentifizierbarkeit.
+1. Geben Sie die Definition eines Identifizierbaren Faktorenanalysemodells wieder.
+1. Geben Sie die Definition der Ordnungsbedingung wieder.
+1. Geben Sie die Definition der Log-Likelihood-Funktion wieder.
+1. Geben Sie die Definition eines Maximum-Likelihood-Schätzers wieder.
+1. Erläutern Sie den Zusammenhang zwischen der Log-Likelihood-Funktion und der Diskrepanzfunktion der CFA.
+1. Geben Sie das Theorem zum CFA Maximum-Likelihood-Schätzer wieder.
+1. Erläutern die Diskrepanzfunktion der CFA vor dem Hintegrund der CFA Modellevaluation.
+
+
+\normalsize      
