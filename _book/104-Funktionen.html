@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.40">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>4&nbsp; Funktionen – Probabilistische Datenwissenschaft für die Psychologie</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./105-Folgen-Grenzwerte-Stetigkeit.html" rel="next">
+<link href="./103-Summen-Produkte-Potenzen.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-ca3ba20d3bce705d7fcc85d020c3372b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Keine Treffer",
+    "search-matching-documents-text": "Treffer",
+    "search-copy-link-title": "Link in die Suche kopieren",
+    "search-hide-matches-text": "Zusätzliche Treffer verbergen",
+    "search-more-match-text": "weitere Treffer in diesem Dokument",
+    "search-more-matches-text": "weitere Treffer in diesem Dokument",
+    "search-clear-button-title": "Zurücksetzen",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Abbrechen",
+    "search-submit-button-title": "Abschicken",
+    "search-label": "Suchen"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Probabilistische Datenwissenschaft für die Psychologie</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools tools-end">
+    <a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages" title="Quellcode" class="quarto-navigation-tool px-1" aria-label="Quellcode"><i class="bi bi-github"></i></a>
+    <a href="./Probabilistische-Datenwissenschaft-für-die-Psychologie.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+          <div id="quarto-search" class="" title="Suchen"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./100-Mathematische-Grundlagen.html">Mathematische Grundlagen</a></li><li class="breadcrumb-item"><a href="./104-Funktionen.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Funktionen</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Willkommen</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./100-Mathematische-Grundlagen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Mathematische Grundlagen</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./101-Sprache-und-Logik.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Sprache und Logik</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./102-Mengen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Mengen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./103-Summen-Produkte-Potenzen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Summen, Produkte, Potenzen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./104-Funktionen.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Funktionen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./105-Folgen-Grenzwerte-Stetigkeit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Folgen, Grenzwerte, Stetigkeit</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./106-Differentialrechnung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Differentialrechnung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./107-Integralrechnung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Integralrechnung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./108-Vektoren.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Vektoren</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./109-Matrizen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Matrizen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./110-Deskriptivstatistiken.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Deskriptivstatistiken</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Referenzen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Referenzen</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Inhaltsverzeichnis</h2>
+   
+  <ul>
+  <li><a href="#definition-und-eigenschaften" id="toc-definition-und-eigenschaften" class="nav-link active" data-scroll-target="#definition-und-eigenschaften"><span class="header-section-number">4.1</span> Definition und Eigenschaften</a></li>
+  <li><a href="#funktionentypen" id="toc-funktionentypen" class="nav-link" data-scroll-target="#funktionentypen"><span class="header-section-number">4.2</span> Funktionentypen</a></li>
+  <li><a href="#sec-elementare-funktionen" id="toc-sec-elementare-funktionen" class="nav-link" data-scroll-target="#sec-elementare-funktionen"><span class="header-section-number">4.3</span> Elementare Funktionen</a></li>
+  <li><a href="#sec-selbstkontrollfragen-funktionen" id="toc-sec-selbstkontrollfragen-funktionen" class="nav-link" data-scroll-target="#sec-selbstkontrollfragen-funktionen"><span class="header-section-number">4.4</span> Selbstkontrollfragen</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/104-Funktionen.qmd" class="toc-action"><i class="bi bi-github"></i>Seite editieren</a></li></ul></div></nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./100-Mathematische-Grundlagen.html">Mathematische Grundlagen</a></li><li class="breadcrumb-item"><a href="./104-Funktionen.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Funktionen</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-funktionen" class="quarto-section-identifier"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Funktionen</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Funktionen und Mengen bilden die Grundpfeiler mathematischer Modellierung. In dieser Einheit definieren wir den Begriff der Funktion, führen erste Eigenschaften von Funktionen ein und geben eine Übersicht über einige elementare Funktionen.</p>
+<section id="definition-und-eigenschaften" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="definition-und-eigenschaften"><span class="header-section-number">4.1</span> Definition und Eigenschaften</h2>
+<div id="def-funktion" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 4.1 (Funktion)</strong></span> Eine <em>Funktion</em> oder <em>Abbildung</em> <span class="math inline">\(f\)</span> ist eine Zuordnungsvorschrift, die jedem Element einer Menge <span class="math inline">\(D\)</span> genau ein Element einer Menge <span class="math inline">\(Z\)</span> zuordnet. <span class="math inline">\(D\)</span> wird dabei <em>Definitionsmenge von <span class="math inline">\(f\)</span></em> und <span class="math inline">\(Z\)</span> wird <em>Zielmenge von <span class="math inline">\(f\)</span></em> genannt. Wir schreiben <span class="math display">\[\begin{equation}
+f : D \to Z, x \mapsto f(x),
+\end{equation}\]</span> wobei <span class="math inline">\(f : D \to Z\)</span> gelesen wird als “die Funktion <span class="math inline">\(f\)</span> bildet alle Elemente der Menge <span class="math inline">\(D\)</span> eindeutig auf Elemente in <span class="math inline">\(Z\)</span> ab” und <span class="math inline">\(x \mapsto f(x)\)</span> gelesen wird als “<span class="math inline">\(x\)</span>, welches ein Element von <span class="math inline">\(D\)</span> ist, wird durch die Funktion <span class="math inline">\(f\)</span> auf <span class="math inline">\(f(x)\)</span> abgebildet, wobei <span class="math inline">\(f(x)\)</span> ein Element von <span class="math inline">\(Z\)</span> ist”. Der Pfeil <span class="math inline">\(\to\)</span> steht für die Abbildung zwischen den Mengen <span class="math inline">\(D\)</span> und <span class="math inline">\(Z\)</span>, der Pfeil <span class="math inline">\(\mapsto\)</span> steht für die Abbildung zwischen einem Element von <span class="math inline">\(D\)</span> und einem Element von <span class="math inline">\(Z\)</span>.</p>
+</div>
+<p>Es ist zentral, zwischen der <em>Funktion</em> <span class="math inline">\(f\)</span> als Zuordnungsvorschrift und einem <em>Wert der Funktion</em> <span class="math inline">\(f(x)\)</span> als Element von <span class="math inline">\(Z\)</span> zu unterscheiden. <span class="math inline">\(x\)</span> ist das <em>Argument</em> der Funktion (der <em>Input</em> der Funktion), <span class="math inline">\(f(x)\)</span> der Wert, den die Funktion <span class="math inline">\(f\)</span> für das Argument <span class="math inline">\(x\)</span> annimmt (der <em>Output</em> der Funktion). Üblicherweise folgt in der Definition einer Funktion <span class="math inline">\(f(x)\)</span> die Definition der <em>funktionalen Form von <span class="math inline">\(f\)</span></em>, also einer Regel, wie aus <span class="math inline">\(x\)</span> der Wert <span class="math inline">\(f(x)\)</span> zu bilden ist. Zum Beispiel wird in folgender Definition einer Funktion <span class="math display">\[\begin{equation}
+f : \mathbb{R} \to \mathbb{R}_{\ge 0}, x \mapsto f(x) := x^2
+\end{equation}\]</span> die Definition der Potenz genutzt. Man beachte, dass Funktionen immer <em>eindeutig</em> sind, als dass sie jedem <span class="math inline">\(x \in D\)</span> bei jeder Anwendung der Funktion immer ein und dasselbe <span class="math inline">\(f(x) \in Z\)</span> zuordnen.</p>
+<p><a href="#fig-funktionen" class="quarto-xref">Abbildung&nbsp;<span>4.1</span></a> visualisiert einige Aspekte der Funktionsdefinition. <a href="#fig-funktionen" class="quarto-xref">Abbildung&nbsp;<span>4.1</span></a> A stellt dabei zunächst die zentralen Begriffe der Funktionsdefinition bildlich dar. <a href="#fig-funktionen" class="quarto-xref">Abbildung&nbsp;<span>4.1</span></a> B visualisiert ein erstes Beispiel für eine Funktion, bei der die den Argumenten zugeordneten Funktionswerte nicht durch eine Rechenregel, sondern durch direkte Defintion bestimmt sind. <a href="#fig-funktionen" class="quarto-xref">Abbildung&nbsp;<span>4.1</span></a> C und <a href="#fig-funktionen" class="quarto-xref">Abbildung&nbsp;<span>4.1</span></a> D bedienen sich der Bildsprache um zwei Aspekte der Definition von Funktionen mithilfe von Gegenbeispielen hervorzuheben: Bei der Zeichnung in <a href="#fig-funktionen" class="quarto-xref">Abbildung&nbsp;<span>4.1</span></a> C handelt es sich nicht um die Darstellung einer Funktion, da nach <a href="#def-funktion" class="quarto-xref">Definition&nbsp;<span>4.1</span></a> eine Funktion <em>jedem Element</em> einer Menge <span class="math inline">\(D\)</span> genau ein Element einer Zielmenge <span class="math inline">\(Z\)</span> zuordnet. Die hier angedeutete Zuordnungsvorschrift orndet dem Element <span class="math inline">\(2 \in D\)</span> aber kein Element in <span class="math inline">\(Z\)</span> zu und ist deshalb keine Funktion. Gleichsam gilt nach <a href="#def-funktion" class="quarto-xref">Definition&nbsp;<span>4.1</span></a>, dass eine Funktion jedem Element einer Menge <span class="math inline">\(D\)</span> <em>genau ein Element einer Zielmenge <span class="math inline">\(Z\)</span></em> zuordnet. Die in <a href="#fig-funktionen" class="quarto-xref">Abbildung&nbsp;<span>4.1</span></a> D angedeutete Zuordnungsvorschrift ordnet <span class="math inline">\(1 \in D\)</span> aber sowohl das Element <span class="math inline">\(a \in Z\)</span> als auch das Element <span class="math inline">\(b \in Z\)</span> zu und ist deshalb mit <a href="#def-funktion" class="quarto-xref">Definition&nbsp;<span>4.1</span></a> nicht vereinbar.</p>
+<div id="fig-funktionen" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-funktionen-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/104-funktionen.png" class="img-fluid quarto-figure quarto-figure-center figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-funktionen-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;4.1: Aspekte der Funktionsdefinition
+</figcaption>
+</figure>
+</div>
+<p>Funktionen setzen also Elemente von Mengen miteinander in Beziehung. Die Mengen dieser Elemente erhalten spezielle Bezeichnungen.</p>
+<div id="def-bildmenge-wertebereich-urbildmenge-urbild" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 4.2 (Bildmenge, Wertebereich, Urbildmenge, Urbild)</strong></span> Es sei <span class="math inline">\(f : D \to Z, x \mapsto f(x)\)</span> eine Funktion und es seien <span class="math inline">\(D' \subseteq D\)</span> und <span class="math inline">\(Z' \subseteq Z\)</span>. Die Menge <span class="math display">\[\begin{equation}
+f(D') := \{z \in Z| \mbox{Es gibt ein } x \in D' \mbox{ mit } z = f(x)\}
+\end{equation}\]</span> heißt die <em>Bildmenge von <span class="math inline">\(D'\)</span> </em> und <span class="math inline">\(f(D) \subseteq Z\)</span> heißt der <em>Wertebereich</em> von <span class="math inline">\(f\)</span>. Weiterhin heißt die Menge <span class="math display">\[\begin{equation}
+f^{-1}(Z') := \{x \in D | f(x) \in Z'\}
+\end{equation}\]</span> die <em>Urbildmenge von <span class="math inline">\(Z'\)</span></em>. Ein <span class="math inline">\(x \in D\)</span> mit <span class="math inline">\(z = f(x) \in Z\)</span> heißt ein <em>Urbild von <span class="math inline">\(z\)</span></em>.</p>
+</div>
+<p>Man beachte, dass der Wertebereich <span class="math inline">\(f(D)\)</span> von <span class="math inline">\(f\)</span> und die Zielmenge <span class="math inline">\(Z\)</span> von <span class="math inline">\(f\)</span> nicht notwendigerweise identisch sein müssen.</p>
+<p><strong>Beispiel</strong></p>
+<p>Um die in <a href="#def-bildmenge-wertebereich-urbildmenge-urbild" class="quarto-xref">Definition&nbsp;<span>4.2</span></a> eingeführten Begriffe zu verdeutlichen betrachten wir die in <a href="#fig-bildmenge-wertebereich-urbildmenge-urbild" class="quarto-xref">Abbildung&nbsp;<span>4.2</span></a> A dargestellte Funktion <span class="math display">\[\begin{equation}
+f : \{1,2,3,4,5\} \to \{a,b,c,d\}, x \mapsto f(x) := \begin{cases} f(1) := b \\ f(2)  := d \\ f(3)  := c  \\ f(4) := c \\ f(5) := d \end{cases}.
+\end{equation}\]</span> Nach <a href="#def-bildmenge-wertebereich-urbildmenge-urbild" class="quarto-xref">Definition&nbsp;<span>4.2</span></a> ist eine Bildmenge immer bezüglich einer Teilmenge <span class="math inline">\(D'\)</span> der Definitionsmenge <span class="math inline">\(D\)</span> definiert. Sei also wie in <a href="#fig-bildmenge-wertebereich-urbildmenge-urbild" class="quarto-xref">Abbildung&nbsp;<span>4.2</span></a> B dargestellt <span class="math inline">\(D' := \{2,3\}\subset D\)</span>. Dann ist die Bildmenge von <span class="math inline">\(D'\)</span> die Menge der <span class="math inline">\(z \in Z\)</span>, für die ein <span class="math inline">\(x \in D'\)</span> existiert, so dass und <span class="math inline">\(z = f(x)\)</span>. Diejenigen <span class="math inline">\(z \in Z\)</span> für die ein <span class="math inline">\(x \in D'\)</span> mit <span class="math inline">\(z = f(x)\)</span> existiert sind aber hier gerade <span class="math inline">\(c,d\in Z\)</span>, da <span class="math inline">\(f(2) = d\)</span> und <span class="math inline">\(f(3) = c\)</span>. Darüberhinaus gibt es keine <span class="math inline">\(z \in Z\)</span> mit <span class="math inline">\(f(x) = z\)</span> und <span class="math inline">\(x \in \{2,3\}\)</span>. Der Wertebereich <span class="math inline">\(f(D)\)</span> ist nach <a href="#def-bildmenge-wertebereich-urbildmenge-urbild" class="quarto-xref">Definition&nbsp;<span>4.2</span></a> die Teilemenge der <span class="math inline">\(z \in Z\)</span>, für die gilt, dass ein <span class="math inline">\(x \in D\)</span> existiert, für das <span class="math inline">\(z = f(x)\)</span> ist. Dies ist für alle Elemente von <span class="math inline">\(Z\)</span> der Fall, außer für <span class="math inline">\(a \in Z\)</span>, da für dieses kein <span class="math inline">\(x \in D\)</span> existiert mit <span class="math inline">\(a = f(x)\)</span>. Der Wertebereich von <span class="math inline">\(f\)</span> ist für die betrachtete Funktion also durch <span class="math inline">\(f(D) := \{b,c,d\}\)</span> gegeben.</p>
+<p>Umgekehrt ist nach <a href="#def-bildmenge-wertebereich-urbildmenge-urbild" class="quarto-xref">Definition&nbsp;<span>4.2</span></a> ist eine Urbildmenge immer bezüglich einer Teilmenge <span class="math inline">\(Z'\)</span> der Zielmenge <span class="math inline">\(Z\)</span> definiert .Sei also wie in <a href="#fig-bildmenge-wertebereich-urbildmenge-urbild" class="quarto-xref">Abbildung&nbsp;<span>4.2</span></a> C dargestellt <span class="math inline">\(Z' := \{c,d\}\subset Z\)</span>. Dann ist die Urbildmenge von <span class="math inline">\(Z'\)</span> die Menge der <span class="math inline">\(x \in D\)</span>, für die gilt, dass <span class="math inline">\(f(x) \in Z'\)</span>. Diejenigen Elemente von <span class="math inline">\(D\)</span>, deren Funktionswerte unter <span class="math inline">\(f\)</span> durch Elemente von <span class="math inline">\(Z'\)</span> gegeben sind, sind gerade <span class="math inline">\(\{2,3,4,5\}\)</span>. <span class="math inline">\(1 \in D\)</span> dagegen ist kein Element von <span class="math inline">\(Z'\)</span>, da <span class="math inline">\(f\)</span> <span class="math inline">\(1 \in D\)</span> auf <span class="math inline">\(b \in Z\)</span> abbildet und <span class="math inline">\(b \notin Z'\)</span>. Nichtsdestotrotz ist natürlich <span class="math inline">\(1 \in D\)</span> ein Urbild von <span class="math inline">\(b\)</span>.</p>
+<div id="fig-bildmenge-wertebereich-urbildmenge-urbild" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-bildmenge-wertebereich-urbildmenge-urbild-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/104-bildmenge-wertebereich-urbildmenge-urbild.png" class="img-fluid quarto-figure quarto-figure-center figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bildmenge-wertebereich-urbildmenge-urbild-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;4.2: Bildmenge, Wertebereich, Urbildmenge, Urbild
+</figcaption>
+</figure>
+</div>
+<p>Grundlegende Eigenschaften von Funktionen werden in folgender Definition benannt.</p>
+<div id="def-injektivität-surjektivität-bijektivität" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 4.3 (Injektivität, Surjektivität, Bijektivität)</strong></span> <span class="math inline">\(f : D \to Z, x \mapsto f(x)\)</span> sei eine Funktion. <span class="math inline">\(f\)</span> heißt <em>injektiv</em>, wenn es zu jedem Bild <span class="math inline">\(z \in f(D)\)</span> genau ein Urbild <span class="math inline">\(x \in D\)</span> gibt. Äquivalent gilt, dass <span class="math inline">\(f\)</span> injektiv ist, wenn aus <span class="math inline">\(x_1,x_2 \in D\)</span> mit <span class="math inline">\(x_1 \neq x_2\)</span> folgt, dass <span class="math inline">\(f(x_1) \neq f(x_2)\)</span> ist. <span class="math inline">\(f\)</span> heißt <em>surjektiv</em>, wenn <span class="math inline">\(f(D) = Z\)</span> gilt, wenn also jedes Element der Zielmenge <span class="math inline">\(Z\)</span> ein Urbild in der Definitionsmenge <span class="math inline">\(D\)</span> hat. Schließlich heißt <span class="math inline">\(f\)</span> <em>bijektiv</em>, wenn <span class="math inline">\(f\)</span> injektiv und surjektiv ist. Bijektive Funktionen werden auch <em>eineindeutige Funktionen</em> (engl. <em>one-to-one mappings</em>) genannt.</p>
+</div>
+<p><strong>Beispiele</strong></p>
+<p>Wir verdeutlichen <a href="#def-injektivität-surjektivität-bijektivität" class="quarto-xref">Definition&nbsp;<span>4.3</span></a> zunächst anhand dreier (Gegen)beispiele in <a href="#fig-inj-sur-bij" class="quarto-xref">Abbildung&nbsp;<span>4.3</span></a>. <a href="#fig-inj-sur-bij" class="quarto-xref">Abbildung&nbsp;<span>4.3</span></a> A visualisiert dabei die <em>nicht-injektive</em> Funktion <span class="math display">\[\begin{equation}
+f : \{1,2,3\} \to \{a,b\}, x \mapsto f(x) := \begin{cases} f(1) := a \\ f(2) := a \\ f(3)  := b \end{cases}.
+\end{equation}\]</span> Die Funktion ist nicht-injektiv, weil es zum Element <span class="math inline">\(a\)</span> in der Bildmenge von <span class="math inline">\(f\)</span> mehr als ein Urbild in der Definitionsmenge von <span class="math inline">\(f\)</span> gibt, nämlich die Elemente <span class="math inline">\(1\)</span> und <span class="math inline">\(2\)</span>. <a href="#fig-inj-sur-bij" class="quarto-xref">Abbildung&nbsp;<span>4.3</span></a> B visualisiert die <em>nicht-surjektive</em> Funktion <span class="math display">\[\begin{equation}
+g : \{1,2,3\} \to \{a,b,c,d\}, x \mapsto g(x) := \begin{cases} g(1) := a \\ g(2)  := b \\ g(3)  := d \end{cases}.
+\end{equation}\]</span> Die Funktion ist nicht surjektiv, weil das Element <span class="math inline">\(c\)</span> in der Zielmenge von <span class="math inline">\(f\)</span> kein Urbild in der Definitionsmenge von <span class="math inline">\(f\)</span> hat. <a href="#fig-inj-sur-bij" class="quarto-xref">Abbildung&nbsp;<span>4.3</span></a> C schließlich visualisiert die bijektive Funktion <span class="math display">\[\begin{equation}
+h : \{1,2,3\} \to \{a,b,c\}, x \mapsto g(x) := \begin{cases} h(1)  := a \\ h(2)  := b \\ h(3)  := c \end{cases}.
+\end{equation}\]</span> Zu <em>jedem</em> Element in der Zielmenge von <span class="math inline">\(h\)</span> gibt es <em>genau ein</em> Urbild, die Funktion ist also injektiv und surjektiv und damit bijektiv. Bijektive Abbildungen werden auch Eins-zu-Eins-Abbildungen (eng. one-to-one mappings) genannt.</p>
+<div id="fig-inj-sur-bij" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-inj-sur-bij-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/104-inj-sur-bij.png" class="img-fluid quarto-figure quarto-figure-center figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-inj-sur-bij-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;4.3: Injektivität, Surjektivität, Bijektivität.
+</figcaption>
+</figure>
+</div>
+<p>Als weiteres Beispiel betrachten wir die Funktion <span class="math display">\[\begin{equation}
+f : \mathbb{R} \to \mathbb{R}, x \mapsto f(x) := x^2
+\end{equation}\]</span> Diese Funktion ist nicht injektiv, weil z.B. für <span class="math inline">\(x_1 = 2 \neq -2 = x_2\)</span> gilt, dass <span class="math inline">\(f(x_1) = 2^2 = 4 = (-2)^2 = f(x_2)\)</span>. Weiterhin ist <span class="math inline">\(f\)</span> auch nicht surjektiv, weil z.B. <span class="math inline">\(-1 \in \mathbb{R}\)</span> kein Urbild unter <span class="math inline">\(f\)</span> hat. Schränkt man die Definitionsmenge von <span class="math inline">\(f\)</span> allerdings auf die nicht-negativen reellen Zahlen ein, definiert man also die Funktion <span class="math display">\[\begin{equation}
+\tilde{f} : [0,\infty[ \to [0,\infty[, x \mapsto \tilde{f}(x) := x^2,
+\end{equation}\]</span> so ist <span class="math inline">\(\tilde{f}\)</span> im Gegensatz zu <span class="math inline">\(f\)</span> injektiv und surjektiv, also bijektiv.</p>
+</section>
+<section id="funktionentypen" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="funktionentypen"><span class="header-section-number">4.2</span> Funktionentypen</h2>
+<p>Durch Verkettung lassen sich aus Funktionen weitere Funktionen bilden.</p>
+<div id="def-verkettung-von-funktionen" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 4.4 (Verkettung von Funktionen)</strong></span> Es seien <span class="math inline">\(f : D \to Z\)</span> und <span class="math inline">\(g : Z \to S\)</span> zwei Funktionen, wobei die Wertemenge von <span class="math inline">\(f\)</span> mit der Definitionsmenge von <span class="math inline">\(g\)</span> übereinstimmen sollen. Dann ist durch <span class="math display">\[\begin{equation}
+g \circ f : D \to S, x \mapsto (g \circ f)(x) := g(f(x))
+\end{equation}\]</span> eine Funktion definiert, die die <em>Verkettung von <span class="math inline">\(f\)</span> und <span class="math inline">\(g\)</span></em> genannt wird.</p>
+</div>
+<p>Die Schreibweise für verkettete Funktionen ist etwas gewöhnungsbedürftig. Wichtig ist es zu erkennen, dass <span class="math inline">\(g \circ f\)</span> die verkette Funktion und <span class="math inline">\((g \circ f)(x)\)</span> ein Element in der Zielmenge der verketten Funktion bezeichnen. Intuitiv wird bei der Auswertung von <span class="math inline">\((g \circ f)(x)\)</span> zunächst die Funktion <span class="math inline">\(f\)</span> auf <span class="math inline">\(x\)</span> angewendet und dann die Funktion <span class="math inline">\(g\)</span> das Element auf <span class="math inline">\(f(x)\)</span> von <span class="math inline">\(R\)</span> angewendet. Dies ist in der funktionalen Form <span class="math inline">\(g(f(x))\)</span> festgehalten. Der Einfachheit halber benennt man die Verkettung zweier Funktionen auch oft mit einem einzelnen Buchstaben und schreibt beispielsweise, <span class="math inline">\(h := g \circ f\)</span> mit <span class="math inline">\(h(x) = g(f(x))\)</span>. Leicht zur Verwirrung kann es führen, wenn Elemente in der Zielmenge von <span class="math inline">\(f\)</span> mit <span class="math inline">\(y\)</span> bezeichnet werden, also die Schreibweise <span class="math inline">\(y = f(x)\)</span> und <span class="math inline">\(h(x) = g(y)\)</span> genutzt wird. Allerdings ist diese Schreibweise manchmal zur notationellen Vereinfachung nötig. Wir visualisieren <a href="#def-verkettung-von-funktionen" class="quarto-xref">Definition&nbsp;<span>4.4</span></a> in <a href="#fig-verkettung" class="quarto-xref">Abbildung&nbsp;<span>4.4</span></a>.</p>
+<div id="fig-verkettung" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-verkettung-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/104-verkettung.png" class="img-fluid quarto-figure quarto-figure-center figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-verkettung-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;4.4: Verkettung von Funktionen.
+</figcaption>
+</figure>
+</div>
+<p>Als Beispiel für die Verkettung zweier Funktionen betrachten wir <span class="math display">\[\begin{equation}
+f : \mathbb{R} \to \mathbb{R}, x \mapsto f(x) := -x^2
+\end{equation}\]</span> und <span class="math display">\[\begin{equation}
+g : \mathbb{R} \to \mathbb{R}, x \mapsto g(x) := \exp(x).
+\end{equation}\]</span> Die Verkettung von <span class="math inline">\(f\)</span> und <span class="math inline">\(g\)</span> ergibt sich in diesem Fall zu <span class="math display">\[\begin{equation}
+g \circ f : \mathbb{R} \to \mathbb{R}, x \mapsto (g \circ f)(x) := g(f(x)) = \exp\left(-x^2\right).
+\end{equation}\]</span></p>
+<p>Eine erste Anwendung der Verkettung von Funktionen findet sich in folgender Definition.</p>
+<div id="def-inverse-funktion" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 4.5 (Inverse Funktion)</strong></span> Es sei <span class="math inline">\(f : D \to Z, x \mapsto f(x)\)</span> eine bijektive Funktion. Dann heißt die Funktion <span class="math inline">\(f^{-1}\)</span> mit <span class="math display">\[\begin{equation}
+f^{-1} \circ f : D \to D, x \mapsto (f^{-1} \circ f)(x) := f^{-1}(f(x)) = x
+\end{equation}\]</span> <em>inverse Funktion</em>, <em>Umkehrfunktion</em> oder einfach <em>Inverse von</em> <span class="math inline">\(f\)</span>.</p>
+</div>
+<p>Inverse Funktionen sind immer bijektiv. Dies folgt, weil <span class="math inline">\(f\)</span> bijektiv ist und damit jedem <span class="math inline">\(x \in D\)</span> genau ein <span class="math inline">\(f(x) = z \in Z\)</span> zugeordnet wird. Damit wird aber auch jedem <span class="math inline">\(z \in Z\)</span> genau ein <span class="math inline">\(x \in D\)</span>, nämlich <span class="math inline">\(f^{-1}(f(x)) = x\)</span> zugeordnet. Intuitiv macht die inverse Funktion von <span class="math inline">\(f\)</span> den Effekt von <span class="math inline">\(f\)</span> auf ein Element <span class="math inline">\(x\)</span> rückgängig. Wir visualisieren <a href="#def-inverse-funktion" class="quarto-xref">Definition&nbsp;<span>4.5</span></a> in <a href="#fig-inversion" class="quarto-xref">Abbildung&nbsp;<span>4.5</span></a> A.</p>
+<div id="fig-inversion" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-inversion-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/104-inversion.png" class="img-fluid quarto-figure quarto-figure-center figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-inversion-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;4.5: Inverse Funktion.
+</figcaption>
+</figure>
+</div>
+<p>Betrachtet man konkret den Graphen einer Funktion in einem Kartesischen Koordinatensystem, so führt die Anwendung von einem Wert auf der <span class="math inline">\(x\)</span>-Achse zu einem Wert auf der <span class="math inline">\(y\)</span>-Achse. Die Anwendung der inversen Funktion führt dementsprechend von einem Wert auf der <span class="math inline">\(y\)</span>-Achse zu einem Wert auf der <span class="math inline">\(x\)</span>-Achse. Wir visualisieren dies in <a href="#fig-inversion" class="quarto-xref">Abbildung&nbsp;<span>4.5</span></a> B. Betrachten wir beispielsweise die Funktion <span class="math display">\[\begin{equation}
+f : \mathbb{R} \to \mathbb{R}, x \mapsto f(x) := 2x =:y.
+\end{equation}\]</span> Dann ist die inverse Funktion von <span class="math inline">\(f\)</span> gegeben durch <span class="math display">\[\begin{equation}
+f^{-1} : \mathbb{R} \to \mathbb{R}, y \mapsto f^{-1}(y) := \frac{1}{2}y,
+\end{equation}\]</span> weil für jedes <span class="math inline">\(x \in \mathbb{R}\)</span> gilt, dass <span class="math display">\[\begin{equation}
+(f^{-1} \circ f)(x) := f^{-1}(f(x)) = f^{-1}(2x) = \frac{1}{2}\cdot 2x = x.
+\end{equation}\]</span></p>
+<p>Eine wichtige Klasse von Funktionen sind <em>lineare Abbildungen</em>.</p>
+<div id="def-lineare-abbildungen" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 4.6 (Lineare Abbildung)</strong></span> Eine Abbildung <span class="math inline">\(f : D \to Z, x \mapsto f(x)\)</span> heißt <em>lineare Abbildung</em>, wenn für <span class="math inline">\(x,y \in D\)</span> und einen Skalar <span class="math inline">\(c\)</span> gelten, dass <span class="math display">\[\begin{equation}
+f(x + y) = f(x) + f(y)  f(cx) = cf(x) \tag*{(Additivität)}
+\end{equation}\]</span> und <span class="math display">\[\begin{equation}
+f(cx) = cf(x) \tag*{(Homogenität)}
+\end{equation}\]</span> Eine Abbildung, für die obige Eigenschaften nicht gelten, heißt <em>nicht-lineare Abbildung</em>.</p>
+</div>
+<p>Lineare Abbildungen sind oft als “gerade Linien” bekannt. Die allgemeine Definition linearer Abbildungen ist mit dieser Intuition nicht komplett kongruent. Insbesondere sind lineare Abbildungen nur solche Funktionen, die den Nullpunkt auf den Nullpunkt abbilden. Wir zeigen dazu folgendes Theorem.</p>
+<div id="thm-lineare-abbildung-des-nullvektors" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 4.1 (Lineare Abbildung der Null)</strong></span> <span class="math inline">\(f : D \to Z\)</span> sei eine lineare Abbildung. Dann gilt <span class="math display">\[\begin{equation}
+f(0) = 0.
+\end{equation}\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Beweis</em>. </span>Wir halten zunächst fest, dass mit der Additivität von <span class="math inline">\(f\)</span> gilt, dass <span class="math display">\[\begin{equation}
+f(0) = f(0 + 0) = f(0) + f(0).
+\end{equation}\]</span> Addition von <span class="math inline">\(-f(0)\)</span> auf beiden Seiten obiger Gleichung ergibt dann <span class="math display">\[\begin{align}
+\begin{split}
+f(0) - f(0) &amp; = f(0) + f(0) - f(0) \\
+0           &amp; = f(0) \\
+\end{split}
+\end{align}\]</span> und damit ist alles gezeigt.</p>
+</div>
+<p>Wir wollen den Begriff der linearen Abbildung noch an zwei Beispielen verdeutlichen.</p>
+<ul>
+<li>Für <span class="math inline">\(a \in \mathbb{R}\)</span> ist die Abbildung <span class="math display">\[\begin{equation}
+f : \mathbb{R} \to \mathbb{R}, x \mapsto f(x) := ax
+\end{equation}\]</span> eine lineare Abbildung, weil gilt, dass <span class="math display">\[\begin{equation}
+f(x + y) = a(x + y) = ax + ay = f(x) + f(y) \mbox{ und } f(cx) = acx = cax = cf(x).
+\end{equation}\]</span></li>
+<li>Für <span class="math inline">\(a,b \in \mathbb{R}\)</span> ist dagegen die Abbildung <span class="math display">\[\begin{equation}
+f : \mathbb{R} \to \mathbb{R}, x \mapsto f(x) := ax + b
+\end{equation}\]</span> nicht-linear, weil z.B. für <span class="math inline">\(a := b := 1\)</span> gilt, dass <span class="math display">\[\begin{equation}
+f(x+y) = 1(x+y)+1 = x + y + 1 \neq x + 1 + y + 1 = f(x) + f(y).
+\end{equation}\]</span></li>
+</ul>
+<p>Eine Abbildung der Form <span class="math inline">\(f(x) := ax + b\)</span> heißt <em>linear-affine Abbildung</em> oder <em>linear-affine Funktion</em>. Etwas unsauber werden Funktionen der Form <span class="math inline">\(f(x) := ax + b\)</span> auch manchmal als <em>lineare Funktionen</em> bezeichnet.</p>
+<p>Neben den bisher diskutierten Funktionentypen gibt es noch viele weitere Klassen von Funktionen. In folgender Definition klassifizieren wir Funktionen anhand der Dimensionalität ihrer Definitions- und Zielmengen. Diese Art der Funktionsklassifikation ist oft hilfreich, um sich einen ersten Überblick über ein mathematisches Modell zu verschaffen.</p>
+<div id="def-funktionenarten" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 4.7 (Funktionenarten)</strong></span> Wir unterscheiden</p>
+<ul>
+<li><em>univariate reellwertige Funktionen</em> der Form <span class="math display">\[\begin{equation}
+f : \mathbb{R} \to \mathbb{R}, x \mapsto f(x),
+\end{equation}\]</span></li>
+<li><em>multivariate reellwertige Funktionen</em> der Form <span class="math display">\[\begin{equation}
+f : \mathbb{R}^n \to \mathbb{R}, x \mapsto f(x) = f(x_1,...,x_n),
+\end{equation}\]</span></li>
+<li>und <em>multivariate vektorwertige Funktionen</em> der Form <span class="math display">\[\begin{equation}
+f : \mathbb{R}^n \to \mathbb{R}^m, x \mapsto
+f(x) =
+\begin{pmatrix}
+f_1(x_1,...,x_n)    \\
+\vdots              \\
+f_m(x_1,...,x_n)
+\end{pmatrix},
+\end{equation}\]</span> wobei <span class="math inline">\(f_i, i = 1,...,m\)</span> die <em>Komponenten(funktionen)</em> von <span class="math inline">\(f\)</span> genannt werden.</li>
+</ul>
+</div>
+<p>In der Physik werden multivariate reellwertige Funktionen <em>Skalarfelder</em> und multivariate vektorwertige Funktionen <em>Vektorfelder</em> genannt. In manchen Anwendungen treten zum Beispiel auch <em>matrixvariate matrixwertige Funktionen</em> auf.</p>
+</section>
+<section id="sec-elementare-funktionen" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="sec-elementare-funktionen"><span class="header-section-number">4.3</span> Elementare Funktionen</h2>
+<p>Als <em>elementare Funktionen</em> bezeichnen wir eine kleine Schar von univariaten reellwertigen Funktionen, die häufig als Bausteine komplexerer Funktionen auftreten. Dies sind die <em>Polynomfunktionen</em>, die <em>Exponentialfunktion</em>, die <em>Logarithmusfunktion</em> und die <em>Gammafunktion</em>. Im Folgenden geben wir die Definitionen dieser Funktionen sowie ihre wesentlichen Eigenschaften als Theoreme an und stellen ihre Graphen an. Für Beweise der Eigenschaften der hier vorgestellten Funktionen verweisen wir auf die weiterführende Literatur.</p>
+<div id="def-polynomfunktionen" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 4.8 (Polynomfunktionen)</strong></span> Eine Funktion der Form <span class="math display">\[\begin{equation}
+f : \mathbb{R} \to \mathbb{R}, x \mapsto f(x) := \sum_{i=0}^{k} a_i x^i = a_0 + a_1 x^1 + a_2 x^2 + \cdots + a_k x^k
+\end{equation}\]</span> heißt <em>Polynomfunktion</em> <span class="math inline">\(k\)</span>-ten Grades mit Koeffizienten <span class="math inline">\(a_0, a_1,...,a_k \in \mathbb{R}\)</span>. Typische Polynomfunktionen sind in nachfolgender Tabelle aufgelistet:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 24%">
+<col style="width: 18%">
+<col style="width: 56%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Name</th>
+<th style="text-align: left;">Form</th>
+<th style="text-align: left;">Koeffizienten</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Konstante Funktion</td>
+<td style="text-align: left;"><span class="math inline">\(f(x) = a\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(a_0 := a\)</span>, <span class="math inline">\(a_i := 0, i &gt; 0\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Identitätsfunktion</td>
+<td style="text-align: left;"><span class="math inline">\(f(x) = x\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(a_0 := 0\)</span>, <span class="math inline">\(a_1 := 1\)</span>, <span class="math inline">\(a_i := 0, i &gt; 1\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Linear-affine Funktion</td>
+<td style="text-align: left;"><span class="math inline">\(f(x) = ax + b\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(a_0 := b\)</span>, <span class="math inline">\(a_1 := a\)</span>, <span class="math inline">\(a_i := 0, i &gt; 1\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Quadratfunktion</td>
+<td style="text-align: left;"><span class="math inline">\(f(x) = x^2\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(a_0 := 0\)</span>, <span class="math inline">\(a_1 := 0\)</span>, <span class="math inline">\(a_2 := 1\)</span>, <span class="math inline">\(a_i := 0, i &gt; 2\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="fig-polynomfunktionen" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-polynomfunktionen-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/104-polynomfunktionen.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-polynomfunktionen-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;4.6: Ausgewählte Polynomfunktionen
+</figcaption>
+</figure>
+</div>
+<p><a href="#fig-polynomfunktionen" class="quarto-xref">Abbildung&nbsp;<span>4.6</span></a> zeigt die Graphen der in <a href="#def-polynomfunktionen" class="quarto-xref">Definition&nbsp;<span>4.8</span></a> aufgelisteten Polynomfunktionen.</p>
+<p>Ein wichtiges Funktionenpaar sind die Exponentialfunktion und die Logarithmusfunktion.</p>
+<div id="thm-exponentialfunktion" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 4.2 (Exponentialfunktion und ihre Eigenschaften)</strong></span> Die <em>Exponentialfunktion</em> ist definiert als <span class="math display">\[\begin{equation}
+\exp : \mathbb{R} \to \mathbb{R},
+x \mapsto \exp(x)
+:= e^x
+:= \sum_{n=0}^\infty \frac{x^n}{n!}
+= 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \frac{x^4}{4!} + \cdots
+\end{equation}\]</span> Die Exponentialfunktion hat folgende Eigenschaften:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 72%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Eigenschaft</th>
+<th style="text-align: left;">Bedeutung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Wertebereich</td>
+<td style="text-align: left;"><span class="math inline">\(x \in ]-\infty,0[ \Rightarrow \exp(x) \in ]0,1[\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><span class="math inline">\(x \in ]0,\infty[\quad\,\,  \Rightarrow \exp(x) \in ]1,\infty[\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Monotonie</td>
+<td style="text-align: left;"><span class="math inline">\(x &lt; y \Rightarrow \exp(x) &lt; \exp(y)\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Spezielle Werte</td>
+<td style="text-align: left;"><span class="math inline">\(\exp(0) = 1\)</span> und <span class="math inline">\(\exp(1) = e\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Summationseigenschaft</td>
+<td style="text-align: left;"><span class="math inline">\(\exp(x + y) = \exp(x)\exp(y)\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Subtraktionseigenschaft</td>
+<td style="text-align: left;"><span class="math inline">\(\exp(x - y) = \frac{\exp(x)}{\exp(y)}\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Insbesondere nimmt die Exponentialfunktion also nur positive Werte an und schneidet die <span class="math inline">\(y\)</span>-Achse also bei <span class="math inline">\(x = 0\)</span>. Die Zahl <span class="math inline">\(\exp(1) := e \approx 2.71...\)</span> heißt <em>Eulersche Zahl</em>. Schließlich gilt mit den speziellen Werten der Exponentialfunktion insbesondere auch <span class="math display">\[\begin{equation}
+\exp(x)\exp(-x) = \exp(x - x) = \exp(0) = 1.
+\end{equation}\]</span></p>
+<div id="thm-exponentialfunktion" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 4.3 (Logarithmusfunktion und ihre Eigenschaften)</strong></span> Die <em>Logarithmusfunktion</em> ist definiert als inverse Funktion der Exponentialfunktion, <span class="math display">\[\begin{equation}
+\ln : ]0,\infty[ \to \mathbb{R}, x \mapsto \ln(x) \mbox{ mit } \ln(\exp(x)) = x \mbox{ für alle } x \in \mathbb{R}.
+\end{equation}\]</span> Die Logarithmusfunktion hat folgende Eigenschaften:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 72%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Eigenschaft</th>
+<th style="text-align: left;">Bedeutung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Wertebereich</td>
+<td style="text-align: left;"><span class="math inline">\(x \in \, ]0,1[\,\,\, \Rightarrow \ln(x) \in\,]-\infty,0[\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><span class="math inline">\(x \in \, ]1,\infty[ \Rightarrow \ln(x) \in\, ]0,\infty[\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Monotonie</td>
+<td style="text-align: left;"><span class="math inline">\(x &lt; y \Rightarrow \ln(x) &lt; \ln(y)\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Spezielle Werte</td>
+<td style="text-align: left;"><span class="math inline">\(\ln(1) = 0\)</span> und <span class="math inline">\(\ln(e) = 1\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Produkteigenschaft</td>
+<td style="text-align: left;"><span class="math inline">\(\ln(xy) = \ln(x) + \ln(y)\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Potenzeigenschaft</td>
+<td style="text-align: left;"><span class="math inline">\(\ln(x^c) = c\ln(x)\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Divisionseigenschaft</td>
+<td style="text-align: left;"><span class="math inline">\(\ln\left(\frac{1}{x}\right) = - \ln (x)\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Im Gegensatz zur Exponentialfunktion nimmt die Logarithmusfunktion sowohl negative als auch positive Werte an und Logarithmusfunktion schneidet die <span class="math inline">\(x\)</span>-Achse bei <span class="math inline">\(x = 1\)</span>. Die Produkteigenschaft und die Potenzeigenschaften sind beim Rechnen mit der Logarithmusfunktion zentral. Man merkt sie sich intuitiv als “Die Logarithmusfunktion wandelt Produkte in Summen und Potenzen in Produkte um.” Die Graphen der Exponential- und Logarithmusfunktion sind in <a href="#fig-exp-log-funktionen" class="quarto-xref">Abbildung&nbsp;<span>4.7</span></a> abgebildet.</p>
+<div id="fig-exp-log-funktionen" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-exp-log-funktionen-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/104-exp-log-funktionen.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-exp-log-funktionen-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;4.7: Exponentialfunktion und Logarithmusfunktion
+</figcaption>
+</figure>
+</div>
+<p>Ein häufiger Begleiter in der Wahrscheinlichkeitstheorie ist die <em>Gammafunktion</em>.</p>
+<div id="def-gammafunktion" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 4.9 (Gammafunktion)</strong></span> Die <em>Gammafunktion</em> ist definiert durch <span class="math display">\[\begin{equation}
+\Gamma : \mathbb{R} \to \mathbb{R}, x \mapsto \Gamma(x) := \int_0^\infty \xi^{x-1}\exp(-\xi)\,d\xi
+\end{equation}\]</span> Die Gammafunktion hat folgende Eigenschaften:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 66%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Eigenschaft</th>
+<th style="text-align: left;">Bedeutung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Spezielle Werte</td>
+<td style="text-align: left;"><span class="math inline">\(\Gamma(1) = 1\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><span class="math inline">\(\Gamma\left(\frac{1}{2} \right) = \sqrt{\pi}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><span class="math inline">\(\Gamma(n) = (n-1)!\)</span> für <span class="math inline">\(n \in \mathbb{N}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Rekursionseigenschaft</td>
+<td style="text-align: left;">Für <span class="math inline">\(x&gt;0\)</span> gilt <span class="math inline">\(\Gamma(x+1) = x\Gamma(x)\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Ein Auschnitt des Graphen der Gammafunktion ist in <a href="#fig-gamma-funktion" class="quarto-xref">Abbildung&nbsp;<span>4.8</span></a> dargestellt.</p>
+<div id="fig-gamma-funktion" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-gamma-funktion-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/104-gamma-funktion.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gamma-funktion-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;4.8: Gammafunktion
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="sec-selbstkontrollfragen-funktionen" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="sec-selbstkontrollfragen-funktionen"><span class="header-section-number">4.4</span> Selbstkontrollfragen</h2>
+<ol type="1">
+<li>Geben Sie die Definition einer Funktion wieder.</li>
+<li>Geben Sie die Definition der Begriffe Bildmenge, Wertebereich, und Urbildmenge wieder.</li>
+<li>Geben Sie die Definitionen der Begriffe Surjektivität, Injektivität, und Bijektivität wieder.</li>
+<li>Erläutern Sie, warum <span class="math inline">\(f:\mathbb{R} \to \mathbb{R}, x \mapsto f(x) := x^2\)</span> weder injektiv noch surjektiv ist.</li>
+<li>Erläutern Sie, warum <span class="math inline">\(f: [0,\infty[ \to [0,\infty[ , x \mapsto f(x) := x^2\)</span> bijektiv ist.</li>
+<li>Geben Sie die Definition der Verkettung von Funktionen wieder.</li>
+<li>Geben Sie die Definition des Begriffs der inversen Funktion wieder.</li>
+<li>Geben Sie die inverse Funktion von <span class="math inline">\(x^2\)</span> auf <span class="math inline">\([0,\infty[\)</span> an.</li>
+<li>Geben Sie die Definition des Begriffs der linearen Abbildung wieder.</li>
+<li>Geben Sie die Definitionen der Begriffe der univariat-reellwertigen, multivariat-reellwertigen und multivariat-vektorwertigen Funktion wieder.</li>
+<li>Skizzieren Sie die Identitätsfunktion und die konstante Funktion für <span class="math inline">\(a := 1\)</span>.</li>
+<li>Skizzieren Sie die linear-affine Funktion <span class="math inline">\(f(x) = ax + b\)</span> für <span class="math inline">\(a = 2\)</span> und <span class="math inline">\(b = 3\)</span>.</li>
+<li>Skizzieren Sie die Funktionen <span class="math inline">\(f(x) := (x-1)^2\)</span> und <span class="math inline">\(g(x) := (x + 3)^2\)</span>.</li>
+<li>Skizzieren Sie die Exponential- und Logarithmusfunktionen.</li>
+<li>Geben Sie die Summations- und Subtraktionseigenschaften der Exponentialfunktion an.</li>
+<li>Geben Sie die Produkt-, Potenz- und Divisionseigenschaften der Logarithmusfunktion an.</li>
+</ol>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Kopiert");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Kopiert");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./103-Summen-Produkte-Potenzen.html" class="pagination-link" aria-label="Summen, Produkte, Potenzen">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Summen, Produkte, Potenzen</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./105-Folgen-Grenzwerte-Stetigkeit.html" class="pagination-link" aria-label="Folgen, Grenzwerte, Stetigkeit">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Folgen, Grenzwerte, Stetigkeit</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/104-Funktionen.qmd" class="toc-action"><i class="bi bi-github"></i>Seite editieren</a></li></ul></div></div></div></footer></body></html>
