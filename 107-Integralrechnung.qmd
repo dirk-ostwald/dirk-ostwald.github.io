@@ -756,7 +756,7 @@ Dieses Ergebnis ist mit der Intuition, die sich anhand der grauen Fläche in
 
 **Beispiel (2)**
 
-Als nächstes betrachten wird die Quadratfunktion
+Als nächstes betrachten wir die Quadratfunktion
 \begin{equation}
 f : \mathbb{R} \to \mathbb{R}, x \mapsto f(x) := x^2
 \end{equation}
@@ -784,7 +784,7 @@ ergibt, kongruent.
 
 **Beispiel (3)**
 
-Schließlich betrachten wir die lineare Funktion
+Schließlich betrachten wir die linear-affine Funktion
 \begin{equation}
 f : \mathbb{R} \to \mathbb{R}, x \mapsto f(x) := -x + 1
 \end{equation}
@@ -951,6 +951,54 @@ dass
 & = \frac{13}{3}.
 \end{split}
 \end{align}
+
+Folgendes Theorem ist in der Analyse von probabilistischen Modellen oft nützlich,
+da es die mehrfache Integration einer faktorisierenden Funktion auf das Produkt
+einfacher Integrationen auf die Funktionenfaktoren zurückführt.
+
+:::{#thm-vertauschung-von-integration-und-multiplikation-bei-produktfunktionen}
+## Vertauschung von Integration und Multiplikation bei Produktfunktionen
+
+Für $i = 1,...,n$ seien  $f_i: \mathbb{R} \to \mathbb{R}$ integrierbare univariate 
+reellwertigte Funktionen. Dann gilt 
+$$
+\int \left( \prod_{i=1}^n f_i(x_i)\right) \,dx_1...dx_n = \prod_{i=1}^n \left(\int f_i(x_i)\,dx_i\right)
+$$ {#eq-vertauschung-integration-multiplikation}
+:::
+
+:::{.proof}
+Das Theorem folgt mit den Linearitätseigenschaften von Integralen. Wir zeigen
+das Theorem durch Induktion nach $n$.
+
+*Induktionsanfang.* Es sei $n = 2$. Dann gilt
+\begin{align}
+\begin{split}
+\int \left( \prod_{i=1}^2 f_i(x_i)\right) \,dx_1dx_2 
+& = \int \left( \int  f_1(x_1)f_2(x_2)  \,dx_1 \right) \,dx_2                   \\
+& = \int f_2(x_2)\left(\int f_1(x_1)  \,dx_1 \right) \,dx_2                     \\    
+& = \left(\int f_1(x_1)  \,dx_1 \right) \left(\int f_2(x_2) \,dx_2\right)       \\   
+& = \prod_{i=1}^2 \left(\int f_i(x_i)  \,dx_i \right)                           \\       
+\end{split}
+\end{align}
+
+*Induktionsschritt*. Es gelte @eq-vertauschung-integration-multiplikation für 
+$n-1$, beispielsweise für $n-1$ = 2. 
+Dann gilt
+\begin{align}
+\begin{split}
+\int \left( \prod_{i=1}^n f_i(x_i)\right) \,dx_1...dx_n 
+& = \int\left(\int\cdots\left(\int f_1(x_1)\cdots f_{n-1}(x_{n-1}) f_n(x_n)\,dx_1\right)\cdots\,dx_{n-1}\right)\,dx_{n} \\    
+& = \int f_n(x_n) \left(\int\cdots\left(\int f_1(x_1)\cdots f_{n-1}(x_{n-1}) \,dx_1\right)\cdots\,dx_{n-1}\right)\,dx_{n} \\
+& = \int f_n(x_n) \left(\int\left(\prod_{i=1}^{n-1} f_i(x_i)\right) \,dx_{1:n-1} \right)\,dx_{n} \\
+& = \left(\int f_n(x_n) \,dx_{n}\right) \left(\int\left(\prod_{i=1}^{n-1} f_i(x_i)\right) \,dx_{1:n-1} \right)\\
+& = \left(\int f_n(x_n) \,dx_{n}\right) \left(\prod_{i=1}^{n-1} \left(\int f_i(x_i)\,dx_i\right)\right)\\
+& = \prod_{i=1}^n \left(\int f_i(x_i)\,dx_i\right),
+\end{split}
+\end{align}
+wobei wir die Annahme, dass @eq-vertauschung-integration-multiplikation für $n-1$ 
+in der vorletzten Gleichung genutzt haben.
+
+:::
 
 ## Selbstkontrollfragen {#sec-selbstkontrollfragen-integralrechnung}
 \small

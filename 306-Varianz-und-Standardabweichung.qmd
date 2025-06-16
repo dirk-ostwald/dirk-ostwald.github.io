@@ -1,0 +1,372 @@
+# Varianz und Standardabweichung {#sec-varianz-und-standardabweichung}
+\normalsize
+## Varianzen von Zufallsvariablen {#sec-varianz-und-standardabweichung-einer-zufallsvariable}
+
+:::{#def-varianz}
+## Varianz
+$\xi$ sei eine Zufallsvariable mit endlichem Erwartungswert $\mathbb{E}(\xi)$. 
+Dann ist die *Varianz von $\xi$* definiert als
+\begin{equation}
+\mathbb{V}(\xi) := \mathbb{E}\left((\xi - \mathbb{E}(\xi))^2\right).
+\end{equation}
+:::
+
+Die Varianz einer Zufallsvariable $\xi$ mit Ergebnisraum $\mathcal{X}$ ist nach 
+@def-erwartungswert-einer-funktion-einer-zufallsvariable also der Erwartungswert 
+der Funktion
+\begin{equation}
+f : \mathcal{X} \to \mathcal{Z}, x \mapsto f(x) := (x - \mathbb{E}(\xi))^2 
+\end{equation}
+und damit die erwartete quadrierte Abweichung einer Zufallsvariable von ihrem 
+Erwartungswert. Die Quadrierung der Abweichung der Zufallsvariable von ihrem Erwartungswert
+ist dabei nötig, da andernfalls mit @thm-erwartungswert-bei-linear-affiner-transformation-einer-zufallsvariable
+immer gelten würde, dass
+\begin{equation}
+\mathbb{E}(\xi-\mathbb{E}(\xi)) = \mathbb{E}(\xi) - \mathbb{E}(\xi) = 0.
+\end{equation}
+Intuitiv misst die Varianz also die *Streuung* oder *Variabilität* einer Zufallvariable.
+In welchem genauen Sinn diese misst, werden wir allerdings erst mithilfe von 
+@thm-chebyshev-ungleichung nachvollziehen können. Neben der Varianz gibt es viele 
+weitere Maße für die Variabilität von Zufallsvariablen. Hier seien beispielsweise 
+die erwartete absolute Abweichung einer Zufallsvariable von ihrem Erwartungswert
+$\mathbb{E}(|\xi - \mathbb{E}(\xi)|)$ und die sogenannte *Entropie* $-\mathbb{E}(\ln p(x))$ 
+genannt. Wir verdeutlichen @def-varianz zunächst an einigen Beispielen.
+
+### Beispiele {-}
+
+:::{#thm-varianz-einer-diskreten-zufallsvariable}
+$\xi$ sei eine Zufallsvariable mit Ergebnisraum $\mathcal{X} := \{-1,0,1\}$ und WMF  
+\begin{equation}
+p(-1) = \frac{1}{4} \quad p(0) = \frac{1}{2}  \quad p(1) = \frac{1}{4}.
+\end{equation}
+Dann gilt
+\begin{equation}
+\mathbb{V}(\xi) = \frac{1}{2}.
+\end{equation}
+:::
+
+:::{.proof}
+Nach @def-varianz ergibt sich mit dem in @thm-erwartungwert-einer-diskreten-zufallsvariable
+bestimmten Erwartungswert derselben Zufallsvariable 
+\begin{align}
+\begin{split}
+\mathbb{V}(\xi) 
+& = \mathbb{E}\left((\xi - \mathbb{E}(\xi))^2\right)                        \\
+& = \mathbb{E}\left((\xi - 0)^2\right)                                      \\
+& = \mathbb{E}\left(\xi^2\right)                                            \\
+& = \sum_{x \in \mathcal{X}} x^2 \,p_\xi(x)                                 \\
+& = (-1)^2 \cdot p_\xi(-1) + 0^2 \cdot p_\xi(0) + 1^2 \cdot p_\xi(1)        \\
+& = 1 \cdot \frac{1}{4} + 0 \cdot \frac{1}{2} + 1 \cdot  \frac{1}{4}        \\
+& = \frac{1}{2}.                                                            \\
+\end{split}
+\end{align}
+:::
+
+:::{#thm-varianz-einer-bernoulli-zufallsvariable}
+## Varianz einer Bernoulli-Zufallsvariable
+Es sei $\xi \sim \mbox{Bern}(\mu)$. Dann ist die Varianz von $\xi$ gegeben durch
+\begin{equation}
+\mathbb{V}(\xi) = \mu(1-\mu).
+\end{equation}
+:::
+
+:::{.proof}
+$\xi$ ist eine diskrete Zufallsvariable und es gilt $\mathbb{E}(\xi) = \mu$. Also gilt
+\begin{align}
+\begin{split}
+\mathbb{V}(\xi)
+& = \mathbb{E}\left((\xi - \mu)^2\right) \\
+& = \sum_{x \in \{0,1\}} (x - \mu)^2 \mbox{Bern}(x;\mu) \\
+& = (0 - \mu)^2 \mu^0(1-\mu)^{1-0}  + (1 - \mu)^2\mu^1(1-\mu)^{1-1}  \\
+& = \mu^2 (1-\mu)  + (1 - \mu)^2\mu  \\
+& = \left(\mu^2  + (1 - \mu)\mu\right)(1-\mu)  \\
+& = \left(\mu^2 + \mu - \mu^2\right)(1 - \mu) \\
+& = \mu(1-\mu).
+\end{split}
+\end{align}
+:::
+
+:::{#thm-varianz-einer-normalverteilten-zufallsvariable}
+## Varianz einer normalverteilten Zufallsvariable
+Es sei $\xi \sim N(\mu,\sigma^2)$. Dann ist die Varianz von $\xi$ gegeben durch
+\begin{equation}
+\mathbb{V}(\xi) = \sigma^2.
+\end{equation}
+:::
+
+:::{.proof}
+Wir verzichten auf einen Beweis.
+:::
+
+Die Varianz hat die Eigenschaft, keine negativen Werte anzunehmen.
+
+:::{#thm-nichtnegativitaet-der-varianz}
+## Nichtnegativität der Varianz
+$\xi$ sei eine Zufallsvariable. Dann gilt
+\begin{equation}
+\mathbb{V}(\xi) \ge 0.
+\end{equation}
+:::
+
+:::{.proof}
+Wir betrachten den Fall einer diskreten Zufallsvariable. Dann gilt zunächst
+\begin{equation}
+(x - \mathbb{E}(\xi))^2 \ge 0 \mbox{ für alle } x \in \mathcal{X}.
+\end{equation}
+Weiterhin gilt für die WMF $p$ von $\xi$, dass
+\begin{equation}
+p(x) \ge 0 \mbox{ für alle } x \in \mathcal{X}.
+\end{equation}
+Also folgt
+\begin{equation}
+p(x)(x - \mathbb{E}(\xi))^2 \ge 0 \mbox{ für alle } x \in \mathcal{X}.
+\end{equation}
+Damit gilt dann aber
+\begin{equation}
+\mathbb{V}(\xi) = \sum_{x \in \mathcal{X}} p(x)(x - \mathbb{E}(\xi))^2 \,dx \ge 0,
+\end{equation}
+Analog zeigt man die Nichtnegativität der Varianz bei kontinuierlichen Zufallsvariablen.
+::: 
+
+Das Berechnen von Varianzen wird durch folgendes Theorem, den sogenannten 
+*Varianzverschiebungssatz* oft erleichtert, insbesondere, wenn der 
+Erwartungswert der quadrierten Zufallsvariable leicht zu bestimmen oder bekannt ist.
+
+:::{#thm-varianzverschiebungssatz}
+## Varianzverschiebungssatz
+$\xi$ sei eine Zufallsvariable. Dann gilt
+\begin{equation}
+\mathbb{V}(\xi) = \mathbb{E}\left(\xi^2 \right) - \mathbb{E}(\xi)^2.
+\end{equation}
+:::
+
+:::{.proof}
+Mit der Definition der Varianz und der Linearität des Erwartungswerts gilt
+\begin{align}
+\begin{split}
+\mathbb{V}(\xi)
+& = \mathbb{E}\left((\xi - \mathbb{E}(\xi))^2\right) \\
+& = \mathbb{E}\left(\xi^2 - 2\xi\mathbb{E}(\xi) + \mathbb{E}(\xi)^2 \right) \\
+& =    \mathbb{E}(\xi^2)
+    - 2\mathbb{E}(\xi)\mathbb{E}(\xi)
+    + \mathbb{E}\left(\mathbb{E}(\xi)^2\right)   \\
+& = \mathbb{E}(\xi^2) - 2\mathbb{E}(\xi)^2 + \mathbb{E}(\xi)^2  \\
+& = \mathbb{E}(\xi^2) - \mathbb{E}(\xi)^2.
+\end{split}
+\end{align}
+:::
+
+In Analogie zu @thm-erwartungswert-bei-linear-affiner-transformation-einer-zufallsvariable
+gilt für die Varianz folgendes Resultat.
+
+:::{#thm-varianz-bei-linear-affiner-transformation-einer-zufallsvariable}
+## Varianz bei linear-affiner Tansformation einer Zufallsvariable
+$\xi$ sei eine Zufallsvariable und es sei
+\begin{equation}
+f : \mathcal{X} \to \mathcal{Z}, x \mapsto f(x) := ax + b \mbox{ für } a,b \in \mathbb{R}
+\end{equation}
+eine linear-affine Funktion. Dann gilt
+\begin{equation}
+\mathbb{V}(f(\xi)) = \mathbb{V}(a\xi + b) = a^2 \mathbb{V}(\xi).
+\end{equation}
+:::
+
+:::{.proof}
+Es ergibt sich
+\begin{align}
+\begin{split}
+\mathbb{V}(f(\xi))
+& = \mathbb{V}(a\xi + b)                                                        \\
+& = \mathbb{E}\left((a\xi+b-\mathbb{E}(a\xi + b))^2\right) 	                    \\
+& = \mathbb{E}\left((a\xi+b-a\mathbb{E}(\xi)-b)^2\right) 	                    \\
+& = \mathbb{E}\left((a\xi-a\mathbb{E}(\xi))^2\right) 		                    \\
+& = \mathbb{E}\left(a(\xi - \mathbb{E}(\xi))^2\right) 		                    \\
+& = \mathbb{E}\left(a^2(\xi - \mathbb{E}(\xi))^2\right) 	                    \\
+& = a^2\mathbb{E}\left((\xi - \mathbb{E}(\xi))^2\right) 	                    \\
+& = a^2\mathbb{V}(\xi).  								                        \\
+\end{split}
+\end{align}
+:::
+
+## Stichprobenvarianz 
+
+Basierend auf einer Stichprobe kann man mit der *Stichprobenvarianz* eine Kennzahl 
+berechnen, die auf den ersten Blick dem der Varianz ähnelt, mit diesem aber nicht 
+verwechselt werden sollte. Defacto dient die Stichprobenvarianz oft als Schätzer 
+für eine Varianz, wie wir in @sec-punktschaetzung sehen werden .
+
+:::{#def-stichprobenvarianz}
+## Stichprobenvarianz
+$\xi_1,...,\xi_n$ sei eine Stichprobe und $\bar{\xi}$ sei das zugehörige 
+Stichprobenmittel. Dann ist die *Stichprobenvarianz* von $\xi_1,...,\xi_n$ 
+definiert als 
+\begin{equation}
+S^2 := \frac{1}{n-1}\sum_{i=1}^n \left(\xi_i-\bar{\xi}\right)^2
+\end{equation}
+:::
+
+Zur Abgrenzung erinnern wir noch einmal daran, dass die Varianz $\mathbb{V}(\xi)$
+Kennzahl einer Zufallsvariable ist $\xi$ sind, wohingegen $S^2$ Kennzahl
+einer Stichprobe $\xi_1,...,\xi_n$ ist. Wie der Erwartungswert kann 
+$\mathbb{V}(\xi)$ berechnet werden, wenn die Verteilung von $\xi$ definiert ist. 
+Werte von $S^2$ dagegen kann man bestimmen, wenn man Realisierungen von 
+$\xi_1,...,\xi_n$ vorliegen hat. Insbesondere ist Varianz als Integrale über den Ergebnisraum 
+einer Zufallsvariable selbst *keine* Zufallsvariable, die Stichprobenvarianz 
+als Funktion von Zufallsvariablen dagegen schon. 
+
+**Beispiel**
+
+Nehmen wir wie in @sec-erwartungswerte an, wir haben für $n = 10$ die in @tbl-realisationen 
+gezeigten Realisationen von Zufallsvariablen $\xi_1,...,\xi_{10}$ mit Stichprobenmittel 
+$\bar{x} = 0.68$ vorliegen.
+
+
+| $x_1$  | $x_2$  | $x_3$  | $x_4$  | $x_5$  | $x_6$  | $x_7$  | $x_8$  | $x_9$  | $x_{10}$ |
+|:------:|:------:|:------:|:------:|:------:|:------:|:------:|:------:|:------:|:--------:|
+|  0.54  |  1.01  | -3.28  |  0.35  |  2.75  | -0.51  |  2.32  |  1.49  |  0.96  |   1.25   |
+
+: Werte der Zufallsvariablen $x_1$ bis $x_{10}$ {#tbl-realisationen}
+
+
+Nach @def-stichprobenvarianz-und-stichprobenstandardabweichung ist die Realisierung
+der Stichprobenvarianz dann gegeben durch
+\begin{equation}
+s^2
+= \frac{1}{10-1}\sum_{i = 1}^{10}\left(x_i - \bar{x}\right)^2
+= \frac{1}{9}\sum_{i = 1}^{10}\left(x_i - 0.68\right)^2
+\approx \frac{25.37}{9}
+\approx 2.82.
+\end{equation}
+
+
+## Bedingte Varianz {#sec-bedingte-varianzen}
+:::{#def-bedingte-varianz}
+## Bedingte Varianz
+Gegeben sei ein Zufallsvektor $\xi := (\xi_1,\xi_2)$ mit Ergebnisraum 
+$\mathcal{X} := \mathcal{X}_1 \times \mathcal{X}_2$ WMF oder WDF $p$
+und bedingter WMF oder WDF $p_{\xi_1|\xi_2 = x_2}$ für alle $x_2 \in \mathcal{X}_2$. 
+Dann ist die \textit{bedingte Varianz von $\xi_1$ gegeben $\xi_2 = x_2$} definiert als
+\begin{equation}
+\mathbb{V}(\xi_1|\xi_2 = x_2) = \mathbb{E}\left(\left(\xi_1 - \mathbb{E}(\xi_1|\xi_2 = x_2)\right)^2|\xi_2 = x_2\right)
+\end{equation}
+und die \textit{bedingte Standardabweichung von $\xi_1$ gegeben $\xi_2 = x_2$} ist definiert als
+\begin{equation}
+\mathbb{S}(\xi_1|\xi_2 = x_2) = \sqrt{\mathbb{V}(\xi_1|\xi_2 = x_2)}.
+\end{equation}
+:::
+
+Die bedingte Varianz ist im Sinne des bedingten Erwartungswerts definiert, ebenso
+wie ein bedingter Erwartungswert ist eine bedingte Varianz also eine Zufallsvariable.
+Auch für die bedingte Varianz gilt der Verschiebungssatz
+\begin{equation}
+\mathbb{V}(\xi_1|\xi_2) = \mathbb{E}\left(\xi_1^2|\xi_2\right) - \mathbb{E}(\xi_1|\xi_2)^2
+\end{equation}
+
+## Standardabweichung einer Zufallsvariable {#sec-standardabweichung-einer-zufallsvariable}
+
+Die Standardabweichung hat gegenüber der Varianz den Vorteil, dass sie die 
+Quadrierung umkehrt und und damit die gleiche Einheitengrundlage besitzt wie die Varianz.
+
+:::{#def-varianz-und-standardabweichung}
+## Varianz und Standardabweichung
+$\xi$ sei eine Zufallsvariable mit Varianz $\mathbb{V}(\xi)$. Dann ist die 
+*Standardabweichung von $\xi$* definiert als
+\begin{equation}
+\mathbb{S}(\xi) := \sqrt{\mathbb{V}(\xi)}.
+\end{equation}
+:::
+
+### Beispiele {-}
+
+Durch Wurzelziehen ergeben sich
+
+* für die in @thm-varianz-einer-diskreten-zufallsvariable betrachtete Zufallsvariable
+\begin{equation}
+\mathbb{S}(\xi) = \frac{1}{\sqrt{2}},
+\end{equation}
+* für die in @thm-varianz-einer-bernoulli-zufallsvariable betrachtete Bernoulli-Zufallsvariable
+\begin{equation}
+\mathbb{S}(\xi) =  
+\end{equation}
+
+* für die in @thm-varianz-einer-normalverteilten-zufallsvariable betrachtete normalverteilte Zufallsvariable
+gilt 
+\begin{equation}
+\mathbb{S}(\xi) =  \sigma.
+\end{equation}
+
+
+\hl{DEFINITION DER QUADRATWURZELFUNKTION IN FUNKTIONEN}. Daraus folgt mit der
+Nichtnegativität der Varianz auch direkt die Nichtnegativität der Standardabweichung.
+
+
+In Analogie zu @thm-erwartungswert-bei-linear-affiner-transformation-einer-zufallsvariable
+gelten für Varianz und Standardabweichung folgende Resultate bei linear-affiner 
+Transformation einer Zufallsvariable. An Analogie zu @thm-varianz-bei-linear-affiner-transformation-einer-zufallsvariable
+gilt für die Standardabweichung folgendes Theorem
+
+:::{#thm-standardabweichung-bei-linear-affiner-transformation-einer-zufallsvariable}
+## Standardabweichung bei linear-affiner Tansformation einer Zufallsvariable
+$\xi$ sei eine Zufallsvariable und es sei
+\begin{equation}
+f : \mathcal{X} \to \mathcal{Z}, x \mapsto f(x) := ax + b \mbox{ für } a,b \in \mathbb{R}
+\end{equation}
+eine linear-affine Funktion. Dann gilt
+\begin{equation}
+\mathbb{S}(f(\xi)) = \mathbb{S}(a\xi + b) = |a|\mathbb{S}(\xi).
+\end{equation}
+:::
+
+:::{.proof}
+Mit @thm-varianz-bei-linear-affiner-transformation-einer-zufallsvariable
+gilt zunächst
+\begin{equation}
+\mathbb{S}(f(\xi)) = \sqrt{\mathbb{V}(f(\xi))} = \sqrt{a^2\mathbb{V}(\xi)}
+\end{equation}
+Mit @thm-wurzel-und-betrag folgt dann das Ergebnis für die Standardabweichung.
+:::
+
+## Bedingte Standardabweichung 
+
+# Bedingte Standardabweichung {#sec-standardabweichung}
+:::{#def-bedingte-standardabweichung}
+## Bedingte Standardabweichung
+Gegeben sei ein Zufallsvektor $\xi := (\xi_1,\xi_2)$ mit Ergebnisraum 
+$\mathcal{X} := \mathcal{X}_1 \times \mathcal{X}_2$ und bedingter Varianz
+$\mathbb{V}(\xi_1|\xi_2 = x_2)$. Dann ist die *bedingte Standardabweichung 
+von $\xi_1$ gegeben $\xi_2 = x_2$* definiert als
+\begin{equation}
+\mathbb{S}(\xi_1|\xi_2 = x_2) = \sqrt{\mathbb{V}(\xi_1|\xi_2 = x_2)}.
+\end{equation}
+:::
+
+
+## Stichprobenstandardabweichung {#sec-stichprobenstandardabweichung}
+
+Aufbauend auf dem Begriff der Stichprobenvarianz nach @def-stichprobenvarianz 
+definiert man die Stichprobenstandardabweichung wie folgt.
+
+:::{#def-stichprobenvarianz-und-stichprobenstandardabweichung}
+## Stichprobenvarianz und Stichprobenstandardabweichung
+$\xi_1,...,\xi_n$ sei eine Stichprobe und $S^2$ sei die Stichprobenvarianz. 
+Dann ist die  *Stichprobenstandardabweichung* definiert als
+\begin{equation}
+S := \sqrt{S^2}
+\end{equation}
+:::
+
+Die Bemerkungen zur Abgrenzung von Erwartungswert und Stichprobenmittel sowie
+von Varianz und Stichprobenvarianz ergeben sich in analoger Weise natürlich
+auch für die Standardabweichung und die Stichprobenstandardabweichung. 
+
+**Beispiel**
+
+Nehmen wir erneuet an, wir haben für $n = 10$ die in @tbl-realisationen 
+gezeigten Realisationen von Zufallsvariablen $\xi_1,...,\xi_{10}$ mit Stichprobenmittel 
+$\bar{x} = 0.68$ und Varianz $s^2 = 2.82$ vorliegen. Dann ergibt sich die 
+Realisierung der Stichprobenstandardabweichung zu
+\begin{equation}
+s = \sqrt{s^2} \approx \sqrt{2.82} \approx 1.68.
+\end{equation}
+
+## Selbstkontrollfragen

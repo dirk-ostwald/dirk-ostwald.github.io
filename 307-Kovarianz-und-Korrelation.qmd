@@ -1,0 +1,1058 @@
+# Kovarianz und Korrelation {#sec-kovarianz-und-korrelation}
+\normalsize 
+
+## Kovarianz von Zufallsvariablen
+:::{#def-kovarianz}
+## Kovarianz 
+Die *Kovarianz* zweier Zufallsvariablen $\xi_1$ und $\xi_2$ ist definiert als
+\begin{equation}
+\mathbb{C}(\xi_1,\xi_2) :=
+\mathbb{E}\left((\xi_1-\mathbb{E}(\xi_1))(\xi_2-\mathbb{E}(\xi_2))\right).
+\end{equation}
+:::
+
+Die Definition der Kovarianz nach @def-kovarianz lässt implizit, dass die in 
+ihr auftauchenden Erwartungswerte unterschiedlicher Natur sind. Dabei geht die 
+Definition der Kovarianz zunächst einmal davon aus, dass $\xi_1$ und $\xi_2$ 
+die Komponenten eines Zufallsvektors $\xi := (\xi_1,\xi_2)$ mit Ergebnisraum
+$\mathcal{X}_1 \times \mathcal{X}_2$, gemeinsamer Verteilung $\mathbb{P}(\xi_1,\xi_2)$
+und marginalen Verteilungen $\mathbb{P}(\xi_1)$ und $\mathbb{P}(\xi_2)$ sind. Bei den 
+Erwartungswerten $\mathbb{E}(\xi_1)$ und $\mathbb{E}(\xi_2)$ handelt es sich um 
+die Erwartungswerte der Komponenten $\xi_1$ und $\xi_2$ bezüglich dieser
+Marginalverteilungen. Die Kovarianz selbst ist dann der Erwartungswert der Funktion
+$$
+f : \mathcal{X}_1 \times \mathcal{X}_2 \to \mathcal{Z},
+(x_1,x_2) \mapsto f(x_1,x_2) := (x_1 - \mathbb{E}(\xi_1))(x_2 - \mathbb{E}(\xi_2))
+$$ {#eq-f}
+bezüglich der gemeinsamen Verteilung $\mathbb{P}(\xi_1,\xi_2)$. Wir wollen 
+dies am Beispiel eines diskreten Zufallsvektors verdeutlichen.
+
+\footnotesize
+**Beispiel**  
+
+Es $\xi := (\xi_1,\xi_2)$ ein diskreter Zufallsvektor mit Ergebnisraum 
+$\mathcal{X} := \{1,2\} \times \{1,2,3\}$ und der in @tbl-wmf dargestellten 
+gemeinsamen WMF $p(x_1,x_2)$ und marginalen WMFen $p(x_1)$ und $p(x_2)$.
+
+
+| $p(x_1,x_2)$  | $x_2 = 1$  | $x_2 = 2$  | $x_2 = 3$  | $p(x_1)$  |
+|:-------------:|:----------:|:----------:|:----------:|:---------:|
+| $x_1 = 1$     | $0.10$     | $0.05$     | $0.15$     | $0.30$    |
+| $x_1 = 2$     | $0.60$     | $0.05$     | $0.05$     | $0.70$    |
+| $p(x_2)$      | $0.70$     | $0.10$     | $0.20$     |           |
+
+: Gemeinsame und marginale WMFen des Zufallsvektors $\xi$ {#tbl-wmf}
+
+Mit der Definition der Kovarianz von $\xi_1$ und $\xi_2$ gilt dann unter Beachtung
+von @eq-f 
+\begin{align}
+\begin{split}
+\mathbb{C}(\xi_1,\xi_2) 	
+& = \mathbb{E}(f(\xi_1,\xi_2)) 																		\\
+& = \sum_{x_1 = 1}^2  \sum_{x_2 = 1}^3 f(x_1, x_2)p(x_1,x_2)										\\
+& = \sum_{x_1 =  1}^2 \sum_{x_2 =  1}^3 (x_1-\mathbb{E}(\xi_1))(x_2-\mathbb{E}(\xi_2))p(x_1,x_2)	\\
+\end{split}
+\end{align}
+Einsetzen der Werte aus @tbl-wmf ergibt dann zunächst
+\begin{equation}
+\mathbb{E}(\xi_1) = \sum_{x_1 = 1}^2 x_1 p(x_1) = 1\cdot 0.3 + 2\cdot 0.7 = 1.7
+\end{equation}
+und
+\begin{equation}
+\mathbb{E}(\xi_2) = \sum_{x_2=1}^3 x_2 p(x_2) = 1\cdot 0.7 + 2\cdot 0.1 + 3\cdot 0.2 = 1.5.
+\end{equation}
+und damit dann schließlich
+\footnotesize
+\begin{align}
+\begin{split}
+\mathbb{C}(\xi_1,\xi_2) 
+& = \sum_{x_1 =  1}^2 \sum_{x_2 =  1}^3 \left(x_1-1.7\right)\left(x_2-1.5\right)p(x_1,x_2)						\\
+& = \sum_{x_1 =  1}^2 (x_1 -1.7)(1 - 1.5)p(x_1,1) + (x_1 -1.7)(2 - 1.5)p(x_1,2) + (x_1 -1.7)(3 - 1.5)p(x_1,3) 	\\
+& =	\quad        (1 - 1.7)(1 - 1.5)p(1,1) + (1 - 1.7)(2 - 1.5)p(1,2) +	(1 - 1.7)(3 - 1.5)p(1,3)				\\
+& \quad\quad\,\, (2 - 1.7)(1 - 1.5)p(2,1) + (2 - 1.7)(2 - 1.5)p(2,2) + (2 - 1.7)(3 - 1.5)p(2,3) 				\\
+& = (-0.7)\cdot(-0.5)\cdot 0.10+ (-0.7)\cdot 0.5\cdot 0.05 + (-0.7)\cdot 1.5\cdot 0.15 							\\
+& \quad\,\,  + 0.3\cdot(-0.5)\cdot 0.60 \,\, + 0.3\cdot 0.5\cdot 0.05 \quad\,\, + 0.3\cdot 1.5\cdot 0.05			\\
+& = 0.035- 0.0175- 0.1575 - 0.09+ 0.0075+ 0.0225																\\
+& = - 0.2.
+\end{split}
+\end{align}
+Die Kovarianz der Zufallsvariablen $\xi_1$ und $\xi_2$ mit der in obiger Tabelle
+festgelegter Verteilung ist also $\mathbb{C}(\xi_1,\xi_2) = -0.2$. Im Gegensatz 
+zur Varianz kann die Kovarianz also offenbar auch negative Werte annehmen. 
+
+\normalsize
+
+Wir betrachten im Folgenden  einige grundlegende Eigenschaften der Kovarianz.
+
+:::{#thm-symmetrie-der-kovarianz}
+## Symmetrie der Kovarianz  
+$\xi_1$ und $\xi_2$ seien zwei Zufallsvariablen. Dann gilt
+\begin{equation}
+\mathbb{C}(\xi_1,\xi_2) = \mathbb{C}(\xi_2,\xi_1)  
+\end{equation}
+:::
+
+:::{.proof}
+Mit der Kommutativität der Multiplikation gilt
+\begin{equation}
+\mathbb{C}(\xi_1,\xi_2) 
+= \mathbb{E}\left((\xi_1-\mathbb{E}(\xi_1))(\xi_2-\mathbb{E}(\xi_2))\right)
+= \mathbb{E}\left((\xi_2-\mathbb{E}(\xi_2))(\xi_1-\mathbb{E}(\xi_1))\right)
+= \mathbb{C}(\xi_2,\xi_1) 
+\end{equation}
+::: 
+
+Wie das Berechnen von Varianzen wird auch das Berechnen von Kovarianzen manchmal 
+durch folgendes Theorem erleichtert.
+
+:::{#thm-kovarianzverschiebungssatz}
+## Kovarianzverschiebungssatz
+$\xi_1$ und $\xi_2$ seien Zufallsvariablen. Dann gilt
+\begin{equation}
+\mathbb{C}(\xi_1,\xi_2) = \mathbb{E}(\xi_1\xi_2) - \mathbb{E}(\xi_1)\mathbb{E}(\xi_2).
+\end{equation}
+:::
+
+:::{.proof}
+Mit @def-kovarianz gilt
+\begin{align}
+\begin{split}
+\mathbb{C}(\xi_1,\xi_2)
+& = \mathbb{E}\left((\xi_1-\mathbb{E}(\xi_1))(\xi_2-\mathbb{E}(\xi_2))\right) 															\\
+& = \mathbb{E}\left(\xi_1\xi_2-\xi_1\mathbb{E}(\xi_2)-\mathbb{E}(\xi_1)\xi_2+\mathbb{E}(\xi_1)\mathbb{E}(\xi_2)\right) 					\\
+& = \mathbb{E}(\xi_1\xi_2)-\mathbb{E}(\xi_1)\mathbb{E}(\xi_2)-\mathbb{E}(\xi_1)\mathbb{E}(\xi_2)+\mathbb{E}(\xi_1)\mathbb{E}(\xi_2)		\\
+& = \mathbb{E}(\xi_1\xi_2)-\mathbb{E}(\xi_1)\mathbb{E}(\xi_2).
+\end{split}
+\end{align}
+:::
+
+Natürlich ist @thm-kovarianzverschiebungssatz nur dann wirklich nützlich, wenn 
+$\mathbb{E}(\xi_1\xi_2)$ leicht zu berechnen sind. Der Varianzverschiebungssatz
+nach @thm-varianzverschiebungssatz ergibt sich aus @thm-kovarianzverschiebungssatz
+für den Fall $\xi_1 = \xi_2 := \xi$ anhand von 
+\begin{equation}
+\mathbb{V}(\xi)
+= \mathbb{C}(\xi,\xi)
+= \mathbb{E}(\xi\xi) - \mathbb{E}(\xi)\mathbb{E}(\xi) 
+= \mathbb{E}(\xi^2) - \mathbb{E}(\xi)\mathbb{E}(\xi). 
+\end{equation}
+
+Auch in Hinblick auf die Kovarianz  $\mathbb{C}(\xi_1,\xi_2)$ ist man daran interessiert, 
+wie sich diese unter Anwendung linear-affiner Transformationen auf $\xi_2$ und 
+$\xi_2$ verhält. Folgendes Resultat zeigt, dass die Kovarianz zweier Zufallsvariablen
+von ihrem Maßstab abhängt.
+
+:::{#thm-kovarianz-bei-linear-affinen-transformation-von-zufallsvariablen}
+## Kovarianz bei linear-affinen Transformationen
+$\xi_1$ und $\xi_2$ seien Zufallsvariablen mit gemeinsamen Ergebnisraum $\mathcal{X}_1 \times \mathcal{X}_2$ 
+und es seien
+\begin{align}
+\begin{split}
+f_1 : \mathcal{X}_1 \to \mathcal{Z}_1, x_1 \mapsto f(x_1) := ax_1 + b \\
+f_2 : \mathcal{X}_2 \to \mathcal{Z}_2, x_2 \mapsto f(x_2) := cx_2 + d 
+\end{split}
+\end{align}
+für $a,b,c,d\in \mathbb{R}$ zwei linear-affine Funktionen. Dann gilt 
+\begin{equation}
+\mathbb{C}(f_1(\xi_1), f(\xi_2)) = \mathbb{C}(a\xi_1 + b, c\xi_2 + d) = ac\mathbb{C}(\xi_1,\xi_2).
+\end{equation}
+:::
+
+:::{.proof}
+Es gilt 
+\begin{align}
+\begin{split}
+\mathbb{C}(a\xi_1+b,c\xi_2+d)
+& = \mathbb{E}((a\xi_1+b-\mathbb{E}(a\xi_1+b))(c\xi_2+d-\mathbb{E}(c\xi_2+d)))    	\\
+& = \mathbb{E}((a\xi_1+b-a\mathbb{E}(\xi_1)-b)(c\xi_2+d-c\mathbb{E}(\xi_2)-d))   	\\
+& = \mathbb{E}(a(\xi_1-\mathbb{E}(\xi_1))(c(\xi_2 -c\mathbb{E}(\xi_2)))             \\
+& = \mathbb{E}(ac((\xi_1-\mathbb{E}(\xi_1))(\xi_2 -c\mathbb{E}(\xi_2))))            \\
+&  = ac\mathbb{C}(\xi_1,\xi_2).
+\end{split}
+\end{align}
+:::
+
+
+Schließlich wollen wir mit @thm-kovarianz-und-unabhängigkeit einen ersten Eindruck
+zum Zusammenhang des Begriffs der Kovarianz zweier Zufallsvariablen mit dem Begriff 
+der Unabhängigkeit zweier Zufallsvariablen erlangen. Es zeigt sich, dass die Kovarianz 
+lediglich für bestimmte Formen der Abhängigkeit von Zufallsvariablen sensitiv ist.
+Insbesondere gilt, dass von einer Kovarianz von Null *nicht* auf die Unabhängigkeit 
+der Zufallsvariablen  geschlossen werden kann. Anderseits impliziert die Unabhängigkeit 
+zweier Zufallsvariablen immer, dass ihre Kovarianz Null und sie damit unkorreliert sind. 
+Abhängigkeit und Unabhängigkeit von Zufallsvariablen sind also allgemeinere Begrifflichkeiten
+zur Beschreibung des Zusammenhangs von Zufallsvariablen als die Kovarianz.
+
+:::{#thm-kovarianz-und-unabhängigkeit}
+## Kovarianz und Unabhängigkeit
+$\xi$ und $\xi_2$ seien zwei Zufallsvariablen. Wenn $\xi_1$ und $\xi_2$ unabhängig sind, 
+dann ist $\mathbb{C}(\xi_1,\xi_2) = 0$. Ist dagegen $\mathbb{C}(\xi_1,\xi_2) = 0$, 
+dann sind $\xi_1$ und $\xi_2$ nicht notwendigerweise unabhängig.
+:::
+
+:::{.proof}
+Wir zeigen zunächst, dass aus der Unabhängigkeit von $\xi_1$ und $\xi_2$ folgt, dass
+$\mathbb{C}(\xi_1,\xi_2) = 0$. Hierzu halten wir zunächst fest, dass für 
+unabhängige Zufallsvariablen gilt, dass
+\begin{equation}
+\mathbb{E}(\xi_1\xi_2) =\mathbb{E}(\xi_1)\mathbb{E}(\xi_2).
+\end{equation}
+Mit dem Kovarianzverschiebungssatz folgt dann
+\begin{equation}
+\mathbb{C}(\xi_1,\xi_2)
+= \mathbb{E}(\xi_1\xi_2) -\mathbb{E}(\xi_1)\mathbb{E}(\xi_2)
+= \mathbb{E}(\xi_1)\mathbb{E}(\xi_2) - \mathbb{E}(\xi_1)\mathbb{E}(\xi_2)
+= 0.
+\end{equation}
+Wir zeigen nun durch Angabe eines Beispiels, dass die Kovarianz von abhängigen 
+Zufallsvariablen $\xi_1$ und $\xi_2$ gleich Null sein kann. Zu diesem Zweck betrachten 
+wir den Fall zweier diskreter Zufallsvariablen $\xi_1$ und $\xi_2$ mit Ergebnisräumen 
+$\mathcal{X}_1 = \{-1,0,1\}$ und $\mathcal{X}_2 = \{0,1\}$, marginaler WMF von 
+$\xi_1$ gegeben durch $p(x_1) := \frac{1}{3}$ für $x_1 \in \mathcal{X}_1$ und der 
+Definition $\xi_2 := \xi_1^2$. Wir halten dann zunächst fest, dass
+\begin{equation}
+\mathbb{E}(\xi_1)
+= \sum_{x_1 \in \mathcal{X}_1} x p(x_1)
+= -1 \cdot \frac{1}{3} + 0\cdot \frac{1}{3} + 1\cdot\frac{1}{3}
+= 0
+\end{equation}
+und
+\begin{equation}
+\mathbb{E}(\xi_1\xi_2)
+= \mathbb{E}(\xi_1\xi_1^2)
+= \mathbb{E}(\xi_1^3)
+= \sum_{x_1 \in \mathcal{X}_1} x_1^3 p(x_1)
+= -1^3 \cdot \frac{1}{3} + 0^3\cdot \frac{1}{3} + 1^3\cdot\frac{1}{3}
+= 0.
+\end{equation}
+Mit dem Kovarianzverschiebungssatz ergibt sich dann
+\begin{equation}
+\mathbb{C}(\xi_1,\xi_2)
+= \mathbb{E}(\xi_1\xi_2) - \mathbb{E}(\xi_1)\mathbb{E}(\xi_2)
+= \mathbb{E}(\xi_1^3)    - \mathbb{E}(\xi_1)\mathbb{E}(\xi_2)
+= 0 - 0\cdot \mathbb{E}(\xi_2)
+= 0.
+\end{equation}
+Die Kovarianz von $\xi_1$ und $\xi_2$ ist also Null. Wie unten gezeigt faktorisiert 
+die gemeinsame WMF von $\xi_1$ und $\xi_2$ jedoch nicht, und somit sind $\xi_1$ und 
+$\xi_2$ nicht unabhängig. Wir halten zunächst fest, dass die Definition von $\xi_2 := \xi_1^2$ 
+die in @tbl-bsp-bedingte-wmf gezeigte bedingte WMF von $\xi_2$ gegeben $\xi_1$ impliziert.
+
+
+|$p(x_2|x_1)$  | $x_2 = 0$  | $x_2 = 1$  |
+|:-------------|:----------:|:----------:|
+| $x_1 = -1$   | $0$        | $1$        |
+| $x_1 = 0$    | $1$        | $0$        |
+| $x_1 = 1$    | $0$        | $1$        |
+
+: Bedingte WMF von $\xi_2$ gegeben $\xi_1$ {#tbl-bsp-bedingte-wmf}
+
+Die marginale WMF $p(x_1)$ und die bedingte WMF $p(x_2|x_1)$ implizieren wiederum
+die in @tbl-bsp-gemeinsame-wmf gezeigte die gemeinsame WMF.
+
+
+| $p(x_1,x_2)$  | $x_2 = 0$  		 | $x_2 = 1$  		| $p(x_1)$  	|
+|:--------------|:------------------:|:----------------:|:-------------:|
+| $x_1 = -1$    | $0$        		 | $\frac{1}{3}$    | $\frac{1}{3}$ |
+| $x_1 = 0$     | $\frac{1}{3}$      | $0$        		| $\frac{1}{3}$ |
+| $x_1 = 1$     | $0$        		 | $\frac{1}{3}$    | $\frac{1}{3}$ |
+| $p(x_2)$      | $\frac{1}{3}$      | $\frac{2}{3}$    |           	|
+
+: Gemeinsame WMF von $\xi_1$ und $\xi_2$ {#tbl-bsp-gemeinsame-wmf}
+
+Es gilt  hier also beispielsweise 
+\begin{equation}
+p(-1,0) = 0 \neq \frac{1}{9} = \frac{1}{3} \cdot \frac{1}{3} = p(-1)p(0).
+\end{equation}
+Also sind $\xi_1$ und $\xi_2$ nicht unabhängig.
+:::
+
+Mithilfe des Begriffes des Kovarianz ist es möglich, weitgreifenderer Aussagen
+über die Varianzen von Summen und Differenzen von Zufallsvariablen zu treffen
+als es in @sec-varianz-und-standardabweichung der Fall war, wo lediglich *unabhängige*
+Zufallsvariablen betrachtetet wurden. Mit dem folgenden Theorem betrachten wir
+zunächst den sehr allgemeinen Fall der Kovarianz zweier Zufallsvariablen, die sich
+als Linearkombinationen von $n$ Zufallsvariablen $\xi_1,...,\xi_n$ und $m$ Zufallsvariablen
+$\zeta_1,...,\zeta_m$ unter Addition reeller Konstanten ergeben. Hieraus ergeben
+sich dann eine Reihe von in der Anwendung, insbesondere in der Klassischen Testtheorie,
+wichtiger Spezialfälle. 
+
+:::{#thm-kovarianz-von-linearkombinationen-von-zufallsvariablen}
+## Kovarianz von Linearkombinationen von Zufallsvariablen
+Gegeben seien $n$ Zufallsvariablen  $\xi_1,...,\xi_n$  und $n+1$ reelle Konstanten 
+$a_0,a_1,...,a_n$ sowie $m$ Zufallsvariablen $\zeta_1,...,\zeta_m$ und $m + 1$ reelle 
+Konstanten $b_0,b_1,...,b_m$. Dann gilt
+\begin{equation}
+\mathbb{C}\left(a_0 + \sum_{i=1}^n a_i \xi_i, b_0 + \sum_{j=1}^m b_j \zeta_j\right)
+= \sum_{i=1}^n \sum_{j=1}^m a_ib_j\mathbb{C}(\xi_i, \zeta_j).
+\end{equation}
+:::
+  
+:::{.proof}
+\begin{align*}
+\begin{split} 
+& \mathbb{C}\left(a_0 + \sum_{i=1}^n a_i \xi_i, b_0 + \sum_{j=1}^m b_j \zeta_j \right) \\
+& = \mathbb{E}\left(
+	\left(a_0 + \sum_{i=1}^n a_i \xi_i  - \mathbb{E}\left(a_0 + \sum_{i=1}^n a_i \xi_i\right)\right)
+	\left(b_0 + \sum_{j=1}^m b_j \zeta_j - \mathbb{E}\left(b_0 + \sum_{j=1}^m b_j \zeta_j \right)\right)
+	\right)
+\\
+& = \mathbb{E}\left(
+	\left(a_0 + \sum_{i=1}^n a_i \xi_i  - a_0 - \mathbb{E}\left(\sum_{i=1}^n a_i \xi_i\right)\right)
+	\left(b_0 + \sum_{j=1}^m b_j \zeta_j - b_0 - \mathbb{E}\left(\sum_{j=1}^m b_j \zeta_j \right)\right)
+	\right)
+\\
+& = \mathbb{E}\left(
+	\left(\sum_{i=1}^n a_i \xi_i  - \sum_{i=1}^n a_i \mathbb{E}(\xi_i) \right)
+	\left(\sum_{j=1}^m b_j \zeta_j - \sum_{j=1}^m b_j \mathbb{E}(\zeta_j)\right)
+	\right)
+\\
+& = \mathbb{E}
+	\left(
+	\sum_{i=1}^n a_i \xi_i\sum_{j=1}^m b_j \zeta_j  - \sum_{i=1}^n a_i \xi_i \sum_{j=1}^m b_j \mathbb{E}(\zeta_j) 
+	- \sum_{i=1}^n a_i \mathbb{E}(\xi_i)\sum_{j=1}^m b_j \zeta_j +  \sum_{i=1}^n a_i \mathbb{E}(\xi_i) \sum_{j=1}^m b_j \mathbb{E}(\zeta_j)
+	\right)
+\\
+& = \mathbb{E}\left(\sum_{i=1}^n a_i \xi_i\sum_{j=1}^m b_j \zeta_j\right)
+    - \mathbb{E}\left(\sum_{i=1}^n a_i \xi_i \sum_{j=1}^m b_j \mathbb{E}(\zeta_j)\right) 
+	- \mathbb{E}\left(\sum_{i=1}^n a_i \mathbb{E}(\xi_i)\sum_{j=1}^m b_j \zeta_j\right) 
+	+ \mathbb{E}\left(\sum_{i=1}^n a_i \mathbb{E}(\xi_i) \sum_{j=1}^m b_j \mathbb{E}(\zeta_j)\right)
+\\
+& =  \sum_{i=1}^n \sum_{j=1}^m a_ib_j \mathbb{E}(\xi_i\zeta_j)
+    - 2\sum_{i=1}^n \sum_{j=1}^m a_i  b_j \mathbb{E}(\xi_i)\mathbb{E}(\zeta_j)  
+	+ \sum_{i=1}^n\sum_{j=1}^m a_ib_j \mathbb{E}(\xi_i) \mathbb{E}(\zeta_j)
+\\
+& =  \sum_{i=1}^n \sum_{j=1}^m a_ib_j \left(\mathbb{E}(\xi_i\zeta_j) -  2 \mathbb{E}(\xi_i)\mathbb{E}(\zeta_j) +\mathbb{E}(\xi_i)\mathbb{E}(\zeta_j)\right)
+\\
+& =  \sum_{i=1}^n \sum_{j=1}^m a_ib_j
+     \mathbb{E}\left((\xi_i -  \mathbb{E}(\xi_i))(\zeta_j - \mathbb{E}(\zeta_j))\right)
+\\
+& = \sum_{i=1}^n \sum_{j=1}^m a_ib_j\mathbb{C}(\xi_i, \zeta_j)
+\end{split}
+\end{align*} 
+:::
+
+Mit folgenden Theorem betrachten wir nun einen ersten Spezialfall von 
+@thm-kovarianz-von-linearkombinationen-von-zufallsvariablen.
+
+:::{#thm-kovarianze-bei-paarweiser-addition-von-zufallsvariablen}
+## Kovarianzen spezieller Linearkombinationen
+$\xi_1,\xi_2,\zeta_1,\zeta_2$ seien vier Zufallsvariablen. Dann gilt
+\begin{equation}
+\mathbb{C}(\xi_1 + \xi_2, \zeta_1 + \zeta_2) 
+= \mathbb{C}(\xi_1,\zeta_1) + \mathbb{C}(\xi_1,\zeta_2) + \mathbb{C}(\xi_2,\zeta_1) + \mathbb{C}(\xi_2,\zeta_2).  
+\end{equation}
+:::
+
+:::{.proof}
+Es seien $n := 2, m := 2, a_0 = b_0 := 0$ und $a_i = b_i := 1$ für $i = 1,2$. 
+Dann gilt mit @thm-kovarianz-von-linearkombinationen-von-zufallsvariablen
+\begin{align}
+\begin{split}
+\mathbb{C}\left(\xi_1 +\xi_2, \zeta_1 + \zeta_2 \right) 
+& = \mathbb{C}\left(a_0 + \sum_{i=1}^2 a_i \xi_i, b_0 + \sum_{j=1}^2 b_j \zeta_j \right) \\
+& = \sum_{i=1}^2 \sum_{j=1}^2 a_i b_j\mathbb{C}\left(\xi_i, \zeta_j \right) \\
+& = \sum_{i=1}^2 \sum_{j=1}^2 \mathbb{C}\left(\xi_i, \zeta_j \right) \\
+& = \mathbb{C}\left(\xi_1, \zeta_1\right) + \mathbb{C}\left(\xi_1, \zeta_2 \right) + \mathbb{C}\left(\xi_2, \zeta_1\right) + \mathbb{C}\left(\xi_2, \zeta_2 \right). 
+\end{split}
+\end{align}  
+:::
+
+Folgendes Theorem besagt nun, wie man im Allgemeinen die Varianz einer Linearkombinationen
+von Zufallsvariablen unter Addition einer Konstante bestimmt werden kann.
+
+:::{#thm-varianz-einer-linearkombination-von-zufallsvariablen}
+## Varianz einer Linearkombination von Zufallsvariablen
+Gegeben seien $n$ Zufallsvariablen $\xi_1,...,\xi_n$ und $n+1$ reelle Konstanten 
+$a_0,a_1,...,a_n$. 
+Dann gilt
+\begin{equation} 
+\mathbb{V}\left(a_0 + \sum_{i=1}^n a_i \xi_i \right) 
+= \sum_{i=1}^n a_i^2 \mathbb{V}(\xi_i) + 2 \sum_{i=1}^{n-1}\sum_{j= i+ 1}^n a_ia_j\mathbb{C}(\xi_i,\xi_j).
+\end{equation}
+::: 
+:::{.proof}
+Mit $\mathbb{V}(\xi) = \mathbb{C}(\xi,\xi)$ und @thm-kovarianz-von-linearkombinationen-von-zufallsvariablen 
+gilt zunächst
+\begin{align}
+\begin{split}
+\mathbb{V}\left(a_0 + \sum_{i=1}^n a_i\xi_i\right)
+& = \mathbb{C}\left(a_0 + \sum_{i=1}^n a_i\xi_i, a_0 + \sum_{i=1}^n a_i\xi_i\right) 																				\\
+& = \mathbb{C}\left(a_0 + \sum_{i=1}^n \xi_i, a_0 + \sum_{j=1}^n a_j \xi_j \right)																					\\
+& = \sum_{i=1}^n \sum_{j=1}^n a_ia_j \mathbb{C}(\xi_i,\xi_j) 																										\\	
+& = \sum_{i=1}^n\sum_{\substack{j=1 \\ j = i}}^n a_ia_j \mathbb{C}(\xi_i,\xi_j)  + \sum_{i=1}^n \sum_{\substack{j=1 \\ j \neq i}}^n a_ia_j \mathbb{C}(\xi_i,\xi_j) 	\\		
+& = \sum_{i=1}^n a_i a_i\mathbb{C}(\xi_i,\xi_i)  + \sum_{i=1}^n \sum_{\substack{j=1 \\ j \neq i}}^n a_ia_j \mathbb{C}(\xi_i,\xi_j) 									\\
+& = \sum_{i=1}^n a_i^2\mathbb{V}(\xi_i)  + \sum_{i=1}^n \sum_{\substack{j=1 \\ j \neq i}}^n a_ia_j \mathbb{C}(\xi_i,\xi_j)											\\
+& = \sum_{i=1}^n a_i^2\mathbb{V}(\xi_i)  + 2 \sum_{i=1}^{n-1}\sum_{j= i+ 1}^na_ia_j \mathbb{C}(\xi_i,\xi_j),
+\end{split} 
+\end{align}
+Dabei wurde in der vierten Gleichung die Doppelsumme in solche Terme aufgespalten
+für die $i = j$ und für die $i \neq j$ und in siebten Gleichung ausgenutzt, dass
+\begin{equation}
+a_ia_j\mathbb{C}(\xi_i,\xi_j) = a_ja_i\mathbb{C}(\xi_j,\xi_i).
+\end{equation}
+Wir verdeutlichen die darausfolgende Identität 
+\begin{equation}
+\sum_{i=1}^n \sum_{\substack{j=1 \\ j \neq i}}^n a_ia_j \mathbb{C}(\xi_i,\xi_j)
+= 2 \sum_{i=1}^{n-1}\sum_{j= i+ 1}^na_ia_j \mathbb{C}(\xi_i,\xi_j),
+\end{equation}
+am Beispiel $n = 3$ untenstehend. Analog mag man sich vorstellen, über alle 
+Elemente außer der Diagonalelemente der $i = 1,...,n$ Zeilen und $j = 1,...,n$
+Spalten einer symmetrischen Matrix mit Einträgen $a_ia_j\mathbb{C}(\xi_i,\xi_j)$ 
+zu summieren. Die linke Seite oberer Gleichung entspricht dann dem zeilenweisen
+Vorgehen der Summationsbildung für alle Spalteneinträge außer dem, der in der
+Spalte der jeweils betrachteten Zeile steht, d.h. dem Diagonaleintrag. Die rechte
+Seite der obigen Gleichung entspricht dann dem Vorgehen, die Symmetrie der Matrix
+auszunutzen, also die Tatsache zu berücksichtigen, dass die Einträge der Matrix rechts
+oberhalb und links unterhalb der Diagonalen identisch sind, so dass es genügt,
+die Einträge der oberen linke Hälfte aufzuaddieren und zu verdoppeln. Dabei werden
+für jede Zeile $i = 1,...,n$ nur gerade die Spalten $j = i+1,...,n$ betrachtet,
+die rechts von der Diagonale stehen und ihre Einträge aufsummiert. In der letzten
+Zeile steht dabei nur ein Diagonalelement, das nicht zur Summe gehört, weshalb
+der Index der äußeren Summe nur bis $n-1$ läuft. Konkret ergibt sich für $n := 3$
+\begin{align}
+\begin{split}
+& \sum_{i=1}^3\sum_{\substack{j=1 \\ j \neq i}}^3 a_ia_j \mathbb{C}(\xi_i,\xi_j) \\
+& = \sum_{\substack{j=1 \\ j \neq 1}}^3 a_1a_j\mathbb{C}(\xi_1,\xi_j) + 
+    \sum_{\substack{j=1 \\ j \neq 2}}^3 a_2a_j\mathbb{C}(\xi_2,\xi_j) +
+	\sum_{\substack{j=1 \\ j \neq 3}}^3 a_3a_j\mathbb{C}(\xi_3,\xi_j)\\
+& = a_1a_2\mathbb{C}(\xi_1,\xi_2) + a_1a_3\mathbb{C}(\xi_1,\xi_3) + a_2a_1\mathbb{C}(\xi_2,\xi_1) + a_2a_3\mathbb{C}(\xi_2,\xi_3)  + a_3a_1\mathbb{C}(\xi_3,\xi_1) + a_3a_2\mathbb{C}(\xi_3,\xi_2)\\
+& = a_1a_2\mathbb{C}(\xi_1,\xi_2) + a_2a_1\mathbb{C}(\xi_2,\xi_1) + a_1a_3\mathbb{C}(\xi_1,\xi_3) + a_31a_1\mathbb{C}(\xi_3,\xi_1) + a_2a_3\mathbb{C}(\xi_2,\xi_3) + a_3a_2\mathbb{C}(\xi_3,\xi_2)\\
+& = 2\mathbb{C}(\xi_1,\xi_2) + 2\mathbb{C}(\xi_1,\xi_3) + 2\mathbb{C}(\xi_2,\xi_3)\\
+& = 2a_1a_2\left(\mathbb{C}(\xi_1,\xi_2) + a_1a_3\mathbb{C}(\xi_1,\xi_3) + a_2a_3\mathbb{C}(\xi_2,\xi_3)\right)\\
+& = 2\left(\sum_{j=2}^3 a_1a_j\mathbb{C}(\xi_1,\xi_j) + \sum_{j=3}^3 a_2a_j\mathbb{C}(\xi_2,\xi_j)\right)\\
+& = 2\left(\sum_{j=1+1}^3 a_1a_j\mathbb{C}(\xi_1,\xi_j) + \sum_{j=2+1}^3 a_2a_j\mathbb{C}(\xi_2,\xi_j)\right)\\
+& = 2\sum_{i=1}^{2}\sum_{j=i+1}^3 a_ia_j\mathbb{C}(\xi_i,\xi_j). 
+\end{split}
+\end{align}
+:::
+
+
+:::{#thm-varianzen-spezieller-linearkombinationen-von-zufallsvariablen}
+## Varianzen spezieller Linearkombinationen von Zufallsvariablen
+\noindent (2) (Varianz bei Addition zweier Zufallsvariablen). Gegeben seien zwei Zufallsvariablen $\xi$ und $\zeta$. Dann gilt
+\begin{equation}
+\mathbb{V}(\xi + \zeta) 
+= \mathbb{V}(\xi) + \mathbb{V}(\zeta) + 2\mathbb{C}(\xi,\zeta) 
+\end{equation}
+\noindent (3) (Varianz bei Subtraktion zweier Zufallsvariablen). Gegeben seien  zwei Zufallsvariablen $\xi$ und $\zeta$. Dann gilt
+\begin{equation}
+\mathbb{V}(\xi - \zeta) 
+= \mathbb{V}(\xi) + \mathbb{V}(\zeta) - 2\mathbb{C}(\xi,\zeta) 
+\end{equation}
+:::
+  
+:::{.proof}
+
+\noindent (1) Es seien $n := 1$, $a_0 := b$ und $a_1 := a$. Dann gilt mit dem Theorem
+zur Varianz einer Linearkombination von Zufallsvariablen
+\begin{align}
+\begin{split} 
+\mathbb{V}(a\xi + b)
+& = \mathbb{V}\left(a_0 + \sum_{i=1}^1 a_i \xi_i \right) 														\\
+& = \sum_{i=1}^1 a_i^2 \mathbb{V}(\xi_i) + 2 \sum_{i=1}^{1-1}\sum_{j = i+ 1}^n a_ia_j\mathbb{C}(\xi_i,\xi_j)	\\
+& = a_1^2 \mathbb{V}(\xi_1)																						\\
+& = a^2\mathbb{V}(\xi)
+\end{split}
+\end{align}
+\noindent (2) Es seien $n := 2$, $\xi_1 := \xi$, $\xi_2 := \zeta$, $a_0 := 0$, $a_1 := 1$ und $a_2 := 1$. Dann gilt mit dem Theorem zur Varianz einer Linearkombination von Zufallsvariablen
+\begin{align}
+\begin{split} 
+\mathbb{V}(\xi + \zeta)
+& = \mathbb{V}(a_0 + a_1\xi_1 + a_2\xi_2) 																					\\
+& = \mathbb{V}\left(a_0 + \sum_{i=1}^2 a_i \xi_i \right) 																	\\
+& = \sum_{i=1}^2 a_i^2 \mathbb{V}(\xi_i) + 2 \sum_{i=1}^{2-1}\sum_{j = i+ 1}^2 a_i a_j\mathbb{C}(\xi_i,\xi_j)				\\
+& = \sum_{i=1}^2 a_i^2 \mathbb{V}(\xi_i) + 2 \sum_{i=1}^{1}\sum_{j = i + 1}^2 a_ia_j \mathbb{C}(\xi_i,\xi_j)				\\
+& = \sum_{i=1}^2 a_i^2 \mathbb{V}(\xi_i) + 2 \sum_{j = 1 + 1}^2 a_ia_j \mathbb{C}(\xi_1,\xi_j)								\\
+& = \sum_{i=1}^2 a_i^2 \mathbb{V}(\xi_i) + 2 \sum_{j = 2}^2 a_1a_j\mathbb{C}(\xi_1,\xi_j)									\\
+& = a_1^2\mathbb{V}(\xi_1) + a_2^2\mathbb{V}(\xi_2) + 2 a_1a_2\mathbb{C}(\xi_1,\xi_2)										\\
+& = 1^2 \cdot \mathbb{V}(\xi)   +  1^2 \cdot \mathbb{V}(\zeta) + 2 \cdot  1 \cdot 1 \cdot  \mathbb{C}(\xi,\zeta) \\
+& = \mathbb{V}(\xi) + \mathbb{V}(\zeta) + 2 \mathbb{C}(\xi,\zeta)																\\
+\end{split}
+\end{align} 
+\noindent (3) Es seien $n := 2$, $\xi_1 := \xi$, $\xi_2 := \zeta$, $a_0 := 0$, $a_1 := 1$ und $a_2 := -1$. Dann gilt mit dem Theorem zur Varianz einer Linearkombination von Zufallsvariablen
+\begin{align}
+\begin{split} 
+\mathbb{V}(\xi - \zeta)
+& = \mathbb{V}(a_0 + a_1\xi_1 + a_2\xi_2) 																					\\
+& = \mathbb{V}\left(a_0 + \sum_{i=1}^2 a_i \xi_i \right) 																	\\
+& = \sum_{i=1}^2 a_i^2 \mathbb{V}(\xi_i) + 2 \sum_{i=1}^{2-1}\sum_{j = i+ 1}^2 a_i a_j\mathbb{C}(\xi_i,\xi_j)				\\
+& = \sum_{i=1}^2 a_i^2 \mathbb{V}(\xi_i) + 2 \sum_{i=1}^{1}\sum_{j = i + 1}^2 a_ia_j \mathbb{C}(\xi_i,\xi_j)				\\
+& = \sum_{i=1}^2 a_i^2 \mathbb{V}(\xi_i) + 2 \sum_{j = 1 + 1}^2 a_ia_j \mathbb{C}(\xi_1,\xi_j)								\\
+& = \sum_{i=1}^2 a_i^2 \mathbb{V}(\xi_i) + 2 \sum_{j = 2}^2 a_1a_j\mathbb{C}(\xi_1,\xi_j)									\\
+& = a_1^2\mathbb{V}(\xi_1) + a_2^2\mathbb{V}(\xi_2) + 2 a_1a_2\mathbb{C}(\xi_1,\xi_2)										\\
+& = 1^2\cdot \mathbb{V}(\xi)   +  (-1)^2 \cdot \mathbb{V}(\zeta) + 2 \cdot  1 \cdot (-1)\cdot  \mathbb{C}(\xi,\zeta) \\
+& = \mathbb{V}(\xi) + \mathbb{V}(\zeta) - 2 \mathbb{C}(\xi,\zeta)																\\
+\end{split}
+\end{align} 
+:::
+
+\hl{Linearkombination unabhängiger Zufallsvariablen}
+
+## Stichprobenkovarianz  
+
+
+
+## Bedingte Kovarianz  
+:::{#def-bedingte-kovarianz-und-bedingte-korrelation}
+## Bedingte Kovarianz und bedingte Korrelation
+Gegeben sei ein Zufallsvektor $\xi := (\xi_1,\xi_2,\xi_3)$ mit Ergebnisraum 
+$\mathcal{X} := \mathcal{X}_1 \times \mathcal{X}_2\times \mathcal{X}_3$ und WMF oder WDF $p(x_1,x_2,x_3)$
+und bedingter WMF oder WDF $p(x_1,x_2|= x_3)$ für alle $x_3 \in \mathcal{X}_3$. Dann ist die
+bedingte Kovarianz von $\xi_1$ und $\xi_2$ gegeben $\xi_3 = x_3$ definiert als
+\begin{equation}
+\mathbb{C}(\xi_1,\xi_2|\xi_3 = x_3)
+= \mathbb{E}
+  \left(
+  \left(\xi_1 - \mathbb{E}\left(\xi_1|\xi_3 = x_3\right)\right)
+  \left(\xi_2 - \mathbb{E}\left(\xi_2|\xi_3 = x_3\right)\right)|\xi_3 = x_3
+  \right)
+\end{equation} 
+und die bedingte Korrelation von $\xi_1$ und $\xi_2$ gegeben $\xi_3 = x_3$ ist definiert als
+\begin{equation}
+\rho(\xi_1,\xi_2|\xi_3 = x_3)
+= \frac{\mathbb{C}(\xi_1,\xi_2|\xi_3 = x_3)}{\sqrt{\mathbb{V}(\xi_1|\xi_3 = x_3)}\sqrt{\mathbb{V}(\xi_2|\xi_3 = x_3)}}
+= \frac{\mathbb{C}(\xi_1,\xi_2|\xi_3 = x_3)}{\mathbb{S}(\xi_1|\xi_3 = x_3\mathbb{S}(\xi_2|\xi_3 = x_3)}.
+\end{equation}
+:::
+
+Die bedingte Kovarianz ist im Sinne des bedingten Erwartungswerts des Zufallsvektors $(\xi_1,\xi_2)$ definiert.
+und stellt, wie der bedingte Erwartungswert und die bedingte Varianz im allgemeinen eine Zufallsvariable dar.
+Auch für die bedingte Kovarianz gilt der Verschiebungssatz
+\begin{equation}
+\mathbb{C}(\xi_1, \xi_2|\xi_3) = \mathbb{E}\left(\xi_1\xi_2|\xi_3\right) - \mathbb{E}\left(\xi_1|\xi_3\right)\mathbb{E}\left(\xi_2|\xi_3\right).  
+\end{equation}
+
+## Korrelation zweier Zufallsvariablen
+
+
+:::{#def-korrelation}
+
+Die *Korrelation* zweier Zufallsvariablen $\xi_1$ und $\xi_2$ ist definiert als
+\begin{equation}
+\rho(\xi_1,\xi_2)
+:= \frac{\mathbb{C}(\xi_1,\xi_2))}{\sqrt{\mathbb{V}(\xi_1)}\sqrt{\mathbb{V}(\xi_2)}}
+ = \frac{\mathbb{C}(\xi_1,\xi_2))}{\mathbb{S}(\xi_1){\mathbb{S}(\xi_2)}}.
+\end{equation}
+:::
+
+Die Korrelation $\rho(\xi_1,\xi_2)$ zweier Zufallsvariablen entspricht ihrer anhand
+der Standardabweichungen der jeweiligen Zufallsvariablen standardisierten Kovarianz
+und wird manchmal auch als *Korrelationskoeffizient* von $\xi_1$ und $\xi_2$ bezeichnet.
+Ist die Korrelation $\rho(\xi_1,\xi_2) = 0$, so werden $\xi_1$ und $\xi_2$ *unkorreliert* 
+genannt. Insbesondere ist die Korrelation im Gegensatz zur Kovarianz *normalisiert*, 
+d.h. es gilt, wie wir an späterer Stellte mithilfe der Cauchy-Schwarz Ungleichung 
+(@thm-cauchy-schwarz-ungleichung) zeigen gilt 
+\begin{equation}
+-1 \le \rho(\xi_1,\xi_2) \le 1.
+\end{equation}
+
+:::{#th-symmetrie-der-korrelation}
+\begin{equation}
+\rho(\xi_1,\xi_2) 
+= \frac{\mathbb{C}(\xi_1,\xi_2)}{\mathbb{S}(\xi_1)\mathbb{\xi_2}}
+= \frac{\mathbb{C}(\xi_2,\xi_1)}{\mathbb{S}(\xi_2)\mathbb{\xi_1}}
+= \rho(\xi_2,\xi_1)
+\end{equation}
+:::
+
+
+Man sagt in diesem Kontext auch, dass die Korrelation im Gegensatz zur Kovarianz
+maßstabsunabhängig sei: wendet man auf eine Zufallsvariable eine linear-affine
+Transformation an, so ändert sich die Kovarianz der Zufallsvariablen, nicht aber
+ihre Korrelation. Das ist die Kernaussage folgenden Theorems.
+
+
+
+Die Korrelation $\rho(\xi_1,\xi_2)$ zweier Zufallsvariablen entspricht ihrer anhand
+der Standardabweichungen der jeweiligen Zufallsvariablen standardisierten Kovarianz
+und wird manchmal auch als *Korrelationskoeffizient* von $\xi_1$ und $\xi_2$ bezeichnet.
+Ist die Korrelation $\rho(\xi_1,\xi_2) = 0$, so werden $\xi_1$ und $\xi_2$ *unkorreliert* 
+genannt. Insbesondere ist die Korrelation im Gegensatz zur Kovarianz *normalisiert*, 
+d.h. es gilt, wie wir an späterer Stellte mithilfe der Cauchy-Schwarz Ungleichung 
+(@thm-cauchy-schwarz-ungleichung) zeigen gilt 
+\begin{equation}
+-1 \le \rho(\xi_1,\xi_2) \le 1.
+\end{equation}
+
+:::{#th-symmetrie-der-korrelation}
+\begin{equation}
+\rho(\xi_1,\xi_2) 
+= \frac{\mathbb{C}(\xi_1,\xi_2)}{\mathbb{S}(\xi_1)\mathbb{\xi_2}}
+= \frac{\mathbb{C}(\xi_2,\xi_1)}{\mathbb{S}(\xi_2)\mathbb{\xi_1}}
+= \rho(\xi_2,\xi_1)
+\end{equation}
+:::
+
+
+Man sagt in diesem Kontext auch, dass die Korrelation im Gegensatz zur Kovarianz
+maßstabsunabhängig sei: wendet man auf eine Zufallsvariable eine linear-affine
+Transformation an, so ändert sich die Kovarianz der Zufallsvariablen, nicht aber
+ihre Korrelation. Das ist die Kernaussage folgenden Theorems.
+
+
+:::{#thm-kovarianz-und-korrelation-bei-linear-affinen-transformationen-von-zufallsvariablen}
+## Kovarianz und Korrelation bei linear-affinen Transformationen von Zufallsvariablen
+
+$\xi_1$ und $\xi_2$ seien Zufallsvariablen und es seien $a,b,c,d \in \mathbb{R}$. 
+Dann gelten
+\begin{equation}
+\mathbb{C}(a\xi_1 + b, c\xi_2 + d) = ac\mathbb{C}(\xi_1,\xi_2)
+\end{equation}
+und
+\begin{equation}
+\rho(a\xi_1 + b, c\xi_2 + d) = \rho(\xi_1,\xi_2).
+\end{equation}
+:::
+
+:::{.proof}
+Es gilt zunächst
+\begin{align}
+\begin{split}
+\mathbb{C}(a\xi_1+b,c\xi_2+d)
+& = \mathbb{E}((a\xi_1+b-\mathbb{E}(a\xi_1+b))(c\xi_2+d-\mathbb{E}(c\xi_2+d)))    \\
+& = \mathbb{E}((a\xi_1+b-a\mathbb{E}(\xi_1)-b)(c\xi_2+d-c\mathbb{E}(\xi_2)-d))   \\
+& = \mathbb{E}(a(\xi_1-\mathbb{E}(\xi_1))(c(\xi_2 -c\mathbb{E}(\xi_2)))             \\
+& = \mathbb{E}(ac((\xi_1-\mathbb{E}(\xi_1))(\xi_2 -c\mathbb{E}(\xi_2))))            \\
+&  = ac\mathbb{C}(\xi_1,\xi_2).
+\end{split}
+\end{align}
+Also folgt
+\begin{align}
+\begin{split}
+\rho(a\xi_1 + b, c\xi_2 + d)
+& = \frac{\mathbb{C}(a\xi_1+b,c\xi_2+d)}{\sqrt{\mathbb{V}(a\xi_1+b)}\sqrt{\mathbb{V}(c\xi_2+d)}} \\
+& = \frac{ac\mathbb{C}(\xi_1,\xi_2)}{\sqrt{a^2\mathbb{V}(\xi_1)}\sqrt{c^2\mathbb{V}(\xi_2)}}     \\
+& = \frac{ac\mathbb{C}(\xi_1,\xi_2)}{a\mathbb{S}(\xi_1)c\mathbb{S}(\xi_2)}         \\
+& = \frac{\mathbb{C}(\xi_1,\xi_2)}{\mathbb{S}(\xi_1)\mathbb{S}(\xi_2)}             \\
+& = \rho(\xi_1,\xi_2).
+\end{split}
+\end{align}
+:::
+
+## Bedingte Korrelation
+
+:::{#def-bedingte-kovarianz-und-bedingte-korrelation}
+## Bedingte Kovarianz und bedingte Korrelation
+Gegeben sei ein Zufallsvektor $\xi := (\xi_1,\xi_2,\xi_3)$ mit Ergebnisraum 
+$\mathcal{X} := \mathcal{X}_1 \times \mathcal{X}_2\times \mathcal{X}_3$ und WMF oder WDF $p(x_1,x_2,x_3)$
+und bedingter WMF oder WDF $p(x_1,x_2|= x_3)$ für alle $x_3 \in \mathcal{X}_3$. Dann ist die
+bedingte Kovarianz von $\xi_1$ und $\xi_2$ gegeben $\xi_3 = x_3$ definiert als
+\begin{equation}
+\mathbb{C}(\xi_1,\xi_2|\xi_3 = x_3)
+= \mathbb{E}
+  \left(
+  \left(\xi_1 - \mathbb{E}\left(\xi_1|\xi_3 = x_3\right)\right)
+  \left(\xi_2 - \mathbb{E}\left(\xi_2|\xi_3 = x_3\right)\right)|\xi_3 = x_3
+  \right)
+\end{equation} 
+und die bedingte Korrelation von $\xi_1$ und $\xi_2$ gegeben $\xi_3 = x_3$ ist definiert als
+\begin{equation}
+\rho(\xi_1,\xi_2|\xi_3 = x_3)
+= \frac{\mathbb{C}(\xi_1,\xi_2|\xi_3 = x_3)}{\sqrt{\mathbb{V}(\xi_1|\xi_3 = x_3)}\sqrt{\mathbb{V}(\xi_2|\xi_3 = x_3)}}
+= \frac{\mathbb{C}(\xi_1,\xi_2|\xi_3 = x_3)}{\mathbb{S}(\xi_1|\xi_3 = x_3\mathbb{S}(\xi_2|\xi_3 = x_3)}.
+\end{equation}
+:::
+
+
+## Kovarianzmatrizen
+
+Das multivariate Analogon der Varianz einer Zufallsvariable ist die *Kovarianzmatrix
+eines Zufallsvektors*. Diese enkodiert neben den Varianzen der Komponenten des Zufallsvektors
+auch ihre paarweisen Kovarianzen und ist wie folgt definiert.
+
+:::{#def-kovarianzmatrix-eines-zufallsvektors}
+## Kovarianzmatrix eines Zufallsvektors
+$\xi$ sei ein $n$-dimensionaler Zufallvektor. Dann ist die *Kovarianzmatrix* von 
+$\xi$ definiert als die $n \times n$ Matrix
+\begin{equation}
+\mathbb{C}(\xi) := \mathbb{E}\left((\xi - \mathbb{E}(\xi))(\xi - \mathbb{E}(\xi))^T \right).
+\end{equation}
+:::
+
+Die Kovarianzmatrix ist in @def-kovarianzmatrix-eines-zufallsvektors 
+formal analog zur Kovarianz zweier Zufallsvariablen definiert. Eine direkte Rückführung
+des Begriffs der Kovarianzmatrix eines Zufallsvektors auf den Begriff aus dem
+univariaten Kontext bekannten Begriff der Kovarianz zweier Zufallsvariablen 
+erlaubt folgendesTheorem.
+
+:::{#thm-eigenschaften-der-kovarianzmatrix}
+## Eigenschaften der Kovarianzmatrix
+$\xi$ sei ein $m$-dimensionaler Zufallsvektor und $\mathbb{C}(\xi)$ sei seine Kovarianzmatrix. 
+Dann gelten
+
+\noindent (1) (Elemente) Die Elemente von $\mathbb{C}(\xi)$ sind die Kovarianzen der Komponenten von $\xi$,
+\begin{equation}
+\mathbb{C}(\xi) = \left(\mathbb{C}(\xi_i,\xi_j)\right)_{1 \le i,j \le m}.
+\end{equation}
+
+\noindent (2) (Kovarianzmatrixverschiebungssatz) Es gilt 
+\begin{equation}
+\mathbb{C}(\xi) = \mathbb{E}\left(\xi\xi^T\right) -  \mathbb{E}(\xi)\mathbb{E}(\xi)^T.
+\end{equation} 
+\noindent (3) (Linear-affine Transformation) Für $A \in \mathbb{R}^{n \times m}$ und $b \in \mathbb{R}^n$ gilt 
+\begin{equation}
+\mathbb{C}(A\xi +b) = A\mathbb{C}(\xi)A^T.
+\end{equation}
+\noindent (4) (Matrixeigenschaften) $\mathbb{C}(\xi)$ ist symmetrisch und positiv-semidefinit.
+:::
+
+:::{.proof}
+
+\noindent (1) Es gilt
+\begin{align}
+\begin{split}
+\mathbb{C}(\xi)
+& := \mathbb{E}\left((\xi - \mathbb{E}(\xi))(\xi - \mathbb{E}(\xi))^T \right) \\
+& =
+\mathbb{E}
+\left(
+\left(
+\begin{pmatrix}
+\xi_1 \\
+\vdots \\
+\xi_n
+\end{pmatrix}
+-
+\begin{pmatrix}
+\mathbb{E}(\xi_1) \\
+\vdots \\
+\mathbb{E}(\xi_n)
+\end{pmatrix}
+\right)
+\left(
+\begin{pmatrix}
+\xi_1 \\
+\vdots \\
+\xi_n
+\end{pmatrix}
+-
+\begin{pmatrix}
+\mathbb{E}(\xi_1) \\
+\vdots \\
+\mathbb{E}(\xi_n)
+\end{pmatrix}
+\right)^T
+\right)
+\\
+& =
+\mathbb{E}
+\left(
+\begin{pmatrix}
+\xi_1 - \mathbb{E}(\xi_1) \\
+\vdots \\
+\xi_n - \mathbb{E}(\xi_n)
+\end{pmatrix}
+\begin{pmatrix}
+\xi_1 - \mathbb{E}(\xi_1)\\
+\vdots \\
+\xi_n - \mathbb{E}(\xi_n)
+\end{pmatrix}^T
+\right)
+\\
+& =
+\mathbb{E}
+\left(
+\begin{pmatrix}
+\xi_1 - \mathbb{E}(\xi_1) \\
+\vdots \\
+\xi_n - \mathbb{E}(\xi_n)
+\end{pmatrix}
+\begin{pmatrix}
+\xi_1 - \mathbb{E}(\xi_1)
+& \dots
+& \xi_n - \mathbb{E}(\xi_n)
+\end{pmatrix}
+\right) \\
+& =
+\mathbb{E}
+\begin{pmatrix}
+  (\xi_1 - \mathbb{E}(\xi_1))(\xi_1 - \mathbb{E}(\xi_1))
+& \dots
+& (\xi_1 - \mathbb{E}(\xi_1))(\xi_n - \mathbb{E}(\xi_n)
+\\
+\vdots
+& \ddots
+& \vdots
+\\
+  (\xi_n - \mathbb{E}(\xi_n))(\xi_1 - \mathbb{E}(\xi_1))
+& \dots
+& (\xi_n - \mathbb{E}(\xi_n))(\xi_n - \mathbb{E}(\xi_n))
+\\
+\end{pmatrix}
+\\
+& =
+\left(\mathbb{E}\left((\xi_i - \mathbb{E}(\xi_i))(\xi_j - \mathbb{E}(\xi_j)) \right) \right)_{1 \le i,j \le n} \\
+& =
+\left(\mathbb{C}(\xi_i,\xi_j)\right)_{1 \le i,j \le n}. \\
+\end{split}
+\end{align}
+
+\noindent (2) Mit den Eigenschaften von Erwartungswerten  gilt
+\begin{align}
+\begin{split}
+\mathbb{C}(\xi)
+& = \mathbb{E}\left((\xi - \mathbb{E}(\xi))(\xi - \mathbb{E}(\xi))^T \right)                                          \\
+& = \mathbb{E}\left(\xi\xi^T - \xi\mathbb{E}(\xi)^T - \mathbb{E}(\xi)\xi^T + \mathbb{E}(\xi)\mathbb{E}(\xi)^T  \right) \\
+& = \mathbb{E}\left(\xi\xi^T\right) - \mathbb{E}(\xi)\mathbb{E}(\xi)^T - \mathbb{E}(\xi)\mathbb{E}(\xi)^T + \mathbb{E}(\xi)\mathbb{E}(\xi)^T  \\
+& = \mathbb{E}\left(\xi\xi^T\right) - \mathbb{E}(\xi)\mathbb{E}(\xi)^T.  \\
+\end{split}
+\end{align}
+
+\noindent (3) Mit den Eigenschaften von Erwartungswerten gilt
+\begin{align}
+\begin{split}
+\mathbb{C}(A\xi+b)
+& = \mathbb{E}\left((A\xi+b-\mathbb{E}(A\xi+b))(A\xi+b-\mathbb{E}(A\xi+b))^T \right)  \\
+& = \mathbb{E}\left((A\xi+b-A\mathbb{E}(\xi)-b)(A\xi+b-A\mathbb{E}(\xi)-b)^T \right)  \\
+& = \mathbb{E}\left((A(\xi-\mathbb{E}(\xi)))(A(\xi-\mathbb{E}(\xi)))^T \right)        \\
+& = \mathbb{E}\left(A(\xi-\mathbb{E}(\xi))(\xi-\mathbb{E}(\xi))^T A^T\right)          \\
+& = A\mathbb{E}\left((\xi-\mathbb{E}(\xi))(\xi-\mathbb{E}(\xi))^T\right)A^T           \\
+& = A\mathbb{C}(\xi)A^T.                                                               \\
+\end{split}
+\end{align}
+
+
+\noindent (4) Die Symmetrie von $\mathbb{C}(\xi)$ folgt aus der Symmetrie der Kovarianz einer Zufallsvariable mit
+\begin{equation}
+\mathbb{C}(\xi_i,\xi_j) = \mathbb{C}(\xi_j, \xi_i) \mbox{ für alle } i = 1,...,m, j = 1,...,m.
+\end{equation}
+Um die positive Semidefinitheit von $\mathbb{C}(\xi)$ nachzuweisen, ist zu zeigen, dass
+$a^T\mathbb{C}(\xi)a \ge 0$ für alle $a\in \mathbb{R}^m$ mit $a \neq 0_m$. Sei also 
+$a \in \mathbb{R}^m$ mit $a\neq 0$. Dann gilt mit Aussage (3) für $A := a^T \in \mathbb{R}^{1\times m}$,
+dass
+\begin{equation}
+a^T\mathbb{C}(\xi)a = \mathbb{C}(a^T\xi). 
+\end{equation}
+Weiterhin gilt mit der Definition der Kovarianzmatrix aber, dass
+\begin{equation}
+\mathbb{C}(a^T\xi) 
+= \mathbb{E}\left(\left(a^T\xi-\mathbb{E}(a^T\xi)\right)^2\right) 
+= \mathbb{V}\left(a^T\xi\right).
+\end{equation}
+Da mit den Eigenschaften der Varianz die Varianz der Zufallsvariable $a^T\xi$ aber immer nichtnegativ ist, folgt
+\begin{equation}
+a^T\mathbb{C}(\xi)a = \mathbb{V}(a^T\xi)\ge 0 
+\end{equation}
+und damit die positive Semidefinitheit von $\mathbb{C}(\xi)$.
+:::
+
+
+
+Die Diagonalelemente von $\mathbb{C}(\xi)$ sind die Varianzen der Komponenten von $\xi$, da
+\begin{equation}
+\mathbb{V}(\xi_i) = \mathbb{C}(\xi_i,\xi_i) \mbox{ für } i = 1,...m.
+\end{equation}
+Eigenschaften (2) und (3) sind im Wesentlichen analog zu den Eigenschaften der Varianz.
+
+
+
+Die Kovarianzmatrix eines Zufallsvektors $\xi$ ist also die Matrix der Kovarianzen 
+der Komponenten von $\xi$. Damit ist auch die Kovarianzmatrix direkt im Sinne 
+des Begriffs der Kovarianz von Zufallsvektoren gegeben. Da die Kovarianz einer
+Zufallsvariable mit sich selbst bekanntlich ihre Varianz ist, enthält die
+Kovarianzmatrix auf ihrer Diagonalen die Varianzen der Komponenten von $\xi$.
+
+Folgendes Theorem dokumentiert eine Schreibweise für die Kovarianzmatrix eines
+partitionierten Zufallsvektors im Sinne von Erwartungswerten von Zufallvektorprodukten
+an, die zum Beispiel im Rahmen der Kanonischen Korrelationsanalyse hilfreich ist.
+
+:::{#thm-kovarianzmatrizen-von-zufallsvektoren}
+## Kovarianzmatrizen von Zufallsvektoren
+
+Es seien
+\begin{equation}
+\zeta = \begin{pmatrix} \xi \\ \upsilon \end{pmatrix}
+\mbox{ mit }
+\mathbb{E}(\zeta)  := 0_m
+\end{equation}
+ein $m_\xi + m_\upsilon$-dimensionaler Zufallsvektor und sein Erwartungswertvektor,
+respektive. Dann kann die $m \times m$ Kovarianzmatrix von $\zeta$ geschrieben werden als
+\begin{equation}
+\mathbb{C}(\zeta) =
+\begin{pmatrix}
+\Sigma_{\xi\xi} & \Sigma_{\xi_1\xi_2} \\
+\Sigma_{\upsilon\xi} & \Sigma_{\upsilon\upsilon} \\
+\end{pmatrix}
+\in \mathbb{R}^{m \times m}
+\end{equation}
+wobei
+\begin{align}
+\begin{split}
+\Sigma_{\xi\xi}   & := \mathbb{E}\left(\xi\xi^T  \right) \in \mathbb{R}^{m_\xi  \times m_\xi}\\
+\Sigma_{\xi_1\xi_2}  & := \mathbb{E}\left(\xi_1\xi_2^T \right) \in \mathbb{R}^{m_\xi  \times m_\upsilon}\\
+\Sigma_{\upsilon\xi}  & := \mathbb{E}\left(\upsilon\xi^T \right) \in \mathbb{R}^{m_\upsilon \times m_\xi}\\
+\Sigma_{\upsilon\upsilon} & := \mathbb{E}\left(\upsilon\upsilon^T\right) \in \mathbb{R}^{m_\xi  \times m_\upsilon}
+\end{split}
+\end{align}
+:::
+
+:::{.proof}
+Nach Definition der Kovarianzmatrix eines Zufallsvektors gilt
+\begin{align}
+\begin{split}
+\mathbb{C}(z)
+& = \mathbb{E}\left((\zeta - \mathbb{E}(\zeta))(\zeta - \mathbb{E}(\zeta))^T \right) \\
+& = \mathbb{E}\left((\zeta - 0_m)(\zeta - 0_m)^T \right) \\
+& = \mathbb{E}\left(\zeta\zeta^T\right)\\
+& = \mathbb{E}\left(\begin{pmatrix} \xi \\ \upsilon \end{pmatrix} \begin{pmatrix} \xi^T & \upsilon^T \end{pmatrix} \right) \\
+& = \mathbb{E}\left(\begin{pmatrix} \xi\xi^T & \xi_1\xi_2^T \\ \upsilon\xi^T & \upsilon\upsilon^T \end{pmatrix}\right)
+\\
+& =
+\begin{pmatrix}
+\mathbb{E}\left(\xi\xi^T\right)   & \mathbb{E}\left(\xi_1\xi_2^T\right) \\
+\mathbb{E}\left(\upsilon\xi^T\right)  & \mathbb{E}\left(\upsilon\upsilon^T\right)
+\end{pmatrix}
+\\
+& =
+\begin{pmatrix}
+\Sigma_{\xi\xi}   & \Sigma_{\xi_1\xi_2}  \\
+\Sigma_{\upsilon\xi}  & \Sigma_{\upsilon\upsilon} \\
+\end{pmatrix}
+\end{split}
+\end{align}
+:::
+
+Schließlich ist man in manchen Anwendungen an einer normalisierten, maßstabsunabhängigen 
+Repräsentation der Kovarianzen eines Zufallsvektors interessiert. Wie im univariaten
+Fall bietet sich hierfür die Normalisierung der Kovarianz zweier Zufallsvariablen
+mithilfe ihrer jeweiligen Varianzen im Sinne einer Korrelation an. Diese Überlegung
+führt auf den Begriff der *Korrelationsmatrix* eines Zufallsvektors. 
+
+
+## Korrelationsmatrizen
+
+:::{#def-korrelationsmatrix}
+## Korrelationsmatrix
+$\xi$ sei ein $n$-dimensionaler Zufallsvektor. Dann ist die *Korrelationsmatrix*
+von $\xi$ definiert als die $n \times n$ Matrix
+\begin{equation}
+\mathbb{R}(\xi)
+:= \left(\rho_{ij} \right)_{1 \le i,j\le n}
+ = \left(\frac{\mathbb{C}(\xi_i,\xi_j)}{\sqrt{\mathbb{V}(\xi_i)}\sqrt{\mathbb{V}(\xi_j)}}\right)_{1 \le i,j\le n}.
+\end{equation}
+:::
+
+Da es sich bei den Varianzen der Komponenten von $\xi$ um die Diagonalelement
+der Kovarianzmatrix von $\xi$ handelt, ist die Korrelationsmatrix natürlich in 
+der Kovarianzmatrix implizit. Weiterhin gelten, wie immer für Korrelationen, für
+die Einträge $\rho_{ij}, 1 \le i,j \le n$ der Korrelationsmatrix, dass 
+\begin{equation}
+\rho_{ij} \in [-1,1] \mbox{ für } 1 \le i,j \in n \mbox{ und } \rho_{ii} = 1 \mbox{ für } 1 \le i \le n.
+\end{equation}
+
+
+## Stichprobenkovarianzmatrix und Stichprobenkorrelationsmatrix
+
+Die Begriffe des Stichprobenmittels, der Stichprobenvarianz und der Stichprobenkovarianz
+lassen sich auch auf den Fall multivariater Stichproben übertragen. Wir nutzen folgende
+Definition.
+
+:::{#def-stichprobenmittel-stichprobenkovarianmatrix-stichprobenkorrelationsmatrix}
+## Stichprobenmittel, -kovarianmatrix und -korrelationsmatrix
+$\upsilon_1,...,\upsilon_n$ sei eine Menge von $m$-dimensionalen Zufallsvektoren, genannt *Stichprobe*.
+
+* Das *Stichprobenmittel* der $\upsilon_1,...,\upsilon_n$ ist definiert als der $m$-dimensionale Vektor
+\begin{equation}
+\bar{\upsilon} := \frac{1}{n} \sum_{i=1}^n \upsilon_i.
+\end{equation}
+* Die *Stichprobenkovarianzmatrix* der $\upsilon_1,...,\upsilon_n$ ist definiert als die $m \times m$ Matrix
+\begin{equation}
+C := \frac{1}{n-1}\sum_{i=1}^n (\upsilon_i - \bar{\upsilon})(\upsilon_i - \bar{\upsilon})^T .
+\end{equation}
+* Die *Stichprobenkorrelationsmatrix* der $\upsilon_1,...,\upsilon_n$ ist definiert als die $m \times m$ Matrix
+\begin{equation}
+D := \left(\frac{(C )_{ij}}{\sqrt{ (C )_{ii}}\sqrt{ (C )_{jj}}}\right)_{1 \le i,j \le m}.
+\end{equation}
+:::
+
+Zur konkreten Berechnung von Stichprobenmittel, Stichprobenkovarianzmatrix und 
+Stichprobenkorrrelationsmatrix basierend auf einem multivariaten Datensatz bieten 
+sich die Aussagen des folgenden Theorems an.
+
+:::{#thm-datenmatrix-und-stichprobenstatistiken}
+## Datenmatrix und Stichprobenstatistiken
+Es sei
+\begin{equation}
+\upsilon :=
+\begin{pmatrix}
+\upsilon_1 & \cdots & \upsilon_n
+\end{pmatrix}
+\end{equation}
+eine $m \times n$ \textit{Datenmatrix}, die durch die spaltenweise Konkatenation
+von $n$ $m$-dimensionalen Zufallvektoren $\upsilon_1, ...,\upsilon_n$ gegeben sei. 
+Dann ergeben sich
+\begin{itemize}
+\item für das Stichprobenmittel 
+\begin{equation}
+\bar{\upsilon} =  \frac{1}{n}\upsilon 1_{n},
+\end{equation}
+\item für die Stichprobenkovarianzmatrix 
+\begin{equation}
+C = \frac{1}{n-1}\left(\upsilon\left(I_n - \frac{1}{n}1_{nn}\right)\upsilon^T\right),
+\end{equation}
+\item und für Stichprobenkorrelationsmatrix mit
+\begin{equation}
+D := \mbox{diag}\left(\sqrt{C_{y_{ii}}}^{-1}, i = 1,...,m\right),
+\end{equation}
+dass
+\begin{equation}
+R = DCD.
+\end{equation}
+\end{itemize}
+:::
+
+:::{.proof}
+Die Darstellung des Stichprobenmittels ergibt sich aus
+\begin{align}
+\begin{split}
+\bar{\upsilon} 
+& := \frac{1}{n} \sum_{i=1}^n\upsilon_i \\
+&  = \frac{1}{n}\begin{pmatrix} \sum_{i=1}^n\upsilon_{i1} \\ \vdots \\ \sum_{i=1}^n\upsilon_{im} \end{pmatrix} \\
+&  = \frac{1}{n}\left(\begin{pmatrix}\upsilon_{11}    & \cdots  &\upsilon_{n1} \\
+                                      \vdots    & \ddots  & \vdots     \\
+                                     \upsilon_{1m}    & \cdots  &\upsilon_{nm} \\
+                   \end{pmatrix}
+                   \begin{pmatrix} 1 \\ \vdots \\ 1 \end{pmatrix}
+              \right) \\
+& = \frac{1}{n}\upsilon 1_{n}.
+\end{split}
+\end{align}
+Hinsichtlich der Darstellung der Stichprobenkovarianzmatrix halten wir zunächst fest, dass 
+nach Definition gilt, dass 
+\begin{align}
+\begin{split}
+C  
+& := \frac{1}{n-1}\sum_{i=1}^n (\upsilon_i - \bar{\upsilon})(\upsilon_i - \bar{\upsilon})^T \\
+&  = \frac{1}{n-1}\sum_{i=1}^n \left(\upsilon_i\upsilon_i^T-\upsilon_i\bar{\upsilon}^T - \bar{\upsilon}\upsilon_i^T+ \bar{\upsilon}\bar{\upsilon}^T\right) \\
+&  = \frac{1}{n-1}\left(\sum_{i=1}^n\upsilon_i\upsilon_i^T- \sum_{i=1}^n\upsilon_i\bar{\upsilon}^T - \sum_{i=1}^n \bar{\upsilon}\upsilon_i^T+ \sum_{i=1}^n \bar{\upsilon}\bar{\upsilon}^T\right) \\
+&  = \frac{1}{n-1}\left(\sum_{i=1}^n\upsilon_i\upsilon_i^T- n\bar{\upsilon}\bar{\upsilon}^T - n\bar{\upsilon}\bar{\upsilon}^T + n\bar{\upsilon}\bar{\upsilon}^T\right) \\
+&  = \frac{1}{n-1}\left(\sum_{i=1}^n\upsilon_i\upsilon_i^T- n\bar{\upsilon}\bar{\upsilon}^T\right).
+\end{split}
+\end{align}
+Mit $1_{n}1_{n}^T = 1_{nn}$ ergibt sich dann weiterhin
+\begin{align}
+\begin{split}
+\upsilon\left(I_n - \frac{1}{n}1_{nn}\right)\upsilon^T
+& = \left(\upsilon I_n - \frac{1}{n}\upsilon 1_{nn}\right)\upsilon^T                                         \\
+& = \upsilon\upsilon^T - \frac{1}{n}\upsilon 1_{nn}\upsilon^T                                                      \\
+& = \begin{pmatrix} \upsilon_1 & \cdots & \upsilon_n\end{pmatrix} \begin{pmatrix} \upsilon_1^T \\ \vdots \\ \upsilon_n^T\end{pmatrix} - \frac{1}{n}\upsilon 1_n 1_n^T\upsilon^T    \\
+& = \sum_{i=1}^n\upsilon_i\upsilon_i^T- n\left(\frac{1}{n}\upsilon 1_n\right)\left(\frac{1}{n}1_n^T\upsilon^T\right)              \\
+& = \sum_{i=1}^n\upsilon_i\upsilon_i^T- n\bar{\upsilon}\bar{\upsilon}^T                                                          \\
+& = \frac{1}{n-1}\sum_{i=1}^n (\upsilon_i - \bar{\upsilon})(\upsilon_i - \bar{\upsilon})^T \\
+& = C.
+\end{split}
+\end{align}
+Hinsichtlich der Korrelationsmatrix ergibt sich nach Definition und für ein
+ beliebiges Indexpaar $i,j$ mit $1 \le i,j \le m$ schließlich, dass
+\begin{align}
+\begin{split}
+R_{{y}_{ij}} 
+& = \frac{(C)_{ij}}{\sqrt{ (C)_{ii}}\sqrt{ (C)_{jj}}}             \\
+& = \frac{1}{\sqrt{(C)_{ii}}}(C)_{ij}\frac{1}{\sqrt{(C)_{jj}}}    \\
+& = (DCD)_{ij}.
+\end{split}
+\end{align}
+:::
+
+## Selbstkontrollfragen
