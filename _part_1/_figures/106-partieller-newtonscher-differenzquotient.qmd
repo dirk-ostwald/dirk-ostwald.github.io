@@ -1,0 +1,84 @@
+
+```{r, echo = F, eval = F}
+# Plot für Powerpoint
+# Install plotly if not installed
+# install.packages("plotly")
+
+library(plotly)
+
+# Define the function f(x, y) = x^2 + y^2
+f <- function(x, y) {
+  x^2 + y^2
+}
+
+# Create a grid of x and y values from -5 to 5
+x <- seq(-5, 5, length = 50)  # Reduced grid range for x
+y <- seq(-5, 5, length = 50)  # Reduced grid range for y
+
+# Compute the z values using the function f(x, y)
+z <- outer(x, y, f)
+
+surface_color <- matrix("gray", nrow = length(x), ncol = length(y))
+
+
+# Create the 3D surface plot with plotly, setting surface opacity to 0.6
+p <- plot_ly(x = x, y = y, z = z, type = "surface", opacity = 0.2, surfacecolor = z, colorscale = list(c(0, 1), c("gray", "gray")), ) %>%
+  layout(title = "Interactive 3D Plot with Vertical and Horizontal Lines",
+         scene = list(xaxis = list(title = "", showticklabels = FALSE, range = c(-5, 5)),
+                      yaxis = list(title = "", showticklabels = FALSE, range = c(-5, 5)),
+                      zaxis = list(title = "", showticklabels = FALSE, range = c(0, 25))))
+
+
+# Adding a surface on the y-z plane for f(x) = x^2
+# Define y values for the y-z plane (where x = 0)
+y_plane <- seq(-5, 5, length = 50)
+z_plane <- y_plane^2  # z = y^2
+x_plane <- rep(0, length(y_plane))  # x = 0 for the entire plane
+
+# Add the y-z plane surface plot
+p <- p %>%
+  add_trace(x = x_plane, y = y_plane, z = z_plane, opacity = 1,
+            type = "scatter3d", mode = "lines", 
+            line = list(color = 'black', width = 4))
+
+# Adding vertical lines extending from x = 2 and x = 3 to their corresponding f(x, y = 0)
+# For x = 2: the line will extend from (2, 0, 0) to (2, 0, 2^2 = 4)
+# For x = 3: the line will extend from (3, 0, 0) to (3, 0, 3^2 = 9)
+
+# Line for x = 2
+p <- p %>%
+  add_trace(x = c(0, 0), y = c(2, 2), z = c(0, 4), 
+            type = "scatter3d", mode = "lines", 
+            line = list(color = 'black', width = 4, dash = 'dash'), 
+            opacity = 1)
+
+# Line for x = 3
+p <- p %>%
+  add_trace(x = c(0, 0), y = c(4, 4), z = c(0, 16), 
+            type = "scatter3d", mode = "lines", 
+            line = list(color = 'black', width = 4, dash = 'dash'), 
+            opacity = 1)
+
+# Adding horizontal lines from the end of vertical lines to the z-axis
+# For x = 2: the horizontal line will go from (2, 0, 4) to (0, 0, 4)
+p <- p %>%
+  add_trace(x = c(0, 0), y = c(2, 0), z = c(4, 4), 
+            type = "scatter3d", mode = "lines", opacity = 1,
+            line = list(color = 'black', width = 4, dash = 'dash'))
+
+# For x = 3: the horizontal line will go from (3, 0, 9) to (0, 0, 9)
+p <- p %>%
+  add_trace(x = c(0, 0), y = c(4, 0), z = c(16, 16), 
+            type = "scatter3d", mode = "lines",  opacity = 1,
+            line = list(color = 'black', width = 4, dash = 'dash'))
+
+# Adding a vertical line along the z-axis from (0, 0, 0) to (0, 0, 25)
+p <- p %>%
+  add_trace(x = c(0, 0), y = c(0, 0), z = c(0, 25), 
+            type = "scatter3d", mode = "lines",  opacity = 1,
+            line = list(color = 'gray', width = 2))
+
+# Display the plot
+p
+
+```

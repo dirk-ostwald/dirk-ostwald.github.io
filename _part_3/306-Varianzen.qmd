@@ -1,0 +1,308 @@
+# Varianzen {#sec-varianzen}
+
+## Definition {#sec-definition}
+
+:::{#def-varianz}
+## Varianz
+$\xi$ sei eine Zufallsvariable mit endlichem Erwartungswert $\mathbb{E}(\xi)$. 
+Dann ist die *Varianz von $\xi$* definiert als
+\begin{equation}
+\mathbb{V}(\xi) := \mathbb{E}\left((\xi - \mathbb{E}(\xi))^2\right).
+\end{equation}
+:::
+
+Die Varianz einer Zufallsvariable $\xi$ mit Ergebnisraum $\mathcal{X}$ ist nach 
+@def-erwartungswert-einer-funktion-einer-zufallsvariable also der Erwartungswert 
+der Funktion
+\begin{equation}
+f : \mathcal{X} \to \mathcal{Z}, x \mapsto f(x) := (x - \mathbb{E}(\xi))^2 
+\end{equation}
+und damit die erwartete quadrierte Abweichung einer Zufallsvariable von ihrem 
+Erwartungswert. Die Quadrierung der Abweichung der Zufallsvariable von ihrem Erwartungswert
+ist dabei nötig, da andernfalls mit @thm-erwartungswert-bei-linear-affiner-transformation-einer-zufallsvariable
+immer gelten würde, dass
+\begin{equation}
+\mathbb{E}(\xi-\mathbb{E}(\xi)) = \mathbb{E}(\xi) - \mathbb{E}(\xi) = 0.
+\end{equation}
+Intuitiv misst die Varianz also die *Streuung* oder *Variabilität* einer Zufallvariable.
+Insbesondere besagt die *Chebyshev Ungleichung*
+\begin{equation}
+\mathbb{P}(|\xi - \mathbb{E}(\xi)| \ge x) \le \frac{\mathbb{V}(\xi)}{x^2}.
+\end{equation}
+Beispielweise gilt für eine Zufallsvariable immer, dass die Wahrscheinlichkeit
+für eine absolute Abweichung vom doppelten ihrer Standardabweichung höchstens $1/4$
+ist,  also Frequentistisch betrachtet nur für etwa ein Viertel ihrer Realisierungen
+zutrifft, und die Wahrscheinlichkeit für eine absolute Abweichung vom dreifachen 
+ihrer Standardabweichung höchstens $1/9$ ist, also Frequentistisch betrachtet 
+nur für etwa ein Zehntel ihrer Realisierungen zutrifft, jeweils unabhängig davon, 
+von welcher genauen Form die Verteilung der Zufallsvariable ist. Dies folgt mit 
+der Chebyshev Ungleichung aus   
+\begin{equation}
+\mathbb{P}\left(|\xi - \mathbb{E}(\xi)| \ge 2 \sqrt{\mathbb{V}(\xi)}\right)
+\le  \frac{\mathbb{V}(\xi)}{\left(2 \sqrt{\mathbb{V}(\xi)}\right)^2} =
+\frac{1}{4} 
+\end{equation}
+und
+\begin{equation}
+\mathbb{P}\left(|\xi - \mathbb{E}(\xi)| \ge 3 \sqrt{\mathbb{V}(\xi)}\right)
+\le  \frac{\mathbb{V}(\xi)}{\left(3 \sqrt{\mathbb{V}(\xi)}\right)^2} =
+\frac{1}{9}.
+\end{equation}
+Neben der Varianz gibt es viele 
+weitere Maße für die Variabilität von Zufallsvariablen. Hier seien beispielsweise 
+die erwartete absolute Abweichung einer Zufallsvariable von ihrem Erwartungswert
+$\mathbb{E}(|\xi - \mathbb{E}(\xi)|)$ und die sogenannte *Entropie* $-\mathbb{E}(\ln p(x))$ 
+genannt. Wir verdeutlichen @def-varianz zunächst an einigen Beispielen.
+
+### Beispiele {-}
+
+:::{#thm-varianz-einer-diskreten-zufallsvariable}
+$\xi$ sei eine Zufallsvariable mit Ergebnisraum $\mathcal{X} := \{-1,0,1\}$ und WMF  
+\begin{equation}
+p(-1) = \frac{1}{4} \quad p(0) = \frac{1}{2}  \quad p(1) = \frac{1}{4}.
+\end{equation}
+Dann gilt
+\begin{equation}
+\mathbb{V}(\xi) = \frac{1}{2}.
+\end{equation}
+:::
+
+:::{.proof}
+Nach @def-varianz ergibt sich mit dem in @thm-erwartungwert-einer-diskreten-zufallsvariable
+bestimmten Erwartungswert derselben Zufallsvariable 
+\begin{align}
+\begin{split}
+\mathbb{V}(\xi) 
+& = \mathbb{E}\left((\xi - \mathbb{E}(\xi))^2\right)                        \\
+& = \mathbb{E}\left((\xi - 0)^2\right)                                      \\
+& = \mathbb{E}\left(\xi^2\right)                                            \\
+& = \sum_{x \in \mathcal{X}} x^2 \,p_\xi(x)                                 \\
+& = (-1)^2 \cdot p_\xi(-1) + 0^2 \cdot p_\xi(0) + 1^2 \cdot p_\xi(1)        \\
+& = 1 \cdot \frac{1}{4} + 0 \cdot \frac{1}{2} + 1 \cdot  \frac{1}{4}        \\
+& = \frac{1}{2}.                                                            \\
+\end{split}
+\end{align}
+:::
+
+:::{#thm-varianz-einer-bernoulli-zufallsvariable}
+## Varianz einer Bernoulli-Zufallsvariable
+Es sei $\xi \sim \mbox{Bern}(\mu)$. Dann ist die Varianz von $\xi$ gegeben durch
+\begin{equation}
+\mathbb{V}(\xi) = \mu(1-\mu).
+\end{equation}
+:::
+
+:::{.proof}
+$\xi$ ist eine diskrete Zufallsvariable und es gilt $\mathbb{E}(\xi) = \mu$. Also gilt
+\begin{align}
+\begin{split}
+\mathbb{V}(\xi)
+& = \mathbb{E}\left((\xi - \mu)^2\right) \\
+& = \sum_{x \in \{0,1\}} (x - \mu)^2 \mbox{Bern}(x;\mu) \\
+& = (0 - \mu)^2 \mu^0(1-\mu)^{1-0}  + (1 - \mu)^2\mu^1(1-\mu)^{1-1}  \\
+& = \mu^2 (1-\mu)  + (1 - \mu)^2\mu  \\
+& = \left(\mu^2  + (1 - \mu)\mu\right)(1-\mu)  \\
+& = \left(\mu^2 + \mu - \mu^2\right)(1 - \mu) \\
+& = \mu(1-\mu).
+\end{split}
+\end{align}
+:::
+
+:::{#thm-varianz-einer-normalverteilten-zufallsvariable}
+## Varianz einer normalverteilten Zufallsvariable
+Es sei $\xi \sim N(\mu,\sigma^2)$. Dann ist die Varianz von $\xi$ gegeben durch
+\begin{equation}
+\mathbb{V}(\xi) = \sigma^2.
+\end{equation}
+:::
+
+:::{.proof}
+Wir verzichten auf einen Beweis.
+:::
+
+## Eigenschaften {#sec-eigenschaften}
+
+Die Varianz hat die Eigenschaft, keine negativen Werte anzunehmen.
+
+:::{#thm-nichtnegativitaet-der-varianz}
+## Nichtnegativität der Varianz
+$\xi$ sei eine Zufallsvariable. Dann gilt
+\begin{equation}
+\mathbb{V}(\xi) \ge 0.
+\end{equation}
+:::
+
+:::{.proof}
+Wir betrachten den Fall einer diskreten Zufallsvariable. Dann gilt zunächst
+\begin{equation}
+(x - \mathbb{E}(\xi))^2 \ge 0 \mbox{ für alle } x \in \mathcal{X}.
+\end{equation}
+Weiterhin gilt für die WMF $p$ von $\xi$, dass
+\begin{equation}
+p(x) \ge 0 \mbox{ für alle } x \in \mathcal{X}.
+\end{equation}
+Also folgt
+\begin{equation}
+p(x)(x - \mathbb{E}(\xi))^2 \ge 0 \mbox{ für alle } x \in \mathcal{X}.
+\end{equation}
+Damit gilt dann aber
+\begin{equation}
+\mathbb{V}(\xi) = \sum_{x \in \mathcal{X}} p(x)(x - \mathbb{E}(\xi))^2 \,dx \ge 0,
+\end{equation}
+Analog zeigt man die Nichtnegativität der Varianz bei kontinuierlichen Zufallsvariablen.
+::: 
+
+Das Berechnen von Varianzen wird durch folgendes Theorem, den sogenannten 
+*Varianzverschiebungssatz* oft erleichtert, insbesondere, wenn der 
+Erwartungswert der quadrierten Zufallsvariable leicht zu bestimmen oder bekannt ist.
+
+:::{#thm-varianzverschiebungssatz}
+## Varianzverschiebungssatz
+$\xi$ sei eine Zufallsvariable. Dann gilt
+\begin{equation}
+\mathbb{V}(\xi) = \mathbb{E}\left(\xi^2 \right) - \mathbb{E}(\xi)^2.
+\end{equation}
+:::
+
+:::{.proof}
+Mit der Definition der Varianz und der Linearität des Erwartungswerts gilt
+\begin{align}
+\begin{split}
+\mathbb{V}(\xi)
+& = \mathbb{E}\left((\xi - \mathbb{E}(\xi))^2\right) \\
+& = \mathbb{E}\left(\xi^2 - 2\xi\mathbb{E}(\xi) + \mathbb{E}(\xi)^2 \right) \\
+& =    \mathbb{E}(\xi^2)
+    - 2\mathbb{E}(\xi)\mathbb{E}(\xi)
+    + \mathbb{E}\left(\mathbb{E}(\xi)^2\right)   \\
+& = \mathbb{E}(\xi^2) - 2\mathbb{E}(\xi)^2 + \mathbb{E}(\xi)^2  \\
+& = \mathbb{E}(\xi^2) - \mathbb{E}(\xi)^2.
+\end{split}
+\end{align}
+:::
+
+In Analogie zu @thm-erwartungswert-bei-linear-affiner-transformation-einer-zufallsvariable
+gilt für die Varianz folgendes Resultat.
+
+:::{#thm-varianz-bei-linear-affiner-transformation-einer-zufallsvariable}
+## Varianz bei linear-affiner Tansformation einer Zufallsvariable
+$\xi$ sei eine Zufallsvariable und es sei
+\begin{equation}
+f : \mathcal{X} \to \mathcal{Z}, x \mapsto f(x) := ax + b \mbox{ für } a,b \in \mathbb{R}
+\end{equation}
+eine linear-affine Funktion. Dann gilt
+\begin{equation}
+\mathbb{V}(f(\xi)) = \mathbb{V}(a\xi + b) = a^2 \mathbb{V}(\xi).
+\end{equation}
+:::
+
+:::{.proof}
+Es ergibt sich
+\begin{align}
+\begin{split}
+\mathbb{V}(f(\xi))
+& = \mathbb{V}(a\xi + b)                                                        \\
+& = \mathbb{E}\left((a\xi+b-\mathbb{E}(a\xi + b))^2\right) 	                    \\
+& = \mathbb{E}\left((a\xi+b-a\mathbb{E}(\xi)-b)^2\right) 	                    \\
+& = \mathbb{E}\left((a\xi-a\mathbb{E}(\xi))^2\right) 		                    \\
+& = \mathbb{E}\left(a(\xi - \mathbb{E}(\xi))^2\right) 		                    \\
+& = \mathbb{E}\left(a^2(\xi - \mathbb{E}(\xi))^2\right) 	                    \\
+& = a^2\mathbb{E}\left((\xi - \mathbb{E}(\xi))^2\right) 	                    \\
+& = a^2\mathbb{V}(\xi).  								                        \\
+\end{split}
+\end{align}
+:::
+
+## Bedingte Varianz {#sec-bedingte-varianz}
+:::{#def-bedingte-varianz}
+## Bedingte Varianz
+Gegeben sei ein Zufallsvektor $\xi := (\xi_1,\xi_2)$ mit Ergebnisraum 
+$\mathcal{X} := \mathcal{X}_1 \times \mathcal{X}_2$. Dann ist die 
+*bedingte Varianz von $\xi_1$ gegeben $\xi_2 = x_2$* definiert als
+\begin{equation}
+\mathbb{V}(\xi_1|\xi_2 = x_2) = \mathbb{E}\left(\left(\xi_1 - \mathbb{E}(\xi_1|\xi_2 = x_2)\right)^2|\xi_2 = x_2\right)
+\end{equation}
+und die \textit{bedingte Standardabweichung von $\xi_1$ gegeben $\xi_2 = x_2$} ist definiert als
+\begin{equation}
+\mathbb{S}(\xi_1|\xi_2 = x_2) = \sqrt{\mathbb{V}(\xi_1|\xi_2 = x_2)}.
+\end{equation}
+:::
+
+Die bedingte Varianz ist im Sinne des bedingten Erwartungswerts definiert, ebenso
+wie ein bedingter Erwartungswert ist eine bedingte Varianz also eine Zufallsvariable.
+Auch für die bedingte Varianz gilt der Verschiebungssatz, wie folgendes Theorem
+besagt.
+
+
+:::{#thm-kovarianzverschiebungssatz-der-bedingten-varianz}
+## Kovarianzverschiebungssatz der bedingten Varianz
+Gegeben sei ein Zufallsvektor $\xi := (\xi_1,\xi_2)$. Dann gilt
+\begin{equation}
+\mathbb{V}(\xi_1|\xi_2 = x_2) = \mathbb{E}\left(\xi_1^2|\xi_2 = x_2\right) - \mathbb{E}(\xi_1|\xi_2 = x_2)^2
+\end{equation}
+:::
+
+:::{.proof}
+Wir beschränken uns auf den Beweis für einen diskreten Zufallsvektor. Der Beweis
+für einen kontinuierlichen Zufallsvektor folgt analog. Mit der Definition des 
+bedingten Erwartungswerts (@def-bedingter-errwartungswert) gilt 
+\begin{align}
+\begin{split}
+\mathbb{V}(\xi_1|\xi_2 = x_2)                                                                                                      
+& = \mathbb{E}\left(\left(\xi_1 - \mathbb{E}(\xi_1|\xi_2 = x_2)\right)^2|\xi_2 = x_2\right)                                         \\
+& = \mathbb{E}\left(\xi_1^2 - 2\xi_1\mathbb{E}(\xi_1|\xi_2 = x_2) + \mathbb{E}(\xi_1|\xi_2 = x_2)^2|\xi_2 = x_2\right)              \\
+& = \sum_{x_1 \in \mathcal{X}_1}p(x_1|x_2)\left(x_1^2 - 2x_1\mathbb{E}(\xi_1|\xi_2 = x_2) + \mathbb{E}(\xi_1|\xi_2 = x_2)^2\right)  \\
+& = \sum_{x_1 \in \mathcal{X}_1}x_1^2p(x_1|x_2) - 
+    \sum_{x_1 \in \mathcal{X}_1}2x_1\mathbb{E}(\xi_1|\xi_2 = x_2)p(x_1|x_2) + 
+    \sum_{x_1 \in \mathcal{X}_1}\mathbb{E}(\xi_1|\xi_2 = x_2)^2p(x_1|x_2)                                                           \\
+& = \mathbb{E}(\xi_1^2|\xi_2 = x_2) - 
+    2\mathbb{E}(\xi_1|\xi_2 = x_2)\sum_{x_1 \in \mathcal{X}_1}x_1p(x_1|x_2) + 
+    \mathbb{E}(\xi_1|\xi_2 = x_2)^2\sum_{x_1 \in \mathcal{X}_1}p(x_1|x_2)                                                           \\
+& = \mathbb{E}(\xi_1^2|\xi_2 = x_2) - 
+    2\mathbb{E}(\xi_1|\xi_2 = x_2)\mathbb{E}(\xi_1|\xi_2 = x_2) + 
+    \mathbb{E}(\xi_1|\xi_2 = x_2)^2 \cdot 1                                                                                         \\
+& = \mathbb{E}(\xi_1^2|\xi_2 = x_2) - 
+    2\mathbb{E}(\xi_1|\xi_2 = x_2)^2 + 
+    \mathbb{E}(\xi_1|\xi_2 = x_2)^2                                                                                          \\
+& = \mathbb{E}(\xi_1^2|\xi_2 = x_2) - \mathbb{E}(\xi_1|\xi_2 = x_2)^2 
+\end{split}
+\end{align}
+:::
+
+Folgendes Theorem, der sogenannte *Satz von der iterierten Varianz* stellt einen
+Zusammenhang zwischen der Varianz einer Zufallsvariable, ihrer bedingten Varianz
+und der Varianz ihres bedingten Erwartungswerts her.
+
+:::{#thm-satz-von-der-iterierten-varianz}
+## Satz von der iterierten Varianz
+Gegeben sei ein Zufallsvektor $\xi := (\xi_1,\xi_2)$. Dann gilt
+\begin{equation}
+\mathbb{V}(\xi_1) = 
+\mathbb{E}(\mathbb{V}(\xi_1|\xi_2)) + \mathbb{V}(\mathbb{E}(\xi_1|\xi_2))
+\end{equation}
+:::
+
+:::{.proof}
+Wir beschränken uns auf den Beweis für einen diskreten Zufallsvektor. Der Beweis
+für einen kontinuierlichen Zufallsvektor folgt analog. Mit dem Kovarianzverschiebungssatz 
+(@thm-kovarianzverschiebungssatz), dem Satz vom iterierten Erwartungswert 
+(@thm-satz-vom-iterierten-erwartungswert) und dem Kovarianzverschiebungssatz 
+der bedingten Varianz (@thm-kovarianzverschiebungssatz-der-bedingten-varianz)
+gilt
+\begin{align}
+\begin{split}
+\mathbb{V}(\xi_1) 
+& = \mathbb{E}(\xi_1^2) - \mathbb{E}(\xi_1)^2                                                                               \\
+& = \mathbb{E}\left(\mathbb{E}(\xi_1^2|\xi_2)\right) - \mathbb{E}\left(\mathbb{E}(\xi_1|\xi_2)\right)^2                     \\
+& = \sum_{x_2 \in \mathcal{X}_2}p(x_2)\mathbb{E}(\xi_1^2|\xi_2 = x_2) - \mathbb{E}\left(\mathbb{E}(\xi_1|\xi_2)\right)^2    \\
+& = \sum_{x_2 \in \mathcal{X}_2}p(x_2)\left(\mathbb{V}(\xi_1|\xi_2 = x_2) + \mathbb{E}(\xi_1|\xi_2 = x_2)^2 \right) - 
+     \mathbb{E}\left(\mathbb{E}(\xi_1|\xi_2)\right)^2                                                                       \\
+& = \sum_{x_2 \in \mathcal{X}_2}p(x_2)\mathbb{V}(\xi_1|\xi_2 = x_2) +
+    \sum_{x_2 \in \mathcal{X}_2}p(x_2)\mathbb{E}(\xi_1|\xi_2 = x_2)^2  - 
+     \mathbb{E}\left(\mathbb{E}(\xi_1|\xi_2)\right)^2                                                                       \\
+& = \mathbb{E}(\mathbb{V}(\xi_1|\xi_2)) + 
+    \left(\mathbb{E}\left(\mathbb{E}(\xi_1|\xi_2)^2\right) - \mathbb{E}\left(\mathbb{E}(\xi_1|\xi_2)\right)^2\right)          \\
+& = \mathbb{E}(\mathbb{V}(\xi_1|\xi_2)) + \mathbb{V}\left(\mathbb{E}(\xi_1|\xi_2)\right)                                      \\
+\end{split}
+\end{align}                                                                   
+::: 
+
