@@ -1,1 +1,819 @@
-# Logistische Regression
+# Logistische Regression {#sec-logistische-regression}
+## Modellformulierung {#sec-modellformulierung}
+
+Im Sinne von @nelder1972 wollen wir das Modell der logistischen Regression 
+als Beispiel für das sogenannte *generalisierte lineare Modell* einführen. Bei 
+letzterem handelt es sich um eine Generalisierung des wohlbekannten allgemeinen 
+linearen Modells. Es ist wie folgt definiert.
+
+:::{#def-generalisiertes-lineares-modell}
+## Generalisiertes lineares Modell
+$x \in \mathbb{R}^{m+1}$ sei ein erweiterter Featurevektor und $y$ das assoziierte
+Label. Weiterhin sei für einen *Parametervektor* $\beta \in \mathbb{R}^{m+1}$
+\begin{equation}
+\eta := x^T\beta
+\end{equation}
+ein *linearer Prädiktor*. Dann ist ein generalisierte lineares Modell definiert
+mithilfe einer zweimal differenzierbaren und invertierbaren *Link-Funktion*
+\begin{equation}
+g:\mathbb{R} \to \mathbb{R}, \mathbb{E}(y) \mapsto g(\mathbb{E}(y)) =: \eta 
+\end{equation}
+definiert. Die Inverse der Link-Funktion,
+\begin{equation}
+g^{-1}:\mathbb{R} \to \mathbb{R}, \eta \mapsto g^{-1}(\eta) = \mathbb{E}(y)
+\end{equation}
+heißt *Mean-Funktion* und wird mit $f$ bezeichnet, sodass
+\begin{equation}
+f: \mathbb{R} \to \mathbb{R}, \eta \mapsto f(\eta) = \mathbb{E}(y).
+\end{equation}
+:::
+
+Nach @def-generalisiertes-lineares-modell ist das allgemeine lineare Modell der folgende
+Spezialfall eines generalisierten linearen Modells:
+
+:::{#def-allgemeines-lineares-modell-als-generalisiertes-lineares-modell}
+## Allgemeines lineares Modell als generalisierters lineares Modell
+
+Das allgemeine lineare Modell mit unabhänig und identisch verteilten Fehlervariablen 
+ist das generalisierte lineare Model, bei dem
+
+1. die Labelvariable eine univariat normalverteilte Zufallsvariable
+\begin{equation}
+y \sim N(\mu,\sigma^2),
+\end{equation}
+ist und
+2. die Link-Funktion durch die Identität
+\begin{equation}
+g:\mathbb{R} \to \mathbb{R}, \mu \mapsto g(\mu) := \mu =: \eta.
+\end{equation}
+gegeben ist. Weil die Inverse der Identität wiederrum die Identität ist, folgt,
+dass die Mean-Funktion des ALM durch
+\begin{equation}
+f:\mathbb{R} \to \mathbb{R}, \eta \mapsto f(\eta) = \eta =  \mu.
+\end{equation}
+gegeben ist. Die Parameter des allgemeinen linearen Modells sind die Komponenten
+des Vektors $\beta \in \mathbb{R}^{m+1}$ des linearen Prädiktors $\eta = x^T\beta$
+und der Parameter $\sigma^2>0$.
+:::
+
+
+Das Modell der logistischen Regression zeichnet sich nun dadurch aus, dass die 
+Labelvariable im Vergleich zum allgemeinen linearen Modell *binär* und nicht 
+kontinuierlich ist. 
+
+
+:::{#def-logistische-regression-als-generalisiertes-lineares-modell}
+## Logistische Regression als generalisiertes lineares Modell
+
+Das Modell der logistischen Regression ist das generalisierte lineare Modell, bei dem
+
+1. die Labelvariable eine Bernoulli-Zufallsvariable
+\begin{equation}
+y \sim B(\mu)
+\end{equation}
+ist und
+2. die Link-Funktion durch die *Logit-Funktion*
+\begin{equation}
+g : [0,1] \to \mathbb{R}, \mu \mapsto g(\mu) := \ln \left(\frac{\mu}{1 - \mu} \right) =: \eta
+\end{equation}
+gegeben ist. Die Parameter des logistischen Regressionsmodels sind die Komponenten
+des Vektors $\beta \in \mathbb{R}^{m}$ des linearen Prädiktors $\eta = x^T\beta$.
+:::
+
+Betrachtet man die Mean-Funktion des Modells der logistischen Regression,
+so ist man auf die sogenannet *logistische Standardfunktion* geführt.
+
+:::{#thm-mean-funktion-der-logistischen-regression}
+## Mean-Funktion der logistischen Regression
+
+Die Inverse der Link-Funktion des Modells der logistischen Regression
+und somit seine Mean-Funktion ist die *logistische Standardfunktion*
+\begin{equation}
+f:\mathbb{R} \to [0,1], \eta \mapsto f(\eta) = \frac{1}{1 + \exp(-\eta)}.
+\end{equation}
+:::
+
+:::{.proof}
+Umformen der Logit-Funktion ergibt
+\begin{align}
+\begin{split}
+\eta & = \ln (\mu/(1-\mu))		\\
+\Leftrightarrow
+-\eta & = -\ln(\mu/(1-\mu))		\\
+\Leftrightarrow
+-\eta & = \ln((1-\mu)/\mu))		\\
+\Leftrightarrow
+\exp(-\eta) & = (1-\mu)/\mu 	\\
+\Leftrightarrow
+\mu \exp(-\eta) & = 1 - \mu 	\\
+\Leftrightarrow
+\exp(-\eta) & = \mu^{-1} - 1 	\\
+\mu & = 1/(\exp(-\eta) + 1)
+\end{split}
+\end{align}
+:::
+
+@fig-lr-link-mean visualisiert die Link- und Mean-Funktionen der logistischen Regression.
+
+```{r, echo = F, eval = F}
+library(latex2exp)
+pdf(
+file        = "_figures/804-lr-link-mean.pdf",
+width       = 8,
+height      = 4)
+par(
+family      = "sans",
+mfcol       = c(1,2),
+pty         = "s",
+bty         = "l",
+lwd         = 1,
+las         = 1,
+mgp         = c(2,1,0),
+xaxs        = "i",
+yaxs        = "i",
+font.main   = 1,
+cex         = 1,
+cex.main    = 1)
+
+mu          = seq(0,1,len = 1e2)
+g_mu        = log(mu/(1-mu))
+eta         = seq(-10,10, len = 1e2)
+f_eta       = 1/(1 + exp(-eta))
+
+# g(\mu)
+plot(
+mu,
+g_mu,
+type = "l",
+col = "Blue",
+xlim = c(0,1),
+ylim = c(-10,10),
+xlab = TeX("$\\mu$"),
+ylab = TeX("$\\eta$"),
+main = TeX("$g(\\mu) := ln (\\mu/1 - \\mu)$"))
+grid()
+
+# f(\eta)
+plot(
+eta,
+f_eta,
+type = "l",
+col = "Blue",
+xlim = c(-10,10),
+ylim = c(0,1),
+xlab = TeX("$\\eta$"),
+ylab = TeX("$\\mu$"),
+main = TeX("$f(\\eta) := 1/(1 + \\exp(-\\eta))$"))
+grid()
+dev.off()
+```
+
+![Link- und Mean-Funktion der logistischen Regression.](./_figures/804-lr-link-mean){#fig-lr-link-mean fig-align="center" width=100%}
+
+Mithilfe der logistischen Standardfunktion lässt sich nun das Modell der
+logistischen Regression wie folgt fassen.
+
+:::{#def-modell-der-logistischen-regression}
+## Modell der logistischen Regression
+
+$y$ sei eine Zufallsvariable mit Ergebnisraum $\{0,1\}$. Dann ist das
+*Modell der logistischen Regression* definiert als die WMF von $y$
+\begin{equation}
+p(y) = B\left(y;\frac{1}{1 + \exp\left(-x^T \beta\right)}\right),
+\end{equation}
+wobei $x \in \mathbb{R}^{m+1}$ einen erweiterten Featurevektor und
+$\beta \in \mathbb{R}^{m+1}$ den *Parametervektor* bezeichnen
+:::
+
+Aus generativer Sicht wird ein Trainingsdatensatz
+\begin{equation}
+\left\lbrace\left(x^{(i)},y^{(i)}\right)\right\rbrace_{i = 1}^{n} \mbox{ mit } x^{(i)} \in \mathbb{R}^{m+1} \mbox{ und } y^{(i)} \in \{0,1\}
+\end{equation}
+unter dem Modell der logistischen Regression also wie folgt erzeugt
+
+1. Es wird ein Featurevektor $x^{(i)}$ definiert.
+2. Die zugehörige Labelvariable $y^{(i)}$ wird anhand von $p(y) = B(y;\mu)$ mit Erwartungswertparameter $\mu = \frac{1}{1 + \exp\left(-x^{(i)^T} \beta\right)}$ realisiert.
+
+Für $n = 30$, $m = 1$ und $\beta = (-2,2)^T$ implementiert folgender **R**
+dieses generative Verfahren
+
+\footnotesize
+```{r, echo = T}
+# Modellparameter
+m    = 1                                # Featurevektoredimensionalität
+n    = 30                               # Anzahl Datenpunkte
+x    = matrix(c(rep(1,n),               # Definition des erweiterten Featurevektors
+                seq(-5,5, len = n)),
+                nrow  = 2,
+                byrow = TRUE)
+beta = matrix(c(-2,2), nrow = 2)        # wahrer, aber unbekannter, Parametervektor
+eta  = t(x) %*% beta                    # wahrer, aber unbekannter linearer Prädiktor
+mu   = 1/(1+exp(-eta))                  # wahrer, aber unbekannter, Bernoulliparametervektor
+
+# Dategeneration
+set.seed(2)                             # Zufallsgeneratorzustand
+y    = rep(NaN,2)                       # Datenarray
+for(i in 1:n){
+  y[i] = rbinom(1,1,mu[i])              # Bernoullivariablenrealisierung
+}
+```
+\normalsize
+
+@fig-lr-datengeneration zeigt die so generierten Daten des Modells, das in Analogie
+zum Modell der einfachen linearen Regression als *einfache logistische Regression*
+bezeichnet werden mag.
+
+```{r, eval = F, echo = F}
+library(latex2exp)
+pdf(
+file        = "_figures/804-lr-datengeneration.pdf",
+width       = 10,
+height      = 5)
+par(
+family      = "sans",
+mfcol       = c(1,2),
+pty         = "m",
+bty         = "l",
+lwd         = 1,
+las         = 1,
+mgp         = c(2,1,0),
+xaxs        = "i",
+yaxs        = "i",
+font.main   = 1,
+cex         = 1.1,
+cex.main    = 1.2)
+
+plot(
+x[2,],
+eta,
+type = "b",
+pch  = 16,
+xlab = TeX("$x_2$"),
+ylab = "",
+xlim = c(min(x[2,])-1, max(x[2,])+1),
+ylim = c(min(eta)-1, max(eta)+1),
+main = TeX("$\\eta = x^T \\beta$"))
+grid()
+
+plot(
+x[2,],
+mu,
+type = "b",
+xlab = TeX("$x_2$"),
+ylab = "",
+col  = "gray60",
+pch  = 16,
+xlim = c(min(x[2,])-1, max(x[2,])+1),
+ylim = c(-.1,1.1),
+main = TeX("$\\mu = 1/(1 + exp(-\\eta))$ und $y$"))
+points(
+x[2,],
+y,
+type = "p")
+grid()
+
+legend(
+"topleft",
+c("y", TeX("$\\mu$")),
+pch         = c(1,16),
+col         = c("Black","gray60"),
+bty         = "n",
+cex         = 1,
+x.intersp   = 1)
+dev.off()
+```
+
+![Daten eines logistischen Regressionmodells.](./_figures/804-lr-datengeneration){#fig-lr-datengeneration fig-align="center" width=100%}
+
+
+Die Verteilung der Labelvariable eines logistischen Regressionsmodells kann zur 
+Klassifikation eines Featurevektors genutzt werden. Im einfachsten Fall bestimmt
+man, ob für einen Featurevektor $x$ die Wahrscheinlichkeit für $y = 0$ oder $y = 1$
+größer ist. Dies ist die zentrale Mechanik folgender Klassifikationsregel.
+ 
+:::{#def-klassifikationsregel-der-logistischen-regression}
+## Klassifikationsregel der logistischen Regression
+
+$p(y)$ sei die WMF eines logistischen Regressionsmodells. Dann ist die *Klassifikationregel* definiert als
+\begin{equation}
+\delta:\mathbb{R}^m \to \{0,1\}, x \mapsto \delta(x) :=
+\begin{cases}
+0 & \mbox{ für } p(y = 0) \ge p(y = 1) \\
+1 & \mbox{ für } p(y = 0)   < p(y = 1)
+\end{cases}
+\end{equation}
+:::
+
+Es gilt offenbar
+\begin{equation}
+\delta(x) = 1
+\Leftrightarrow p(y = 1) > p(y = 0)
+\Leftrightarrow p(y = 1) > 0.5.
+\end{equation}
+
+Zur Angabe der Wahrscheinlichkeit $p(y)$ ist neben dem Featurevektor gemäß 
+@def-modell-der-logistischen-regression das Wissen um den Parametervektor 
+nötig. Im Folgenden Abschnitt diskutieren wir, wie basierend auf einem 
+Trainingsdatensatz der Parametervektor eines logistischen Regressionsmodells
+geschätzt werden kann.
+
+## Lernen {#sec-lernen}
+
+Eine grundlegende Herangehensweise zum Schätzen des Parametervektors im logistischen
+Regressionsmodell ist die Maximum-Likelihood-Methode. Im Gegensatz zur Anwendung
+dieser Methode z.B. im Bereich der linearen Diskriminanzanalyse ist es bei der
+logistischen Regression allerdings nicht möglich, analytische Lösungen für einen
+Parametervektorschätzer anzugeben, sondern man ist auf die Verwendung numerischer
+Optimierungsverfahren geführt. Wir wollen zunächst die Zielfunktion dieser Verfahren,
+also die Log-Likelihood-Funktion der logistischen Regression formulieren.
+
+:::{#thm-log-likelihood-funktion-der-logistischen-regression}
+## Log-Likelihood-Funkktion der logistischen Regression
+
+$\lbrace(x^{(i)},y^{(i)})\rbrace_{i=1}^n$ sei ein Trainingsdatensatz aus erweiterten
+$(m+1)$-dimensionalen Featurevektoren und assoziierten Labelvariablenrealisierungen 
+und $f$ sei die logistische Standardfunktion. Dann hat die Log-Likelihood-Funktion 
+der logistischen Regression die Form
+\begin{equation}
+\ell:\mathbb{R}^{m+1} \to \mathbb{R}, \beta \mapsto \ell(\beta)
+:= \sum_{i=1}^n y^{(i)}              \ln \left(f\left(x^{{(i)}^T}\beta\right)\right)+
+               \left(1-y^{(i)}\right)\ln \left(1-f\left(x^{{(i)}^T}\beta\right)\right).
+\end{equation}
+:::
+
+:::{.proof}
+Wir halten zunächst fest, dass für unabhängig und identisch verteilte Labelvariablen 
+gilt, dass
+\begin{equation}
+\ell(\beta)
+:= \ln p\left(y^{(1)}, ...,y^{(n)}\right)
+ = \ln \prod_{i=1}^n p\left(y^{(i)}\right)
+ = \sum_{i=1}^n \ln p\left(y^{(i)}\right)
+ = \sum_{i=1}^n \l nB\left( y^{(i)}; f\left(x^{{(i)}^T} \beta\right)\right)
+\end{equation}
+Mit der WMF der Bernoulliverteilung folgt dann
+\begin{align}
+\begin{split}
+\ell(\beta)
+& = \sum_{i=1}^n \ln \left(f\left(x^{{(i)}^T}\beta\right)^{y^{(i)}}\left(1-f\left(x^{{(i)}^T}\beta\right)\right)^{1 - y^{(i)}}\right)	                    \\
+& = \sum_{i=1}^n y^{(i)}  \ln \left(f\left(x^{{(i)}^T}\beta\right)\right) + \left(1 - {y^{(i)}}\right) \ln\left(1 - f\left(x^{{(i)}^T}\beta\right)\right)	\\
+\end{split}
+\end{align}
+:::
+
+Folgender **R** Code zeigt eine Möglichkeit auf, die Log-Likelihood-Funktion des
+oben formulierten einfachen logistischen Regressionsmodells für einen Trainingsdatensatz
+auszuwerten. Da der erweiterte Parametervektor dieses Modells zweidimensional ist,
+ergibt sich eine bivariate reellwertige Funktion. Diese ist in @fig-lr-llh visualisiert.  
+
+\footnotesize
+```{r, echo = T}
+# Funktionsdefinitionen
+f = function(eta){                                                   # logistische Standardfunktion
+    return(1/(1 + exp(-eta)))                                       
+}
+
+
+llh = function(x,y,beta){                                           # Log-Likelihood-Funktion
+    n   = ncol(x)                                                   # Anzahl Datenpunkte    
+    ell = 0                                                         # Log-Likelhood Initialisierung
+    for(i in 1:n){
+        ell = ell + y[i]*log(f(t(x[,i]) %*% beta)) + (1-y[i])*log(1-f(t(x[,i]) %*% beta))
+    }
+    return(ell)
+}
+
+# Auswertung der Log-Likelihood-Funktion
+beta_min  = -5                                                      # beta Minimum
+beta_max  =  5                                                      # beta Maximum
+beta_res  = 5e1                                                     # beta Auflösung
+beta_1    = seq(beta_min, beta_max, length.out = beta_res)          # beta_1 Raum
+beta_2    = seq(beta_min, beta_max, length.out = beta_res)          # beta_2 Raum
+ell       = matrix(rep(NaN, beta_res*beta_res), nrow = beta_res)    # Log-Likelihood-Funktion Array
+for(i in 1:beta_res){                                               # Iterationen beta_1
+    for(j in 1:beta_res){                                           # Iterationen beta_2
+        beta12   = matrix(c(beta_1[i], beta_2[j]), nrow = 2)        # Parametervektordefinition
+        ell[i,j] = llh(x,y,beta12)                                  # Auswertung der Log-Likelihood-Funktion
+    }
+}
+```
+
+```{r, eval = F, echo = F}
+library(latex2exp)
+pdf(
+file        = "_figures/804-lr-llh.pdf",
+width       = 5,
+height      = 5)
+par(
+family      = "sans",
+mfcol       = c(1,1),
+pty         = "s",
+bty         = "l",
+lwd         = 1,
+las         = 1,
+mgp         = c(2,1,0),
+xaxs        = "i",
+yaxs        = "i",
+font.main   = 1,
+cex         = 1.3,
+cex.main    = 1.1)
+filled.contour(
+beta_1,
+beta_2,
+ell,
+col    = hcl.colors(20, "YlOrRd"),
+levels = seq(-20,0,len = 20),
+ylim   = c(0,5),
+xlab   = TeX("$\\beta_1$"),
+ylab   = TeX("$\\beta_2$"),
+main   = "Log-Likelihood-Funktion")
+beta = matrix(c(-2,2), nrow = 2)         
+dev.off()
+```
+
+![Log-Likelihood-Funktion zum generierten Datensatz des einfachen logistischen Regressionsmodells.](./_figures/804-lr-llh){#fig-lr-llh fig-align="center" width=100%}
+
+Um nun die Log-Likelihood-Funktion der logistischen Regression zu maximieren, kann 
+beispielsweise das Gradientenverfahren eingesetzt werden. Dieses hat folgende Form.
+
+:::{#thm-gradientenverfahren-der-logistischen-regression}
+## Gradientenverfahren der logistischen Regression
+
+Gegeben sei das Modell der logistischen Regression und $\{(x^{(i)},y^{(i)})\}_{i=1}^n$
+sei ein entsprechender Trainingsdatensatz. Dann kann ein Maximum-Likelihood-Schätzer
+$\hat{\beta}$ für den Parametervektor $\beta$ des logistischen Regressionsmodells 
+durch folgendes Gradientenverfahren gewonnen werden:
+
+(0) Wähle $\beta^0 \in \mathbb{R}^{m+1}, \alpha > 0, \delta > 0$
+(1) Für $k = 0,1,2,...$ bis zur Konvergenz setze
+\begin{equation}
+\beta^{(k+1)} := \beta^{(k)} + \alpha \nabla \ell(\beta^{(k)}).
+\end{equation}
+\end{itemize}
+wobei $\nabla \ell\left(\beta^k\right) \in \mathbb{R}^{m+1}$ den Gradienten 
+\begin{equation}
+\renewcommand{\arraystretch}{1.2}
+\nabla \ell(\beta)
+=
+\begin{pmatrix}
+\frac{\partial}{\partial \beta_1} \ell(\beta) 	                                \\
+\vdots 											                                \\
+\frac{\partial}{\partial \beta_{m+1}} \ell(\beta) 	                            \\
+\end{pmatrix}
+=
+\begin{pmatrix}
+\sum_{i=1}^n \left(y^{(i)} - f\left(x^{{(i)}^T}\beta\right)\right)x_1^{(i)} 	\\
+\vdots 													                        \\
+\sum_{i=1}^n \left(y^{(i)} - f\left(x^{{(i)}^T}\beta\right)\right)x_{m+1}^{(i)} \\
+\end{pmatrix}
+\end{equation}
+der Log-Likelihood-Funktion der logistischen Regression bezeichnet
+:::
+
+:::{.proof}
+Um die $j$te partielle Ableitung der Log-Likelihood-Funktion zu bestimmen, halten
+wir zunächst fest, dass sich die Ableitung der logistischen Standardfunktion 
+$f$ hinsichtlich $\eta$ zu
+\begin{equation}\label{eq:deta_f}
+\frac{d}{d\eta} f: \mathbb{R} \to \mathbb{R}, \eta \mapsto \frac{d}{d\eta}f(\eta) = f(\eta)(1 - f(\eta))
+\end{equation}
+ergibt. Dies kann wie folgt eingesehen werden:
+\begin{align}
+\begin{split}
+\frac{d}{d\eta}f(\eta)
+& = \frac{d}{d\eta}\left({1 + \exp(-\eta)}\right)^{-1} \\
+& = -\left({1 + \exp(-\eta)}\right)^{-2}\cdot \exp(-\eta)\cdot(-1) \\
+& = \frac{\exp(-\eta)}{(1 + \exp(-\eta))^2} \\
+& = \frac{1 + \exp(-\eta) - 1}{(1 + \exp(-\eta))^2} \\
+& = \frac{1 + \exp(-\eta)}{(1 + \exp(-\eta))^2} - \frac{1}{(1 + \exp(-\eta))^2} \\
+& = \frac{1}{1 + \exp(-\eta)} - \frac{1}{(1 + \exp(-\eta))^2} \\
+& = \frac{1}{1 + \exp(-\eta)}\left(1 - \frac{1}{1 + \exp(-\eta)}\right) \\
+& = f(\eta)(1 - f(\eta))
+\end{split}
+\end{align}
+Damit ergibt sich dann für $\frac{\partial}{\partial \beta_j} \ell, j = 1,...,m$:
+\begin{align}
+\begin{split}
+\frac{\partial}{\partial \beta_j} \ell(\beta) 
+& = \frac{\partial}{\partial \beta_j}
+\left(\sum_{i=1}^n y^{(i)} \ln \left(f\left(x^{(i)^T} \beta\right)\right)  + \left(1 - y^{(i)}\right) \ln \left(1 - f\left(x^{(i)^T}\beta\right)\right)\right) \\
+& =
+\sum_{i=1}^n y^{(i)}
+\frac{\partial}{\partial \beta_j} \left(\ln \left(f\left(x^{(i)^T} \beta\right)\right)\right)
++ \left(1 - y^{(i)}\right) \frac{\partial}{\partial \beta_j}\left( \ln \left(1 - f\left(x^{(i)^T}\beta\right)\right)\right) \\
+& =
+\sum_{i=1}^n y^{(i)}
+\frac{1}{f\left(x^{(i)^T} \beta\right)} \left(\frac{\partial}{\partial \beta_j}\left(f\left(x^{(i)^T} \beta\right)\right)\right)
++ \left(1 - y^{(i)}\right)
+\frac{1}{1 - f\left(x^{(i)^T} \beta\right)}
+\frac{\partial}{\partial \beta_j}\left(1 - f\left(x^{(i)^T}\beta\right)\right) \\
+& =
+\sum_{i=1}^n \left(y^{(i)}
+\frac{1}{f\left(x^{(i)^T} \beta\right)}
+- \left(1 - y^{(i)}\right)
+\frac{1}{1 - f\left(x^{(i)^T} \beta\right)} \right)
+\frac{\partial}{\partial \beta_j}\left(f\left(x^{(i)^T} \beta\right)\right) \\
+& =
+\sum_{i=1}^n \left(y^{(i)}
+\frac{1}{f\left(x^{(i)^T} \beta\right)} -
+\left(1 - y^{(i)}\right)
+\frac{1}{1 - f\left(x^{(i)^T} \beta\right)} \right)  
+f\left(x^{(i)^T}\beta\right) \left(1 - f\left(x^{(i)^T}\beta\right)\right)
+\frac{\partial}{\partial \beta_j}\left(x^{(i)^T}\beta\right) \\
+& =
+\sum_{i=1}^n \left(y^{(i)}
+\frac{1}{f\left(x^{(i)^T} \beta\right)} -
+\left(1 - y^{(i)}\right)
+\frac{1}{1 - f\left(x^{(i)^T} \beta\right)} \right)
+f\left(x^{(i)^T} \beta\right) \left(1 - f\left(x^{(i)^T}\beta\right)\right)x_j^{(i)} \\
+& =
+\sum_{i=1}^n \left(y^{(i)}
+\frac{f\left(x^{(i)^T}\beta\right) \left(1 - f\left(x^{(i)^T}\beta\right)\right)}{f\left(x^{(i)^T} \beta\right)} -
+\left(1 - y^{(i)}\right)
+\frac{f\left(x^{(i)^T }\beta\right) \left(1 - f\left(x^{(i)^T}\beta\right)\right)}{1 - f\left(x^{(i)^T} \beta\right)} \right)x_j^{(i)} \\
+& =
+\sum_{i=1}^n \left(y^{(i)}
+\left(1 - f\left(x^{(i)^T}\beta\right)\right) -
+\left(1 - y^{(i)}\right) f\left(x^{(i)^T}\beta\right) \right) x_j^{(i)}\\
+& =
+\sum_{i=1}^n \left(y^{(i)} - y^{(i)}f\left(x^{(i)^T}\beta\right) -
+f\left(x^{(i)^T}\beta\right) + y^{(i)} f\left(x^{(i)^T}\beta\right)\right) x_j^{(i)} \\
+& =
+\sum_{i=1}^n \left(y^{(i)} - f\left(x^{(i)^T}\beta\right) \right)x_j^{(i)}. 
+\end{split}
+\end{align}
+:::
+
+Für eine erleichtete Implementation kann der in @thm-gradientenverfahren-der-logistischen-regression
+bestimmte Gradient der Log-Likelihood-Funktion der logistischen Regression in Matrixform
+dargestellt werden.
+
+:::{#thm-matrixdarstellung-des-gradienten-der-logistischen-regression}
+
+## Matrixdarstellung des Gradienten der logistischen Regression
+Es seien $X \in \mathbb{R}^{n \times (m + 1)}$ die Matrix der zeilenweise konkatenierten 
+transponierten erweiterten Featurevektoren $x^{(i)} \in \mathbb{R}^{m+1}, i = 1,...,n$,
+$y \in \mathbb{R}^n$ sei der Vektor der zugehörigen Labelvariablenrealisierungen $y^{(i)}, i = 1,...,n$
+und $f:\mathbb{R}^n \to \mathbb{R}^n$ sei die multivariate, vektorwertige, elementweise evaluierte  
+Version der Mean-Funktion der logistischen Regression. Dann kann der Gradient der
+Log-Likelihood-Funktion der logistischen Regression geschrieben werden als
+\begin{equation}
+\nabla \ell(\beta) = X^T(y-f(X\beta)).
+\end{equation}
+:::
+
+:::{.proof}
+Die Aussage ergibt sich durch Anwendung der Matrixsubtraktion und Matrixmultiplikation.
+::: 
+
+
+Folgender **R** Code demonstriert die Anwendung von @thm-gradientenverfahren-der-logistischen-regression 
+und @thm-matrix-darstellung-des-gradienten-der-logistischen-regression für den 
+oben generierten Datensatz des einfachen logistischen Regressionsmodells.
+
+\footnotesize
+```{r, echo = T}
+# Funktionsdefinitionen
+# ----------------------------------------------------------------
+f = function(eta){                                                  # Mean-Funktion der logistischen Regression
+    return(1/(1 + exp(-eta)))                                       
+}
+nabla_l = function(beta, X, y){                                     # Gradient der Log-Likelihood Function
+    return(as.matrix(t(X) %*% (y - f(X %*% beta)))) 
+}
+
+# Gradientenverfahren
+#  ----------------------------------------------------------------
+y           = matrix(y, ncol = 1)                                   # n x 1     Form der Labelvariable
+X           = t(x)                                                  # n x (m+1) Form der erweiterten Featurevektoren
+alpha       = 1e-1                                                  # Lernrate
+delta       = 1e-2                                                  # Konvergenzkriterium
+beta_hat_k  = matrix(c(.61,.85), nrow = 2)                          # Zufälliger Startpunkt in [0,1]^2
+while(norm(nabla_l(beta_hat_k, X, y)) > delta){                     # Iterationen
+    beta_hat_k   = beta_hat_k+ alpha*(nabla_l(beta_hat_k, X, y))    # Parameterschätzerupdate
+}
+print(beta_hat_k)
+```
+
+Basierend auf dem vorliegenden Datensatz und den Parametern des Gradientenverfahrens 
+ergibt sich also der Schätzer $\hat{\beta} = (-0.9, 2.6)$ für den wahren, aber
+unbekannten, Parameter $\beta$. @fig-lr-schaetzung visualisiert den resultierenden
+Schätzer im Kontext der datensatzspezifischen Log-Likelihood-Funktion.
+
+
+
+
+```{r, eval = F, echo = F}
+library(latex2exp)
+pdf(
+file        = "_figures/804-lr-schaetzung.pdf",
+width       = 5,
+height      = 5)
+par(
+family      = "sans",
+mfcol       = c(1,1),
+pty         = "s",
+bty         = "l",
+lwd         = 1,
+las         = 1,
+mgp         = c(2,1,0),
+xaxs        = "i",
+yaxs        = "i",
+font.main   = 1,
+cex         = 1.3,
+cex.main    = 1.1)
+contour(
+beta_1,
+beta_2,
+ell,
+col    = hcl.colors(20, "YlOrRd"),
+levels = round(seq(-20,0,len = 15), digits = 1),
+ylim   = c(0,5),
+xlab   = TeX("$\\beta_1$"),
+ylab   = TeX("$\\beta_2$"),
+main   = "Parametervektorschätzer")
+points(
+beta_hat[1],
+beta_hat[2],
+col = "Black",
+pch = 16)
+dev.off()
+```
+
+![Parameterschätzung der logistischen Regression.](./_figures/804-lr-schaetzung){#fig-lr-schaetzung fig-align="center" width=100%}
+
+
+
+Im Allgemeinen ist das reine Gradientenverfahren zum Lernen der Parameter eines 
+logistischen Regressionsmodells allerdings recht instabil. Generell werden deshalb 
+sogenannte *Iteratively Weighted Least-Squares (IWLS) Verfahren* zur Maximum-Likelihood-Schätzung 
+in generalisierten linearen Modellen bevorzugt (@green1984). Diese den Gauss-Newton-Verfahren 
+nicht unähnlichen numerischen Optimierungsverfahren nutzen üblicherweise neben dem 
+Gradienten auch die Hesse-Matrix zur Bestimmung eines Iteranden. In der **R** Funktion
+ `glm()`, die zur Schätzung der Parameter generalisierter linearer Modelle genutzt werden kann, 
+implementiert **R** ein IWLS Verfahren. Folgender **R** zeigt, dass sich im vorliengende Fall 
+die Schätzung basierend auf dem Gradientenverfahren und dem IWLS-Verfahren 
+allerdings nicht starkt unterscheiden. 
+
+\footnotesize
+```{r, echo = T, eval = T}
+lr        = glm(y ~ x[2,], family = 'binomial')          # generalized linear model fit
+beta_hat  = lr$coefficients                              # Parametervektorschätzer
+print(beta_hat)                                          # Ausgabew
+```
+
+
+## Anwendungsbeispiel {#sec-anwendungsbeispiel}
+
+```{r, eval = F, echo = F}
+library(latex2exp)
+D           = read.csv("_data/804-lr.csv", header = T)
+pdf(
+file        = "_figures/804-lr-anwendungsbeispiel-1.pdf",
+width       = 4.5,
+height      = 4.5)
+par(
+family      = "sans",
+mfcol       = c(1,1),
+pty         = "s",
+bty         = "l",
+lwd         = 1,
+las         = 1,
+mgp         = c(2,1,0),
+xaxs        = "i",
+yaxs        = "i",
+font.main   = 1,
+cex         = 1,
+cex.main    = 1)
+
+# Daten y^{(i)} = 0
+plot(
+D[D[,3] == 0,1],
+D[D[,3] == 0,2],
+col     = "White",
+bg      = "Red",
+pch     = 21,
+xlim    = c(0,3),
+ylim    = c(0,3),
+xlab    = "BDI",
+ylab    = "GLU")
+
+# Daten y^{(i)} = 1
+points(
+D[D[,3] == 1,1],
+D[D[,3] == 1,2],
+col = "White",
+bg  = "Blue",
+pch = 21)
+
+legend(
+"topleft",
+c("Non-Responder", "Responder"),
+pch         = 19,
+col         = c("Red", "Blue"),
+bty         = "n",
+cex         = .8,
+x.intersp   = 1)
+dev.off()
+```
+
+```{r echo = F, eval = T}
+library(knitr)
+D           = read.csv("_data/804-lr.csv", header = T)
+kable(head(D, n = 20L), digits = 2, align = "c")
+``` 
+
+
+\footnotesize
+```{r, echo = T, eval = F}
+D         = read.csv("_data/804-lr.csv")                                        # Datensatz                                                 
+x         = t(D[,1:2])                                                          # Featurevektoren
+y         = t(D[,3])                                                            # Label
+n         = ncol(x)                                                             # n
+m         = nrow(x)                                                             # m
+lr        = glm(t(y) ~ t(x), family = 'binomial')                               # IWLS Parameterlernen
+beta_hat  = as.matrix(lr$coefficients, nrow = m + 1)                            # Parameterschätzer
+x_min     = 0                                                                   # GLU/BDI Minimum
+x_max     = 3                                                                   # GLU/BDI Maximum
+x_res     = 5e2                                                                 # GLU/BDI Auflösung
+bdi       = seq(x_min, x_max, length.out = x_res)                               # BDI
+glu       = seq(x_min, x_max, length.out = x_res)                               # GLU
+p_y       = matrix(rep(NaN, x_res*x_res), nrow = x_res)                         # p_{(BDI, GLU}(y=1)
+for(i in 1:x_res){                                                              # BDI Iterationen
+    for(j in 1:x_res){                                                          # GLU Iterationen
+        x_tilde   = rbind(1, bdi[i], glu[j])                                    # \tilde{x}
+        p_y[i,j]  = 1/(1+exp(-t(x_tilde) %*% beta_hat))}}                       # p_{(BDI, GLU}(y=1)  
+```
+\normalsize
+
+```{r, eval = F, echo = F}
+library(latex2exp)
+pdf(
+file        = "_figures/804-lr-anwendungsbeispiel-2.pdf",
+width       = 5,
+height      = 5)
+par(
+family      = "sans",
+mfcol       = c(1,1),
+pty         = "s",
+bty         = "l",
+lwd         = 1,
+las         = 1,
+mgp         = c(2,1,0),
+xaxs        = "i",
+yaxs        = "i",
+font.main   = 1,
+cex         = 1,
+cex.main    = 1)
+filled.contour(
+bdi,
+glu,
+p_y[nrow(p_y):1, ncol(p_y):1],
+col         = hcl.colors(20, "YlOrRd"),
+levels      = seq(0,1,len = 20),
+xlab        = "BDI",
+ylab        = "GLU",
+main        = "P(Non-Response)")
+dev.off()
+```
+
+![Anwendungsbeispiel.](./_figures/804-lr-anwendungsbeispiel-2){#fig-lr-anwendungsbeispiel-2 fig-align="center" width=100%}
+
+LOOCV zur Bestimmung der Featureprädiktivität
+
+\footnotesize
+```{r, echo = T}
+D       = read.csv("_data/804-lr.csv")                                          # Datensatz                                                 
+K       = nrow(D)                                                               # Anzahl Cross Folds
+p_y     = matrix(rep(NaN, K)  , nrow = 1)                                       # p(y = 1)                                   
+y_pred  = matrix(rep(NaN, K*2), nrow = K)                                       # Prädiktionsperformancearray
+for(k in 1:K){                                                                  # K-fold LOOCV
+    x_train      = t(D[-k,1:2])                                                 # Trainingsdatensatzfeatures
+    y_train      = t(D[-k,3  ])                                                 # Trainingsdatensatzlabels
+    x_test       = t(D[ k,1:2])                                                 # Testdatensatzfeaturevektor
+    y_pred[k,1]  = t(D[ k,3])                                                   # Testdatensatzfeaturevektorlabel    
+    n            = ncol(x_train)                                                # n    
+    m            = nrow(x_train)                                                # m
+    lr           = glm(t(y_train) ~ t(x_train), family = 'binomial')            # IWLS Parameterlernen
+    beta_hat     = as.matrix(lr$coefficients, nrow = m + 1)                     # Parameterschätzer
+    x_test_tilde = rbind(1, x_test)                                             # erweiteter Featurevektor                
+    p_y[k]       = 1/(1+exp(-t(x_test_tilde) %*% beta_hat))                     # p(y)
+    y_pred[k,2]  = as.numeric(p_y[k] >= 0.5)                                    # Klassifikationsregel \delta
+}
+rp      = sum(y_pred[y_pred[,1] == 1,2] == 1)                                   # |(1,1)|
+rn      = sum(y_pred[y_pred[,1] == 0,2] == 0)                                   # |(0,0)|
+fp      = sum(y_pred[y_pred[,1] == 0,2] == 1)                                   # |(0,1)|
+fn      = sum(y_pred[y_pred[,1] == 1,2] == 0)                                   # |(1,0)|
+ACC     = (rp+rn)/(rp+fp+rn+fn)                                                 # Accuracy            
+SEN     = rp/(rp+fn)                                                            # Sensitivity
+SPE     = rn/(rn+fp)                                                            # Specificity
+```
+
+```{r, echo = F, eval = T}
+cat("Accuracy   : " , round(ACC, digits = 2), 
+  ", Sensitivity: " , round(SEN, digits = 2), 
+  ", Specificity: " , round(SPE, digits = 2))   # Ergebnisausgabe
+```
+\footnotesize 
+
+

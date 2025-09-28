@@ -11,6 +11,7 @@ nutzen, wie folgendes Beispiele zeigt
 1+1                                                     # Addition
 ```
 \normalsize
+
 Im Terminal erscheint dabei einerseits das Ergebnis $2$, andererseits mit `[1]`
 ein Hinweis darauf, dass das Ergebnis der erste Eintrag in dem von **R** erzeugten
 Ergebnisvektor ist. Vektoren werden wir in @sec-vektoren im Detail behandeln. Weitere
@@ -41,7 +42,7 @@ bereit.
 
 
 | Operation             | Operator      |  
-|-----------------------|---------------|  
+|:----------------------|:--------------|  
 | Addition              | `+`           | 
 | Subtraktion           | `-`           |  
 | Multiplikation        | `*`           |  
@@ -59,7 +60,7 @@ auch die Möglichkeit mathematische Standardfunktionen auszuwerten, einen ersten
 
 
 | Funktion              | Aufruf        |            
-| ----------------------|---------------|
+|:----------------------|:--------------|
 | Exponentialfunktion   | `exp(x)` 	    | 						  
 | Logarithmusfunktion   | `log(x)`	    | 	
 | Betrag 				| `abs(x)`	    |								 
@@ -97,7 +98,7 @@ Begiffen der logischen Konjunktion ("und") und Disjunktion ("nicht-exklusive ode
 
 
 | Logische Verknüpfung  | Operator  |	
-| ----------------------|-----------|					 
+|:----------------------|:----------|					 
 | Gleich 		        | `==`	    |						 
 | Ungleich			    | `!=` 	    |							 
 | Konjunktion           | `&`       |       					 
@@ -227,212 +228,339 @@ Neben den hier betrachteten Präzedenzregeln für die Grundrechenarten gibt es
 in **R** eine ganze Reihe weiterer Regeln zum Umgang mit vielen weiteren Operatoren,
 von denen wir bisher nur sehr wenige kennengelernt haben. Wenn man sich beim
 Erlernen einer Programmiersprache mit einem neuen Operator vertraut macht, sollte
-man also für sich auch unbedingt die Präzedenz dieses Operators klären. Der in @fig-r-precedence
+man also für sich auch unbedingt die Präzedenz dieses Operators klären. Der in @fig-precedence
 gezeigte und mit dem Befehl `?Syntax` aufzurufende Text der **R** Dokumentation diskutiert die
 in **R** geltenden Präzedenzregeln vollumfänglich und sollte bei der Arbeit mit
 **R** häufig konsultiert werden.
 
-![**R** Präzedenzregeln](./_figures/202-r-precedence){#fig-r-precedence fig-align="center" width=100%}
 
-<!-- ## Variablen {#sec-variablen}
-\normalsize
+![Präzedenzregeln in **R**.](./_figures/202-precedence){#fig-precedence fig-align="center" width=100%}
 
-Definition 
+## Variablen {#sec-variablen}
 
-In der Programmierung ist eine Variable ein abstrakter Behälter für eine Größe,
-welche im Verlauf eines Rechenprozesses auftritt. Im Normalfall wird eine Variable
-im Quelltext durch einen Namen bezeichnet und hat eine Adresse im Speicher
-einer Maschine. Der durch eine Variable repräsentierte Wert kann – im Unterschied
-zu einer Konstante – zur Laufzeit des Rechenprozesses verändert werden. (Wikipedia)
+In der Programmierung sind *Variablen* abstrakte Behälter für Daten, deren Inhalt
+im Verlauf einer Programmausführung geändert werden kann. Variablen werden im 
+Programmcode mit Namen bezeichnet und besitzen bei Programmausführung eine Adresse 
+im Arbeitsspeicher. Variablen können verschiedenen *Typs* sein, d.h. unterschiedliche
+Arten von Daten, und nur diese, repräsentieren. In traditionellen Programmiersprachen
+wird der Typ einer Variable explizit deklariert, d.h. es wird zu Beginn der 
+Programmausführung festgelegt, welche Art von Daten eine bestimmte Variable repräsentiert.
+Die Deklaration einer Variable `A`, die ganze Zahlen (und nur diese) repräsentiert
+hat etwa die Form
 
-Grundlagen 
-
-Variablen sind vom Programmierenden benannte Platzhalter für Werte
-
-In 3GL Sprachen wird der Variablentyp durch eine Initialisierungsanweisung festgelegt:
-
+\footnotesize
 ```{r, eval = F}
 VAR A : INTEGER     # A ist eine Variable vom Typ Integer (ganze Zahl)
 ```
+\normalsize 
 
-In 3GL Sprachen wird Variablen durch eine Zuweisungsanweisung ein Wert zugeschrieben:
+In der Folge kann der Variable `A` dann ein Wert vom Typ ganze Zahl zugewiesen werden,
+beispielsweise in der Form
 
+\footnotesize
 ```{r, eval = F}
 A := 1              # Der Variable A wird der numerische Wert 1 zugewiesen
 ```
+\normalsize
 
-In 4GL Sprachen wie Matlab, Python, R werden Variablen durch Zuweisung initialisiert:
+In 4GL Sprachen wir **R** wird der Variablentyp überlicherweise direkt durch eine 
+Initialisierungsanweisung festgelegt. So deklariert folgender **R** Code die Variable
+`a` gleichzeitig als vom Typ `double` (Dezimalzahl) mit dem Wert `1`,
+
+\footnotesize
 ```{r, eval = F}
 a = 1               # a ist eine Variable vom Typ double, ihr Wert ist 1
 ```
+\normalsize
 
-Der Zuweisungsbefehl in Matlab und Python ist `=`, der Zuweisungsbefehl in R ist `<-`  oder `=`.
+In den allermeisten Programmiersprachen ist der Zuweisungsbefehl `=`. **R** ist dahingehend
+besonders, als es mit `->` und `<-` Zuweisungsbefehle für Zuweisungen von Werten von 
+links nach rechts oder von links nach rechts erlaubt, wobei letzteres auch durch
+`=` erreicht wird. Offiziell empfohlener Zuweisungsbefehl für **R** ist `<-`, 
+da dies aber sehr idiosynkratisch ist, benutzen wir `=` wie in jeder anderen Programmiersprache.
+Ein erstes Beispiel soll den Umgang mit Variablen vedeutlichen.
 
-Offiziell empfohlen für R ist `<-`, aus Kohärenzgründen benutzen wir hier `=`.
+**Beispiel** 
 
-Beispiel 
+Wir betrachten folgende Textaufgabe: 
 
-Lina geht ins Schreibwarengeschäft und kauft vier Hefte, zwei Stifte und einen Füller. 
-Wie viele analoge Gegenstände kauft Lina insgesamt?
+"Lina geht ins Schreibwarengeschäft und kauft vier Hefte und zwei Stifte. 
+Ein Heft koste 1 Euro und ein Stift koste 3 Euro. Wieviele Dinge kauft Lina 
+insgesamt und wieviel Euro muss Lina insgesamt bezahlen?"
 
+Um die Aufgabe zu lösen, definieren wir zunächst die Variablen `anzahl_hefte` und 
+`anzahl_stifte` und weisen ihnen dabei ihre jeweiligen Wert aus der Aufgabe zu. 
+
+\footnotesize
 ```{r}
-hefte  = 4		# Definition der Variable 'hefte'  und Wertzuweisung 4
-stifte = 2		# Definition der Variable 'stifte' und Wertzuweisung 2
-fuller = 1		# Definition der Variable 'fuller' und Wertzuweisung 1
+anzahl_hefte        = 4        
+anzahl_stifte       = 2		 
 ```
+\normalsize
 
-Nach Zuweisung existieren die Variablen im Arbeitsspeicher, dem sogenannten Workspace}
+Nach Zuweisung existieren die Variablen mit den ihnen zugewiesenen Werte nun 
+im Arbeitsspeicher, dem sogenannten *Workspace*. Der Befehl `ls()` zeigt die 
+existierenden benutzbaren Variablen im Arbeitsspeicher an.
 
-Die Variablen können jetzt wie Zahlen in Berechnungen genutzt werden
-
+\footnotesize
 ```{r}
-gesamt  = hefte + stifte + fuller                    # Berechnung der Gegenstandsanzahl
-print(gesamt)
+ls()
 ```
+\normalsize 
 
-Ein Heft kostet einen Euro, ein Stift kostet zwei Euro, und ein Füller kostet 10 Euro. Wie viel Euro muss Lina insgesamt bezahlen?
+Entscheidend ist, dass die Variablennamen jetzt wie  Zahlen in Berechnungen 
+genutzt werden können `print()` gibt dabei Variablenwerte in einem **R** Terminal aus.
+
+\footnotesize
 ```{r}
-gesamtpreis	= hefte*1 + stifte*2 + fuller*10         # Berechung des Preises
+anzahl_dinge = anzahl_hefte + anzahl_stifte 
+print(anzahl_dinge) 
+```                      
+\normalsize
+
+Um den Gesamtpreis zu berechnen, definieren wir als nächsted die Variablen
+`preis_heft` und `preis_stift` anhand der Aufgabenspezifikation.
+
+\footnotesize
+```{r}
+preis_heft        = 1     
+preis_stift       = 2		 
+```
+\normalsize
+
+Der Gesamtpreis berechnet sich dann wie folgt.
+
+\footnotesize
+```{r}
+gesamtpreis	= anzahl_hefte*preis_heft + anzahl_stifte*preis_stift 
 print(gesamtpreis)
 ```
 
-`print()` gibt Variablenwerte in der R Konsole aus.
+\normalsize
+Variablen im Workspace könnne auch wieder gelöscht werden. `rm()` (remove) 
+erlaubt das Löschen einzelner Variablen
 
-Workspace 
-
-`ls()` zeigt die existierenden benutzbaren Variablen im Arbeitsspeicher an
-
+\footnotesize
 ```{r}
-ls()						# Anzeigen aller Variablennamen im Workspace
-```
-
-`rm()` erlaubt das Löschen von Variablen
-
-```{r}
-rm(gesamtpreis)		        # Löschen der Variable Gesamtpreis
+rm(gesamtpreis)		         
 ls()
 ```
-
-
+\normalsize 
 `rm(list=ls())` löscht alle Variablen
+
+\footnotesize
 ```{r}
-rm(list = ls()) 	        # Löschen aller Variablen
+rm(list = ls()) 	         
 ls()
 ```
+\normalsize
 
-Variablennamen 
+**Variablennamen**
 
-Zulässige Variablennamen
+Prinzipiell ist man in der Wahl der Namen für Variablen mit kleineren Einschränkungen frei.
+Zulässige Variablennamen in **R** 
 
-* bestehen aus Buchstaben, Zahlen, Punkten (.) und Unterstrichen (\_)
-* beginnen mit einem Buchstaben oder . nicht gefolgt von einer Zahl
-* dürfen keine reserverd words wie `for`, `if`, `NaN`, usw. sein ($>$?reserved)
-* werden unter `?make.names() beschrieben
+* bestehen aus Buchstaben, Zahlen, Punkten (.) und Unterstrichen (\_), 
+* beginnen mit einem Buchstaben oder einem Punkt, dann allerdings nicht gefolgt von einer Zahl und
+* dürfen keine in **R** schon belegten  Ausdrücke wie `for`, `if`, `NaN`, ... sein 
+
+Hilfestellung zu den Einschränkungen von Variablennamen geben `?reserved`. Eine Funktion,
+um aus beliebigen Vorschlägen einen syntaktisch zulässigen Variablennamen zu generieren,
+ist `make.names()`. Ihre Hilfe beschreibt auch die hier skizzierten Regeln zur 
+Variablenbenennung in weiteren Details. Generell sind sinnvolle Variablen kurz,
+um im Code Platz zu sparen und aussagekräftig, um das menschliche Verständnis
+des Codes zu erhöhen. Meist bestehen Variablen nur aus Kleinbuchstaben und 
+Unterstrichen.
 
 
-Sinnvolle Variablennamen
+**Variablenrepräsentation**
 
-* sind kurz ($\approx$ 1 bis 7 Zeichen) und aussagekräftig
-* bestehen nur aus Kleinbuchstaben und Unterstrichen
+Wir wollen uns noch etwas genauer mit dem Verhältnis von Variablennamen 
+(Bezeichnern) und Variableninhalten (Objekten im Arbeitsspeicher) befassen. 
+Die folgenden Begriffe und Zusammenhänge sind insbesondere dann wichtig, wenn 
+Berechnungen an die Grenzen des verfügbaren Arbeitsspeichers gelangen und optimiert
+werden müssen. 
 
-Variablenrepräsentation $\vert$ Binding 
+Wir beginnen mit dem Begriff des *Binding*. Dazu betrachten wir zunächst die 
+folgende Variableninitialisierung:
 
-```{r, eval = F}
+\footnotesize
+```{r}
 x = 1
 ```
+\normalsize
 
-Intuitiv wird eine Variable genannt x mit dem Wert 1 erzeugt.
+Intuitiv wird durch dieses Statement eine Variable genannt `x` mit dem Wert `1` erzeugt.
+Auf technischer Ebene geschehen dabei de-facto geschehen zwei Dinge (vgl. @fig-binding-1):
 
-De-facto geschehen zwei Dinge:
+1. **R** erzeugt ein Objekt (Vektor mit Wert 1) mit Arbeitsspeicheradresse `lobstr::obj_addr(x).
+2. **R** verbindet dieses Objekt mit dem Namen `x` (*binding*), der das Objekt im Arbeitsspeicher referenziert.
 
-1. R erzeugt ein Objekt (Vektor mit Wert 1) mit Speicheradresse `lobstr::obj_addr(x).
-2. R verbindet dieses Objekt mit dem Namen x, der das Objekt im Speicher referenziert.
+![Binding eines Namens mit einem Objekt im Arbeitsspeicher.](./_figures/202-binding-1){#fig-binding-1 fig-align="center" width=40%}
 
 
-![Binding](./_figures/005-binding-1.pdf){#fig-binding-1 fig-align="center" width=100%}
+Betrachten wir nun folgendes Statement :
 
-```{r, eval = F}
+\footnotesize
+```{r}
 y = x
 ```
+\normalsize
 
-Intuitiv wird eine Variable genannt y mit Wert gleich dem Wert von x erzeugt.
+Intuitiv wird dabei eine Variable, genannt `y`,  mit Wert gleich dem Wert von `x` erzeugt.
+Auf technischer Ebene wird dabei neuer Name `y` erzeugt, der dasselbe Objekt im Arbeitsspeicher 
+referenziert wie `x` (vgl .@fig-binding-2).
 
-De-facto wird ein neuer Name y erzeugt, der dasselbe Objekt referenziert wie x:
+![Binding zweier Namen mit einem Objekt im Arbeitsspeicher.](./_figures/202-binding-2){#fig-binding-2 fig-align="center" width=40%}
 
-```{r, echo = FALSE, out.width="22%"}
-knitr::include_graphics("_figures/005-binding-2.pdf")
-```
+Man kann sich mithilfe von `lobstr::obj_addr(x)` und `lobstr::obj_addr(y)` davon
+überzeugen, dass die Addressen des Objekts im Arbeitsspeicher identisch sind
 
-
-Man überzeuge sich mit `lobstr::obj_addr(x)` und `lobstr::obj_addr(y).
-
-Das Objekt (Vektor mit Wert 1) wird nicht kopiert, R spart Arbeitsspeicher.
-
-Variablenrepräsentation $\vert$ Copy-on-modify 
-
-
-
+\footnotesize
 ```{r}
-x = 1 		# Objekt (0x74b) erzeugt, x referenziert Speicheradresse  des Objektes
+print(lobstr::obj_addr(x))
+print(lobstr::obj_addr(y))
+```
+\normalsize
+
+Das betreffende Objekt wird also bei Allokation zu `y` nicht kopiert und dadurch 
+Arbeitsspeicher eingespart. 
+
+Weiterhin nutzt **R** das sogenannte *Copy-on-modify* Prinzip. Dieses Prinzip
+besagt, dass ein Objekt im Arbeitsspeicher kopiert wird und eine neue Addresse
+erhält, sobald es modifiziert wird. Das ursprüngliche Object im Arbeitsspeicher
+bleibt dabei unverändert. @fig-copy-on-modify und folgender **R** Code verdeutlichen zunächst
+das *Copy-on-Modify* Prinzip 
+
+\footnotesize
+```{r}
+x = 1 		# Objekt (z.B. 0x74b) erzeugt, x referenziert Speicheradresse des Objektes
 y = x		# y referenziert dieselbe Speicheradresse wie x (0x74b)
-y = 3 		# y modifiziert, modifizierte Kopie (0xcd2) wird gespeichert
+y = 3 		# y modifiziert, eine modifizierte Kopie (z.B. 0xcd2) wird gespeichert
 y        	# y referenziert jetzt (0xcd2)
 ```
 
 ```{r}
 x           # x referenziert weiterhin (0x74b)
 ```
+\normalsize
 
+![Copy-on-modify.](./_figures/202-copy-on-modify){#fig-copy-on-modify fig-align="center" width=100%}
 
-```{r, echo = FALSE, out.width="70%"}
-knitr::include_graphics("_figures/005-copy-on-modify.pdf")
-```
-
-R Objekte sind *immutable*, können also nicht verändert werden.
-
-Variablenrepräsentation $\vert$ Copy-on-modify 
-
-Zur Immutability gibt allerdings zwei Ausnahmen, genannt Modifications-in-place
-
-1. Objekte mit nur einem gebundenem Namen werden in-place modifiziert
-
-    *  Dieses Verhalten ist allerdings nur in R, nicht innerhalb RStudios reproduzierbar.
-
+Die Tatsache, dass Objekte bei Veränderung im Arbeitsspeicher kopiert werden, 
+die ursprünglichen Objekte aber im Prinzip unverändert erhalten bleiben, wird 
+auch als die *Immutability* von Objekten in **R** bezeichnet. Allerdings greift
+die Immutability von Objekten in **R** nicht besonders weit, wie folgendes 
+Beispiel zeigt. Dabei wird zunächst ein Objekt einer `1` im Arbeitsspeicher 
+erzeugt, das mit dem Variablennamen `x` referenziert werden kann. Per *Indexing*
+(vgl. @sec-Datenstrukturen-und-Datenmanagement) wird das Objekt dann bei einer
+beabsichtigten Modifikation im Arbeitsspeicher neu addressiert.
+    
+\footnotesize
 ```{r}
-x = 1 		# Objekt (0x74b) erzeugt, x referenziert Speicheradresse des Objektes
-x[1] = 2 	# Objekt (0x74b) veraendert
+x   = 1 		            # Objekt erzeugt, x referenziert Speicheradresse des Objektes
+print(lobstr::obj_addr(x))  # Speicheraddresse des Objekts
+x[1] = 2 	                # Objekt verändert
+print(lobstr::obj_addr(x))  # neue Speicheraddresse
 ```
+\normalsize
 
-
-2.  Environments werden in-place modifiziert ($\rightarrow$ Environments und Funktionen).
-
-
-Variablenrepräsentation $\vert$ Unbinding und Carbage Collection 
-
-Copy-on-modify gilt auch in umgekehrter Reihenfolge
+Das Copy-on-modify-Prinzip gilt auch in umgekehrter Reihenfolge, d.h. wird ein
+Objekt, auf das ein weiterer Variablenname zeigt, verändert, so ändert sich das
+ursprünglich referenzierte Objekt nicht. Folgender **R** Code mag dies verdeutlichen.
 
 
 ```{r}
-x = 1 		# Objekt (0x74b) erzeugt, x referenziert Speicheradresse  des Objektes
+x = 1 		# Objekt (z.B. 0x74b) erzeugt, x referenziert Speicheradresse  des Objektes
 y = x		# y referenziert dieselbe Speicheradresse wie x (0x74b)
-x = 3 		# Ein neues Objekt (0x2a08) wird erzeugt, x referenziert (0x2a08)
-y           # y referenziert weiterhin  Objekt (0x74b)
+x = 3 		# Ein neues Objekt (z.B. 0x2a08) wird erzeugt, x referenziert nun 0x2a08
+y           # y referenziert weiterhin das ursprüngliche Objekt (0x74b)
 ```
 
-```{r, echo = FALSE, out.width="56%"}
-knitr::include_graphics("_figures/005-unbinding.pdf")
-```
+Schließlich ist auch ein *Unbinding* von Objekten im Arbeitsspeicher möglich, z.B.
+als Folge folgenden **R** Codes (vgl. @fig-unbinding):
 
-Unbinding
-
+\footnotesize
 ```{r}
 x = 1		#  x referenziert Objekt (0x74b)
 x = "a"		#  x referenziert Objekt (0x2a08), Objekt (0x74b) jetzt ohne Referenz
 ```
+\normalsize
 
-Carbage collection
+![Unbinding.](./_figures/202-unbinding){#fig-unbinding fig-align="center" width=100%}
+
+Das Löschen von nicht-referenzierten im Objekten im Arbeitsspeicher wird als 
+*Garbage collection* bezeichnet. **R** löscht  nicht referenzierte Objekte im 
+Arbeitsspeicher automatisch, allerdings meist erst dann, wenn der Speicher benötigt
+wird, es  also wirklich nötig ist. Generell funktioniert dies aber gut und es 
+ist nicht nötig, aktiv die von **R** bereitgestellte  Garbage Collection 
+Funktion `gc()` zu benutzen. 
 
 
-* Nicht referenzierte Objekte im Arbeitsspeicher werden automatisch gelöscht.
-* Das Löschen geschieht meist erst dann, wenn es wirklich nötig ist.
-* Es ist nicht nötig, aktiv die Garbage Collection Funktion `gc()` zu benutzen. -->
+**Repräsentation fehlender Werte**
+
+In der datenanalytischen Programmierung hat man es desöfteren mit fehlenden Werten 
+zu tun, z.B. wenn eine experimentelle Messung bei einer Versuchsperson abgebrochen
+wurde. Zur Repräsentation fehlender Werte nutzt **R** `NA` (*not applicable*). Versucht
+man mit `NA` zu rechnen, so ergibt dies meist wieder `NA`:
+
+\footnotesize
+```{r}
+3 * NA					# Multiplikation eines NA Wertes ergibt NA
+```
+
+```{r}
+NA < 2					# Relationaler Vergleich eines NA Wertes ergibt NA
+```
+
+```{r}
+NA^0					# NA hoch 0 ergibt 1, weil jeder Wert hoch 0 eins ergibt (?)
+```
+
+```{r}
+NA & FALSE 				# NA UND FALSE  ergibt FALSE, weil jeder Wert UND FALSE FALSE ergibt
+```
+
+Auf `NA` testet man mit `is.na()`:
+
+```{r}
+x = c(NA, 5, NA, 10)	# Vektor mit NAs
+x == NA					# Kein Testen auf NAs : 5 == NA ist NA, nicht FALSE
+``` 
+
+```{r}
+is.na(x)				# Logisches Testen auf NA
+```
+\normalsize
+
+Neben `NA` besitzt **R** mit `NaN` auch eine Möglichkeit zur Darstellung mathematisch
+nicht definierter Werte. Im Gegensatz zu `NA` ist `NaN` immer vom numerischen 
+Typ. Die Ergebnisse beim Rechnen mit `NaN` ähnlen denen mit `NA`. 
+
+\footnotesize
+```{r}
+3 * NaN					# Multiplikation eines NaNA Wertes ergibt NaN
+```
+
+```{r}
+NaN < 2					# Relationaler Vergleich eines NaN Wertes ergibt NA
+```
+
+```{r}
+NaN^0					# NaN hoch 0 ergibt 1, weil jeder Wert hoch 0 eins ergibt (?)
+```
+
+```{r}
+NaN & FALSE 			# NaN UND FALSE ergibt FALSE, weil jeder Wert UND FALSE FALSE ergibt
+```
+\normalsize
+
+Auf `NaN` testet man mit `is.nan()`
+
+\footnotesize
+```{r, eval = F}
+x = c(NaN, 5, NaN, 10)	# Vektor mit NaNs
+is.nan(x)				# Logisches Testen auf NaN
+```
+\normalsize 
+

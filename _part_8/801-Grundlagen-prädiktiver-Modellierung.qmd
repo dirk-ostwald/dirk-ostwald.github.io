@@ -1,1 +1,487 @@
 # Grundlagen prädiktiver Modellierung
+## Anwendungsbeispiel {#sec-anwendungsbeispiel}
+
+Als durchgängiges Anwendungsbeispiel zur prädiktiven Modellierung betrachten 
+wir das Problem der Vorhersage des Behandlungserfolgs einer Psychotherapie 
+basierend auf eingangsdiagnostischen klinisch-psychologischen Markern. Hintergrund 
+dieser Fragestellung ist es, die Non-Response-Raten bei Psychotherapie je nach
+Störungsbild und Therapieform auf 20 - 50 \% geschätzt werden (vgl. z.B. @semmlinger2024, 
+@cuijpers2024, @carrington2024, @hoyer2024). Eine individuelle
+Vorhersage des Behandlungserfolgs wäre also in mehrerer Hinsicht hilfreich. Zum einen
+könnte sie die Auswahl einer wirksamen Therapieform erleichtern und für die 
+Patient:innen einen direkten Lebensqualitätsgewinn darstellen. Zum anderen würde es
+die optimale Auswahl der Therapieform erlauben den Einsatz der beschränkten 
+Ressourcen des Gesundheitssystems sachgerecht zu steuern und so mehr Patient:innen
+den Zugang zu psychologischer Unterstützung eröffnen.
+
+Als empirische Grundlage eines solchen Ansatzes stellen wir uns vor, dass eine 
+digitale Datenbank verfügbar ist, die für jede Patient:in und Therapieform 
+neben den eingangsdiagnostischen klinisch-psychologischen Kennwerten auch Informationen
+über den Therapieverlauf und insbesondere das Therapieoutcome enthält. Basierend
+auf diesen Daten soll das Ziel also sein, einerseits ein prädiktives klinisch-psychologische
+Markerprofil zu identifizieren, dass den Therapieerfolg reliable vorhersagt und zum 
+anderen für den Einzelfall einer neuen Patient:in eine quantitative Aussage über
+den zu erwartenden Behandlungserfolg erlaubt. 
+
+Um die Komplexität des Anwendungsbeispiels möglichst gering zu halten, beschränken
+wir uns hier auf ein bivariates klinisch-psychologisches Markerprofil. Speziell
+nehmen wir an, dass für eine Kohorte von Depressionspatient:innen im Rahmen der
+Eingangsdiagnostik sowohl ein normalisierter BDI-II Wert (`BDI`) als auch ein 
+normalisiertes Glukokorticoidserumlevel (`GLU`) bestimmt wurden. @tbl-beispieldatensatz 
+zeigt den binär kodierten Behandlungserfolg (`RES`, 0 = kein Erfolg, 1 Erfolg) 
+für eine Kohorte von Patient:innen, die beispielsweise eine spezielle KVT-Variante 
+als Therapie erhielten. 
+
+```{r tbl-beispieldatensatz, echo=F}
+library(knitr)
+D           = read.csv("_data/801-anwendungsbeispiel.csv", header = T)
+kable(head(D, n = 20L), digits = 2, align = "c", caption = "Beispieldatensatz.")
+``` 
+
+```{r, eval = F, echo = F}
+library(latex2exp)
+D           = read.csv("_data/801-anwendungsbeispiel.csv", header = T)
+pdf(
+file        = "_figures/801-anwendungsbeispiel.pdf",
+width       = 4.5,
+height      = 4.5)
+par(
+family      = "sans",
+mfcol       = c(1,1),
+pty         = "s",
+bty         = "l",
+lwd         = 1,
+las         = 1,
+mgp         = c(2,1,0),
+xaxs        = "i",
+yaxs        = "i",
+font.main   = 1,
+cex         = 1,
+cex.main    = 1)
+
+# Daten y^{(i)} = 0
+plot(
+D[D[,3] == 0,1],
+D[D[,3] == 0,2],
+col     = "White",
+bg      = "Red",
+pch     = 21,
+xlim    = c(0,3),
+ylim    = c(0,3),
+xlab    = "BDI",
+ylab    = "GLU")
+
+# Daten y^{(i)} = 1
+points(
+D[D[,3] == 1,1],
+D[D[,3] == 1,2],
+col = "White",
+bg  = "Blue",
+pch = 21)
+
+legend(
+"topleft",
+c("Non-Responder", "Responder"),
+pch         = 19,
+col         = c("Red", "Blue"),
+bty         = "n",
+cex         = .8,
+x.intersp   = 1)
+dev.off()
+```
+
+![Anwendungsbeispiel.](./_figures/801-anwendungsbeispiel){#fig-lda-anwendungsbeispiel fig-align="center" width=80%}
+
+
+## Binäre Klassifikation
+
+:::{#def-binaerer-klassifikationstrainingdatensatz}
+## Binärer Klassifikationsdatensatz
+
+Ein *binärer Klassifikationsdatensatz*
+\begin{equation}
+\mathcal{D} := \{(x_1,y_1), ..., (x_n,y_n)\} = \{(x_i,y_i)\}_{i=1}^n
+\end{equation}
+ist eine Menge von $n$ *Trainingsdatenpunkten*
+\begin{equation}
+\left(x_i,y_i\right) \mbox{ mit } x_i \in \mathbb{R}^m
+\mbox{ und }
+y_i \in \{0,1\}
+\mbox{ for }
+i = 1,...,n,
+\end{equation}
+wobei  $x_i$ *$m$-dimensionaler Featurevektor* und $y_i$ *Label* genannt wird.
+Üblicherweise werden die Trainingsdatenpunkte dabei als unabhängige und identische
+Realisierungen eines $m+1$-dimensionalen Zufallsvektors $\zeta := (\xi,\upsilon)$ verstanden. 
+:::
+
+$y_i \in \{0,1\}$ bezeichnet die Klassenzugehörigkeit des Featurevektors $x_i \in \mathbb{R}^m$. 
+
+Ein Beispiel für $y_i$ ist "GAF < 65" (0)" vs. "GAF $\ge$ 65" (1).
+
+Beispiele für die $m$ Komponenten der $x_i$ sind Testscores, soziodemographische Daten, ...
+
+Beispiele bivariater Featureplotszenarien
+
+
+$x_i \in \mathbb{R}^2, y_i \in \{0,1\}, i = 1,...,n$, \textcolor{red}{$\bullet$} $y_i = 0, \quad$ \textcolor{blue}{$\bullet$} $y_i = 1$
+
+
+```{r, eval = F, echo = F}
+# Abbildungsparameter
+library(latex2exp)
+pdf(
+file        = "_figures/801-bivariate-feature-plots.pdf",
+width       = 12,
+height      = 4)
+par(
+family      = "sans",
+mfcol       = c(1,3),
+pty         = "s",
+bty         = "l",
+lwd         = 1,
+las         = 1,
+mgp         = c(2,1,0),
+xaxs        = "i",
+yaxs        = "i",
+font.main   = 1,
+cex         = 1.1,
+cex.main    = 1.2)
+
+# Featurevektoren
+n           = 2e2
+X           = cbind(runif(n, min = 0, max = 2), runif(n, min = 0, max = 2))
+
+# Labelplots
+plot(
+X[X[,1] <= 1,1],
+X[X[,1] <= 1,2],
+type = "p",
+col  = "White",
+xlim = c(0,2),
+ylim = c(0,2),
+pch  = 21,
+bg   = "Red",
+xlab = TeX("$x_1$"),
+ylab = TeX("$x_2$"),
+)
+points(
+X[X[,1] > 1,1],
+X[X[,1] > 1,2],
+col  = "White",
+pch  = 21,
+bg   = "Blue")
+
+plot(
+X[((X[,1] + X[,2]) <= 2),1],
+X[((X[,1] + X[,2]) <= 2),2],
+type = "p",
+col  = "White",
+xlim = c(0,2),
+ylim = c(0,2),
+pch  = 21,
+bg   = "Red",
+xlab = TeX("$x_1$"),
+ylab = TeX("$x_2$"))
+points(
+X[((X[,1] + X[,2]) > 2),1],
+X[((X[,1] + X[,2]) > 2),2],
+col  = "White",
+pch  = 21,
+bg   = "Blue")
+
+plot(
+X[((X[,1]^2 + X[,2]^2) <= 2),1],
+X[((X[,1]^2 + X[,2]^2) <= 2),2],
+type = "p",
+col  = "White",
+xlim = c(0,2),
+ylim = c(0,2),
+pch  = 21,
+bg   = "Red",
+xlab = TeX("$x_1$"),
+ylab = TeX("$x_2$"))
+points(
+X[((X[,1]^2 + X[,2]^2) > 2),1],
+X[((X[,1]^2 + X[,2]^2) > 2),2],
+col  = "White",
+pch  = 21,
+bg   = "Blue")
+dev.off()
+```
+
+$\quad\quad\quad x_{i_1} > 1 \Leftrightarrow y_{i} = 1\quad\quad\quad\,\,$
+$x_{i_1} + x_{i_2} > 2 \Leftrightarrow y_{i} = 1\quad\quad\,\,$
+$x_{i_1}^2 + x_{i_2}^2 > 2 \Leftrightarrow y_{i} = 1$
+
+
+![Anwendungsbeispiel 1.](./_figures/803-lda-anwendungsbeispiel-1){#fig-lda-anwendungsbeispiel-l fig-align="center" width=100%}
+
+
+## Kreuvalidierung {#sec-kreuzvalidierung}
+
+![Leave-one-out cross-validation.](./_figures/804-loocv){#fig-loocv fig-align="center" width=100%}
+
+
+## Performanzmetriken {#sec-performanzmetriken}
+
+Zur Evaluation einer Kreuzvalidierung bei binärer Klassifikation werden eine 
+Reihe von Performanzmetriken herangezogen, die wir im Folgenden genauer 
+beleuchten wollen. Dabei ist grundlegend festzuhalten, dass bei einem gegebenen 
+Trainingsdatensatz und Klassifikationsansatz die prädiktive Güte immer sowohl
+von der Prädiktivität der Feature des Trainingsdatensatzes als auch der Fähigkeit
+des Klassifikationsansatzes abhängt, diese Prädiktivität erfolgreich zu nutzen. 
+Im Allgemeinen wird im Bereich des Maschinellen Lernens versucht, bei einem 
+festen Trainingsdatensatz Klassifikationsansätze zu entwickeln, die möglichst 
+prädiktiv sind, wohingegen in der anwendungsorientierten Forschung Klassifikationsansätze
+häufig dazu dienen, die Prädiktivität von Datenfeaturen zu evaluieren. Im letzteren
+Fall ist oft nicht klar, warum zu diesem Zweck nicht etabliertere Methoden der 
+multivariaten Inferenz herangezogen werden, deren theoretische Eigenschaften und
+Limitationen fundierter und besser verstandenn sind als diejenigen modernerer,
+und damit weniger untersuchter, Klassifikationsansätze. 
+
+### Konfusionsmatrix und Prädiktionsgüte {-}
+
+Ausgangspunkt der Prädiktivitätsevaluation eines Kreuzvalidierungsansatzes ist 
+in der Regel eine *Konfusionsmatrix*, die tatsächlichen Label von Testfeaturevektoren
+mit den durch den Klassifikationsansatz prädizierten Labeln im Rahmen der
+Kreuzvalidierung in Bezug setzt (@fig-konfusionsmatrix). Grundlegend ist es dabei im 
+Rahmen einer binären Klassifikation möglich, dass ein Testfeaturevektor $x_i$ das Label
+$y_i = 0$ oder das Label $y_i = 1$ hat und dass in jedem dieser beiden Fälle eine
+Labelprädiktion $f(x_i) = 0$ oder $f(x_i) = 1$ möglich ist. Zählt man nun die Anzahl 
+der möglichen vier Fälle im Rahmen einer Kreuzvalidierung, so erhält man zuächst
+die Anzahlen der 
+
+* True Negatives  ($y_i = 0$, $f(x_i) = 0$)
+* False Positives ($y_i = 0$, $f(x_i) = 1$)
+* False Negatives ($y_i = 1$, $f(x_i) = 0$)
+* True Positives ($y_i = 1$, $f(x_i) = 1$)
+
+![Konfusionsmatrix bei binärer Klassifikation mit Featurevektor $x_i$ und Label $y_i$.](./_figures/804-konfusionsmatrix){#fig-konfusionsmatrix fig-align="center" width=100%}
+
+Man beachte, dass dieses Schema natürlich aus dem Bereich des binären 
+Hypothesentestens bekannt sein dürfte, dass allerdings dort der wahre Fall, also
+das Zutreffen oder Nicht-Zutreffen der Nullhypothese eine latente Modellanahme, 
+im Rahmen der Konfusionsmatrix einer Kreuzvalidierung allerdings eine tatsächlich
+beobachtete Tatsache ist. Man ist im Rahmen der Evaluation einer Prädiktionsperformanz
+also nicht auf wahrscheinlichkeitstheoretische Abschätzungen wie in der Konstruktion
+Frequentistischer Hypothesentests geführt, sondern kann die im Folgenden behandelten
+Performanzmetriken direkt anhand ihrer Häufigkeitsbeobachtungen schätzen. Diese
+Form der theoretischen Komplexitätsreduktion mag ein Grund für die Popularität von 
+Kreuzvalidierungsansätzen sein. Weiterhin ist zu beachten, dass neben obiger Nomenklatur
+auch parallele Nomenklaturen für das identische Szenario bestehen. So werden z.B.
+die True Negatives auch als *Correct rejections*, die False Positives als *False alarms*,
+die False Negatives als *Misses* und die True Positives als *Hits* bezeichnet.
+
+Neben den in den jeweiligen Zellen des Konfusionsmatrixschemas auftauchtenden Anzahlen,
+kann man durch Marginalisierung weitere Anzahlen auswerten. So ergeben die Summe
+
+* der True Negatives (TN) und der False Negatives (FN) die Anzahl der Predicted Negatives PN := TN+FN,
+* der True Positives (TP) und der False Positives (FP) die Anzahl der Predicted Positives PP := TP+FP,
+* der True Negatives (TN) and False Positives (FP) die Anzahl der Negatives N := TN+FP,
+* der False Negatives (FN) and True Positives (TP) die Anzahl der Positives P := FN+TP,
+* aller vier Möglichkeiten die Gesamtanzahl an Fällen T = TN+FP+FN+TP = N + P = PN + PP,
+
+Das grundlegende Maß der Prädiktionsgüte vor dem Hintergrund der Konfusionsmatrix
+ist dann die *Accuracy*, definiert
+\begin{equation}
+\mbox{Accuracy (ACC)}  
+= \frac{\mbox{Anzahl richtiger Prädiktionen}}{\mbox{Anzahl aller Prädiktionen}} 
+= \frac{\mbox{TN}+\mbox{TP}}{\mbox{T}}
+\end{equation}
+
+
+### Prädiktionsraten mit Bezug zu tatsächlichen Fällen{-}
+
+True Positive Rate (aka Hit Rate, Sensitivity, Detection probability, Recall, Power) 
+\begin{equation}
+\mbox{TPR}  
+= \frac{\mbox{Anzahl richtiger Positivprädiktionen}}{\mbox{Anzahl positiver Fälle}} 
+= \frac{\mbox{TP}}{\mbox{P}}
+\end{equation}
+
+False Positive Rate (aka Type I Error Rate, False Alarm Probability, Fall-Out) 
+\begin{equation}
+\mbox{FPR}  
+= \frac{\mbox{Anzahl falscher Positivprädiktionen}}{\mbox{Anzahl negativer Fälle}} 
+= \frac{\mbox{FP}}{\mbox{N}}
+\end{equation}
+
+True Negative Rate (aka Specificity, Selectivity) 
+\begin{equation}
+\mbox{TNR}  
+= \frac{\mbox{Anzahl richtiger Negativprädiktionen}}{\mbox{Anzahl negativer Fälle}} 
+= \frac{\mbox{TN}}{\mbox{N}}
+\end{equation}
+
+False Negative Rate (aka Type II Error Rate, Miss Rate) 
+\begin{equation}
+\mbox{FNR}  
+= \frac{\mbox{Anzahl falscher Negativprädiktionen}}{\mbox{Anzahl positiver Fälle}} 
+= \frac{\mbox{FN}}{\mbox{P}}
+\end{equation}
+
+### Prädiktionsraten mit Bezug zu Prädiktionsanzahlen {-}
+
+Positive Predictive Value / Precision
+\begin{equation}
+\mbox{PPV}  
+= \frac{\mbox{Anzahl richtiger Positivprädiktionen}}{\mbox{Anzahl positiver Prädiktionen}} 
+= \frac{\mbox{TP}}{\mbox{PP}}
+\end{equation}
+
+False Discovery Rate
+\begin{equation}
+\mbox{FDR}  
+= \frac{\mbox{Anzahl falscher Positivprädiktionen}}{\mbox{Anzahl positiver Prädiktionen}} 
+= \frac{\mbox{FP}}{\mbox{PP}}
+\end{equation}
+
+Negative Predictive Value  
+\begin{equation}
+\mbox{NPV}  
+= \frac{\mbox{Anzahl richtiger Negativprädiktionen}}{\mbox{Anzahl negativer Prädiktionen}} 
+= \frac{\mbox{TN}}{\mbox{PN}}
+\end{equation}
+
+
+False Omission Rate
+\begin{equation}
+\mbox{NPV}  
+= \frac{\mbox{Anzahl falscher Negativprädiktionen}}{\mbox{Anzahl negativer Prädiktionen}} 
+= \frac{\mbox{FN}}{\mbox{PN}}
+\end{equation}
+
+Beispiel (@koutsouleris2016, Table 1, 4-week outcome prediction, RBF-SVM)
+
+Positive Predictive Value / Precision
+\begin{equation}
+\mbox{PPV}  
+= \frac{\mbox{Anzahl richtiger Positivprädiktionen}}{\mbox{Anzahl positiver Prädiktionen}} 
+= \frac{\mbox{TP}}{\mbox{PP}}
+= \frac{84}{110}
+= 76.4\%
+\end{equation}
+
+False Discovery Rate
+\begin{equation}
+\mbox{FDR}  
+= \frac{\mbox{Anzahl falscher Positivprädiktionen}}{\mbox{Anzahl positiver Prädiktionen}} 
+= \frac{\mbox{FP}}{\mbox{PP}}
+= \frac{26}{110}
+= 23.6\%
+\end{equation}
+
+Negative Predictive Value  
+\begin{equation}
+\mbox{NPV}  
+= \frac{\mbox{Anzahl richtiger Negativprädiktionen}}{\mbox{Anzahl negativer Prädiktionen}} 
+= \frac{\mbox{TN}}{\mbox{PN}}
+= \frac{165}{224}
+= 73.7\%
+\end{equation}
+
+False Omission Rate
+\begin{equation}
+\mbox{NPV}  
+= \frac{\mbox{Anzahl falscher Negativprädiktionen}}{\mbox{Anzahl negativer Prädiktionen}} 
+= \frac{\mbox{FN}}{\mbox{PN}}
+= \frac{59}{224}
+= 26.3\%
+\end{equation}
+
+### Balanced Accuracy {-}
+
+Bei ungleichen Verhältnissen von Fallzahlen ist Accuracy (ACC) leicht missverständlich
+Seien bspw. $\mbox{N} = 95$ und $\mbox{P} = 5$ und alle Prädiktionen negativ. Dann gilt
+\begin{equation}
+\mbox{ACC} = \frac{\mbox{TN} + \mbox{TP}}{\mbox{T}} = \frac{95 + 0}{\mbox{100}} = 95\%
+\end{equation}
+Die Balanced Accuracy ist der Mittelwert der True Positive Rate und der True Negative Rate
+\begin{equation}
+\mbox{Balanced Accuracy (BAC)} = \frac{\mbox{TPR} + \mbox{TNR}}{2}
+\end{equation}
+Seien $\mbox{N} = 95$ und $\mbox{P} = 5$ und alle Prädiktionen negativ. Dann gilt
+\begin{equation*}
+\mbox{TPR} = \frac{\mbox{TP}}{\mbox{P}} = \frac{0}{5} = 0\%, \quad
+\mbox{TNR} = \frac{\mbox{TN}}{\mbox{N}} = \frac{95}{95} = 100\%, \quad
+\mbox{BAC} = \frac{\mbox{TPR} + \mbox{TNR}}{2}= \frac{0\% + 100\%}{2} = 50\% 
+\end{equation*}
+Seien $\mbox{N} = 95$ und $\mbox{P} = 5$ und alle Negativprädiktionen und alle Positivprädiktionen richtig. Dann gilt
+\begin{equation*}
+\mbox{TPR} = \frac{\mbox{TP}}{\mbox{P}} = \frac{5}{5} = 100\%, \quad
+\mbox{TNR} = \frac{\mbox{TN}}{\mbox{N}} = \frac{95}{95} = 100\%, \quad
+\mbox{BAC} = \frac{\mbox{TPR} + \mbox{TNR}}{2}= \frac{100\% + 100\%}{2} = 100\% 
+\end{equation*}
+
+Beispiel (@koutsouleris2016, Table 1, 4-week outcome prediction, RBF-SVM)
+\begin{equation}
+\mbox{BAC} = \frac{\mbox{TPR} + \mbox{TNR}}{2} = \frac{58.7\% + 86.4\%}{2} = 72.6\%
+\end{equation}
+
+
+### F1 Score {-}
+
+F1 Score ist ein integriertes Maß von Precision und Recall aus der Information Retrieval Literatur
+\begin{equation}
+\mbox{Precision} = \frac{\mbox{TP}}{\mbox{PP}} = \mbox{PPV} \quad\quad\quad\quad 
+\mbox{Recall}    = \frac{\mbox{TP}}{\mbox{P}}  = \mbox{TPR}
+\end{equation}
+Es gilt
+\begin{equation}
+\mbox{F1 Score} = 2\cdot \frac{\mbox{Precision} \cdot \mbox{Recall}}{\mbox{Precision} + \mbox{Recall}}
+\end{equation}
+Der F1 Score ist groß, wenn sowohl Precision als auch Recall groß sind.
+
+```{r, eval = FALSE}
+pdf(file    = "_figures/804-f1.pdf", 
+width       = 6, 
+height      = 6) 
+par(
+family      = "sans",
+mfcol       = c(1,1),
+pty         = "s",
+bty         = "l",
+lwd         = 1,
+las         = 1,
+mgp         = c(3,2,0),
+xaxs        = "i",
+yaxs        = "i",
+font.main   = 1,
+cex         = 1,
+cex.main    = 1)
+
+# F1 Score Evaluation
+precision   = seq(0, 100, length.out = 100)
+recall      = seq(0, 100, length.out = 100)
+f1_scores   =  matrix(0, nrow = length(precision), ncol = length(recall))
+for (i in seq_along(precision)){
+  for (j in seq_along(recall)){
+    p = precision[i]  / 100
+    r = recall[j]     / 100
+    f1_scores[j,i] = ifelse(p + r == 0, 0, 2 * (p * r) / (p + r))     
+  }
+}
+
+# Plot the heatmap
+contour(
+x       = precision,
+y       = recall,
+z       = f1_scores,
+labcex  = 1.0,
+col     = hcl.colors(10, "YlOrRd"),
+xlab    = "Precision (%)",
+ylab    = "Recall (%)",
+main    = "F1 Score")
+dev.off()
+```
+
+![F1 Score.](./_figures/804-f1){#fig-f1 fig-align="center" width=100%}
+
+
+Ist Precision oder Recall oder beide gering, so ist der F1 Score niedrig
+
+
+
+
+

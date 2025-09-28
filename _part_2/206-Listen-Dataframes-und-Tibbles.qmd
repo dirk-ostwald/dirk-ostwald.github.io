@@ -1,0 +1,557 @@
+# Listen, Dataframes und Tibbles {#sec-listen-dataframes-und-tibbles}
+## Listen {#sec-listen}
+
+*Listen* sind geordnete Folgen von R Objekten. Listen werden als *rekursiver* 
+Datentyp bezeichnet, da sie Objektve verschiedener Datentypen, insbesondere auch
+wiederum Listen bündeln können. Obwohl sich die intuitive Sichtweise, dass Listen
+Objekte "enthalten" anbietet, "enthalten" Listen defacto keine Objekte, sondern 
+lediglich die Referenzen zu den entsprechenden Objekten im Arbeitsspeicher 
+(@fig-listen-repraesentation). Listen sind ein wesentlicher Baustein der 
+zentralen `dataframe` Datenstruktur in **R**.
+
+![Listenrepräsentation. Eine Liste in **R** ist eine indizierbare Folge von 
+Referenzen zu **R** Objekten im Arbeitsspeicher.](./_figures/206-listen-repraesentation){#fig-listen-repraesentation fig-align="center" width=30%}
+
+
+### Erzeugung {-}
+
+Listen können durch die direkte Konkatenation der Listenelemente mithilfe der
+Funktion `list()` erzeugt werden.
+
+\footnotesize
+```{r}
+# Erzeugung einer Liste mit einem Vektor-, Matrix-, und Funktionselement
+L = list(c(1,4,5), matrix(1:8, nrow = 2), exp) 									
+print(L)
+```
+\normalsize
+
+Insbesondere können auch Listen selbst Elemente von Listen sein, was ihre 
+Bezeichnung als *rekursiver* Datentyp motiviert.
+
+\footnotesize
+```{r, eval = F}
+L = list(list(1))						# Liste mit Element 1 in einer Liste
+print(L)								# Ausgabe
+```
+\normalsize
+
+Die von den **R** Vektoren vertraute Funktion `c()` kann auch zum Konkatenieren
+von mehreren Listen genutzt werden.
+
+\footnotesize
+```{r, eval = F}
+L = c(list(pi), list("a"))				# Konkatenation zweier Listen
+print(L)								# Ausgabe
+```
+\normalsize
+
+### Charakterisierung {-}
+
+Der Datentyp von Listen ist `list`:
+
+\footnotesize
+```{r}
+L = list(1:2, "a", log)					# Erzeugung einer Liste
+typeof(L)								# Typenbestimmung
+```
+\normalsize 
+
+`length()` gibt die Anzahl der Listenelemente auf dem obersten Listenlevel aus,
+die Elementinhalte werden also ingoriert.
+
+\footnotesize
+```{r}
+L = list(1:2, list("a", pi), exp)		# Liste mit drei Toplevelelementen
+length(L)								# length() ignoriert Elementinhalte, length() von L ist also 3
+```
+\normalsize 
+
+Die Dimension, Zeilen- und Spaltenanzahl von Listen ist `NULL`:
+
+\footnotesize
+```{r}
+L = list(1:2, "a", sin)					# eine Liste
+dim(L)							    	# Die Dimension von Listen ist NULL
+nrow(L)							    	# Die Zeilenanzahl von Listen ist NULL
+ncol(L)									# Die Spaltenanzahl von Listen ist NULL
+```
+\normalsize 
+
+### Indizierung {-}
+
+Bei der Indizierung von Listen ist zu beachten, dass Listen auf zwei unterschiedliche
+Arten indiziert werden können. Einfache eckige Klammern `[ ]` indizieren Listenelemente 
+als Listen:
+
+\footnotesize
+```{r}
+L  = list(1:3, "a", exp)				# eine Liste
+l1 = L[1]								# Indizierung eines Listenelements
+print(l1)								# Ausgabe					
+typeof(l1)								# Typbestimmung von l1
+```
+\normalsize 
+
+Doppelte eckige Klammern `[[ ]]` indizieren den Inhalt von Listenelementen:
+
+\footnotesize
+```{r, eval = F}
+L  = list(1:3, "a", exp)				# eine Liste
+i2 = L[[2]]								# Indizierung des Listenelementinhalts
+print(i2)								# Ausgabe des Inhalts von Listenelement L[2]
+typeof(i2)						    	# Typbestimmung von i2
+```
+\normalsize 
+
+Auch beim Ersetzen von Listeninhalten sind diese Konventionen zu beachten. 
+So ist es zum Beispiel nicht möglich durch den Ausdruck `L[1] = c(1,2,3)` das
+erste Listenelement zu ändern, da der Vektor `c(1,2,3)` keine Liste ist: 
+
+\footnotesize
+```{r, error = F}
+L  		= list(1:3, "a", exp)			# eine Liste
+L[1]	= 4:6							# keine Typkonversion, Fehlermeldung
+L[1]	= list(4:6)				    	# Ersetzung des 1. Listenelementes
+L[[3]]	= "c"							# Ersetzung des 3. Listenelementinhaltes
+```
+\normalsize 
+
+
+### Indizierung {-}
+
+Die Prinzipien der Listenindizierung sind analog zu denen der Vektorindizierung.
+Vektoren positiver Zahlen adressieren die entsprechenden Elemente:
+
+\footnotesize
+```{r}
+L = list(1:3, "a", pi)					# eine Liste
+l = L[c(1,3)] 					    	# 1. und 3. Listenelement
+l
+```
+\normalsize
+
+Vektoren negativer Zahlen adressieren die zu ihren Werten komplementären Elemente:_
+
+\footnotesize
+```{r}
+L = list(1:3, "a", pi)					# eine Liste
+l = L[-c(1,3)] 							# 2. Listenelement
+l
+```
+\normalsize
+
+Logische Vektoren adressieren Elemente mit Index `TRUE`:
+
+\footnotesize
+```{r}
+L = list(1:3, "a", pi)					# eine Liste
+l = L[c(T,T,F)]							# 1. und 2. Listenelement
+l
+```
+\normalsize
+
+
+Zur nicht-numerischen Addressierung können auch Listenelementen können Namen 
+gegeben werden. Dies ist nach der Erzeugung einer Liste mithilfe der `names()`
+Funktion möglich:
+
+\footnotesize
+```{r}
+K 		 = list(1:2, TRUE)							# eine unbenannte Liste
+names(K) = c("Frodo", "Sam")						# Namensgebung mit names()
+K													# Ausgabe
+```
+\normalsize
+
+Ebenso ist es möglich, die Namen der Listenelemente direkt bei Erzeugung der Liste
+durch Zuweisung zu vergeben: 
+
+\footnotesize
+```{r, eval = F}
+L = list(greta  = 1:3, luisa  = "a", carla  = "b")	# Listenerzeugung mit Namenvergabe
+```
+\normalsize
+
+Sowohl Listenelemente als auch Listenelementinhalte können dann mit ihren Namen
+addressiert werden:
+
+\footnotesize
+```{r}
+L = list(greta  = 1:3, luisa  = "a", carla  = "b")	# Listenerzeugung mit Namenvergabe
+L["greta"]											# Listenelementausgabe
+typeof(L["greta"])									# Listenelementtyp			
+L[["greta"]]										# Listenelementinhaltausgabe
+typeof(L[["luisa"]])								# Listenelementinhaltstyp
+```
+\normalsize
+
+Insbesondere können Listenelementinhalte auch mit dem `$` Operator und ihrem Namen 
+indiziert werden. Dies stellt im Rahmen der Dataframes die gebräuchlichste Art 
+der Listenindizierung dar:
+
+\footnotesize
+```{r}
+L = list(greta  = 1:3, luisa  = "a", carla  = "b")	# Listenerzeugung mit Namenvergabe
+L$greta												# Listenelementinhaltsausgabe
+typeof(L$greta)										# Listenelementinhaltstyp
+L$luisa                                             # Listenelementinhaltsausgabe
+typeof(L$luisa)                                     # Listenelementinhaltstyp
+L$carla                                             # Listenelementinhaltsausgabe
+typeof(L$carla)                                     # Listenelementinhaltstyp
+```
+\normalsize
+
+### Arithmetik {-}
+
+Eine allgemeine Listenarithmetik ist nicht definiert, da Listenelementinhalte ja 
+unterschiedlichen Datentyps sein können, für die unitäre oder binäre Operationen 
+nicht definiert sind:
+
+\footnotesize
+```{r, error = TRUE}
+L1 = list(1:3, "a" )		# eine Liste
+L2 = list(T, exp )		    # eine Liste
+L1+L2						# Versuch der Listenaddition
+```
+\normalsize
+
+Sind Inhalte von Listenelementen allerdings von einem gemeinsamen Datentyp, für
+den bestimmte binäre Operationen definiert sind, so können sie auch z.B. arithmetisch 
+verknüpft werden:
+
+\footnotesize
+```{r}
+L1 = list(1:3, pi )	   		# eine Liste
+L2 = list(4:6, exp )	    # eine Liste
+L1[[1]] + L2[[1]]			# Addition  der 1. Listenelementinhalte,  [1+4, 2+5,3+6]
+L2[[2]](1)					# Anwendung des 2. Listenelementinhalts, exp(1)
+```
+\normalsize
+
+
+
+### Copy-on-modify {-}
+
+Wie bei Vektoren gilt bei Listen das *Copy-on-Modify* Prinzip. Insbesondere gilt
+bei Listen, dass sogenannte *Shallow copies* bei Modifikation einer Liste erzeugt
+werdem. Dabei wird nur das Listenobjekt selbst kopiert und erhält eine neue Addresse
+im Arbeitsspeicher, nicht aber die durch die Liste nicht-modifizierent gebundenen 
+Objekte, die an den gleichen Addressen im Arbeitsspeicher verbleiben. `lobstr::ref()` 
+erlaubt es, dieses Verhalten zu studieren.
+
+\footnotesize
+```{r}
+L1 = list(1,2,3)			# Erzeugen einer Liste als Objekt  
+lobstr::ref(L1)				# Ausgabe der Referenzen
+L2 = L1						# L1 und L2 referenzieren dasselbe Objekt  
+lobstr::ref(L2)	            # Ausgabe der Referenzen
+L2[[3]] = 4					# Copy-on-Modify mit shallow Objekt Kopie
+lobstr::ref(L2)				# Ausgabe der Referenzen
+```
+\normalsize
+
+Offenbar ändert die Zuweisung `L2 = L1` zunächst nichts an den Arbeitsspeicheraddressen
+auf die `L1` und `L2` sowie ihre Elemente verweisen. Die Modifikation des Inhalts
+des dritten Listenelements von `L2` durch `L2[[3]] = 4` allerdings ändert dann die
+Addresse des Listenobjekts im Arbeitsspeicher, da eine Kopie des Listenobjekts erzeugt
+wird. Gleichzeitig ändern sich gemäß dem shallow copy-Prinzips die Addressen der 
+ersten beiden Inhalte von `L2` aber nicht. @fig-list-copy-on-modify visualisiert
+diese Prinzipien an einem Beispiel.
+
+
+![Effekte der Zuweisung `L2 = L1` für eine Liste `L1` sowie der Modifikation eines
+Elements von `L2`.](./_figures/206-list-copy-on-modify){#fig-list-copy-on-modify fig-align="center" width=100%}
+
+## Dataframes {#sec-dataframes}
+
+Dataframes sind die zentrale Datenstruktur in **R**. Dataframes stellt man sich
+am besten als Tabelle vor, deren Spalten Namen haben. Technisch ist ein Dataframe 
+eine **R** Liste, deren Elemente **R** Vektoren gleicher Länge sind. Die Listenelemente 
+entsprechen dabei den Spalten einer Tabelle und die Vektorelemente an gleicher 
+Position entsprechen den Zeilen einer Tabelle.
+
+
+![Dataframerepräsentation. Ein **R** Dataframe ist einer **R** Liste deren Elemente
+**R** Vektoren gleicher Länge sind.](./_figures/206-dataframe-repraesentation){#fig-dataframe-repraesentation fig-align="center" width=50%}
+
+
+### Erzeugung {-}
+
+Dataframes werden mit der Funktion `data.frame()` erzeugt. Dabei werden als 
+Argument der Funktion die Spaltennamen und ihre vektorwertigen Inhalte festegelegt:
+
+\footnotesize
+```{r}
+D = data.frame(x = letters[1:4],	# 1. Spalte mit Name x
+			   y = 1:4, 			# 2. Spalte mit Name y
+			   z = c(T,T,F,T))		# 3. Spalte mit Name z
+print(D)							# Ausgabe des Dataframes als Tabelle	
+```
+\normalsize
+
+Die Spalten des Dataframes müssen die gleiche Länge haben, ansonsten ist ein
+Dataframe nicht definiert:
+
+\footnotesize
+```{r, error = TRUE}
+D = data.frame(x = letters[1:4], 	# 1. Spalte mit Name x
+			   y = 1:4, 			# 2. Spalte mit Name y
+			   z = c(T,T,F))		# 3. Spalte mit Name z
+```
+\normalsize
+
+Die Spalten eines Dataframes können offenbar unterschiedlichen Datentyps sein, dies
+ist natürlich mit dem Charakter von **R** Listen kongruent.
+
+### Charakterisierung {-}
+
+Mit den Funktionen `names()` und `colnames()` können die Namen der Spalten eines
+Dataframes ausgegeben werden, mit der Funktion `rownames()` seine Zeilennamen.
+Per Default sind die Zeilennamen eines Dataframes die ganzen Zahlen 1,2,...:
+
+\footnotesize
+```{r}
+D = data.frame(age    = c(30,35,40,45), 	# 1. Spalte
+			   height = c(178,189,165,171),	# 2. Spalte
+			   weight = c(67, 76, 81, 92))	# 3. Spalte
+names(D)									# names gibt die Spaltennamen aus
+colnames(D)									# colnames entspricht names
+rownames(D)                                 # default rownames sind 1,2,...										
+```
+\normalsize
+
+Des Weiteren ist ein Dataframe durch die Anzahl seiner Zeilen und Spalten charkterisiert.
+Diese können mit den Funktionen `nrow()` bzw. `ncol()` ausgegeben werden. Die Funktion
+`length()` gibt für Dataframes wie für Listen die Anzahl der Listeneinträge, bei
+Dataframes also entsprechend die Spaltenanzahl, aus.
+
+\footnotesize
+```{r}
+nrow(D)										# Zeilenanzahl
+ncol(D)									    # Spaltenanzahl
+length(D)									# Länge ist die Spaltenanzahl
+```
+\normalsize
+
+Eine hilfreiche Funktion zur Charaktersierung eines Dataframes ist die Funktion 
+`str()`, die in kompakter Form wesentliche Aspekte eines Dataframes anzeigt. 
+`str()` steht dabei für *structure* und bezeichnet die Spalten des Dataframes
+als *variables* und Zeileneinträge als *observations*:
+
+\footnotesize
+```{r}
+str(D)
+```
+\normalsize
+
+### Attribute {-}
+
+Technisch sind Dataframes Listen mit Attributen für (column) `names` und `row.names`.
+Dataframes sind von der`class` "data.frame":
+
+\footnotesize
+```{r}
+typeof(D)
+attributes(D)
+```
+\normalsize
+
+### Indizierung {-}
+
+Dataframes können sowohl wie Matrizen als auch wie Listen indiziert werden. 
+Die Prinzipien der Indizierung entsprechen dabei denen von Vektoren. Folgendes
+Beispiel zeigt zunächst, wie ein Dataframe im Sinne einer Liste mit einfachen
+Klammern indiziert wird. Das entsprechende Listenelement ist bei Dataframes dann
+selbst ein Dataframe:
+
+\footnotesize
+```{r}
+D = data.frame(x = letters[1:4],	# 1. Spalte mit Name x
+			   y = 1:4, 			# 2. Spalte mit Name y
+			   z = c(T,T,F,T))		# 3. Spalte mit Name z
+class(D)                            # D ist ein Dataframe
+v = D[1]							# 1. Listenelement als Dataframe
+v
+class(v)							# v ist ein Dataframe
+```
+\normalsize
+
+Des Weiteren können Dataframes wie Listen mit doppelten Klammern indiziert werden,
+es werden dadurch entsprechend die Inhalte eines Listenelements addressiert:
+
+\footnotesize
+```{r}
+w = D[[1]]			                # Inhalt des 1. Listenelements										
+w
+class(w)							# w ist ein character vector
+```
+\normalsize
+
+Die typische Indizierung eines Dataframes erfolgt mit der von den Listen bekannten
+`$` Indizierung, die den Inhalt der entsprechenden Dataframe Spalte addressiert: 
+
+\footnotesize
+```{r}
+y = D$y								# $ zur Indizierung der y Spalte
+y
+class(y)							# v ist ein Vektor vom Typ "integer" (!)
+```
+\normalsize
+
+
+Ist man an speziellen Inhalten des Dataframes in spezifischen Zeilen und Spalten
+interessiert, so bieten sich die Prinzipien der Matrixindizierung an, wie folgendes
+Beispiel zeigt: 
+
+\footnotesize
+```{r}
+D[2:3,-2]	    					# 1. Index fuer Zeilen, 2. Index fuer Spalten
+D[c(T,F,T,F),] 		                # 1. Index fuer Zeilen, 2. Index fuer Spalten
+D[,c("x", "z")]						# 1. Index fuer Zeilen, 2. Index fuer Spalten
+```
+\normalsize
+
+### Copy-on-modify {-}
+
+Zur optimalen Nutzung des Arbeitsspeichers gelten die Copy-on-Modify Prinzipien 
+für Listen auch für Dataframes. Weiterhin gelten dabei, dass die Modifikation 
+einer Spalte zur Kopie der entsprechenden Spalte führt, wohingegen die Modifikation 
+einer Zeile in der Kopie des gesamten Dataframes resultiert. 
+
+![Effekte von Spalten und Zeilen Modifikationen bei Dataframes. Die Modifikation einer
+Spalte führt zur Kopie der entsprechenden Spalte, die Modifikation einer Zeile zur Kopie
+des gesamten Dataframes.](./_figures/206-dataframe-copy-on-modify){#fig-dataframe-copy-on-modify fig-align="center" width=100%}
+
+
+## Tibbles {#sec-tibbles}
+
+In Ergänzung zu den **R** Dataframes haben in den letzten zehn Jahren die 
+*Tibbles* (diminutiv für *tables*) als Teil des `tidyverse` Pakets Verbreitung gefunden. 
+Tibbles sind programmiertechnisch optimierte Dataframes und stellen ein Beispiel für die 
+datenwissenschaftliche Verallgemeinerung der **R** Anwendung über den Bereich 
+der linearen statistischen Modellbildung hinaus dar. Zur Nutzung von Tibbles muss
+das `tidyverse` Paket installiert und der Tibble Code geladen sein: 
+
+\footnotesize
+```{r, eval = F}
+install.packages("tidyverse")				# Einmaliger Paket Download und Installation
+library(tibble)								# Sessionspezifisches Laden des tibble Codes
+```
+\normalsize
+
+Im Großen und Ganzen enstpren Tibbles den Dataframes. Wie bei Dataframes handelt 
+es sich bei Tibbles um Listen von Vektorreferenzen, wobei auch hier die Vektoren 
+die gleiche Länge haben und die benannten Spalten einer Tabelle darstellen. 
+Tibbles können mit der Funktion `tibble()` erzeugt werden. Die Anzeige im **R** 
+Terminal ist im Vergleich zu Dataframes optimiert, wie folgendes Beispiel zeigt: 
+
+\footnotesize
+```{r}
+library(tibble)																# Paket
+T = tibble(x = c("a", "c", "d"),  y = c(1,2,3), z = c(TRUE,FALSE,FALSE))	# Erzeugung
+print(T)																	# Ausgabe
+attributes(T)																# Attribute
+```
+\normalsize
+
+### Tibbles vs. Dataframes
+
+Tibbles wurden 2016 im Rahmen des `tidyverse` Pakets eingeführt, 
+um wahrgenommene Schwächen der **R** Dataframes auszugleichen. Dazu gehörte unter anderem, dass 
+die Funktion `data.frame()` character Vektoren automatisiert in den **R** Datentyp
+`factor` umwandelte. Dies ist seit einer **R** Revision von 2019 allerdings nicht
+mehr der Fall, wie folgendes Beispiel zeigt:
+
+\footnotesize
+```{r}
+D = data.frame(x = 1:3, y = c("a", "b", "c"))			# character vector y 
+str(D)													# ... bleibt character vector
+```
+\normalsize
+
+Per Default wandelt `data.frame()` weiterhin nicht legale Spaltennamen wie eine
+Zahl (`1`) in legale Spaltennamen (`X1`) um. Möchte man dies nicht, so kann man
+dieses Verhalten allerdings durch Setzen des Arguments `check.names` abstellen
+
+\footnotesize
+```{r}
+names(data.frame(`1` = 1))						# Per Default Umwandlung von nicht legalen Variablennamen
+names(data.frame(`1` = 1, check.names = FALSE))	# Dieser Default kann jedoch abgestellt werden.
+```
+\normalsize
+
+Wie in @sec-vektoren gesehen, hat **R** die Tendenz, bei von ihrer Länge unpassenden
+Datentypen selbst Daten durch Recycling zu erzeugen, was leicht zu Fehlern führen kann.
+So recyclet die Funktion `data.frame()` bei der Erzeugung eines Dataframes zum 
+Beispiel Vektoren, wenn einer davon ein ganzzahliges Vielfaches des anderen ist:  
+
+\footnotesize
+```{r, error = TRUE}
+D = data.frame(x = 1:2, y = 3:6)  	# length(y) = 2 * length(x)
+print(D)							# Ausgabe
+```
+\normalsize
+
+`tibble()` dagegen ist hier genauer und gibt im obigen Fall einen Fehler aus:
+
+\footnotesize
+```{r, error = TRUE}
+T = tibble(x = 1:2, y = 3:6) 		# tibble gibt hier eine Fehler aus
+```
+\normalsize
+
+Vektoren der Länge 1 werden allerdings auch von `tibble()` recyclet:
+
+\footnotesize
+```{r}
+T = tibble(x = 1:3, y = 3)			# Vektoren mit length 1
+print(T)							# Ausgabe
+```
+\normalsize
+
+Dataframes sind manchmal inkonsistent, was die von ihnen ausgegeben Datentypen
+angeht. So ergibt, wie unteres Beispiel zeigt, die Indizierung einer Dataframespalte
+mit ihrem Namen etwa einen Dataframe, die Indizierung der gleichen Spalte mit ihrem
+Namen in Matrixindizierung allerdings einen Vektor:
+
+\footnotesize
+```{r}
+D = data.frame(x = 1:3, y = 4:6)  	# Dataframe
+str(D["x"])							# Indizierung mit Namen gibt einen Dataframe aus
+str(D[,"x"])						# Matrixindizierung mit Namen gibt einen Vektor aus
+```
+\normalsize
+
+Tibbles sind in dieser Hinsicht konsistenter:
+
+\footnotesize
+```{r}
+T = tibble(x = 1:3, y = 4:6)  	# Tibble
+str(T["x"])						# Indizierung mit Namen ergibt tibble
+str(T[,"x"])					# Matrixindizierung mit Namen ergibt tibble
+```
+\normalsize 
+
+Ein zusätzliches Feature von Tibbles gegenüber Dataframes ist, dass die Funktion 
+`tibble()` es erlaubt, Spaltennamen schon bei Erzeugung eines Tibble zu referenzieren,
+was bei Dataframes nicht möglich ist.
+Zusätzliches Feature von Tibbles
+
+\footnotesize
+```{r, error = TRUE}
+T = tibble(x = 1, y = 2*x)		# Die Spalte x wird definiert und und benutzt
+D = data.frame(x = 1, y = 2*x) 	# data.frame erlaubt dies nicht
+```
+\normalsize
+
+
+Zusammenfassend lässt sich festhalten, dass Tibbles in mancher Hinsicht weniger 
+flexibel und damit präziser als Dataframes funktionieren. Generell verhalten sich
+Tibbles in `tidyverse` Kontexten konsistenter als Dataframes. Allerdings sind die
+Unterschiede zwischen Dataframes und Tibbles wie oben gesehen eher subtil, sodass
+ein effizienter Umgang mit Dataframes auch einen effizienten Umgang mit Tibbles 
+ermöglicht. Da nicht alle **R** Projekte die Pakete des `tidyverse` nutzen, werden
+wohl auch in Zukunft Dataframes die Standarddatenstruktur für tabellarische Daten
+in **R** bleiben.
+

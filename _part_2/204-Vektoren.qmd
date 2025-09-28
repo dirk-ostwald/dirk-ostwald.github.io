@@ -1,0 +1,669 @@
+# Vektoren {#sec-vektoren}
+
+In diesem Abschnitt wollen wir nun mit den **R** *Vektoren* eine erste grundlegende 
+Datenstruktur genauer kennenlernen. Viele Prinzipien, die am Beispiel von Vektoren
+erläutert werden können, übertragen sich sinngemäß auf komplexere Datenstrukturen 
+in **R**, sodass ein kompetenter Umgang auch mit der hier betrachteten basalen
+Datenstruktur im Anwendungskontext unverzichtbar ist. Es sei angemerkt, dass sich 
+der Begriff des *Vektors* in diesem Abschnitt streng auf die entsprechenden **R** 
+Datenstruktur, nicht aber auf das gleichnamige mathematische Objekt beziehen. 
+Auch wenn **R** Vektoren in manchen Eigenschaften ihrem mathematischen Pendant ähneln
+und bestimmte Operationen zwischen **R** Vektoren Operationen zwischen den entsprechenden
+mathematischen Objekten abbilden können, so haben Vektoren in der imperativen
+Programmierung oft viel mehr und andere Eigenschaften als die entsprechenden 
+mathematischen Objekte.
+
+Allgemein betrachten für die Präsentation von Datenstruktur immer zunächst, wie 
+eine bestimmte Datenstruktur mit **R** Code *erzeugt* wird, durch welche Eigenschaften 
+die Datenstruktur *charakterisiert* ist, wie einzelne Elemente der
+Struktur *indiziert* und bearbeitet werden können und welche *arithmetischen Operationen* 
+für die Datenstruktur zulässig sind. Schließlich betrachten wir auch immer 
+eventuelle weitere Besonderheiten der Datenstruktur. Im Kontext von **R** Vektoren
+sind dies beispielsweise die Begriffe der *Datentypangleichung (Coercion)*,
+dem *Recyling* oder die Repräsentation fehlender Werte in Datensätzen.
+
+**R** Vektoren sind geordnete Folgen von Datenwerten. Die einzelnen Datenwerte 
+eines Vektors heißen *Elemente* des Vektors. Vektoren, deren Elemente alle vom 
+gleichen Datentyp sind, heißen *atomar*. Mit dem Begriff *Vektor* soll hier immer ein 
+atomarer Vektor gemeint sein. Die zentralen Datentypen für Vektoren sind die oben
+eingeführten *numeric*, (*double*, *integer*), *logical* und *character*. 
+@fig-vektoren zeigt graphische Darstellungen enstprechender Vektoren.
+
+![Vektoren in **R**.](./_figures/204-vektoren){#fig-vektoren fig-align="center" width=100%}
+
+## Erzeugung {#sec-erzeugung}
+
+Wir betrachten zunächst die Erzeugung einelementiger Vektoren, die auch als
+*Elementarwerte* bezeichnet werden. Wie alle Datenstrukturen werden auch 
+Elementarwerte durch Zuweisungen der Form 
+
+\footnotesize
+```{r, eval = F}
+Elementarwert <- Wert
+```
+\normalsize
+
+oder 
+
+\footnotesize
+```{r, eval = F}
+Elementarwert = Wert
+```
+\normalsize
+
+Dabei bestimmt die Spezifikation von `Wert`, welcher Art der erzeugte Elementarwert ist.
+
+Elementarwerte vom Typ `numeric` können durch Zuweisung einer Zahl erzeugt werden.
+Per Default wird dabei ein Elementarwert vom Typ `double` erzeugt. Die Zahlen können 
+dabei ohne Dezimalstellen, in Dezimalnotation oder wissenschaftlicher Notation 
+spezifiziert werden. Weitere mögliche Werte zur Erzeugung eines Elementarwerts
+vom Typ `double` sind `Inf` und `-Inf` für positiv und negativ Unendlich und `NaN` 
+(Not-a-Number) als Platzhalter für numerische Werte.
+
+\footnotesize
+```{r}
+x = 1                               # Einelementiger Vektor 
+typeof(x)                           # vom Typ double
+y = 2.1e2                           # Einelementiger Vektor 
+typeof(y)                           # vom Typ double
+z = Inf 					        # Einelementiger Vektor 
+typeof(z)                           # vom Typ double
+```
+\normalsize
+
+Numerische Elementarwerte vom Typ `integer` wird wie double ohne Dezimalstellen 
+erzeugt, gefolgt von einem `L` für `long integer`.
+
+\footnotesize
+```{r}
+x = 1L                              # Einelementiger Vektor 
+typeof(x)                           # vom Typ integer
+y = 200L                            # Einelementiger Vektor 
+typeof(y)                           # vom Typ integer                        
+```
+\normalsize
+
+Elementarwerte vom Typ `logical` können durch Zuweisung der logischen Werte 
+`TRUE` oder `FALSE` bzw. abgekürzt `T` oder `F` erzeugt werden.
+
+\footnotesize
+```{r}
+x = TRUE                            # Einelementiger Vektor 
+typeof(x)                           # vom Typ logical
+y = F                               # Einelementiger Vektor 
+typeof(y)                           # vom Typ logical
+```
+\normalsize
+
+Elementarwerte vom Typ `character` schließlich werden durch die Zuweisung von 
+Werten in Hochkommata (`'a'`) oder Anführungszeichen (`"a"`) erzeugt
+
+\footnotesize
+```{r}
+x = "a"                             # Einelementiger Vektor 
+typeof(x)                           # vom Typ character
+y = 'test'                          # Einelementiger Vektor 
+typeof(y)                           # vom Typ character
+```
+\normalsize
+
+Um nun mehrere Elementarwerte in einem Vektor zusammenzufügen, konkateniert 
+(von lat. *catena* (Kette), engl. *concatenate* (verketten)) man sie mit der 
+Funktion `c()`.
+
+\footnotesize
+```{r}
+x = c(1,2,3) 						# numeric vector [1,2,3]  
+s = c("a", "b", "c")				# character vector ["a", "b", "c"]
+l = c(TRUE, FALSE)					# logical  vector [TRUE, FALSE]
+```
+
+```{r}
+x 
+s
+l
+```
+\normalsize
+
+Es können nicht nur Elementarwerte, sondern auch Vektoren mit Elementarwerten 
+oder anderen Vektoren konkateniert werden. Mit obigem Vektor `x` erzeugt man
+beispielsweise folgende Vektoren `y` und `z`:
+
+\footnotesize
+```{r}
+y = c(0,x,4)				     	# numeric vector [0,1,2,3,4] mit 
+z = c(x,y)                          # numeric vector [1,2,3,0,1,2,3,4]       
+```
+
+```{r}
+y
+z
+```
+\normalsize
+
+Vektoren müssen nicht mit bereits bestehenden Werten erzeugt werden, sondern
+es können auch "leere" Vektoren von einem gewünschten Datentyp erzeugt werden.
+**R** stellt dafür die Funktionen `vector()` sowie `double()`, `integer()`, 
+`logical()` und `character()` bereit. Dies ist potenziell hilfreich, um zu 
+Beginn einer längeren Berechnung bereits Arbeitsspeicher des Computers belegt zu haben,
+sodass während der Programmausführung nicht nach Arbeitsspeicher gesucht werden
+muss, was unter Umständen die Programmlaufzeit erhöht.
+
+\footnotesize
+```{r, eval = F}
+# Erzeugen "leerer" Vektoren mit vector()
+v = vector("double",3)			    # double vector [0,0,0]
+w = vector("integer",3)			    # integer vector [0,0,0]
+l = vector("logical",2)			    # logical vector [FALSE, FALSE]
+s = vector("character",4)		    # character vector ["", "", "", ""]
+
+# Erzeugen leere Vektoren mit vector()
+v = double(3)						# double vector [0,0,0]
+w = integer(3)						# integer vector [0,0,0]
+l = logical(2)						# logical vector [FALSE, FALSE]
+s = character(4)					# character vector ["", "", "", ""]
+```
+\normalsize
+
+Allerdings sind die so erzeugten "leeren" Vektoren nicht wirklich leer: 
+`v` und `w` bestehen aus Nullen, `l` aus den logischen Werten `FALSE` und `s`
+aus den Zeichen `""`. Zur Initialisierung von Vektoren als Container und anschließender
+Befüllung im Rahmen eines Programms sind `vector()`, `double()`, `integer()`, 
+`logical()` und `character()` deshalb nur bedingt geeignet: Übersieht der Code 
+die Befüllung einzelner Einträge, so wird mit den von diesen Funktionen erzeugten
+Werten gerechnet, was nicht unbebedingt beabsichtig ist. In @sec-kontrollstrukturen
+lernen wir eine Methode kennen, um Datenstrukturen zu initialisieren und dabei 
+einigermaßen sicheren Code zu generieren.  
+
+**Sequenzen**
+
+Ein häufiges Hilfsmittel in der Programmierung sind Vektoren, die Folgen von 
+numerischen Werten, z.B. als Repräsentation der Definitionsmengen einer 
+univariaten Funktion, darstellen. **R** stellt zu ihrer Erzeugung den sogenannten 
+Colonoperator `:` und die Funktion `seq()` sowie ihre Varianten zur Verfügung.
+
+Der Colonoperators in der Form `a:b` erzeugt Sequenzen ganzzahliger Schritte 
+zwischen $a$ und $b$ anhand von   
+\begin{equation}
+(s_i)_{i = 0,1,2...} \mbox{ mit } s_i = a + i \mbox{ für } i = 0,1,2,... \mbox{ und } s_i \le b
+\end{equation}
+Dabei meint "zwischen `a` und `b`" hier also speziell, dass `a` die erste 
+Zahl der generierten Sequenz ist und `b` die maximal mögliche. Folgende Beispiele
+verdeutlichen dies  
+
+\footnotesize
+```{r}
+x = 0:5	        # 0 ist Sequenzbeginn, 5 kann inkludiert werden   
+y = 1.5:6.1 	# 1.5 ist Sequenzbeginn, Sequenz endet bei 5.5 < 6.1  
+```
+```{r}
+x
+y
+```
+\normalsize
+
+Die Funktion `seq()` mit der Syntax `seq(from, to, by)`, wobei `from` den Startwert,  
+`to` den maximalen Endwert und `by` die Schrittweite bezeichnen bietet weitere
+Möglichkeiten Sequenzen nicht zur ganzzahliger Schrittweiten zu erzeugen. Die
+folgenden Beispiele sollen dies verdeutlichen:  
+
+\footnotesize
+```{r}
+x_1	= seq(0,5)					# wie 0:5 
+x_2 = seq(0,1,len = 5)			# 5 Zahlen zwischen 0 (inkl.) und 1 (inkl.)				
+x_3 = seq(0,2,by = .15)			# 0.15 Schritte zwischen 0 (inkl.) und 2 (max.)
+x_4	= seq(1,0,by = -.1)			# -0.1 Schritte zwischen 1 (inkl.) und 0 (min.)
+```
+```{r}
+x_1
+x_2
+x_3 
+x_4
+```
+\normalsize
+
+Die `seq()` Variante `seq.int()`kann zur Erzeugung von ganzzahligen Folgen 
+genutzt werden und ist unter Umständen schneller als `seq()`. `seq_len()` erzeugt
+ganzzahlige Folgen einer vorgegebenen Länge, `seq_along()` generiert ganzzahlige
+Folgen anhand der Einträge eines Vektors als weitere Varianten
+
+\footnotesize
+```{r}
+x_1	= seq.int(0,5)				# wie 0:5, [0,1,2,3,4,5]
+x_2 = seq_len(5)				# Natuerliche Zahlen bis 5, [1,2,3,4,5]
+x_3 = seq_along(c("a","b"))	    # wie seq_len(length(c("a", "b")))
+``` 
+```{r}
+x_1
+x_2
+x_3 
+``` 
+\normalsize
+
+## Charakterisierung {#sec-charakterisierung}
+
+Zur Charakterisierung von Vektoren stehen mit `length()` und `typeof()` Funktionen
+bereit, die die Anzahl der Einträge eines Vektors und den Datentyp der Einträge
+eines Vektors ausgeben, wie folgende Beispiele verdeutlichen. 
+
+\footnotesize
+```{r, eval = T}
+x = 0:10					# Vektor
+length(x)					# Anzahl der Elemente des Vektors
+```
+```{r, eval = T}
+x = 1:3L					# Vektor
+typeof(x)					# Datentyp des atomic vectors
+```
+```{r, eval = T}
+y = c(T,F,T)				# Vektor
+typeof(y)				    # Der Datentyp des atomic vectors
+```
+\normalsize
+
+`is.logical()`, `is.double()`, `is.integer()`, `is.character()` testen den 
+Datentyp eines Vektors und geben einen logischen Binärwert aus.
+
+\footnotesize
+```{r, eval = T}
+is.double(x)				# Testen obigen Vektors
+```
+```{r, eval = T}
+is.logical(y)			    # Testen obigen Vektors
+``` 
+\normalsize
+
+**Datentypangleichung (Coercion)**
+
+Versucht man in **R** verschiedene Datentypen in einem Vektor zu kontaktieren, 
+zum Beispiel Elementarwerte vom Typ `numeric`, `character` und `logical`, so 
+erzwingt **R** für den resultierenden Vektor einen einheitlichen Datentyp. Es 
+gilt dabei folgende Rangfolge 
+
+\begin{center}
+character $>$ double $>$ integer $>$ logical
+\end{center}
+
+Ist also beispielsweise einer der Elementarwerte vom Typ `character`, so ist der
+resultierende Vektor vom Typ `character` und numerische oder logische Werte werden
+in diesen umgewandelt.
+
+\footnotesize
+```{r}
+x = c(1, "a", TRUE) 	        # Konkatenation verschiedener Datentypen 
+typeof(x)                       # erzwungener Datentyp
+x                               # character vector                                               
+```
+\normalsize
+
+Ist dagegen beispielsweise einer der Elementarwerte vom Typ `integer` und ein 
+anderer vom Typ `logical`, so ist der resultierende Vektor vom Typ `integer` und 
+und die logischen Werte werden in ganze Zahlen umgewandelt
+
+\footnotesize
+```{r, eval = T}
+x = c(1L, TRUE, FALSE)	        # Kombination  gemischter Datentypen (integer schlaegt logical)
+typeof(x)				        # Erzeugter Vektor ist vom Typ integer
+x
+```
+\normalsize
+
+Da **R** diese Datentypangleichung implizit vornimmt, sollte man darauf achten
+nur Werte gleichen Datentyps mit der Funktion `c()` zu konkatenieren. Um möglichst
+gewandt zu sein, nimmt **R** auch noch subtilere Datenangleichungen vor. So ist
+es zum Beispiel möglich, die Summe logischer Werte zu berechnen, wobei die logischen
+Werten `TRUE` und `FALSE` implizit als die numerischen Werte `0` und `1` behandelt werden.
+
+\footnotesize
+```{r}
+x = c(TRUE, FALSE, TRUE, TRUE)  # logical Vektor
+s = sum(x)				        # Summation in integer gewandelter logical Elemente
+s		
+```
+\normalsize
+
+Explizite Datentypangleichung erlauben die Funktionen `as.logical()`, `as.integer()`, 
+`as.double()`,  und `as.character()`. Wendet man diese auf einen Vektor an, so 
+ist der resultierende Vektor vom gewünschten Typ.
+
+\footnotesize
+```{r}
+x = c(0,1,1,0)			    # double Vektor
+typeof(x)
+x
+y = as.logical(x)	        # ... umgewandelt in logical
+typeof(y)
+y
+z = as.integer(x)            
+typeof(z)
+z
+```
+\normalsize
+
+
+## Indizierung {#sec-indizierung}
+
+In **R** und vielen anderen Programmiersprachen werden einzelne oder mehrere 
+Vektoreinträge durch *Indizierung* adressiert. Indizierung wird dabei auch *indexing*, 
+*subsetting* oder *slicing* genannt. In **R** werden zur Indizierung eckige Klammern 
+der Form [$\,\,$] benutzt. **R** nutzt *one-based indexing*, d.h. der Index des 
+ersten Elements ist `1` und nicht etwa `0` wie in anderen Programmiersprachen.
+
+Die Indizierung von Vektoreinträgen kann genutzt werden, um einen bestimmten 
+Eintrag eines Vektors in eine andere Datenstruktur zu kopieren:
+
+\footnotesize
+```{r}
+x		= c("a", "b", "c")		# character vector ["a", "b", "c"]
+y 		= x[2]					# Kopie von "b" in y
+y                               # Ausgabe
+```
+\normalsize
+
+Ebenso kann die Indizierung von Vektoreinträgen genutzt werden, um einen 
+bestimmten Eintrag des indizierten Vektors zu manipulieren: 
+
+\footnotesize
+```{r}
+x		= c("a", "b", "c")		# character vector ["a", "b", "c"]
+x[3]	= "d" 					# Aenderung von x zu x = ["a", "b", "d"]
+x                               # Ausgabe
+```
+\normalsize
+
+Prinzipiel gilt in **R**, dass die Indizierung
+
+(1) mit einem Vektor positiver Zahlen die entsprechende Einträge, 
+(2) mit einem Vektor negativer Zahlen die entsprechenden komplementären Einträge,
+(3) mit einem logischen Vektor die Einträge mit dem logischen Wert `TRUE`, und
+(4) mit einem `character` die entsprechend benannten Einträge addressiert. 
+
+Wir wollen diese Prinzipien anhand folgender Beispiele verdeutlichen
+
+(1) Indizierung mit einem Vektor positiver Zahlen
+
+\footnotesize
+```{r}
+x = c(1,4,9,16,25)	    # [1,4,9,16,25] = [1^2, 2^2, 3^2, 4^2, 5^2]
+y = x[1:3]			    # 1:3 erzeugt Vektor [1,2,3], x[1:3] = [1,4,9]
+z = x[c(1,3,5)]		    # c(1,3,5) erzeugt Vektor [1,3,5], x[c(1,3,5)] = [1,9,25]
+x
+y
+z
+```
+\normalsize
+
+(2) Indizierung mit einem Vektor negativer Zahlen
+
+\footnotesize
+```{r, error = TRUE}
+x = c(1,4,9,16,25)	    # [1,4,9,16,25] = [1^2, 2^2, 3^2, 4^2, 5^2]
+y = x[c(-2,-4)]		    # Alle Komponenten ausser 2 und 4, x[c(-2,-4)] = [1,9,25]
+x
+y
+z = x[c(-1,2)] 		    # Gemischte Indizierung nicht erlaubt (Fehlermeldung)
+```
+\normalsize
+
+(3) Indizierung mit einem logischen Vektor
+
+\footnotesize
+```{r}
+x = c(1,4,9,16,25)	    # [1,4,9,16,25] = [1^2, 2^2, 3^2, 4^2, 5^2]
+y = x[c(T,T,F,F,T)]	    # TRUE Komponenten,  x[c(T,T,F,F,T)] = [1,4,25]
+z = x[x > 5] 		    # x > 5 = [F,F,T,T,T], x[x > 5] = [9,16,25]
+x 
+y
+z
+```
+\normalsize
+
+(4) Indizierung mit einem character Vektor
+
+\footnotesize
+```{r}
+x = c(1,4,9,16,25)	    # [1,4,9,16,25] = [1^2, 2^2, 3^2, 4^2, 5^2]
+names(x) = c("a","b")	# Benennung der Komponenten als [a  b <NA> <NA> <NA>]
+y = x["a"]				# x["a"] = 1
+```
+\normalsize
+
+Es bleibt anzumerken, dass **R** hat eine hohe Flexibilität bei Indizierung
+aufweist, d.h. oft keine Fehler ausgibt, obwohl eine Indizierung perse keinen
+Sinn ergibt. So verursachen z.B. out-of-range Indizes, also Indizes die die
+Anzahl der Einträge eines Vektors überschreiten keine Fehler, sondern geben `NA`
+(not applicable) aus
+
+\footnotesize
+```{r}
+x = c(1,4,9,16,25)		# [1,4,9,16,25] = [1^2, 2^2, 3^2, 4^2, 5^2]
+y = x[10]				# x[10] = NA (Not Applicable)
+y
+```
+\normalsize
+
+Weiterhin verursachen nichtganzzahlige Indizes keine Fehler, sondern werden 
+auf die nächste ganze Zahl abgerundet.
+
+\footnotesize
+```{r}
+y = x[4.9]				# x[4.9]  = x[4]  = 16
+y
+z = x[-4.9]				# x[-4.9] = x[-4] = [1,4,9,25]
+z
+```
+\normalsize
+
+Leere Indizes schließlich indizieren den gesamten Vektor
+
+\footnotesize
+```{r}
+y = x[]					# y = x
+```
+\normalsize
+
+Die Flexibilität von **R** bei nicht sinnhafter Indizierung hat einerseits den
+Vorteil, dass Programme seltener mit einem Fehler unterbrochen werden. Auf der 
+anderen Seite hat die Indizierungsflexibilität den Nachteil, dass unbeabsichtigte
+Fehlindizierungen unbemerkt bleiben und Datenanalyseprogramme so zu nicht 
+intendierten Ergebnissen kommen können. Im Umgang mit der Indizierung in **R** 
+ist also ein hohes Maß an Aufmerksamkeit und im Idealfall die Validierung von 
+erstellten Datenanalyseprogramme anhand simulierter Daten mit bekannten Ergebnissen 
+geboten. Ein ähnliches Maß an Vorsicht ist aufgrund von **R**'s *Recycling* Funktionsweise
+geboten, die wir im nächsten Abschnitt kennenlernen werden.
+
+## Arithmetik numerischer Vektoren {#sec-arithmetik-numerischer-vektoren}
+
+Mit **R** Vektoren kann man arithmetische Operationen ausführen, d.h. mit ihnen
+rechnen. Wir unterscheiden dabei *unitäre arithmetische Operationen*, d.h. arithmetische
+Operationen, die auf einen Vektor angewendet werden und *binäre arithmetische Operationen*, 
+bei denen zwei Vektoren miteinander verknüpft werden. Allgemein gilt, dass arithmetische 
+Vektoroperatoren in **R** elementweise ausgewertet werden, allerdings sind bei 
+binären Operatoren einige Besonderheiten zu beachten. 
+
+Betrachten wir zunächst einige unitäre arithmetische Operatoren und die Anwendung
+von Funktionen auf einen Vektor. In folgendem Beispiel werden die unitären Operatoren
+`-` und `^2`, sowie die Funktion `log()` auf einen Vektor `a` angewendet. Die 
+Auswertung der Operatoren bzw. der Funktion geschieht dabei elementweise, d.h. 
+der Operator oder die Funktion werden auf jedes Element des Vektors unabhängig
+von seinen anderen Elementen angewendet.
+
+\footnotesize
+```{r}
+a 	= seq(0,1,len=11)	# a = [ 0.0   ,  0.1   , ...,  0.9    , 1.0    ]
+a
+b 	= -a				# b = [-0.0   , -0.1   , ..., -0.9    ,-1.0    ]
+b
+v	= a^2			    # v = [ 0.0^2 ,  0.1^2 , ...,  0.9^2  , 1.0^2  ]
+v
+w 	= log(a)			# w = [ln(0.0), ln(0.1), ...,  ln(0.9), ln(1.0)]
+w
+```
+\normalsize
+
+Binäre arithmetische Operatoren, also die Verknüpfung von zwei Vektoren, geschieht
+ebenfalls elementweise. Bei der Verknüpfung zweier Vektoren gleicher Länge  werden 
+dabei die Vektoreinträge mit den gleichen Indizes anhand des binären arithmetischen
+Operators verknüpft, als Resultat ergibt sich ein Vektor mit der gleichen Länge 
+wie die beiden Ausgangsvektoren
+
+\footnotesize
+```{r}
+a = c(1,2,3)			# a = [1,2,3]
+b = c(2,1,4)			# b = [2,1,4]
+v = a + b				# v = [1,2,3] + [2,1,4] = [1+2,2+1,3+4] = [   3,  3,    7]
+v
+w = a - b 			    # w = [1,2,3] - [2,1,4] = [1-2,2-1,3-4] = [  -1,  1,   -1]
+w
+x = a * b 				# x = [1,2,3] * [2,1,4] = [1*2,2*1,3*4] = [   2,  2,   12]
+x
+y = a / b 				# y = [1,2,3] / [2,1,4] = [1/2,2/1,3/4] = [0.50,  2, 0.75]
+y
+```
+\normalsize
+
+Verküpft man in **R** einen Vektor und einen Skalar, also einen Vektor der Länge 1,
+so erweitert **R** den Skalar auf einen Vektor der gleichen Länge und führt die
+elementweise Verknüpfung dieser Vektoren aus, wie folgende Beispiele verdeutlichen.
+
+\footnotesize
+```{r}
+a = c(1,2,3)			# a = [1,2,3]
+b = 2					# b = [2]
+v = a + b			    # v = [1,2,3] + [2,2,2] = [1+2,2+2,3+2] = [  3,  4,   5]
+v
+w = a - b 				# w = [1,2,3] - [2,2,2] = [1-2,2-2,3-2] = [ -1,  2,   1]
+w
+x = a * b 				# x = [1,2,3] * [2,2,2] = [1*2,2*2,3*2] = [  2,  4,   6]
+x
+y = a / b 				# y = [1,2,3] / [2,2,2] = [1/2,2/2,3/2] = [0.5,  1, 1.5]
+y
+```
+\normalsize
+
+Unter dem Begriff des *Recycling* erlaubt **R** neben der elementweisen Arithmetik
+für Vektoren gleicher Länge bzw. für Skalare und Vektoren außerdem auch eine
+Arithmetik mit Vektoren unterschiedlicher Länge. Dazu werden Elemente des kürzeren
+von zwei Vektoren zum Aufstocken auf die Länge des längeren Vektors genutzt, also 
+in diesem Sinn *recycled*. Wiederum führt diese Eigenschaft der Vektorarithmetik 
+in **R** dazu, dass Programme seltener mit einem Fehler abbrechen und dass das
+Recyling unter Umständen in informiert geschriebenem Code elegante Lösungen für 
+Berechnungen anbieten kann. Allerdings hat es den klaren Nachteil, dass auch 
+unbeabsichtigte Fehlallokationen von Vektoren, z.B. durch das Nichtvorhandensein
+von Datenpunkten unentdeckt bleiben können. Auch hier ist also bei der Erstellung
+von Programmen hohe Aufmerksamkeit und insbesondere ausführlichen Testen angezeit.
+Speziell kann man bei Recycling der Vektorarithmetik in **R** zwei Fälle unterscheiden:
+Ist die Länge des längeren der beiden Vektoren ein ganzzahliges Vielfaches der
+Länge des kürzeren Vektors, so wird der kürzere Vektor durch die entsprechend 
+häufige Wiederholung seiner Elemente in ihrer originären Reihenfolge expandiert.
+Folgendes Beispiel soll dies verdeutlichen:
+
+\footnotesize
+```{r}
+x = 1:2					# x = [1,2], length(x) = 2
+x
+y = 3:6					# y = [3,4,5,6], length(y) = 4
+y
+v = x + y			    # v = [1,2,1,2] + [3,4,5,6] = [4,6,6,8]
+v
+```
+\normalsize
+
+In diesem Sinn ist dann die Arithmetik von Vektoren und Skalaren, also Vektoren
+der Länge 1, in Spezialfall dieses Prinzips. Ist die Länge des längeren der beiden 
+Vektoren kein ganzzahliges Vielfaches der Länge des kürzeren Vektors, so werden
+Elemente des kürzeren Vektor in ihrer originären Reihenfolge so lange zum Auffüllen
+des kürzeren Vektors genutzt, bis beide Vektoren die gleiche Länge haben. 
+Folgendes Beispiel soll dies verdeutlichen:
+
+\footnotesize
+```{r, eval = F}
+x = c(1,3,5)			# x = [1,3,5], length(x) = 3
+x
+y = c(2,4,6,8,10)		# y = [2,4,6,8,10], length(y) = 5
+y
+v = x + y				# v = [1,3,5,1,3] + [2,4,6,8,10] = [3,7,11,9,13]
+v
+```
+\normalsize
+
+## Attribute {#sec-attribute}
+
+Attribute in **R** sind Metadaten von Objekten in Form von Schlüssel-Wert-Paaren.
+Generell ruft die Funktion `attributes()` alle Attribute eines Objektes auf. 
+Vektoren haben perse keine keine Attribute
+
+\footnotesize
+```{r}
+a = 1:3	            # ein numerischer Vektor
+attributes(a)		# Aufrufen aller Attribute von 
+```
+\normalsize
+
+Die Funktion `attr()` kann zum Aufrufen und Definieren von Attributen genutzt werden.
+Folgender Code definiert für den Vektor `a` as Attribut mit dem Schlüssel (Namen)
+`"S"` und dem Werte `"W"`.
+
+\footnotesize
+```{r}
+attr(a, "S") = "W"	# a bekommt Attribut mit Schluessel S und Wert W
+attr(a, "S")		# Das Attribut mit Schluessel S hat den Wert W
+```
+\normalsize
+
+Allerdings werden Attribute werden bei Operationen oft entfernt.
+
+\footnotesize
+```{r}
+b = a[1]			# Kopie des ersten Elements von a in Vektor b
+attributes(b)		# Aufrufen aller Attribute von b
+```
+\normalsize
+
+Die Spezifikation des Attributs `names` gibt den Elementen eines Vektors Namen
+(Bezeichnungen), die zur Indizierung genutzt werden können und die bei Operationen
+nicht entfernt werden.   
+
+\footnotesize
+```{r}
+v = c(x=1,y=2,z=3)      # Elementnamengeneration bei Vektorerzeugung
+v                       # Vektorausgabe
+```
+\normalsize
+
+Die Indizierung mithilfe von Namen hat folgende Form
+
+\footnotesize
+```{r, eval = T}
+v["y"]                  # Indizierung per Namen
+```
+\normalsize
+
+Im Nachgang der Definition eines Vektors kann die Funktion `names()` genutzt werden,
+um für die Vektoreinträge Namen zu Definiere und diese Nachzuschlagen.
+
+\footnotesize
+```{r, eval = T}
+y = 4:6                       # Erzeugung eines Vektors
+names(y) = c("a","b","c")     # Definition von Namen
+names(y)                      # Elementnamenaufruf
+```
+\normalsize
+
+Benannte Vektoreinträge können hilfreich sein, wenn der Vektor eine Sinneinheit bildet, 
+z.B. die Eigenschaften einer Versuchsperson wie Alter, Größe und Gewicht repräsentiert
+
+\footnotesize
+```{r, eval = F}
+p = c(age    = 31,         # Alter (Jahre), Groesse (cm), Gewicht (kg) einer Person
+      height = 198, 
+      weight = 75)
+p                          # Vektorausgabe
+```
+\normalsize
+
+Allerdings ist die Arbeit mit benannten Vektoreinträgen eher selten. Das Prinzip,
+Einträge einer Datenstruktur anstelle eines numerischen Indizes mit einer sinntragenden
+Bezeichnung zu versehen ist in **R** allerdings eines der Leitmotive, wie wir 
+im Umgang mit der zentralen Datenstruktur der Dataframes in @sec-listen-dataframes-und-tibbles
+sehen werden.

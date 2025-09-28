@@ -1,1 +1,937 @@
-# Lineare Diskriminanzanalyse
+# Lineare Diskriminanzanalyse {#sec-lineare-diskriminanzanalyse}
+
+Das Modell der linearen Diskriminanzanalyse geht auf @fisher1936 zurück und
+modelliert Featurevektoren als Realisationen bedinger normalverteilter Zufallsvektoren.
+Es hat folgende Form. 
+
+## Modellformulierung
+
+:::{#def-modell-der-linearen-diskriminanzanalyse}
+## Modell der linearen Diskriminanzanalyse
+
+$x$ sei ein $m$-dimensionaler Zufallsvektor mit Ergebnisraum $\mathbb{R}^m$ und
+$y$ sei eine Zufallsvariable mit Ergebnisraum $\{0,1\}$. Dann ist das *Modell der 
+linearen Diskriminanzanalyse* die gemeinsame Verteilung
+\begin{equation}
+\mathbb{P}(x,y) = \mathbb{P}(y)\mathbb{P}(x|y),
+\end{equation}
+wobei die diskrete marginale Verteilung $\mathbb{P}(y)$ durch die WMF
+\begin{equation}
+p(y) = \mbox{Bern}(y;\mu)
+\end{equation}
+mit $\mu \in ]0,1[$ und die kontinuierliche bedingte Verteilung
+$\mathbb{P}(x|y)$ durch die WDF
+\begin{equation}
+p(x|y)
+= N(x; \mu_0, \Sigma)^{1 - y}N(x; \mu_1, \Sigma)^{y}
+\end{equation}
+mit $\mu_0, \mu_1 \in \mathbb{R}^m$ und $\Sigma \in \mathbb{R}^{m \times m}$ pd
+definiert ist. Wir bezeichnen die gemischte WMF und WDF (WMDF) des Modells der Linearen Diskriminanzanalyse mit
+\begin{equation}
+p(x,y) := p(y)p(x|y) = \mbox{Bern}(y;\mu) N(x;\mu_0,\Sigma)^{1-y}N(x;\mu_1, \Sigma)^{y}
+\end{equation}
+::: 
+
+Aus generativer Sicht wird ein Trainingsdatensatz
+\begin{equation}
+\left\lbrace \left(x^{(i)},y^{(i)}\right)\right\rbrace_{i = 1}^{n} \mbox{ mit } x^{(i)} \in \mathbb{R}^m \mbox{ und } y^{(i)} \in \{0,1\}
+\end{equation}
+eines Modells zur linearen Diskriminanzanalyse also wie folgt erzeugt:
+
+1. $y^{(i)}$ wird zunächst durch Ziehen aus einer Bernoulliverteilung mit Parameter $\mu$ erzeugt.
+2. In Abhängigkeit vom Wert von $y^{(i)}$ wird $x^{(i)}$ dann durch Ziehen aus einer multivariaten Normalverteilung
+mit Kovarianzmatrixparameter $\Sigma$ und Erwartungswertparameter $\mu_0$ für $y^{(i)} = 0$ oder $\mu_1$ für $y^{(i)} = 1$ erzeugt.
+
+Folgender **R** Code implementiert dieses Vorgehen für die Parameter 
+
+$$
+m = 2,
+n = 200,
+\mu = 0.5,
+\mu_0 = \begin{pmatrix} 1 \\ 1 \end{pmatrix},
+\mu_1 = \begin{pmatrix} 2 \\ 2 \end{pmatrix}
+\mbox{ und }
+\Sigma = \begin{pmatrix} 0.40 & -0.30 \\ -0.30 & 0.60 \end{pmatrix}.
+$$ {#eq-lda-parameter}
+
+\footnotesize
+```{r, echo = T}
+# Modellformulierung
+library(mvtnorm)                                # Multivariate Normalverteilung
+set.seed(0)                                     # Zufallszahlengenerator
+m      = 2                                      # Featurevektordimension
+n      = 2e2                                    # Anzahl Trainingsdatenpunkte
+mu     = 0.5                                    # Bernoulliparameter \mu
+mu_0   = c(1,1)                                 # Normalverteilungsparameter \mu_0
+mu_1   = c(2,2)                                 # Normalverteilungsparameter \mu_1
+Sigma  = matrix(c( 0.40, -0.30,                 # Kovarianzmatrixparameter
+                  -0.30,  0.60),
+                byrow = TRUE,
+                nrow = m)
+
+# Modellsampling
+y      = matrix(rep(NaN,n)  , nrow = 1)         # Labeldatenarray
+x      = matrix(rep(NaN,n*m), nrow = m)         # Featurevektorarray
+for(i in 1:n){                                  # Iteration über Datenpunkte
+  y[i]  = rbinom(1,1,mu)                        # y^{(i)} \sim Bern(\mu)
+  x[,i] = ((rmvnorm(1, mu_0, Sigma)**(1-y[i]))  # x^{i} \sim N(\mu_0,\Sigma)^{1-y}*
+          *(rmvnorm(1, mu_1, Sigma)**(y[i])))}  #            N(\mu_1,\Sigma)^y  
+
+# Datensatzkonkatenation
+D = rbind(x,y)
+```
+\normalsize
+
+Die durch obigen **R** Code erzeugten zwei-dimensionalen Featurevektoren sind in 
+@fig-lda-modell visualisiert, wobei Realisierungen $x^{(i)}$ mit assoziierten 
+Label $y^{(i)} = 0$ in blau und Realisierungen $x^{(i)}$ mit assoziierten 
+Label $y^{(i)} = 1$ in rot dargestellt sind. Zusätzlich zeigt die Abbildung die
+entsprechenden Erwartungswertparameter $\mu_0$ und $\mu_1$ als Kreuze und eine
+Isokontur der über beide Featurevektorklassen identischen Kovarianzmatrix.
+
+```{r, eval = F, echo = F}
+library(latex2exp)
+pdf(
+file        = "_figures/803-lda-modell.pdf",
+width       = 6,
+height      = 6)
+par(
+family      = "sans",
+mfcol       = c(1,1),
+pty         = "s",
+bty         = "l",
+lwd         = 1,
+las         = 1,
+mgp         = c(2,1,0),
+xaxs        = "i",
+yaxs        = "i",
+font.main   = 1,
+cex         = 1,
+cex.main    = 1)
+
+# Gaussian Isokontur Paket
+library(ellipse)
+iso_0           = ellipse(Sigma, level = 0.50, centre = mu_0)
+iso_1           = ellipse(Sigma, level = 0.50, centre = mu_1)
+
+# N(\mu_0,\Sigma)
+plot(
+iso_0,
+type  = "l",
+col   = "Blue",
+xlim  = c(0,3),
+ylim  = c(0,3.5),
+xlab  = TeX("$x_1$"),
+ylab  = "")
+points(
+mu_0[1],
+mu_0[2],
+col   = "Blue",
+pch   = 3,
+cex   = 1.5)
+mtext(
+TeX("$x_2$"),
+side  = 2, 
+line  = 2.5, 
+las   = 1) 
+
+# N(\mu_1,\Sigma)
+lines(
+iso_1[,1],
+iso_1[,2],
+col = "Red")
+points(
+mu_1[1],
+mu_1[2],
+col  = "Red",
+pch = 3,
+cex = 1.5)
+
+# Daten y^{(i)} = 0
+points(
+D[1,D[3,] == 0],
+D[2,D[3,] == 0],
+col = "White",
+bg  = "Blue",
+pch = 21)
+
+# Daten y^{(i)} = 1
+points(
+D[1,D[3,] == 1],
+D[2,D[3,] == 1],
+col = "White",
+bg  = "Red",
+pch = 21)
+
+legend(
+"top",
+ horiz    = TRUE,          
+legend    = c(
+TeX("$y^{(i)}=0$"),
+TeX("$y^{(i)}=1$"),
+TeX("$\\mu_0$"),
+TeX("$\\mu_1$"),
+TeX("$\\Sigma$"),
+TeX("$\\Sigma$")),
+col       = c("blue", "red", "blue", "red", "blue", "red"),
+pt.bg     = c("blue", "red", NA, NA, NA, NA),
+pch       = c(21, 21, 3, 3, NA, NA),
+lty       = c(NA, NA, NA, NA, 1, 1),
+pt.cex    = c(.9, .9, .9, .9, NA, NA),
+lwd       = c(NA, NA, NA, NA, 1, 1),
+cex       = 0.7,
+bg        = 'white',
+x.intersp = 0.2,       
+y.intersp = 0.8)      
+dev.off()
+```
+
+![Daten eines linearen Diskriminananalysemodells.](./_figures/803-lda-modell){#fig-lda-modell fig-align="center" width=70%}
+
+## Inferenz und Klassifikation {#sec-inferenz-und-klassifikation}
+
+Da das Modell der linearen Diskriminanzanalyse eine gemeinsame Verteilung von 
+Featurevektor $x$ und Labelvariable $y$ definiert, definiert es implizit auch
+die bedingte Verteilung der Labelvariable gegeben den Featurevektor $p(y|x)$. 
+Die Bestimmung dieser bedingten Verteilung wird im Kontext der prädiktiven
+Modellierung bekanntlich als *Inferenz* bezeichnet. Folgendes Theorem besagt,
+die wie bedingte Verteilung $p(y|x)$ für einen Featurevektor $x$ ausgewertet 
+werden kann.
+
+:::{#thm-inferenz-bei-linearer-diskriminanzanalyse}
+## Inferenz bei linearer Diskriminanzanalyse
+
+$p(x,y)$ sei die WMDF des Modells der linearen Diskriminanzanalyse. Dann gilt
+\begin{equation}
+p(y = 1|x) = \frac{1}{1 + \exp(-\tilde{x}^T\beta)}
+\mbox{ und  }
+p(y = 0|x) = 1 - p(y = 1|x),
+\end{equation}
+wobei
+\begin{equation}
+\tilde{x} :=
+\begin{pmatrix}
+1 \\
+x
+\end{pmatrix}
+\in \mathbb{R}^{m+1}
+\end{equation}
+der *erweiterte Featurevektor* und
+\begin{equation}
+\beta :=
+\begin{pmatrix}
+\frac{1}{2}\left(\mu_0^T\Sigma^{-1}\mu_0 - \mu_1^T\Sigma^{-1} \mu_1\right) + \ln\left(\frac{\mu}{1- \mu}\right) \\
+-\Sigma^{-1}(\mu_0 - \mu_1)
+\end{pmatrix}
+\in \mathbb{R}^{m+1}.
+\end{equation}
+der *Inferenzparametervektor* sind.
+:::
+
+:::{.proof}
+Wir halten zunächst fest, dass
+\begin{align}
+\begin{split}
+p(y = 1|x)
+& = \frac{p(x, y = 1)}{p(x,y = 0) + p(x,y = 1)} 															                              \\
+& = \frac{\frac{p(x, y = 1)}{p(x, y = 1)}}{\frac{p(x,y = 0)}{p(x,y = 1)} + \frac{p(x,y = 1)}{p(x,y = 1)}} 	\\
+& = \frac{1}{1 + \frac{p(x,y = 0)}{p(x,y = 1)}} 															                              \\
+& = \frac{1}{1 + \exp\left(\ln\left(\frac{p(x,y = 0)}{p(x,y = 1)} \right)\right)} 							            \\
+& = \frac{1}{1 + \exp\left(-\ln\left(\frac{p(x,y = 1)}{p(x,y = 0)} \right)\right)} 							            \\
+\end{split}
+\end{align}
+Mit der Definition des Modells der Linearen Diskriminanzanalyse gilt dann
+\begin{equation}
+p(x,y = 1) = p(x|y = 1)p(y = 1) = N(x; \mu_1, \Sigma) \mu
+\end{equation}
+und
+\begin{equation}
+p(x,y = 0) = p(x|y = 0)p(y = 0) = N(x; \mu_0, \Sigma) (1 - \mu)
+\end{equation}
+Wir erhalten also
+\begin{align}
+\begin{split}
+& = \ln \left(\frac{p(x,y = 1)}{p(x,y = 0)}\right) \\
+& = \ln \left(\frac{N(x;\mu_1,\Sigma)\mu}{N(x;\mu_0,\Sigma)(1-\mu)}\right) \\
+& = \ln \left(N(x;\mu_1,\Sigma)\mu\right) - \ln \left(N(x;\mu_0,\Sigma)(1 - \mu)\right)\\
+& = \ln(\mu) + \ln N(x;\mu_1,\Sigma) - \ln (1 - \mu) - \ln N(x;\mu_0,\Sigma)  \\
+& =
+\ln \mu - \ln (1 - \mu)
+- \frac{m}{2}\ln 2\pi - \ln |\Sigma| - \frac{1}{2}(x - \mu_1)^T\Sigma^{-1}(x-\mu_1) \\
+& \hspace{20mm}
++ \frac{m}{2}\ln 2\pi + \ln |\Sigma| + \frac{1}{2}(x - \mu_0)^T\Sigma^{-1}(x-\mu_0) \\
+& =
+-\frac{1}{2}(x - \mu_1)^T\Sigma^{-1}(x-\mu_1)
++\frac{1}{2}(x - \mu_0)^T\Sigma^{-1}(x-\mu_0)
++ \ln \mu - \ln (1 - \mu)
+\\
+& =
+-\frac{1}{2}x^T\Sigma^{-1}x + x^T \Sigma^{-1}\mu_1 -\frac{1}{2} \mu_1^T \Sigma^{-1}\mu_1
++\frac{1}{2}x^T\Sigma^{-1}x - x^T \Sigma^{-1}\mu_0 +\frac{1}{2} \mu_0^T \Sigma^{-1}\mu_0
++ \ln \left(\frac{\mu}{1 -\mu}\right) \\
+& =
+ \frac{1}{2} \mu_0^T \Sigma^{-1}\mu_0
+-\frac{1}{2} \mu_1^T \Sigma^{-1}\mu_1
+- x^T \Sigma^{-1}(\mu_0 - \mu_1)
++ \ln \left(\frac{\mu}{1 -\mu}\right) \\
+& = \left(\begin{matrix}
+1 &  x^T
+\end{matrix} \right)
+\left(\begin{matrix}
+\frac{1}{2}\left(\mu_0^T \Sigma^{-1}\mu_0 - \mu_1^T \Sigma^{-1}\mu_1\right)
++ \ln \left(\frac{\mu}{1 -\mu}\right)
+\\
+-\Sigma^{-1}(\mu_0 - \mu_1)
+\end{matrix}\right) 
+\\
+& =: \tilde{x}^T\beta
+\end{split}
+\end{align}
+:::
+
+Die bedingte Verteilung $p(y|x)$ kann zur Prädiktion der Klasse eines $x \in \mathbb{R}^m$ 
+genutzt werden. Konkret besagt $p(y|x)$, dass beispielsweise $y = 0$ für besagtes
+$x$ eine hohe Wahrscheinlichkeit und $y = 1$ damit eine geringe Wahrscheinlichkeit hat.
+Dabei hängt der genaue Wert von $p(y|x)$ nach @thm-inferenz-bei-linearer-diskriminanzanalyse
+offenbar neben $x$ von den Parametern des linearen Diskriminanzanalysemodells ab.
+Folgende Klassifikationsregel besagt nun, wie aufgrund der Verteilung $p(y|x)$
+eine Zuordnung des betreffenden Featurevektors zu einer der beiden Klassen $0$ und 
+$1$ erfolgen mag.
+
+:::{#def-klassifikationsregel-der-linearen-diskriminanzanalyse}
+## Klassifikationsregel der linearen Diskriminanzanalyse
+$p(x,y)$ sei die WMDF des Modells der linearen Diskriminanzanalyse. Dann ist die 
+*Klassifikationregel der linearen Diskriminanzanalyse* definiert als
+
+\begin{equation}
+\delta : \mathbb{R}^m \to \{0,1\}, x \mapsto \delta(x) :=
+\begin{cases}
+0 & \mbox{ für } p(y = 0|x) \ge p(y = 1|x) \\
+1 & \mbox{ für } p(y = 0|x)   < p(y = 1|x)
+\end{cases}
+\end{equation}
+::: 
+
+Es gilt nach @def-klassifikationsregel-der-linearen-diskriminanzanalyse offenbar
+\begin{equation}
+\delta(x) = 1
+\Leftrightarrow  p(y = 1|x) > p(y = 0|x)
+\Leftrightarrow  p(y = 1|x) > 0.5.
+\end{equation}
+
+Untenstehender **R** Code und @tbl-lda-klassifikation zeigen exemplarisch die
+Anwendung der Klassifikationsregel @def-klassifikationsregel-der-linearen-diskriminanzanalyse 
+für das lineare Diskriminanzanalysemodell mit den in @eq-lda-parameter aufgeführten Parametern.  
+
+\footnotesize
+```{r, echo = T}
+# Inferenz und Klassifikation für die ersten k Datenpunkte
+k          = 10                                             # Anzahl Datenpunkte
+x_tilde    = rbind(rep(1,k), x[,1:k])                       # erweiterte Featurevektoren
+beta       = matrix(                                        # Inferenzparametervektor
+             c((1/2)*(  t(mu_0) %*% solve(Sigma) %*% mu_0
+                      - t(mu_1) %*% solve(Sigma) %*% mu_1)
+                      + log(mu/(1-mu)),
+               -solve(Sigma) %*% (mu_0-mu_1)), nrow = 3)
+p_y_giv_x  = 1/(1+exp(-t(x_tilde) %*% beta))                # p(y = 1|x)
+delta      = as.numeric(p_y_giv_x >= 0.5)                   # Klassifikationsregel
+```
+\normalsize
+
+```{r tbl-lda-klassifikation, echo = F}
+# data tabulation
+P = data.frame(rbind(y[1:k], rbind(x[,1:k], t(p_y_giv_x)), delta))
+colnames(P) = 1:10
+rownames(P) = c( "y", "x_1", "x_2", "p(y = 1|x)", "delta(x)")
+knitr::kable(P, "pipe", digits = 2,caption = "Anwendung der Klassifikationsregel der linearen Diskriminanzanalyse")
+```
+
+Mithilfe der Parameter eines linearen Diskriminanzanalysemodells und seiner 
+Klassifikationsregel kann man ihre Diskriminanzfunktion angeben, die eine 
+Partition des Featureraums induziert.
+
+:::{#thm-diskriminanzfunktion-der-linearen-diskriminanzanalyse}
+$p(x,y)$ sei die WMDF eines linearen Diskriminanzanalysemodells, $\beta \in \mathbb{R}^{m+1}$ 
+der Inferenzparametervektor und $\delta$ ihre Klassifikationsregel. Dann kann die
+$\delta$ als eine eine lineare Diskriminanzfunktion der Form
+\begin{equation}
+h : \mathbb{R}^m \to \{0,1\}, x \mapsto h(x) := g(f(x)),
+\end{equation}
+mit
+\begin{equation}
+f : \mathbb{R}^{m} \to \mathbb{R}, x \mapsto f(x) := w^T x + w_0,
+\end{equation}
+und
+\begin{equation}
+g : \mathbb{R} \to \{0,1\}, f(x) \mapsto g(f(x)) :=
+\begin{cases}
+0, & f(x) \ge 0 \\
+1, & f(x)  < 0
+\end{cases}
+\end{equation}
+geschrieben werden, d.h. es gilt 
+\begin{equation}
+\delta(x) = h(x) \mbox{ für alle } x \in \mathbb{R}^m.
+\end{equation}
+Inbesondere gilt dabei
+\begin{equation}
+w_0 = \beta_1 \mbox{ und } w = (\beta_2,...,\beta_{m+1})^T
+\end{equation}
+::: 
+
+\hl{BEWEIS?}
+
+Zur Visualisierung in zweidimensionalen Featureräumen dient die Graphgleichungen für Hyperebenen
+\begin{equation}
+f(x) = 0
+\Leftrightarrow
+w^T x + w_0 = 0
+\Leftrightarrow
+w_1 x_1 + w_2 x_2 + w_0 = 0
+\Leftrightarrow
+x_2 = - \frac{w_1}{w_2}x_1 - \frac{w_0}{w_2}
+\end{equation}
+
+Folgender **R** Code implementiert die Diskriminanzfunktion bei bekannten Modellparametern.
+
+\footnotesize
+```{r}
+# Diskriminanzfunktion
+x_1  = seq(0,3,len = 1e2)                       # x_1
+w_0  = beta[1]                                  # w_0
+w    = beta[2:(m+1)]                            # w
+x_2  = -(w[1]/w[2])*x_1 - (w_0/w[2])            # x_2
+```
+\normalsize
+
+## Lernen {#sec-lernen}
+
+Die Parameter des Modells einer linearen Diskriminanzanalyse können analytisch
+mithilfe der Maximum-Likelihood-Methode geschätzt werden. Die resultierenden 
+Schätzer besitzen einfache intuitive Bedeutungen. 
+
+:::{#thm-maximum-likelihood-schaetzer-der-linearen-diskriminanzanalyse}
+## Maximum-Likelihood-Schätzer der linearen Diskriminanzanalyse
+
+$p(x,y)$ sei die WMDF des Modells einer Linearen Diskriminanzanalyse mit Parametern 
+$\{\mu,\mu_0,\mu_1,\Sigma\}$, $\{(x^{(i)}, y^{(i)})\}_{i=1}^n$ sei ein Trainingsdatensatz 
+und $1_{\{S\}}$ sei die Indikatorfunktion der Aussage $A$, d.h.  $1_{\{A\}} = 1$, 
+wenn $A$ WAHR ist uns $1_{\{A\}} = 0$, wenn $A$ FALSCH ist. Dann sind 
+Maximum-Likelihood-Schätzer für $\mu,\mu_0,\mu_1$ und $\Sigma$ gegeben durch
+\begin{align}
+\begin{split}
+\hat{\mu} 		& = \frac{1}{n}\sum_{i=1}^n 1_{\{y^{(i)} = 1\}}, \\
+\hat{\mu}_0 	& = \frac{1}{\sum_{i=1}^n 1_{\{y^{(i)} = 0\}}}\sum_{i=1}^n 1_{\{y^{(i)} = 0\}}x^{(i)}, \\
+\hat{\mu}_1 	& = \frac{1}{\sum_{i=1}^n 1_{\{y^{(i)} = 1\}}}\sum_{i=1}^n 1_{\{y^{(i)} = 1\}}x^{(i)}, \\
+\hat{\Sigma} 	& = \frac{1}{n}\sum_{i=1}^n \left(x^{(i)} - \hat{\mu}_{y^{(i)}}\right)\left(x^{(i)} - \hat{\mu}_{y^{(i)}}\right)^T.
+\end{split}
+\end{align}
+:::
+
+:::{.proof}
+
+\noindent (1) Wir formulieren zunächst die Log-Likelihood-Funktion bezüglich des Trainingsdatensatzes.
+\begin{align}
+\begin{split}
+\ell(\mu,\mu_0,\mu_1,\Sigma)    
+& := \ln \prod_{i=1}^n p\left(x^{(i)},y^{(i)}\right) \\
+& = \sum_{i=1}^n \ln p\left(x^{(i)},y^{(i)}\right) \\
+& = \sum_{i=1}^n \ln p\left(x^{(i)}|y^{(i)}\right)p\left(y^{(i)}\right) \\
+& = \sum_{i=1}^n \ln p\left(x^{(i)}|y^{(i)}\right) + \ln p\left(y^{(i)}\right) \\
+& = \sum_{i=1}^n \ln \left(N(x^{(i)}; \mu_0,\Sigma)\right)^{1 - y^{(i)}}\left(N(x^{(i)}; \mu_1,\Sigma)\right)^{y^{(i)}}
+     + \ln \left(\mu^{y^{(i)}}(1 - \mu)^{1 - \mu^{y^{(i)}}}\right) \\
+& = \sum_{i=1}^n
+\left(1 - y^{(i)}\right) \ln N\left(x^{(i)}; \mu_0,\Sigma\right)
+               + y^{(i)} \ln N\left(x^{(i)}; \mu_1,\Sigma\right)
+			  +  y^{(i)} \ln \mu
+			  + \left(1 - y^{(i)}\right)\ln (1- \mu) \\
+& = \quad  \sum_{i=1}^n \left(1 - y^{(i)}\right) \left(-\frac{n}{2} \ln 2\pi -\frac{1}{2} \ln |\Sigma|
+-  \frac{1}{2}\left(x^{(i)} - \mu_0\right)^T \Sigma^{-1}\left(x^{(i)} - \mu_0 \right)\right) \\
+& \quad +  \sum_{i=1}^n  y^{(i)} \left(-\frac{n}{2} \ln 2\pi -\frac{1}{2} \ln |\Sigma|
+-   \frac{1}{2}\left(x^{(i)} - \mu_1\right)^T \Sigma^{-1}\left(x^{(i)} - \mu_1 \right)\right) \\
+& \quad + \sum_{i=1}^n y^{(i)} \ln \mu  + \sum_{i=1}^n \left(1 - y^{(i)} \right) \ln (1 - \mu).
+\end{split}
+\end{align}
+
+\noindent (2) Wir bestimmen als nächstes den Gradienten der Log-Likelihood-Funktion
+Dieser besteht bekanntlich besteht aus den partiellen Ableitungen von $\ell$ 
+hinsichtlich von $\mu,\mu_0,\mu_1$ und $\Sigma$. Wie unten formal gezeigt ergibt 
+er sich als
+
+\begin{align}
+\begin{split}
+\nabla \ell\left(\mu,\mu_0,\mu_1,\Sigma\right)
+& =
+\left(\begin{matrix}
+\frac{\partial}{\partial \mu}   \ell\left(\mu,\mu_0,\mu_1,\Sigma\right) \\
+\frac{\partial}{\partial \mu_0}   \ell\left(\mu,\mu_0,\mu_1,\Sigma\right) \\
+\frac{\partial}{\partial \mu_1}   \ell\left(\mu,\mu_0,\mu_1,\Sigma\right) \\
+\frac{\partial}{\partial \Sigma}   \ell\left(\mu,\mu_0,\mu_1,\Sigma\right) \\
+\end{matrix}\right)  
+=
+\left(\begin{matrix}
+\frac{1}{\mu}\sum_{i=1}^n 1_{\lbrace y^{(i)} = 1 \rbrace}  -
+\frac{1}{1-\mu}\sum_{i=1}^n 1_{\lbrace y^{(i)} = 0 \rbrace} \\
+-\frac{1}{2}\sum_{i=1}^n 1_{\lbrace y^{(i)} = 0 \rbrace} \left(\left(x^{(i)} - \mu_0\right)^T \Sigma^{-1}\right) \\
+-\frac{1}{2}\sum_{i=1}^n 1_{\lbrace y^{(i)} = 1 \rbrace} \left(\left(x^{(i)} - \mu_1\right)^T \Sigma^{-1}\right) \\
+\frac{n}{2}\Sigma - \frac{1}{2} \sum_{i=1}^n
+\left(x^{(i)} - \mu_{1_{\lbrace y^{(i)} = 1 \rbrace}}\right) \left(x^{(i)} - \mu_{1_{\lbrace y^{(i)} = 1 \rbrace}} \right)^T
+\end{matrix}\right).
+\end{split}
+\end{align}
+
+Ohne tiefer auf die Bedeutung von Ableitungen von Funktionen bezüglich von 
+Vektoren und Matrizen einzugehen halten wir formal fest, dass sich die partielle 
+Ableitung von $\ell$ hinsichtlich $\mu_0$ als 
+\begin{align}
+\begin{split}
+\frac{\partial}{\partial \mu_0} \ell(\mu,\mu_0,\mu_1, \Sigma)
+& = \frac{\partial}{\partial \mu_0}
+\sum_{i=1}^n \left(1 - y^{(i)}\right) \left(-\frac{n}{2} \ln 2\pi -\frac{1}{2} \ln |\Sigma|
+-  \frac{1}{2}\left(x^{(i)} - \mu_0\right)^T \Sigma^{-1}\left(x^{(i)} - \mu_0 \right)\right) \\
+& = \sum_{i=1}^n \left(1 - y^{(i)}\right) \frac{\partial}{\partial \mu_0} \left(-\frac{n}{2} \ln 2\pi -\frac{1}{2} \ln |\Sigma| -  \frac{1}{2}\left(x^{(i)} - \mu_0\right)^T \Sigma^{-1}\left(x^{(i)} - \mu_0 \right)\right) \\
+& = \sum_{i=1}^n \left(1 - y^{(i)}\right) \left(- \frac{1}{2} \frac{\partial}{\partial \mu_0} \left(x^{(i)} - \mu_0\right)^T \Sigma^{-1}\left(x^{(i)} - \mu_0 \right)\right) \\
+& = \sum_{i=1}^n \left(1 - y^{(i)}\right) \left( - \frac{1}{2} \left(x^{(i)} - \mu_0\right)^T \Sigma^{-1} \right) \\
+& = -\frac{1}{2}\sum_{i=1}^n \left(1 - y^{(i)}\right) \left( \left(x^{(i)} - \mu_0\right)^T \Sigma^{-1} \right). \\
+& = -\frac{1}{2}\sum_{i=1}^n 1_{\{y^{(i)} = 0\}} \left( \left(x^{(i)} - \mu_0\right)^T \Sigma^{-1} \right). \\
+\end{split}
+\end{align}
+ergibt. Ähnliches gilt für $\mu_1$. Für die partielle Ableitung hinsichtlich $\Sigma$ ergibt sich
+\begin{align}
+\begin{split}
+\frac{\partial}{\partial \Sigma} \ell(\mu,\mu_1,\mu_0,\Sigma) 
+& = \quad \frac{\partial}{\partial \Sigma}
+     \sum_{i=1}^n \left(1 - y^{(i)}\right) \left(-\frac{n}{2} \ln 2\pi -\frac{1}{2} \ln |\Sigma|
+      -  \frac{1}{2}\left(x^{(i)} - \mu_0\right)^T \Sigma^{-1}\left(x^{(i)} - \mu_0 \right)\right) \\
+& \quad +   \frac{\partial}{\partial \Sigma}
+	\sum_{i=1}^n  y^{(i)}  \left(-\frac{n}{2} \ln 2\pi -\frac{1}{2} \ln |\Sigma|
+-  \frac{1}{2}\left(x^{(i)} - \mu_1\right)^T \Sigma^{-1}\left(x^{(i)} - \mu_1 \right)\right) \\
+& = \quad \sum_{i=1}^n \left(1 - y^{(i)}\right) \left(-\frac{1}{2} \frac{\partial}{\partial \Sigma} \ln |\Sigma|
+      -  \frac{1}{2}\frac{\partial}{\partial \Sigma} \left(x^{(i)} - \mu_0\right)^T \Sigma^{-1}\left(x^{(i)} - \mu_0 \right)\right) \\
+& \quad +  \sum_{i=1}^n y^{(i)} \left( -\frac{1}{2} \frac{\partial}{\partial \Sigma} \ln |\Sigma|
+-  \frac{1}{2}\frac{\partial}{\partial \Sigma}\left(x^{(i)} - \mu_1\right)^T \Sigma^{-1}\left(x^{(i)} - \mu_1 \right)\right) \\
+& = \quad \sum_{i=1}^n \left(1 - y^{(i)}\right) \left(-\frac{1}{2} \Sigma
+      -  \frac{1}{2} \left(x^{(i)} - \mu_0\right) \left(x^{(i)} - \mu_0 \right)^T\right) \\
+& \quad +  \sum_{i=1}^n  y^{(i)}  \left( -\frac{1}{2} \Sigma
+-  \frac{1}{2}\left(x^{(i)} - \mu_1\right)\left(x^{(i)} - \mu_1 \right)^T\right) \\
+& = \frac{n}{2}\Sigma  -\frac{1}{2} \sum_{i=1}^n
+	\left(x^{(i)} - \mu_{1_{\lbrace y^{(i)} = 1 \rbrace}}\right) \left(x^{(i)} - \mu_{1_{\lbrace y^{(i)} = 1 \rbrace}} \right)^T.
+\end{split}
+\end{align}
+Für die partielle Ableitung hinsichtlich $\mu$ ergibt sich schließlich
+\begin{align}
+\begin{split}
+\frac{\partial}{\partial \mu} \ell(\mu,\mu_1,\mu_0,\Sigma)
+& =  \frac{\partial}{\partial \mu}
+\left(\sum_{i=1}^n  y^{(i)} \ln \mu  +
+\sum_{i=1}^n \left(1 - y^{(i)}\right) \ln (1 - \mu) \right) \\
+& = \sum_{i=1}^n  y^{(i)} \frac{\partial}{\partial \mu} \ln \mu  +
+\sum_{i=1}^n  \left(1 - y^{(i)}\right) \frac{\partial}{\partial \mu} \ln (1 - \mu) \\
+& = \frac{1}{\mu}\sum_{i=1}^n 1_{\lbrace y^{(i)} = 1 \rbrace}  -
+\frac{1}{1-\mu}\sum_{i=1}^n 1_{\lbrace y^{(i)} = 0 \rbrace}. \\
+\end{split}
+\end{align}
+
+\noindent (4) Nullsetzen der partiellen Ableitungen des Gradienten der 
+Log-Likelihood-Funktion und Auflösen der resultierenden Log-Likelihood-Gleichungen 
+ergibt dann die Maximum-Likelihood-Schätzer des Modells der Linearen Diskriminanzanalyse.
+Speziell ergibt das Nullsetzen der ersten Gradientenkomponente 
+\begin{align}
+\begin{split}
+\frac{1}{\hat{\mu}}\sum_{i=1}^n 1_{\lbrace y^{(i)} = 1 \rbrace}  - \frac{1}{1-\hat{\mu}}\sum_{i=1}^n 1_{\lbrace y^{(i)} = 0 \rbrace}
+& = 0 \\
+\Leftrightarrow
+\frac{1}{\hat{\mu}}\sum_{i=1}^n y^{(i)} - \frac{1}{1-\hat{\mu}}\sum_{i=1}^n \left(1 - y^{(i)}\right)
+& = 0 \\
+\Leftrightarrow
+\frac{1-\hat{\mu}}{\hat{\mu}}\sum_{i=1}^n y^{(i)} - \sum_{i=1}^n \left(1 - y^{(i)}\right)
+& = 0 \\
+\Leftrightarrow
+\frac{1-\hat{\mu}}{\hat{\mu}}\sum_{i=1}^n y^{(i)} - n +  \sum_{i=1}^n  y^{(i)}
+& = 0 \\
+\Leftrightarrow
+(1-\hat{\mu})\sum_{i=1}^n y^{(i)} - \hat{\mu} n + \hat{\mu}\sum_{i=1}^n  y^{(i)}
+& = 0 \\
+\Leftrightarrow
+(1-\hat{\mu})\sum_{i=1}^n y^{(i)} - \hat{\mu} n + \hat{\mu}\sum_{i=1}^n  y^{(i)}
+& = 0 \\
+\Leftrightarrow
+(1-\hat{\mu} + \hat{\mu})\sum_{i=1}^n y^{(i)}
+& = \hat{\mu} n \\
+\Leftrightarrow
+\hat{\mu} n
+& = \sum_{i=1}^n y^{(i)} \\
+\Leftrightarrow
+\hat{\mu}
+& = \frac{1}{n}\sum_{i=1}^n 1_{\lbrace y^{(i)} = 1 \rbrace}. \\
+\end{split}
+\end{align}
+Nullsetzen der zweiten Gradientenkomponente ergibt
+\begin{align}
+\begin{split}
+\sum_{i=1}^n \left(1 - y^{(i)} \right)\left(\left(x^{(i)} - \hat{\mu}_0 \right)^T \Sigma^{-1}\right)
+& =
+0 \\
+\Leftrightarrow
+\sum_{i=1}^n 1_{\lbrace y^{(i)} = 0\rbrace } \left(x^{(i)} - \hat{\mu}_0 \right)^T
+& =
+0 \\
+\Leftrightarrow
+\sum_{i=1}^n 1_{\lbrace y^{(i)} \rbrace } x^{(i)}  - \sum_{i=1}^n 1_{\lbrace y^{(i)} = 0 \rbrace} \hat{\mu}_0
+& =
+0 \\
+\Leftrightarrow
+\sum_{i=1}^n 1_{\lbrace y^{(i)} = 0 \rbrace} \hat{\mu}_0
+& = \sum_{i=1}^n 1_{\lbrace y^{(i)} \rbrace } x^{(i)}
+\\
+\Leftrightarrow
+\hat{\mu}_0 & =
+\frac{1}{\sum_{i=1}^n 1_{\lbrace y^{(i)} = 0 \rbrace} } \sum_{i=1}^n 1_{\lbrace y^{(i)} \rbrace } x^{(i)}.
+\end{split}
+\end{align}
+Nullsetzen der dritten Gradientenkomponente ergibt dann in ähnlicher Weise den 
+Maximum-Likelihood-Schätzer $\hat{\mu}_1$. Nullsetzen der vierten Gradientenkomponente 
+ergibt schließlich
+\begin{align}
+\begin{split}
+0 & = \frac{n}{2}\hat{\Sigma} - \frac{1}{2}
+\sum_{i=1}^n
+\left(x^{(i)} - \mu_{1_{\lbrace y^{(i)} = 1 \rbrace}}\right)
+\left(x^{(i)} - \mu_{1_{\lbrace y^{(i)} = 1 \rbrace}} \right)^T
+\\
+\Leftrightarrow
+n\hat{\Sigma}
+& =
+\sum_{i=1}^n
+\left(x^{(i)} - \mu_{1_{\lbrace y^{(i)} = 1 \rbrace}}\right)
+\left(x^{(i)} - \mu_{1_{\lbrace y^{(i)} = 1 \rbrace}} \right)^T \\
+\hat{\Sigma}
+& =
+\frac{1}{n}
+\sum_{i=1}^n
+\left(x^{(i)} - \mu_{1_{\lbrace y^{(i)} = 1 \rbrace}}\right)
+\left(x^{(i)} - \mu_{1_{\lbrace y^{(i)} = 1 \rbrace}} \right)^T \\
+\end{split} 
+\end{align}
+:::
+
+Intuitiv gilt also, dass
+
+* $\mu$ durch die relative Häufigkeit der $1$en im Trainingsdatensatz, 
+* $\mu_0$ und $\mu_1$ durch die Stichprobenmittel aller Featurevektoren $x^{(i)}$ mit $y^{(i)} = 0$ bzw. mit $y^{(i)} = 1$ und
+* $\Sigma$ durch die verzerrte Stichprobenkovarianzmatrix aller Featurevektoren $x^{(i)}, i = 1,...,n$ 
+
+geschätzt werden. Substitution der entsprechenden Schätzer ergibt dann den Schätzer 
+$\hat{\beta}$ für den Parameterinferenzvektor.
+
+
+Folgender **R** Code wendet die Schätzer aus @thm-maximum-likelihood-schaetzer-der-linearen-diskriminanzanalyse
+auf den oben generierten Datensatz an
+
+\footnotesize
+```{r, echo = T}
+# Parameterlernen  
+n            = ncol(x)                                                        # n
+m            = nrow(x)                                                        # m
+mu_hat       = mean(y)                                                        # \hat{\mu}
+mu_0_hat     = rowMeans(x[,y == 0])                                           # \hat{\mu}_0
+mu_1_hat     = rowMeans(x[,y == 1])                                           # \hat{\mu}_1
+Sigma_hat    = matrix(rep(0,m^2), nrow = m)                                   # \hat{\Sigma}
+for(i in 1:n){
+  Sigma_hat  = (Sigma_hat + (1/n)*
+               ((y[i] == 0)*(x[,i]-mu_0_hat) %*% t((x[,i]-mu_0_hat))
+               +(y[i] == 1)*(x[,i]-mu_1_hat) %*% t((x[,i]-mu_1_hat))))
+}
+beta_hat     = matrix(c((1/2)*( t(mu_0_hat) %*% solve(Sigma_hat) %*% mu_0_hat # \hat{beta}
+                              - t(mu_1_hat) %*% solve(Sigma_hat) %*% mu_1_hat)
+                              + log(mu_hat/(1-mu_hat)),
+                        -solve(Sigma_hat) %*% (mu_0_hat-mu_1_hat)),
+                      nrow = m+1)
+```
+\normalsize
+
+Es ergeben sich dabei die Schätzerwerte
+\begin{equation}
+\hat{\mu}     =  0.52,
+\hat{\mu}_0   = \begin{pmatrix} 0.95 \\ 1.00 \end{pmatrix},
+\hat{\mu}_1   = \begin{pmatrix} 1.94 \\ 2.10 \end{pmatrix} \mbox{ und }
+\hat{\Sigma}  = \begin{pmatrix} 0.42 & -0.31 \\ -0.31 & 0.59 \end{pmatrix}.
+\end{equation}
+Dies sind in @fig-lda-lernen visualisiert.
+
+```{r, eval = F, echo = F}
+library(ellipse)
+pdf(
+file        = "_figures/803-lda-lernen.pdf",
+width       = 6,
+height      = 6)
+par(
+family      = "sans",
+mfcol       = c(1,1),
+pty         = "s",
+bty         = "l",
+lwd         = 1,
+las         = 1,
+mgp         = c(2,1,0),
+xaxs        = "i",
+yaxs        = "i",
+font.main   = 1,
+cex         = 1,
+cex.main    = 1)
+
+# Gaussian Isokontur Paket
+library(ellipse)
+iso_0           = ellipse(Sigma    , level = 0.5, centre = mu_0)
+iso_1           = ellipse(Sigma    , level = 0.5, centre = mu_1)
+iso_0_hat       = ellipse(Sigma_hat, level = 0.5, centre = mu_0_hat)
+iso_1_hat       = ellipse(Sigma_hat, level = 0.5, centre = mu_1_hat)
+
+# N(\mu_0,\Sigma)
+plot(
+iso_0,
+type = "l",
+col = "Blue",
+xlim = c(0,3),
+ylim = c(0,3.5),
+xlab = TeX("$x_1$"),
+ylab = TeX("$x_2$"))
+points(
+mu_0[1],
+mu_0[2],
+col  = "Blue",
+pch = 3,
+cex = 1)
+
+# N(\hat{\mu}_0,\hat{\Sigma})
+lines(
+iso_0_hat[,1],
+iso_0_hat[,2],
+col = "Blue",
+lty  = 2)
+points(
+mu_0_hat[1],
+mu_0_hat[2],
+col  = "Blue",
+pch = 2,
+cex = 1)
+
+# N(\mu_1,\Sigma)
+lines(
+iso_1[,1],
+iso_1[,2],
+type = "l",
+col = "Red")
+points(
+mu_1[1],
+mu_1[2],
+col  = "Red",
+pch = 3,
+cex = 1)
+
+# N(\hat{\mu}_1,\hat{\Sigma})
+lines(
+iso_1_hat[,1],
+iso_1_hat[,2],
+col = "Red",
+lty  = 2)
+points(
+mu_1_hat[1],
+mu_1_hat[2],
+col  = "Red",
+pch = 2,
+cex = 1)
+
+# Daten y^{(i)} = 0
+points(
+D[1,D[3,] == 0],
+D[2,D[3,] == 0],
+col = "White",
+bg  = "Blue",
+pch = 21)
+
+# Daten y^{(i)} = 1
+points(
+D[1,D[3,] == 1],
+D[2,D[3,] == 1],
+col = "White",
+bg  = "Red",
+pch = 21)
+legend(
+"top",
+horiz    = TRUE,          
+legend    = c(
+TeX("$\\mu_0$"),
+TeX("$\\mu_1$"),
+TeX("$\\hat{\\mu}_0$"),
+TeX("$\\hat{\\mu}_1$"),
+TeX("$\\Sigma$"),
+TeX("$\\Sigma$"),
+TeX("$\\hat{\\Sigma}$"),
+TeX("$\\hat{\\Sigma}$")),
+col       = c("blue", "red","blue", "red", "blue", "red", "blue", "red"),
+pt.bg     = c(NA, NA, NA, NA, NA, NA, NA, NA),
+pch       = c(3, 3, 2, 2, NA, NA, NA, NA),
+lty       = c(NA, NA, NA, NA, 1, 1, 2, 2),
+pt.cex    = c(.9, .9, .9, .9, NA, NA, NA, NA),
+lwd       = c(NA, NA, NA, NA, 1, 1, 1, 1),
+cex       = 0.7,
+bg        = 'white',
+x.intersp = 0.0,       
+y.intersp = 0.8)      
+dev.off()
+```
+
+![Schätzer eines linearen Diskriminananalysemodells.](./_figures/803-lda-lernen){#fig-lda-lernen fig-align="center" width=70%}
+
+## Anwendungsbeispiel {#sec-anwendungsbeispiel}
+
+```{r, echo = F}
+# Modellformulierung
+library(mvtnorm)                                # Multivariate Normalverteilung
+set.seed(0)                                     # Zufallszahlengenrator                        
+m      = 2                                      # Featurevektordimension
+n      = 60                                     # Anzahl Trainingsdatenpunkte
+mu     = 0.5                                    # wahrer, aber unbekannter, Bernoulliparameter \mu
+mu_0   = c(1,1)+.2                              # wahrer, aber unbekannter, Normalverteilungsparameter \mu_0
+mu_1   = c(2,2)-.2                              # wahrer, aber unbekannter, Normalverteilungsparameter \mu_1
+Sigma  = matrix(c( 0.50, -0.15,                 # Kovarianzmatrixparameter
+                  -0.15,  0.50),
+                byrow = TRUE,
+                nrow = m)
+
+# Modellsampling
+y      = matrix(rep(NaN,n)  , nrow = 1)         # Labeldatenarray
+x      = matrix(rep(NaN,n*m), nrow = m)         # Featurevektorarray
+for(i in 1:n){                                  # Iteration über Datenpunkte
+  y[i]  = rbinom(1,1,mu)                        # y^{(i)} \sim Bern(\mu)
+  x[,i] = ((rmvnorm(1, mu_0, Sigma)**(y[i]))    # x^{i} \sim N(\mu_0,\Sigma)^{1-y}N(\mu_1,\Sigma)^y
+          *(rmvnorm(1, mu_1, Sigma)**(1-y[i])))
+}
+D           = data.frame(t(rbind(x,y)))
+colnames(D) = c("BDI", "GLU", "RES")
+write.csv(D, "_data/803-lda.csv", row.names = F)
+```
+
+
+
+
+Beispieldatensatz
+
+
+`BDI` und `GLU` Werte bei Depressionsdiagnose als Prädiktoren von CBT Erfolg `RES`
+
+
+```{r echo = F, eval = T}
+library(knitr)
+D           = read.csv("_data/803-lda.csv", header = T)
+kable(head(D, n = 20L), digits = 2, align = "c")
+``` 
+
+Evaluation der Non-Response Wahrscheinlichkeit
+
+```{r, echo = T}
+D           = read.csv("_data/803-lda.csv")                                     # Datensatz                                                 
+x           = t(D[,1:2])                                                        # Featurevektoren
+y           = t(D[,3])                                                          # Label
+n           = ncol(x)                                                           # n
+m           = nrow(x)                                                           # m
+mu_hat      = mean(y)                                                           # \hat{\mu}
+mu_0_hat    = rowMeans(x[,y == 0])                                              # \hat{\mu}_0
+mu_1_hat    = rowMeans(x[,y == 1])                                              # \hat{\mu}_1
+Sigma_hat   = matrix(rep(0,m^2), nrow = m)                                      # \hat{\Sigma}
+for(i in 1:n){
+  Sigma_hat  = (Sigma_hat + (1/n)*
+               ((y[i] == 0)*(x[,i]-mu_0_hat) %*% t((x[,i]-mu_0_hat))
+               +(y[i] == 1)*(x[,i]-mu_1_hat) %*% t((x[,i]-mu_1_hat))))}
+beta_hat     = matrix(c((1/2)*( t(mu_0_hat) %*% solve(Sigma_hat) %*% mu_0_hat   # \hat{beta}
+                              - t(mu_1_hat) %*% solve(Sigma_hat) %*% mu_1_hat)
+                              + log(mu_hat/(1-mu_hat)),
+                        -solve(Sigma_hat) %*% (mu_0_hat-mu_1_hat)),
+                      nrow = m+1)
+x_min     = 0                                                                   # GLU/BDI Minimum
+x_max     = 3                                                                   # GLU/BDI Maximum
+x_res     = 5e2                                                                 # GLU/BDI Auflösung
+bdi       = seq(x_min, x_max, length.out = x_res)                               # BDI
+glu       = seq(x_min, x_max, length.out = x_res)                               # GLU
+p_y       = matrix(rep(NaN, x_res*x_res), nrow = x_res)                         # p(y=1|(BDI, GLU))
+for(i in 1:x_res){                                                              # BDI Iterationen
+    for(j in 1:x_res){                                                          # GLU Iterationen
+        x_tilde   = rbind(1, bdi[i], glu[j])                                    # \tilde{x}
+        p_y[i,j]  = 1/(1+exp(-t(x_tilde) %*% beta_hat))}}                       # p(y=1|(BDI, GLU))  
+```
+
+Evaluation der Non-Response Wahrscheinlichkeit
+
+```{r, eval = F, echo = F}
+library(latex2exp)
+pdf(
+file        = "_figures/803-lda-anwendungsbeispiel-2.pdf",
+width       = 5,
+height      = 5)
+par(
+family      = "sans",
+mfcol       = c(1,1),
+pty         = "s",
+bty         = "l",
+lwd         = 1,
+las         = 1,
+mgp         = c(2,1,0),
+xaxs        = "i",
+yaxs        = "i",
+font.main   = 1,
+cex         = 1,
+cex.main    = 1)
+filled.contour(
+bdi,
+glu,
+p_y[nrow(p_y):1, ncol(p_y):1],
+col         = hcl.colors(20, "YlOrRd"),
+levels      = seq(0,1,len = 20),
+xlab        = "BDI",
+ylab        = "GLU",
+main        = "P(Nonresponse|BDI,GLU)")
+dev.off()
+```
+
+![Anwendungsbeispiel 2.](./_figures/803-lda-anwendungsbeispiel-2){#fig-lda-anwendungsbeispiel-2 fig-align="center" width=100%}
+
+LOOCV zur Bestimmung der Featureprädiktivität
+
+```{r, echo = T}
+D       = read.csv("_data/803-lda.csv")                                         # Datensatz                                                 
+K       = nrow(D)                                                               # Anzahl Cross Folds
+p_y     = matrix(rep(NaN, K)  , nrow = 1)                                       # p(y = 1|x)                                   
+y_pred  = matrix(rep(NaN, K*2), nrow = K)                                       # Prädiktionsperformancearray
+for(k in 1:K){                                                                  # K-fold LOOCV
+  x_train     = t(D[-k,1:2])                                                    # Trainingsdatensatzfeatures
+  y_train     = t(D[-k,3  ])                                                    # Trainingsdatensatzlabels
+  x_test      = t(D[ k,1:2])                                                    # Testdatensatzfeaturevektor
+  y_pred[k,1] = t(D[ k,3])                                                      # Testdatensatzfeaturevektorlabel    
+  n            = ncol(x_train)                                                  # n
+  m            = nrow(x_train)                                                  # m
+  mu_hat       = mean(y_train)                                                  # \hat{\mu}
+  mu_0_hat     = rowMeans(x_train[,y_train == 0])                               # \hat{\mu}_0
+  mu_1_hat     = rowMeans(x_train[,y_train == 1])                               # \hat{\mu}_1
+  Sigma_hat    = matrix(rep(0,m^2), nrow = m)                                   # \hat{\Sigma}
+  for(i in 1:n){
+    Sigma_hat  = (Sigma_hat + (1/n)*
+                ((y_train[i] == 0)*(x_train[,i]-mu_0_hat) %*% t((x_train[,i]-mu_0_hat))
+                +(y_train[i] == 1)*(x_train[,i]-mu_1_hat) %*% t((x_train[,i]-mu_1_hat))))}
+  beta_hat     = matrix(c((1/2)*( t(mu_0_hat) %*% solve(Sigma_hat) %*% mu_0_hat # \hat{beta}
+                                - t(mu_1_hat) %*% solve(Sigma_hat) %*% mu_1_hat)
+                                + log(mu_hat/(1-mu_hat)), 
+                                -solve(Sigma_hat) %*% (mu_0_hat-mu_1_hat)), nrow = m+1)
+  x_test_tilde = rbind(1, x_test)                                               # \tilde{x}
+  p_y[k]       = 1/(1+exp(-t(x_test_tilde) %*% beta_hat))                       # p(y=1|x)
+  y_pred[k,2]  = as.numeric(p_y[k] >= 0.5)}                                     # Prädiktion
+rp      = sum(y_pred[y_pred[,1] == 1,2] == 1)                                   # |(1,1)|
+rn      = sum(y_pred[y_pred[,1] == 0,2] == 0)                                   # |(0,0)|
+fp      = sum(y_pred[y_pred[,1] == 0,2] == 1)                                   # |(0,1)|
+fn      = sum(y_pred[y_pred[,1] == 1,2] == 0)                                   # |(1,0)|
+ACC     = (rp+rn)/(rp+fp+rn+fn)                                                 # Accuracy            
+SEN     = rp/(rp+fn)                                                            # Sensitivity
+SPE     = rn/(rn+fp)                                                            # Specificity
+cat("Accuracy   : "  , ACC, ", Sensitivity: " , SEN, ", Specificity: " , SPE)   # Ergebnisausgabe
+```
+ 
+ 
