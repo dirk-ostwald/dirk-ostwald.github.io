@@ -20,7 +20,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -642,16 +662,286 @@ f : \mathbb{R} \to \mathbb{R}, x \mapsto f(x) := x^2
 \end{equation}\]</span> Diese Funktion ist nicht injektiv, weil z.B. für <span class="math inline">\(x_1 = 2 \neq -2 = x_2\)</span> gilt, dass <span class="math inline">\(f(x_1) = 2^2 = 4 = (-2)^2 = f(x_2)\)</span>. Weiterhin ist <span class="math inline">\(f\)</span> auch nicht surjektiv, weil z.B. <span class="math inline">\(-1 \in \mathbb{R}\)</span> kein Urbild unter <span class="math inline">\(f\)</span> hat. Schränkt man die Definitionsmenge von <span class="math inline">\(f\)</span> allerdings auf die nicht-negativen reellen Zahlen ein, definiert man also die Funktion <span class="math display">\[\begin{equation}
 \tilde{f} : [0,\infty[ \to [0,\infty[, x \mapsto \tilde{f}(x) := x^2,
 \end{equation}\]</span> so ist <span class="math inline">\(\tilde{f}\)</span> im Gegensatz zu <span class="math inline">\(f\)</span> injektiv und surjektiv, also bijektiv.</p>
+<p><strong>Zur Überabzählbarkeit der reellen Zahlen</strong></p>
+<p>Wir wollen an dieser Stelle die Begriffe der Surjektivität und Bijektivität von Funktionen nutzen, um den Begriff der <em>Überabzählbarkeit der reellen Zahlen</em> noch etwas vertiefen (vgl. <a href="102-Mengen.html#sec-spezielle-mengen" class="quarto-xref"><span>Kapitel 2.3</span></a>). Dieser besagt, dass es verschiedene Arten von Unendlichkeiten gibt, was zunächst sicherlich intuitiv nicht leicht zu fassen ist. Weiterhin sind manche Aspekte der Wahrscheinlichkeitstheorie so gefasst, dass sie der Überabzählbarkeit der reellen Zahlen Genüge tun, sodass zumindest ein grobes Verständnis dieser Eigenschaft zur Motivation mancher Spitzfindigkeiten der Wahrscheinlichkeitstheorie dienen kann. Speziell wollen wir an dieser Stelle das <em>Cantorsche Diagonalargument</em> (<span class="citation" data-cites="cantor1891">Cantor (<a href="#ref-cantor1891" role="doc-biblioref">1891</a>)</span>, <span class="citation" data-cites="gray1994">Gray (<a href="#ref-gray1994" role="doc-biblioref">1994</a>)</span>) zur Überabzählbarkeit der reellen Zahlen grob skizzieren. Wie beginnen damit, zunächst festzuhalten, was vor dem Hintegrund der bijektiven Abbildungen mit einer <em>endlichen</em> und einer <em>abzählbar unendlichen</em> Menge gemeint sein soll.</p>
+<div id="def-endliche-abzaehlbar-unendliche-menge" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 4.4</strong></span> Eine Menge <span class="math inline">\(M\)</span> heißt <em>endlich</em>, wenn es eine bijektive Abbildung der Form <span class="math display">\[\begin{equation}
+f:\mathbb{N}_n \to M
+\end{equation}\]</span> auf die Elemente von <span class="math inline">\(M\)</span> gibt. Weiterhin heißt eine Menge <span class="math inline">\(M\)</span> <em>abzählbar unendlich</em>, wenn es eine bijektive Abbildung der Form <span class="math display">\[\begin{equation}
+f:\mathbb{N} \to M
+\end{equation}\]</span> gibt.</p>
+</div>
+<p>Im Falle einer endlichen Menge kann jedem Element der Menge also im Sinne einer bijektiven Abbildung eine natürliche Zahl mit maximalem Wert <span class="math inline">\(n &lt; \infty\)</span> zugeordnet werden. Im Falle einer abzählbar unendlichen Menge kann jedem Element der Menge im Sinne einer bijektiven Abbildung zumindest eine natürliche Zahl zugeordnet werden. Die Elemente dieser Mengen können also abgezählt werden.</p>
+<p><span class="citation" data-cites="cantor1891">Cantor (<a href="#ref-cantor1891" role="doc-biblioref">1891</a>)</span> zeigte nun, dass dies im Allgemeinen für die reellen Zahlen nicht zutrifft, dass also keine bijektive Abbildung zwischen den reellen Zahlen und den natürlichen Zahlen konstruiert werden kann und es somit mehr reelle Zahlen als natürliche Zahlen geben muss. Speziell kann man argumentieren, dass sogar das Intervall <span class="math inline">\([0,1]\)</span> schon mehr reelle Zahlen enthält als es natürliche Zahlen gibt, dass also keine surjektive Funktion von <span class="math inline">\(\mathbb{N}\)</span> nach <span class="math inline">\([0,1]\)</span> konstruiert werden kann.</p>
+<p>Das Argument von <span class="citation" data-cites="cantor1891">Cantor (<a href="#ref-cantor1891" role="doc-biblioref">1891</a>)</span> hat die folgende Form. Man nehme an, <span class="math inline">\(f : \mathbb{N} \to [0,1]\)</span> sei eine injektive Funktion, die tabellarisch wie beispielsweise in <a href="#tbl-diagonal-argument" class="quarto-xref">Tabelle&nbsp;<span>4.1</span></a> dargestellt sei.</p>
+<div id="tbl-diagonal-argument" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-diagonal-argument-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabelle&nbsp;4.1: Abbildung <span class="math inline">\(f: \mathbb{N} \to [0,1]\)</span>. Die Punkte <span class="math inline">\(\cdots\)</span> und <span class="math inline">\(\vdots\)</span> zeigen an, dass die Tabelle bis ins Unendliche nach rechts und nach unten fortgesetzt wird.
+</figcaption>
+<div aria-describedby="tbl-diagonal-argument-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 11%">
+<col style="width: 10%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 9%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><span class="math inline">\(n\)</span></th>
+<th><span class="math inline">\(f(n)\)</span></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(1\)</span></td>
+<td>0.</td>
+<td><strong>3</strong></td>
+<td>1</td>
+<td>4</td>
+<td>1</td>
+<td>5</td>
+<td>9</td>
+<td>2</td>
+<td>6</td>
+<td>5</td>
+<td><span class="math inline">\(\cdots\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(2\)</span></td>
+<td>0.</td>
+<td>8</td>
+<td><strong>9</strong></td>
+<td>4</td>
+<td>5</td>
+<td>9</td>
+<td>7</td>
+<td>8</td>
+<td>1</td>
+<td>0</td>
+<td><span class="math inline">\(\cdots\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(3\)</span></td>
+<td>0.</td>
+<td>9</td>
+<td>6</td>
+<td><strong>2</strong></td>
+<td>3</td>
+<td>2</td>
+<td>1</td>
+<td>5</td>
+<td>8</td>
+<td>7</td>
+<td><span class="math inline">\(\cdots\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(4\)</span></td>
+<td>0.</td>
+<td>5</td>
+<td>3</td>
+<td>6</td>
+<td><strong>8</strong></td>
+<td>8</td>
+<td>8</td>
+<td>9</td>
+<td>7</td>
+<td>3</td>
+<td><span class="math inline">\(\cdots\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(5\)</span></td>
+<td>0.</td>
+<td>7</td>
+<td>4</td>
+<td>3</td>
+<td>8</td>
+<td><strong>1</strong></td>
+<td>8</td>
+<td>0</td>
+<td>9</td>
+<td>7</td>
+<td><span class="math inline">\(\cdots\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\vdots\)</span></td>
+<td><span class="math inline">\(\vdots\)</span></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>Man konstruiere nun eine weitere Zahl in <span class="math inline">\([0,1]\)</span> dadurch, dass man zu den fett gedruckten Diagonalementen in <a href="#tbl-diagonal-argument" class="quarto-xref">Tabelle&nbsp;<span>4.1</span></a> jeweils <span class="math inline">\(1\)</span> addiert, wenn der entsprechende Wert kleiner als 9 ist und ansonsten den Wert auf 0 setzt. Dies ist in <a href="#tbl-diagonal-konstruktion" class="quarto-xref">Tabelle&nbsp;<span>4.2</span></a> gezeigt.</p>
+<div id="tbl-diagonal-konstruktion" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-diagonal-konstruktion-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabelle&nbsp;4.2: Konstruktion einer weiteren reellen Zahl in <span class="math inline">\([0,1]\)</span>.
+</figcaption>
+<div aria-describedby="tbl-diagonal-konstruktion-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 11%">
+<col style="width: 10%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 9%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><span class="math inline">\(n\)</span></th>
+<th><span class="math inline">\(f(n)\)</span></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(1\)</span></td>
+<td>0.</td>
+<td><strong>4</strong></td>
+<td>1</td>
+<td>4</td>
+<td>1</td>
+<td>5</td>
+<td>9</td>
+<td>2</td>
+<td>6</td>
+<td>5</td>
+<td><span class="math inline">\(\cdots\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(2\)</span></td>
+<td>0.</td>
+<td>8</td>
+<td><strong>0</strong></td>
+<td>4</td>
+<td>5</td>
+<td>9</td>
+<td>7</td>
+<td>8</td>
+<td>1</td>
+<td>0</td>
+<td><span class="math inline">\(\cdots\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(3\)</span></td>
+<td>0.</td>
+<td>9</td>
+<td>6</td>
+<td><strong>3</strong></td>
+<td>3</td>
+<td>2</td>
+<td>1</td>
+<td>5</td>
+<td>8</td>
+<td>7</td>
+<td><span class="math inline">\(\cdots\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(4\)</span></td>
+<td>0.</td>
+<td>5</td>
+<td>3</td>
+<td>6</td>
+<td><strong>9</strong></td>
+<td>8</td>
+<td>8</td>
+<td>9</td>
+<td>7</td>
+<td>3</td>
+<td><span class="math inline">\(\cdots\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(5\)</span></td>
+<td>0.</td>
+<td>7</td>
+<td>4</td>
+<td>3</td>
+<td>8</td>
+<td><strong>2</strong></td>
+<td>8</td>
+<td>0</td>
+<td>9</td>
+<td>7</td>
+<td><span class="math inline">\(\cdots\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\vdots\)</span></td>
+<td><span class="math inline">\(\vdots\)</span></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>Die so konstruierte Zahl <span class="math display">\[\begin{equation}
+0.40392...
+\end{equation}\]</span> kann nicht in <a href="#tbl-diagonal-argument" class="quarto-xref">Tabelle&nbsp;<span>4.1</span></a> auftauchen, da sie sich von <span class="math inline">\(f(1)\)</span> durch ihren Eintrag an der ersten Dezimalstelle, von <span class="math inline">\(f(2)\)</span> durch ihren Eintrag an der zweiten Dezimalstelle, von <span class="math inline">\(f(3)\)</span> durch ihren Eintrag an der dritten Dezimalstelle, …, von <span class="math inline">\(f(n)\)</span> durch ihren Eintrag an der <span class="math inline">\(n\)</span>ten Dezimalstelle, und so ins Unendliche weiter unterscheidet. Also gibt es zumindest eine Zahl in <span class="math inline">\([0,1]\)</span>, der keine natürliche Zahl zugeordnet werden kann, die injektive Abbildung <span class="math inline">\(f\)</span> ist nicht surjektiv und damit auch nicht bijektiv. Somit ist aber <span class="math inline">\([0,1]\)</span> nicht abzählbar unendlich und wird entsprechend <em>überabzählbar</em> genannt.</p>
 </section>
 <section id="funktionentypen" class="level2" data-number="4.2">
 <h2 data-number="4.2" class="anchored" data-anchor-id="funktionentypen"><span class="header-section-number">4.2</span> Funktionentypen</h2>
 <p>Durch Verkettung lassen sich aus Funktionen weitere Funktionen bilden.</p>
 <div id="def-verkettung-von-funktionen" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 4.4 (Verkettung von Funktionen)</strong></span> Es seien <span class="math inline">\(f : D \to Z\)</span> und <span class="math inline">\(g : Z \to S\)</span> zwei Funktionen, wobei die Wertemenge von <span class="math inline">\(f\)</span> mit der Definitionsmenge von <span class="math inline">\(g\)</span> übereinstimmen sollen. Dann ist durch <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 4.5 (Verkettung von Funktionen)</strong></span> Es seien <span class="math inline">\(f : D \to Z\)</span> und <span class="math inline">\(g : Z \to S\)</span> zwei Funktionen, wobei die Wertemenge von <span class="math inline">\(f\)</span> mit der Definitionsmenge von <span class="math inline">\(g\)</span> übereinstimmen sollen. Dann ist durch <span class="math display">\[\begin{equation}
 g \circ f : D \to S, x \mapsto (g \circ f)(x) := g(f(x))
 \end{equation}\]</span> eine Funktion definiert, die die <em>Verkettung von <span class="math inline">\(f\)</span> und <span class="math inline">\(g\)</span></em> genannt wird.</p>
 </div>
-<p>Die Schreibweise für verkettete Funktionen ist etwas gewöhnungsbedürftig. Wichtig ist es zu erkennen, dass <span class="math inline">\(g \circ f\)</span> die verkette Funktion und <span class="math inline">\((g \circ f)(x)\)</span> ein Element in der Zielmenge der verketten Funktion bezeichnen. Intuitiv wird bei der Auswertung von <span class="math inline">\((g \circ f)(x)\)</span> zunächst die Funktion <span class="math inline">\(f\)</span> auf <span class="math inline">\(x\)</span> angewendet und dann die Funktion <span class="math inline">\(g\)</span> das Element auf <span class="math inline">\(f(x)\)</span> von <span class="math inline">\(R\)</span> angewendet. Dies ist in der funktionalen Form <span class="math inline">\(g(f(x))\)</span> festgehalten. Der Einfachheit halber benennt man die Verkettung zweier Funktionen auch oft mit einem einzelnen Buchstaben und schreibt beispielsweise, <span class="math inline">\(h := g \circ f\)</span> mit <span class="math inline">\(h(x) = g(f(x))\)</span>. Leicht zur Verwirrung kann es führen, wenn Elemente in der Zielmenge von <span class="math inline">\(f\)</span> mit <span class="math inline">\(y\)</span> bezeichnet werden, also die Schreibweise <span class="math inline">\(y = f(x)\)</span> und <span class="math inline">\(h(x) = g(y)\)</span> genutzt wird. Allerdings ist diese Schreibweise manchmal zur notationellen Vereinfachung nötig. Wir visualisieren <a href="#def-verkettung-von-funktionen" class="quarto-xref">Definition&nbsp;<span>4.4</span></a> in <a href="#fig-verkettung" class="quarto-xref">Abbildung&nbsp;<span>4.4</span></a>.</p>
+<p>Die Schreibweise für verkettete Funktionen ist etwas gewöhnungsbedürftig. Wichtig ist es zu erkennen, dass <span class="math inline">\(g \circ f\)</span> die verkette Funktion und <span class="math inline">\((g \circ f)(x)\)</span> ein Element in der Zielmenge der verketten Funktion bezeichnen. Intuitiv wird bei der Auswertung von <span class="math inline">\((g \circ f)(x)\)</span> zunächst die Funktion <span class="math inline">\(f\)</span> auf <span class="math inline">\(x\)</span> angewendet und dann die Funktion <span class="math inline">\(g\)</span> das Element auf <span class="math inline">\(f(x)\)</span> von <span class="math inline">\(R\)</span> angewendet. Dies ist in der funktionalen Form <span class="math inline">\(g(f(x))\)</span> festgehalten. Der Einfachheit halber benennt man die Verkettung zweier Funktionen auch oft mit einem einzelnen Buchstaben und schreibt beispielsweise, <span class="math inline">\(h := g \circ f\)</span> mit <span class="math inline">\(h(x) = g(f(x))\)</span>. Leicht zur Verwirrung kann es führen, wenn Elemente in der Zielmenge von <span class="math inline">\(f\)</span> mit <span class="math inline">\(y\)</span> bezeichnet werden, also die Schreibweise <span class="math inline">\(y = f(x)\)</span> und <span class="math inline">\(h(x) = g(y)\)</span> genutzt wird. Allerdings ist diese Schreibweise manchmal zur notationellen Vereinfachung nötig. Wir visualisieren <a href="#def-verkettung-von-funktionen" class="quarto-xref">Definition&nbsp;<span>4.5</span></a> in <a href="#fig-verkettung" class="quarto-xref">Abbildung&nbsp;<span>4.4</span></a>.</p>
 <div id="fig-verkettung" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-verkettung-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -671,11 +961,11 @@ g \circ f : \mathbb{R} \to \mathbb{R}, x \mapsto (g \circ f)(x) := g(f(x)) = \ex
 \end{equation}\]</span></p>
 <p>Eine erste Anwendung der Verkettung von Funktionen findet sich in folgender Definition.</p>
 <div id="def-inverse-funktion" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 4.5 (Inverse Funktion)</strong></span> Es sei <span class="math inline">\(f : D \to Z, x \mapsto f(x)\)</span> eine bijektive Funktion. Dann heißt die Funktion <span class="math inline">\(f^{-1}\)</span> mit <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 4.6 (Inverse Funktion)</strong></span> Es sei <span class="math inline">\(f : D \to Z, x \mapsto f(x)\)</span> eine bijektive Funktion. Dann heißt die Funktion <span class="math inline">\(f^{-1}\)</span> mit <span class="math display">\[\begin{equation}
 f^{-1} \circ f : D \to D, x \mapsto (f^{-1} \circ f)(x) := f^{-1}(f(x)) = x
 \end{equation}\]</span> <em>inverse Funktion</em>, <em>Umkehrfunktion</em> oder einfach <em>Inverse von</em> <span class="math inline">\(f\)</span>.</p>
 </div>
-<p>Inverse Funktionen sind immer bijektiv. Dies folgt, weil <span class="math inline">\(f\)</span> bijektiv ist und damit jedem <span class="math inline">\(x \in D\)</span> genau ein <span class="math inline">\(f(x) = z \in Z\)</span> zugeordnet wird. Damit wird aber auch jedem <span class="math inline">\(z \in Z\)</span> genau ein <span class="math inline">\(x \in D\)</span>, nämlich <span class="math inline">\(f^{-1}(f(x)) = x\)</span> zugeordnet. Intuitiv macht die inverse Funktion von <span class="math inline">\(f\)</span> den Effekt von <span class="math inline">\(f\)</span> auf ein Element <span class="math inline">\(x\)</span> rückgängig. Wir visualisieren <a href="#def-inverse-funktion" class="quarto-xref">Definition&nbsp;<span>4.5</span></a> in <a href="#fig-inversion" class="quarto-xref">Abbildung&nbsp;<span>4.5</span></a> A.</p>
+<p>Inverse Funktionen sind immer bijektiv. Dies folgt, weil <span class="math inline">\(f\)</span> bijektiv ist und damit jedem <span class="math inline">\(x \in D\)</span> genau ein <span class="math inline">\(f(x) = z \in Z\)</span> zugeordnet wird. Damit wird aber auch jedem <span class="math inline">\(z \in Z\)</span> genau ein <span class="math inline">\(x \in D\)</span>, nämlich <span class="math inline">\(f^{-1}(f(x)) = x\)</span> zugeordnet. Intuitiv macht die inverse Funktion von <span class="math inline">\(f\)</span> den Effekt von <span class="math inline">\(f\)</span> auf ein Element <span class="math inline">\(x\)</span> rückgängig. Wir visualisieren <a href="#def-inverse-funktion" class="quarto-xref">Definition&nbsp;<span>4.6</span></a> in <a href="#fig-inversion" class="quarto-xref">Abbildung&nbsp;<span>4.5</span></a> A.</p>
 <div id="fig-inversion" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-inversion-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -695,7 +985,7 @@ f^{-1} : \mathbb{R} \to \mathbb{R}, y \mapsto f^{-1}(y) := \frac{1}{2}y,
 \end{equation}\]</span></p>
 <p>Eine wichtige Klasse von Funktionen sind <em>lineare Abbildungen</em>.</p>
 <div id="def-lineare-abbildungen" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 4.6 (Lineare Abbildung)</strong></span> Eine Abbildung <span class="math inline">\(f : D \to Z, x \mapsto f(x)\)</span> heißt <em>lineare Abbildung</em>, wenn für <span class="math inline">\(x,y \in D\)</span> und einen Skalar <span class="math inline">\(c\)</span> gelten, dass <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 4.7 (Lineare Abbildung)</strong></span> Eine Abbildung <span class="math inline">\(f : D \to Z, x \mapsto f(x)\)</span> heißt <em>lineare Abbildung</em>, wenn für <span class="math inline">\(x,y \in D\)</span> und einen Skalar <span class="math inline">\(c\)</span> gelten, dass <span class="math display">\[\begin{equation}
 f(x + y) = f(x) + f(y) \tag*{(Additivität)}
 \end{equation}\]</span> und <span class="math display">\[\begin{equation}
 f(cx) = cf(x) \tag*{(Homogenität)}
@@ -730,7 +1020,7 @@ f(x+y) = 1(x+y)+1 = x + y + 1 \neq x + 1 + y + 1 = f(x) + f(y).
 <p>Eine Abbildung der Form <span class="math inline">\(f(x) := ax + b\)</span> heißt <em>linear-affine Abbildung</em> oder <em>linear-affine Funktion</em>. Etwas unsauber werden Funktionen der Form <span class="math inline">\(f(x) := ax + b\)</span> auch manchmal als <em>lineare Funktionen</em> bezeichnet.</p>
 <p>Neben den bisher diskutierten Funktionentypen gibt es noch viele weitere Klassen von Funktionen. In folgender Definition klassifizieren wir Funktionen anhand der Dimensionalität ihrer Definitions- und Zielmengen. Diese Art der Funktionsklassifikation ist oft hilfreich, um sich einen ersten Überblick über ein mathematisches Modell zu verschaffen.</p>
 <div id="def-funktionenarten" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 4.7 (Funktionenarten)</strong></span> Wir unterscheiden</p>
+<p><span class="theorem-title"><strong>Definition 4.8 (Funktionenarten)</strong></span> Wir unterscheiden</p>
 <ul>
 <li><em>univariate reellwertige Funktionen</em> der Form <span class="math display">\[\begin{equation}
 f : \mathbb{R} \to \mathbb{R}, x \mapsto f(x),
@@ -755,13 +1045,13 @@ f_m(x_1,...,x_n)
 <h2 data-number="4.3" class="anchored" data-anchor-id="sec-elementare-funktionen"><span class="header-section-number">4.3</span> Elementare Funktionen</h2>
 <p>Als <em>elementare Funktionen</em> bezeichnen wir eine kleine Schar von univariaten reellwertigen Funktionen, die häufig als Bausteine komplexerer Funktionen auftreten. Dies sind die <em>Polynomfunktionen</em>, die <em>Exponentialfunktion</em>, die <em>Logarithmusfunktion</em> und die <em>Gammafunktion</em>. Im Folgenden geben wir die Definitionen dieser Funktionen sowie ihre wesentlichen Eigenschaften als Theoreme an und stellen ihre Graphen an. Für Beweise der Eigenschaften der hier vorgestellten Funktionen verweisen wir auf die weiterführende Literatur.</p>
 <div id="def-polynomfunktionen" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 4.8 (Polynomfunktionen)</strong></span> Eine Funktion der Form <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 4.9 (Polynomfunktionen)</strong></span> Eine Funktion der Form <span class="math display">\[\begin{equation}
 f : \mathbb{R} \to \mathbb{R}, x \mapsto f(x) := \sum_{i=0}^{k} a_i x^i = a_0 + a_1 x^1 + a_2 x^2 + \cdots + a_k x^k
-\end{equation}\]</span> heißt <em>Polynomfunktion</em> <span class="math inline">\(k\)</span>-ten Grades mit Koeffizienten <span class="math inline">\(a_0, a_1,...,a_k \in \mathbb{R}\)</span>. Typische Polynomfunktionen sind in <a href="#tbl-polynomfunktionen" class="quarto-xref">Tabelle&nbsp;<span>4.1</span></a> aufgelistet.</p>
+\end{equation}\]</span> heißt <em>Polynomfunktion</em> <span class="math inline">\(k\)</span>-ten Grades mit Koeffizienten <span class="math inline">\(a_0, a_1,...,a_k \in \mathbb{R}\)</span>. Typische Polynomfunktionen sind in <a href="#tbl-polynomfunktionen" class="quarto-xref">Tabelle&nbsp;<span>4.3</span></a> aufgelistet.</p>
 <div id="tbl-polynomfunktionen" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-polynomfunktionen-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Tabelle&nbsp;4.1: Polynomfunktionen.
+Tabelle&nbsp;4.3: Polynomfunktionen.
 </figcaption>
 <div aria-describedby="tbl-polynomfunktionen-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -814,7 +1104,7 @@ Abbildung&nbsp;4.6: Ausgewählte Polynomfunktionen
 </figcaption>
 </figure>
 </div>
-<p><a href="#fig-polynomfunktionen" class="quarto-xref">Abbildung&nbsp;<span>4.6</span></a> zeigt die Graphen der in <a href="#def-polynomfunktionen" class="quarto-xref">Definition&nbsp;<span>4.8</span></a> aufgelisteten Polynomfunktionen.</p>
+<p><a href="#fig-polynomfunktionen" class="quarto-xref">Abbildung&nbsp;<span>4.6</span></a> zeigt die Graphen der in <a href="#def-polynomfunktionen" class="quarto-xref">Definition&nbsp;<span>4.9</span></a> aufgelisteten Polynomfunktionen.</p>
 <p>Ein wichtiges Funktionenpaar sind die Exponentialfunktion und die Logarithmusfunktion.</p>
 <div id="thm-exponentialfunktion" class="theorem">
 <p><span class="theorem-title"><strong>Theorem 4.2 (Exponentialfunktion und ihre Eigenschaften)</strong></span> Die <em>Exponentialfunktion</em> ist definiert als <span class="math display">\[\begin{equation}
@@ -823,11 +1113,11 @@ x \mapsto \exp(x)
 := e^x
 := \sum_{n=0}^\infty \frac{x^n}{n!}
 = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \frac{x^4}{4!} + \cdots
-\end{equation}\]</span> Die Exponentialfunktion hat unter anderem die in <a href="#tbl-eigenschaften-der-exponentialfunktion" class="quarto-xref">Tabelle&nbsp;<span>4.2</span></a> aufgeführten Eigenschaften.</p>
+\end{equation}\]</span> Die Exponentialfunktion hat unter anderem die in <a href="#tbl-eigenschaften-der-exponentialfunktion" class="quarto-xref">Tabelle&nbsp;<span>4.4</span></a> aufgeführten Eigenschaften.</p>
 <div id="tbl-eigenschaften-der-exponentialfunktion" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-eigenschaften-der-exponentialfunktion-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Tabelle&nbsp;4.2: Eigenschaften der Exponentialfunktion.
+Tabelle&nbsp;4.4: Eigenschaften der Exponentialfunktion.
 </figcaption>
 <div aria-describedby="tbl-eigenschaften-der-exponentialfunktion-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -878,11 +1168,11 @@ Tabelle&nbsp;4.2: Eigenschaften der Exponentialfunktion.
 <div id="thm-logarithmusfuntion" class="theorem">
 <p><span class="theorem-title"><strong>Theorem 4.3 (Logarithmusfunktion und ihre Eigenschaften)</strong></span> Die <em>Logarithmusfunktion</em> ist definiert als inverse Funktion der Exponentialfunktion, <span class="math display">\[\begin{equation}
 \ln : ]0,\infty[ \to \mathbb{R}, x \mapsto \ln(x) \mbox{ mit } \ln(\exp(x)) = x \mbox{ für alle } x \in \mathbb{R}.
-\end{equation}\]</span> Die Logarithmusfunktion hat unter anderem die in <a href="#tbl-eigenschaften-der-logarithmusfunktion" class="quarto-xref">Tabelle&nbsp;<span>4.3</span></a> aufgeführten Eigenschaften.</p>
+\end{equation}\]</span> Die Logarithmusfunktion hat unter anderem die in <a href="#tbl-eigenschaften-der-logarithmusfunktion" class="quarto-xref">Tabelle&nbsp;<span>4.5</span></a> aufgeführten Eigenschaften.</p>
 <div id="tbl-eigenschaften-der-logarithmusfunktion" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-eigenschaften-der-logarithmusfunktion-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Tabelle&nbsp;4.3: Eigenschaften der Logarithmusfunktion.
+Tabelle&nbsp;4.5: Eigenschaften der Logarithmusfunktion.
 </figcaption>
 <div aria-describedby="tbl-eigenschaften-der-logarithmusfunktion-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -944,13 +1234,13 @@ Abbildung&nbsp;4.7: Exponentialfunktion und Logarithmusfunktion
 </div>
 <p>Ein häufiger Begleiter in der Wahrscheinlichkeitstheorie ist die <em>Gammafunktion</em>.</p>
 <div id="def-gammafunktion" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 4.9 (Gammafunktion)</strong></span> Die <em>Gammafunktion</em> ist definiert durch <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 4.10 (Gammafunktion)</strong></span> Die <em>Gammafunktion</em> ist definiert durch <span class="math display">\[\begin{equation}
 \Gamma : \mathbb{R} \to \mathbb{R}, x \mapsto \Gamma(x) := \int_0^\infty \xi^{x-1}\exp(-\xi)\,d\xi
-\end{equation}\]</span> Die Gammafunktion hat unter anderem die in <a href="#tbl-eigenschaften-der-gammafunktion" class="quarto-xref">Tabelle&nbsp;<span>4.4</span></a> aufgeführten Eigenschaften.</p>
+\end{equation}\]</span> Die Gammafunktion hat unter anderem die in <a href="#tbl-eigenschaften-der-gammafunktion" class="quarto-xref">Tabelle&nbsp;<span>4.6</span></a> aufgeführten Eigenschaften.</p>
 <div id="tbl-eigenschaften-der-gammafunktion" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-eigenschaften-der-gammafunktion-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Tabelle&nbsp;4.4: Eigenschaften der Gammafunktion.
+Tabelle&nbsp;4.6: Eigenschaften der Gammafunktion.
 </figcaption>
 <div aria-describedby="tbl-eigenschaften-der-gammafunktion-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -1000,6 +1290,14 @@ Abbildung&nbsp;4.8: Gammafunktion
 </div>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-cantor1891" class="csl-entry" role="listitem">
+Cantor, G. (1891). <span>Ü</span>ber Eine Elementare <span>Frage</span> Der <span>Mannigfaltigkeitslehre</span>. <em>Jahresbericht der Deutschen Mathematiker-Vereinigung</em>, <em>1</em>, 75–78.
+</div>
+<div id="ref-gray1994" class="csl-entry" role="listitem">
+Gray, R. (1994). Georg <span>Cantor</span> and <span>Transcendental Numbers</span>. <em>The American Mathematical Monthly</em>, <em>101</em>(9), 819–832. <a href="https://doi.org/10.1080/00029890.1994.11997035">https://doi.org/10.1080/00029890.1994.11997035</a>
+</div>
+</div>
 </section>
 
 </main> <!-- /main -->
