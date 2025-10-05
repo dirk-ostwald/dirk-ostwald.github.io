@@ -96,14 +96,14 @@ D = data.frame(c("Polynomfunktion",
                  "Quadratfunktion",
                  "Exponentialfunktion",
                  "Logarithmusfunktion"),
-               c("$f(x) := \\sum_{i=0}^n a_ix^i$",
+               c("$f(x) := \\sum_{i=0}^k a_ix^i$",
                  "$f(x) := a$",
                  "$f(x) := x$",
                  "$f(x) := ax + b$",
                  "$f(x) := x^2$",
                  "$f(x) := \\exp(x)$",
                  "$f(x) := \\ln(x)$"),
-               c("$f'(x) = \\sum_{i=1}^n ia_ix^{i-1}$",
+               c("$f'(x) = \\sum_{i=1}^k ia_ix^{i-1}$",
                  "$f'(x) = 0$",
                  "$f'(x) = 1$",
                  "$f'(x) = a$",
@@ -336,7 +336,7 @@ f^{(1)} := f'
 sei die Ableitung von $f$. Die $k$-te Ableitung von $f$ ist rekursiv definiert
 durch
 \begin{equation}
-f^{(k)} := \left(f^{(k-1)}\right)' \mbox{ für } k \ge 1,
+f^{(k)} := \left(f^{(k-1)}\right)' \mbox{ für } k > 1,
 \end{equation}
 unter der Annahme, dass $f^{(k-1)}$ differenzierbar ist. Insbesondere ist die
 *zweite Ableitung von $f$* definiert durch die Ableitung von $f'$, also
@@ -469,15 +469,17 @@ f : \mathbb{R} \to \mathbb{R}, x \mapsto f(x) := \exp\left(-x^2\right)
 \end{equation}
 Dann hat $f$ die Form
 \begin{equation}
-f(x) = g_2(g_1(x)) \mbox{ mit }  g_2(z) := \exp(z) \mbox{ und }  g_1(x) := -x^2 
+f(x) = g_1(g_2(x)) \mbox{ mit }  g_1(x) := \exp(x) \mbox{ und } g_2(x) := -x^2 
 \end{equation}
-wobei man beachte, dass für das Funktionsargument $z$ in $g_2$ im Fall von $f$ gerade $z = g_1(x) := -x^2$ eingesetzt wird.  Es gelten außerdem
+Es gelten außerdem
 \begin{equation}
-g_1'(x) = \frac{d}{dx}\left(-x^2\right) = -2x  \mbox{ und }g_2'(z) = \frac{d}{dz}\left(\exp(z)\right) = \exp(z) 
+g_1'(x) = \frac{d}{dx}\left(\exp(x)\right) = \exp(x)
+\mbox{ und } 
+g_2'(x) = \frac{d}{dx}\left(-x^2\right) = -2x. 
 \end{equation}
 Also gilt mit der Kettenregel
 \begin{equation}
-f'(x) = g_2'(g_1(x))g_1'(x) = \exp\left(-x^2\right)\left(-2x\right) = -2x\exp\left(-x^2 \right).
+f'(x) = g_1'(g_2(x))g_2'(x) = \exp\left(-x^2\right)\left(-2x\right) = -2x\exp\left(-x^2 \right).
 \end{equation} 
 Man kann sich die resultierende Ableitung der Kettenregel also merken als "Die 
 Ableitung der äußeren Funktion an der Stelle der inneren Funktion mal die Ableitung 
