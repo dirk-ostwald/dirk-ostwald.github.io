@@ -28,7 +28,7 @@ Wenn nun $\xi^{-1}(S) \in \mathcal{A}$ für alle $S \in \mathcal{S}$ gilt,
 dann nennt man die Abbildung $\xi$ *messbar*. Nehmen wir also an 
 $\xi$ sei messbar. Dann kann allen $S \in \mathcal{S}$ die Wahrscheinlichkeit
 \begin{equation}
-\mathbb{P}_\xi : \mathcal{S} \to [0,1], S \mapsto
+\mathbb{P}_\xi: \mathcal{S} \to [0,1], S \mapsto
 \mathbb{P}_\xi(S)
 := \mathbb{P}\left(\xi^{-1}(S)\right)
  = \mathbb{P}\left(\{\omega \in \Omega|\xi(\omega) \in S\}\right)
@@ -73,7 +73,7 @@ und ein $\xi(\omega) \in \mathcal{X}$ heißt eine *Realisierung der Zufallvariab
 
 Aufbauend auf dem in @sec-beispiele-bei-endlichem-ergebnisraum betrachteten 
 Beispiel eines Wahrscheinlichkeitsraums zur Modellierung des geichzeitigen Würfelns 
-mit einem blauem und einem roten  Würfel wollen wir mit der Summe der Würfelaugenzahlen 
+mit einem blauem und einem roten Würfel wollen wir mit der Summe der Würfelaugenzahlen 
 ein erstes Beispiel für eine Zufallsvariable und ihre Verteilung betrachten. 
 Wir haben in @sec-beispiele-bei-endlichem-ergebnisraum gesehen, dass ein 
 sinnvolles Wahrscheinlichkeitsraummodell für das geichzeitige Würfeln mit einem 
@@ -84,14 +84,14 @@ blauem und einem roten Würfel durch $(\Omega,\mathcal{A}, \mathbb{P})$ mit
 * $\mathbb{P} : \mathcal{A} \to [0,1]$ mit $\mathbb{P}(\{(r,b)\}) = \frac{1}{36}$ für alle $(r,b) \in \Omega$.
 
 gegeben ist. Die Auswertung der Summe der beiden Würfelaugenzahlen wird dann 
-sinnvoller Weise durch die Abbildung 
+sinnvollerweise durch die Abbildung 
 \begin{equation}
 \xi : \Omega \to \mathcal{X}, (r,b) \mapsto \xi((r,b)) := r + b
 \end{equation}
 beschrieben, wobei offenbar $\mathcal{X} := \{2,3,...,12\}$ gelten muss. Der
 Ergebnisraum der Zufallsvariable ist also wiederrum endlich und 
 $\mathcal{S} := \mathcal{P}(\mathcal{X})$ ist eine sinnvolle $\sigma$-Algebra 
-auf $\mathcal{X}$. Mithilfe der $\sigma$-Addivität von $\mathbb{P}$ können wir 
+auf $\mathcal{X}$. Mithilfe der $\sigma$-Additivität von $\mathbb{P}$ können wir 
 nun die Verteilung $\mathbb{P}_\xi$ von $\xi$ für alle Elementarereignisse 
 $\{x\} \in \mathcal{S}$ berechnen und damit insbesondere auch die Messbarkeit
 von $\xi$ nachweisen, wie in @tbl-wuerfel-summe gezeigt.
@@ -296,7 +296,7 @@ interpretiert werden kann.
 ### Beispiele {-}
 
 Wir wollen mit den *Bernoulli-Zufallsvariablen*, den *Binomial-Zufallsvariablen*
-und den *diskret-gleichverteilten Zufallsvariablen* drei erste Beispiel für 
+und den *diskret-gleichverteilten Zufallsvariablen* drei erste Beispiele für 
 die Definition von Verteilungen mithilfe von WMFen betrachten.
 
 :::{#def-bernoulli-zufallsvariable}
@@ -341,19 +341,19 @@ mu      = c(.1,.5, .7)
 # Visualisierungsparameter
 library(latex2exp)
 pdf(
-file      = file.path("./_figures/303-bernoulliverteilung-wmf.pdf"),
+file      =  "./_figures/303-bernoulliverteilung-wmf.pdf",
 width     = 7,
 height    = 3)
 par(                                                                   
-mfcol      = c(1,length(mu)),                                            
-family     = "sans",                                                   
-pty        = "s",                                                       
-bty        = "l",                                                      
-lwd        = 1,                                                         
-las        = 1,                                                           
-mgp        = c(2,1,0),                                                 
-font.main  = 1,                                                         
-cex.main   = 1.4)                                                        
+mfcol     = c(1,length(mu)),                                            
+family    = "sans",                                                   
+pty       = "s",                                                       
+bty       = "l",                                                      
+lwd       = 1,                                                         
+las       = 1,                                                           
+mgp       = c(2,1,0),                                                 
+font.main = 1,                                                         
+cex.main  = 1.4)                                                        
 
 # Parameter Iterationen
 for (i in 1:length(mu)){
@@ -362,14 +362,18 @@ for (i in 1:length(mu)){
   plot(
   x,                                                                         
   dbinom(x,1,mu[i]),                                                         
-  type         = "h",                                                        
-  lwd          =  1.0,                                                       
-  col          = "Blue",                                                   
-  ylab         = " ",                                                        
-  xlab         = "x",                                                        
-  xlim         = c(-.3,1.3),                                                 
-  ylim         = c(0,1))                                                    
-   title(sprintf("Bern(x;%g)", mu[i]))                                         
+  type    = "h",                                                        
+  lwd     =  1.0,                                                       
+  col     = "Blue",                                                   
+  ylab    = " ",                                                        
+  xlab    = "x",                                                        
+  xlim    = c(-.3,1.3),                                                 
+  ylim    = c(0, 1),
+  xaxt    = "n")  
+  
+  # Add only x = 0 and x = 1 ticks
+  axis(1, at = c(0, 1), labels = c("0", "1"))
+  title(sprintf("Bern(x; %g)", mu[i]))                                      
 }
 dev.off()
 ```
@@ -551,7 +555,7 @@ WDF wie folgt.
 Eine Zufallsvariable $\xi$ heißt *kontinuierlich*, wenn $\mathbb{R}$ der 
 Ergebnisraum von $\xi$ ist und eine Funktion 
 \begin{equation}
-p : \mathbb{R} \to \mathbb{R}_{\ge 0}, x \mapsto p(x)
+p: \mathbb{R} \to \mathbb{R}_{\ge 0}, x \mapsto p(x)
 \end{equation}
 existiert, für die gilt
 
@@ -573,7 +577,7 @@ sondern Wahrscheinlichkeitsdichten dar, Wahrscheinlichkeiten werden aus WDFen an
 @def-kontinuierliche-zufallsvariable-und-wahrscheinlichkeitsdichtefunktion (2)
 durch Integration berechnet. Wie im physikalischen Sinn ergibt sich die einem reellen 
 Intervall zugeordnete Wahrscheinlichkeitsmasse also erst durch "Multiplikation"
-mit dem enstprechenden "Intervallvolumen". Man denke hierzu auch an die Approximation 
+mit dem entprechenden "Intervallvolumen". Man denke hierzu auch an die Approximation 
 des bestimmten Integrals $\int_a^b p(x)\,dx$ durch einen Riemannschen Summenterm 
 (vgl. @def-riemannsche-summen). Intuitiv gilt also 
 \begin{equation}
@@ -581,7 +585,7 @@ des bestimmten Integrals $\int_a^b p(x)\,dx$ durch einen Riemannschen Summenterm
 \end{equation}
 wobei sich das Volumen im Sinne des Lebesgue-Maßes auf die Breite des Intervalls
 $[a,b]$ bezieht. Wie in der physikalischen Analogie ist die Wahrscheinlichkeitsmasse 
-eines Intervalls ohne Volumen gleich Null,  
+eines Intervalls ohne Volumen gleich null,  
 \begin{equation}
 \mathbb{P}(\xi = a) = \int_a^a p(x) \,dx = 0.
 \end{equation}
@@ -598,7 +602,7 @@ mit assoziierter relativ niedrigerer Wahrscheinlichkeitsdichte.
 ### Normalverteilte Zufallsvariablen {-}
 
 Mit der normalverteilten Zufallsvariable wollen wir als erstes Beispiel für 
-die Definition einer kontinuierlichen Zufallsvariable mithile einer WDF nun 
+die Definition einer kontinuierlichen Zufallsvariable mithilfe einer WDF nun 
 die wichtigste Zufallsvariable der probabilistischen Modellbildung einführen.
 
 :::{#def-normalverteilte-zufallsvariable}
@@ -679,8 +683,8 @@ dev.off()
 ### Weitere Beispiele {-}
 
 Wir wollen mit den *Gamma-Zufallsvariablen*, den *Beta-Zufallsvariablen*
-und den *gleichverteilten Zufallsvariablen* drei weitere 
-Beispiele für die Definition von Verteilungen mithilfe von WDFen betrachten.
+und den *gleichverteilten Zufallsvariablen* drei weitere Beispiele für die 
+Definition von Verteilungen mithilfe von WDFen betrachten.
 
 :::{#def-gamma-zufallsvariable}
 ## Gamma-Zufallsvariable
@@ -750,7 +754,7 @@ dev.off()
 ## Beta-Zufallvariable
 Es sei $\xi$ eine Zufallsvariable mit Ergebnisraum $\mathcal{X} := [0,1]$ und WDF
 \begin{equation}
-p : \mathcal{X} \to [0,1], x \mapsto p(x)
+p: \mathcal{X} \to [0,1], x \mapsto p(x)
 := \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha)\Gamma(\beta)}
 x^{\alpha-1}(1-x)^{\beta-1} \mbox{ mit } \alpha,\beta \in \mathbb{R}_{>0},
 \end{equation}
@@ -915,7 +919,9 @@ for (i in 1:length(mu)){
   ylab    = "",                                                       
   xlab    = "x",                                                       
   xlim    = c(-.3,1.3),                                                
-  ylim    = c(0,1))                                                    
+  ylim    = c(0, 1),
+  xaxt    = "n")  
+  axis(1, at = c(0, 1), labels = c("0", "1"))                                                    
   title(sprintf("WMF von Bern(x;%g)", mu[i]))                                   
   x         = -1:2
   kvf       = stepfun(x, c(0, pbinom(x, 1, mu[i])), right = FALSE) 
@@ -1418,9 +1424,6 @@ Entwicklung des Begriffs der Normalverteilung durch Abraham De Moivre
 (1777-1855) und viele andere, ihre deskriptiv-statistischen Entsprechungen in 
 der empirischen Forschung des 19. Jahrhunderts, sowie ihre multivariate Generalisierung 
 im ausgehenden 19. Jahrhundert werden ausführlich in @stigler1986 dargestellt.
-
-\footnotesize
-
 
 ## Selbstkontrollfragen {.unnumbered .unlisted}
 \footnotesize
