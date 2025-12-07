@@ -3,28 +3,28 @@
 
 In diesem Kapitel beschäftigen wir uns mit für die probabilistische Modellbildung
 und Datenanalyse grundlegenden Grenzwertaussagen zu Folgen von Zufallsvariablen. 
-Dabei liefern die *Gesetze der Großen Zahlen* (@sec-gesetze-der-grossen-zahlen) zunächst 
+Dabei liefern die *Gesetze der großen Zahlen* (@sec-gesetze-der-grossen-zahlen) zunächst 
 eine grundlegende Begründung für die Mittelwertbildung im Rahmen der probabilistischen
-Inferenz. Die *Zentralen Grenzwertsätze* liefern dann die Begründung für
-die weite Verbreitung von Normalverteilungsannahmen zu Störvariablen 
-im Rahmen der probabilistischen Modellformulierung (@sec-zentrale-grenzwertsaetze). 
+Inferenz. Die *zentralen Grenzwertsätze* liefern dann die Begründung für
+die weite Verbreitung von Normalverteilungsannahmen zu unbekannten Einflüssen im Rahmen 
+der probabilistischen Modellformulierung (@sec-zentrale-grenzwertsaetze). 
 Die mathematische Tiefe dieser Grenzwertaussagen kann in dieser einführenden 
-Betrachtung nicht ausgeschöpft werden, so dass wir uns mit zahlreichen Vereinfachungen 
+Betrachtung nicht ausgeschöpft werden, sodass wir uns mit zahlreichen Vereinfachungen 
 begnügen müssen. Ein minimales Vorwissen zu Funktionenfolgen und ihren Grenzfunktionen 
 liefert @sec-folgen-grenzwerte-stetigkeit. 
 
-## Gesetze der Großen Zahlen {#sec-gesetze-der-grossen-zahlen}
+## Gesetze der großen Zahlen {#sec-gesetze-der-grossen-zahlen}
 
-Es gibt ein *Schwaches Gesetz der Großen Zahlen* und ein *Starkes Gesetz der Großen Zahlen*.
+Es gibt ein *schwaches Gesetz der großen Zahlen* und ein *starkes Gesetz der großen Zahlen*.
 Intuitiv besagen beide Gesetze, dass sich das Stichprobenmittel von unabhängigen 
 und identisch verteilten Zufallsvariablen für eine große Anzahl an Zufallsvariablen 
-dem Erwartungswert der zugrundeliegenden Verteilung nähert. Das Schwache und das 
-Starke Gesetz der Großen Zahlen unterscheiden sich in Hinblick auf die zu 
+dem Erwartungswert der zugrundeliegenden Verteilung nähert. Das schwache und das 
+starke Gesetz der großen Zahlen unterscheiden sich in Hinblick auf die zu 
 ihrer Formulierung benutzen Formen der *Konvergenz von Zufallsvariablen*. Das 
-Schwache Gesetz basiert auf der *Konvergenz in Wahrscheinlichkeit*. Das Starke 
+schwache Gesetz basiert auf der *Konvergenz in Wahrscheinlichkeit*. Das starke 
 Gesetz basiert auf der *fast sicheren Konvergenz*. Wir begnügen uns hier mit 
-dem Begriff der Konvergenz in Wahrscheinlichkeit und damit dem Schwachen Gesetz
-der Großen Zahlen.
+dem Begriff der Konvergenz in Wahrscheinlichkeit und damit dem schwachen Gesetz
+der großen Zahlen.
 
 :::{#def-konvergenz-in-wahrscheinlichkeit}
 ## Konvergenz in Wahrscheinlichkeit
@@ -42,19 +42,19 @@ geschrieben als
 \end{equation}
 :::
 
-$\xi_n\xrightarrow[n \to \infty]{\text{P}} \xi$  heißt also, dass sich die 
+$\xi_n\xrightarrow[n \to \infty]{\text{P}} \xi$ heißt also, dass sich die 
 Wahrscheinlichkeit dafür, dass $\xi_n$ in dem zufälligen Intervall
 \begin{equation}
 ]\xi-\epsilon, \xi+\epsilon[
 \end{equation}
 liegt, unabhängig davon, wie klein dieses Intervall sein mag, $1$ nähert, wenn 
 $n$ gegen Unendlich geht. Intuitiv heißt das, dass sich für $n \to \infty$ und
-eine  konstante Zufallsvariable $\xi := a$ die Verteilung von $\xi_n$ mehr und 
+eine konstante Zufallsvariable $\xi := a$ die Verteilung von $\xi_n$ mehr und 
 mehr um $a$ konzentriert, wenn $n$ gegen Unendlich strebt. Mithilfe der Konvergenz
-in Wahrscheinlichkeit formuliert man das Schwache Gesetz der Großen Zahlen wie folgt.
+in Wahrscheinlichkeit formuliert man das schwache Gesetz der großen Zahlen wie folgt.
 
 :::{#thm-schwaches-gesetz-der-großen-zahlen}
-## Schwaches Gesetz der Großen Zahlen
+## Schwaches Gesetz der großen Zahlen
 $\xi_1,...,\xi_n$ seien unabhängig und gleichverteilte Zufallsvariablen mit
 $\mathbb{E}(\xi_i) = \mu$ für alle $i = 1,...,n$. Weiterhin bezeichne
 \begin{equation}
@@ -67,27 +67,69 @@ Wahrscheinlichkeit gegen $\mu$,
 \end{equation}
 :::
 
-Für einen Beweis dieses Theorems verweisen wir auf die weiterführende Literatur, 
-so zum Beispiel auf Abschnitt 5.1 in @georgii2009. Intuitiv heißt 
+:::{.proof}
+Mit @thm-erwartungswert-bei-linear-affiner-kombination-von-zufallsvariablen gilt zunächst, dass 
 \begin{equation}
-\bar{\xi}_n \xrightarrow[n\to\infty]{\mbox{P}} \mu
+\mathbb{E}\left(\bar{\xi}_n\right)
+= \mathbb{E}\left(\frac{1}{n}\sum_{i=1}^n \xi_i\right)
+= \frac{1}{n}\sum_{i=1}^n \mathbb{E}\left(\xi_i\right)
+= \frac{1}{n} n \mathbb{E}\left(\xi_i\right)
+= \mathbb{E}\left(\xi_i\right)
+= \mu.
 \end{equation}
-also, dass die Wahrscheinlichkeit, dass das Stichprobenmittel nahe dem Erwartungswert 
+Der Erwartungswert $\mu$ der $i$ten Stichprobenvariable $\xi_i$ stimmt also mit dem
+Erwartunsgwert des Stichprobenmittels $\bar{\xi}_n$ überein. Weiterhin halten 
+wir fest, dass mit @thm-varianz-einer-linearkombination-von-zufallsvariablen und 
+@thm-korrelation-und-unabhängigkeit-von-zufallsvariablen bei Unabhängigkeit der Zufallsvariablen gilt, dass
+\begin{equation}
+\mathbb{V}\left(\bar{\xi}_n\right)
+= \mathbb{V}\left(\frac{1}{n}\sum_{i=1}^n \xi_i\right)
+= \frac{1}{n^2}\sum_{i=1}^n \mathbb{V}\left(\xi_i\right)
+= \frac{1}{n^2}n\mathbb{V}\left(\xi_i\right)
+= \frac{\mathbb{V}\left(\xi_i\right)}{n}.
+\end{equation}
+für $i=1,...,n$. Die Varianz des Stichprobenmittels ergibt sich also durch Teilen der Varianz
+der $i$ten Stichprobenvariable durch $n$. Mit @thm-chebyshev-ungleichung gilt dann aber
+\begin{equation}
+\mathbb{P}(|\bar{\xi}_n - \mathbb{E}\left(\bar{\xi}_n\right)| \ge \epsilon) 
+\le \frac{\mathbb{V}\left(\bar{\xi}_n\right)}{\epsilon^2}
+= \frac{\mathbb{V}\left(\xi_i\right)}{n\epsilon^2}.
+\end{equation}
+Dann aber gilt für beliebige $\mathbb{V}\left(\xi_i\right)\ge 0$ und $\epsilon > 0$ und mit der Nichtnegativität der Wahrscheinlichkeit
+\begin{equation}
+\lim_{n \to \infty} \mathbb{P}(|\bar{\xi}_n - \mathbb{E}\left(\bar{\xi}_n\right)| \ge \epsilon) 
+\le \lim_{n \to \infty} \frac{\mathbb{V}\left(\xi_i\right)}{n\epsilon^2}
+\Leftrightarrow
+\lim_{n \to \infty} \mathbb{P}(|\bar{\xi}_n - \mu| \ge \epsilon) \le 0
+\Leftrightarrow
+\lim_{n \to \infty} \mathbb{P}(|\bar{\xi}_n - \mu| \ge \epsilon) = 0
+\end{equation}
+und es ist alles gezeigt. 
+:::
+
+Intuitiv heißt 
+\begin{equation}
+\bar{\xi}_n \xrightarrow[n\to\infty]{\mbox{P}} \mu,
+\end{equation}
+dass die Wahrscheinlichkeit, dass das Stichprobenmittel nahe dem Erwartungswert 
 der zugrundeliegenden Verteilung liegt, sich 1 nähert, wenn $n$ gegen Unendlich strebt.
 
-**Simulation** 
+:::{#exm-simulation-des-schwachen-gesetz-der-großen-zahlen}
+## Simulation des schwachen Gesetzes der großen Zahlen
 
-Wir betrachten den Fall von u.i.v. normalverteilten Zufallsvariablen 
-$\xi_1,...,\xi_n \sim N(0,1)$. @fig-schwaches-gesetz A zeigt Realisationen der
-von Stichprobenmitteln $\bar{\xi}_n$ als Funktion von $n$. Man erkennt, dass für
-größeres $n$ mehr Realisierungen von $\bar{\xi}_n$ in der Nähe des Erwartungswerts
-der $\xi_i, i = 1,...,n$ liegen. Basierend auf diesen Stichprobenmittelrealisationen
-zeigt @fig-schwaches-gesetz B Schätzungen der Wahrscheinlichkeit 
-$\mathbb{P}(|\bar{\xi}_n - \mu| \ge \epsilon)$ als Funktionen von $n$ und $\epsilon$.
-Für ein großes $\epsilon$ reicht ein geringes $n$ aus um die Wahrscheinlichkeit
-für eine absolute Abwecihung des Stichprobenmittels vom Erwartungswert klein werden
-zu lassen, für ein kleineres $\epsilon$ ist dafür ein größeres $n$ nötig. In jedem
-Fall sinken die Wahrscheinlichkeiten jedoch mit größerem $n$.
+Zur Veranschaulichung von @thm-schwaches-gesetz-der-großen-zahlen betrachten wird 
+den Fall von u.i.v. normalverteilten Zufallsvariablen $\xi_1,...,\xi_n \sim N(0,1)$. 
+@fig-schwaches-gesetz A zeigt Realisationen der von Stichprobenmitteln $\bar{\xi}_n$ 
+als Funktion von $n$. Man erkennt, dass für größeres $n$ mehr Realisierungen von 
+$\bar{\xi}_n$ in der Nähe des Erwartungswerts der $\xi_i, i = 1,...,n$ liegen. 
+Basierend auf diesen Stichprobenmittelrealisationen zeigt @fig-schwaches-gesetz B 
+Schätzungen der Wahrscheinlichkeit $\mathbb{P}(|\bar{\xi}_n - \mu| \ge \epsilon)$ 
+als Funktionen von $n$ und $\epsilon$. Für ein großes $\epsilon$ reicht ein geringes 
+$n$ aus, um die Wahrscheinlichkeit für eine absolute Abwecihung des Stichprobenmittels 
+vom Erwartungswert klein werden zu lassen. Für ein kleineres $\epsilon$ ist 
+dafür ein größeres $n$ nötig. In jedem Fall sinken die Abweichungswahrscheinlichkeiten 
+jedoch mit größerem $n$.
+::: 
 
 ```{r, eval = F, echo = F}
 # Modellformulierung
@@ -184,39 +226,39 @@ bty          = "n")
 mtext(LETTERS[2], adj=0, line=2.1, cex = 2, at = -20)                                                         
 dev.off()
 ```
-![Simulation des schwachen Gesetz der Großen Zahlen.](./_figures/309-schwaches-gesetz){#fig-schwaches-gesetz fig-align="center" width=100%}
+![Simulation des schwachen Gesetz der großen Zahlen.](./_figures/309-schwaches-gesetz){#fig-schwaches-gesetz fig-align="center" width=100%}
 
 ## Zentrale Grenzwertsätze {#sec-zentrale-grenzwertsaetze}
 
-Die Zentralen Grenzwertsätze besagen intuitiv, dass die Summe von unabhängigen
-Zufallsvariablen mit Erwartungswert Null *asymptotisch*, also für unendlich 
-viele Zufallsvariablen, normalverteilt mit Erwartungswertparameter Null ist.
-Modelliert man eine beliebige Messgröße $\upsilon$ also als Summe eines 
+Die zentralen Grenzwertsätze besagen intuitiv, dass die Summe von unabhängigen
+Zufallsvariablen mit Erwartungswert null *asymptotisch*, also für unendlich 
+viele Zufallsvariablen, normalverteilt mit Erwartungswertparameter null ist.
+Modelliert man eine beliebige Messgröße $y$ also als Summe eines 
 deterministischen Einflusses $\mu$ und der Summe
 \begin{equation}
 \varepsilon := \sum_{i=1}^n \xi_i
 \end{equation}
 einer Vielzahl von unabhängigen Zufallsvariablen $\xi_i, i = 1,...,n$, die
-unbekannte Störeinflüsse modellieren sollen, so ist für großes $n$ die Annahme
+unbekannte Einflüsse modellieren sollen, so ist für großes $n$ die Annahme
 $$
-\upsilon = \mu + \varepsilon \mbox{ mit } \varepsilon \sim N(0,\sigma^2)
+y = \mu + \varepsilon \mbox{ mit } \varepsilon \sim N(0,\sigma^2)
 $$ {#eq-standardmodell}
 mathematisch gerechtfertigt. Wie wir später sehen werden, liegt die Annahme
-in Gleichung @eq-standardmodell einer großen Vielzahl von probabilistischen 
+in @eq-standardmodell einer großen Vielzahl von probabilistischen 
 Modellen zugrunde.
 
-Formal werden verschiedene Formen von Zentralen Grenzwertsätzen, je nach
+Formal werden verschiedene Formen von zentralen Grenzwertsätzen, je nach
 Ausgestaltung der zugrundeliegenden Annahmen und ihrer Beweisführung unterschieden.
-In der sogenannten *Lindenberg und Lévy Form* des Zentralen Grenzwertsatzes werden
-unabhängig und identische Zufallsvariablen vorausgesetzt. In der *Liapunov
-Form* dagegen werden nur unabhängige Zufallsvariablen voraussetzt. In beiden 
-Formulierungen des Zentralen Grenzwertsatzes ist die betrachtete Konvergenz 
+In der sogenannten *Lindeberg und Lévy Form* des zentralen Grenzwertsatzes werden
+unabhängig und identische Zufallsvariablen vorausgesetzt. In der *Liapunov Form* 
+dagegen werden nur unabhängige Zufallsvariablen voraussetzt. In beiden 
+Formulierungen des zentralen Grenzwertsatzes ist die betrachtete Konvergenz 
 von Zufallsvariablen die *Konvergenz in Verteilung*, welche wir zunächst einführen.
 
 :::{#def-konvergenz-in-verteilung}
 ## Konvergenz in Verteilung
-Eine Folge $\xi_1,\xi_2,...$ von Zufallsvariablen \textit{konvergiert in Verteilung
-gegen eine Zufallsvariable $\xi$}, wenn
+Eine Folge $\xi_1,\xi_2,...$ von Zufallsvariablen *konvergiert in Verteilung
+gegen eine Zufallsvariable $\xi$*, wenn
 \begin{equation}
 \lim_{n \to \infty} P_{\xi_n}(x) = P_\xi(x)
 \end{equation}
@@ -226,15 +268,17 @@ Die Konvergenz in Verteilung von $\xi_1,\xi_2,...$ gegen $\xi$ wird geschrieben 
 \xi_n\xrightarrow[n\to \infty]{\text{D}} \xi.
 \end{equation}
 Gilt $\xi_n\xrightarrow[n\to \infty]{\text{D}} \xi$, dann heißt die Verteilung von
-$\xi$ die \textit{asymptotische Verteilung der Folge $\xi_1,\xi_2,...$}.
+$\xi$ die *asymptotische Verteilung der Folge $\xi_1,\xi_2,...$*.
 :::
+
 Die Konvergenz in Verteilung ist also eine Aussage zur Konvergenz von Funktionenfolgen,
 speziell von KVFen. Ohne Begründung merken wir an, dass die oben betrachtete Konvergenz 
-in Wahrscheinlichkeit die Konvergenz in Verteilung impliziert. Wir geben nun 
-zunächst den Zentralen Grenzwertsatz nach Lindenberg und Lévy an.
+in Wahrscheinlichkeit die Konvergenz in Verteilung impliziert. Wir geben nun zunächst 
+den zentralen Grenzwertsatz nach Lindeberg und Lévy an. Für einen Beweis verweisen wir 
+auf @henze2024a.
 
-:::{#thm-zentraler-grenzwertsatz-nach-lindenberg-und-levy}
-## Zentraler Grenzwertsatz nach Lindenberg und Lévy
+:::{#thm-zentraler-grenzwertsatz-nach-Lindeberg-und-levy}
+## Zentraler Grenzwertsatz nach Lindeberg und Lévy
 $\xi_1,...,\xi_n$ seien unabhängig und identisch verteilte Zufallsvariablen mit
 \begin{equation}
 \mathbb{E}(\xi_i) := \mu \mbox{ und }
@@ -256,11 +300,11 @@ $$
 \sum_{i=1}^n \xi_i \sim N(\mu, n\sigma^2)
 \mbox{ und }
 \bar{\xi}_n \sim N\left(\mu,\frac{\sigma^2}{n}\right).
-$$ {#eq-generalisierung-zentraler-grenzwertsatz-lindenberg-levy}
+$$ {#eq-generalisierung-zentraler-grenzwertsatz-Lindeberg-levy}
 
 ```{r, eval = F, echo = F}
 # Abbildungsparameter
-pdf(file = "./_figures/309-lindenberg-levy.pdf", width = 15, height = 5)
+pdf(file = "./_figures/309-lindeberg-levy.pdf", width = 15, height = 5)
 library(latex2exp)
 par(                                                                    
 family     = "sans",                                                  
@@ -353,21 +397,21 @@ dev.off()
 ```
 
 
-**Simulation** 
+:::{#exm-simulation-des-zentralen-grenzwertsatzes-nach-Lindeberg-und-levy}
+## Simulation des zentralen Grenzwertsatzes nach Lindeberg und Lévy
 
-Wir betrachten den Fall von u.i.v. $\chi^2$-Zufallsvariablen 
-$\xi_1,...,\xi_n \sim \chi^2(3)$. Offenbar ist die funktionale Form der 
-$\chi^2(3)$-Verteilung von der Standardnormalverteilung recht verschieden,
-insbesondere nehmen $\chi^2$-Zufallsvariablen mit von Null 
-verschiedener Wahrscheinlichkeit nur nicht-negative Werte an (vgl. @sec-wahrscheinlichkeitsdichtefunktionen) 
+Wir betrachten den Fall von u.i.v. $\chi^2$-Zufallsvariablen $\xi_1,...,\xi_n \sim \chi^2(3)$. 
+Offenbar ist die funktionale Form der $\chi^2(3)$-Verteilung von der Standardnormalverteilung recht verschieden,
+insbesondere nehmen $\chi^2$-Zufallsvariablen mit von null verschiedener Wahrscheinlichkeit 
+nur nicht-negative Werte an (vgl. @sec-wahrscheinlichkeitsdichtefunktionen). 
 Nichtsdestotrotz resultiert ihre standardisierte Summe asymptotisch in einer
-Normalverteilung, wie in @fig-lindenberg-levy visualisiert. Dazu nutzen wir 
+Normalverteilung, wie in @fig-Lindeberg-levy visualisiert. Dazu nutzen wir 
 auf Ebene der Implementation die Tatsache, für die $\chi^2$-Zufallsvariablen 
-$\xi_i, i = 1,...,n$ mit Freiheitsgradparameter $3$ bekanntlich gilt (vgl. @sec-erwartungswerte und @sec-varianzen) 
+$\xi_i, i = 1,...,n$ mit Freiheitsgradparameter $3$ gilt, dass
 \begin{equation}
-\mathbb{E}(\xi_i) = 3 \mbox{ und }\mathbb{V}(\xi_i) = 6
+\mathbb{E}(\xi_i) = 3 \mbox{ und }\mathbb{V}(\xi_i) = 6.
 \end{equation}
-Die Abbildungen in  @fig-lindenberg-levy A zeigen Histogrammschätzer der 
+Die Abbildungen in @fig-Lindeberg-levy A zeigen Histogrammschätzer der 
 Wahrscheinlichkeitsdichte von
 \begin{equation}
 \zeta_n := \sqrt{n}\left(\frac{\bar{\xi}_n - \mu}{\sigma}\right)
@@ -376,11 +420,16 @@ basierend auf 1000 Realisationen von $\zeta_n$ für $n = 2$ und $n = 200$,
 sowie die WDF von $N(0,1)$. Offenbar ist die Verteilung der Realisiationen 
 von $\zeta_2$ der Standardnormalverteilung noch sehr unähnlich, wohingegen
 sich die Verteilung der Realisationen von $\zeta_{200}$ der Standardnormalverteilung
-schon annähert. @fig-lindenberg-levy B zeigt die entsprechenden geschätzten 
-KVFen über die @thm-zentraler-grenzwertsatz-nach-lindenberg-und-levy formal
+schon annähert. @fig-Lindeberg-levy B zeigt die entsprechenden geschätzten 
+KVFen über die @thm-zentraler-grenzwertsatz-nach-Lindeberg-und-levy formal
 eine Aussage trifft.
+:::
 
-![Simulation des Zentralen Grenzwertsatzes nach Lindenberg und Lévy.](./_figures/309-lindenberg-levy){#fig-lindenberg-levy fig-align="center" width=100%}
+![Simulation des Zentralen Grenzwertsatzes nach Lindeberg und Lévy.](./_figures/309-lindeberg-levy){#fig-Lindeberg-levy fig-align="center" width=100%}
+
+Der zentrale Grenzwertsatz nach Liapounov generalisiert @thm-zentraler-grenzwertsatz-nach-Lindeberg-und-levy
+auf den Fall nicht notwendig identisch verteilter Zufallsvariablen. Für einen 
+Beweis verweisen wir wiederrum auf @henze2024a.
 
 :::{#thm-zentraler-grenzwertsatz-nach-liapounov}
 ## Zentraler Grenzwertsatz nach Liapounov
@@ -407,14 +456,30 @@ wobei $\Phi$ KVF der Standardnormalverteilung bezeichnet.
 :::
 Wir zeigen an späterer Stelle, dass damit für $n\to\infty$ auch gilt, dass
 $$
-\sum_{i=1}^n \xi_i \sim N\left(\sum_{i=1}^n \mu_i, \sum_{i=1}^n \sigma_i^2\right)
+\sum_{i=1}^n \xi_i \sim N\left(\sum_{i=1}^n \mu_i, \sum_{i=1}^n \sigma_i^2\right).
 $$ {#eq-generalisierung-zentraler-grenzwertsatz-liapunov}
 
 ## Literaturhinweise
 
-Zur mathematik-geschichtlichen Genese der Zentralen Grenzwertsätze siehe 
-z.B. @fischer2011.
+Zur mathematik-geschichtlichen Genese der Zentralen Grenzwertsätze siehe @fischer2011 und @ulyanov2024.
+Zum zentralen Grenzwertsatz nach Lindeberg-Lévy, siehe @lindeberg1922 und @levy1937, 
+zum zentralen Grenzwertsatz nach Liapunov, siehe @Liapounoff1900 und @Liapounoff1901.
 
+## Selbstkontrollfragen {.unnumbered .unlisted}
+\footnotesize
 
+1. Geben Sie das Schwache Gesetz der großen Zahlen wieder.
+1. Erläutern Sie den zentralen Grenzwertsatz nach Lindeberg und Lévy.
+1. Erläutern Sie den zentralen Grenzwertsatz nach Liapunov.
+1. Warum sind die zentralen Grenzwertsätze für die probabilistische Modellbildung wichtig?
 
+## Lösungen {.unnumbered .unlisted}
 
+1. Siehe @thm-schwaches-gesetz-der-großen-zahlen.
+1. Der zentrale Grenzwertsatz nach Lindeberg und Lévy besagt, dass das die standardisierte
+Summe unabhängig und identisch verteilter Zufallsvariablen asymptotisch normalverteilt ist. 
+1. Der zentrale Grenzwertsatz nach Liapunov besagt, dass das standardisierte Summe unabhängig 
+und nicht notwendig identisch verteilter Zufallsvariablen asymptotisch normalverteilt ist. 
+1. Die zentralen Grenzwertsätze begründen die häufige Annahme normalverteilter 
+unbekannter Einflüsse als Stör-, Fehler-, Abweichungs- oder Unsicherheitsvariablen 
+in probabilistischen Modellen.

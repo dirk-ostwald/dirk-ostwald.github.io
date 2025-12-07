@@ -4,22 +4,22 @@
 Das Thema dieses Kapitels sind Ungleichungen, die in der Wahrscheinlichkeitstheorie
 häufig zur Abschätzung von Wahrscheinlichkeiten und Erwartungswerten genutzt werden.
 Wir gliedern die Ungleichungen entsprechend in *Wahrscheinlichkeitsungleichungen*
-(*Markov Ungleichung* und *Chebychev Ungleichung*, @sec-wahrscheinlichkeitsungleichungen)
-und *Erwartungswertungleichungen* (*Cauchy-Schwarz Ungleichung*, *Korrelationsungleichung* 
+(*Markov-Ungleichung* und *Chebychev Ungleichung*, @sec-wahrscheinlichkeitsungleichungen)
+und *Erwartungswertungleichungen* (*Cauchy-Schwarz-Ungleichung*, *Korrelationsungleichung* 
 und *Jensensche Ungleichung*, @sec-erwartungswertungleichungen).
 
 ## Wahrscheinlichkeitsungleichungen {#sec-wahrscheinlichkeitsungleichungen}
 
-Die *Markov Ungleichung* stellt einen Bezug zwischen den Überschreitungswahrscheinlichkeiten 
+Die *Markov-Ungleichung* stellt einen Bezug zwischen den Überschreitungswahrscheinlichkeiten 
 (vgl. @thm-überschreitungswahrscheinlichkeit) und dem Erwartungswert einer 
 *nicht-negativen* Zufallsvariablen, also einer Zufallsvariable, für die 
 $\mathbb{P}(\xi \ge 0 ) = 1$ ist, her. Im Beweis dieser Ungleichung wollen wir 
 nur den Fall einer kontinuierlichen Zufallsvariable betrachten. 
 
 :::{#thm-markov-ungleichung}
-## Markov Ungleichung
+## Markov-Ungleichung
 $\xi$ sei eine Zufallsvariable mit $\mathbb{P}(\xi \ge 0) = 1$. Dann gilt für 
-alle  $x \in \mathbb{R}$, dass
+alle $x > 0$, dass
 \begin{equation}
 \mathbb{P}(\xi \ge x) \le \frac{\mathbb{E}(\xi)}{x}.
 \end{equation}
@@ -55,24 +55,25 @@ und die zweite Ungleichung gilt, weil $x \le \xi$ für $\xi \in [x,\infty[$. Es 
 :::
 
 Gilt beispielweise für eine nichtnegative Zufallsvariable $\xi$, dass 
-$\mathbb{E}(\xi) = 1$ ist, dann folgt aus der Markov Ungleichung, dass 
+$\mathbb{E}(\xi) = 1$ ist, dann folgt aus der Markov-Ungleichung, dass 
 \begin{equation}
 \mathbb{P}(\xi \ge 100) \le 0.01.
 \end{equation}
 
-**Beispiel**
+:::{#exm-markov-ungleichung}
+## Markov-Ungleichung
 
-Als Beispiel für die Markov Ungleichung betrachten wir den Fall einer 
+Als Beispiel für die Markov-Ungleichung betrachten wir den Fall einer 
 Gamma-Zufallsvariable $\xi \sim G(\alpha,\beta)$. Gamma-Zufallsvariablen 
-sind bekanntlich per Definition nicht-negativ (vgl. @def-gamma-zufallsvariable)
-und wir haben gesehen, dass für den Erwartungswert einer Gamma-Zufallsvariable 
-$\mathbb{E}(\xi) = \alpha\beta$ gilt. Wir betrachten konkret den Fall $\alpha := 5$ 
-und $\beta := 2$, so dass $\xi$ auch einer $\chi^2$-Zufallsvariable mit Freiheitsgradparameter $n = 10$ entspricht. 
+sind bekanntlich definitionsgemäß nicht-negativ (vgl. @def-gamma-zufallsvariable)
+Für den Erwartungswert einer Gamma-Zufallsvariable gilt $\mathbb{E}(\xi) = \alpha\beta$. 
+Wir betrachten konkret den Fall $\alpha := 5$ und $\beta := 2$, sodass $\xi$ 
+auch einer $\chi^2$-Zufallsvariable mit Freiheitsgradparameter $n = 10$ entspricht. 
 In @fig-markov-ungleichung A stellen wir die KVF $P$ dieser Zufallsvariable dar, 
-in @fig-markov-ungleichung B visualisieren wir die in der Markov Ungleichung 
+in @fig-markov-ungleichung B visualisieren wir die in der Markov-Ungleichung 
 betrachteten Größen $\mathbb{E}(\xi)/x$ und die Überschreitungswahrscheinlichkeit 
-$\mathbb{P}(\xi \ge x) = 1 - P(x)$. Offensichtlich trifft die Markov Ungleichung zu.
-
+$\mathbb{P}(\xi \ge x) = 1 - P(x)$. Offensichtlich trifft die Markov-Ungleichung zu.
+:::
 
 ```{r, eval = F, echo = F}
 # Modellformulierung
@@ -117,7 +118,7 @@ ylim         = c(-.01,1.01),
 main         = "P(x)")   
 mtext(LETTERS[1], adj=0, line=2, cex = 1.5, at = -2)                                              
 
-# Markov Ungleichung
+# Markov-Ungleichung
 matplot(
 x,                                                                        
 miq,                                                                     
@@ -128,7 +129,7 @@ col         = c("black","gray70"),
 ylab        = " ",                                                       
 xlim        = c(0,10),                                                    
 ylim        = c(-.1,5),                                                   
-main        = "Markov Ungleichung")                                        
+main        = "Markov-Ungleichung")                                        
 legend(
 4,                                                                        
 5,                                                                       
@@ -143,17 +144,18 @@ mtext(LETTERS[2], adj=0, line=2, cex = 1.5, at = -2)
 dev.off()
 ```
 
-![Markov Ungleichung am Beispiel einer Gamma-Zufallsvariable.](./_figures/308-markov-ungleichung){#fig-markov-ungleichung fig-align="center" width=100%}
+![Markov-Ungleichung am Beispiel einer Gamma-Zufallsvariable.](./_figures/308-markov-ungleichung){#fig-markov-ungleichung fig-align="center" width=100%}
 
 Die Chebychev Ungleichung setzt die Wahrscheinlichkeit dafür, dass eine Zufallsvariable
-Werte weit von ihrem Erwartungswert entfernt annimmt, in Bezug zur ihrer Varianz.
-Die Chebychev Ungleichung liefert damit eine Begründung dafür, warum die in 
-@def-varianz formulierte Größe als ein Maß für die Streuung einer Zufallsvariable 
-verstanden werden kann. Im Beweis der Chebyshev Ungleichung wird an entscheidender 
-Stelle auf die Markov Ungleichung zurück gegriffen.
+Werte weit von ihrem Erwartungswert entfernt annimmt, in Bezug zu ihrer Varianz.
+Wie in @sec-varianzen erläutert, liefert die Chebychev Ungleichung damit eine 
+Begründung dafür, warum die in @def-varianz-und-standardabweichung formulierte Größe 
+als ein Maß für die Variabilität einer Zufallsvariable verstanden werden kann. 
+Im Beweis der Chebyshev -Ungleichung wird an entscheidender Stelle auf die Markov 
+Ungleichung zurückgegriffen.
 
 :::{#thm-chebyshev-ungleichung}
-## Chebyshev Ungleichung
+## Chebyshev -Ungleichung
 Es sei $\xi$ eine Zufallsvariable mit Varianz $\mathbb{V}(\xi)$. Dann gilt für alle $x \in \mathbb{R}$
 \begin{equation}
 \mathbb{P}(|\xi - \mathbb{E}(\xi)| \ge x) \le \frac{\mathbb{V}(\xi)}{x^2}.
@@ -164,24 +166,24 @@ Es sei $\xi$ eine Zufallsvariable mit Varianz $\mathbb{V}(\xi)$. Dann gilt für 
 Wir halten zunächst fest, dass für $a,b \in \mathbb{R}$ gilt, dass aus $a^2 \ge b^2$
 folgt, dass $|a| \ge b$. Dazu betrachten wir die folgenden vier möglichen Fälle.
 
-(1) $a^2 \ge b^2$ für  $a \ge 0$ und $b \ge 0$. Dann gilt
+(1) $a^2 \ge b^2$ für $a \ge 0$ und $b \ge 0$. Dann gilt
 \begin{equation}
 a^2 \ge b^2 \Rightarrow \sqrt{a^2} \ge \sqrt{b^2} \Rightarrow a \ge b \Rightarrow |a| \ge b.
 \end{equation}
-(2) $a^2 \ge b^2$ für  $a \le 0$ und $b \ge 0$. Dann gilt
+(2) $a^2 \ge b^2$ für $a \le 0$ und $b \ge 0$. Dann gilt
 \begin{equation}
 a^2 \ge b^2 \Rightarrow \sqrt{a^2} \ge \sqrt{b^2} \Rightarrow -a \ge b \Rightarrow |a| \ge b.
 \end{equation}
-(3) $a^2 \ge b^2$ für  $a \ge 0$ und $b \le 0$. Dann gilt
+(3) $a^2 \ge b^2$ für $a \ge 0$ und $b \le 0$. Dann gilt
 \begin{equation}
 a^2 \ge b^2 \Rightarrow \sqrt{a^2} \ge \sqrt{b^2} \Rightarrow a \ge -b \ge b \Rightarrow |a| \ge b.
 \end{equation}
-(4) $a^2 \ge b^2$ für  $a \le 0$ und $b \le 0$. Dann gilt
+(4) $a^2 \ge b^2$ für $a \le 0$ und $b \le 0$. Dann gilt
 \begin{equation}
 a^2 \ge b^2 \Rightarrow \sqrt{a^2} \ge \sqrt{b^2} \Rightarrow -a \ge -b \ge b \Rightarrow |a| \ge b.
 \end{equation}
-Als nächstes definieren wir $\upsilon := (\xi - \mathbb{E}(\xi))^2$. Dann gilt offenbar
-$\upsilon \ge 0$ und es folgt aus der Markov Ungleichung
+Als Nächstes definieren wir $\upsilon := (\xi - \mathbb{E}(\xi))^2$. Dann gilt offenbar
+$\upsilon \ge 0$ und es folgt aus der Markov-Ungleichung
 \begin{align}
 \begin{split}
 \mathbb{P}\left(\upsilon \ge x^2\right)
@@ -196,36 +198,16 @@ $\upsilon \ge 0$ und es folgt aus der Markov Ungleichung
 \end{align}
 :::
 
-Beispielweise gilt für eine Zufallsvariable immer, dass die Wahrscheinlichkeit
-für eine absolute Abweichung vom doppelten ihrer Standardabweichung höchstens $1/4$
-ist,  also Frequentistisch betrachtet nur für etwa ein Viertel ihrer Realisierungen
-zutrifft, und die Wahrscheinlichkeit für eine absolute Abweichung vom dreifachen 
-ihrer Standardabweichung höchstens $1/9$ ist, also Frequentistisch betrachtet 
-nur für etwa ein Zehntel ihrer Realisierungen zutrifft, jeweils unabhängig davon, 
-von welcher genauen Form die Verteilung der Zufallsvariable ist. Dies folgt mit 
-der Chebyshev Ungleichung aus   
-\begin{equation}
-\mathbb{P}\left(|\xi - \mathbb{E}(\xi)| \ge 2 \sqrt{\mathbb{V}(\xi)}\right)
-\le  \frac{\mathbb{V}(\xi)}{\left(2 \sqrt{\mathbb{V}(\xi)}\right)^2} =
-\frac{1}{4} 
-\end{equation}
-und
-\begin{equation}
-\mathbb{P}\left(|\xi - \mathbb{E}(\xi)| \ge 3 \sqrt{\mathbb{V}(\xi)}\right)
-\le  \frac{\mathbb{V}(\xi)}{\left(3 \sqrt{\mathbb{V}(\xi)}\right)^2} =
-\frac{1}{9}.
-\end{equation}
-
 ## Erwartungswertungleichungen {#sec-erwartungswertungleichungen}
 
-Die Cauchy-Schwarz Ungleichung ist eine zentrale Ungleichung der modernen
+Die Cauchy-Schwarz-Ungleichung ist eine zentrale Ungleichung der modernen
 Mathematik, die in verschiedenen mathematischen Bereichen wie der Analysis, der
 Vektorraumtheorie und eben auch der Wahrscheinlichkeitstheorie zur Anwendung kommt
 (vgl. @steele2006). In Bezug auf Erwartungswerte von Zufallsvariablen hat sie 
 die folgende Form.
 
 :::{#thm-cauchy-schwarz-ungleichung}
-## Cauchy-Schwarz Ungleichung
+## Cauchy-Schwarz-Ungleichung
 $\xi$ und $\upsilon$ seien zwei Zufallsvariablen und $\mathbb{E}(\xi\upsilon)$ sei endlich.
 Dann gilt
 \begin{equation}
@@ -234,8 +216,7 @@ Dann gilt
 :::
 
 Für einen Beweis verweisen wir auf den Beweis von Theorem 4.6.2 in @degroot2012.
-Analog zu @thm-cauchy-schwarz-ungleichung gilt zum Beispiel für Vektoren $x,y \in \mathbb{R}^n$,
-dass 
+Analog zu @thm-cauchy-schwarz-ungleichung gilt zum Beispiel für Vektoren $x,y \in \mathbb{R}^n$, dass 
 \begin{equation}
 \langle x,y \rangle^2 \le \langle x,x \rangle \langle x,y \rangle.
 \end{equation}
@@ -259,7 +240,7 @@ Mit der Cauchy-Schwarz-Ungleichung für zwei Zufallsvariablen $\alpha$ und $\bet
 \mathbb{E}(\alpha\beta)^2 \le \mathbb{E}\left(\alpha^2\right)\mathbb{E}\left(\beta^2\right).
 \end{equation}
 Wir definieren nun $\alpha := \xi -\mathbb{E}(\xi)$ und $\beta := \upsilon - \mathbb{E}(\upsilon)$.
-Dann besagt die Cauchy-Schwarz Ungleichung gerade, dass
+Dann besagt die Cauchy-Schwarz-Ungleichung gerade, dass
 \begin{equation}
 \mathbb{E}\left((\xi -\mathbb{E}(\xi))(\upsilon-\mathbb{E}(\upsilon))\right)^2
 \le  \mathbb{E}\left((\xi -\mathbb{E}(\xi))^2 \right) \mathbb{E}\left((\upsilon-\mathbb{E}(\upsilon))^2 \right).
@@ -295,18 +276,16 @@ Die Korrelationsungleichung wird manchmal auch als *Kovarianzungleichung* bezeic
 Insbesondere besagt sie, dass die Korrelation von Zufallsvariablen normalisiert ist,
 also immer Werte zwischen -1 und 1 inklusive annimmt (vgl. @sec-kovarianzen).
 
-
 Die *Jensensche Ungleichung* schließlich liefert Abschätzungen für den Erwartungswert
 einer durch eine konvexe oder konkave Funktion transformierte Zufallsvariable. 
 Sie kommt in der Betrachtung von Parameterschätzereigenschaften (vgl. @sec-parameterschaetzung) 
-und insbesondere als Grundlage der Variationalen Bayesianischen Inferenz zum Einsatz.
+und insbesondere als Grundlage der variationalen Bayesianischen Inferenz zum Einsatz.
 Wir erinnern daran, dass sich eine konvexe Funktion $g$ dadurch auszeichnet, dass
-der Funktionsgraph von $g$ über einem Intervall $[x_1,x_2]$ immer unter der 
+der Funktionsgraf von $g$ über einem Intervall $[x_1,x_2]$ immer unter der 
 verbindenden Geraden zwischen den Funktionswerten $g(x_1)$ und $g(x_2)$ liegt, 
 wohingegehn bei einer konkaven Funktion $g$ dieser immer über der verbindenden 
 Geraden zwischen den Funktionswerten $g(x_1)$ zu $g(x_2)$ liegt. Wir visualisieren
 dies für eine konvexe Funktion in @fig-konvexe-funktion.
-
 
 :::{#thm-jensensche-ungleichung}
 ## Jensensche Ungleichung
@@ -329,7 +308,6 @@ für alle $x_1,x_2 \in \mathbb{R}, \lambda \in [0,1]$. Dann gilt
 :::
 
 :::{.proof}
-
 Es sei $g$ eine konvexe Funktion. Dann gilt für die Tangente $t$ von $g$ in 
 $x_0 \in \mathbb{R}$ für alle $x \in \mathbb{R}$, dass
 \begin{equation}
@@ -366,12 +344,11 @@ Ungleichung für konkave Funktionen aus
 \end{align}
 :::
 
-Im Kontext der Variationalen Bayesianischen Inferenz ist grundlegend, dass der
+Im Kontext der variationalen Bayesianischen Inferenz ist grundlegend, dass der
 Logarithmus ist eine konkave Funktion ist und damit für eine beliebige Zufallsvariable $\xi$ gilt, dass
 \begin{equation}
 \mathbb{E}(\ln \xi) \le \ln \mathbb{E}(\xi).
 \end{equation}
-
 
 ```{r, eval = F, echo = F}
 # figure setup
@@ -457,3 +434,17 @@ dev.off()
 ```
 ![Darstellung der konvexen Funktion $g(x) := x^2$ mit $x_1 := -\sqrt{1.5}, x_2 := \sqrt{3.5}, \lambda \in [0,1]$ und $x_0 := 1$.](./_figures/308-konvexe-funktion){#fig-konvexe-funktion fig-align="center" width=80%}
 
+## Selbstkontrollfragen {.unnumbered .unlisted}
+\footnotesize
+
+1. Geben Sie die Markov-Ungleichung wieder.
+1. Geben Sie die Chebyshev -Ungleichung wieder.
+1. Geben Sie die Cauchy-Schwarz-Ungleichung wieder
+1. Geben Sie die Korrelationsungleichung wieder.
+
+## Lösungen {.unnumbered .unlisted}
+
+1. Siehe @thm-markov-ungleichung.
+1. Siehe @thm-chebyshev-ungleichung.
+1. Siehe @thm-cauchy-schwarz-ungleichung.
+1. Siehe @thm-korrelationsungleichung.

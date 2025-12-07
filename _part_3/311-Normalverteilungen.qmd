@@ -1,4 +1,5 @@
 # Normalverteilungen {#sec-normalverteilungen}
+\normalsize
 
 Die multivariate Normalverteilung ist die multivariate Generalisierung der 
 univariaten Normalverteilung. Die Motivation für die verbreiteten 
@@ -12,9 +13,9 @@ Zufallsvorgänge dann aber gerade normalverteilt.
 Über diesen grundlegenden Aspekt hinaus hat die Normalverteilung viele günstige 
 mathematische Eigenschaften, die ihren Einsatz in vielen Bereichen der probabilistischen 
 Modellierung ermöglichen. Anwendungen multivariater Normalverteilungen finden 
-sich damit im Kontext des Allgemeinen Linearen Modells, den Generalisierungen 
-des Allgemeinen Modells zu Hierarchischen Linearen Modellen oder Multivariaten 
-Allgemeinen Linearen Modellen, der Bayesianischen Inferenz bei Normalverteilungsannahmen
+sich damit im Kontext des Allgemeinen linearen Modells, den Generalisierungen 
+des Allgemeinen Modells zu Hierarchischen linearen Modellen oder Multivariaten 
+Allgemeinen linearen Modellen, der Bayesianischen Inferenz bei Normalverteilungsannahmen
 und nicht zuletzt der Theorie probabilistischer Filter, wie zum Beispiel 
 dem Kalman-Bucy Filter. 
 
@@ -109,7 +110,7 @@ standardnormalverteilte  Zufallsvariablen. Weiterhin seien $\mu_1,\mu_2\in \math
 $\sigma_1,\sigma_2>0$ und $\rho \in ]-1,1[$. Schließlich seien
 \begin{align}
 \begin{split}
-\xi_1 & := \sigma_1\zeta_1 + \mu_1                                            \\
+\xi_1 & := \sigma_1\zeta_1 + \mu_1\\
 \xi_2 & := \sigma_2\left(\rho\zeta_1 + (1 -\rho^2)^{1/2}\zeta_2\right) + \mu_2.
 \end{split}
 \end{align}
@@ -136,7 +137,9 @@ gegeben sind.
 :::
 Für einen Beweis des Theorems verweisen wir auf @degroot2012.
 
-**Beispiel**
+
+:::{#exm-konstruktion-einer-bivariaten-normalverteilungen}
+## Konstruktion einer bivariaten Normalverteilung
 
 Folgender **R** Code zeichnet das obige Theorem anhand konkreter Beispielwerte
 für $\mu_1,\mu_2,\sigma_1,\sigma_2$ und $\rho$ nach und gibt die Parameter
@@ -175,6 +178,7 @@ print(Sigma)
 Die durch obigen **R** Code generierten Realisierungen von $\xi = (\xi_1,\xi_2)^T$,
 sowie die Isokonturen der durch @thm-konstruktion-bivariater-normalverteilungen
 postulierten WDF sind in @fig-konstruktion dargestellt.
+:::
 
 ```{r echo = F, eval = F}
 library(latex2exp)
@@ -223,8 +227,43 @@ bg          = "gray60",
 cex         = .9)
 dev.off()
 ```
-![Konstruktion bivariater Normalverteilungen.](./_figures/311-konstruktion){#fig-konstruktion fig-align="center" width=50%}
+![Konstruktion einer bivariaten Normalverteilungen.](./_figures/311-konstruktion){#fig-konstruktion fig-align="center" width=60%}
 
+
+## Definition multivariater Normalverteilungen {#sec-definition-multivariater-normalverteilungen} 
+
+Wir wollen die multivariate Normalverteilung nun formal einführen und erste 
+Eigenschaften angeben. Wir nutzen dazu folgende Definition.
+
+:::{#def-multivariate-normalverteilung}
+$\xi$ sei ein $n$-dimensionaler Zufallsvektor mit Ergebnisraum $\mathbb{R}^n$ und WDF
+\begin{equation}
+p : \mathbb{R}^n \to \mathbb{R}_{>0},\, x \mapsto p(x) := (2\pi)^{-\frac{n}{2}}|\Sigma|^{-\frac{1}{2}}\exp\left(-\frac{1}{2}(x-\mu)^T \Sigma^{-1} (x-\mu)\right).
+\end{equation}
+Dann sagen wird, dass $\xi$ einer *multivariaten (oder $n$-dimensionalen)
+Normalverteilung* mit *Erwartungswertparameter* $\mu \in \mathbb{R}^n$ und
+positiv-definitem *Kovarianzmatrixparameter* $\Sigma \in \mathbb{R}^{n \times n}$
+unterliegt und nennen $\xi$ einen *(multivariat) normalverteilten Zufallsvektor*.
+Wir kürzen dies mit $\xi \sim N(\mu,\Sigma)$ ab. Die WDF eines multivariat
+normalverteilten Zufallsvektors bezeichnen wir mit
+\begin{equation}
+N(x;\mu,\Sigma):= (2\pi)^{-\frac{n}{2}}|\Sigma|^{-\frac{1}{2}}\exp\left(-\frac{1}{2}(x-\mu)^T \Sigma^{-1} (x-\mu)\right).
+\end{equation}
+:::
+
+:::{#exm-bivariate-normalverteilungen}
+## Bivariate Normalverteilungen 
+
+@fig-bivariate-normal-wdf A,B,C zeigen die Isokonturen der WDFen bivariat normlaverteilter
+Zufallsvektoren für $\mu = (1,1)^T$ und
+\begin{equation}
+\Sigma_A := \begin{pmatrix} 0.20 &  0.15  \\   0.15 & 0.20 \end{pmatrix}, \quad
+\Sigma_B := \begin{pmatrix} 0.20 &  0.00  \\   0.00 & 0.20 \end{pmatrix}, \quad
+\Sigma_C := \begin{pmatrix} 0.20 &  -0.15 \\  -0.15 & 0.20 \end{pmatrix}
+\end{equation}
+respektive. @fig-bivariate-normal-realisierungen A,B und C zeigen jeweils 200 
+Realisierungen der entsprechenden Zufallsvektoren.
+::: 
 
 ```{r echo = F, eval = F}
 library(latex2exp)
@@ -455,36 +494,6 @@ mtext(LETTERS[3], adj=1, line=2, cex = 1.5, at = -.8)
 dev.off()
 ```
 
-## Definition multivariater Normalverteilungen {#sec-definition-multivariater-normalverteilungen} 
-
-Wir wollen die multivariate Normalverteilung nun formal einführen und erste 
-Eigenschaften angeben. Wir nutzen dazu folgende Definition.
-
-:::{#def-multivariate-normalverteilung}
-$\xi$ sei ein $n$-dimensionaler Zufallsvektor mit Ergebnisraum $\mathbb{R}^n$ und WDF
-\begin{equation}
-p : \mathbb{R}^n \to \mathbb{R}_{>0},\, x \mapsto p(x) := (2\pi)^{-\frac{n}{2}}|\Sigma|^{-\frac{1}{2}}\exp\left(-\frac{1}{2}(x-\mu)^T \Sigma^{-1} (x-\mu)\right).
-\end{equation}
-Dann sagen wird, dass $\xi$ einer *multivariaten (oder $n$-dimensionalen)
-Normalverteilung* mit *Erwartungswertparameter* $\mu \in \mathbb{R}^n$ und
-positiv-definitem *Kovarianzmatrixparameter* $\Sigma \in \mathbb{R}^{n \times n}$
-unterliegt und nennen $\xi$ einen *(multivariat) normalverteilten Zufallsvektor*.
-Wir kürzen dies mit $\xi \sim N(\mu,\Sigma)$ ab. Die WDF eines multivariat
-normalverteilten Zufallsvektors bezeichnen wir mit
-\begin{equation}
-N(x;\mu,\Sigma):= (2\pi)^{-\frac{n}{2}}|\Sigma|^{-\frac{1}{2}}\exp\left(-\frac{1}{2}(x-\mu)^T \Sigma^{-1} (x-\mu)\right).
-\end{equation}
-:::
-
-@fig-bivariate-normal-wdf A,B,C zeigen die Isokonturen der WDFen bivariat normlaverteilter
-Zufallsvektoren für $\mu = (1,1)^T$ und
-\begin{equation}
-\Sigma_A := \begin{pmatrix} 0.20 &  0.15  \\   0.15 & 0.20 \end{pmatrix}, \quad
-\Sigma_B := \begin{pmatrix} 0.20 &  0.00  \\   0.00 & 0.20 \end{pmatrix}, \quad
-\Sigma_C := \begin{pmatrix} 0.20 &  -0.15 \\  -0.15 & 0.20 \end{pmatrix}
-\end{equation}
-respektive. @fig-bivariate-normal-realisierungen A,B und C zeigen jeweils 200 
-Realisierungen der entsprechenden Zufallsvektoren.
 
 ```{r echo = F, eval = F}
 library(latex2exp)
@@ -569,10 +578,8 @@ multivariat normalverteilten Zufallsvektors das $i,j$te Element von
 $\Sigma \in \mathbb{R}^{n \times n} \mbox{ pd}$ hier nun die Kovarianz der 
 Zufallsvektorkomponenten $\xi_i$ und $\xi_j$.
 
-
 ## Sphärizität {#sec-sphaerizitaet}
-
-Folgendes Theorem ist für die grundlegende Theorie des Allgemeinen Linearen Modells zentral.
+Folgendes Theorem ist für die grundlegende Theorie des Allgemeinen linearen Modells zentral.
 
 :::{#thm-sphärizität}
 ## Sphärische multivariate Normalverteilung
@@ -634,7 +641,7 @@ $\mu_i, i = 1,...,n$ explizit unterscheiden.
 Multivariate Normalverteilungen haben die Eigenschaft, dass auch alle anderen
 assoziierten Verteilungen Normalverteilungen sind und deren Erwartungswert- und
 Kovarianzmatrixparameter aus den Parametern der jeweils komplementären Verteilung
-errechnet werden können. Insbesondere gilt zum einen, dass die uni- und multivariaten 
+errechnet werden können. Speziell gilt zum einen, dass die uni- und multivariaten 
 Marginalverteilungen multivariater Normalverteilungen wiederum Normalverteilungen sind.
 Zum anderen lassen sich wie alle multivariaten Verteilungen multivariate Normalverteilungen 
 multiplikativ in eine marginale und eine bedingte Verteilung zerlegen. Insbesondere sind 
@@ -676,6 +683,10 @@ $k$- und $l$-dimensionale normalverteilte Zufallsvektoren, respektive, und es gi
 Die Marginalverteilungen einer multivariaten Normalverteilung sind also auch Normalverteilungen
 und die Parameter der Marginalverteilungen ergeben sich aus den Parametern der gemeinsamen Verteilung.
 Für Beweise dieses Theorems verweisen wir auf @mardia1979 und @anderson2003.
+
+:::{exm-marginale-normalverteilungen}
+## Marginale Normalverteilungen
+
 @fig-marginale-normalverteilungen visualisiert @thm-marginale-normalverteilungen für den
 Fall $n := 2, k := 1, l := 1$,
 \begin{equation}
@@ -686,6 +697,7 @@ Fall $n := 2, k := 1, l := 1$,
 @fig-marginale-normalverteilungen A zeigt dabei die WDF des bivariaten Zufallsvektors
 $\xi$ und @fig-marginale-normalverteilungen B und C die WDFen der entsprechenden
 marginalen Zufallsvariablen $\upsilon$ und $\zeta$.
+:::
 
 ```{r, eval = F, echo = F}
 library(mvtnorm)
@@ -796,8 +808,12 @@ mit $\mu_{\xi,\upsilon} \in \mathbb{R}^{m+n}$ und $\Sigma_{\xi,\upsilon} \in \ma
 \end{equation}
 :::
 
-Insbesondere ergeben sich die Parameter der gemeinsamen Verteilung also als
-linear-affine Transformation der Parameter der induzierenden Verteilungen.
+Die Parameter der gemeinsamen Verteilung ergeben sich also als linear-affine 
+Transformationen der Parameter der induzierenden marginalen und bedingten Verteilungen.
+
+:::{#exm-gemeinsame-normalverteilungen}
+## Gemeinsame Normalverteilungen
+
 @fig-gemeinsame-normalverteilungen visualisiert @thm-gemeinsame-normalverteilungen für den
 Fall $m := 1, n := 1, \mu_\xi := 1, \Sigma_{\xi\xi} := 0.2, A := 1, b := 1$ und 
 $\Sigma_{\upsilon\upsilon} := 0.1$. @fig-gemeinsame-normalverteilungen A zeigt dabei 
@@ -805,6 +821,7 @@ die WDF der Zufallsvariable $\xi$,  @fig-gemeinsame-normalverteilungen B zeigt d
 WDF der bedingten Verteilung der Zufallsvariable  $\upsilon$ gegeben $\xi$ und 
 @fig-marginale-normalverteilungen C schließlich zeigt die WDFen des induzierten bivariaten
 Zufallsvektors $(\xi,\upsilon)$.
+:::
 
 ![Gemeinsame Verteilungen einer marginalen und einer auf dieser bedingten normalverteilten Zufallsvariable.](./_figures/311-gemeinsame-normalverteilungen){#fig-gemeinsame-normalverteilungen fig-align="center" width=100%}
 
@@ -847,6 +864,10 @@ und
 Im Zusammenspiel mit @thm-gemeinsame-normalverteilungen und @thm-marginale-normalverteilungen 
 können die Parameter bedingter und marginaler Normalverteilungen also aus den 
 Parametern der komplementären bedingten und marginalen Normalverteilungen bestimmt werden.
+
+:::{#exm-bedingte-normalverteilungen}
+## Bedingte Normalverteilungen
+
 @fig-bedingte-normalverteilungen visualisiert @thm-bedingte-normalverteilungen für den Fall
 $m := 2, n := 1$, 
 \begin{equation}
@@ -857,9 +878,9 @@ $m := 2, n := 1$,
 Dabei zeigt @fig-bedingte-normalverteilungen A die WDF des bivariaten Zufallsvektors $(\xi,\upsilon)^T$
 und @fig-bedingte-normalverteilungen B und C zeigen die WDF der bedingten Verteilung
 der Zufallsvariable $\xi$ gegeben $\upsilon = 1.5$ und $\upsilon = 2.8$, respektive.
+:::
 
-![Bedingte Normalverteilungen](./_figures/311-bedingte-normalverteilungen){#fig-bedingte-normalverteilungen fig-align="center" width=110%}
-
+![Bedingte Normalverteilungen](./_figures/311-bedingte-normalverteilungen){#fig-bedingte-normalverteilungen fig-align="center" width=100%}
 
 ## Multivariate Transformationen {#sec-multivariate-transformationen}
 
@@ -886,7 +907,9 @@ multivariat normalverteilten Zufallsvektor und die Parameter der Verteilung
 dieses normalverteilten Zufallsvektors ergeben sich aus den Parametern der Verteilung
 des ursprünglichen Zufallsvektors und der Transformationsmatrix.
 
-**Beispiel**
+
+:::{#exm-invertierbare-lineare-transformation-einer-bivariaten-normalverteilung}
+## Invertierbare lineare Transformation einer bivariaten Normalverteilung
 
 Als Beispiel betrachten wir die invertierbare lineare Transformation eines
 bivariaten normalverteilten Zufallsvektors $\xi$. Es seien 
@@ -911,6 +934,7 @@ A\Sigma_\xi A^T = \begin{pmatrix} 0.40 & 0.05 \\ 0.05 & 0.40 \end{pmatrix}.
 $x^{(i)} \in \mathbb{R}^2$ von $\xi$ für $i = 1,...,50$. @fig-lineare-transformation B
 zeigt die transfomierten Realisierungen $z^{(i)} = Ax^{(i)} \in \mathbb{R}^{2}$
 von $\zeta$ sowie die Isokonturen der WDF von $\zeta$ nach @thm-invertierbare-lineare-transformation.
+::: 
 
 ```{r, eval = F, echo = F}
 library(latex2exp)
@@ -1003,7 +1027,6 @@ aus den Parametern der Verteilung des ursprünglichen Zufallsvektors sowie den T
 bestimmen lassen, bleibt auch im Falle einer nicht notwendigerweise invertierbaren
 linearen Transformation und auch im Falle einer nicht notwendigerweise invertierbaren
 linear-affinen Transformation wahr. Dies ist die Aussage folgenden zentralen Theorems.
-Für einen Beweis verweisen wir auf @anderson2003. 
 
 :::{#thm-linear-affine-transformation}
 ## Linear-affine Transformation eines normalverteilten Zufallsvektors
@@ -1021,26 +1044,25 @@ Dann gilt
 \end{equation}
 :::
 
+Für einen Beweis verweisen wir auf @anderson2003. 
 
-## Univariate Transformationen {#sec-univariate-transformationen}
+## Transformationen normalverteilter Zufallsvariablen {#sec-normalverteilter-zufallsvariablen}
 
 In diesem Abschnitt diskutieren wir sechs Transformationen normalverteilter 
 Zufallsvariablen, die in der Frequentistischen Inferenz zentrale Rollen spielen
-und bei denen es sich um Anwendungen von den in @sec-transformationstheoreme eingeführten
-Transformationtheore handelt. Unsere Aussagen sind dabei von der allgemeinen Form 
-"Wenn $\xi_i, i = 1,...,n$  unabhängig und identisch normalverteilte Zufallsvariablen 
+und bei denen es sich um Anwendungen von den in @sec-transformationen eingeführten
+Transformationstheoremen handelt. Unsere Aussagen sind dabei meist von der allgemeinen Form 
+"Wenn $\xi_i, i = 1,...,n$ unabhängig und identisch normalverteilte Zufallsvariablen 
 sind und $\upsilon := f(\xi_1,...,\xi_n)$ eine Transformation dieser Zufallsvariablen ist, 
 dann ist die WDF von $\upsilon$ durch die Formel $p_\upsilon := \{\mbox{Formel}\}$ gegeben und 
 man nennt die Verteilung von $\upsilon$ *Verteilungsname*". Aussagen dieser Form sind 
-für die Frequentistische Inferenz zentral, weil
-
-(1)  die Zentralen Grenzwertsätze die Annahme additiv unabhängig normalverteilter
-Störvariablen, und damit normalverteilter Daten, begründet,
-(2) wie wir in @sec-grundbegriffe-frequentistischer-inferenz sehen werden, es 
-sich bei Schätzern und Statistiken um Transformationen von Zufallsvariablen handelt, und
-(3) Parameterschätzergütekriterien, Konfidenzintervalle und Hypothesentests der 
-Frequentistischen Inferenz durch die Verteilungen der jeweiligen Schätzer und 
-Statistiken charakterisiert und begründet sind.
+für die Frequentistische Inferenz zentral, weil erstens die Zentralen Grenzwertsätze 
+die Annahme additiv unabhängig normalverteilter Störvariablen, und damit normalverteilter 
+Daten, begründet, zweitens, wie wir in @sec-grundbegriffe-frequentistischer-inferenz 
+sehen werden, es sich bei Schätzern und Statistiken um Transformationen von 
+Zufallsvariablen handelt, und drittens, Parameterschätzergütekriterien, 
+Konfidenzintervalle und Hypothesentests der Frequentistischen Inferenz durch die 
+Verteilungen der jeweiligen Schätzer und Statistiken charakterisiert und begründet sind.
 
 ### Summationstransformation {-}
 
@@ -1049,8 +1071,8 @@ und Mittelwertbildung von unabhängig und identisch normalverteilten Zufallsvari
 Speziell besagt das @thm-summationstransformation besagt, dass die Summe
 unabhängig normalverteilter Zufallsvariablen wiederum normalverteilt ist und gibt die
 Parameter dieser Verteilung an, während @thm-mittelwerttransformation
-besagt, dass das Stichprobenmittel unabhängig normalverteilter Zufallsvariablen wiederum normalverteilt ist und
-gibt die Parameter dieser Verteilung an.
+besagt, dass das Stichprobenmittel unabhängig normalverteilter Zufallsvariablen 
+wiederum normalverteilt ist und gibt die Parameter dieser Verteilung an.
 
 :::{#thm-summationstransformation}
 ## Summationstransformation
@@ -1342,11 +1364,9 @@ p_{\bar{\xi}_n}(\bar{x}_n)
 :::
 
 Wichtige Anwendungsfälle von @thm-mittelwerttransformation
-sind die Analyse von Erwartungswertschätzern in @sec-punktschaetzung sowie die
-sowie die in @eq-generalisierung-zentraler-grenzwertsatz-lindenberg-levy erwähnte Generalisierung
+sind die Analyse von Erwartungswertschätzern in @sec-punktschaetzung sowie die in @eq-generalisierung-zentraler-grenzwertsatz-lindenberg-levy erwähnte Generalisierung
 des Zentralen Grenzwertsatzes nach Lindenberg-Lévy. Wir visualisieren 
 @thm-mittelwerttransformation exemplarisch in @fig-mittelwert.
-
 
 ```{r, echo = F, eval = F}
 # figure setup
@@ -1470,7 +1490,8 @@ f'(y)
 = \frac{d}{dy}\left(\frac{y}{\sigma} -\frac{\mu}{\sigma} \right)
 = \frac{1}{\sigma}.
 \end{equation}
-Einsetzen in das univariate WDF Transformationstheorem für lineare Funktionen ergibt dann
+Einsetzen in @thm-univariates-wdf-transformationstheorem-bei-linear-affinen-abbildungen 
+ergibt dann
 \begin{align}
 \begin{split}
 p_Z(z)
@@ -2267,7 +2288,7 @@ f_1^{-1} : \mathcal{U}_1 \to \mathcal{U}_1, u \mapsto f_1^{-1}(u) = - \sqrt{u}
 f_2^{-1} : \mathcal{U}_2 \to \mathcal{U}_2, u \mapsto f_2^{-1}(u) = \sqrt{u},
 \end{equation}
 respektive.
-Einsetzen in Gleichung \eqref{eq:piecewise_pdf_transform} ergibt dann
+Einsetzen ergibt dann
 \begin{align}
 \begin{split}
 p_U(u)
@@ -2501,7 +2522,7 @@ Linearen Modells. Wir visualisieren @thm-t-transformation exemplarisch in @fig-t
 
 In diesem Abschnitt betrachten wir den Fall, dass der Erwartungswertparameter
 der Zählervariable der in @thm-t-transformation betrachteten Zufallsvariable $T$
-von Null verschieden ist, dass es sich bei der Zählervariable also nicht um eine
+von null verschieden ist, dass es sich bei der Zählervariable also nicht um eine
 nach $N(0,1)$, sondern eine nach $N(\mu,1)$ verteilte Zufallsvariable für ein 
 beliebiges $\mu \in \mathbb{R}$ handelt. Die so entstehende Zufallsvariable $T$
 folgt dann einer sogenannten *nichtzentralen-t-Verteilung*. Eine frühe ausführliche
@@ -2574,7 +2595,7 @@ Dabei ist eine $F$-verteilte Zufallsvariable wie folgt definiert.
 ## $f$-Zufallsvariable
 $F$ sei eine Zufallsvariable mit Ergebnisraum $\mathbb{R}_{>0}$ und WDF
 \begin{equation}
-p_F : \mathbb{R} \to \mathbb{R}_{>0}, f \mapsto p_F(f)
+p_F: \mathbb{R} \to \mathbb{R}_{>0}, f \mapsto p_F(f)
 := m^{\frac{m}{2}}n^{\frac{n}{2}}
    \frac{\Gamma\left(\frac{m+n}{2}\right)}{\Gamma\left(\frac{m}{2}\right)\Gamma\left(\frac{n}{2}\right)}
    \frac{f^{\frac{m}{2}-1}}{\left(1 + \frac{m}{n}f \right)^{\frac{m+n}{2}}},
@@ -2613,9 +2634,7 @@ für Quotienten von Zufallsvariablen mithilfe von @thm-transformation-eines-zufa
 und Marginalisierung herleitet und dieses Theorem dann auf die WDF von $\chi^2$-verteilten
 Zufallsvariablen anwendet. Wir visualisieren @thm-f-transformation exemplarisch in @fig-f-transform.
 Wichtige Anwendungsfälle von @thm-f-transformation sind die im Rahmen der
-Theorie des Allgemeinen Linearen Modells betrachteten $F$-Statistiken.
-
-
+Theorie des Allgemeinen linearen Modells betrachteten $F$-Statistiken.
 
 ![$F$-Transformation normalverteilter Zufallsvariablen.](./_figures/311-f-transformation){#fig-f-transform fig-align="center" width=100%}
 
@@ -2625,8 +2644,30 @@ Theorie des Allgemeinen Linearen Modells betrachteten $F$-Statistiken.
 Die Entwicklung der bivariaten Normalverteilung hat ihre Ursprünge in der statistischen
 Literatur zur Mitte des 19. Jahrhunderts, insbesondere in den Arbeiten von 
 Francis Galton (1822-1911). Die mathematische Formalisierung der bivariaten Normalverteilung 
-geht dabei wohl insbesondere auf @pearson1896 zurück (@seal1967). Die
-ursprüngliche Formulierung der multivariaten Normalverteilung wird bei @edgeworth1892
-verortet. @tong1990 gibt eine umfassenden Überblick zur Theorie und Anwendung
-der multivariaten Normalverteilung.
+geht dabei wohl auf @pearson1896 zurück (@seal1967). Die ursprüngliche Formulierung
+der multivariaten Normalverteilung wird bei @edgeworth1892 verortet. @tong1990 
+gibt eine umfassenden Überblick zur Theorie und Anwendung der multivariaten Normalverteilung.
 
+
+## Selbskontrollfragen {.unnumbered .unlisted}
+\footnotesize
+
+1. Geben Sie das Summationstransformationstheorem wieder.
+1. Geben Sie das Mittelwertstransformationstheorem wieder.
+1. Geben Sie das $Z$-Transformationstheorem wieder.
+1. Geben Sie das $\chi^2$-Transformationstheorem wieder.
+1. Beschreiben Sie die WDF der $t$-Verteilung in Abhängigkeit ihres Freiheitsgradparameters.
+1. Geben Sie das $T$-Transformationstheorem wieder.
+1. Geben Sie das $F$-Transformationstheorem wieder.
+
+## Lösungen {.unnumbered .unlisted}
+
+1. Siehe @thm-summationstransformation.
+1. Siehe @thm-mittelwerttransformation.
+1. Siehe @thm-z-transformation. 
+1. Siehe @thm-chi2-transformation.
+1. Siehe @fig-t-wdf.
+1. Siehe @thm-t-transformation.
+1. Siehe @thm-f-transformation.
+
+\normalsize

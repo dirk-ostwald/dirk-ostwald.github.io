@@ -1,13 +1,13 @@
 # Listen, Dataframes und Tibbles {#sec-listen-dataframes-und-tibbles}
 ## Listen {#sec-listen}
 
-*Listen* sind geordnete Folgen von R Objekten. Listen werden als *rekursiver* 
+**R** Listen sind geordnete Folgen von **R** Objekten. Listen werden als rekursiver
 Datentyp bezeichnet, da sie Objektve verschiedener Datentypen, insbesondere auch
 wiederum Listen bündeln können. Obwohl sich die intuitive Sichtweise, dass Listen
 Objekte "enthalten" anbietet, "enthalten" Listen defacto keine Objekte, sondern 
 lediglich die Referenzen zu den entsprechenden Objekten im Arbeitsspeicher 
-(@fig-listen-repraesentation). Listen sind ein wesentlicher Baustein der 
-zentralen `dataframe` Datenstruktur in **R**.
+(@fig-listen-repraesentation). Listen sind ein wesentlicher Baustein von **R** 
+Dataframes.
 
 ![Listenrepräsentation. Eine Liste in **R** ist eine indizierbare Folge von 
 Referenzen zu **R** Objekten im Arbeitsspeicher.](./_figures/206-listen-repraesentation){#fig-listen-repraesentation fig-align="center" width=30%}
@@ -58,16 +58,16 @@ typeof(L)								# Typenbestimmung
 \normalsize 
 
 `length()` gibt die Anzahl der Listenelemente auf dem obersten Listenlevel aus,
-die Elementinhalte werden also ingoriert.
+die Elementinhalte werden also ingoriert:
 
 \footnotesize
 ```{r}
 L = list(1:2, list("a", pi), exp)		# Liste mit drei Toplevelelementen
-length(L)								# length() ignoriert Elementinhalte, length() von L ist also 3
+length(L)								# length() ignoriert Elementinhalte 
 ```
 \normalsize 
 
-Die Dimension, Zeilen- und Spaltenanzahl von Listen ist `NULL`:
+Die Dimension, Zeilen- und Spaltenanzahlen von Listen sind `NULL`:
 
 \footnotesize
 ```{r}
@@ -131,7 +131,7 @@ l
 ```
 \normalsize
 
-Vektoren negativer Zahlen adressieren die zu ihren Werten komplementären Elemente:_
+Vektoren negativer Zahlen adressieren die zu ihren Werten komplementären Elemente:
 
 \footnotesize
 ```{r}
@@ -169,7 +169,7 @@ durch Zuweisung zu vergeben:
 
 \footnotesize
 ```{r, eval = F}
-L = list(greta  = 1:3, luisa  = "a", carla  = "b")	# Listenerzeugung mit Namenvergabe
+L = list(frodo  = 1:3, sam  = "a", eowyn  = "b")	# Listenerzeugung mit Namenvergabe
 ```
 \normalsize
 
@@ -178,11 +178,11 @@ addressiert werden:
 
 \footnotesize
 ```{r}
-L = list(greta  = 1:3, luisa  = "a", carla  = "b")	# Listenerzeugung mit Namenvergabe
-L["greta"]											# Listenelementausgabe
-typeof(L["greta"])									# Listenelementtyp			
-L[["greta"]]										# Listenelementinhaltausgabe
-typeof(L[["luisa"]])								# Listenelementinhaltstyp
+L = list(frodo  = 1:3, sam  = "a", eowyn  = "b")	# Listenerzeugung mit Namenvergabe
+L["frodo"]											# Listenelementausgabe
+typeof(L["frodo"])									# Listenelementtyp			
+L[["frodo"]]										# Listenelementinhaltausgabe
+typeof(L[["sam"]])									# Listenelementinhaltstyp
 ```
 \normalsize
 
@@ -192,13 +192,13 @@ der Listenindizierung dar:
 
 \footnotesize
 ```{r}
-L = list(greta  = 1:3, luisa  = "a", carla  = "b")	# Listenerzeugung mit Namenvergabe
-L$greta												# Listenelementinhaltsausgabe
-typeof(L$greta)										# Listenelementinhaltstyp
-L$luisa                                             # Listenelementinhaltsausgabe
-typeof(L$luisa)                                     # Listenelementinhaltstyp
-L$carla                                             # Listenelementinhaltsausgabe
-typeof(L$carla)                                     # Listenelementinhaltstyp
+L = list(frodo  = 1:3, sam  = "a", eowyn  = "b")	# Listenerzeugung mit Namenvergabe
+L$frodo												# Listenelementinhaltsausgabe
+typeof(L$frodo)										# Listenelementinhaltstyp
+L$sam                                             	# Listenelementinhaltsausgabe
+typeof(L$sam)                                     	# Listenelementinhaltstyp
+L$eowyn                                             # Listenelementinhaltsausgabe
+typeof(L$eowyn)                                     # Listenelementinhaltstyp
 ```
 \normalsize
 
@@ -229,16 +229,14 @@ L2[[2]](1)					# Anwendung des 2. Listenelementinhalts, exp(1)
 ```
 \normalsize
 
-
-
 ### Copy-on-modify {-}
 
-Wie bei Vektoren gilt bei Listen das *Copy-on-Modify* Prinzip. Insbesondere gilt
-bei Listen, dass sogenannte *Shallow copies* bei Modifikation einer Liste erzeugt
+Wie bei Vektoren gilt bei Listen das *copy-on-modify* Prinzip. Speziell gilt
+bei Listen, dass sogenannte *shallow copies* bei Modifikation einer Liste erzeugt
 werdem. Dabei wird nur das Listenobjekt selbst kopiert und erhält eine neue Addresse
-im Arbeitsspeicher, nicht aber die durch die Liste nicht-modifizierent gebundenen 
-Objekte, die an den gleichen Addressen im Arbeitsspeicher verbleiben. `lobstr::ref()` 
-erlaubt es, dieses Verhalten zu studieren.
+im Arbeitsspeicher, nicht aber die durch die Liste gebundenen Objekte, die an den 
+gleichen Addressen im Arbeitsspeicher verbleiben. `lobstr::ref()` erlaubt es, 
+dieses Verhalten nachzuvollziehen.
 
 \footnotesize
 ```{r}
@@ -251,7 +249,7 @@ lobstr::ref(L2)				# Ausgabe der Referenzen
 ```
 \normalsize
 
-Offenbar ändert die Zuweisung `L2 = L1` zunächst nichts an den Arbeitsspeicheraddressen
+Offenbar ändert die Zuweisung `L2 = L1` zunächst nichts an den Arbeitsspeicheraddressen,
 auf die `L1` und `L2` sowie ihre Elemente verweisen. Die Modifikation des Inhalts
 des dritten Listenelements von `L2` durch `L2[[3]] = 4` allerdings ändert dann die
 Addresse des Listenobjekts im Arbeitsspeicher, da eine Kopie des Listenobjekts erzeugt
@@ -265,10 +263,10 @@ Elements von `L2`.](./_figures/206-list-copy-on-modify){#fig-list-copy-on-modify
 
 ## Dataframes {#sec-dataframes}
 
-Dataframes sind die zentrale Datenstruktur in **R**. Dataframes stellt man sich
+**R** Dataframes sind die zentrale Datenstruktur in **R**. Dataframes stellt man sich
 am besten als Tabelle vor, deren Spalten Namen haben. Technisch ist ein Dataframe 
-eine **R** Liste, deren Elemente **R** Vektoren gleicher Länge sind. Die Listenelemente 
-entsprechen dabei den Spalten einer Tabelle und die Vektorelemente an gleicher 
+eine Liste, deren Elemente Vektoren gleicher Länge sind. Die Listenelemente entsprechen 
+dabei den Spalten einer Tabelle und die Vektorelemente an gleicher 
 Position entsprechen den Zeilen einer Tabelle.
 
 
@@ -308,7 +306,7 @@ ist natürlich mit dem Charakter von **R** Listen kongruent.
 
 Mit den Funktionen `names()` und `colnames()` können die Namen der Spalten eines
 Dataframes ausgegeben werden, mit der Funktion `rownames()` seine Zeilennamen.
-Per Default sind die Zeilennamen eines Dataframes die ganzen Zahlen 1,2,...:
+Per Default sind die Zeilennamen eines Dataframes die ganzen Zahlen 1,2,...,n:
 
 \footnotesize
 ```{r}
@@ -359,11 +357,10 @@ attributes(D)
 
 ### Indizierung {-}
 
-Dataframes können sowohl wie Matrizen als auch wie Listen indiziert werden. 
-Die Prinzipien der Indizierung entsprechen dabei denen von Vektoren. Folgendes
-Beispiel zeigt zunächst, wie ein Dataframe im Sinne einer Liste mit einfachen
-Klammern indiziert wird. Das entsprechende Listenelement ist bei Dataframes dann
-selbst ein Dataframe:
+DataFrames kann man sowohl wie Matrizen als auch wie Listen indizieren. Die Prinzipien 
+der Indizierung entsprechen dabei denen von Vektoren. Folgendes Beispiel zeigt zunächst, 
+wie ein Dataframe im Sinne einer Liste mit einfachen Klammern indiziert wird. Das 
+entsprechende Listenelement ist bei Dataframes dann selbst ein Dataframe:
 
 \footnotesize
 ```{r}
@@ -377,8 +374,8 @@ class(v)							# v ist ein Dataframe
 ```
 \normalsize
 
-Des Weiteren können Dataframes wie Listen mit doppelten Klammern indiziert werden,
-es werden dadurch entsprechend die Inhalte eines Listenelements addressiert:
+Des Weiteren können Dataframes wie Listen mit doppelten Klammern indiziert werden.
+Dadurch werden entsprechend die Inhalte eines Listenelements addressiert:
 
 \footnotesize
 ```{r}
@@ -428,19 +425,19 @@ des gesamten Dataframes.](./_figures/206-dataframe-copy-on-modify){#fig-datafram
 
 In Ergänzung zu den **R** Dataframes haben in den letzten zehn Jahren die 
 *Tibbles* (diminutiv für *tables*) als Teil des `tidyverse` Pakets Verbreitung gefunden. 
-Tibbles sind programmiertechnisch optimierte Dataframes und stellen ein Beispiel für die 
-datenwissenschaftliche Verallgemeinerung der **R** Anwendung über den Bereich 
-der linearen statistischen Modellbildung hinaus dar. Zur Nutzung von Tibbles muss
+Tibbles sind eine modernere, technisch verbesserte Form von DataFrames und zeigen, 
+wie **R** für datenwissenschaftliche Aufgaben über die Anwendung von klassischen 
+lineare Modelle hinaus erweitert wurde. Zur Nutzung von Tibbles muss
 das `tidyverse` Paket installiert und der Tibble Code geladen sein: 
 
 \footnotesize
 ```{r, eval = F}
-install.packages("tidyverse")				# Einmaliger Paket Download und Installation
-library(tibble)								# Sessionspezifisches Laden des tibble Codes
+install.packages("tidyverse")				# einmaliger Paket Download und Installation
+library(tibble)								# sessionspezifisches Laden des tibble Codes
 ```
 \normalsize
 
-Im Großen und Ganzen enstpren Tibbles den Dataframes. Wie bei Dataframes handelt 
+Im Großen und Ganzen enstprechen Tibbles den Dataframes. Wie bei Dataframes handelt 
 es sich bei Tibbles um Listen von Vektorreferenzen, wobei auch hier die Vektoren 
 die gleiche Länge haben und die benannten Spalten einer Tabelle darstellen. 
 Tibbles können mit der Funktion `tibble()` erzeugt werden. Die Anzeige im **R** 
@@ -476,8 +473,8 @@ dieses Verhalten allerdings durch Setzen des Arguments `check.names` abstellen
 
 \footnotesize
 ```{r}
-names(data.frame(`1` = 1))						# Per Default Umwandlung von nicht legalen Variablennamen
-names(data.frame(`1` = 1, check.names = FALSE))	# Dieser Default kann jedoch abgestellt werden.
+names(data.frame(`1` = 1))						# Umwandlung von nicht legalen Variablennamen
+names(data.frame(`1` = 1, check.names = FALSE))	# Abstellen des Defaultsverhaltens
 ```
 \normalsize
 
@@ -528,7 +525,7 @@ Tibbles sind in dieser Hinsicht konsistenter:
 \footnotesize
 ```{r}
 T = tibble(x = 1:3, y = 4:6)  	# Tibble
-str(T["x"])						# Indizierung mit Namen ergibt tibble
+str(T["x"])						# sndizierung mit Namen ergibt tibble
 str(T[,"x"])					# Matrixindizierung mit Namen ergibt tibble
 ```
 \normalsize 
@@ -536,11 +533,10 @@ str(T[,"x"])					# Matrixindizierung mit Namen ergibt tibble
 Ein zusätzliches Feature von Tibbles gegenüber Dataframes ist, dass die Funktion 
 `tibble()` es erlaubt, Spaltennamen schon bei Erzeugung eines Tibble zu referenzieren,
 was bei Dataframes nicht möglich ist.
-Zusätzliches Feature von Tibbles
 
 \footnotesize
 ```{r, error = TRUE}
-T = tibble(x = 1, y = 2*x)		# Die Spalte x wird definiert und und benutzt
+T = tibble(x = 1, y = 2*x)		# die Spalte x wird definiert und und benutzt
 D = data.frame(x = 1, y = 2*x) 	# data.frame erlaubt dies nicht
 ```
 \normalsize

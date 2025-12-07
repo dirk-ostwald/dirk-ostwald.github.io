@@ -1,27 +1,30 @@
 # Transformationen {#sec-transformationen}
 \normalsize
 
-Die Transformation von Zufallsvariablen und ihren Verteilungen ist ein zentrales Thema der
-probabilistischen Modellierung und in besonderem Maße der Frequentistischen Inferenz. 
-Mit einer *Transformation* sollen hier die Anwendung von Funktionen auf Zufallsvariablen 
-sowie die arithmetische Verknüpfung mehrerer Zufallsvariablen gemeint sein. Die zentrale 
-Fragestellung dabei ist folgende: "Wenn eine Zufallsvariable $\xi$ eine durch ihre
-WDF fest vogegebene Verteilung hat, wie ist dann eine Zufallsvariable $\upsilon$, 
-die sich durch Transformation von $\xi$ ergibt, verteilt?" Für die in diesem Kapitel 
-behandelten Fälle gilt dabei, dass man explizit WDFen für die Verteilung der transformierten
-Zufallsvariable angeben kann. Diese gehören zu den klassischen Resultaten der
-Frequentistischen Inferenz und sind für das Verständnis von klassischer Frequentistischer
-Inferenzverfahren wie Konfidenzintervallen und Hypothesentests essentiell.
+Die Transformation von Zufallsvektoren und die Analyse ihrer resultierenden 
+Verteilungen ist ein zentrales Thema der probabilistischen Modellierung und in 
+besonderem Maße der Frequentistischen Inferenz. Mit einer *Transformation* soll 
+hier die Anwendung einer Funktion auf einen Zufallsvektor gemeint sein, die seine 
+Komponenten entweder individuell transfomiert oder miteinander verknüft. 
+Die zentrale Fragestellung dabei ist folgende: "Wenn ein Zufallsvektor $\xi$ 
+eine vogegebene Verteilung hat, wie ist dann der Zufallsvektor $\upsilon$, der 
+sich durch Transformation von $\xi$ ergibt, verteilt?" Für die in diesem Kapitel 
+behandelten Fälle gilt dabei, dass man explizite Lösungen für die Verteilung der 
+transformierten Zufallsvektoren angeben kann. Diese gehören zu den klassischen 
+Resultaten der Frequentistischen Inferenz und sind für das Verständnis von 
+klassischer Frequentistischer Inferenzverfahren wie Konfidenzintervallen und 
+Hypothesentests essenziell.
 
-Intuitiv kann man sich die Transformation einer Zufallsvariable anhand der
-Transformation ihrer unabhängig und identisch verteilten Realisierungen klar machen. 
-Betrachtet man beispielsweise die Zufallsvariable $\xi \sim N(0,1)$ und ihre 
+Für eine erste Intuition hierzu beschränken wir uns auf den Fall einer einzelnen 
+Zufallsvariable. Man kann sich dann die Transformation einer Zufallsvariable 
+anhand der Transformation ihrer unabhängig und identisch verteilten Realisierungen 
+verdeutlichen. Betrachtet man beispielsweise die Zufallsvariable $\xi \sim N(0,1)$ und ihre 
 Transformation $\upsilon := \xi^2$ und sind $x_1 = 0.10, x_2 = -0.20, x_3 = 0.80$
-drei Realisierungen von drei unabhängigen Kopien von  $\xi$, so entspricht dies 
+drei Realisierungen von drei unabhängigen Kopien von $\xi$, so entspricht dies 
 den Realisierungen $y_1 = x_1^2 = 0.01, y_2 = x_2^2 = 0.04, y_3 = x_3^2 = 0.64$ 
 von $\upsilon$. In diesem Beispiel fällt auf, dass $\upsilon$ keine negativen Werte annimmt, 
-die Verteilung von $\upsilon$ ordnet negativen Werten daher Wahrscheinlichkeitsdichten von $0$ zu.
-Untenstehender **R** Code simuliert diese Überlegungen. @fig-hist-x zeigt das
+die Verteilung von $\upsilon$ ordnet negativen Werten daher eine Wahrscheinlichkeitsdichte 
+von $0$ zu. Untenstehender **R** Code simuliert diese Überlegungen. @fig-hist-x zeigt das
 Histogramm der gewonnenen Realisierungen der hier betrachteten Zufallsvariable 
 $\xi$ und @fig-hist-y zeigt das Histogramm der quadrierten Realisierungen von $\xi$,
 also unabhängig und identisch verteilte Realisierungen von $\upsilon$.
@@ -55,7 +58,6 @@ ylab = "Häufigkeit",
 xlab = "x")
 dev.off()
 ```
-
 ![Histogramm von 10.000 Realisierungen unabhängig und identisch normalverteilter Zufallsvariablen.](./_figures/310-hist-x){#fig-hist-x fig-align="center" width=80%}
 
 ```{r, echo = F, eval = F}
@@ -86,28 +88,24 @@ ein Zufallsvektor.
 :::
 
 Das Theorem formalisiert die oben etablierte Intuition, dass die Anwendung einer 
-(deterministischen) Funktion  auf eine zufällige Größe im Allgemeinen wieder eine 
-zufällige  Größe ergibt. In einem Beweis von @thm-transformation-eines-zufallsvektors 
-müsste die Messbarkeit von $\upsilon$ als Folge der Messbarkeit von $\xi$ nachgewiesen werden.
-Im Folgenden ist oft $\mathcal{X} := \mathbb{R}$ und $f : \mathbb{R} \to \mathbb{R}$.
-Wir schreiben in diesem Fall in der Regel einfach $\upsilon := f(\xi)$ und nennen 
-$\upsilon$ die *transformierte Zufallsvariable*. In @sec-univariate-transformationstheoreme
-betrachten wir drei Theorem zur Transformation von Zufallsvariablen in Abhängigkeit
-von der Art der betrachteten Funktion $f$. In @sec-multivariate-wdf-transformationstheorem
-betrachten wir ein Theorem zur Transformation von Zufallsvektoren bei bijektiver
-Transformationsfunktion. In @sec-operationstheoreme schließlich betrachten wir,
-wie der Verteilungen von Verknüpfungen von Zufallsvariablen analytisch bestimmt 
-werden können.
+Funktion auf eine zufällige Größe im Allgemeinen wieder eine zufällige Größe ergibt. 
+In einem Beweis von @thm-transformation-eines-zufallsvektors müsste die Messbarkeit 
+von $\upsilon$ als Folge der Messbarkeit von $\xi$ nachgewiesen werden. Im Folgenden 
+ist oft $\mathcal{X} := \mathbb{R}$ und $f : \mathbb{R} \to \mathbb{R}$. Wir schreiben 
+in diesem Fall in der Regel einfach $\upsilon := f(\xi)$ und nennen $\upsilon$ 
+die *transformierte Zufallsvariable*. 
 
+In @sec-univariate-transformationstheoreme betrachten wir Theoreme zur 
+Transformation von Zufallsvariablen in Abhängigkeit von der Art der betrachteten 
+Funktion $f$. In @sec-multivariate-transformationstheoreme betrachten wir ein 
+Theorem zur Transformation von Zufallsvektoren bei bijektiver Transformationsfunktion
+und die Bestimmung von Verteilungen bei der binären Verknüpfungen von Zufallsvariablen.
 
 ## Univariate Transformationstheoreme {#sec-univariate-transformationstheoreme}
 
-Dabei liefert @thm-univariate-wdf-transformation-bei-bijektiven-abbildungen
-eine Formel zur Berechnung der WDF $p_\upsilon$ von $\upsilon := f(\xi)$, wenn $\xi$ eine
-Zufallsvariable mit WDF $p_\xi$ ist und $f$ eine bijektive Funktion ist. @thm-univariates-wdf-transformationstheorem-bei-linear-affinen-abbildungen gibt weiterhin 
-eine vereinfachte Formel zur Berechnung der WDF $p_\upsilon$ von $\upsilon := f(\xi)$ an, 
-wenn $f$ speziell eine linear-affine Funktion ist. @thm-univariate-wdf-transformation-bei-stückweise-bijektiven-abbildungen schließlich gibt eine Formel zur Berechnung der WDF $p_\upsilon$ von $\upsilon := f(\xi)$ an,
-wenn $f$ zumindest in Teilen bijektiv ist.
+@thm-univariate-wdf-transformation-bei-bijektiven-abbildungen gibt eine Formel
+zur Berechnung der WDF $p_\upsilon$ von $\upsilon := f(\xi)$, wenn $\xi$ eine
+Zufallsvariable mit WDF $p_\xi$ ist und $f$ eine bijektive Funktion ist. 
 
 :::{#thm-univariate-wdf-transformation-bei-bijektiven-abbildungen}
 ## Univariate WDF Transformation bei bijektiven Abbildungen
@@ -180,7 +178,11 @@ Weil $f^{-1}$ strikt fallend ist, ist $d/dy (f^{-1}(y))$ negativ, so dass
 $-d/dy (f^{-1}(y))$ gleich $|d/dy (f^{-1}(y))|$ ist und das Theorem trifft zu.
 :::
 
-Ein wichtiger Anwendungsfall von @thm-univariate-wdf-transformation-bei-bijektiven-abbildungen ist @thm-univariates-wdf-transformationstheorem-bei-linear-affinen-abbildungen.
+Ein wichtiger Anwendungsfall von @thm-univariate-wdf-transformation-bei-bijektiven-abbildungen ist @thm-univariates-wdf-transformationstheorem-bei-linear-affinen-abbildungen. Im Vergleich
+zu @thm-univariate-wdf-transformation-bei-bijektiven-abbildungen gibt 
+@thm-univariates-wdf-transformationstheorem-bei-linear-affinen-abbildungen 
+eine vereinfachte Formel zur Berechnung der WDF $p_\upsilon$ von $\upsilon := f(\xi)$ an, 
+wenn $f$ eine linear-affine Funktion ist. 
 
 :::{#thm-univariates-wdf-transformationstheorem-bei-linear-affinen-abbildungen}
 ## Univariates WDF Transformationstheorem bei linear-affinen Abbildungen
@@ -218,11 +220,9 @@ p_\upsilon : \mathbb{R} \to \mathbb{R}_{\ge 0}, y \mapsto p_\upsilon(y)
 \end{align}
 :::
 
-Ein wichtiger Anwendungsfall dieses Theorems ist die in 
-@sec-normalverteilungstransformationen betrachtete *$Z$-Transformation*. Das 
-folgende Theorem, dass wir nicht beweisen wollen, verallgemeinert 
-@thm-univariate-wdf-transformation-bei-bijektiven-abbildungen auf den Fall nur
-stückweise bijektiver Abbildungen.
+@thm-univariate-wdf-transformation-bei-stückweise-bijektiven-abbildungen gibt 
+eine Formel zur Berechnung der WDF $p_\upsilon$ von $\upsilon := f(\xi)$ an,
+wenn $f$ zumindest in Teilen bijektiv ist.
 
 :::{#thm-univariate-wdf-transformation-bei-stückweise-bijektiven-abbildungen}
 ## Univariate WDF Transformation bei stückweise bijektiven Abbildungen
@@ -235,8 +235,8 @@ von Mengen $\mathcal{X}_1,...,\mathcal{X}_k$ mit einer entsprechenden Anzahl von
 Mengen $\mathcal{Y}_1 := f(\mathcal{X}_1), ..., \mathcal{Y}_k :=  f(\mathcal{X}_k)$
 im Ergebnisraum $\mathcal{Y}$ von $\upsilon$ partitioniert werden kann (wobei nicht
 notwendigerweise $\mathcal{Y}_i \cap \mathcal{Y}_j = \emptyset, 1 \le i,j \le k$
-gelten muss), so dass die Abbildung $f$ für alle $\mathcal{X}_1,...,\mathcal{X}_k$
-bijektiv ist (d.h. $f$ ist eine \textit{stückweise} bijektive Abbildung). Für
+gelten muss), sodass die Abbildung $f$ für alle $\mathcal{X}_1,...,\mathcal{X}_k$
+bijektiv ist (d.h. $f$ ist eine *stückweise* bijektive Abbildung). Für
 $i = 1,...,k$ bezeichne $f_i^{-1}$ die Umkehrfunktion von $f$ auf $\mathcal{Y}_i$.
 Schließlich nehmen wir an, dass die Ableitungen $f_i^{\prime}$ für alle $i=1,...,k$
 existieren und stetig sind. Dann ist eine WDF von $\upsilon$ durch
@@ -247,16 +247,14 @@ p_\upsilon : \mathcal{Y} \to \mathbb{R}_{\ge 0}, y \mapsto p_\upsilon(y) :=
 gegeben.
 :::
 
-Ein wichtiger Anwendungsfall ist die in  @sec-normalverteilungstransformationen 
-betrachtete *$\chi^2$-Transformation*.
+Für einen Beweis verweisen wir auf @casella2002.
 
-## Multivariate WDF Transformationstheoreme {#sec-multivariate-wdf-transformationstheorem}
+## Multivariate Transformationstheoreme {#sec-multivariate-transformationstheoreme}
 
 @thm-multivariate-wdf-transformation-bei-bijektiven-abbildungen liefert eine Formel 
 zur Berechnung der WDF $p_\upsilon$ von $\upsilon := f(\xi)$, wenn $\xi$ ein Zufallsvektor 
 mit WDF $p_\xi$ ist und $f$ eine bijektive multivariate vektorwertigeFunktion ist.
-Es handelt sich dabei um eine direkte Generalisierung von @thm-univariate-wdf-transformation-bei-bijektiven-abbildungen
-und wir verzichten auf einen Beweis.
+Es handelt sich dabei um eine direkte Generalisierung von @thm-univariate-wdf-transformation-bei-bijektiven-abbildungen. 
 
 :::{#thm-multivariate-wdf-transformation-bei-bijektiven-abbildungen}
 ## Multivariate WDF Transformation bei bijektiven Abbildungen
@@ -279,22 +277,19 @@ Dann ist eine WDF von $\upsilon$ durch
 p_\upsilon : \mathbb{R}^n \to \mathbb{R}_{\ge 0}, y \mapsto p_\upsilon(y) :=
 \begin{cases}
 \frac{1}{|J^f\left(f^{-1}(y)\right)|}p_\xi\left(f^{-1}(y)\right)
-& \mbox{ for } y\in f(\mathbb{R}^n) \\
+& \mbox{ für } y\in f(\mathbb{R}^n) \\
 0
-& \mbox{ for } y \in \mathbb{R}^n \setminus f(\mathbb{R}^n)
+& \mbox{ für } y \in \mathbb{R}^n \setminus f(\mathbb{R}^n)
 \end{cases}
 \end{equation}
 gegeben.
 :::
 
-Wichtige Anwendungsfälle sind die in  @sec-normalverteilungstransformationen 
-betrachteten *$T$-* und *$F$-Transformationen*.
-
-## Operationstheoreme {#sec-operationstheoreme}
+Für einen Beweis verweisen wir auf @billingsley1995.
 
 Das folgende sogenannte *Konvolutionstheorem* liefert eine Formel zur Berechnung der 
-WDF $p_\upsilon$ von $\upsilon := \xi_1 + \xi_2$, wenn  $\xi_1$ und $\xi_2$ zwei 
-Zufallsvariablen mit WDFen $p_{\xi_1}$ und $p_{\xi_2}$ sind.
+WDF $p_\upsilon$ von $\upsilon := \xi_1 + \xi_2$, wenn $\xi_1$ und $\xi_2$ zwei 
+Zufallsvariablen mit WDFen $p_{\xi_1}$ und $p_{\xi_2}$ sind. 
 
 :::{#thm-summe-unabhängiger-zufallsvariablen-konvolution}
 ## Summe unabhängiger Zufallsvariablen (Konvolution)
@@ -306,16 +301,15 @@ p_\upsilon(y)
 = \int_{-\infty}^\infty p_{\xi_1}(y - x_2)p_{\xi_2}(x_2)\,dx_2
 = \int_{-\infty}^\infty p_{\xi_1}(x_1)p_{\xi_2}(y - x_1)\,dx_1
 \end{equation}
-Die Formel für die WDF $p_\upsilon$ heißt \textit{Konvolution} oder \textit{Faltung}
-von $p_{\xi_1}$ und $p_{\xi_2}$.
+Die Formel für die WDF $p_\upsilon$ heißt *Konvolution* oder *Faltung* von 
+$p_{\xi_1}$ und $p_{\xi_2}$.
 :::
-
 
 :::{.proof}
 Wir nutzen das multivariate WDF Transformationstheorem für bijektive Abbildungen.
 Dazu definieren wir zunächst
 \begin{equation}
-f : \mathbb{R}^2 \to \mathbb{R}^2, x \mapsto f(x) :=
+f: \mathbb{R}^2 \to \mathbb{R}^2, x \mapsto f(x) :=
 \begin{pmatrix}
 x_1 + x_2 \\
 x_2
@@ -327,7 +321,7 @@ z_1 \\ z_2
 \end{equation}
 Die inverse Funktion von $f$ ist dann gegeben durch
 \begin{equation}
-f : \mathbb{R}^2 \to \mathbb{R}^2, z \mapsto f(z) :=
+f: \mathbb{R}^2 \to \mathbb{R}^2, z \mapsto f(z) :=
 \begin{pmatrix}
 z_1 - x_2 \\
 z_2
@@ -362,11 +356,11 @@ J^{f}(x) =
 \end{pmatrix}
 =
 \begin{pmatrix}
-	\frac{\partial}{\partial x_1} (x_1 + x_2)
-&  	\frac{\partial}{\partial x_2} (x_1 + x_2)
+\frac{\partial}{\partial x_1} (x_1 + x_2)
+& \frac{\partial}{\partial x_2} (x_1 + x_2)
 \\
-	\frac{\partial}{\partial x_1} x_2
-&   \frac{\partial}{\partial x_2} x_2 \\
+\frac{\partial}{\partial x_1} x_2
+& \frac{\partial}{\partial x_2} x_2 \\
 \end{pmatrix}
 =
 \begin{pmatrix}
@@ -374,18 +368,18 @@ J^{f}(x) =
 0 &  1 \\
 \end{pmatrix}
 \end{equation}
-und die Jacobideterminante damit zu $|J^f(x)| = 1$. Wir halten weiterhin fest, dass die Unabhängigkeit von $\xi_1$ und $\xi_2$ impliziert,
-dass
+und die Jacobideterminante damit zu $|J^f(x)| = 1$. Wir halten weiterhin fest, 
+dass die Unabhängigkeit von $\xi_1$ und $\xi_2$ impliziert, dass
 \begin{equation}
 p_{\xi_1,\xi_2}(x_1,x_2) = p_{\xi_1}(x_1)p_{\xi_2}(x_2)
 \end{equation}
-impliziert. Einsetzen und Integration hinsichtlich $x_2$ ergibt dann ergibt dann
+impliziert. Einsetzen und Integration hinsichtlich $x_2$ ergibt dann  
 für $z \in f(\mathbb{R}^2)$
 \begin{align}
 \begin{split}
 p_\zeta(z)
-& = \frac{1}{|J^f\left(f^{-1}(z)\right)|}p_\xi\left(f^{-1}(z)\right)  \\
-& = \frac{1}{1}p_{\xi_1,\xi_2}\left(z_1 - x_2, x_2\right)  \\
+& = \frac{1}{|J^f\left(f^{-1}(z)\right)|}p_\xi\left(f^{-1}(z)\right) \\
+& = \frac{1}{1}p_{\xi_1,\xi_2}\left(z_1 - x_2, x_2\right) \\
 & = p_{\xi_1}(z_1 - x_2)p_{\xi_2}(x_2)
 \end{split}
 \end{align}
@@ -396,14 +390,21 @@ p_{\zeta_1}(z_1)
 & = \int_{-\infty}^{\infty} p_{\xi_1}(z_1 - x_2)p_{\xi_2}(x_2)\,dx_2
 \end{split}
 \end{align}
-Mit $\zeta_1 = \xi_1 + \xi_2 = \upsilon$ ergibt sich dann die erste Form des Konvlutionstheorems zu
+Mit $\zeta_1 = \xi_1 + \xi_2 = \upsilon$ ergibt sich dann die erste Form des 
+Konvolutionstheorems zu
 \begin{align}
 p_\upsilon(y)
 & = \int_{-\infty}^{\infty} p_{\xi_1}(y - x_2)p_{\xi_2}(x_2)\,dx_2.
 \end{align}
 :::
 
-Wichtige in @sec-normalverteilungstransformationen betrachtete Anwendungsfällte
-sind die *Summentransformation* und die *Mittelwerttransformation*.
 
+## Selbskontrollfragen {.unnumbered .unlisted}
+\footnotesize
+1. Erläutern Sie das Konzept der Transformation einer Zufallsvariable am Beispiel von $\upsilon := \xi^2$.
 
+## Lösungen {.unnumbered .unlisted}
+
+1. Siehe Erläuterungen zu @fig-hist-x und @fig-hist-y.
+
+\normalsize

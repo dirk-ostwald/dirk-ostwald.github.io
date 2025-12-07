@@ -1,12 +1,23 @@
-# Erwartungswerte  {#sec-erwartungswerte}
+# Erwartungswerte {#sec-erwartungswerte}
 \normalsize
 
-## Definition {#sec-definition} 
+In diesem Kapitel führen wir den Begriff des *Erwartungswerts* einer Zufallsvariable 
+ein. Der Erwartungswert dient als eine einzige, skalare Kennzahl, die eine 
+Wahrscheinlichkeitsverteilung zusammenfassend beschreibt und häufig als 
+zentrale charakteristische Größe von Zufallsvariablen verwendet wird. Der Erwartungswert 
+dient dabei als ein Maß der "durchschnittlichen Realisierung" einer Zufallsvariable
+und bildet die Grundlage für weitere Begriffsbildungen wie die der *Varianz* einer
+Zufallsvariable und die der *Kovarianz* zweier Zufallsvariablen im Folgenden. 
+Wir ergänzen den Begriff des Erwartungswerts um seine Analoga in Bezug auf 
+Zufallsvektoren und bedingte Verteilungen sowie um sein deskriptiv-statistisches 
+Äquivalent, das sogenannte *Stichprobenmittel*.
+
+## Definitionen {#sec-definitionen} 
 
 :::{#def-erwartungswert-einer-zufallsvariable}
 ## Erwartungswert einer Zufallsvariable
 $(\Omega, \mathcal{A},\mathbb{P})$ sei ein Wahrscheinlichkeitsraum und $\xi$
-sei eine  Zufallsvariable. Dann ist der *Erwartungswert von $\xi$* definiert als
+sei eine Zufallsvariable. Dann ist der *Erwartungswert von $\xi$* definiert als
 
 * $\mathbb{E}(\xi) := \sum_{x \in \mathcal{X}} x\,p(x)$, wenn $\xi : \Omega \to \mathcal{X}$ diskret mit WMF $p$ ist.
 * $\mathbb{E}(\xi) := \int_{-\infty}^\infty x \,p(x)\,dx$, wenn $\xi : \Omega \to \mathbb{R}$ kontinuierlich mit WDF $p$ ist.
@@ -18,18 +29,20 @@ Zufallsvariable. Eine Definition des Erwartungswertes, die ohne eine Falluntersc
 in kontinuierliche und diskrete Zufallsvariablen auskommt, ist möglich, erfordert 
 aber mit der Einführung des Lebesgue-Integrals einigen technischen Aufwand. 
 Wir verweisen dafür auf die weiterführende Literatur (vgl. @schmidt2009, @meintrup2005). 
-Intuitiv entspricht der Erwartungswert einer Zufallsvariable dem im langfristigen 
-Mittel zu erwartenden Wert der Zufallsvariable. Wir betrachten drei Beispiele 
-für @def-erwartungswert-einer-zufallsvariable.
+Es ist wichtig anzuerkennen, dass ein Erwartungswert alleine aufgrund der Festlegung
+des Ergebnisraums und der Verteilung einer Zufallsvariable mithilfe einer WMF oder WDF
+bestimmt wird. Nichtsdestotrotz entspricht der Erwartungswert einer Zufallsvariable 
+dem im langfristigen Mittel durchschnittlich zu erwartenden Wert der Zufallsvariable. 
+Dieser Umstand wird unter dem Begriff des *Gesetzes der großen Zahlen* (vgl. 
+@sec-gesetze-der-grossen-zahlen) formalisiert. Wir betrachten zunächst drei
+Beispiele für @def-erwartungswert-einer-zufallsvariable.
 
-#### Beispiele {-}
-
-:::{#thm-erwartungwert-einer-diskreten-zufallsvariable}
+:::{#exm-erwartungwert-einer-diskreten-zufallsvariable}
 ## Erwartungswert einer diskreten Zufallsvariable
 $\xi$ sei eine Zufallsvariable mit Ergebnisraum $\mathcal{X} := \{-1,0,1\}$ 
 und WMF  
 \begin{equation}
-p(-1) = \frac{1}{4}, \quad p(0) = \frac{1}{2},  \quad p(1) = \frac{1}{4}.
+p(-1) := \frac{1}{4}, \quad p(0) := \frac{1}{2}, \quad p(1) := \frac{1}{4}.
 \end{equation}
 Dann gilt
 \begin{equation}
@@ -50,7 +63,7 @@ Nach @def-erwartungswert-einer-zufallsvariable ergibt sich
 \end{align}
 :::
 
-:::{#thm-erwartungwert-einer-bernoulli-zufallsvariable}
+:::{#exm-erwartungswert-einer-bernoulli-zufallsvariable}
 ## Erwartungswert einer Bernoulli Zufallsvariable
 Es sei $\xi \sim \mbox{Bern}(\mu)$. Dann gilt $\mathbb{E}(\xi) = \mu$.
 :::
@@ -67,7 +80,7 @@ $\xi$ ist diskret mit $\mathcal{X} = \{0,1\}$. Also gilt nach @def-erwartungswer
 \end{align}
 :::
 
-:::{#thm-erwartungwert-einer-normalverteilten-zufallsvariable}
+:::{#exm-erwartungwert-einer-normalverteilten-zufallsvariable}
 ## Erwartungswert einer normalverteilten Zufallsvariable
 Es sei $\xi \sim N(\mu,\sigma^2)$. Dann gilt $\mathbb{E}(\xi) = \mu$.
 :::
@@ -76,13 +89,105 @@ Es sei $\xi \sim N(\mu,\sigma^2)$. Dann gilt $\mathbb{E}(\xi) = \mu$.
 Wir verzichten auf einen Beweis.
 :::
 
+Intuitiv mag man sich @def-erwartungswert-einer-zufallsvariable wie in 
+@exm-erwartungswert-und-mittelwert dargestellt erklären.
+
+:::{#exm-erwartungswert-und-mittelwert}
+## Erwartungswert und Mittelwert
+
+Wir betrachten eine diskrete Zufallsvariable $\xi$ mit Ergebnisraum $\{1,2,3\}$ und WMF
+definiert durch
+\begin{equation}
+p(1) := \frac{1}{4}, \quad p(2) := \frac{1}{4}, \quad p(3) := \frac{1}{2}.
+\end{equation}
+Es gilt also 
+\begin{align}
+\begin{split}
+\mathbb{E}(\xi) 
+& = \sum_{x \in \{1,2,3\}}xp(x)                                         \\
+& = 1 \cdot p(1) + 2 \cdot p(2) + 3 \cdot p(3)                          \\
+& = 1 \cdot \frac{1}{4} + 2 \cdot \frac{1}{4} + 3 \cdot \frac{1}{2}     \\
+& = \frac{9}{4}.                                                         \\
+\end{split}
+\end{align}
+Stellen wir uns nun $n = 100$ unabhängige Realisierungen $x_1,....,x_{100}$ der 
+Zufallsvariable vor. Gemäß ihrer WMF würden wir in etwa 25 Einsen, 25 Zweien 
+und 50 Dreien erwarten. Neben wir konkret an, wir hätten 27 Einsen, 22 Zweien 
+und 51 Dreien vorliegen. Der Mittelwert dieser Zahlen ergibt sich dann zu (vgl. @sec-summen-produkte-potenzen)
+\begin{align}
+\begin{split}
+\bar{x} 
+& = \frac{1}{100}\sum_{i=1}^n x_i                                                           \\
+& = \frac{1}{100}\left(27 \cdot 1 + 22 \cdot 2 + 51 \cdot 3 \right)                         \\
+& = \frac{1}{100}\left(1 \cdot 27 + 2 \cdot 22  + 3 \cdot 51 \right)                        \\
+& = 1 \cdot \frac{27}{100} + 2 \cdot \frac{22}{100}  + 3 \cdot \frac{51}{100}               \\
+& = 1 \cdot 0.27 + 2 \cdot 0.22  + 3 \cdot 0.51                                             \\
+& = 2.24.
+\end{split}
+\end{align}
+Versteht man in dieser Rechnung die Faktoren $0.27 \approx \frac{1}{4}$, 
+$0.22 \approx \frac{1}{4}$ und $0.51 \frac{1}{2}$ als Schätzungen $\hat{p}(1)$, 
+$\hat{p}(2)$ und $\hat{p}(3)$ für die WMF Werte $p(1)$, $p(2)$ und $p(3)$, 
+so fällt mit
+\begin{equation}
+\bar{x} = \sum_{x \in \{1,2,3\}} x \hat{p}(x) \approx \sum_{x \in \{1,2,3\}} x p(x) = \mathbb{E}(\xi)
+\end{equation}
+die formale Ähnlichkeit der Bildung eines Mittelwerts von Realisierungen einer diskreten Zufallsvariablen
+und zwischen der Definition des Erwartungswerts einer eben solchen direkt ins Auge.
+::: 
+
+In Abgrenzung zu @def-erwartungswert-einer-zufallsvariable definieren wir 
+aufbauend auf @exm-erwartungswert-und-mittelwert das sogenannte *Stichprobenmittel*.
+
+:::{#def-stichprobenmittel} 
+## Stichprobenmittel
+$\xi_1,...,\xi_n$ seien Zufallsvariablen. Dann nennt man $\xi_1,...,\xi_n$ auch 
+eine *Stichprobe*. Das *Stichprobenmittel* von $\xi_1,...,\xi_n$ ist definiert 
+als der arithmetische Mittelwert
+\begin{equation}
+\bar{\xi} := \frac{1}{n}\sum_{i=1}^n \xi_i.
+\end{equation}
+:::
+
+Es ist zentral zu erkennen, dass $\mathbb{E}(\xi)$ eine feste Kennzahl einer Zufallsvariable $\xi$ ist
+und insbesondere selbst keine Zufallsvariable ist. $\bar{\xi}$ hingegen ist 
+eine Kennzahl einer Stichprobe $\xi_1,...,\xi_n$ und als Funktion von Zufallsvariablen
+damit selbst eine Zufallsvariable. In @exm-erwartungswert-und-mittelwert modelliert 
+man beispielsweise jede Realisierung $x_i$ für $i = 1,...,n$ als eine Realisierung 
+der Zufallsvariable $\xi_i := \xi$ für $i = 1,...,n$. Da $\bar{\xi}$ eine skalierte 
+Summe von Zufallsvariablen ist, ist $\bar{\xi}$ auch selbst eine Zufallsvariable. 
+Realisierungen der Zufallsvariable $\bar{\xi}$ bezeichnen wir wie im Folgenden 
+mit $\bar{x}$.
+
+:::{#exm-stichprobenmittel}
+## Stichprobenmittel
+
+Als Beispiel für die Realisation eines Stichprobenmittels betrachten wir die in 
+@tbl-stichprobenrealisation gezeigten Realisationen der Zufallsvariablen $\xi_1,...,\xi_{10} \sim N(1,2)$.
+
+
+| $x_1$ | $x_2$ | $x_3$ | $x_4$ | $x_5$ | $x_6$ | $x_7$ | $x_8$ | $x_9$ | $x_{10}$ |
+|-------|-------|-------|-------|-------|-------|-------|-------|-------|----------|
+| 0.54  | 1.01  | -3.28 | 0.35  | 2.75  | -0.51 | 2.32  | 1.49  | 0.96  | 1.25     |
+
+: Stichprobenrealisation {#tbl-stichprobenrealisation}
+
+Die Stichprobenmittelrealisation ist
+\begin{equation}
+\bar{x}
+= \frac{1}{10}\sum_{i = 1}^{10}x_i
+= \frac{6.88}{10}
+= 0.68.
+\end{equation}
+:::
+
 In Verallgemeinerung von @def-erwartungswert-einer-zufallsvariable gilt folgende
 Definition für den Erwartungswert einer Funktion einer Zufallsvariable.
 
 :::{#def-erwartungswert-einer-funktion-einer-zufallsvariable}
 ## Erwartungswert einer Funktion einer Zufallsvariable
 $(\Omega, \mathcal{A},\mathbb{P})$ sei ein Wahrscheinlichkeitsraum, $\xi$
-sei eine  Zufallsvariable mit Ergebnisraum $\mathcal{X}$ und $f: \mathcal{X} \to \mathcal{Z}$
+sei eine Zufallsvariable mit Ergebnisraum $\mathcal{X}$ und $f: \mathcal{X} \to \mathcal{Z}$
 sei eine Funktion mit Zielmenge $\mathcal{Z}$. Dann ist der *Erwartungswert der
 Funktion $f$ der Zufallsvariable $\xi$* definiert als
 
@@ -99,7 +204,7 @@ in dem gilt, dass
 f : \mathcal{X} \to \mathcal{Z}, x \mapsto f(x) := x.
 \end{equation}
 In der englischsprachigen Literatur ist @def-erwartungswert-einer-funktion-einer-zufallsvariable 
-auch als *law of the unconscious statistician* bekannt und wird oft auch direkt zur Definition des
+auch als "Law of the unconscious statistician" bekannt und wird oft auch direkt zur Definition des
 Erwartungswertes herangezogen. Folgendes Theorem gibt ein erstes Beispiel für 
 den Erwartungswert einer Funktion einer Zufallsvariable.
 
@@ -107,7 +212,7 @@ den Erwartungswert einer Funktion einer Zufallsvariable.
 ## Erwartungswert bei linear-affiner Transformation einer Zufallsvariable
 $\xi$ sei eine Zufallsvariable mit Ergebnisraum $\mathcal{X}$ und es sei 
 \begin{equation}
-f : \mathcal{X} \to \mathcal{Z}, x \mapsto f(x) := ax + b \mbox{ für } a,b \in \mathbb{R}
+f: \mathcal{X} \to \mathcal{Z}, x \mapsto f(x) := ax + b \mbox{ für } a,b \in \mathbb{R}
 \end{equation}
 eine linear-affine Funktion. Dann gilt
 \begin{equation}
@@ -117,7 +222,7 @@ eine linear-affine Funktion. Dann gilt
 
 :::{.proof}
 Die Aussage des Theorems folgt mit den Linearitätseigenschaften von Summen 
-und Integralen. Wir betrachten  den Fall einer diskreten Zufallsvariable $\xi$
+und Integralen. Wir betrachten den Fall einer diskreten Zufallsvariable $\xi$
 mit endlichem Ergebnisraum $\mathcal{X}$ und WMF $p$. Es gilt
 \begin{align}
 \begin{split}
@@ -131,11 +236,31 @@ mit endlichem Ergebnisraum $\mathcal{X}$ und WMF $p$. Es gilt
 \end{align}
 :::
 
+Betrachtet man anstelle einer Zufallsvariable einen Zufallsvektor, so erweitert
+sich die Definition des Erwartungswerts wie folgt.
 
-In Analogie zu @def-erwartungswert-einer-funktion-einer-zufallsvariable definiert man für die 
+:::{#def-erwartungswert-eines-zufallsvektors}
+## Erwartungswert eines Zufallsvektors
+$\xi$ sei ein $n$-dimensionaler Zufallvektor. Dann ist der *Erwartungwert von $\xi$* 
+definiert als der $n$-dimensionale reelle Vektor
+\begin{equation}
+\mathbb{E}(\xi) :=
+\begin{pmatrix}
+\mathbb{E}(\xi_1) \\
+\vdots            \\
+\mathbb{E}(\xi_n)
+\end{pmatrix}.
+\end{equation}
+:::
+
+Der Erwartungswert eines Zufallsvektors ist also der Vektor der Erwartungswerte 
+seiner Komponenten. Die Berechnung eines Erwartungswerts eines Zufallsvektors ist 
+damit auf die Bestimmung der Erwartungswerte der den Zufallsvektor konstituierenden
+Zufallsvektoren bezüglich ihrer marginalen Verteilungen zurückgeführt. In Analogie 
+zu @def-erwartungswert-einer-funktion-einer-zufallsvariable definiert man für die 
 Funktion eines Zufallsvektors den Erwartungswert dieser Transformation wie folgt.
 
-:::{#def-erwartungswert-einer-funktion-einer-zufallsvektors}
+:::{#def-erwartungswert-einer-funktion-eines-zufallsvektors}
 ## Erwartungswert einer Funktion eines Zufallsvektors
 $(\Omega, \mathcal{A},\mathbb{P})$ sei ein Wahrscheinlichkeitsraum, $\xi$
 sei ein Zufallsvektor mit Ergebnisraum $\mathcal{X}$ und $f: \mathcal{X} \to \mathcal{Z}$
@@ -150,10 +275,12 @@ wenn $\xi : \Omega \to \mathbb{R}$ kontinuierlich mit WDF $p$ ist.
 
 ## Eigenschaften {#sec-eigenschaften}
 
-:::{#thm-erwartungswert-bei-linear-affiner-kombination}
-## Erwartungswert bei linear-affiner Kombination
+Folgende Aussagen sind insbesondere beim Rechnen mit Stichproben relevant.
+
+:::{#thm-erwartungswert-bei-linear-affiner-kombination-von-zufallsvariablen}
+## Erwartungswert bei linear-affiner Kombination von Zufallsvariablen
 $\xi$ sei ein $n$-dimensionaler Zufallsvektor mit Komponenten $\xi_1,...,\xi_n$
-und Ergebnisraum  $\mathcal{X} := \mathcal{X}_1 \times \cdots \times \mathcal{X}_n$.
+und Ergebnisraum $\mathcal{X} := \mathcal{X}_1 \times \cdots \times \mathcal{X}_n$.
 Weiterhin sei
 \begin{equation}
 f : \mathcal{X} \to \mathcal{Z}, x \mapsto f(x) := a_0 + \sum_{i=1}^n a_ix_i \mbox{ für }  a_0,...,a_n \in \mathbb{R}.
@@ -167,8 +294,9 @@ eine linear-affine Kombination der Komponenten von $\xi$. Dann gilt
 :::{.proof}
 Wie unten gezeigt, folgt das Theorem mit den Linearitätseigenschaften von Summen 
 und Integralen, sowie Fubini's Theorem zur Vertauschung von Summations- bzw. 
-Integrationsreihenfolge. Zur Vereinfachung der Notation schreiben wir untenstehend
-$\sum_{x_i \in \mathcal{X}_i}$ als $\sum_{x_i}$. Es gilt dann 
+Integrationsreihenfolge. Wir beschränken uns auf den diskreten Fall, wobei wir 
+zur Vereinfachung der Notation $\sum_{x_i \in \mathcal{X}_i}$ als $\sum_{x_i}$
+schreiben. Es gilt dann  
 \begin{align}
 \begin{split}
 \mathbb{E}(f(\xi))
@@ -188,6 +316,45 @@ $\sum_{x_i \in \mathcal{X}_i}$ als $\sum_{x_i}$. Es gilt dann
 & = a_0 + a_1\sum_{x_1}x_1 p(x_1) + \cdots + a_n\sum_{x_n}x_n p(x_n)  \\
 & = a_0 + a_1\mathbb{E}(\xi_1) + \cdots + a_n\mathbb{E}(\xi_n)  \\
 & = a_0 + \sum_{i=1}^n a_i\mathbb{E}(\xi_i)  
+\end{split}
+\end{align}
+Analog folgt das Resultat für einen kontinuierlichen Zufallsvektor.
+:::
+
+:::{#thm-erwartungswert-des-produkts-unabhängiger-zufallsvariablen}
+## Erwartungswert des Produkts unabhängiger Zufallsvariablen 
+$\xi$ sei ein $n$-dimensionaler Zufallsvektor mit unabhängigen Komponenten 
+$\xi_1,...,\xi_n$ und Ergebnisraum $\mathcal{X} := \mathcal{X}_1 \times \cdots \times \mathcal{X}_n$.
+Weiterhin sei
+\begin{equation}
+f : \mathcal{X} \to \mathcal{Z}, x \mapsto f(x) := \prod_{i=1}^n x_i.
+\end{equation}
+das Produkt der Komponenten von $\xi$. Dann gilt 
+\begin{equation}
+\mathbb{E}(f(\xi)) = \prod_{i=1}^n \mathbb{E}(\xi_i).
+\end{equation}
+:::
+
+:::{.proof}
+
+Wie unten gezeigt, folgt das Theorem mit den Linearitätseigenschaften von Summen 
+und Integralen, sowie Fubini's Theorem zur Vertauschung von Summations- bzw. 
+Integrationsreihenfolge. Wir beschränken uns auf den diskreten Fall, wobei wir 
+zur Vereinfachung der Notation $\sum_{x_i \in \mathcal{X}_i}$ als $\sum_{x_i}$
+schreiben. Weil die Komponenten von $\xi_1,...,\xi_n$ als unabhängig vorausgesetzt
+sind, gilt zunächst für die WMF des Zufallsvektors
+\begin{equation}
+p(\xi) = \prod_{i=1}^n p(x_i).
+\end{equation}
+Weiterhin gilt also
+\begin{align}
+\begin{split}
+\mathbb{E}\left(\prod_{i=1}^n \xi_i\right)
+& = \sum_{x_1} \cdots \sum_{x_n} \left(\prod_{i=1}^n x_i\right)p(x_1,...,x_n) 	\\
+& = \sum_{x_1} \cdots \sum_{x_n} \prod_{i=1}^n x_i \prod_{i=1}^n p(x_i) 	    \\
+& = \sum_{x_1} \cdots \sum_{x_n} \prod_{i=1}^n x_i p(x_i)  					    \\
+& = \prod_{i=1}^n \sum_{x_i }x_i p(x_i) 									    \\	
+& = \prod_{i=1}^n\mathbb{E}(\xi_i).
 \end{split}
 \end{align}
 :::
@@ -222,7 +389,7 @@ da $\xi_2$ eine Zufallsvariable ist und nur mit einer gewissen Wahrscheinlichkei
 einen Wert $\xi_2 = x_2$ annimmt. Wir werden später sehen, dass analog zu @def-bedingter-errwartungswert 
 bedingte Varianzen, bedingte Kovarianzen und bedingte Korrelationen definiert werden. 
 In der Psychologie ist der Begriff des bedingten Erwartungswerts zentral, denn 
-in der klassischen Testtheorie sind die wahren Werte von Personen bei Testmessungen  
+in der klassischen Testtheorie sind die wahren Werte von Personen bei Testmessungen 
 als bedingte Erwartungswerte definiert. Zur Verdeutlichung von @def-bedingter-errwartungswert 
 betrachten wir ein Beispiel für einen diskreten Zufallsvektor.
 
@@ -230,7 +397,7 @@ betrachten wir ein Beispiel für einen diskreten Zufallsvektor.
 
 Für einen zweidimensionalen Zufallsvektor $\xi:= (\xi_1,\xi_2)$, der 
 Werte in $\mathcal{X} := \mathcal{X}_1 \times \mathcal{X}_2$ mit
-$\mathcal{X}_1 := \{1,2,3,4\}$ und $\mathcal{X}_2 = \{1,2,3}$ annehme seien
+$\mathcal{X}_1 := \{1,2,3,4\}$ und $\mathcal{X}_2 = \{1,2,3\}$ annehme, seien
 bedingte WMFen für $p(x_1|x_2)$ für alle $x_1 \in \mathcal{X}_1$ wie in @tbl-bedingte-wkt
 spezifiziert 
 
@@ -238,7 +405,7 @@ spezifiziert
 | $p(x_1|x_2)$      | $x_2 = 1$      | $x_2 = 2$      | $x_2 = 3$      | 
 |:-----------------:|:--------------:|:--------------:|:--------------:| 
 | $p(x_1 = 1|x_2)$  | $\frac{1}{4}$  | $\frac{1}{3}$  | $0$ 	       |		 
-| $p(x_1 = 2|x_2)$  | $0$  	     | $\frac{2}{3}$  | $\frac{1}{3}$  |              
+| $p(x_1 = 2|x_2)$  | $0$  	         | $\frac{2}{3}$  | $\frac{1}{3}$  |              
 | $p(x_1 = 3|x_2)$  | $\frac{1}{2}$  | $0$  	      | $\frac{1}{3}$  |  
 | $p(x_1 = 4|x_2)$  | $\frac{1}{4}$  | $0$  	      | $\frac{1}{3}$  | 
 
@@ -266,6 +433,7 @@ Dann ergeben sich die bedingten Erwartungswerte
 = \frac{8}{3}.
 \end{split}
 \end{align}
+
 
 Das folgende Theorem, der sogenannte *Satz vom iterierten Erwartungswert*, stellt
 einen Zusammenhang zwischen dem (marginalen) Erwartungswert einer Zufallsvariable
@@ -303,6 +471,34 @@ der linken Seite der Gleichung bezeichnet den Erwartungswert bezüglich der marg
 Verteilung von $\xi_1$, der äußere Erwartungswert auf der rechten Seite der Gleichung
 bezeichnet den Erwartungswert bezüglich der marginalen Verteilung von $\xi_2$ und 
 der innere Erwartungswert auf der rechten Seite der Gleichung bezeichnet den
-bedingten Erwartungswert von $\xi_1$ gegeben $\xi_2$ 
+bedingten Erwartungswert von $\xi_1$ gegeben $\xi_2$.
 
+## Selbstkontrollfragen {.unnumbered .unlisted}
+\footnotesize
 
+1. Geben Sie die Definition des Erwartungswerts einer Zufallsvariable wieder.
+1. Erläutern Sie den Begriff des Erwartungswerts einer Zufallsvariable.
+1. Berechnen Sie den Erwartungswert einer Bernoulli-Zufallsvariable.
+1. Geben Sie die Definition des Begriffs der Stichprobe wieder.
+1. Geben Sie die Definition des Stichprobenmittels wieder.
+1. Erläutern Sie die Unterschiede zwischen einem Erwartungswert und einem Stichprobenmittel.
+1. Geben Sie die Definition des Erwartungswerts einer Funktion einer Zufallsvariable wieder.
+1. Geben Sie das Theorem zum Erwartungswert bei linear-affiner Transformation einer Zufallsvariable wieder.
+1. Geben Sie die Definition des Erwartungswerts eines Zufallsvektors wieder.
+1. Geben Sie die Definition des Erwartungswerts einer Funktion eines Zufallsvektors wieder.
+1. Geben Sie das Theorem zum Erwartungswert bei linear-affiner Kombination von Zufallsvariablen wieder.
+1. Geben Sie das Theorem zum Erwartungswert des Produkts unabhängiger Zufallsvariablen wieder. 
+
+## Lösungen {.unnumbered .unlisted}
+
+1. Siehe @def-erwartungswert-einer-zufallsvariable.
+1. Siehe Erläuterungen in der Nachfolge von @def-erwartungswert-einer-zufallsvariable, insbesondere auch @exm-erwartungswert-und-mittelwert.
+1. Siehe @exm-erwartungswert-einer-bernoulli-zufallsvariable.
+1. Siehe @def-stichprobenmittel.
+1. Siehe @def-stichprobenmittel.
+1. Siehe Erläuterungen zu @exm-erwartungswert-und-mittelwert, @def-stichprobenmittel und @exm-stichprobenmittel.
+1. Siehe @thm-erwartungswert-bei-linear-affiner-transformation-einer-zufallsvariable.
+1. Siehe @def-erwartungswert-eines-zufallsvektors.
+1. Siehe @def-erwartungswert-einer-funktion-eines-zufallsvektors.
+1. Siehe @thm-erwartungswert-bei-linear-affiner-kombination-von-zufallsvariablen.
+1. Siehe @thm-erwartungswert-des-produkts-unabhängiger-zufallsvariablen.
