@@ -875,26 +875,26 @@ $Sam
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1"></a>L1 <span class="ot">=</span> <span class="fu">list</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>)            <span class="co"># Erzeugen einer Liste als Objekt  </span></span>
 <span id="cb58-2"><a href="#cb58-2"></a>lobstr<span class="sc">::</span><span class="fu">ref</span>(L1)             <span class="co"># Ausgabe der Referenzen</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>█ [1:0x191fdba8a08] &lt;list&gt; 
-├─[2:0x191fb6bd5b0] &lt;dbl&gt; 
-├─[3:0x191fb6bd3b8] &lt;dbl&gt; 
-└─[4:0x191fb6bd1f8] &lt;dbl&gt; </code></pre>
+<pre><code>█ [1:0x2371cbbea08] &lt;list&gt; 
+├─[2:0x2371a7295b0] &lt;dbl&gt; 
+├─[3:0x2371a7293b8] &lt;dbl&gt; 
+└─[4:0x2371a7291f8] &lt;dbl&gt; </code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1"></a>L2 <span class="ot">=</span> L1                     <span class="co"># L1 und L2 referenzieren dasselbe Objekt  </span></span>
 <span id="cb60-2"><a href="#cb60-2"></a>lobstr<span class="sc">::</span><span class="fu">ref</span>(L2)             <span class="co"># Ausgabe der Referenzen</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>█ [1:0x191fdba8a08] &lt;list&gt; 
-├─[2:0x191fb6bd5b0] &lt;dbl&gt; 
-├─[3:0x191fb6bd3b8] &lt;dbl&gt; 
-└─[4:0x191fb6bd1f8] &lt;dbl&gt; </code></pre>
+<pre><code>█ [1:0x2371cbbea08] &lt;list&gt; 
+├─[2:0x2371a7295b0] &lt;dbl&gt; 
+├─[3:0x2371a7293b8] &lt;dbl&gt; 
+└─[4:0x2371a7291f8] &lt;dbl&gt; </code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1"></a>L2[[<span class="dv">3</span>]] <span class="ot">=</span> <span class="dv">4</span>                 <span class="co"># Copy-on-Modify mit shallow Objekt Kopie</span></span>
 <span id="cb62-2"><a href="#cb62-2"></a>lobstr<span class="sc">::</span><span class="fu">ref</span>(L2)             <span class="co"># Ausgabe der Referenzen</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>█ [1:0x191fde7e818] &lt;list&gt; 
-├─[2:0x191fb6bd5b0] &lt;dbl&gt; 
-├─[3:0x191fb6bd3b8] &lt;dbl&gt; 
-└─[4:0x191fb68c8c8] &lt;dbl&gt; </code></pre>
+<pre><code>█ [1:0x2371ce4c818] &lt;list&gt; 
+├─[2:0x2371a7295b0] &lt;dbl&gt; 
+├─[3:0x2371a7293b8] &lt;dbl&gt; 
+└─[4:0x2371a73a8c8] &lt;dbl&gt; </code></pre>
 </div>
 </div>
 <p>Offenbar ändert die Zuweisung <code>L2 = L1</code> zunächst nichts an den Arbeitsspeicheraddressen, auf die <code>L1</code> und <code>L2</code> sowie ihre Elemente verweisen. Die Modifikation des Inhalts des dritten Listenelements von <code>L2</code> durch <code>L2[[3]] = 4</code> allerdings ändert dann die Addresse des Listenobjekts im Arbeitsspeicher, da eine Kopie des Listenobjekts erzeugt wird. Gleichzeitig ändern sich gemäß dem shallow copy-Prinzips die Addressen der ersten beiden Inhalte von <code>L2</code> aber nicht. <a href="#fig-list-copy-on-modify" class="quarto-xref">Abbildung&nbsp;<span>16.2</span></a> visualisiert diese Prinzipien an einem Beispiel.</p>
