@@ -651,7 +651,7 @@ window.Quarto = {
 <h3 class="unnumbered anchored" data-anchor-id="konfidenzintervall-für-den-erwartungswertparameter-des-normalverteilungsmodells">Konfidenzintervall für den Erwartungswertparameter des Normalverteilungsmodells</h3>
 <p>Wir betrachten die Konstruktion eines <span class="math inline">\(\delta\)</span>-Konfidenzintervalls für den Erwartungswertparameter des Normalverteilungsmodells. Zu diesem Zweck definieren wir zunächst folgende Konfidenzintervallstatistik.</p>
 <div id="def-t-konfidenzintervallstatistik" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 32.2 (<span class="math inline">\(T\)</span>-Konfidenzintervallstatistk)</strong></span> Gegeben sei das Normalverteilungsmodell <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 32.2 (<span class="math inline">\(T\)</span>-Konfidenzintervallstatistik)</strong></span> Gegeben sei das Normalverteilungsmodell <span class="math display">\[\begin{equation}
 y_1,...,y_n \sim N\left(\mu,\sigma^2\right)
 \end{equation}\]</span> Dann heißt die mit dem Stichprobenmittel und der Stichprobenstandardabweichung <span class="math display">\[\begin{equation}
 \bar{y} := \frac{1}{n}\sum_{i=1}^n y_i \mbox{ und } S := \sqrt{\frac{1}{n-1}\sum_{i=1}^n(y_i - \bar{y})^2},
@@ -691,7 +691,7 @@ T \sim t(n-1)
 <span id="cb1-19"><a href="#cb1-19"></a>y_bar    <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                                <span class="co"># \bar{y} Array</span></span>
 <span id="cb1-20"><a href="#cb1-20"></a>S        <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                                <span class="co"># S Array  </span></span>
 <span id="cb1-21"><a href="#cb1-21"></a>TKS      <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                                <span class="co"># T-Konfidenzintervallstatistik Array</span></span>
-<span id="cb1-22"><a href="#cb1-22"></a><span class="cf">for</span>(s <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>ns){                                       <span class="co"># Simulationsiterationen</span></span>
+<span id="cb1-22"><a href="#cb1-22"></a><span class="cf">for</span>(s <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>ns){                                         <span class="co"># Simulationsiterationen</span></span>
 <span id="cb1-23"><a href="#cb1-23"></a>  y         <span class="ot">=</span> <span class="fu">rnorm</span>(n,mu,<span class="fu">sqrt</span>(sigsqr))                <span class="co"># Stichprobenrealisierung</span></span>
 <span id="cb1-24"><a href="#cb1-24"></a>  y_i[s]    <span class="ot">=</span> y[<span class="dv">1</span>]                                    <span class="co"># Stichprobenrealisierung y_i mit i = 1</span></span>
 <span id="cb1-25"><a href="#cb1-25"></a>  y_bar[s]  <span class="ot">=</span> <span class="fu">mean</span>(y)                                 <span class="co"># Stichprobenmittelrealisierung</span></span>
@@ -926,8 +926,8 @@ Abbildung&nbsp;32.5: Sicherung der Überdeckungswahrscheinlichkeit des Konfidenz
 <span id="cb4-4"><a href="#cb4-4"></a>sigsqr      <span class="ot">=</span> <span class="dv">2</span>                                 <span class="co"># wahrer, aber unbekannter,  Varianzparameter</span></span>
 <span id="cb4-5"><a href="#cb4-5"></a>n           <span class="ot">=</span> <span class="dv">12</span>                                <span class="co"># Stichprobenumfang</span></span>
 <span id="cb4-6"><a href="#cb4-6"></a>delta       <span class="ot">=</span> <span class="fl">0.95</span>                              <span class="co"># Konfidenzbedingung</span></span>
-<span id="cb4-7"><a href="#cb4-7"></a>u_delta_u   <span class="ot">=</span> <span class="fu">qchisq</span>((<span class="dv">1</span><span class="sc">-</span>delta)<span class="sc">/</span><span class="dv">2</span>, n <span class="sc">-</span> <span class="dv">1</span>)        <span class="co"># \Xi^2((1-\delta)/2; n - 1)</span></span>
-<span id="cb4-8"><a href="#cb4-8"></a>u_delta_o   <span class="ot">=</span> <span class="fu">qchisq</span>((<span class="dv">1</span><span class="sc">+</span>delta)<span class="sc">/</span><span class="dv">2</span>, n <span class="sc">-</span> <span class="dv">1</span>)        <span class="co"># \Xi^2((1+\delta)/2; n - 1)</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a>u_delta     <span class="ot">=</span> <span class="fu">qchisq</span>((<span class="dv">1</span><span class="sc">-</span>delta)<span class="sc">/</span><span class="dv">2</span>, n <span class="sc">-</span> <span class="dv">1</span>)        <span class="co"># \Xi^2((1-\delta)/2; n - 1)</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a>u_delta_p   <span class="ot">=</span> <span class="fu">qchisq</span>((<span class="dv">1</span><span class="sc">+</span>delta)<span class="sc">/</span><span class="dv">2</span>, n <span class="sc">-</span> <span class="dv">1</span>)        <span class="co"># \Xi^2((1+\delta)/2; n - 1)</span></span>
 <span id="cb4-9"><a href="#cb4-9"></a></span>
 <span id="cb4-10"><a href="#cb4-10"></a><span class="co"># Stichprobenrealisierungen</span></span>
 <span id="cb4-11"><a href="#cb4-11"></a>ns          <span class="ot">=</span> <span class="fl">1e2</span>                               <span class="co"># Anzahl Simulationen</span></span>
@@ -935,10 +935,10 @@ Abbildung&nbsp;32.5: Sicherung der Überdeckungswahrscheinlichkeit des Konfidenz
 <span id="cb4-13"><a href="#cb4-13"></a>S2          <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                       <span class="co"># Stichprobenvarianzarray</span></span>
 <span id="cb4-14"><a href="#cb4-14"></a>kappa       <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="cn">NaN</span>,<span class="dv">2</span><span class="sc">*</span>ns), <span class="at">ncol =</span> <span class="dv">2</span>)   <span class="co"># Konfidenzintervallarray</span></span>
 <span id="cb4-15"><a href="#cb4-15"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>ns){                                 <span class="co"># Simulationsiterationen</span></span>
-<span id="cb4-16"><a href="#cb4-16"></a>   y        <span class="ot">=</span> <span class="fu">rnorm</span>(n,mu,<span class="fu">sqrt</span>(sigsqr))          <span class="co"># Stichprobenrealisierung</span></span>
-<span id="cb4-17"><a href="#cb4-17"></a>   S2[i]    <span class="ot">=</span> <span class="fu">var</span>(y)                            <span class="co"># Stichprobenvarianz</span></span>
-<span id="cb4-18"><a href="#cb4-18"></a>   kappa[i,<span class="dv">1</span>]   <span class="ot">=</span> (n<span class="dv">-1</span>)<span class="sc">*</span>S2[i]<span class="sc">/</span>u_delta_o         <span class="co"># untere Konfidenzintervallgrenze</span></span>
-<span id="cb4-19"><a href="#cb4-19"></a>   kappa[i,<span class="dv">2</span>]   <span class="ot">=</span> (n<span class="dv">-1</span>)<span class="sc">*</span>S2[i]<span class="sc">/</span>u_delta_u         <span class="co"># obere Konfidenzintervallgrenze</span></span>
+<span id="cb4-16"><a href="#cb4-16"></a>   y            <span class="ot">=</span> <span class="fu">rnorm</span>(n,mu,<span class="fu">sqrt</span>(sigsqr))      <span class="co"># Stichprobenrealisierung</span></span>
+<span id="cb4-17"><a href="#cb4-17"></a>   S2[i]        <span class="ot">=</span> <span class="fu">var</span>(y)                        <span class="co"># Stichprobenvarianz</span></span>
+<span id="cb4-18"><a href="#cb4-18"></a>   kappa[i,<span class="dv">1</span>]   <span class="ot">=</span> (n<span class="dv">-1</span>)<span class="sc">*</span>S2[i]<span class="sc">/</span>u_delta_p         <span class="co"># untere Konfidenzintervallgrenze</span></span>
+<span id="cb4-19"><a href="#cb4-19"></a>   kappa[i,<span class="dv">2</span>]   <span class="ot">=</span> (n<span class="dv">-1</span>)<span class="sc">*</span>S2[i]<span class="sc">/</span>u_delta           <span class="co"># obere Konfidenzintervallgrenze</span></span>
 <span id="cb4-20"><a href="#cb4-20"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="fig-ki-varianzparameter-normalverteilung" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
@@ -956,12 +956,12 @@ Abbildung&nbsp;32.6: Simulation der Überdeckungswahrscheinlichkeit des Konfiden
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>D           <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"./_data/bdi-ii-datensatz.csv"</span>)      <span class="co"># Datensatzeinlesen </span></span>
 <span id="cb5-2"><a href="#cb5-2"></a>y           <span class="ot">=</span> D<span class="sc">$</span>dBDI                                        <span class="co"># Datenauswahl            </span></span>
-<span id="cb5-3"><a href="#cb5-3"></a>mu_hat      <span class="ot">=</span> <span class="fu">mean</span>(y)                                       <span class="co"># Stichprobenmittel </span></span>
-<span id="cb5-4"><a href="#cb5-4"></a>sigsqr_hat  <span class="ot">=</span> <span class="fu">var</span>(y)                                        <span class="co"># Stichprobenvarianz</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a>mu_hat      <span class="ot">=</span> <span class="fu">round</span>(<span class="fu">mean</span>(y),<span class="dv">2</span>)                              <span class="co"># Stichprobenmittel </span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>sigsqr_hat  <span class="ot">=</span> <span class="fu">round</span>(<span class="fu">var</span>(y),<span class="dv">2</span>)                               <span class="co"># Stichprobenvarianz</span></span>
 <span id="cb5-5"><a href="#cb5-5"></a><span class="fu">cat</span>(<span class="st">"mu_hat     :"</span>, mu_hat,<span class="st">"</span><span class="sc">\n</span><span class="st">sigsqr_hat :"</span>, sigsqr_hat)    <span class="co"># Ausgabe    </span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>mu_hat     : 3.166667 
-sigsqr_hat : 13.78788</code></pre>
+<pre><code>mu_hat     : 3.17 
+sigsqr_hat : 13.79</code></pre>
 </div>
 </div>
 <p>Basierend auf diesen Schätzern und den vorliegenden <span class="math inline">\(n = 12\)</span> Datenpunkten sind also <span class="math display">\[\begin{equation}
