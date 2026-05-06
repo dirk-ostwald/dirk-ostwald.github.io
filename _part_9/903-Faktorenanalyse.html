@@ -1348,9 +1348,9 @@ C = Q\Lambda Q^T
 <span id="cb1-5"><a href="#cb1-5"></a>I_n       <span class="ot">=</span> <span class="fu">diag</span>(n)                                                 <span class="co"># Einheitsmatrix I_n</span></span>
 <span id="cb1-6"><a href="#cb1-6"></a>J_n       <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="dv">1</span>,n<span class="sc">^</span><span class="dv">2</span>), <span class="at">nrow =</span> n)                            <span class="co"># 1_{nn}</span></span>
 <span id="cb1-7"><a href="#cb1-7"></a>C         <span class="ot">=</span> (<span class="dv">1</span><span class="sc">/</span>(n<span class="dv">-1</span>))<span class="sc">*</span>(Y <span class="sc">%*%</span> (I_n<span class="sc">-</span>(<span class="dv">1</span><span class="sc">/</span>n)<span class="sc">*</span>J_n) <span class="sc">%*%</span> <span class="fu">t</span>(Y))              <span class="co"># Stichprobenkovarianzmatrix</span></span>
-<span id="cb1-8"><a href="#cb1-8"></a>EA        <span class="ot">=</span> <span class="fu">eigen</span>(C)                                                <span class="co"># Eigenanalyse von R</span></span>
-<span id="cb1-9"><a href="#cb1-9"></a>lambda_k  <span class="ot">=</span> EA<span class="sc">$</span>values[<span class="dv">1</span><span class="sc">:</span>k]                                          <span class="co"># k größte Eigenwerte von R</span></span>
-<span id="cb1-10"><a href="#cb1-10"></a>Q_k       <span class="ot">=</span> EA<span class="sc">$</span>vectors[,<span class="dv">1</span><span class="sc">:</span>k]                                        <span class="co"># k zugehörige Eigenvektoren von R</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a>EA        <span class="ot">=</span> <span class="fu">eigen</span>(C)                                                <span class="co"># Eigenanalyse von C</span></span>
+<span id="cb1-9"><a href="#cb1-9"></a>lambda_k  <span class="ot">=</span> EA<span class="sc">$</span>values[<span class="dv">1</span><span class="sc">:</span>k]                                          <span class="co"># k größte Eigenwerte von C</span></span>
+<span id="cb1-10"><a href="#cb1-10"></a>Q_k       <span class="ot">=</span> EA<span class="sc">$</span>vectors[,<span class="dv">1</span><span class="sc">:</span>k]                                        <span class="co"># k zugehörige Eigenvektoren von C</span></span>
 <span id="cb1-11"><a href="#cb1-11"></a>L_hat     <span class="ot">=</span> Q_k <span class="sc">%*%</span> <span class="fu">diag</span>(<span class="fu">sqrt</span>(lambda_k))                            <span class="co"># Faktorladungsmatrixschätzer</span></span>
 <span id="cb1-12"><a href="#cb1-12"></a>Psi_hat   <span class="ot">=</span> <span class="fu">diag</span>(<span class="fu">diag</span>(C) <span class="sc">-</span> <span class="fu">diag</span>(L_hat <span class="sc">%*%</span> <span class="fu">t</span>(L_hat)))                <span class="co"># Beobachtungsrauschenkovarianzmatrixschätzer</span></span>
 <span id="cb1-13"><a href="#cb1-13"></a>V_i_hat   <span class="ot">=</span> <span class="fu">diag</span>(C)                                                 <span class="co"># Varianzschätzer</span></span>
@@ -1384,7 +1384,7 @@ Abbildung&nbsp;51.3: Faktorladungsmatrix- und Spezifitätsschätzer für den BDI
 <p><strong>Anwendungsbeispiel</strong></p>
 <p>Folgender <strong>R</strong> Code demonstriert die iterierte Hauptachsenfaktorisierung zur Schätzung der Parameter eines Faktorenanalysemodells mit <span class="math inline">\(k = 2\)</span> anhand des in <a href="#fig-bdi-datensatz" class="quarto-xref">Abbildung&nbsp;<span>51.1</span></a> dargestellten Datensatzes nach <span class="citation" data-cites="keller2008">Keller et al. (<a href="#ref-keller2008" role="doc-biblioref">2008</a>)</span>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>Y             <span class="ot">=</span> <span class="fu">as.matrix</span>(<span class="fu">read.csv</span>(<span class="st">"./_data/903-fa-keller.csv"</span>))        <span class="co"># Y \in \mathbb{R}^{m x n}</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>Y             <span class="ot">=</span> <span class="fu">as.matrix</span>(<span class="fu">read.csv</span>(<span class="st">"./_data/903-fa-keller.csv"</span>))        <span class="co"># R-Datenmatrix: Beobachtungen in Zeilen, Variablen in Spalten</span></span>
 <span id="cb2-2"><a href="#cb2-2"></a>R             <span class="ot">=</span> <span class="fu">cor</span>(Y)                                                  <span class="co"># m x m Korrelationsmatrix</span></span>
 <span id="cb2-3"><a href="#cb2-3"></a>k             <span class="ot">=</span> <span class="dv">2</span>                                                       <span class="co"># Faktorenzahl</span></span>
 <span id="cb2-4"><a href="#cb2-4"></a>eps_min       <span class="ot">=</span> <span class="fl">0.01</span>                                                    <span class="co"># Konvergenzkriterium</span></span>
@@ -1487,7 +1487,7 @@ F_Y : \Theta \to \mathbb{R}, \theta \mapsto F_{Y}(\theta) := n \ln |\Sigma_\thet
 </div>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">library</span>(psych)</span>
-<span id="cb3-2"><a href="#cb3-2"></a>Y       <span class="ot">=</span> <span class="fu">as.matrix</span>(<span class="fu">read.csv</span>(<span class="st">"./_data/903-fa-keller.csv"</span>))                      <span class="co"># Y \in \mathbb{R}^{m x n}</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>Y       <span class="ot">=</span> <span class="fu">as.matrix</span>(<span class="fu">read.csv</span>(<span class="st">"./_data/903-fa-keller.csv"</span>))                      <span class="co"># R-Datenmatrix: Beobachtungen in Zeilen, Variablen in Spalten</span></span>
 <span id="cb3-3"><a href="#cb3-3"></a>M       <span class="ot">=</span> <span class="fu">fa</span>(<span class="at">r =</span> Y, <span class="at">nfactors =</span> <span class="dv">2</span>, <span class="at">rotate =</span> <span class="st">"none"</span>, <span class="at">fm =</span> <span class="st">"ml"</span>)                   <span class="co"># Modellformulierung und -schätzung</span></span>
 <span id="cb3-4"><a href="#cb3-4"></a>L_hat   <span class="ot">=</span> M<span class="sc">$</span>loadings[,<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]                                                      <span class="co"># Faktorladungsmatrixschätzer</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -1544,10 +1544,10 @@ Abbildung&nbsp;51.4: Faktorladungsmatrixschätzer für den BDI-II Datensatz nach
 <ul>
 <li><span class="math inline">\(G := \sum_{i=1}^m c_{ii}\)</span> die Gesamtstichprobenvarianz,</li>
 <li><span class="math inline">\(F := \sum_{i=1}^m \sum_{j=1}^k \hat{l}_{ij}^2\)</span> die faktorenbasierte Stichprobenvarianz,</li>
-<li><span class="math inline">\(R := \sum_{i=1}^m \hat{\psi}_i\)</span> die Beobachtungsrauschenbasierte Stichprobenvarianz.</li>
+<li><span class="math inline">\(U := \sum_{i=1}^m \hat{\psi}_i\)</span> die Beobachtungsrauschenbasierte Stichprobenvarianz.</li>
 </ul>
 <p>Dann gilt <span class="math display">\[\begin{equation}
-G = F + R.
+G = F + U.
 \end{equation}\]</span> Außerdem gilt mit den Eigenwerten <span class="math inline">\(\lambda_1,...,\lambda_k\)</span> von <span class="math inline">\(C\)</span>, dass <span class="math display">\[\begin{equation}
 F = \sum_{j=1}^k \lambda_j \mbox{, wobei } \lambda_j = \sum_{i=1}^m \hat{l}_{ij}^2
 \end{equation}\]</span> für <span class="math inline">\(j = 1,...,k\)</span> der Anteil des <span class="math inline">\(j\)</span>ten Faktors an <span class="math inline">\(F\)</span> ist.</p>
@@ -1579,7 +1579,7 @@ F = \sum_{j=1}^k \lambda_j \mbox{, wobei } \lambda_j = \sum_{i=1}^m \hat{l}_{ij}
 \sum_{j=1}^k \hat{l}_{mj}\hat{l}_{1j}   &amp; \sum_{j=1}^k \hat{l}_{mj}\hat{l}_{2j}     &amp; \cdots    &amp; \sum_{j=1}^k \hat{l}_{mj}^2               \\
 \end{pmatrix*}
 \end{split}
-\end{align}\]</span> Die Identität von <span class="math inline">\(G\)</span> und <span class="math inline">\(F + R\)</span> folgt dann direkt aus der Identität der Diagonalelemente von <span class="math inline">\(C\)</span>, <span class="math inline">\(\hat{L}\hat{L}^T\)</span> und <span class="math inline">\(\hat{\Psi}\)</span>, die im Rahmen der Hauptkomponentenschätzung mithilfe von <span class="math display">\[\begin{equation}
+\end{align}\]</span> Die Identität von <span class="math inline">\(G\)</span> und <span class="math inline">\(F + U\)</span> folgt dann direkt aus der Identität der Diagonalelemente von <span class="math inline">\(C\)</span>, <span class="math inline">\(\hat{L}\hat{L}^T\)</span> und <span class="math inline">\(\hat{\Psi}\)</span>, die im Rahmen der Hauptkomponentenschätzung mithilfe von <span class="math display">\[\begin{equation}
 \hat{\psi}_i := c_{ii} - \sum_{j = 1}^k \hat{l}_{ij}^2 \mbox{ für } i = 1,...,m
 \end{equation}\]</span> konstruiert wird. Um als nächstes <span class="math display">\[\begin{equation}
 F = \sum_{j=1}^k \lambda_j
@@ -1638,22 +1638,22 @@ F
 <span id="cb4-7"><a href="#cb4-7"></a>I_n       <span class="ot">=</span> <span class="fu">diag</span>(n)                                                 <span class="co"># Einheitsmatrix I_n</span></span>
 <span id="cb4-8"><a href="#cb4-8"></a>J_n       <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="dv">1</span>,n<span class="sc">^</span><span class="dv">2</span>), <span class="at">nrow =</span> n)                            <span class="co"># 1_{nn}</span></span>
 <span id="cb4-9"><a href="#cb4-9"></a>C         <span class="ot">=</span> (<span class="dv">1</span><span class="sc">/</span>(n<span class="dv">-1</span>))<span class="sc">*</span>(Y <span class="sc">%*%</span> (I_n<span class="sc">-</span>(<span class="dv">1</span><span class="sc">/</span>n)<span class="sc">*</span>J_n) <span class="sc">%*%</span> <span class="fu">t</span>(Y))              <span class="co"># Stichprobenkovarianzmatrix</span></span>
-<span id="cb4-10"><a href="#cb4-10"></a>EA        <span class="ot">=</span> <span class="fu">eigen</span>(C)                                                <span class="co"># Eigenanalyse von R</span></span>
-<span id="cb4-11"><a href="#cb4-11"></a>lambda_k  <span class="ot">=</span> EA<span class="sc">$</span>values[<span class="dv">1</span><span class="sc">:</span>k]                                          <span class="co"># k größte Eigenwerte von R</span></span>
-<span id="cb4-12"><a href="#cb4-12"></a>Q_k       <span class="ot">=</span> EA<span class="sc">$</span>vectors[,<span class="dv">1</span><span class="sc">:</span>k]                                        <span class="co"># k zugehörige Eigenvektoren von R</span></span>
+<span id="cb4-10"><a href="#cb4-10"></a>EA        <span class="ot">=</span> <span class="fu">eigen</span>(C)                                                <span class="co"># Eigenanalyse von C</span></span>
+<span id="cb4-11"><a href="#cb4-11"></a>lambda_k  <span class="ot">=</span> EA<span class="sc">$</span>values[<span class="dv">1</span><span class="sc">:</span>k]                                          <span class="co"># k größte Eigenwerte von C</span></span>
+<span id="cb4-12"><a href="#cb4-12"></a>Q_k       <span class="ot">=</span> EA<span class="sc">$</span>vectors[,<span class="dv">1</span><span class="sc">:</span>k]                                        <span class="co"># k zugehörige Eigenvektoren von C</span></span>
 <span id="cb4-13"><a href="#cb4-13"></a>L_hat     <span class="ot">=</span> Q_k <span class="sc">%*%</span> <span class="fu">diag</span>(<span class="fu">sqrt</span>(lambda_k))                            <span class="co"># Faktorladungsmatrixschätzer</span></span>
 <span id="cb4-14"><a href="#cb4-14"></a>Psi_hat   <span class="ot">=</span> <span class="fu">diag</span>(<span class="fu">diag</span>(C) <span class="sc">-</span> <span class="fu">diag</span>(L_hat <span class="sc">%*%</span> <span class="fu">t</span>(L_hat)))                <span class="co"># Beobachtungsrauschenkovarianzmatrixschätzer</span></span>
 <span id="cb4-15"><a href="#cb4-15"></a>GG        <span class="ot">=</span> <span class="fu">sum</span>(<span class="fu">diag</span>(C))                                            <span class="co"># Gesamtstichprobenvarianz</span></span>
 <span id="cb4-16"><a href="#cb4-16"></a>FF        <span class="ot">=</span> <span class="fu">sum</span>(<span class="fu">diag</span>(L_hat <span class="sc">%*%</span> <span class="fu">t</span>(L_hat)))                           <span class="co"># Faktorenbasierte Stichprobenvarianz</span></span>
-<span id="cb4-17"><a href="#cb4-17"></a>RR        <span class="ot">=</span> <span class="fu">sum</span>(<span class="fu">diag</span>(Psi_hat))                                      <span class="co"># Beobachtungsrauschenbasierter Stichprobenvarianz</span></span>
+<span id="cb4-17"><a href="#cb4-17"></a>UU        <span class="ot">=</span> <span class="fu">sum</span>(<span class="fu">diag</span>(Psi_hat))                                      <span class="co"># Beobachtungsrauschenbasierter Stichprobenvarianz</span></span>
 <span id="cb4-18"><a href="#cb4-18"></a>FF_lambda <span class="ot">=</span> <span class="fu">sum</span>(lambda_k)                                           <span class="co"># Summe der Eigenwerte \lambda_1,...,\lambda_k</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>G   = 25.84 
 F   = 22.51 
-R   = 3.33 
-F+B = 25.84 </code></pre>
+U   = 3.33 
+F+U = 25.84 </code></pre>
 </div>
 </div>
 <div class="cell">
@@ -1674,9 +1674,9 @@ Summe der Eigenwerte lambda_1,...,lambda_k = 22.51</code></pre>
 <span id="cb7-7"><a href="#cb7-7"></a>I_n       <span class="ot">=</span> <span class="fu">diag</span>(n)                                                 <span class="co"># Einheitsmatrix I_n</span></span>
 <span id="cb7-8"><a href="#cb7-8"></a>J_n       <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="dv">1</span>,n<span class="sc">^</span><span class="dv">2</span>), <span class="at">nrow =</span> n)                            <span class="co"># 1_{nn}</span></span>
 <span id="cb7-9"><a href="#cb7-9"></a>C         <span class="ot">=</span> (<span class="dv">1</span><span class="sc">/</span>(n<span class="dv">-1</span>))<span class="sc">*</span>(Y <span class="sc">%*%</span> (I_n<span class="sc">-</span>(<span class="dv">1</span><span class="sc">/</span>n)<span class="sc">*</span>J_n) <span class="sc">%*%</span> <span class="fu">t</span>(Y))              <span class="co"># Stichprobenkovarianzmatrix</span></span>
-<span id="cb7-10"><a href="#cb7-10"></a>EA        <span class="ot">=</span> <span class="fu">eigen</span>(C)                                                <span class="co"># Eigenanalyse von R</span></span>
-<span id="cb7-11"><a href="#cb7-11"></a>lambda_k  <span class="ot">=</span> EA<span class="sc">$</span>values[<span class="dv">1</span><span class="sc">:</span>k]                                          <span class="co"># k größte Eigenwerte von R</span></span>
-<span id="cb7-12"><a href="#cb7-12"></a>Q_k       <span class="ot">=</span> EA<span class="sc">$</span>vectors[,<span class="dv">1</span><span class="sc">:</span>k]                                        <span class="co"># k zugehörige Eigenvektoren von R</span></span>
+<span id="cb7-10"><a href="#cb7-10"></a>EA        <span class="ot">=</span> <span class="fu">eigen</span>(C)                                                <span class="co"># Eigenanalyse von C</span></span>
+<span id="cb7-11"><a href="#cb7-11"></a>lambda_k  <span class="ot">=</span> EA<span class="sc">$</span>values[<span class="dv">1</span><span class="sc">:</span>k]                                          <span class="co"># k größte Eigenwerte von C</span></span>
+<span id="cb7-12"><a href="#cb7-12"></a>Q_k       <span class="ot">=</span> EA<span class="sc">$</span>vectors[,<span class="dv">1</span><span class="sc">:</span>k]                                        <span class="co"># k zugehörige Eigenvektoren von C</span></span>
 <span id="cb7-13"><a href="#cb7-13"></a>L_hat     <span class="ot">=</span> Q_k <span class="sc">%*%</span> <span class="fu">diag</span>(<span class="fu">sqrt</span>(lambda_k))                            <span class="co"># Faktorladungsmatrixschätzer</span></span>
 <span id="cb7-14"><a href="#cb7-14"></a>Psi_hat   <span class="ot">=</span> <span class="fu">diag</span>(<span class="fu">diag</span>(C) <span class="sc">-</span> <span class="fu">diag</span>(L_hat <span class="sc">%*%</span> <span class="fu">t</span>(L_hat)))                <span class="co"># Beobachtungsrauschenkovarianzmatrixschätzer</span></span>
 <span id="cb7-15"><a href="#cb7-15"></a>G         <span class="ot">=</span> <span class="fu">sum</span>(<span class="fu">diag</span>(C))                                            <span class="co"># Gesamtstichprobenvarianz</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
