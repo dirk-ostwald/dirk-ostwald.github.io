@@ -670,7 +670,7 @@ window.Quarto = {
 
 
 <p>Matrizen sind die Worte der Sprache der modernen Datenanalyse. Ein Verständnis moderner datenanalytischer Verfahren und ihrer Implementation ist ohne ein Grundverständnis des Matrixbegriffs und ein Wissen um die grundlegenden Matrixoperationen nicht möglich. Matrizen können dabei sehr unterschiedliche Rollen spielen. So können Matrizen zum Beispiel Daten, experimentelle Designs und Modellparameter repräsentieren. Im Kontext der Linearen Algebra dienen Matrizen zur Repräsentation linearer Abbildungen und von Vektorräumen, hier werden Vektoren dann als spezielle Matrizen aufgefasst.</p>
-<p>In diesem Kapitel geben wir eine Einführung zum Umgang mit Matrizen, wobei wir auf abstrakte Begrifflichkeiten der Linearen Algebra im Wesentlichen verzichten. Wir führen zunächst den Matrixbegriff ein und diskutieren dann mit der Matrixaddition, Matrixsubtraktion, Skalarmultiplikation und der Matrixtransposition erste grundlegende Matrixoperationen (<a href="#sec-matrix-definition" class="quarto-xref"><span class="quarto-unresolved-ref">sec-matrix-definition</span></a> und <a href="#sec-grundlegende-matrixoperationen" class="quarto-xref"><span class="quarto-unresolved-ref">sec-grundlegende-matrixoperationen</span></a>). Wir führen dann die zentralen Begriffe der Matrixmultiplikation und der Matrixinversion ein (<a href="#sec-matrixmultiplikation" class="quarto-xref"><span class="quarto-unresolved-ref">sec-matrixmultiplikation</span></a> und <a href="#sec-matrixinversion" class="quarto-xref"><span class="quarto-unresolved-ref">sec-matrixinversion</span></a>). Mit der Matrixdeterminante diskutieren wir dann in <a href="#sec-determinanten" class="quarto-xref"><span class="quarto-unresolved-ref">sec-determinanten</span></a> eine erste Maßzahl zur Beschreibung von Matrizen. Wir schließen in <a href="#sec-spezielle-matrizen" class="quarto-xref"><span class="quarto-unresolved-ref">sec-spezielle-matrizen</span></a> mit einer Übersicht zu besonders häufig auftretenden Matrizen.</p>
+<p>In diesem Kapitel geben wir eine Einführung zum Umgang mit Matrizen, wobei wir auf abstrakte Begrifflichkeiten der Linearen Algebra im Wesentlichen verzichten. Wir führen zunächst den Matrixbegriff ein und diskutieren dann mit der Matrixaddition, Matrixsubtraktion, Skalarmultiplikation und der Matrixtransposition erste grundlegende Matrixoperationen (<a href="#sec-matrix-definition" class="quarto-xref"><span>Kapitel 9.1</span></a> und <a href="#sec-grundlegende-matrixoperationen" class="quarto-xref"><span>Kapitel 9.2</span></a>). Wir führen dann die zentralen Begriffe der Matrixmultiplikation und der Matrixinversion ein (<a href="#sec-matrixmultiplikation" class="quarto-xref"><span>Kapitel 9.3</span></a> und <a href="#sec-matrixinversion" class="quarto-xref"><span>Kapitel 9.4</span></a>). Mit der Matrixdeterminante diskutieren wir dann in <a href="#sec-determinanten" class="quarto-xref"><span>Kapitel 9.5</span></a> eine erste Maßzahl zur Beschreibung von Matrizen. Wir schließen in <a href="#sec-spezielle-matrizen" class="quarto-xref"><span>Kapitel 9.6</span></a> mit einer Übersicht zu besonders häufig auftretenden Matrizen.</p>
 <section id="sec-matrix-definition" class="level2" data-number="9.1">
 <h2 data-number="9.1" class="anchored" data-anchor-id="sec-matrix-definition"><span class="header-section-number">9.1</span> Definition</h2>
 <p>Wir beginnen mit der Definition einer Matrix.</p>
@@ -708,23 +708,38 @@ A :=
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># Spaltenweise Definition von A (R default)</span></span>
 <span id="cb1-2"><a href="#cb1-2"></a>A <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">6</span>,<span class="dv">0</span>,<span class="dv">5</span>), <span class="at">nrow =</span> <span class="dv">2</span>)</span>
 <span id="cb1-3"><a href="#cb1-3"></a><span class="fu">print</span>(A)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3]
+[1,]    2    3    0
+[2,]    1    6    5</code></pre>
+</div>
 </div>
 <p><strong>R</strong> folgt hier per default einer sogenannten <em>column-major-order</em>, das heißt, die Elemente des <strong>R</strong> Vektors <code>c(2,1,3,6,0,5)</code> werden der Reihe nach von oben nach unten in die Spalten der Matrix von links nach rechts überführt. Einen etwas klareren Zusammenhang zwischen dem visuellen Layout des <strong>R</strong> Codes und der resultierenden Matrix erhält man, indem man den <strong>R</strong> Vektor mithilfe von Zeilenumbrüchen anhand des intendierten Matrixlayouts formatiert und dann die column-major-order mithilfe des Arguments <code>byrow = TRUE</code> zu einer <em>row-major-order</em> umstellt. Es wird dann zunächst die erste Zeile der Matrix von links nach rechts mit den Elementen des <strong>R</strong> Vektors gefüllt und dann die zweite Zeile usw. bis alle Elemente des Vektors auf die Matrix verteilt sind.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># Zeilenweise Definition von A (byrow = TRUE)</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a>A <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">0</span>,</span>
-<span id="cb2-3"><a href="#cb2-3"></a>             <span class="dv">1</span>,<span class="dv">6</span>,<span class="dv">5</span>),</span>
-<span id="cb2-4"><a href="#cb2-4"></a>             <span class="at">nrow =</span> <span class="dv">2</span>,</span>
-<span id="cb2-5"><a href="#cb2-5"></a>             <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb2-6"><a href="#cb2-6"></a><span class="fu">print</span>(A)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># Zeilenweise Definition von A (byrow = TRUE)</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>A <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">0</span>,</span>
+<span id="cb3-3"><a href="#cb3-3"></a>             <span class="dv">1</span>,<span class="dv">6</span>,<span class="dv">5</span>),</span>
+<span id="cb3-4"><a href="#cb3-4"></a>             <span class="at">nrow =</span> <span class="dv">2</span>,</span>
+<span id="cb3-5"><a href="#cb3-5"></a>             <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="fu">print</span>(A)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3]
+[1,]    2    3    0
+[2,]    1    6    5</code></pre>
+</div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># Zeilenweise Definition von B</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a>B <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">0</span>,</span>
-<span id="cb3-3"><a href="#cb3-3"></a>            <span class="sc">-</span><span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">0</span>),</span>
-<span id="cb3-4"><a href="#cb3-4"></a>            <span class="at">nrow =</span> <span class="dv">2</span>,</span>
-<span id="cb3-5"><a href="#cb3-5"></a>            <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb3-6"><a href="#cb3-6"></a><span class="fu">print</span>(B)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># Zeilenweise Definition von B</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>B <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">0</span>,</span>
+<span id="cb5-3"><a href="#cb5-3"></a>            <span class="sc">-</span><span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">0</span>),</span>
+<span id="cb5-4"><a href="#cb5-4"></a>            <span class="at">nrow =</span> <span class="dv">2</span>,</span>
+<span id="cb5-5"><a href="#cb5-5"></a>            <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-6"><a href="#cb5-6"></a><span class="fu">print</span>(B)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3]
+[1,]    4    1    0
+[2,]   -4    2    0</code></pre>
+</div>
 </div>
 </section>
 <section id="sec-grundlegende-matrixoperationen" class="level2" data-number="9.2">
@@ -812,19 +827,24 @@ C
 \end{align}\]</span></p>
 <p>In <strong>R</strong> führt man obige Rechnung wie folgt aus.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># Definition</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a>A <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span>, <span class="sc">-</span><span class="dv">3</span>, <span class="dv">0</span>,</span>
-<span id="cb4-3"><a href="#cb4-3"></a>             <span class="dv">1</span>,  <span class="dv">6</span>, <span class="dv">5</span>),</span>
-<span id="cb4-4"><a href="#cb4-4"></a>             <span class="at">nrow  =</span> <span class="dv">2</span>,</span>
-<span id="cb4-5"><a href="#cb4-5"></a>             <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb4-6"><a href="#cb4-6"></a>B <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>( <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">0</span>,</span>
-<span id="cb4-7"><a href="#cb4-7"></a>             <span class="sc">-</span><span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">0</span>),</span>
-<span id="cb4-8"><a href="#cb4-8"></a>              <span class="at">nrow =</span> <span class="dv">2</span>,</span>
-<span id="cb4-9"><a href="#cb4-9"></a>             <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb4-10"><a href="#cb4-10"></a></span>
-<span id="cb4-11"><a href="#cb4-11"></a><span class="co"># Addition</span></span>
-<span id="cb4-12"><a href="#cb4-12"></a>C <span class="ot">=</span> A <span class="sc">+</span> B</span>
-<span id="cb4-13"><a href="#cb4-13"></a><span class="fu">print</span>(C)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># Definition</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>A <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span>, <span class="sc">-</span><span class="dv">3</span>, <span class="dv">0</span>,</span>
+<span id="cb7-3"><a href="#cb7-3"></a>             <span class="dv">1</span>,  <span class="dv">6</span>, <span class="dv">5</span>),</span>
+<span id="cb7-4"><a href="#cb7-4"></a>             <span class="at">nrow  =</span> <span class="dv">2</span>,</span>
+<span id="cb7-5"><a href="#cb7-5"></a>             <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-6"><a href="#cb7-6"></a>B <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>( <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">0</span>,</span>
+<span id="cb7-7"><a href="#cb7-7"></a>             <span class="sc">-</span><span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">0</span>),</span>
+<span id="cb7-8"><a href="#cb7-8"></a>              <span class="at">nrow =</span> <span class="dv">2</span>,</span>
+<span id="cb7-9"><a href="#cb7-9"></a>             <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-10"><a href="#cb7-10"></a></span>
+<span id="cb7-11"><a href="#cb7-11"></a><span class="co"># Addition</span></span>
+<span id="cb7-12"><a href="#cb7-12"></a>C <span class="ot">=</span> A <span class="sc">+</span> B</span>
+<span id="cb7-13"><a href="#cb7-13"></a><span class="fu">print</span>(C)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3]
+[1,]    6   -2    0
+[2,]   -3    8    5</code></pre>
+</div>
 </div>
 </section>
 <section id="matrixsubtraktion" class="level3" data-number="9.2.2">
@@ -893,9 +913,14 @@ D
 \end{align}\]</span></p>
 <p>In <strong>R</strong> führt man diese Rechnung wie folgt aus.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># Subtraktion</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a>D <span class="ot">=</span> A <span class="sc">-</span> B</span>
-<span id="cb5-3"><a href="#cb5-3"></a><span class="fu">print</span>(D)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># Subtraktion</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a>D <span class="ot">=</span> A <span class="sc">-</span> B</span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="fu">print</span>(D)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3]
+[1,]   -2   -4    0
+[2,]    5    4    5</code></pre>
+</div>
 </div>
 </section>
 <section id="skalarmultiplikation" class="level3" data-number="9.2.3">
@@ -962,18 +987,25 @@ cA
 \end{align}\]</span></p>
 <p>In <strong>R</strong> führt man diese Skalarmultiplikation aus wie folgt. </p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># Definitionen</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a>A <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">1</span>,<span class="dv">1</span>,</span>
-<span id="cb6-3"><a href="#cb6-3"></a>             <span class="dv">5</span>,<span class="dv">2</span>,<span class="dv">5</span>,</span>
-<span id="cb6-4"><a href="#cb6-4"></a>             <span class="dv">2</span>,<span class="dv">7</span>,<span class="dv">1</span>,</span>
-<span id="cb6-5"><a href="#cb6-5"></a>             <span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">2</span>),</span>
-<span id="cb6-6"><a href="#cb6-6"></a>           <span class="at">nrow =</span> <span class="dv">4</span>,</span>
-<span id="cb6-7"><a href="#cb6-7"></a>           <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb6-8"><a href="#cb6-8"></a>c <span class="ot">=</span> <span class="sc">-</span><span class="dv">3</span></span>
-<span id="cb6-9"><a href="#cb6-9"></a></span>
-<span id="cb6-10"><a href="#cb6-10"></a><span class="co"># Skalarmultiplikation</span></span>
-<span id="cb6-11"><a href="#cb6-11"></a>B <span class="ot">=</span> c<span class="sc">*</span>A</span>
-<span id="cb6-12"><a href="#cb6-12"></a><span class="fu">print</span>(B)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co"># Definitionen</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a>A <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">1</span>,<span class="dv">1</span>,</span>
+<span id="cb11-3"><a href="#cb11-3"></a>             <span class="dv">5</span>,<span class="dv">2</span>,<span class="dv">5</span>,</span>
+<span id="cb11-4"><a href="#cb11-4"></a>             <span class="dv">2</span>,<span class="dv">7</span>,<span class="dv">1</span>,</span>
+<span id="cb11-5"><a href="#cb11-5"></a>             <span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">2</span>),</span>
+<span id="cb11-6"><a href="#cb11-6"></a>           <span class="at">nrow =</span> <span class="dv">4</span>,</span>
+<span id="cb11-7"><a href="#cb11-7"></a>           <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb11-8"><a href="#cb11-8"></a>c <span class="ot">=</span> <span class="sc">-</span><span class="dv">3</span></span>
+<span id="cb11-9"><a href="#cb11-9"></a></span>
+<span id="cb11-10"><a href="#cb11-10"></a><span class="co"># Skalarmultiplikation</span></span>
+<span id="cb11-11"><a href="#cb11-11"></a>B <span class="ot">=</span> c<span class="sc">*</span>A</span>
+<span id="cb11-12"><a href="#cb11-12"></a><span class="fu">print</span>(B)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3]
+[1,]   -9   -3   -3
+[2,]  -15   -6  -15
+[3,]   -6  -21   -3
+[4,]   -9  -12   -6</code></pre>
+</div>
 </div>
 <p>Mithilfe der Definition von Matrixaddition und Skalarmultiplikation ist es möglich, einen Vektorraum zu definieren, dessen Elemente die reellen Matrizen sind. Insbesondere legt diese Definition auch die Rechenregeln beim Umgang mit Matrixaddition und Skalarmultiplikation fest.</p>
 <div id="thm-vektorraum-der-reellwertigen-Matrizen" class="theorem">
@@ -1052,16 +1084,26 @@ A^{T} :=
 (a_{22}) = \left(a_{22}\right)^T.
 \end{equation}\]</span> In <strong>R</strong> führt man die Transposition einer Matrix wie folgt durch.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># Definition</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a>A <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">0</span>,</span>
-<span id="cb7-3"><a href="#cb7-3"></a>             <span class="dv">1</span>,<span class="dv">6</span>,<span class="dv">5</span>),</span>
-<span id="cb7-4"><a href="#cb7-4"></a>           <span class="at">nrow =</span> <span class="dv">2</span>,</span>
-<span id="cb7-5"><a href="#cb7-5"></a>           <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb7-6"><a href="#cb7-6"></a><span class="fu">print</span>(A)</span>
-<span id="cb7-7"><a href="#cb7-7"></a></span>
-<span id="cb7-8"><a href="#cb7-8"></a><span class="co"># Transposition</span></span>
-<span id="cb7-9"><a href="#cb7-9"></a>AT <span class="ot">=</span> <span class="fu">t</span>(A)</span>
-<span id="cb7-10"><a href="#cb7-10"></a><span class="fu">print</span>(AT)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="co"># Definition</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a>A <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">0</span>,</span>
+<span id="cb13-3"><a href="#cb13-3"></a>             <span class="dv">1</span>,<span class="dv">6</span>,<span class="dv">5</span>),</span>
+<span id="cb13-4"><a href="#cb13-4"></a>           <span class="at">nrow =</span> <span class="dv">2</span>,</span>
+<span id="cb13-5"><a href="#cb13-5"></a>           <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb13-6"><a href="#cb13-6"></a><span class="fu">print</span>(A)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3]
+[1,]    2    3    0
+[2,]    1    6    5</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="co"># Transposition</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a>AT <span class="ot">=</span> <span class="fu">t</span>(A)</span>
+<span id="cb15-3"><a href="#cb15-3"></a><span class="fu">print</span>(AT)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2]
+[1,]    2    1
+[2,]    3    6
+[3,]    0    5</code></pre>
+</div>
 </div>
 <p>Schließlich gelten in der Verbindung mit der Matrixaddition, Matrixsubtraktion und der Skalarmultiplikation folgende Rechenregeln, wie man sich an Beispielen klar macht:</p>
 <ol type="1">
@@ -1176,20 +1218,25 @@ C
 \end{align}\]</span></p>
 <p>In <strong>R</strong> nutzt man für die Matrixmultiplikation den <code>%*%</code> Operator.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co"># Definitionen</span></span>
-<span id="cb8-2"><a href="#cb8-2"></a>A <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span>,<span class="sc">-</span><span class="dv">3</span>,<span class="dv">0</span>,</span>
-<span id="cb8-3"><a href="#cb8-3"></a>             <span class="dv">1</span>, <span class="dv">6</span>,<span class="dv">5</span>),</span>
-<span id="cb8-4"><a href="#cb8-4"></a>           <span class="at">nrow  =</span> <span class="dv">2</span>,</span>
-<span id="cb8-5"><a href="#cb8-5"></a>           <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb8-6"><a href="#cb8-6"></a>B <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>( <span class="dv">4</span>,<span class="dv">2</span>,</span>
-<span id="cb8-7"><a href="#cb8-7"></a>             <span class="sc">-</span><span class="dv">1</span>,<span class="dv">0</span>,</span>
-<span id="cb8-8"><a href="#cb8-8"></a>              <span class="dv">1</span>,<span class="dv">3</span>),</span>
-<span id="cb8-9"><a href="#cb8-9"></a>           <span class="at">nrow  =</span> <span class="dv">3</span>,</span>
-<span id="cb8-10"><a href="#cb8-10"></a>           <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb8-11"><a href="#cb8-11"></a></span>
-<span id="cb8-12"><a href="#cb8-12"></a><span class="co"># Matrixmultiplikation</span></span>
-<span id="cb8-13"><a href="#cb8-13"></a>C <span class="ot">=</span> A <span class="sc">%*%</span> B</span>
-<span id="cb8-14"><a href="#cb8-14"></a><span class="fu">print</span>(C)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="co"># Definitionen</span></span>
+<span id="cb17-2"><a href="#cb17-2"></a>A <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span>,<span class="sc">-</span><span class="dv">3</span>,<span class="dv">0</span>,</span>
+<span id="cb17-3"><a href="#cb17-3"></a>             <span class="dv">1</span>, <span class="dv">6</span>,<span class="dv">5</span>),</span>
+<span id="cb17-4"><a href="#cb17-4"></a>           <span class="at">nrow  =</span> <span class="dv">2</span>,</span>
+<span id="cb17-5"><a href="#cb17-5"></a>           <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb17-6"><a href="#cb17-6"></a>B <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>( <span class="dv">4</span>,<span class="dv">2</span>,</span>
+<span id="cb17-7"><a href="#cb17-7"></a>             <span class="sc">-</span><span class="dv">1</span>,<span class="dv">0</span>,</span>
+<span id="cb17-8"><a href="#cb17-8"></a>              <span class="dv">1</span>,<span class="dv">3</span>),</span>
+<span id="cb17-9"><a href="#cb17-9"></a>           <span class="at">nrow  =</span> <span class="dv">3</span>,</span>
+<span id="cb17-10"><a href="#cb17-10"></a>           <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb17-11"><a href="#cb17-11"></a></span>
+<span id="cb17-12"><a href="#cb17-12"></a><span class="co"># Matrixmultiplikation</span></span>
+<span id="cb17-13"><a href="#cb17-13"></a>C <span class="ot">=</span> A <span class="sc">%*%</span> B</span>
+<span id="cb17-14"><a href="#cb17-14"></a><span class="fu">print</span>(C)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2]
+[1,]   11    4
+[2,]    3   17</code></pre>
+</div>
 </div>
 <p>Für <span class="math inline">\(D\)</span> ergibt sich weiterhin <span class="math display">\[\begin{align}
 \begin{split}
@@ -1256,25 +1303,35 @@ D
 \end{align}\]</span></p>
 <p>In <strong>R</strong> überprüft man diese Rechnung wie folgt.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># Definitionen</span></span>
-<span id="cb9-2"><a href="#cb9-2"></a>A <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span>,<span class="sc">-</span><span class="dv">3</span>,<span class="dv">0</span>,</span>
-<span id="cb9-3"><a href="#cb9-3"></a>             <span class="dv">1</span>, <span class="dv">6</span>,<span class="dv">5</span>),</span>
-<span id="cb9-4"><a href="#cb9-4"></a>           <span class="at">nrow  =</span> <span class="dv">2</span>,</span>
-<span id="cb9-5"><a href="#cb9-5"></a>           <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb9-6"><a href="#cb9-6"></a>B <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>( <span class="dv">4</span>,<span class="dv">2</span>,</span>
-<span id="cb9-7"><a href="#cb9-7"></a>             <span class="sc">-</span><span class="dv">1</span>,<span class="dv">0</span>,</span>
-<span id="cb9-8"><a href="#cb9-8"></a>              <span class="dv">1</span>,<span class="dv">3</span>),</span>
-<span id="cb9-9"><a href="#cb9-9"></a>           <span class="at">nrow  =</span> <span class="dv">3</span>,</span>
-<span id="cb9-10"><a href="#cb9-10"></a>           <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb9-11"><a href="#cb9-11"></a></span>
-<span id="cb9-12"><a href="#cb9-12"></a><span class="co"># Matrixmultiplikation</span></span>
-<span id="cb9-13"><a href="#cb9-13"></a>D <span class="ot">=</span> B <span class="sc">%*%</span> A</span>
-<span id="cb9-14"><a href="#cb9-14"></a><span class="fu">print</span>(D)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="co"># Definitionen</span></span>
+<span id="cb19-2"><a href="#cb19-2"></a>A <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span>,<span class="sc">-</span><span class="dv">3</span>,<span class="dv">0</span>,</span>
+<span id="cb19-3"><a href="#cb19-3"></a>             <span class="dv">1</span>, <span class="dv">6</span>,<span class="dv">5</span>),</span>
+<span id="cb19-4"><a href="#cb19-4"></a>           <span class="at">nrow  =</span> <span class="dv">2</span>,</span>
+<span id="cb19-5"><a href="#cb19-5"></a>           <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb19-6"><a href="#cb19-6"></a>B <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>( <span class="dv">4</span>,<span class="dv">2</span>,</span>
+<span id="cb19-7"><a href="#cb19-7"></a>             <span class="sc">-</span><span class="dv">1</span>,<span class="dv">0</span>,</span>
+<span id="cb19-8"><a href="#cb19-8"></a>              <span class="dv">1</span>,<span class="dv">3</span>),</span>
+<span id="cb19-9"><a href="#cb19-9"></a>           <span class="at">nrow  =</span> <span class="dv">3</span>,</span>
+<span id="cb19-10"><a href="#cb19-10"></a>           <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb19-11"><a href="#cb19-11"></a></span>
+<span id="cb19-12"><a href="#cb19-12"></a><span class="co"># Matrixmultiplikation</span></span>
+<span id="cb19-13"><a href="#cb19-13"></a>D <span class="ot">=</span> B <span class="sc">%*%</span> A</span>
+<span id="cb19-14"><a href="#cb19-14"></a><span class="fu">print</span>(D)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3]
+[1,]   10    0   10
+[2,]   -2    3    0
+[3,]    5   15   15</code></pre>
+</div>
 </div>
 <p>Ist allerdings eine Matrixmultiplikation aufgrund nicht-adäquater Matrizengrößen nicht definiert, so lässt sich diese auch nicht numerisch auswerten.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="co"># Beispiel für eine undefinierte Matrixmultiplikation</span></span>
-<span id="cb10-2"><a href="#cb10-2"></a>E <span class="ot">=</span> <span class="fu">t</span>(A) <span class="sc">%*%</span> B      <span class="co"># (3 x 2)(3 x 2)</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="co"># Beispiel für eine undefinierte Matrixmultiplikation</span></span>
+<span id="cb21-2"><a href="#cb21-2"></a>E <span class="ot">=</span> <span class="fu">t</span>(A) <span class="sc">%*%</span> B      <span class="co"># (3 x 2)(3 x 2)</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in `t(A) %*% B`:
+! nicht passende Argumente</code></pre>
+</div>
 </div>
 <p>Folgendes Theorem, das wir nicht beweisen wollen, stellt den Bezug zwischen dem Skalarprodukt zweier Vektoren und der Multiplikation zweier Matrizen her. Dieser ergibt sich im Wesentlichen durch die Identifikation von <span class="math inline">\(\mathbb{R}^{n}\)</span> und <span class="math inline">\(\mathbb{R}^{n \times 1}\)</span> und der Tatsache, dass nach Definition der Eintrag <span class="math inline">\((AB)_{ij}\)</span> im Produkt von <span class="math inline">\(A \in \mathbb{R}^{n \times m}\)</span> und <span class="math inline">\(B \in \mathbb{R}^{m \times k}\)</span> dem Vektorskalarprodukt der <span class="math inline">\(i\)</span>ten Spalte von <span class="math inline">\(A^T\)</span> und der <span class="math inline">\(j\)</span>ten Spalte von <span class="math inline">\(B\)</span> entspricht.</p>
 <div id="thm-matrixmultiplikation-skalarprodukt" class="theorem">
@@ -1452,7 +1509,7 @@ b_{ij}
 A^{-1}A = AA^{-1} = I_n
 \end{equation}\]</span> ist. Die Matrix <span class="math inline">\(A^{-1}\)</span> heißt die <em>inverse Matrix von <span class="math inline">\(A\)</span></em>.</p>
 </div>
-<p>Man beachte, dass sich die Begriffe der inversen Matrix und der Invertierbarkeit <em>nur</em> auf quadratische Matrizen beziehen. Insbesondere können quadratische Matrizen invertierbar sein, müssen es aber nicht sein (lineare Gleichungssysteme können also Lösungen haben, müssen es aber nicht). Nicht invertierbare Matrizen nennt man auch <em>singuläre</em> Matrizen, invertierbare Matrizen manchmal auch <em>nicht-singuläre</em> Matrizen. Schließlich beachte man, dass <a href="#def-invertierbare-matrix-und-inverse-matrix" class="quarto-xref">Definition&nbsp;<span class="quarto-unresolved-ref">def-invertierbare-matrix-und-inverse-matrix</span></a> lediglich aussagt, was eine inverse Matrix ist, aber nicht wie man sie berechnet.</p>
+<p>Man beachte, dass sich die Begriffe der inversen Matrix und der Invertierbarkeit <em>nur</em> auf quadratische Matrizen beziehen. Insbesondere können quadratische Matrizen invertierbar sein, müssen es aber nicht sein (lineare Gleichungssysteme können also Lösungen haben, müssen es aber nicht). Nicht invertierbare Matrizen nennt man auch <em>singuläre</em> Matrizen, invertierbare Matrizen manchmal auch <em>nicht-singuläre</em> Matrizen. Schließlich beachte man, dass <a href="#def-invertierbare-matrix-und-inverse-matrix" class="quarto-xref">Definition&nbsp;<span>9.8</span></a> lediglich aussagt, was eine inverse Matrix ist, aber nicht wie man sie berechnet.</p>
 <p><strong>Beispiel für eine invertierbare Matrix</strong></p>
 <p>Die Matrix <span class="math display">\[\begin{equation}
 A := \begin{pmatrix} 2.0 &amp; 1.0 \\ 3.0 &amp; 4.0 \end{pmatrix}
@@ -1483,28 +1540,45 @@ B := \begin{pmatrix} 1 &amp; 0 \\ 0 &amp; 0 \end{pmatrix}
 <p><strong>Zum Berechnen inverser Matrizen</strong></p>
 <p><span class="math inline">\(2 \times 2\)</span> bis etwa <span class="math inline">\(5 \times 5\)</span> Matrizen kann man prinzipiell per Hand invertieren, dazu stellt die Lineare Algebra verschiedene Verfahren bereit. Wir wollen hier auf eine Einführung in die Matrizeninvertierung per Hand verzichten, da in der Anwendung Matrizen standardmäßig numerisch invertiert werden. Die numerische Matrixinversion ist dann auch ein großes Feld der Forschung zur Numerischen Mathematik, die eine Vielzahl von Algorithmen zu diesem Zweck bereitstellt. In <strong>R</strong> werden Matrizen per default mit der Funktion <code>solve()</code>, in Anlehnung an das Lösen linearer Gleichungssysteme, invertiert. Für das obige Beispiel einer invertierbaren Matrix ergibt sich dabei folgender <strong>R</strong> Code.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co"># Definition</span></span>
-<span id="cb11-2"><a href="#cb11-2"></a>A <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>,</span>
-<span id="cb11-3"><a href="#cb11-3"></a>             <span class="dv">3</span>,<span class="dv">4</span>),</span>
-<span id="cb11-4"><a href="#cb11-4"></a>           <span class="at">nrow  =</span> <span class="dv">2</span>,</span>
-<span id="cb11-5"><a href="#cb11-5"></a>           <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb11-6"><a href="#cb11-6"></a></span>
-<span id="cb11-7"><a href="#cb11-7"></a><span class="co"># Berechnen von A^{-1}</span></span>
-<span id="cb11-8"><a href="#cb11-8"></a><span class="fu">print</span>(<span class="fu">solve</span>(A))</span>
-<span id="cb11-9"><a href="#cb11-9"></a></span>
-<span id="cb11-10"><a href="#cb11-10"></a><span class="co"># Überprüfen der Eigenschaften einer inversen Matrix</span></span>
-<span id="cb11-11"><a href="#cb11-11"></a><span class="fu">print</span>(<span class="fu">solve</span>(A) <span class="sc">%*%</span> A)</span>
-<span id="cb11-12"><a href="#cb11-12"></a></span>
-<span id="cb11-13"><a href="#cb11-13"></a><span class="co"># Bei der umgekehrten Berechnung ergeben sich kleine Rundungsfehler</span></span>
-<span id="cb11-14"><a href="#cb11-14"></a><span class="fu">print</span>(A <span class="sc">%*%</span> <span class="fu">solve</span>(A))</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="co"># Definition</span></span>
+<span id="cb23-2"><a href="#cb23-2"></a>A <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>,</span>
+<span id="cb23-3"><a href="#cb23-3"></a>             <span class="dv">3</span>,<span class="dv">4</span>),</span>
+<span id="cb23-4"><a href="#cb23-4"></a>           <span class="at">nrow  =</span> <span class="dv">2</span>,</span>
+<span id="cb23-5"><a href="#cb23-5"></a>           <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb23-6"><a href="#cb23-6"></a></span>
+<span id="cb23-7"><a href="#cb23-7"></a><span class="co"># Berechnen von A^{-1}</span></span>
+<span id="cb23-8"><a href="#cb23-8"></a><span class="fu">print</span>(<span class="fu">solve</span>(A))</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2]
+[1,]  0.8 -0.2
+[2,] -0.6  0.4</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="co"># Überprüfen der Eigenschaften einer inversen Matrix</span></span>
+<span id="cb25-2"><a href="#cb25-2"></a><span class="fu">print</span>(<span class="fu">solve</span>(A) <span class="sc">%*%</span> A)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2]
+[1,]    1    0
+[2,]    0    1</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="co"># Bei der umgekehrten Berechnung ergeben sich kleine Rundungsfehler</span></span>
+<span id="cb27-2"><a href="#cb27-2"></a><span class="fu">print</span>(A <span class="sc">%*%</span> <span class="fu">solve</span>(A))</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1]          [,2]
+[1,]    1 -5.551115e-17
+[2,]    0  1.000000e+00</code></pre>
+</div>
 </div>
 <p>Nicht-invertierbare Matrizen sind dabei natürlich auch numerisch nicht-invertierbar, wie folgende Fehlermeldung in <strong>R</strong> bezüglich obigen Beispiels einer nicht-invertierbaren Matrix demonstriert.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>B <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">0</span>,</span>
-<span id="cb12-2"><a href="#cb12-2"></a>             <span class="dv">0</span>,<span class="dv">0</span>),</span>
-<span id="cb12-3"><a href="#cb12-3"></a>           <span class="at">nrow  =</span> <span class="dv">2</span>,</span>
-<span id="cb12-4"><a href="#cb12-4"></a>           <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb12-5"><a href="#cb12-5"></a><span class="fu">solve</span>(B)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a>B <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">0</span>,</span>
+<span id="cb29-2"><a href="#cb29-2"></a>             <span class="dv">0</span>,<span class="dv">0</span>),</span>
+<span id="cb29-3"><a href="#cb29-3"></a>           <span class="at">nrow  =</span> <span class="dv">2</span>,</span>
+<span id="cb29-4"><a href="#cb29-4"></a>           <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb29-5"><a href="#cb29-5"></a><span class="fu">solve</span>(B)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in `solve.default()`:
+! Lapackroutine dgesv: System ist genau singulär: U[2,2] = 0</code></pre>
+</div>
 </div>
 </section>
 <section id="sec-determinanten" class="level2" data-number="9.5">
@@ -1633,27 +1707,34 @@ C :=
 \end{equation}\]</span></p>
 <p>In <strong>R</strong> rechnet man dies mithilfe der <code>det()</code> Funktion wie folgt nach.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="co"># Matrixdefinition und Determinantenberechnung</span></span>
-<span id="cb13-2"><a href="#cb13-2"></a>A <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>,</span>
-<span id="cb13-3"><a href="#cb13-3"></a>             <span class="dv">3</span>,<span class="dv">4</span>),</span>
-<span id="cb13-4"><a href="#cb13-4"></a>           <span class="at">nrow =</span> <span class="dv">2</span>,</span>
-<span id="cb13-5"><a href="#cb13-5"></a>           <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb13-6"><a href="#cb13-6"></a><span class="fu">det</span>(A)</span>
-<span id="cb13-7"><a href="#cb13-7"></a></span>
-<span id="cb13-8"><a href="#cb13-8"></a><span class="co"># Matrixdefinition und Determinantenberechnung</span></span>
-<span id="cb13-9"><a href="#cb13-9"></a>B <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">0</span>,</span>
-<span id="cb13-10"><a href="#cb13-10"></a>             <span class="dv">0</span>,<span class="dv">0</span>),</span>
-<span id="cb13-11"><a href="#cb13-11"></a>           <span class="at">nrow =</span> <span class="dv">2</span>,</span>
-<span id="cb13-12"><a href="#cb13-12"></a>           <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb13-13"><a href="#cb13-13"></a><span class="fu">det</span>(B)</span>
-<span id="cb13-14"><a href="#cb13-14"></a></span>
-<span id="cb13-15"><a href="#cb13-15"></a><span class="co"># Matrixdefinition und Determinantenberechnung</span></span>
-<span id="cb13-16"><a href="#cb13-16"></a>C <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">0</span>,<span class="dv">0</span>,</span>
-<span id="cb13-17"><a href="#cb13-17"></a>             <span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,</span>
-<span id="cb13-18"><a href="#cb13-18"></a>             <span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">3</span>),</span>
-<span id="cb13-19"><a href="#cb13-19"></a>           <span class="at">nrow =</span> <span class="dv">3</span>,</span>
-<span id="cb13-20"><a href="#cb13-20"></a>           <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb13-21"><a href="#cb13-21"></a><span class="fu">det</span>(C)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a><span class="co"># Matrixdefinition und Determinantenberechnung</span></span>
+<span id="cb31-2"><a href="#cb31-2"></a>A <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>,</span>
+<span id="cb31-3"><a href="#cb31-3"></a>             <span class="dv">3</span>,<span class="dv">4</span>),</span>
+<span id="cb31-4"><a href="#cb31-4"></a>           <span class="at">nrow =</span> <span class="dv">2</span>,</span>
+<span id="cb31-5"><a href="#cb31-5"></a>           <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb31-6"><a href="#cb31-6"></a><span class="fu">det</span>(A)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="co"># Matrixdefinition und Determinantenberechnung</span></span>
+<span id="cb33-2"><a href="#cb33-2"></a>B <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">0</span>,</span>
+<span id="cb33-3"><a href="#cb33-3"></a>             <span class="dv">0</span>,<span class="dv">0</span>),</span>
+<span id="cb33-4"><a href="#cb33-4"></a>           <span class="at">nrow =</span> <span class="dv">2</span>,</span>
+<span id="cb33-5"><a href="#cb33-5"></a>           <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb33-6"><a href="#cb33-6"></a><span class="fu">det</span>(B)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a><span class="co"># Matrixdefinition und Determinantenberechnung</span></span>
+<span id="cb35-2"><a href="#cb35-2"></a>C <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">0</span>,<span class="dv">0</span>,</span>
+<span id="cb35-3"><a href="#cb35-3"></a>             <span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,</span>
+<span id="cb35-4"><a href="#cb35-4"></a>             <span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">3</span>),</span>
+<span id="cb35-5"><a href="#cb35-5"></a>           <span class="at">nrow =</span> <span class="dv">3</span>,</span>
+<span id="cb35-6"><a href="#cb35-6"></a>           <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb35-7"><a href="#cb35-7"></a><span class="fu">det</span>(C)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6</code></pre>
+</div>
 </div>
 <p>Für Determinanten bestehen zahlreiche Rechenregeln im Zusammenspiel mit Matrixmultiplikation und Matrixinversion. Ohne Beweis stellen wir diese in folgendem Theorem zusammen.</p>
 <div id="thm-rechenregeln-für-determinanten" class="theorem">
@@ -1703,7 +1784,7 @@ A_3 =
 \lvert A_2 \rvert= 2\cdot 2 - 0 \cdot 0 = 4, \quad
 \lvert A_3 \rvert = 2\cdot 2 - 2 \cdot 2 = 0.
 \end{equation}\]</span></p>
-<p><a href="#fig-determinanten" class="quarto-xref">Abbildung&nbsp;<span class="quarto-unresolved-ref">fig-determinanten</span></a> visualisiert die entsprechende Intuition.</p>
+<p><a href="#fig-determinanten" class="quarto-xref">Abbildung&nbsp;<span>9.1</span></a> visualisiert die entsprechende Intuition.</p>
 <div id="fig-determinanten" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-determinanten-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1892,7 +1973,7 @@ A(cv) = \lambda(cv).
 </div>
 <p>Um nun die Uneindeutigkeit in der Definition des zu einem Eigenwert zugeordneten Eigenvektors aufzulösen, nutzen wir die Konvention, nur diejenigen Vektoren als Eigenvektoren zu einem Eigenwert <span class="math inline">\(\lambda\)</span> zu betrachten, die die Länge 1 haben, für die also gilt, dass <span class="math display">\[\begin{equation}
 \Vert v \Vert = 1.
-\end{equation}\]</span> Sollten wir also einen Eigenvektor <span class="math inline">\(v\)</span> zu einem Eigenwert <span class="math inline">\(\lambda\)</span> einer Matrix <span class="math inline">\(A\)</span> finden, der nicht von der Länge 1 ist, so können wir ihn immer mit <span class="math inline">\(\Vert v \Vert^{-1}\)</span> multiplizieren. Der resultierende Vektor <span class="math inline">\(v' = v/\Vert v \Vert\)</span> hat dann die Länge 1 und ist nach <a href="#thm-multiplikativität-von-eigenvektoren" class="quarto-xref">Theorem&nbsp;<span class="quarto-unresolved-ref">thm-multiplikativität-von-eigenvektoren</span></a> ebenso ein Eigenvektor von <span class="math inline">\(A\)</span> zum Eigenwert <span class="math inline">\(\lambda\)</span>. Bevor wir uns der Bestimmung von Eigenwerten und Eigenvektoren widmen, wollen wir die Konzepte von Eigenwert und Eigenvektor für den Fall einer <span class="math inline">\(2 \times 2\)</span> Matrix an einem Beispiel veranschaulichen.</p>
+\end{equation}\]</span> Sollten wir also einen Eigenvektor <span class="math inline">\(v\)</span> zu einem Eigenwert <span class="math inline">\(\lambda\)</span> einer Matrix <span class="math inline">\(A\)</span> finden, der nicht von der Länge 1 ist, so können wir ihn immer mit <span class="math inline">\(\Vert v \Vert^{-1}\)</span> multiplizieren. Der resultierende Vektor <span class="math inline">\(v' = v/\Vert v \Vert\)</span> hat dann die Länge 1 und ist nach <a href="#thm-multiplikativität-von-eigenvektoren" class="quarto-xref">Theorem&nbsp;<span>9.15</span></a> ebenso ein Eigenvektor von <span class="math inline">\(A\)</span> zum Eigenwert <span class="math inline">\(\lambda\)</span>. Bevor wir uns der Bestimmung von Eigenwerten und Eigenvektoren widmen, wollen wir die Konzepte von Eigenwert und Eigenvektor für den Fall einer <span class="math inline">\(2 \times 2\)</span> Matrix an einem Beispiel veranschaulichen.</p>
 </section>
 <section id="beispiel" class="level3 unnumbered">
 <h3 class="unnumbered anchored" data-anchor-id="beispiel">Beispiel</h3>
@@ -1946,7 +2027,7 @@ Av
 &amp; =
 \lambda v.
 \end{split}
-\end{align}\]</span> Inspektion von <a href="#fig-eigenvektor" class="quarto-xref">Abbildung&nbsp;<span class="quarto-unresolved-ref">fig-eigenvektor</span></a> zeigt dementsprechend, dass für die hier definierte Matrix <span class="math inline">\(A\)</span> die Vektoren <span class="math inline">\(v\)</span> und <span class="math inline">\(Av\)</span> in die gleiche Richtung zeigen, dass aber <span class="math inline">\(Av\)</span> um den Faktor <span class="math inline">\(\lambda\)</span> länger ist als <span class="math inline">\(v\)</span>.</p>
+\end{align}\]</span> Inspektion von <a href="#fig-eigenvektor" class="quarto-xref">Abbildung&nbsp;<span>9.2</span></a> zeigt dementsprechend, dass für die hier definierte Matrix <span class="math inline">\(A\)</span> die Vektoren <span class="math inline">\(v\)</span> und <span class="math inline">\(Av\)</span> in die gleiche Richtung zeigen, dass aber <span class="math inline">\(Av\)</span> um den Faktor <span class="math inline">\(\lambda\)</span> länger ist als <span class="math inline">\(v\)</span>.</p>
 <p>Der Vektor <span class="math display">\[\begin{equation}
 w := \begin{pmatrix} 1 \\ 0 \end{pmatrix}
 \end{equation}\]</span> dagegen hat zwar die Länge 1, ist aber im Gegensatz zu <span class="math inline">\(v\)</span> kein Eigenvektor von <span class="math inline">\(A\)</span>, da es im Falle von <span class="math display">\[\begin{equation}
@@ -1958,7 +2039,7 @@ Aw =
 \begin{pmatrix} 1 \\ 0 \end{pmatrix}
 =
 \begin{pmatrix} 2 \\ 1 \end{pmatrix}
-\end{equation}\]</span> keinen Skalar <span class="math inline">\(\lambda\)</span> geben kann, der mit Null, dem zweiten Eintrag von <span class="math inline">\(w\)</span>, multipliziert einen Wert ungleich Null ergeben kann. Inspektion von <a href="#fig-eigenvektor" class="quarto-xref">Abbildung&nbsp;<span class="quarto-unresolved-ref">fig-eigenvektor</span></a> zeigt dementsprechend, dass der aus der Multiplikation von <span class="math inline">\(w\)</span> mit <span class="math inline">\(A\)</span> resultierende Vektor in eine andere Richtung zeigt als <span class="math inline">\(w\)</span>.</p>
+\end{equation}\]</span> keinen Skalar <span class="math inline">\(\lambda\)</span> geben kann, der mit Null, dem zweiten Eintrag von <span class="math inline">\(w\)</span>, multipliziert einen Wert ungleich Null ergeben kann. Inspektion von <a href="#fig-eigenvektor" class="quarto-xref">Abbildung&nbsp;<span>9.2</span></a> zeigt dementsprechend, dass der aus der Multiplikation von <span class="math inline">\(w\)</span> mit <span class="math inline">\(A\)</span> resultierende Vektor in eine andere Richtung zeigt als <span class="math inline">\(w\)</span>.</p>
 <div id="fig-eigenvektor" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-eigenvektor-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1996,7 +2077,7 @@ f : \mathbb{R}^m \to \mathbb{R}^m, x \mapsto (A - \lambda I_m)x
 (A - \lambda_i^* I_m)v_i^* = 0_m
 \end{equation}\]</span> nach <span class="math inline">\(v_i^*\)</span> einen Eigenvektor zum Eigenwert <span class="math inline">\(\lambda_i^*\)</span> ergibt.</p>
 </div>
-<p>Allgemein müssen zur Bestimmung von Eigenwerten und Eigenvektoren also Polynomnullstellen bestimmt und lineare Gleichungssysteme gelöst werden. Dies kann für kleine Matrizen mit <span class="math inline">\(m \le 4\)</span> durchaus manuell geschehen. Die in der Anwendung auftretenden Matrizen sind jedoch meist weitaus größer, so dass zur Eigenanalyse numerische Verfahren der Nullstellenbestimmung und des Lösens linearer Gleichungssysteme eingesetzt werden, die zum Beispiel in Funktionen wie <strong>R</strong>’s <code>eigen()</code>, <strong>SciPy’s</strong> <code>linalg.eig()</code> oder <strong>Julia</strong>’s <code>eigvals()</code> und <code>eigvecs()</code> genutzt werden. Für Details zu diesen Verfahren verweisen wir auf die weiterführende Literatur, zum Beispiel <span class="citation" data-cites="burden2016">Burden et al. (<a href="#ref-burden2016" role="doc-biblioref">2016</a>)</span> und <span class="citation" data-cites="richter2017">Richter &amp; Wick (<a href="#ref-richter2017" role="doc-biblioref">2017</a>)</span>. Wir wollen <a href="#thm-bestimmung-von-eigenwerten-und-eigenvektoren" class="quarto-xref">Theorem&nbsp;<span class="quarto-unresolved-ref">thm-bestimmung-von-eigenwerten-und-eigenvektoren</span></a> hier lediglich anhand eines Beispiels illustrieren.</p>
+<p>Allgemein müssen zur Bestimmung von Eigenwerten und Eigenvektoren also Polynomnullstellen bestimmt und lineare Gleichungssysteme gelöst werden. Dies kann für kleine Matrizen mit <span class="math inline">\(m \le 4\)</span> durchaus manuell geschehen. Die in der Anwendung auftretenden Matrizen sind jedoch meist weitaus größer, so dass zur Eigenanalyse numerische Verfahren der Nullstellenbestimmung und des Lösens linearer Gleichungssysteme eingesetzt werden, die zum Beispiel in Funktionen wie <strong>R</strong>’s <code>eigen()</code>, <strong>SciPy’s</strong> <code>linalg.eig()</code> oder <strong>Julia</strong>’s <code>eigvals()</code> und <code>eigvecs()</code> genutzt werden. Für Details zu diesen Verfahren verweisen wir auf die weiterführende Literatur, zum Beispiel <span class="citation" data-cites="burden2016">Burden et al. (<a href="#ref-burden2016" role="doc-biblioref">2016</a>)</span> und <span class="citation" data-cites="richter2017">Richter &amp; Wick (<a href="#ref-richter2017" role="doc-biblioref">2017</a>)</span>. Wir wollen <a href="#thm-bestimmung-von-eigenwerten-und-eigenvektoren" class="quarto-xref">Theorem&nbsp;<span>9.16</span></a> hier lediglich anhand eines Beispiels illustrieren.</p>
 </section>
 <section id="beispiel-1" class="level3 unnumbered">
 <h3 class="unnumbered anchored" data-anchor-id="beispiel-1">Beispiel</h3>
@@ -2005,7 +2086,7 @@ A :=
 \begin{pmatrix}
 2 &amp; 1 \\
 1 &amp; 2\end{pmatrix}
-\end{equation}\]</span> Wir wollen zunächst die Eigenwerte von <span class="math inline">\(A\)</span> berechnen. Nach <a href="#thm-bestimmung-von-eigenwerten-und-eigenvektoren" class="quarto-xref">Theorem&nbsp;<span class="quarto-unresolved-ref">thm-bestimmung-von-eigenwerten-und-eigenvektoren</span></a> sind dies die Nullstellen des charakteristischen Polynoms von <span class="math inline">\(A\)</span>. Wir berechnen also zunächst das charakteristische Polynom von <span class="math inline">\(A\)</span> durch <span class="math display">\[\begin{equation}
+\end{equation}\]</span> Wir wollen zunächst die Eigenwerte von <span class="math inline">\(A\)</span> berechnen. Nach <a href="#thm-bestimmung-von-eigenwerten-und-eigenvektoren" class="quarto-xref">Theorem&nbsp;<span>9.16</span></a> sind dies die Nullstellen des charakteristischen Polynoms von <span class="math inline">\(A\)</span>. Wir berechnen also zunächst das charakteristische Polynom von <span class="math inline">\(A\)</span> durch <span class="math display">\[\begin{equation}
 \chi_A(\lambda)
 =
 \left\vert
@@ -2081,46 +2162,69 @@ v_1^Tv_2 = 0 \mbox{ und } \Vert v_1 \Vert = \Vert v_2 \Vert = 1.
 \end{equation}\]</span></p>
 <p>Folgender <strong>R</strong> Code demonstriert die Bestimmung der Eigenwerte und Eigenvektoren der hier betrachteten Matrix mithilfe der <code>eigen()</code> Funktion.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="co"># Matrixdefinition</span></span>
-<span id="cb14-2"><a href="#cb14-2"></a>A <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>,</span>
-<span id="cb14-3"><a href="#cb14-3"></a>             <span class="dv">1</span>,<span class="dv">2</span>),</span>
-<span id="cb14-4"><a href="#cb14-4"></a>           <span class="at">nrow  =</span> <span class="dv">2</span>,</span>
-<span id="cb14-5"><a href="#cb14-5"></a>           <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb14-6"><a href="#cb14-6"></a></span>
-<span id="cb14-7"><a href="#cb14-7"></a><span class="co"># Eigenanalyse</span></span>
-<span id="cb14-8"><a href="#cb14-8"></a><span class="fu">eigen</span>(A)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="co"># Matrixdefinition</span></span>
+<span id="cb37-2"><a href="#cb37-2"></a>A <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>,</span>
+<span id="cb37-3"><a href="#cb37-3"></a>             <span class="dv">1</span>,<span class="dv">2</span>),</span>
+<span id="cb37-4"><a href="#cb37-4"></a>           <span class="at">nrow  =</span> <span class="dv">2</span>,</span>
+<span id="cb37-5"><a href="#cb37-5"></a>           <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb37-6"><a href="#cb37-6"></a></span>
+<span id="cb37-7"><a href="#cb37-7"></a><span class="co"># Eigenanalyse</span></span>
+<span id="cb37-8"><a href="#cb37-8"></a><span class="fu">eigen</span>(A)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>eigen() decomposition
+$values
+[1] 3 1
+
+$vectors
+          [,1]       [,2]
+[1,] 0.7071068 -0.7071068
+[2,] 0.7071068  0.7071068</code></pre>
 </div>
-<p>Zum Abschluss dieses Abschnittes betrachten wir zwei technische Theoreme, die Aussagen zum Zusammenhang spezieller Matrixprodukte und ihrer Eigenwerte und Eigenvektoren machen. Wir benötigen diese Theoreme im Kontext der Kanonischen Korrelationsanalyse (<a href="#sec-kanonische-korrelationsanalyse" class="quarto-xref"><span class="quarto-unresolved-ref">sec-kanonische-korrelationsanalyse</span></a>).</p>
+</div>
+<p>Zum Abschluss dieses Abschnittes betrachten wir zwei technische Theoreme, die Aussagen zum Zusammenhang spezieller Matrixprodukte und ihrer Eigenwerte und Eigenvektoren machen. Wir benötigen diese Theoreme im Kontext der Kanonischen Korrelationsanalyse (<a href="../_part_7/704-Kanonische-Korrelationsanalyse.html" class="quarto-xref"><span>Kapitel 48</span></a>).</p>
 <div id="thm-eigenwerte-und-eigenvektoren-von-matrixprodukten" class="theorem">
 <p><span class="theorem-title"><strong>Theorem 9.17 (Eigenwerte und Eigenvektoren von Matrixprodukten)</strong></span> Für <span class="math inline">\(A \in \mathbb{R}^{n \times m}\)</span> und <span class="math inline">\(B \in \mathbb{R}^{m \times n}\)</span> sind die Eigenwerte von <span class="math inline">\(AB \in \mathbb{R}^{n \times n}\)</span> und <span class="math inline">\(BA \in \mathbb{R}^{m \times m}\)</span> gleich. Weiterhin gilt, dass für einen Eigenvektor <span class="math inline">\(v\)</span> zu einem von Null verschiedenen Eigenwert <span class="math inline">\(\lambda\)</span> von <span class="math inline">\(AB\)</span> <span class="math inline">\(w := Bv\)</span> ein Eigenvektor von <span class="math inline">\(BA\)</span> zum Eigenwert <span class="math inline">\(\lambda\)</span> ist.</p>
 </div>
 <p>Für einen Beweis verweisen wir auf <span class="citation" data-cites="mardia1979">Mardia et al. (<a href="#ref-mardia1979" role="doc-biblioref">1979</a>)</span>, S. 468. Wir demonstrieren die Aussage dieses Theorems anhand untenstehenden <strong>R</strong> Codes.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>A   <span class="ot">=</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">nrow =</span> <span class="dv">2</span>,  <span class="at">byrow =</span> T)           <span class="co"># Matrix A \in \mathbb{R}^{2 x 3}</span></span>
-<span id="cb15-2"><a href="#cb15-2"></a>B   <span class="ot">=</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">ncol =</span> <span class="dv">2</span>,  <span class="at">byrow =</span> T)           <span class="co"># Matrix B \in \mathbb{R}^{3 x 2}</span></span>
-<span id="cb15-3"><a href="#cb15-3"></a>EAB <span class="ot">=</span> <span class="fu">eigen</span>(A <span class="sc">%*%</span> B)                              <span class="co"># Eigenanalyse von AB \in \mathbb{R}^{2 \times 2}</span></span>
-<span id="cb15-4"><a href="#cb15-4"></a>EBA <span class="ot">=</span> <span class="fu">eigen</span>(B <span class="sc">%*%</span> A)                              <span class="co"># Eigenanalyse von BA \in \mathbb{R}^{3 \times 3}</span></span>
-<span id="cb15-5"><a href="#cb15-5"></a>w   <span class="ot">=</span> B <span class="sc">%*%</span> EAB<span class="sc">$</span>vectors[,<span class="dv">1</span>]                       <span class="co"># Eigenvektor von BA</span></span>
-<span id="cb15-6"><a href="#cb15-6"></a><span class="fu">cat</span>(<span class="st">"Eigenwerte von AB :"</span>  , EAB<span class="sc">$</span>values[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>],</span>
-<span id="cb15-7"><a href="#cb15-7"></a>    <span class="st">"</span><span class="sc">\n</span><span class="st">Eigenwerte von BA :"</span>, EBA<span class="sc">$</span>values[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>],</span>
-<span id="cb15-8"><a href="#cb15-8"></a>    <span class="st">"</span><span class="sc">\n</span><span class="st">BAw mit w = Bv    :"</span>, B <span class="sc">%*%</span> A <span class="sc">%*%</span> w,</span>
-<span id="cb15-9"><a href="#cb15-9"></a>    <span class="st">"</span><span class="sc">\n</span><span class="st">lw mit w = Bv     :"</span>, EBA<span class="sc">$</span>values[<span class="dv">1</span>] <span class="sc">*</span> w)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a>A   <span class="ot">=</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">nrow =</span> <span class="dv">2</span>,  <span class="at">byrow =</span> T)           <span class="co"># Matrix A \in \mathbb{R}^{2 x 3}</span></span>
+<span id="cb39-2"><a href="#cb39-2"></a>B   <span class="ot">=</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">ncol =</span> <span class="dv">2</span>,  <span class="at">byrow =</span> T)           <span class="co"># Matrix B \in \mathbb{R}^{3 x 2}</span></span>
+<span id="cb39-3"><a href="#cb39-3"></a>EAB <span class="ot">=</span> <span class="fu">eigen</span>(A <span class="sc">%*%</span> B)                              <span class="co"># Eigenanalyse von AB \in \mathbb{R}^{2 \times 2}</span></span>
+<span id="cb39-4"><a href="#cb39-4"></a>EBA <span class="ot">=</span> <span class="fu">eigen</span>(B <span class="sc">%*%</span> A)                              <span class="co"># Eigenanalyse von BA \in \mathbb{R}^{3 \times 3}</span></span>
+<span id="cb39-5"><a href="#cb39-5"></a>w   <span class="ot">=</span> B <span class="sc">%*%</span> EAB<span class="sc">$</span>vectors[,<span class="dv">1</span>]                       <span class="co"># Eigenvektor von BA</span></span>
+<span id="cb39-6"><a href="#cb39-6"></a><span class="fu">cat</span>(<span class="st">"Eigenwerte von AB :"</span>  , EAB<span class="sc">$</span>values[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>],</span>
+<span id="cb39-7"><a href="#cb39-7"></a>    <span class="st">"</span><span class="sc">\n</span><span class="st">Eigenwerte von BA :"</span>, EBA<span class="sc">$</span>values[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>],</span>
+<span id="cb39-8"><a href="#cb39-8"></a>    <span class="st">"</span><span class="sc">\n</span><span class="st">BAw mit w = Bv    :"</span>, B <span class="sc">%*%</span> A <span class="sc">%*%</span> w,</span>
+<span id="cb39-9"><a href="#cb39-9"></a>    <span class="st">"</span><span class="sc">\n</span><span class="st">lw mit w = Bv     :"</span>, EBA<span class="sc">$</span>values[<span class="dv">1</span>] <span class="sc">*</span> w)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Eigenwerte von AB : 85.57934 0.4206623 
+Eigenwerte von BA : 85.57934 0.4206623 
+BAw mit w = Bv    : -191.1333 -416.7586 -642.3839 
+lw mit w = Bv     : -191.1333 -416.7586 -642.3839</code></pre>
+</div>
 </div>
 <div id="thm-eigenwert-und-eigenvektor-eines-matrixvektorprodukts" class="theorem">
 <p><span class="theorem-title"><strong>Theorem 9.18</strong></span> Für <span class="math inline">\(A \in \mathbb{R}^{n \times m}, B \in \mathbb{R}^{p \times n}, a \in \mathbb{R}^m\)</span> und <span class="math inline">\(b \in \mathbb{R}^p\)</span> gilt, dass der einzige von Null verschiedene Eigenwert von <span class="math inline">\(Aab^TB \in \mathbb{R}^{n \times n}\)</span> gleich <span class="math inline">\(b^T BAa\)</span> mit zugehörigem Eigenvektor <span class="math inline">\(Aa\)</span> ist.</p>
 </div>
 <p>Für einen Beweis verweisen wir auf <span class="citation" data-cites="mardia1979">Mardia et al. (<a href="#ref-mardia1979" role="doc-biblioref">1979</a>)</span>, S. 468. Wir demonstrieren die Aussage dieses Theorems anhand untenstehenden <strong>R</strong> Codes.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>A      <span class="ot">=</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">nrow =</span> <span class="dv">2</span>,  <span class="at">byrow =</span> T)     <span class="co"># Matrix A \in \mathbb{R}^{2 x 3}</span></span>
-<span id="cb16-2"><a href="#cb16-2"></a>B      <span class="ot">=</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>, <span class="at">ncol =</span> <span class="dv">2</span>,  <span class="at">byrow =</span> T)     <span class="co"># Matrix B \in \mathbb{R}^{4 x 2}</span></span>
-<span id="cb16-3"><a href="#cb16-3"></a>a      <span class="ot">=</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">nrow =</span> <span class="dv">3</span>,  <span class="at">byrow =</span> T)     <span class="co"># Vektor a \in \mathbb{R}^{3 x 1}</span></span>
-<span id="cb16-4"><a href="#cb16-4"></a>b      <span class="ot">=</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="at">nrow =</span> <span class="dv">4</span>,  <span class="at">byrow =</span> T)     <span class="co"># Vektor b \in \mathbb{R}^{4 x 1}</span></span>
-<span id="cb16-5"><a href="#cb16-5"></a>EAabTB <span class="ot">=</span> <span class="fu">eigen</span>(A <span class="sc">%*%</span> a <span class="sc">%*%</span> <span class="fu">t</span>(b) <span class="sc">%*%</span> B)         <span class="co"># Eigenanalyse von Aab^TB \in \mathbb{R}^{2 x 2}</span></span>
-<span id="cb16-6"><a href="#cb16-6"></a><span class="fu">cat</span>(<span class="st">"Eigenwerte von AabTB :"</span>, EAabTB<span class="sc">$</span>values,</span>
-<span id="cb16-7"><a href="#cb16-7"></a>    <span class="st">"</span><span class="sc">\n</span><span class="st">bTBAa                :"</span>, <span class="fu">t</span>(b) <span class="sc">%*%</span> B <span class="sc">%*%</span> A <span class="sc">%*%</span> a,</span>
-<span id="cb16-8"><a href="#cb16-8"></a>    <span class="st">"</span><span class="sc">\n</span><span class="st">Aa                   :"</span>, A <span class="sc">%*%</span> a,</span>
-<span id="cb16-9"><a href="#cb16-9"></a>    <span class="st">"</span><span class="sc">\n</span><span class="st">(AabTB)Aa            :"</span>,(A <span class="sc">%*%</span> a <span class="sc">%*%</span> <span class="fu">t</span>(b) <span class="sc">%*%</span> B) <span class="sc">%*%</span> A <span class="sc">%*%</span> a,            <span class="co"># Mv</span></span>
-<span id="cb16-10"><a href="#cb16-10"></a>    <span class="st">"</span><span class="sc">\n</span><span class="st">(bTBAa)Aa            :"</span>,<span class="fu">as.vector</span>((<span class="fu">t</span>(b) <span class="sc">%*%</span> B <span class="sc">%*%</span> A <span class="sc">%*%</span> a)) <span class="sc">*</span> (A <span class="sc">%*%</span> a)) <span class="co"># = \lambda v</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1"></a>A      <span class="ot">=</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">nrow =</span> <span class="dv">2</span>,  <span class="at">byrow =</span> T)     <span class="co"># Matrix A \in \mathbb{R}^{2 x 3}</span></span>
+<span id="cb41-2"><a href="#cb41-2"></a>B      <span class="ot">=</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>, <span class="at">ncol =</span> <span class="dv">2</span>,  <span class="at">byrow =</span> T)     <span class="co"># Matrix B \in \mathbb{R}^{4 x 2}</span></span>
+<span id="cb41-3"><a href="#cb41-3"></a>a      <span class="ot">=</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">nrow =</span> <span class="dv">3</span>,  <span class="at">byrow =</span> T)     <span class="co"># Vektor a \in \mathbb{R}^{3 x 1}</span></span>
+<span id="cb41-4"><a href="#cb41-4"></a>b      <span class="ot">=</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="at">nrow =</span> <span class="dv">4</span>,  <span class="at">byrow =</span> T)     <span class="co"># Vektor b \in \mathbb{R}^{4 x 1}</span></span>
+<span id="cb41-5"><a href="#cb41-5"></a>EAabTB <span class="ot">=</span> <span class="fu">eigen</span>(A <span class="sc">%*%</span> a <span class="sc">%*%</span> <span class="fu">t</span>(b) <span class="sc">%*%</span> B)         <span class="co"># Eigenanalyse von Aab^TB \in \mathbb{R}^{2 x 2}</span></span>
+<span id="cb41-6"><a href="#cb41-6"></a><span class="fu">cat</span>(<span class="st">"Eigenwerte von AabTB :"</span>, EAabTB<span class="sc">$</span>values,</span>
+<span id="cb41-7"><a href="#cb41-7"></a>    <span class="st">"</span><span class="sc">\n</span><span class="st">bTBAa                :"</span>, <span class="fu">t</span>(b) <span class="sc">%*%</span> B <span class="sc">%*%</span> A <span class="sc">%*%</span> a,</span>
+<span id="cb41-8"><a href="#cb41-8"></a>    <span class="st">"</span><span class="sc">\n</span><span class="st">Aa                   :"</span>, A <span class="sc">%*%</span> a,</span>
+<span id="cb41-9"><a href="#cb41-9"></a>    <span class="st">"</span><span class="sc">\n</span><span class="st">(AabTB)Aa            :"</span>,(A <span class="sc">%*%</span> a <span class="sc">%*%</span> <span class="fu">t</span>(b) <span class="sc">%*%</span> B) <span class="sc">%*%</span> A <span class="sc">%*%</span> a,            <span class="co"># Mv</span></span>
+<span id="cb41-10"><a href="#cb41-10"></a>    <span class="st">"</span><span class="sc">\n</span><span class="st">(bTBAa)Aa            :"</span>,<span class="fu">as.vector</span>((<span class="fu">t</span>(b) <span class="sc">%*%</span> B <span class="sc">%*%</span> A <span class="sc">%*%</span> a)) <span class="sc">*</span> (A <span class="sc">%*%</span> a)) <span class="co"># = \lambda v</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Eigenwerte von AabTB : 2620 0 
+bTBAa                : 2620 
+Aa                   : 14 32 
+(AabTB)Aa            : 36680 83840 
+(bTBAa)Aa            : 36680 83840</code></pre>
+</div>
 </div>
 </section>
 </section>
@@ -2152,7 +2256,7 @@ ac = bc.
 \Leftrightarrow q_i^T S q_j     =  \lambda_j q_i^Tq_j
 \end{equation}\]</span> gelten. Sowohl <span class="math inline">\(\lambda_i q_i^Tq_j\)</span> als auch <span class="math inline">\(\lambda_j q_i^Tq_j\)</span> sind also mit <span class="math inline">\(q_i^T Sq_j\)</span> und damit auch miteinander identisch.</p>
 </div>
-<p>Offenbar haben wir nur Aussage (2) von <a href="#thm-eigenwerte-und-eigenvektoren-symmetrischer-matrizen" class="quarto-xref">Theorem&nbsp;<span class="quarto-unresolved-ref">thm-eigenwerte-und-eigenvektoren-symmetrischer-matrizen</span></a> bewiesen. Ein vollständiger Beweis des Theorems findet sich zum Beispiel bei <span class="citation" data-cites="strang2009">Strang (<a href="#ref-strang2009" role="doc-biblioref">2009</a>)</span>. Wir merken außerdem an, dass, weil wir nach Konvention Eigenvektoren der Länge 1 betrachten, die in <a href="#thm-eigenwerte-und-eigenvektoren-symmetrischer-matrizen" class="quarto-xref">Theorem&nbsp;<span class="quarto-unresolved-ref">thm-eigenwerte-und-eigenvektoren-symmetrischer-matrizen</span></a> angesprochenen orthogonalen Eigenvektoren insbesondere auch orthonormal sind. Mithilfe von <a href="#thm-eigenwerte-und-eigenvektoren-symmetrischer-matrizen" class="quarto-xref">Theorem&nbsp;<span class="quarto-unresolved-ref">thm-eigenwerte-und-eigenvektoren-symmetrischer-matrizen</span></a> können wir nun die Orthonormalzerlegung einer symmetrischen Matrix formulieren und ihre Existenz beweisen.</p>
+<p>Offenbar haben wir nur Aussage (2) von <a href="#thm-eigenwerte-und-eigenvektoren-symmetrischer-matrizen" class="quarto-xref">Theorem&nbsp;<span>9.19</span></a> bewiesen. Ein vollständiger Beweis des Theorems findet sich zum Beispiel bei <span class="citation" data-cites="strang2009">Strang (<a href="#ref-strang2009" role="doc-biblioref">2009</a>)</span>. Wir merken außerdem an, dass, weil wir nach Konvention Eigenvektoren der Länge 1 betrachten, die in <a href="#thm-eigenwerte-und-eigenvektoren-symmetrischer-matrizen" class="quarto-xref">Theorem&nbsp;<span>9.19</span></a> angesprochenen orthogonalen Eigenvektoren insbesondere auch orthonormal sind. Mithilfe von <a href="#thm-eigenwerte-und-eigenvektoren-symmetrischer-matrizen" class="quarto-xref">Theorem&nbsp;<span>9.19</span></a> können wir nun die Orthonormalzerlegung einer symmetrischen Matrix formulieren und ihre Existenz beweisen.</p>
 <div id="thm-orthonormale-zerlegung-einer-symmetrischen-matrix" class="theorem">
 <p><span class="theorem-title"><strong>Theorem 9.20 (Orthonormalzerlegung einer symmetrischen Matrix)</strong></span> <span class="math inline">\(S \in \mathbb{R}^{m \times m}\)</span> sei eine symmetrische Matrix mit <span class="math inline">\(m\)</span> verschiedenen Eigenwerten. Dann kann <span class="math inline">\(S\)</span> geschrieben werden als <span class="math display">\[\begin{equation}
 S = Q \Lambda Q^T,
@@ -2260,7 +2364,7 @@ v_1 &amp; v_2
 1 &amp; 2
 \end{pmatrix} \\
 &amp; = A
-\end{align*}\]</span> und wir haben <a href="#thm-orthonormale-zerlegung-einer-symmetrischen-matrix" class="quarto-xref">Theorem&nbsp;<span class="quarto-unresolved-ref">thm-orthonormale-zerlegung-einer-symmetrischen-matrix</span></a> für dieses Beispiel verifiziert.</p>
+\end{align*}\]</span> und wir haben <a href="#thm-orthonormale-zerlegung-einer-symmetrischen-matrix" class="quarto-xref">Theorem&nbsp;<span>9.20</span></a> für dieses Beispiel verifiziert.</p>
 <section id="symmetrische-quadratwurzel-einer-matrix" class="level3 unnumbered">
 <h3 class="unnumbered anchored" data-anchor-id="symmetrische-quadratwurzel-einer-matrix">Symmetrische Quadratwurzel einer Matrix</h3>
 <p>Die Definition der Orthonormalzerlegung einer symmetrischen Matrix erlaubt es, den Begriff der <em>symmetrischen Quadratwurzel einer Matrix</em> einzuführen.</p>
@@ -2271,7 +2375,7 @@ S^{r/s} = Q \Lambda^{r/s} Q^T \mbox{ mit } \Lambda^{r/s} = \mbox{diag}\left(\lam
 S^{1/2} = Q\Lambda^{1/2}Q^T \mbox{ mit } \Lambda^{1/2} = \mbox{diag}\left(\lambda_i^{1/2}\right).
 \end{equation}\]</span></p>
 </div>
-<p>Wir halten fest, dass mit <a href="#def-symmetrische-quadratwurzel-einer-matrix" class="quarto-xref">Definition&nbsp;<span class="quarto-unresolved-ref">def-symmetrische-quadratwurzel-einer-matrix</span></a> offenbar gilt, dass <span class="math display">\[\begin{equation}
+<p>Wir halten fest, dass mit <a href="#def-symmetrische-quadratwurzel-einer-matrix" class="quarto-xref">Definition&nbsp;<span>9.17</span></a> offenbar gilt, dass <span class="math display">\[\begin{equation}
 \left(S^{1/2} \right)^2
 = Q\Lambda^{1/2}Q^TQ\Lambda^{1/2}Q^T
 = Q\Lambda^{1/2}\Lambda^{1/2}Q^T

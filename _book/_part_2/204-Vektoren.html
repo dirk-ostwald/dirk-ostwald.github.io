@@ -621,7 +621,7 @@ window.Quarto = {
 
 <p>In diesem Abschnitt wollen wir nun mit den <strong>R</strong> Vektoren eine erste grundlegende Datenstruktur genauer kennenlernen. Viele Prinzipien, die am Beispiel von Vektoren erläutert werden können, übertragen sich sinngemäß auf komplexere Datenstrukturen in <strong>R</strong>, sodass ein kompetenter Umgang auch mit der hier betrachteten basalen Datenstruktur im Anwendungskontext unverzichtbar ist. Es sei angemerkt, dass sich der Begriff des <em>Vektors</em> in diesem Abschnitt streng auf die entsprechende <strong>R</strong> Datenstruktur, nicht aber auf das gleichnamige mathematische Objekt bezieht. Auch wenn <strong>R</strong> Vektoren in manchen Eigenschaften ihrem mathematischen Pendant ähneln und bestimmte Operationen zwischen <strong>R</strong> Vektoren Operationen zwischen den entsprechenden mathematischen Objekten abbilden können, so haben Vektoren in der imperativen Programmierung oft viel mehr und andere Eigenschaften als die entsprechenden mathematischen Objekte.</p>
 <p>Allgemein betrachten wir bei der Diskussion einer Datenstruktur immer zunächst, wie sie mithilfe von <strong>R</strong>-Code <em>erzeugt</em> wird, durch welche Eigenschaften sie <em>charakterisiert</em> ist, wie einzelne Elemente der Datenstruktur <em>indiziert</em> und bearbeitet werden können und welche <em>arithmetischen Operationen</em> für die Datenstruktur zulässig sind. Schließlich betrachten wir eventuelle weitere Besonderheiten der Datenstruktur. Im Kontext von <strong>R</strong> Vektoren sind dies beispielsweise die Begriffe der <em>Datentypangleichung (Coercion)</em>, des <em>Recyclings</em> oder die Repräsentation fehlender Werte in Datensätzen.</p>
-<p><strong>R</strong> Vektoren sind geordnete Folgen von Datenwerten. Die einzelnen Datenwerte eines Vektors heißen <em>Elemente</em> des Vektors. Vektoren, deren Elemente alle vom gleichen Datentyp sind, heißen <em>atomar</em>. Mit dem Begriff <em>Vektor</em> soll hier immer ein atomarer Vektor gemeint sein. Die zentralen Datentypen für Vektoren sind die oben eingeführten <em>numeric</em>, (<em>double</em>, <em>integer</em>), <em>logical</em> und <em>character</em>. <a href="#fig-vektoren" class="quarto-xref">Abbildung&nbsp;<span class="quarto-unresolved-ref">fig-vektoren</span></a> zeigt graphische Darstellungen entsprechender Vektoren.</p>
+<p><strong>R</strong> Vektoren sind geordnete Folgen von Datenwerten. Die einzelnen Datenwerte eines Vektors heißen <em>Elemente</em> des Vektors. Vektoren, deren Elemente alle vom gleichen Datentyp sind, heißen <em>atomar</em>. Mit dem Begriff <em>Vektor</em> soll hier immer ein atomarer Vektor gemeint sein. Die zentralen Datentypen für Vektoren sind die oben eingeführten <em>numeric</em>, (<em>double</em>, <em>integer</em>), <em>logical</em> und <em>character</em>. <a href="#fig-vektoren" class="quarto-xref">Abbildung&nbsp;<span>14.1</span></a> zeigt graphische Darstellungen entsprechender Vektoren.</p>
 <div id="fig-vektoren" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-vektoren-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -642,159 +642,276 @@ Abbildung&nbsp;14.1: Vektoren in <strong>R</strong>.
 <p>Elementarwerte vom Typ <code>numeric</code> können durch Zuweisung einer Zahl erzeugt werden. Per Default wird dabei ein Elementarwert vom Typ <code>double</code> erzeugt. Die Zahlen können dabei ohne Dezimalstellen, in Dezimalnotation oder in wissenschaftlicher Notation spezifiziert werden. Weitere mögliche Werte zur Erzeugung eines Elementarwerts vom Typ <code>double</code> sind <code>Inf</code> und <code>-Inf</code> für positiv und negativ Unendlich und <code>NaN</code> (Not-a-Number) als Platzhalter für numerische Werte.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>x <span class="ot">=</span> <span class="dv">1</span>                               <span class="co"># Einelementiger Vektor</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="fu">typeof</span>(x)                           <span class="co"># vom Typ double</span></span>
-<span id="cb2-3"><a href="#cb2-3"></a>y <span class="ot">=</span> <span class="fl">2.1e2</span>                           <span class="co"># Einelementiger Vektor</span></span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="fu">typeof</span>(y)                           <span class="co"># vom Typ double</span></span>
-<span id="cb2-5"><a href="#cb2-5"></a>z <span class="ot">=</span> <span class="cn">Inf</span>                             <span class="co"># Einelementiger Vektor</span></span>
-<span id="cb2-6"><a href="#cb2-6"></a><span class="fu">typeof</span>(z)                           <span class="co"># vom Typ double</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="fu">typeof</span>(x)                           <span class="co"># vom Typ double</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "double"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>y <span class="ot">=</span> <span class="fl">2.1e2</span>                           <span class="co"># Einelementiger Vektor</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="fu">typeof</span>(y)                           <span class="co"># vom Typ double</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "double"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>z <span class="ot">=</span> <span class="cn">Inf</span>                             <span class="co"># Einelementiger Vektor</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="fu">typeof</span>(z)                           <span class="co"># vom Typ double</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "double"</code></pre>
+</div>
 </div>
 <p>Numerische Elementarwerte vom Typ <code>integer</code> werden wie <code>double</code> ohne Dezimalstellen erzeugt, gefolgt von einem <code>L</code> für <code>long integer</code>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>x <span class="ot">=</span> <span class="dv">1</span>L                              <span class="co"># Einelementiger Vektor</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="fu">typeof</span>(x)                           <span class="co"># vom Typ integer</span></span>
-<span id="cb3-3"><a href="#cb3-3"></a>y <span class="ot">=</span> <span class="dv">200</span>L                            <span class="co"># Einelementiger Vektor</span></span>
-<span id="cb3-4"><a href="#cb3-4"></a><span class="fu">typeof</span>(y)                           <span class="co"># vom Typ integer</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>x <span class="ot">=</span> <span class="dv">1</span>L                              <span class="co"># Einelementiger Vektor</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="fu">typeof</span>(x)                           <span class="co"># vom Typ integer</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "integer"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>y <span class="ot">=</span> <span class="dv">200</span>L                            <span class="co"># Einelementiger Vektor</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="fu">typeof</span>(y)                           <span class="co"># vom Typ integer</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "integer"</code></pre>
+</div>
 </div>
 <p>Elementarwerte vom Typ <code>logical</code> können durch Zuweisung der logischen Werte <code>TRUE</code> oder <code>FALSE</code> bzw. abgekürzt <code>T</code> oder <code>F</code> erzeugt werden.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>x <span class="ot">=</span> <span class="cn">TRUE</span>                            <span class="co"># Einelementiger Vektor</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="fu">typeof</span>(x)                           <span class="co"># vom Typ logical</span></span>
-<span id="cb4-3"><a href="#cb4-3"></a>y <span class="ot">=</span> F                               <span class="co"># Einelementiger Vektor</span></span>
-<span id="cb4-4"><a href="#cb4-4"></a><span class="fu">typeof</span>(y)                           <span class="co"># vom Typ logical</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>x <span class="ot">=</span> <span class="cn">TRUE</span>                            <span class="co"># Einelementiger Vektor</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="fu">typeof</span>(x)                           <span class="co"># vom Typ logical</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "logical"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>y <span class="ot">=</span> F                               <span class="co"># Einelementiger Vektor</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a><span class="fu">typeof</span>(y)                           <span class="co"># vom Typ logical</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "logical"</code></pre>
+</div>
 </div>
 <p>Elementarwerte vom Typ <code>character</code> schließlich werden durch die Zuweisung von Werten in Hochkommata (<code>'a'</code>) oder Anführungszeichen (<code>"a"</code>) erzeugt.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>x <span class="ot">=</span> <span class="st">"a"</span>                             <span class="co"># Einelementiger Vektor</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a><span class="fu">typeof</span>(x)                           <span class="co"># vom Typ character</span></span>
-<span id="cb5-3"><a href="#cb5-3"></a>y <span class="ot">=</span> <span class="st">'test'</span>                          <span class="co"># Einelementiger Vektor</span></span>
-<span id="cb5-4"><a href="#cb5-4"></a><span class="fu">typeof</span>(y)                           <span class="co"># vom Typ character</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>x <span class="ot">=</span> <span class="st">"a"</span>                             <span class="co"># Einelementiger Vektor</span></span>
+<span id="cb16-2"><a href="#cb16-2"></a><span class="fu">typeof</span>(x)                           <span class="co"># vom Typ character</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "character"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>y <span class="ot">=</span> <span class="st">'test'</span>                          <span class="co"># Einelementiger Vektor</span></span>
+<span id="cb18-2"><a href="#cb18-2"></a><span class="fu">typeof</span>(y)                           <span class="co"># vom Typ character</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "character"</code></pre>
+</div>
 </div>
 <p>Um nun mehrere Elementarwerte in einem Vektor zusammenzufügen, konkateniert man sie mit der Funktion <code>c()</code>. Der Begriff der Konkatenation leitet sich dabei vom Lateinischen <em>catena</em> (“die Kette”) her.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>x <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>)                        <span class="co"># numeric vector [1,2,3]</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a>s <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>)                <span class="co"># character vector ["a", "b", "c"]</span></span>
-<span id="cb6-3"><a href="#cb6-3"></a>l <span class="ot">=</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>)                  <span class="co"># logical  vector [TRUE, FALSE]</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>x <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>)                        <span class="co"># numeric vector [1,2,3]</span></span>
+<span id="cb20-2"><a href="#cb20-2"></a>s <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>)                <span class="co"># character vector ["a", "b", "c"]</span></span>
+<span id="cb20-3"><a href="#cb20-3"></a>l <span class="ot">=</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>)                  <span class="co"># logical  vector [TRUE, FALSE]</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>x</span>
-<span id="cb7-2"><a href="#cb7-2"></a>s</span>
-<span id="cb7-3"><a href="#cb7-3"></a>l</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>x</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1 2 3</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>s</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "a" "b" "c"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>l</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  TRUE FALSE</code></pre>
+</div>
 </div>
 <p>Es können nicht nur Elementarwerte, sondern auch Vektoren mit Elementarwerten oder mit anderen Vektoren konkateniert werden. Mit obigem Vektor <code>x</code> erzeugt man beispielsweise folgende Vektoren <code>y</code> und <code>z</code>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>y <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">0</span>,x,<span class="dv">4</span>)                        <span class="co"># numeric vector [0,1,2,3,4] mit</span></span>
-<span id="cb8-2"><a href="#cb8-2"></a>z <span class="ot">=</span> <span class="fu">c</span>(x,y)                          <span class="co"># numeric vector [1,2,3,0,1,2,3,4]</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a>y <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">0</span>,x,<span class="dv">4</span>)                        <span class="co"># numeric vector [0,1,2,3,4] mit</span></span>
+<span id="cb27-2"><a href="#cb27-2"></a>z <span class="ot">=</span> <span class="fu">c</span>(x,y)                          <span class="co"># numeric vector [1,2,3,0,1,2,3,4]</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>y</span>
-<span id="cb9-2"><a href="#cb9-2"></a>z</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a>y</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0 1 2 3 4</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a>z</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1 2 3 0 1 2 3 4</code></pre>
+</div>
 </div>
 <p>Vektoren müssen nicht mit bereits bestehenden Werten erzeugt werden, sondern es können auch “leere” Vektoren von einem gewünschten Datentyp erzeugt werden. <strong>R</strong> stellt dafür die Funktionen <code>vector()</code> sowie <code>double()</code>, <code>integer()</code>, <code>logical()</code> und <code>character()</code> bereit. Dies ist potenziell hilfreich, um zu Beginn einer längeren Berechnung bereits Arbeitsspeicher des Computers belegt zu haben, sodass während der Programmausführung nicht nach Arbeitsspeicher gesucht werden muss, was unter Umständen die Programmlaufzeit erhöht.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="co"># Erzeugen "leerer" Vektoren mit vector()</span></span>
-<span id="cb10-2"><a href="#cb10-2"></a>v <span class="ot">=</span> <span class="fu">vector</span>(<span class="st">"double"</span>,<span class="dv">3</span>)              <span class="co"># double vector [0,0,0]</span></span>
-<span id="cb10-3"><a href="#cb10-3"></a>w <span class="ot">=</span> <span class="fu">vector</span>(<span class="st">"integer"</span>,<span class="dv">3</span>)             <span class="co"># integer vector [0,0,0]</span></span>
-<span id="cb10-4"><a href="#cb10-4"></a>l <span class="ot">=</span> <span class="fu">vector</span>(<span class="st">"logical"</span>,<span class="dv">2</span>)             <span class="co"># logical vector [FALSE, FALSE]</span></span>
-<span id="cb10-5"><a href="#cb10-5"></a>s <span class="ot">=</span> <span class="fu">vector</span>(<span class="st">"character"</span>,<span class="dv">4</span>)           <span class="co"># character vector ["", "", "", ""]</span></span>
-<span id="cb10-6"><a href="#cb10-6"></a></span>
-<span id="cb10-7"><a href="#cb10-7"></a><span class="co"># Alternatives Erzeugen "leerer Vektoren"</span></span>
-<span id="cb10-8"><a href="#cb10-8"></a>v <span class="ot">=</span> <span class="fu">double</span>(<span class="dv">3</span>)                       <span class="co"># double vector [0,0,0]</span></span>
-<span id="cb10-9"><a href="#cb10-9"></a>w <span class="ot">=</span> <span class="fu">integer</span>(<span class="dv">3</span>)                      <span class="co"># integer vector [0,0,0]</span></span>
-<span id="cb10-10"><a href="#cb10-10"></a>l <span class="ot">=</span> <span class="fu">logical</span>(<span class="dv">2</span>)                      <span class="co"># logical vector [FALSE, FALSE]</span></span>
-<span id="cb10-11"><a href="#cb10-11"></a>s <span class="ot">=</span> <span class="fu">character</span>(<span class="dv">4</span>)                    <span class="co"># character vector ["", "", "", ""]</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a><span class="co"># Erzeugen "leerer" Vektoren mit vector()</span></span>
+<span id="cb32-2"><a href="#cb32-2"></a>v <span class="ot">=</span> <span class="fu">vector</span>(<span class="st">"double"</span>,<span class="dv">3</span>)              <span class="co"># double vector [0,0,0]</span></span>
+<span id="cb32-3"><a href="#cb32-3"></a>w <span class="ot">=</span> <span class="fu">vector</span>(<span class="st">"integer"</span>,<span class="dv">3</span>)             <span class="co"># integer vector [0,0,0]</span></span>
+<span id="cb32-4"><a href="#cb32-4"></a>l <span class="ot">=</span> <span class="fu">vector</span>(<span class="st">"logical"</span>,<span class="dv">2</span>)             <span class="co"># logical vector [FALSE, FALSE]</span></span>
+<span id="cb32-5"><a href="#cb32-5"></a>s <span class="ot">=</span> <span class="fu">vector</span>(<span class="st">"character"</span>,<span class="dv">4</span>)           <span class="co"># character vector ["", "", "", ""]</span></span>
+<span id="cb32-6"><a href="#cb32-6"></a></span>
+<span id="cb32-7"><a href="#cb32-7"></a><span class="co"># Alternatives Erzeugen "leerer Vektoren"</span></span>
+<span id="cb32-8"><a href="#cb32-8"></a>v <span class="ot">=</span> <span class="fu">double</span>(<span class="dv">3</span>)                       <span class="co"># double vector [0,0,0]</span></span>
+<span id="cb32-9"><a href="#cb32-9"></a>w <span class="ot">=</span> <span class="fu">integer</span>(<span class="dv">3</span>)                      <span class="co"># integer vector [0,0,0]</span></span>
+<span id="cb32-10"><a href="#cb32-10"></a>l <span class="ot">=</span> <span class="fu">logical</span>(<span class="dv">2</span>)                      <span class="co"># logical vector [FALSE, FALSE]</span></span>
+<span id="cb32-11"><a href="#cb32-11"></a>s <span class="ot">=</span> <span class="fu">character</span>(<span class="dv">4</span>)                    <span class="co"># character vector ["", "", "", ""]</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Allerdings sind die so erzeugten “leeren” Vektoren nicht wirklich leer: <code>v</code> und <code>w</code> bestehen aus Nullen, <code>l</code> aus den logischen Werten <code>FALSE</code> und <code>s</code> aus den Zeichen <code>""</code>. Zur Initialisierung von Vektoren als Container und anschließender Befüllung im Rahmen eines Programms sind <code>vector()</code>, <code>double()</code>, <code>integer()</code>, <code>logical()</code> und <code>character()</code> deshalb nur bedingt geeignet: Übersieht der Code die Befüllung einzelner Einträge, so wird mit den von diesen Funktionen erzeugten Werten gerechnet, was nicht unbebedingt beabsichtig ist. In <a href="#sec-kontrollstrukturen" class="quarto-xref"><span class="quarto-unresolved-ref">sec-kontrollstrukturen</span></a> lernen wir eine Methode kennen, um Datenstrukturen zu initialisieren und dabei einigermaßen sicheren Code zu generieren.</p>
+<p>Allerdings sind die so erzeugten “leeren” Vektoren nicht wirklich leer: <code>v</code> und <code>w</code> bestehen aus Nullen, <code>l</code> aus den logischen Werten <code>FALSE</code> und <code>s</code> aus den Zeichen <code>""</code>. Zur Initialisierung von Vektoren als Container und anschließender Befüllung im Rahmen eines Programms sind <code>vector()</code>, <code>double()</code>, <code>integer()</code>, <code>logical()</code> und <code>character()</code> deshalb nur bedingt geeignet: Übersieht der Code die Befüllung einzelner Einträge, so wird mit den von diesen Funktionen erzeugten Werten gerechnet, was nicht unbebedingt beabsichtig ist. In <a href="208-Kontrollstrukturen.html" class="quarto-xref"><span>Kapitel 18</span></a> lernen wir eine Methode kennen, um Datenstrukturen zu initialisieren und dabei einigermaßen sicheren Code zu generieren.</p>
 <p><strong>Sequenzen</strong></p>
 <p>Ein häufiges Hilfsmittel in der Programmierung sind Vektoren, die Folgen von numerischen Werten, z.B. als Repräsentation der Definitionsmengen einer univariaten Funktion, darstellen. <strong>R</strong> stellt zu ihrer Erzeugung den sogenannten <em>Colonoperator</em> <code>:</code> und die Funktion <code>seq()</code> und ihre Varianten zur Verfügung.</p>
 <p>Der Colonoperators in der Form <code>a:b</code> erzeugt Sequenzen ganzzahliger Schritte zwischen <span class="math inline">\(a\)</span> und <span class="math inline">\(b\)</span> anhand von <span class="math display">\[\begin{equation}
 (s_i)_{i = 0,1,2...} \mbox{ mit } s_i = a + i \mbox{ für } i = 0,1,2,... \mbox{ und } s_i \le b.
 \end{equation}\]</span> Dabei meint “zwischen <code>a</code> und <code>b</code>” hier also speziell, dass <code>a</code> die erste Zahl der generierten Sequenz ist und <code>b</code> die maximal mögliche. Folgende Beispiele verdeutlichen dies</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>x <span class="ot">=</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">5</span>         <span class="co"># 0 ist Sequenzbeginn, 5 kann inkludiert werden</span></span>
-<span id="cb11-2"><a href="#cb11-2"></a>y <span class="ot">=</span> <span class="fl">1.5</span><span class="sc">:</span><span class="fl">6.1</span>     <span class="co"># 1.5 ist Sequenzbeginn, Sequenz endet bei 5.5 &lt; 6.1</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a>x <span class="ot">=</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">5</span>         <span class="co"># 0 ist Sequenzbeginn, 5 kann inkludiert werden</span></span>
+<span id="cb33-2"><a href="#cb33-2"></a>y <span class="ot">=</span> <span class="fl">1.5</span><span class="sc">:</span><span class="fl">6.1</span>     <span class="co"># 1.5 ist Sequenzbeginn, Sequenz endet bei 5.5 &lt; 6.1</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>x</span>
-<span id="cb12-2"><a href="#cb12-2"></a>y</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a>x</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0 1 2 3 4 5</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a>y</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.5 2.5 3.5 4.5 5.5</code></pre>
+</div>
 </div>
 <p>Die Funktion <code>seq()</code> mit der Syntax <code>seq(from, to, by)</code>, wobei <code>from</code> den Startwert, <code>to</code> den maximalen Endwert und <code>by</code> die Schrittweite bezeichnen, bietet weitere Möglichkeiten Sequenzen nicht nur ganzzahliger Schrittweiten zu erzeugen. Die folgenden Beispiele sollen dies verdeutlichen.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>x_1 <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">5</span>)                  <span class="co"># wie 0:5</span></span>
-<span id="cb13-2"><a href="#cb13-2"></a>x_2 <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="at">len =</span> <span class="dv">5</span>)          <span class="co"># 5 Zahlen zwischen 0 (inkl.) und 1 (inkl.)</span></span>
-<span id="cb13-3"><a href="#cb13-3"></a>x_3 <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">2</span>,<span class="at">by =</span> .<span class="dv">15</span>)         <span class="co"># 0.15 Schritte zwischen 0 (inkl.) und 2 (max.)</span></span>
-<span id="cb13-4"><a href="#cb13-4"></a>x_4 <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">0</span>,<span class="at">by =</span> <span class="sc">-</span>.<span class="dv">1</span>)         <span class="co"># -0.1 Schritte zwischen 1 (inkl.) und 0 (min.)</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a>x_1 <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">5</span>)                  <span class="co"># wie 0:5</span></span>
+<span id="cb38-2"><a href="#cb38-2"></a>x_2 <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="at">len =</span> <span class="dv">5</span>)          <span class="co"># 5 Zahlen zwischen 0 (inkl.) und 1 (inkl.)</span></span>
+<span id="cb38-3"><a href="#cb38-3"></a>x_3 <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">2</span>,<span class="at">by =</span> .<span class="dv">15</span>)         <span class="co"># 0.15 Schritte zwischen 0 (inkl.) und 2 (max.)</span></span>
+<span id="cb38-4"><a href="#cb38-4"></a>x_4 <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">0</span>,<span class="at">by =</span> <span class="sc">-</span>.<span class="dv">1</span>)         <span class="co"># -0.1 Schritte zwischen 1 (inkl.) und 0 (min.)</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>x_1</span>
-<span id="cb14-2"><a href="#cb14-2"></a>x_2</span>
-<span id="cb14-3"><a href="#cb14-3"></a>x_3</span>
-<span id="cb14-4"><a href="#cb14-4"></a>x_4</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a>x_1</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0 1 2 3 4 5</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1"></a>x_2</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.00 0.25 0.50 0.75 1.00</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1"></a>x_3</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 0.00 0.15 0.30 0.45 0.60 0.75 0.90 1.05 1.20 1.35 1.50 1.65 1.80 1.95</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1"></a>x_4</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 1.0 0.9 0.8 0.7 0.6 0.5 0.4 0.3 0.2 0.1 0.0</code></pre>
+</div>
 </div>
 <p>Die <code>seq()</code> Variante <code>seq.int()</code>kann zur Erzeugung von ganzzahligen Folgen genutzt werden und ist unter Umständen schneller als <code>seq()</code>. <code>seq_len()</code> erzeugt ganzzahlige Folgen einer vorgegebenen Länge, <code>seq_along()</code> generiert ganzzahlige Folgen anhand der Einträge eines Vektors.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>x_1 <span class="ot">=</span> <span class="fu">seq.int</span>(<span class="dv">0</span>,<span class="dv">5</span>)              <span class="co"># wie 0:5, [0,1,2,3,4,5]</span></span>
-<span id="cb15-2"><a href="#cb15-2"></a>x_2 <span class="ot">=</span> <span class="fu">seq_len</span>(<span class="dv">5</span>)                <span class="co"># Natuerliche Zahlen bis 5, [1,2,3,4,5]</span></span>
-<span id="cb15-3"><a href="#cb15-3"></a>x_3 <span class="ot">=</span> <span class="fu">seq_along</span>(<span class="fu">c</span>(<span class="st">"a"</span>,<span class="st">"b"</span>))     <span class="co"># wie seq_len(length(c("a", "b")))</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1"></a>x_1 <span class="ot">=</span> <span class="fu">seq.int</span>(<span class="dv">0</span>,<span class="dv">5</span>)              <span class="co"># wie 0:5, [0,1,2,3,4,5]</span></span>
+<span id="cb47-2"><a href="#cb47-2"></a>x_2 <span class="ot">=</span> <span class="fu">seq_len</span>(<span class="dv">5</span>)                <span class="co"># Natuerliche Zahlen bis 5, [1,2,3,4,5]</span></span>
+<span id="cb47-3"><a href="#cb47-3"></a>x_3 <span class="ot">=</span> <span class="fu">seq_along</span>(<span class="fu">c</span>(<span class="st">"a"</span>,<span class="st">"b"</span>))     <span class="co"># wie seq_len(length(c("a", "b")))</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>x_1</span>
-<span id="cb16-2"><a href="#cb16-2"></a>x_2</span>
-<span id="cb16-3"><a href="#cb16-3"></a>x_3</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1"></a>x_1</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0 1 2 3 4 5</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1"></a>x_2</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1 2 3 4 5</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1"></a>x_3</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1 2</code></pre>
+</div>
 </div>
 </section>
 <section id="sec-vektoren-charakterisierung" class="level2" data-number="14.2">
 <h2 data-number="14.2" class="anchored" data-anchor-id="sec-vektoren-charakterisierung"><span class="header-section-number">14.2</span> Charakterisierung</h2>
 <p>Zur Charakterisierung von Vektoren stehen mit <code>length()</code> und <code>typeof()</code> Funktionen bereit, die die Anzahl der Einträge eines Vektors und den Datentyp seiner Einträge ausgeben, wie folgende Beispiele verdeutlichen.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>x <span class="ot">=</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">10</span>                    <span class="co"># Vektor</span></span>
-<span id="cb17-2"><a href="#cb17-2"></a><span class="fu">length</span>(x)                   <span class="co"># Anzahl der Elemente des Vektors</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1"></a>x <span class="ot">=</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">10</span>                    <span class="co"># Vektor</span></span>
+<span id="cb54-2"><a href="#cb54-2"></a><span class="fu">length</span>(x)                   <span class="co"># Anzahl der Elemente des Vektors</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 11</code></pre>
+</div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>x <span class="ot">=</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>L                    <span class="co"># Vektor</span></span>
-<span id="cb18-2"><a href="#cb18-2"></a><span class="fu">typeof</span>(x)                   <span class="co"># Datentyp des atomic vectors</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1"></a>x <span class="ot">=</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>L                    <span class="co"># Vektor</span></span>
+<span id="cb56-2"><a href="#cb56-2"></a><span class="fu">typeof</span>(x)                   <span class="co"># Datentyp des atomic vectors</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "integer"</code></pre>
+</div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>y <span class="ot">=</span> <span class="fu">c</span>(T,F,T)                <span class="co"># Vektor</span></span>
-<span id="cb19-2"><a href="#cb19-2"></a><span class="fu">typeof</span>(y)                   <span class="co"># Der Datentyp des atomic vectors</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1"></a>y <span class="ot">=</span> <span class="fu">c</span>(T,F,T)                <span class="co"># Vektor</span></span>
+<span id="cb58-2"><a href="#cb58-2"></a><span class="fu">typeof</span>(y)                   <span class="co"># Der Datentyp des atomic vectors</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "logical"</code></pre>
+</div>
 </div>
 <p><code>is.logical()</code>, <code>is.double()</code>, <code>is.integer()</code>, <code>is.character()</code> testen den Datentyp eines Vektors und geben einen logischen Binärwert aus.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="fu">is.double</span>(x)                <span class="co"># Testen obigen Vektors</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1"></a><span class="fu">is.double</span>(x)                <span class="co"># Testen obigen Vektors</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE</code></pre>
+</div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="fu">is.logical</span>(y)               <span class="co"># Testen obigen Vektors</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1"></a><span class="fu">is.logical</span>(y)               <span class="co"># Testen obigen Vektors</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
 </div>
 <p><strong>Datentypangleichung (Coercion)</strong></p>
 <p>Versucht man in <strong>R</strong> verschiedene Datentypen in einem Vektor zu konkatenieren, zum Beispiel Elementarwerte vom Typ <code>numeric</code>, <code>character</code> und <code>logical</code>, so erzwingt <strong>R</strong> für den resultierenden Vektor einen einheitlichen Datentyp. Es gilt dabei folgende Rangfolge:</p>
 <p>Ist also zum Beispiel einer der Elementarwerte vom Typ <code>character</code>, so ist der resultierende Vektor vom Typ <code>character</code> und numerische oder logische Werte werden in diesen umgewandelt.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>x <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="st">"a"</span>, <span class="cn">TRUE</span>)             <span class="co"># Konkatenation verschiedener Datentypen</span></span>
-<span id="cb22-2"><a href="#cb22-2"></a><span class="fu">typeof</span>(x)                       <span class="co"># erzwungener Datentyp</span></span>
-<span id="cb22-3"><a href="#cb22-3"></a>x                               <span class="co"># character vector</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb64"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1"></a>x <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="st">"a"</span>, <span class="cn">TRUE</span>)             <span class="co"># Konkatenation verschiedener Datentypen</span></span>
+<span id="cb64-2"><a href="#cb64-2"></a><span class="fu">typeof</span>(x)                       <span class="co"># erzwungener Datentyp</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "character"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb66"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1"></a>x                               <span class="co"># character vector</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "1"    "a"    "TRUE"</code></pre>
+</div>
 </div>
 <p>Ist dagegen zum Beispiel einer der Elementarwerte vom Typ <code>integer</code> und ein anderer vom Typ <code>logical</code>, so ist der resultierende Vektor vom Typ <code>integer</code> und die logischen Werte werden in ganze Zahlen umgewandelt.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>x <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>L, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>)  <span class="co"># Kombination  gemischter Datentypen (integer schlaegt logical)</span></span>
-<span id="cb23-2"><a href="#cb23-2"></a><span class="fu">typeof</span>(x)               <span class="co"># Erzeugter Vektor ist vom Typ integer</span></span>
-<span id="cb23-3"><a href="#cb23-3"></a>x</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb68"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1"></a>x <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>L, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>)  <span class="co"># Kombination  gemischter Datentypen (integer schlaegt logical)</span></span>
+<span id="cb68-2"><a href="#cb68-2"></a><span class="fu">typeof</span>(x)               <span class="co"># Erzeugter Vektor ist vom Typ integer</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "integer"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb70"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1"></a>x</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1 1 0</code></pre>
+</div>
 </div>
 <p>Da <strong>R</strong> diese Datentypangleichung implizit vornimmt, sollte man darauf achten nur Werte gleichen Datentyps mit der Funktion <code>c()</code> zu konkatenieren. Um möglichst flexibel zu sein, nimmt <strong>R</strong> auch noch subtilere Datenangleichungen vor. So ist es zum Beispiel möglich, die Summe logischer Werte zu berechnen, wobei die logischen Werte <code>TRUE</code> und <code>FALSE</code> implizit als die numerischen Werte <code>0</code> und <code>1</code> behandelt werden.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>x <span class="ot">=</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">TRUE</span>)  <span class="co"># logical Vektor</span></span>
-<span id="cb24-2"><a href="#cb24-2"></a>s <span class="ot">=</span> <span class="fu">sum</span>(x)                      <span class="co"># Summation in integer gewandelter logical Elemente</span></span>
-<span id="cb24-3"><a href="#cb24-3"></a>s</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb72"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1"></a>x <span class="ot">=</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">TRUE</span>)  <span class="co"># logical Vektor</span></span>
+<span id="cb72-2"><a href="#cb72-2"></a>s <span class="ot">=</span> <span class="fu">sum</span>(x)                      <span class="co"># Summation in integer gewandelter logical Elemente</span></span>
+<span id="cb72-3"><a href="#cb72-3"></a>s</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3</code></pre>
+</div>
 </div>
 <p>Explizite Datentypangleichung erlauben die Funktionen <code>as.logical()</code>, <code>as.integer()</code>, <code>as.double()</code> und <code>as.character()</code>. Wendet man diese auf einen Vektor an, so ist der resultierende Vektor vom gewünschten Typ.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>x <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>)              <span class="co"># double Vektor</span></span>
-<span id="cb25-2"><a href="#cb25-2"></a><span class="fu">typeof</span>(x)</span>
-<span id="cb25-3"><a href="#cb25-3"></a>x</span>
-<span id="cb25-4"><a href="#cb25-4"></a>y <span class="ot">=</span> <span class="fu">as.logical</span>(x)           <span class="co"># ... umgewandelt in logical</span></span>
-<span id="cb25-5"><a href="#cb25-5"></a><span class="fu">typeof</span>(y)</span>
-<span id="cb25-6"><a href="#cb25-6"></a>y</span>
-<span id="cb25-7"><a href="#cb25-7"></a>z <span class="ot">=</span> <span class="fu">as.integer</span>(x)</span>
-<span id="cb25-8"><a href="#cb25-8"></a><span class="fu">typeof</span>(z)</span>
-<span id="cb25-9"><a href="#cb25-9"></a>z</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb74"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1"></a>x <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>)              <span class="co"># double Vektor</span></span>
+<span id="cb74-2"><a href="#cb74-2"></a><span class="fu">typeof</span>(x)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "double"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb76"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1"></a>x</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0 1 1 0</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb78"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1"></a>y <span class="ot">=</span> <span class="fu">as.logical</span>(x)           <span class="co"># ... umgewandelt in logical</span></span>
+<span id="cb78-2"><a href="#cb78-2"></a><span class="fu">typeof</span>(y)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "logical"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb80"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1"></a>y</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE  TRUE  TRUE FALSE</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb82"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1"></a>z <span class="ot">=</span> <span class="fu">as.integer</span>(x)</span>
+<span id="cb82-2"><a href="#cb82-2"></a><span class="fu">typeof</span>(z)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "integer"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb84"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1"></a>z</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0 1 1 0</code></pre>
+</div>
 </div>
 </section>
 <section id="sec-vektoren-indizierung" class="level2" data-number="14.3">
@@ -802,15 +919,21 @@ Abbildung&nbsp;14.1: Vektoren in <strong>R</strong>.
 <p>In <strong>R</strong> und vielen anderen Programmiersprachen werden einzelne oder mehrere Vektoreinträge durch <em>Indizierung</em> adressiert. Indizierung wird dabei auch <em>indexing</em>, <em>subsetting</em> oder <em>slicing</em> genannt. In <strong>R</strong> werden zur Indizierung eckige Klammern der Form [<span class="math inline">\(\,\,\)</span>] benutzt. <strong>R</strong> nutzt <em>one-based indexing</em>, das heißt, der Index des ersten Elements ist <code>1</code> (und nicht etwa <code>0</code> wie in Python).</p>
 <p>Die Indizierung von Vektoreinträgen kann genutzt werden, um einen bestimmten Eintrag eines Vektors in eine andere Datenstruktur zu kopieren:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>x       <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>)      <span class="co"># character vector ["a", "b", "c"]</span></span>
-<span id="cb26-2"><a href="#cb26-2"></a>y       <span class="ot">=</span> x[<span class="dv">2</span>]                  <span class="co"># Kopie von "b" in y</span></span>
-<span id="cb26-3"><a href="#cb26-3"></a>y                               <span class="co"># Ausgabe</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb86"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1"></a>x       <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>)      <span class="co"># character vector ["a", "b", "c"]</span></span>
+<span id="cb86-2"><a href="#cb86-2"></a>y       <span class="ot">=</span> x[<span class="dv">2</span>]                  <span class="co"># Kopie von "b" in y</span></span>
+<span id="cb86-3"><a href="#cb86-3"></a>y                               <span class="co"># Ausgabe</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "b"</code></pre>
+</div>
 </div>
 <p>Ebenso kann die Indizierung von Vektoreinträgen genutzt werden, um einen bestimmten Eintrag des indizierten Vektors zu manipulieren:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a>x       <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>)      <span class="co"># character vector ["a", "b", "c"]</span></span>
-<span id="cb27-2"><a href="#cb27-2"></a>x[<span class="dv">3</span>]    <span class="ot">=</span> <span class="st">"d"</span>                   <span class="co"># Aenderung von x zu x = ["a", "b", "d"]</span></span>
-<span id="cb27-3"><a href="#cb27-3"></a>x                               <span class="co"># Ausgabe</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb88"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1"></a>x       <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>)      <span class="co"># character vector ["a", "b", "c"]</span></span>
+<span id="cb88-2"><a href="#cb88-2"></a>x[<span class="dv">3</span>]    <span class="ot">=</span> <span class="st">"d"</span>                   <span class="co"># Aenderung von x zu x = ["a", "b", "d"]</span></span>
+<span id="cb88-3"><a href="#cb88-3"></a>x                               <span class="co"># Ausgabe</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "a" "b" "d"</code></pre>
+</div>
 </div>
 <p>Prinzipiell gilt in <strong>R</strong>, dass die Indizierung</p>
 <ol type="1">
@@ -822,52 +945,89 @@ Abbildung&nbsp;14.1: Vektoren in <strong>R</strong>.
 <p>Wir wollen diese Prinzipien anhand folgender Beispiele verdeutlichen</p>
 <p>(1) Indizierung mit einem Vektor positiver Zahlen</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a>x <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">4</span>,<span class="dv">9</span>,<span class="dv">16</span>,<span class="dv">25</span>)      <span class="co"># [1,4,9,16,25] = [1^2, 2^2, 3^2, 4^2, 5^2]</span></span>
-<span id="cb28-2"><a href="#cb28-2"></a>y <span class="ot">=</span> x[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]              <span class="co"># 1:3 erzeugt Vektor [1,2,3], x[1:3] = [1,4,9]</span></span>
-<span id="cb28-3"><a href="#cb28-3"></a>z <span class="ot">=</span> x[<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">5</span>)]         <span class="co"># c(1,3,5) erzeugt Vektor [1,3,5], x[c(1,3,5)] = [1,9,25]</span></span>
-<span id="cb28-4"><a href="#cb28-4"></a>x</span>
-<span id="cb28-5"><a href="#cb28-5"></a>y</span>
-<span id="cb28-6"><a href="#cb28-6"></a>z</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb90"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1"></a>x <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">4</span>,<span class="dv">9</span>,<span class="dv">16</span>,<span class="dv">25</span>)      <span class="co"># [1,4,9,16,25] = [1^2, 2^2, 3^2, 4^2, 5^2]</span></span>
+<span id="cb90-2"><a href="#cb90-2"></a>y <span class="ot">=</span> x[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]              <span class="co"># 1:3 erzeugt Vektor [1,2,3], x[1:3] = [1,4,9]</span></span>
+<span id="cb90-3"><a href="#cb90-3"></a>z <span class="ot">=</span> x[<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">5</span>)]         <span class="co"># c(1,3,5) erzeugt Vektor [1,3,5], x[c(1,3,5)] = [1,9,25]</span></span>
+<span id="cb90-4"><a href="#cb90-4"></a>x</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  1  4  9 16 25</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb92"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1"></a>y</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1 4 9</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb94"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1"></a>z</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  1  9 25</code></pre>
+</div>
 </div>
 <p>(2) Indizierung mit einem Vektor negativer Zahlen</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a>x <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">4</span>,<span class="dv">9</span>,<span class="dv">16</span>,<span class="dv">25</span>)      <span class="co"># [1,4,9,16,25] = [1^2, 2^2, 3^2, 4^2, 5^2]</span></span>
-<span id="cb29-2"><a href="#cb29-2"></a>y <span class="ot">=</span> x[<span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span>,<span class="sc">-</span><span class="dv">4</span>)]         <span class="co"># Alle Komponenten ausser 2 und 4, x[c(-2,-4)] = [1,9,25]</span></span>
-<span id="cb29-3"><a href="#cb29-3"></a>x</span>
-<span id="cb29-4"><a href="#cb29-4"></a>y</span>
-<span id="cb29-5"><a href="#cb29-5"></a>z <span class="ot">=</span> x[<span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">2</span>)]          <span class="co"># Gemischte Indizierung nicht erlaubt (Fehlermeldung)</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb96"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1"></a>x <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">4</span>,<span class="dv">9</span>,<span class="dv">16</span>,<span class="dv">25</span>)      <span class="co"># [1,4,9,16,25] = [1^2, 2^2, 3^2, 4^2, 5^2]</span></span>
+<span id="cb96-2"><a href="#cb96-2"></a>y <span class="ot">=</span> x[<span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span>,<span class="sc">-</span><span class="dv">4</span>)]         <span class="co"># Alle Komponenten ausser 2 und 4, x[c(-2,-4)] = [1,9,25]</span></span>
+<span id="cb96-3"><a href="#cb96-3"></a>x</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  1  4  9 16 25</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb98"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1"></a>y</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  1  9 25</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb100"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1"></a>z <span class="ot">=</span> x[<span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">2</span>)]          <span class="co"># Gemischte Indizierung nicht erlaubt (Fehlermeldung)</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in `x[c(-1, 2)]`:
+! nur Nullen dürfen mit negativen Indizes gemischt werden</code></pre>
+</div>
 </div>
 <p>(3) Indizierung mit einem logischen Vektor</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a>x <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">4</span>,<span class="dv">9</span>,<span class="dv">16</span>,<span class="dv">25</span>)      <span class="co"># [1,4,9,16,25] = [1^2, 2^2, 3^2, 4^2, 5^2]</span></span>
-<span id="cb30-2"><a href="#cb30-2"></a>y <span class="ot">=</span> x[<span class="fu">c</span>(T,T,F,F,T)]     <span class="co"># TRUE Komponenten,  x[c(T,T,F,F,T)] = [1,4,25]</span></span>
-<span id="cb30-3"><a href="#cb30-3"></a>z <span class="ot">=</span> x[x <span class="sc">&gt;</span> <span class="dv">5</span>]            <span class="co"># x &gt; 5 = [F,F,T,T,T], x[x &gt; 5] = [9,16,25]</span></span>
-<span id="cb30-4"><a href="#cb30-4"></a>x</span>
-<span id="cb30-5"><a href="#cb30-5"></a>y</span>
-<span id="cb30-6"><a href="#cb30-6"></a>z</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb102"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1"></a>x <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">4</span>,<span class="dv">9</span>,<span class="dv">16</span>,<span class="dv">25</span>)      <span class="co"># [1,4,9,16,25] = [1^2, 2^2, 3^2, 4^2, 5^2]</span></span>
+<span id="cb102-2"><a href="#cb102-2"></a>y <span class="ot">=</span> x[<span class="fu">c</span>(T,T,F,F,T)]     <span class="co"># TRUE Komponenten,  x[c(T,T,F,F,T)] = [1,4,25]</span></span>
+<span id="cb102-3"><a href="#cb102-3"></a>z <span class="ot">=</span> x[x <span class="sc">&gt;</span> <span class="dv">5</span>]            <span class="co"># x &gt; 5 = [F,F,T,T,T], x[x &gt; 5] = [9,16,25]</span></span>
+<span id="cb102-4"><a href="#cb102-4"></a>x</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  1  4  9 16 25</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb104"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1"></a>y</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  1  4 25</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb106"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1"></a>z</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  9 16 25</code></pre>
+</div>
 </div>
 <p>(4) Indizierung mit einem <code>character</code> Vektor</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a>x <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">4</span>,<span class="dv">9</span>,<span class="dv">16</span>,<span class="dv">25</span>)      <span class="co"># [1,4,9,16,25] = [1^2, 2^2, 3^2, 4^2, 5^2]</span></span>
-<span id="cb31-2"><a href="#cb31-2"></a><span class="fu">names</span>(x) <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"a"</span>,<span class="st">"b"</span>)   <span class="co"># Benennung der Komponenten als [a  b &lt;NA&gt; &lt;NA&gt; &lt;NA&gt;]</span></span>
-<span id="cb31-3"><a href="#cb31-3"></a>y <span class="ot">=</span> x[<span class="st">"a"</span>]              <span class="co"># x["a"] = 1</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb108"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1"></a>x <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">4</span>,<span class="dv">9</span>,<span class="dv">16</span>,<span class="dv">25</span>)      <span class="co"># [1,4,9,16,25] = [1^2, 2^2, 3^2, 4^2, 5^2]</span></span>
+<span id="cb108-2"><a href="#cb108-2"></a><span class="fu">names</span>(x) <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"a"</span>,<span class="st">"b"</span>)   <span class="co"># Benennung der Komponenten als [a  b &lt;NA&gt; &lt;NA&gt; &lt;NA&gt;]</span></span>
+<span id="cb108-3"><a href="#cb108-3"></a>y <span class="ot">=</span> x[<span class="st">"a"</span>]              <span class="co"># x["a"] = 1</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Es bleibt anzumerken, dass <strong>R</strong> eine hohe Flexibilität bei Indizierung aufweist, also oft keine Fehler ausgibt, obwohl eine Indizierung per se keinen Sinn ergibt. So verursachen zum Beispiel out-of-range Indizes, also Indizes, die die Anzahl der Einträge eines Vektors überschreiten, keine Fehler, sondern geben <code>NA</code> (not available) aus.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a>x <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">4</span>,<span class="dv">9</span>,<span class="dv">16</span>,<span class="dv">25</span>)      <span class="co"># [1,4,9,16,25] = [1^2, 2^2, 3^2, 4^2, 5^2]</span></span>
-<span id="cb32-2"><a href="#cb32-2"></a>y <span class="ot">=</span> x[<span class="dv">10</span>]               <span class="co"># x[10] = NA (Not Applicable)</span></span>
-<span id="cb32-3"><a href="#cb32-3"></a>y</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb109"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1"></a>x <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">4</span>,<span class="dv">9</span>,<span class="dv">16</span>,<span class="dv">25</span>)      <span class="co"># [1,4,9,16,25] = [1^2, 2^2, 3^2, 4^2, 5^2]</span></span>
+<span id="cb109-2"><a href="#cb109-2"></a>y <span class="ot">=</span> x[<span class="dv">10</span>]               <span class="co"># x[10] = NA (Not Applicable)</span></span>
+<span id="cb109-3"><a href="#cb109-3"></a>y</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] NA</code></pre>
+</div>
 </div>
 <p>Weiterhin verursachen nichtganzzahlige Indizes keine Fehler, sondern werden auf die nächste ganze Zahl abgerundet.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a>y <span class="ot">=</span> x[<span class="fl">4.9</span>]              <span class="co"># x[4.9]  = x[4]  = 16</span></span>
-<span id="cb33-2"><a href="#cb33-2"></a>y</span>
-<span id="cb33-3"><a href="#cb33-3"></a>z <span class="ot">=</span> x[<span class="sc">-</span><span class="fl">4.9</span>]             <span class="co"># x[-4.9] = x[-4] = [1,4,9,25]</span></span>
-<span id="cb33-4"><a href="#cb33-4"></a>z</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb111"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1"></a>y <span class="ot">=</span> x[<span class="fl">4.9</span>]              <span class="co"># x[4.9]  = x[4]  = 16</span></span>
+<span id="cb111-2"><a href="#cb111-2"></a>y</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 16</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb113"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1"></a>z <span class="ot">=</span> x[<span class="sc">-</span><span class="fl">4.9</span>]             <span class="co"># x[-4.9] = x[-4] = [1,4,9,25]</span></span>
+<span id="cb113-2"><a href="#cb113-2"></a>z</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  1  4  9 25</code></pre>
+</div>
 </div>
 <p>Leere Indizes schließlich indizieren den gesamten Vektor.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a>y <span class="ot">=</span> x[]                 <span class="co"># y = x</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb115"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1"></a>y <span class="ot">=</span> x[]                 <span class="co"># y = x</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Die Flexibilität von <strong>R</strong> bei nicht sinnhafter Indizierung hat einerseits den Vorteil, dass Programme seltener mit einem Fehler unterbrochen werden. Auf der anderen Seite hat sie den Nachteil, dass unbeabsichtigte Fehlindizierungen unbemerkt bleiben und Datenanalyseprogramme so zu nicht beabsichtigten Ergebnissen kommen können. Im Umgang mit der Indizierung in <strong>R</strong> ist also ein hohes Maß an Aufmerksamkeit und im Idealfall die Validierung von erstellten Datenanalyseprogrammen anhand simulierter Daten mit bekannten Ergebnissen geboten. Ein ähnliches Maß an Vorsicht ist aufgrund von <strong>R</strong>s <em>Recycling</em>-Funktionsweise angezeigt, die wir im nächsten Abschnitt kennenlernen werden.</p>
 </section>
@@ -876,100 +1036,170 @@ Abbildung&nbsp;14.1: Vektoren in <strong>R</strong>.
 <p>Mit <strong>R</strong> Vektoren kann man arithmetische Operationen ausführen, das heißt, man kann mit ihnen rechnen. Wir unterscheiden dabei <em>unitäre arithmetische Operationen</em>, also arithmetische Operationen, die auf einen Vektor angewendet werden, und <em>binäre arithmetische Operationen</em>, bei denen zwei Vektoren miteinander verknüpft werden. Allgemein gilt, dass arithmetische Vektoroperatoren in <strong>R</strong> elementweise ausgewertet werden, allerdings sind bei binären Operatoren einige Besonderheiten zu beachten.</p>
 <p>Betrachten wir zunächst einige unitäre arithmetische Operatoren und die Anwendung von Funktionen auf einen Vektor. In folgendem Beispiel werden die unitären Operatoren <code>-</code> und <code>^2</code>, sowie die Funktion <code>log()</code> auf einen Vektor <code>a</code> angewendet. Die Auswertung der Operatoren bzw. der Funktion geschieht dabei <em>elementweise</em>, das heißt, der Operator oder die Funktion werden auf jedes Element des Vektors unabhängig von seinen anderen Elementen angewendet.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a>a   <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="at">len=</span><span class="dv">11</span>)   <span class="co"># a = [ 0.0   ,  0.1   , ...,  0.9    , 1.0    ]</span></span>
-<span id="cb35-2"><a href="#cb35-2"></a>a</span>
-<span id="cb35-3"><a href="#cb35-3"></a>b   <span class="ot">=</span> <span class="sc">-</span>a                <span class="co"># b = [-0.0   , -0.1   , ..., -0.9    ,-1.0    ]</span></span>
-<span id="cb35-4"><a href="#cb35-4"></a>b</span>
-<span id="cb35-5"><a href="#cb35-5"></a>v   <span class="ot">=</span> a<span class="sc">^</span><span class="dv">2</span>               <span class="co"># v = [ 0.0^2 ,  0.1^2 , ...,  0.9^2  , 1.0^2  ]</span></span>
-<span id="cb35-6"><a href="#cb35-6"></a>v</span>
-<span id="cb35-7"><a href="#cb35-7"></a>w   <span class="ot">=</span> <span class="fu">log</span>(a)            <span class="co"># w = [ln(0.0), ln(0.1), ...,  ln(0.9), ln(1.0)]</span></span>
-<span id="cb35-8"><a href="#cb35-8"></a>w</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb116"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1"></a>a   <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="at">len=</span><span class="dv">11</span>)   <span class="co"># a = [ 0.0   ,  0.1   , ...,  0.9    , 1.0    ]</span></span>
+<span id="cb116-2"><a href="#cb116-2"></a>a</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb118"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1"></a>b   <span class="ot">=</span> <span class="sc">-</span>a                <span class="co"># b = [-0.0   , -0.1   , ..., -0.9    ,-1.0    ]</span></span>
+<span id="cb118-2"><a href="#cb118-2"></a>b</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1]  0.0 -0.1 -0.2 -0.3 -0.4 -0.5 -0.6 -0.7 -0.8 -0.9 -1.0</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb120"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1"></a>v   <span class="ot">=</span> a<span class="sc">^</span><span class="dv">2</span>               <span class="co"># v = [ 0.0^2 ,  0.1^2 , ...,  0.9^2  , 1.0^2  ]</span></span>
+<span id="cb120-2"><a href="#cb120-2"></a>v</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 0.00 0.01 0.04 0.09 0.16 0.25 0.36 0.49 0.64 0.81 1.00</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb122"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb122-1"><a href="#cb122-1"></a>w   <span class="ot">=</span> <span class="fu">log</span>(a)            <span class="co"># w = [ln(0.0), ln(0.1), ...,  ln(0.9), ln(1.0)]</span></span>
+<span id="cb122-2"><a href="#cb122-2"></a>w</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1]       -Inf -2.3025851 -1.6094379 -1.2039728 -0.9162907 -0.6931472
+ [7] -0.5108256 -0.3566749 -0.2231436 -0.1053605  0.0000000</code></pre>
+</div>
 </div>
 <p>Binäre arithmetische Operatoren, also die Verknüpfung von zwei Vektoren, geschieht ebenfalls elementweise. Bei der Verknüpfung zweier Vektoren gleicher Länge werden dabei die Vektoreinträge mit den gleichen Indizes anhand des binären arithmetischen Operators verknüpft. Als Resultat ergibt sich ein Vektor mit der gleichen Länge wie die beiden Ausgangsvektoren.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a>a <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>)            <span class="co"># a = [1,2,3]</span></span>
-<span id="cb36-2"><a href="#cb36-2"></a>b <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">4</span>)            <span class="co"># b = [2,1,4]</span></span>
-<span id="cb36-3"><a href="#cb36-3"></a>v <span class="ot">=</span> a <span class="sc">+</span> b               <span class="co"># v = [1,2,3] + [2,1,4] = [1+2,2+1,3+4] = [   3,  3,    7]</span></span>
-<span id="cb36-4"><a href="#cb36-4"></a>v</span>
-<span id="cb36-5"><a href="#cb36-5"></a>w <span class="ot">=</span> a <span class="sc">-</span> b               <span class="co"># w = [1,2,3] - [2,1,4] = [1-2,2-1,3-4] = [  -1,  1,   -1]</span></span>
-<span id="cb36-6"><a href="#cb36-6"></a>w</span>
-<span id="cb36-7"><a href="#cb36-7"></a>x <span class="ot">=</span> a <span class="sc">*</span> b               <span class="co"># x = [1,2,3] * [2,1,4] = [1*2,2*1,3*4] = [   2,  2,   12]</span></span>
-<span id="cb36-8"><a href="#cb36-8"></a>x</span>
-<span id="cb36-9"><a href="#cb36-9"></a>y <span class="ot">=</span> a <span class="sc">/</span> b               <span class="co"># y = [1,2,3] / [2,1,4] = [1/2,2/1,3/4] = [0.50,  2, 0.75]</span></span>
-<span id="cb36-10"><a href="#cb36-10"></a>y</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb124"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb124-1"><a href="#cb124-1"></a>a <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>)            <span class="co"># a = [1,2,3]</span></span>
+<span id="cb124-2"><a href="#cb124-2"></a>b <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">4</span>)            <span class="co"># b = [2,1,4]</span></span>
+<span id="cb124-3"><a href="#cb124-3"></a>v <span class="ot">=</span> a <span class="sc">+</span> b               <span class="co"># v = [1,2,3] + [2,1,4] = [1+2,2+1,3+4] = [   3,  3,    7]</span></span>
+<span id="cb124-4"><a href="#cb124-4"></a>v</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3 3 7</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb126"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb126-1"><a href="#cb126-1"></a>w <span class="ot">=</span> a <span class="sc">-</span> b               <span class="co"># w = [1,2,3] - [2,1,4] = [1-2,2-1,3-4] = [  -1,  1,   -1]</span></span>
+<span id="cb126-2"><a href="#cb126-2"></a>w</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -1  1 -1</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb128"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb128-1"><a href="#cb128-1"></a>x <span class="ot">=</span> a <span class="sc">*</span> b               <span class="co"># x = [1,2,3] * [2,1,4] = [1*2,2*1,3*4] = [   2,  2,   12]</span></span>
+<span id="cb128-2"><a href="#cb128-2"></a>x</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  2  2 12</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb130"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb130-1"><a href="#cb130-1"></a>y <span class="ot">=</span> a <span class="sc">/</span> b               <span class="co"># y = [1,2,3] / [2,1,4] = [1/2,2/1,3/4] = [0.50,  2, 0.75]</span></span>
+<span id="cb130-2"><a href="#cb130-2"></a>y</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.50 2.00 0.75</code></pre>
+</div>
 </div>
 <p>Verknüpft man in <strong>R</strong> einen Vektor und einen <em>Skalar</em>, also einen Vektor der Länge 1, so erweitert <strong>R</strong> den Skalar auf einen Vektor der gleichen Länge und führt die elementweise Verknüpfung dieser Vektoren aus. Folgende Beispiele verdeutlichen dies.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a>a <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>)            <span class="co"># a = [1,2,3]</span></span>
-<span id="cb37-2"><a href="#cb37-2"></a>b <span class="ot">=</span> <span class="dv">2</span>                   <span class="co"># b = [2]</span></span>
-<span id="cb37-3"><a href="#cb37-3"></a>v <span class="ot">=</span> a <span class="sc">+</span> b               <span class="co"># v = [1,2,3] + [2,2,2] = [1+2,2+2,3+2] = [  3,  4,   5]</span></span>
-<span id="cb37-4"><a href="#cb37-4"></a>v</span>
-<span id="cb37-5"><a href="#cb37-5"></a>w <span class="ot">=</span> a <span class="sc">-</span> b               <span class="co"># w = [1,2,3] - [2,2,2] = [1-2,2-2,3-2] = [ -1,  2,   1]</span></span>
-<span id="cb37-6"><a href="#cb37-6"></a>w</span>
-<span id="cb37-7"><a href="#cb37-7"></a>x <span class="ot">=</span> a <span class="sc">*</span> b               <span class="co"># x = [1,2,3] * [2,2,2] = [1*2,2*2,3*2] = [  2,  4,   6]</span></span>
-<span id="cb37-8"><a href="#cb37-8"></a>x</span>
-<span id="cb37-9"><a href="#cb37-9"></a>y <span class="ot">=</span> a <span class="sc">/</span> b               <span class="co"># y = [1,2,3] / [2,2,2] = [1/2,2/2,3/2] = [0.5,  1, 1.5]</span></span>
-<span id="cb37-10"><a href="#cb37-10"></a>y</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb132"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb132-1"><a href="#cb132-1"></a>a <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>)            <span class="co"># a = [1,2,3]</span></span>
+<span id="cb132-2"><a href="#cb132-2"></a>b <span class="ot">=</span> <span class="dv">2</span>                   <span class="co"># b = [2]</span></span>
+<span id="cb132-3"><a href="#cb132-3"></a>v <span class="ot">=</span> a <span class="sc">+</span> b               <span class="co"># v = [1,2,3] + [2,2,2] = [1+2,2+2,3+2] = [  3,  4,   5]</span></span>
+<span id="cb132-4"><a href="#cb132-4"></a>v</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3 4 5</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb134"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb134-1"><a href="#cb134-1"></a>w <span class="ot">=</span> a <span class="sc">-</span> b               <span class="co"># w = [1,2,3] - [2,2,2] = [1-2,2-2,3-2] = [ -1,  2,   1]</span></span>
+<span id="cb134-2"><a href="#cb134-2"></a>w</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -1  0  1</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb136"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb136-1"><a href="#cb136-1"></a>x <span class="ot">=</span> a <span class="sc">*</span> b               <span class="co"># x = [1,2,3] * [2,2,2] = [1*2,2*2,3*2] = [  2,  4,   6]</span></span>
+<span id="cb136-2"><a href="#cb136-2"></a>x</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2 4 6</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb138"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb138-1"><a href="#cb138-1"></a>y <span class="ot">=</span> a <span class="sc">/</span> b               <span class="co"># y = [1,2,3] / [2,2,2] = [1/2,2/2,3/2] = [0.5,  1, 1.5]</span></span>
+<span id="cb138-2"><a href="#cb138-2"></a>y</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.5 1.0 1.5</code></pre>
+</div>
 </div>
 <p>Unter dem Begriff des <em>Recycling</em> erlaubt <strong>R</strong> neben der elementweisen Arithmetik für Vektoren gleicher Länge bzw. für Skalare und Vektoren außerdem auch eine Arithmetik mit Vektoren unterschiedlicher Länge. Dazu werden Elemente des kürzeren von zwei Vektoren zum Aufstocken auf die Länge des längeren Vektors genutzt, also in diesem Sinn <em>recycled</em>. Wiederum führt diese Eigenschaft der Vektorarithmetik in <strong>R</strong> dazu, dass Programme seltener mit einem Fehler abbrechen und dass das Recycling unter Umständen in informiert geschriebenem Code elegante Lösungen für Berechnungen anbieten kann. Allerdings hat es den klaren Nachteil, dass auch unbeabsichtigte Fehlallokationen von Vektoren, beispielsweise durch das Nichtvorhandensein von Datenpunkten, unentdeckt bleiben können. Auch hier ist also bei der Erstellung von Programmen eine hohe Aufmerksamkeit und insbesondere ausführliches Testen angezeigt. Speziell kann man bei Recycling der Vektorarithmetik in <strong>R</strong> zwei Fälle unterscheiden: Ist die Länge des längeren der beiden Vektoren ein ganzzahliges Vielfaches der Länge des kürzeren Vektors, so wird der kürzere Vektor durch die entsprechend häufige Wiederholung seiner Elemente in ihrer originären Reihenfolge expandiert. Folgendes Beispiel soll dies verdeutlichen.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a>x <span class="ot">=</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>                 <span class="co"># x = [1,2], length(x) = 2</span></span>
-<span id="cb38-2"><a href="#cb38-2"></a>x</span>
-<span id="cb38-3"><a href="#cb38-3"></a>y <span class="ot">=</span> <span class="dv">3</span><span class="sc">:</span><span class="dv">6</span>                 <span class="co"># y = [3,4,5,6], length(y) = 4</span></span>
-<span id="cb38-4"><a href="#cb38-4"></a>y</span>
-<span id="cb38-5"><a href="#cb38-5"></a>v <span class="ot">=</span> x <span class="sc">+</span> y               <span class="co"># v = [1,2,1,2] + [3,4,5,6] = [4,6,6,8]</span></span>
-<span id="cb38-6"><a href="#cb38-6"></a>v</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb140"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb140-1"><a href="#cb140-1"></a>x <span class="ot">=</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>                 <span class="co"># x = [1,2], length(x) = 2</span></span>
+<span id="cb140-2"><a href="#cb140-2"></a>x</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1 2</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb142"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb142-1"><a href="#cb142-1"></a>y <span class="ot">=</span> <span class="dv">3</span><span class="sc">:</span><span class="dv">6</span>                 <span class="co"># y = [3,4,5,6], length(y) = 4</span></span>
+<span id="cb142-2"><a href="#cb142-2"></a>y</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3 4 5 6</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb144"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb144-1"><a href="#cb144-1"></a>v <span class="ot">=</span> x <span class="sc">+</span> y               <span class="co"># v = [1,2,1,2] + [3,4,5,6] = [4,6,6,8]</span></span>
+<span id="cb144-2"><a href="#cb144-2"></a>v</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4 6 6 8</code></pre>
+</div>
 </div>
 <p>In diesem Sinn ist dann die Arithmetik von Vektoren und Skalaren, also Vektoren der Länge 1, ein Spezialfall dieses Prinzips. Ist die Länge des längeren der beiden Vektoren kein ganzzahliges Vielfaches der Länge des kürzeren Vektors, so werden Elemente des kürzeren Vektors in ihrer originären Reihenfolge so lange zum Auffüllen des kürzeren Vektors genutzt, bis beide Vektoren die gleiche Länge haben. Folgendes Beispiel soll dies verdeutlichen.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a>x <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">5</span>)            <span class="co"># x = [1,3,5], length(x) = 3</span></span>
-<span id="cb39-2"><a href="#cb39-2"></a>x</span>
-<span id="cb39-3"><a href="#cb39-3"></a>y <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">6</span>,<span class="dv">8</span>,<span class="dv">10</span>)       <span class="co"># y = [2,4,6,8,10], length(y) = 5</span></span>
-<span id="cb39-4"><a href="#cb39-4"></a>y</span>
-<span id="cb39-5"><a href="#cb39-5"></a>v <span class="ot">=</span> x <span class="sc">+</span> y               <span class="co"># v = [1,3,5,1,3] + [2,4,6,8,10] = [3,7,11,9,13]</span></span>
-<span id="cb39-6"><a href="#cb39-6"></a>v</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb146"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb146-1"><a href="#cb146-1"></a>x <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">5</span>)            <span class="co"># x = [1,3,5], length(x) = 3</span></span>
+<span id="cb146-2"><a href="#cb146-2"></a>x</span>
+<span id="cb146-3"><a href="#cb146-3"></a>y <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">6</span>,<span class="dv">8</span>,<span class="dv">10</span>)       <span class="co"># y = [2,4,6,8,10], length(y) = 5</span></span>
+<span id="cb146-4"><a href="#cb146-4"></a>y</span>
+<span id="cb146-5"><a href="#cb146-5"></a>v <span class="ot">=</span> x <span class="sc">+</span> y               <span class="co"># v = [1,3,5,1,3] + [2,4,6,8,10] = [3,7,11,9,13]</span></span>
+<span id="cb146-6"><a href="#cb146-6"></a>v</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="sec-vektoren-attribute" class="level2" data-number="14.5">
 <h2 data-number="14.5" class="anchored" data-anchor-id="sec-vektoren-attribute"><span class="header-section-number">14.5</span> Attribute</h2>
 <p>Attribute in <strong>R</strong> sind Metadaten von Objekten in Form von Schlüssel-Wert-Paaren. Generell ruft die Funktion <code>attributes()</code> alle Attribute eines Objektes auf. Vektoren haben per se keine Attribute.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a>a <span class="ot">=</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>             <span class="co"># ein numerischer Vektor</span></span>
-<span id="cb40-2"><a href="#cb40-2"></a><span class="fu">attributes</span>(a)       <span class="co"># Aufrufen aller Attribute von</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb147"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb147-1"><a href="#cb147-1"></a>a <span class="ot">=</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>             <span class="co"># ein numerischer Vektor</span></span>
+<span id="cb147-2"><a href="#cb147-2"></a><span class="fu">attributes</span>(a)       <span class="co"># Aufrufen aller Attribute von</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>NULL</code></pre>
+</div>
 </div>
 <p>Die Funktion <code>attr()</code> kann zum Aufrufen und Definieren von Attributen genutzt werden. Folgender Code definiert für den Vektor <code>a</code> ein Attribut mit dem Schlüssel (Namen) <code>"S"</code> und dem Wert <code>"W"</code>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1"></a><span class="fu">attr</span>(a, <span class="st">"S"</span>) <span class="ot">=</span> <span class="st">"W"</span>  <span class="co"># a bekommt Attribut mit Schluessel S und Wert W</span></span>
-<span id="cb41-2"><a href="#cb41-2"></a><span class="fu">attr</span>(a, <span class="st">"S"</span>)        <span class="co"># Das Attribut mit Schluessel S hat den Wert W</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb149"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb149-1"><a href="#cb149-1"></a><span class="fu">attr</span>(a, <span class="st">"S"</span>) <span class="ot">=</span> <span class="st">"W"</span>  <span class="co"># a bekommt Attribut mit Schluessel S und Wert W</span></span>
+<span id="cb149-2"><a href="#cb149-2"></a><span class="fu">attr</span>(a, <span class="st">"S"</span>)        <span class="co"># Das Attribut mit Schluessel S hat den Wert W</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "W"</code></pre>
+</div>
 </div>
 <p>Allerdings werden Attribute bei Operationen oft entfernt.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1"></a>b <span class="ot">=</span> a[<span class="dv">1</span>]            <span class="co"># Kopie des ersten Elements von a in Vektor b</span></span>
-<span id="cb42-2"><a href="#cb42-2"></a><span class="fu">attributes</span>(b)       <span class="co"># Aufrufen aller Attribute von b</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb151"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb151-1"><a href="#cb151-1"></a>b <span class="ot">=</span> a[<span class="dv">1</span>]            <span class="co"># Kopie des ersten Elements von a in Vektor b</span></span>
+<span id="cb151-2"><a href="#cb151-2"></a><span class="fu">attributes</span>(b)       <span class="co"># Aufrufen aller Attribute von b</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>NULL</code></pre>
+</div>
 </div>
 <p>Die Spezifikation des Attributs <code>names</code> gibt den Elementen eines Vektors Namen, die zur Indizierung genutzt werden können und die bei Operationen nicht entfernt werden.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1"></a>v <span class="ot">=</span> <span class="fu">c</span>(<span class="at">x=</span><span class="dv">1</span>,<span class="at">y=</span><span class="dv">2</span>,<span class="at">z=</span><span class="dv">3</span>)      <span class="co"># Elementnamengeneration bei Vektorerzeugung</span></span>
-<span id="cb43-2"><a href="#cb43-2"></a>v                       <span class="co"># Vektorausgabe</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb153"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb153-1"><a href="#cb153-1"></a>v <span class="ot">=</span> <span class="fu">c</span>(<span class="at">x=</span><span class="dv">1</span>,<span class="at">y=</span><span class="dv">2</span>,<span class="at">z=</span><span class="dv">3</span>)      <span class="co"># Elementnamengeneration bei Vektorerzeugung</span></span>
+<span id="cb153-2"><a href="#cb153-2"></a>v                       <span class="co"># Vektorausgabe</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>x y z 
+1 2 3 </code></pre>
+</div>
 </div>
 <p>Die Indizierung mithilfe von Namen hat folgende Form:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1"></a>v[<span class="st">"y"</span>]                  <span class="co"># Indizierung per Namen</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb155"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb155-1"><a href="#cb155-1"></a>v[<span class="st">"y"</span>]                  <span class="co"># Indizierung per Namen</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>y 
+2 </code></pre>
+</div>
 </div>
 <p>Im Nachgang der Definition eines Vektors kann die Funktion <code>names()</code> genutzt werden, um für die Vektoreinträge Namen zu definieren und diese nachzuschlagen.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1"></a>y <span class="ot">=</span> <span class="dv">4</span><span class="sc">:</span><span class="dv">6</span>                       <span class="co"># Erzeugung eines Vektors</span></span>
-<span id="cb45-2"><a href="#cb45-2"></a><span class="fu">names</span>(y) <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"a"</span>,<span class="st">"b"</span>,<span class="st">"c"</span>)     <span class="co"># Definition von Namen</span></span>
-<span id="cb45-3"><a href="#cb45-3"></a><span class="fu">names</span>(y)                      <span class="co"># Elementnamenaufruf</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb157"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb157-1"><a href="#cb157-1"></a>y <span class="ot">=</span> <span class="dv">4</span><span class="sc">:</span><span class="dv">6</span>                       <span class="co"># Erzeugung eines Vektors</span></span>
+<span id="cb157-2"><a href="#cb157-2"></a><span class="fu">names</span>(y) <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"a"</span>,<span class="st">"b"</span>,<span class="st">"c"</span>)     <span class="co"># Definition von Namen</span></span>
+<span id="cb157-3"><a href="#cb157-3"></a><span class="fu">names</span>(y)                      <span class="co"># Elementnamenaufruf</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "a" "b" "c"</code></pre>
+</div>
 </div>
 <p>Benannte Vektoreinträge können hilfreich sein, wenn der Vektor eine Sinneinheit bildet und zum Beispiel Eigenschaften einer Versuchsperson wie Alter, Größe und Gewicht repräsentiert.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1"></a>p <span class="ot">=</span> <span class="fu">c</span>(<span class="at">age    =</span> <span class="dv">31</span>,         <span class="co"># Alter (Jahre)</span></span>
-<span id="cb46-2"><a href="#cb46-2"></a>      <span class="at">height =</span> <span class="dv">198</span>,        <span class="co"># Groesse (cm)</span></span>
-<span id="cb46-3"><a href="#cb46-3"></a>      <span class="at">weight =</span> <span class="dv">75</span>)         <span class="co"># Gewicht (kg)</span></span>
-<span id="cb46-4"><a href="#cb46-4"></a>p                          <span class="co"># Vektorausgabe</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb159"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb159-1"><a href="#cb159-1"></a>p <span class="ot">=</span> <span class="fu">c</span>(<span class="at">age    =</span> <span class="dv">31</span>,         <span class="co"># Alter (Jahre)</span></span>
+<span id="cb159-2"><a href="#cb159-2"></a>      <span class="at">height =</span> <span class="dv">198</span>,        <span class="co"># Groesse (cm)</span></span>
+<span id="cb159-3"><a href="#cb159-3"></a>      <span class="at">weight =</span> <span class="dv">75</span>)         <span class="co"># Gewicht (kg)</span></span>
+<span id="cb159-4"><a href="#cb159-4"></a>p                          <span class="co"># Vektorausgabe</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   age height weight 
+    31    198     75 </code></pre>
 </div>
-<p>Allerdings ist die Arbeit mit benannten Vektoreinträgen eher selten. Das Prinzip, Einträge einer Datenstruktur anstelle eines numerischen Indizes mit einer sinntragenden Bezeichnung zu versehen, ist in <strong>R</strong> allerdings nichtsdestotrotz übliche Praxis, wie wir im Umgang mit der zentralen Datenstruktur der Dataframes in <a href="#sec-listen-dataframes-und-tibbles" class="quarto-xref"><span class="quarto-unresolved-ref">sec-listen-dataframes-und-tibbles</span></a> sehen werden.</p>
+</div>
+<p>Allerdings ist die Arbeit mit benannten Vektoreinträgen eher selten. Das Prinzip, Einträge einer Datenstruktur anstelle eines numerischen Indizes mit einer sinntragenden Bezeichnung zu versehen, ist in <strong>R</strong> allerdings nichtsdestotrotz übliche Praxis, wie wir im Umgang mit der zentralen Datenstruktur der Dataframes in <a href="206-Listen-Dataframes-und-Tibbles.html" class="quarto-xref"><span>Kapitel 16</span></a> sehen werden.</p>
 
 
 </section>
