@@ -199,13 +199,62 @@ ul.task-list li input[type="checkbox"] {
     "/en/_part_1/104-Functions.html": "/_part_1/104-Funktionen.html",
     "/en/References.html": "/Referenzen.html"
   };
+  var deToEnHash = {
+    "#willkommen": "#welcome",
+    "#zitation": "#citation",
+    "#lizenz": "#license",
+    "#mathematische-grundlagen": "#mathematical-foundations",
+    "#literaturhinweise": "#literature-notes",
+    "#sec-funktionen": "#sec-functions",
+    "#definition-und-eigenschaften": "#definition-and-properties",
+    "#def-funktion": "#def-function",
+    "#fig-funktionen": "#fig-functions",
+    "#def-bildmenge-wertebereich-urbildmenge-urbild": "#def-image-range-codomain-preimage",
+    "#eq-f-beispiel": "#eq-function-example",
+    "#fig-bildmenge-wertebereich-urbildmenge-urbild": "#fig-image-range-codomain-preimage",
+    "#def-injektivität-surjektivität-bijektivität": "#def-injectivity-surjectivity-bijectivity",
+    "#fig-inj-sur-bij": "#fig-injectivity-surjectivity-bijectivity",
+    "#def-endliche-abzaehlbar-unendliche-menge": "#def-finite-countably-infinite-set",
+    "#funktionentypen": "#types-of-functions",
+    "#def-verkettung-von-funktionen": "#def-composition-of-functions",
+    "#fig-verkettung": "#fig-composition",
+    "#def-inverse-funktion": "#def-inverse-function",
+    "#fig-inversion": "#fig-inverse-function",
+    "#def-lineare-abbildungen": "#def-linear-map",
+    "#thm-lineare-abbildung-des-nullvektors": "#thm-linear-map-of-zero",
+    "#def-funktionenarten": "#def-function-types",
+    "#sec-elementare-funktionen": "#sec-elementary-functions",
+    "#def-polynomfunktionen": "#def-polynomial-functions",
+    "#tbl-polynomfunktionen": "#tbl-polynomial-functions",
+    "#fig-polynomfunktionen": "#fig-polynomial-functions",
+    "#thm-exponentialfunktion": "#thm-exponential-function",
+    "#tbl-eigenschaften-der-exponentialfunktion": "#tbl-properties-exponential-function",
+    "#thm-logarithmusfuntion": "#thm-logarithm-function",
+    "#tbl-eigenschaften-der-logarithmusfunktion": "#tbl-properties-logarithm-function",
+    "#fig-exp-log-funktionen": "#fig-exp-log-functions",
+    "#def-gammafunktion": "#def-gamma-function",
+    "#tbl-eigenschaften-der-gammafunktion": "#tbl-properties-gamma-function",
+    "#fig-gamma-funktion": "#fig-gamma-function"
+  };
+  var enToDeHash = {};
+  Object.keys(deToEnHash).forEach(function (key) {
+    enToDeHash[deToEnHash[key]] = key;
+  });
   var path = window.location.pathname;
-  var target = deToEn[path] || enToDe[path];
+  var isGerman = Object.prototype.hasOwnProperty.call(deToEn, path);
+  var target = isGerman ? deToEn[path] : enToDe[path];
   if (!target) return;
+  var rawHash = window.location.hash;
+  var hash = rawHash;
+  try {
+    hash = decodeURIComponent(rawHash);
+  } catch (error) {}
+  var targetHash = isGerman ? deToEnHash[hash] : enToDeHash[hash];
+  if (!targetHash && rawHash) targetHash = rawHash;
   document.querySelectorAll("a.nav-link").forEach(function (link) {
     var text = link.textContent.trim();
     if (text === "English" || text === "Deutsch") {
-      link.href = base + target;
+      link.href = base + target + (targetHash || "");
     }
   });
 }());
