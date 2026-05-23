@@ -22,7 +22,7 @@ Mehr an Symptomreduktion impliziert. Ziel der Methode der kleinsten Quadrate
 und der einfachen linearen Regression ist es, diesen intuitiven funktionalen 
 Zusammenhang zwischen unabhängiger und abhängiger Variable auf eine quantitative Basis zu stellen.
 
-```{r, echo = F, eval = F}
+```{r, echo = FALSE, eval = FALSE}
 # Datensatzsimulation
 library(MASS)                                                                   # Normalverteilungen
 set.seed(0)                                                                     # Ergebnisreproduzierbarkeit
@@ -96,7 +96,7 @@ für die für einen Datensatz $\left\{\left(x_{1}, y_{1}\right), \ldots,\left(x_
 q: \mathbb{R}^{2} \rightarrow \mathbb{R}_{\geq 0}, \beta \mapsto q(\beta):=\sum_{i=1}^{n}\left(y_{i}-f_{\beta}\left(x_{i}\right)\right)^{2}=\sum_{i=1}^{n}\left(y_{i}-\left(\beta_{0}+\beta_{1} x_{i}\right)\right)^{2}
 \end{equation}
 der quadrierten vertikalen Abweichungen der $y_{i}$ von den Funktionswerten 
-$f_{\beta}\left(x_{i}\right)$ ihr Minimum annimt, Ausgleichsgerade für den 
+$f_{\beta}\left(x_{i}\right)$ ihr Minimum annimmt, Ausgleichsgerade für den
 Datensatz $\left\{\left(x_{1}, y_{1}\right), \ldots,\left(x_{n}, y_{n}\right)\right\}$.
 :::
 
@@ -141,7 +141,7 @@ minimiert. Für eine fest vorgegebenen Datensatz von $\left(x_{i}, y_{i}\right)$
 Paaren ist der Wert dieser Summe abhängig von den Werten von $\beta_{0}$ 
 und $\beta_{1}$ und kann deshalb durch Wahl geeigneter 
 
-```{r, echo = F, eval = F}
+```{r, echo = FALSE, eval = FALSE}
 # Ausgleichs- und weitere Geraden
 X           = matrix(c(rep(1,n), x), ncol = 2)                                  # Designmatrix
 beta_hat    = solve(t(X) %*% X) %*% t(X) %*% y                                  # OLS Schätzer
@@ -185,7 +185,7 @@ dev.off()
 ```
 
 ![Linear-affine Funktionen mit unterschiedlichen Parameterwerten 
-vor dem Hintegrund des Beispieldatensatzes.](./_figures/501-ausgleichsgerade-1){#fig-ausgleichsgerade-1 fig-align="center" width=100%}
+vor dem Hintergrund des Beispieldatensatzes.](./_figures/501-ausgleichsgerade-1){#fig-ausgleichsgerade-1 fig-align="center" width=100%}
 
 Werte von $\beta_{0}$ und $\beta_{1}$ minimiert werden. Da hierbei eine Summe 
 von quadrierten Abweichungen zwischen Datenpunkten und Werten der Ausgleichsgerade 
@@ -196,7 +196,7 @@ des Beispieldatensatzes als orange Linien sowie die Summe ihrer Quadrate $q(\bet
 im Titel. Für die Parameterwerte $\beta_{0}=-6.2$ und $\beta_{1}=1.7$ (vgl. @fig-ausgleichsgerade-1) 
 immt diese Summe ihren kleinsten Wert an.
 
-```{r, echo = F, eval = F}
+```{r, echo = FALSE, eval = FALSE}
 # q Funktionswerte
 q1          = t(y - X %*% beta_set[,1]) %*% (y - X %*% beta_set[,1])
 q2          = t(y - X %*% beta_set[,2]) %*% (y - X %*% beta_set[,2])
@@ -393,7 +393,7 @@ cxy         = cov(D$x_i, D$y_i)                                                 
 
 # Ausgleichsgeradenparameter
 beta_1_hat  = cxy/s2x                                                           # \hat{\beta}_1, Steigungsparameter
-beta_0_hat  = y_bar - beta_1_hat*x_bar                                          # \hat{\beta}_0, Offset Parameter
+beta_0_hat  = y_bar - beta_1_hat*x_bar                                          # \hat{\beta}_0, Offsetparameter
 
 # Ausgabe
 cat("beta_0_hat:", beta_0_hat,
@@ -404,7 +404,7 @@ cat("beta_0_hat:", beta_0_hat,
 Eine typische Visualisierung der Ausgleichsgerade eines Datensatzes wie in 
 @fig-ausgleichsgerade-3 implementiert folgender $\mathbf{R}$ Code.
 
-```{r, echo = F, eval = F}
+```{r, echo = FALSE, eval = FALSE}
 pdf(
 file        = "./_figures/501-ausgleichsgerade-3.pdf",
 width       = 5,
@@ -445,7 +445,7 @@ dev.off()
 ```
 
 \tiny
-```{r, eval = F}
+```{r, eval = FALSE}
 # Datenwerte
 plot(
 D$x_i,
@@ -485,7 +485,7 @@ Polynomfunktionen beliebigen Grades.
 
 :::{#def-ausgleichspolynom}
 ## Ausgleichspolynom 
-Für $\beta:=\left(\beta_{0}, \ldots, \beta_{k}\right)^{T} \in \mathbb{R}^{k+1}$ heißt die Polynomfunktion $k$ ten Grades
+Für $\beta:=\left(\beta_{0}, \ldots, \beta_{k}\right)^{T} \in \mathbb{R}^{k+1}$ heißt die Polynomfunktion $k$-ten Grades
 \begin{equation}
 f_{\beta}: \mathbb{R} \rightarrow \mathbb{R}, x \mapsto f_{\beta}(x):=\sum_{i=0}^{k} \beta_{i} x^{i}
 \end{equation}
@@ -493,18 +493,18 @@ für die für einen Datensatz $\left\{\left(x_{1}, y_{1}\right), \ldots,\left(x_
 \begin{equation}
 q: \mathbb{R}^{k+1} \rightarrow \mathbb{R}_{\geq 0}, \beta \mapsto q(\beta):=\sum_{i=1}^{n}\left(y_{i}-f_{\beta}\left(x_{i}\right)\right)^{2}=\sum_{i=1}^{n}\left(y_{i}-\sum_{i=0}^{k} \beta_{i} x^{i}\right)^{2}
 \end{equation}
-der quadrierten vertikalen Abweichungen der $y_{i}$ von den Funktionswerten $f_{\beta}\left(x_{i}\right)$ ihr Minimum annimt, das *Ausgleichspolynom kten Grades für den Datensatz $\left\{\left(x_{1}, y_{1}\right), \ldots,\left(x_{n}, y_{n}\right)\right\}$*.
+der quadrierten vertikalen Abweichungen der $y_{i}$ von den Funktionswerten $f_{\beta}\left(x_{i}\right)$ ihr Minimum annimmt, das *Ausgleichspolynom $k$-ten Grades für den Datensatz $\left\{\left(x_{1}, y_{1}\right), \ldots,\left(x_{n}, y_{n}\right)\right\}$*.
 :::
 
 Die Ausgleichsgerade ist damit das Ausgleichspolynom ersten Grades. Wir wollen 
 den Begriff des Ausgleichspolynoms hier nicht weiter vertiefen und werden insbesondere 
 die Parameterwerte $\hat{\beta}_{0}, \ldots, \hat{\beta}_{k}$, für die die 
-Funktion $q$ ihr Minimum annimt an späterer Stelle im Rahmen der Theorie des 
+Funktion $q$ ihr Minimum annimmt an späterer Stelle im Rahmen der Theorie des
 Allgemeinen Linearen Modells allgemein bestimmen. In @fig-ausgleichspolynom 
 visualisieren beispielhaft die Ausgleichspolynome ersten bis vierten Grades für 
 den Beispieldatensatz wobei der Wert der Funktion $q$ an der Minimumsstelle jeweils im Titel vermerkt ist.
 
-```{r, echo = F, eval = F}
+```{r, echo = FALSE, eval = FALSE}
 # Daten und Modellparameter
 library(pracma)                                                                 # Polynomtools
 fname       = "_data/501-regression.csv"                                        # Datendatei
@@ -646,7 +646,7 @@ Mit dem WDF Transformationstheorem bei linear-affinen Abbildungen folgt dann
 p_{y_{i}}\left(y_{i}\right) & =\frac{1}{|1|} p_{\varepsilon_{i}}\left(\frac{y_{i}-\beta_{0}-\beta_{1} x_{i}}{1}\right) \\
 & =N\left(y_{i}-\beta_{0}-\beta_{1} x_{i} ; 0, \sigma^{2}\right) \\
 & =\frac{1}{\sqrt{2 \pi \sigma^{2}}} \exp \left(-\frac{1}{2 \sigma^{2}}\left(y_{i}-\beta_{0}-\beta_{1} x_{i}-0\right)^{2}\right) \\
-& =\frac{1}{\sqrt{2 \pi \sigma^{2}}} \exp \left(-\frac{1}{2 \sigma^{2}}\left(y_{i}-\left(\beta_{0}+\beta_{1} x_{i}\right)^{2}\right)\right. \\
+& =\frac{1}{\sqrt{2 \pi \sigma^{2}}} \exp \left(-\frac{1}{2 \sigma^{2}}\left(y_{i}-\left(\beta_{0}+\beta_{1} x_{i}\right)\right)^{2}\right) \\
 & =N\left(y_{i} ; \beta_{0}+\beta_{1} x_{i}, \sigma^{2}\right) .
 \end{aligned}
 \end{equation}
@@ -658,7 +658,7 @@ vom Wert der unabhängigen Variable $x_{i}$ abhängen. Abbildung 1.6 visualisier
 das Modell und eine Realisation der einfachen linearen Regression für wahre, 
 aber unbekannte, Parameterwerte $\beta_{0}:=0, \beta_{1}:=1$ und $\sigma^{2}:=1$.
 
-```{r, echo = F, eval = F}
+```{r, echo = FALSE, eval = FALSE}
 # Deterministischer Modellteil
 n           = 10                                                                # Anzahl Regressor/Datenwerte
 x           = 1:n                                                               # Regressorwerte
@@ -707,7 +707,7 @@ w           = 3                          # WDF Support Width
 res         = 1e3                        # WDF resolution
 for(i in 1:length(x)){
   y    = seq(mu[i]-w,mu[i]+w, len = res)
-  pdfy = -dnorm(y, mu[i], sigsqr)
+  pdfy = -dnorm(y, mu[i], sqrt(sigsqr))
   lines(-pdfy+mu[i],y      , col = "gray80")
   lines(-rep(0,res)+mu[i],y, col = "gray40")
 }
@@ -723,7 +723,7 @@ pch = 16)
 set.seed(0)
 y           = rep(NaN,n)                                                        # Datenarrayinitialisierung
 for(i in 1:n){
-  y[i] = rnorm(1,mu[i],sigsqr)                                                  # y_i \sim N(\beta_0 + \beta_1x_i, \sigma^2)
+  y[i] = rnorm(1, mu[i], sqrt(sigsqr))                                                  # y_i \sim N(\beta_0 + \beta_1x_i, \sigma^2)
 }
 
 # Datenwerte
@@ -737,8 +737,8 @@ pch = 16)
 legend(
 "topleft", 
 c(TeX("$x_i$"),                                          
-  TeX("$\\beta_0 + \\beta_1 x_i)$"),
-  TeX("$N(y;\\beta_0 + \\beta_1x_i$"),
+  TeX("$\\beta_0 + \\beta_1 x_i$"),
+  TeX("$N(y;\\beta_0 + \\beta_1x_i,\\sigma^2)$"),
   TeX("$y_i$")),
 cex         = .9,                                                               
 lty         = c(NA,NA,1,NA),   
@@ -754,27 +754,27 @@ dev.off()
 
 Da es sich bei dem Modell der einfachen linearen Regression um ein parametrisches 
 Frequentistisches Modell handelt, können Schätzer für die Modellparameter mithilfe des 
-MaximumLikelihood Prinzips gewonnen werden. Insbesondere stellt sich dabei heraus, 
-dass die Maximum-Likelihood Schätzer des Offset- und des Steigungsparameter mit 
+Maximum-Likelihood-Prinzips gewonnen werden. Insbesondere stellt sich dabei heraus,
+dass die Maximum-Likelihood-Schätzer des Offset- und des Steigungsparameters mit
 den Werten der Ausgleichsgeradenparameter identisch sind. Dies ist eine der 
-Aussagen folgenden Theorems. Wir verzichten hier bei den Schätzern aus Gründen 
+Aussagen des folgenden Theorems. Wir verzichten hier bei den Schätzern aus Gründen
 der notationstechnischen Übersichtlichkeit auf ${ }^{\mathrm{ML}}$ Superskripte.
 
 :::{#thm-maximum-likelihood-schaetzung-der-einfachen-linearen-regression} 
-## Maximum-Likelihood Schätzung der einfachen linearen Regression
+## Maximum-Likelihood-Schätzung der einfachen linearen Regression
 \begin{equation}
 y_{i}=\beta_{0}+\beta_{1} x_{i}+\varepsilon_{i} \text { mit } \varepsilon_{i} \sim N\left(0, \sigma^{2}\right) \text { u.i.v. für } i=1, \ldots, n
 \end{equation}
-das Modell der einfachen linearen Regression. Dann sind Maximum Likelihood 
-Schätzer der Modellparameter $\beta_{0}, \beta_{1}$ und $\sigma^{2}$ gegeben durch
+das Modell der einfachen linearen Regression. Dann sind Maximum-Likelihood-Schätzer
+der Modellparameter $\beta_{0}, \beta_{1}$ und $\sigma^{2}$ gegeben durch
 \begin{equation}
 \hat{\beta}_{1}:=\frac{c_{x y}}{s_{x}^{2}}, \quad \hat{\beta}_{0}:=\bar{y}-\hat{\beta}_{1} \bar{x} \quad \text { und } \hat{\sigma}^{2}:=\frac{1}{n} \sum_{i=1}^{n}\left(y_{i}-\left(\hat{\beta}_{0}+\hat{\beta}_{1} x_{i}\right)\right)^{2}
 \end{equation}
 :::
 
 :::{.proof} 
-Wir zeigen zunächst, dass die Ausgleichsgerardenparameter $\hat{\beta}_{0}$ und 
-$\hat{\beta}_{1}$ den entsprechenden Maximum-Likelihood Schätzern gleichen. Dazu 
+Wir zeigen zunächst, dass die Ausgleichsgeradenparameter $\hat{\beta}_{0}$ und
+$\hat{\beta}_{1}$ den entsprechenden Maximum-Likelihood-Schätzern gleichen. Dazu
 halten wir zunächst fest, dass aufgrund der Unabhängigkeit der $y_{1}, \ldots,y_{n}$ 
 die Likelihood-Funktion des Modells der einfachen linearen Regression bezüglich 
 $\beta_{0}$ und $\beta_{1}$ die Form
@@ -806,7 +806,7 @@ und die entsprechende Log-Likelihood-Funktion
 \begin{equation}
 \ell: \mathbb{R}_{>0} \rightarrow \mathbb{R}, \sigma^{2} \mapsto \ell\left(\sigma^{2}\right)=-\frac{n}{2} \ln 2 \pi-\frac{n}{2} \ln \sigma^{2}-\frac{1}{2 \sigma^{2}} \sum_{i=1}^{n}\left(y_{i}-\left(\hat{\beta}_{0}+\hat{\beta}_{1} x_{i}\right)\right)^{2}
 \end{equation}
-In Analogie zu der Herleitung des Maximum-Likelihood Schätzers für $\sigma^{2}$ 
+In Analogie zu der Herleitung des Maximum-Likelihood-Schätzers für $\sigma^{2}$
 im Normalverteilungsmodell ergibt sich unter Beachtung von
 \begin{equation}
 \hat{\mu}=\hat{\beta}_{0}+\hat{\beta}_{1} x_{i}
@@ -817,7 +817,7 @@ dann hier
 \end{equation}
 :::
 
-In der Anwendung ist die Maximum-Likelihood Schätzung der Parameter der 
+In der Anwendung ist die Maximum-Likelihood-Schätzung der Parameter der
 einfachen linearen Regression also im Wesentlichen mit der Bestimmung der 
 Ausgleichsgeradenparameter identisch, wie folgender **R** Code zur 
 Schätzung der Parameter für den Beispieldatensatz demonstriert.
@@ -835,16 +835,16 @@ y_bar       = mean(D$y_i)                                                       
 s2x         = var(D$x_i)                                                        # Stichprobenvarianz der  x_i-Werte
 cxy         = cov(D$x_i, D$y_i)                                                 # Stichprobenkovarianz der (x_i,y_i)-Werte
 
-# Parameteterschätzer
+# Parameterschätzer
 beta_1_hat  = cxy/s2x                                                           # \hat{\beta}_1, Steigungsparameter
-beta_0_hat  = y_bar - beta_1_hat*x_bar                                          # \hat{\beta}_0, Offset Parameter
+beta_0_hat  = y_bar - beta_1_hat*x_bar                                          # \hat{\beta}_0, Offsetparameter
 sigsqr_hat  = (1/n)*sum((D$y_i-(beta_0_hat+beta_1_hat*D$x_i))^2)                # Varianzparameter
 
 
 # Ausgabe
 cat("beta_0_hat:"  , beta_0_hat,
     "\nbeta_1_hat:", beta_1_hat,
-    "\nsigsqr_hat:", sqrt(sigsqr_hat))
+    "\nsigsqr_hat:", sigsqr_hat)
 ```
 \normalsize
 

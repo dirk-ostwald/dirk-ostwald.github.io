@@ -1,51 +1,51 @@
 
 # Datenmanagement {#sec-datenmanagement}
 
-In diesem Abschnitt wollen wir einige allgemeine Begrifflichkeiten zum Umgang 
+In diesem Abschnitt wollen wir einige allgemeine Begrifflichkeiten zum Umgang
 mit Forschungsdaten einführen, gängige Formate zur längerfristigen
-Speicherung von Daten diskutieren und uns schließlich mit dem praktischen 
-Einlesen und Speichern von Daten im Rahmen des **R** Verzeichnismanagements 
-beschäftigen.    
+Speicherung von Daten diskutieren und uns schließlich mit dem praktischen
+Einlesen und Speichern von Daten im Rahmen des **R** Verzeichnismanagements
+beschäftigen.
 
 
 ## Das FAIR Datenideal {#sec-das-fair-datenideal}
 
-Das FAIR Datenideal ist ein Prinzip zum Management von Forschungsdaten, dass 
-der weiten Verbreitung, Nützlichkeit und Transparenz von Forschungsdaten im 
-Digitalzeitalterrechnung trägt. Unter *Forschungsdaten* werden dabei im allgemeinen 
-"elektronisch repräsentierte analoge oder digitale Daten, die im Zuge 
-wissenschaftlicher Vorhaben entstehen oder genutzt werden, z.B. durch Beobachtungen, 
-Experimente, Simulationsrechnungen, Erhebungen, Befragungen, Quellenforschungen, 
-Aufzeichnungen von Audio- und Videosequenzen, Digitalisierung von Objekten, 
+Das FAIR Datenideal ist ein Prinzip zum Management von Forschungsdaten, das
+der weiten Verbreitung, Nützlichkeit und Transparenz von Forschungsdaten im
+Digitalzeitalter Rechnung trägt. Unter *Forschungsdaten* werden dabei im Allgemeinen
+"elektronisch repräsentierte analoge oder digitale Daten, die im Zuge
+wissenschaftlicher Vorhaben entstehen oder genutzt werden, z. B. durch Beobachtungen,
+Experimente, Simulationsrechnungen, Erhebungen, Befragungen, Quellenforschungen,
+Aufzeichnungen von Audio- und Videosequenzen, Digitalisierung von Objekten,
 und Auswertungen." (@ratfurinformationsinfrastrukturen2017) verstanden. Konkret
-handelt sich dabei etwa um Zahlenarrays oder Characterarrays, aber auch Computersoftware, 
-wie **R** Skripte, digitale Werkzeuge, Workflows und Analysepipelines. 
+handelt es sich dabei etwa um Zahlenarrays oder Characterarrays, aber auch um Computersoftware
+wie **R**-Skripte, digitale Werkzeuge, Workflows und Analysepipelines.
 
-Neben diesen, manchmal auch als *Primärdaten* bezeichneten Datenformen sind für das 
-FAIR Datenideal sogenannte *Metadaten* von Bedeutung. Dabei handelt es sich um Daten, 
-die Informationen über andere Daten repräsentieren. Man unterscheidet dabei beispielsweise 
-*deskriptive*, *strukturelle* und *administrative Metadaten* (@riley2017, @ulrich2022). 
+Neben diesen, manchmal auch als *Primärdaten* bezeichneten Datenformen sind für das
+FAIR Datenideal sogenannte *Metadaten* von Bedeutung. Dabei handelt es sich um Daten,
+die Informationen über andere Daten repräsentieren. Man unterscheidet dabei beispielsweise
+*deskriptive*, *strukturelle* und *administrative Metadaten* (@riley2017, @ulrich2022).
 
-* *Deskriptive Metadaten* dienen dem Auffinden und der Identifikation einer Datenquelle. Beispiele für 
-deskriptive Metadaten sind etwa Titel der einer wissenschaftlichen Publikation oder
-ihr digital object identifier (DOI, @rosenblatt1997). DOIs sind alphanumerische Kennungen, 
-die digitale Objekte eindeutig identifizieren und als persistente Links zu 
-Objekten im Internet funktionieren. 
-* *Strukturelle Metadaten* sind Metadaten über Datencontainer und repräsentieren den 
-strukturellen Aufbau einer Datenquelle. Beispiele sind die Ordnung der Seiten eines 
-Buches oder die for-Schleifenenkodierung dreidimensionaler Datenobjekte. 
-* *Administrative Metadaten* schließlich sind Daten, die das Management einer 
-Datenquelle erleichtern. Beispiele für administrative Metadaten sind Provenienz, 
+* *Deskriptive Metadaten* dienen dem Auffinden und der Identifikation einer Datenquelle. Beispiele für
+deskriptive Metadaten sind etwa Titel einer wissenschaftlichen Publikation oder
+ihr Digital Object Identifier (DOI, @rosenblatt1997). DOIs sind alphanumerische Kennungen,
+die digitale Objekte eindeutig identifizieren und als persistente Links zu
+Objekten im Internet funktionieren.
+* *Strukturelle Metadaten* sind Metadaten über Datencontainer und repräsentieren den
+strukturellen Aufbau einer Datenquelle. Beispiele sind die Ordnung der Seiten eines
+Buches oder die For-Schleifen-Enkodierung dreidimensionaler Datenobjekte.
+* *Administrative Metadaten* schließlich sind Daten, die das Management einer
+Datenquelle erleichtern. Beispiele für administrative Metadaten sind Provenienz,
 das Dateiformat, die Zugangsrechte oder andere technische Informationen zu einer Datenquelle.
 
-Das FAIR Ideal zum Forschungsdatenmanagement hat seinen Ursprung in Diskussionen 
-im Rahmen der FORCE11 Konferenzserie und wurde 2016 durch @wilkinson2016 akademisch 
-kommuniziert. Es besagt im Kern, dass Forschungsdaten *Findable*, *Accessible*, 
-*Interoperable*, und *Reusable* für Menschen und Maschinen aufbereitet und vorgehalten 
-werden sollen. Speziell formuliert das FAIR Datenideal folgende Ansprüche an 
+Das FAIR-Ideal zum Forschungsdatenmanagement hat seinen Ursprung in Diskussionen
+im Rahmen der FORCE11-Konferenzserie und wurde 2016 durch @wilkinson2016 akademisch
+kommuniziert. Es besagt im Kern, dass Forschungsdaten *Findable*, *Accessible*,
+*Interoperable*, und *Reusable* für Menschen und Maschinen aufbereitet und vorgehalten
+werden sollen. Speziell formuliert das FAIR Datenideal folgende Ansprüche an
 das Management von Forschungs(meta)daten:
 
-**Findability (Auffindbarkeit)** 
+**Findability (Auffindbarkeit)**
 
 * F1. (Meta)Daten haben einen persistenten global einzigartigen Identifikator.
 * F2. Daten werden mit Metadaten angereichert.
@@ -59,7 +59,7 @@ das Management von Forschungs(meta)daten:
 * A1.2. Das Protokoll ermöglicht Authentifizierung und Rechtevergabe.
 * A2. Metadaten bleiben zugänglich, auch wenn Daten nicht mehr vorliegen.
 
-**Interoperability (Interoperabilität)** 
+**Interoperability (Interoperabilität)**
 
 * I1. (Meta)Daten nutzen eine formale, zugängliche, gemeinsam genutzte und breit anwendbare Sprache zur Wissensrepräsentation.
 * I2. (Meta)Daten nutzen Vokabularien, die den FAIR-Prinzipien folgen.
@@ -72,70 +72,70 @@ das Management von Forschungs(meta)daten:
 * R1.2. (Meta)Daten enthalten detaillierte Provenienz-Informationen.
 * R1.3. (Meta)Daten genügen den Standards der jeweiligen Fachcommunity.
 
-Der Anspruch an ein FAIRes Forschungsdatenmanagement ist mittlerweile recht 
-verbreitet, wobei die FAIR Prinzipien mit mehr oder weniger bürokratischem 
+Der Anspruch an ein faires Forschungsdatenmanagement ist mittlerweile recht
+verbreitet, wobei die FAIR-Prinzipien mit mehr oder weniger bürokratischem
 Aufwand umgesetzt werden können. Es bleibt aber festzuhalten, dass zurzeit
-die FAIR Prinzipien im Wesentlichen ein anzustrebendes Datenmanagementideal sind,
-und längst nicht alle Forschungsdaten FAIR verfügbar sind. Tatsächlich ist der 
+die FAIR-Prinzipien im Wesentlichen ein anzustrebendes Datenmanagementideal sind,
+und längst nicht alle Forschungsdaten FAIR verfügbar sind. Tatsächlich ist der
 Umgang mit digitalen Forschungsdaten auch weiterhin noch sehr unstrukturiert
-und gerade das deutsche Universtätsssystem begreift das digitale Datenmanagement 
-nur sehr langsam als eine Kernaufgabe. Im größeren, wenn auch Projekt-basiertem,
-und damit nicht nachhaltigem Rahmen, versucht die Initiative zur 
-[Nationalen Forschungsdateninfrastruktur (NFDI)](https://www.nfdi.de/), 
+und gerade das deutsche Universitätssystem begreift das digitale Datenmanagement
+nur sehr langsam als eine Kernaufgabe. In größerem, wenn auch projektbasiertem
+und damit nicht nachhaltigem Rahmen versucht die Initiative zur
+[Nationalen Forschungsdateninfrastruktur (NFDI)](https://www.nfdi.de/),
 das deutsche digitale Forschungsdatenmanagement zu verbessern. Leider bleibt weiterhin festzuhalten,
 dass viele durch öffentliche Mittel finanzierte Wissenschaftler:innen von ihnen
 erhobene Forschungsdaten weder systematisch aufbereiten noch der Öffentlichkeit
-zur Verfügung stellen wollen. Hier ist also weiterhin auf einen Kulturwandel 
-zu mehr wissenschaftlicher Transparenz zu hoffen und offene öffentlich-finanziert 
-Forschung (Open Research, vgl. z.B. @toelch2018, @miedema2022, @bertram2023) 
-bleibt ein anzustrebenes Ideal.
+zur Verfügung stellen wollen. Hier ist also weiterhin auf einen Kulturwandel
+zu mehr wissenschaftlicher Transparenz zu hoffen und offene, öffentlich finanzierte
+Forschung (Open Research, vgl. z.B. @toelch2018, @miedema2022, @bertram2023)
+bleibt ein anzustrebendes Ideal.
 
 ## Dateiformate {#sec-dateiformate}
 
-Allgemeine definiert Dateiformat Syntax und Semantik von Daten innerhalb einer Datei.
-Dateiformate sind dabei bijektive Abbildungen von Information auf den binären 
-Langzeitspeicher. Allgemein unterscheidet man *Datendateiformate* gegenüber *Softwaredateiformaten*, 
-*textuelle* gegenüber *binären Dateiformaten* und *offene* gegenüber *propietären*, 
+Allgemein definieren Dateiformate Syntax und Semantik von Daten innerhalb einer Datei.
+Dateiformate sind dabei bijektive Abbildungen von Information auf den binären
+Langzeitspeicher. Allgemein unterscheidet man *Datendateiformate* gegenüber *Softwaredateiformaten*,
+*textuelle* gegenüber *binären Dateiformaten* und *offene* gegenüber *proprietären*,
 d.h. urheberrechtlich geschützten, Dateiformaten. Bei binären Datendateiformaten ist
-das Einlesen von Daten, ihre Inspektion, und ihre Manipulation generell nur mit 
-spezieller Software möglich. Beispiele für binäre Dateiformate sind *.docx*, *.pdf*, 
-*.xlsx*, *.jpg*, und *.mp4* Dateien. Binäre Dateiformate sind dabei oft propietär.
-Früher wuden binäre Dateiformate aufgrund ihres geringeren Speicherbedarfs auch 
-für Forschungsdaten bevorzugt eingesetzt. Heutzutage werden dagegen textuelle 
-Datendateiformate wie *.txt*, *.csv*, *.tsv*, und *.json* favorisiert. Bei diesen
-Formaten ist das Einlesen der gespeicherten Daten, ihre Inspektion und ihre 
-Manipulation mit einfachen allgemeinen Editoren, wie beispielsweise VSCode problemlos 
-möglich und die Dateiformate sind generell nicht propietär. @fig-dateiformate
+das Einlesen von Daten, ihre Inspektion, und ihre Manipulation generell nur mit
+spezieller Software möglich. Beispiele für binäre Dateiformate sind *.docx*, *.pdf*,
+*.xlsx*, *.jpg* und *.mp4* Dateien. Binäre Dateiformate sind dabei oft proprietär.
+Früher wurden binäre Dateiformate aufgrund ihres geringeren Speicherbedarfs auch
+für Forschungsdaten bevorzugt eingesetzt. Heutzutage werden dagegen textuelle
+Datendateiformate wie *.txt*, *.csv*, *.tsv* und *.json* favorisiert. Bei diesen
+Formaten ist das Einlesen der gespeicherten Daten, ihre Inspektion und ihre
+Manipulation mit einfachen allgemeinen Editoren wie beispielsweise VS Code problemlos
+möglich und die Dateiformate sind generell nicht proprietär. @fig-dateiformate
 zeigt die Darstellung eines binären Datenformats und eines textuellen Datenformats
-im Windows Editor. Generell bieten sich im Forschungskontext und im Sinne der 
-FAIR Prinzipien also offene, textuelle Datendateiformate an. Exemplarisch wollen
-wir hier als textuelle Dateiformate das .csv und .tsv, sowie das .json Dateiformat
+im Windows Editor. Generell bieten sich im Forschungskontext und im Sinne der
+FAIR-Prinzipien also offene, textuelle Datendateiformate an. Exemplarisch wollen
+wir hier als textuelle Dateiformate das .csv-, das .tsv- sowie das .json-Dateiformat
 genauer betrachten.
 
 ![Binäre und textuelle Dateiformate in Editordarstellung.](./_figures/207-dateiformate){#fig-dateiformate fig-align="center" width=100%}
 
-### .csv und .tsv. Dateien 
+### .csv- und .tsv-Dateien
 
-.csv (comma-separated values) und .tsv (tab-separated values) Dateien sind wichtige
-Dateiformate zur Speicherung einfacher, tabellarisch strukturierter Daten. Allgemein 
-repräsentieren .csv und .tsv zeilenweise miteinander verknüpfte Datensätze. 
-Dabei werden Datenfelder innerhalb einer Zeile durch Kommata (.csv) oder Tabulatorzeichen (.tsv) 
-und einzelne Datensätze durch Zeilenumbrüche voneinander abgegrenzt. Der Datensatz 
-in der ersten Zeilen einer .csv oder .tsv Datei enthält typischerweise die Definition 
+.csv- (comma-separated values) und .tsv-Dateien (tab-separated values) sind wichtige
+Dateiformate zur Speicherung einfacher, tabellarisch strukturierter Daten. Allgemein
+repräsentieren .csv und .tsv zeilenweise miteinander verknüpfte Datensätze.
+Dabei werden Datenfelder innerhalb einer Zeile durch Kommata (.csv) oder Tabulatorzeichen (.tsv)
+und einzelne Datensätze durch Zeilenumbrüche voneinander abgegrenzt. Der Datensatz
+in der ersten Zeile einer .csv- oder .tsv-Datei enthält typischerweise die Definition
 der Spaltennamen und wird als Kopfdatensatz (Header) bezeichnet. Ein typisches
-Beispiel einer .csv ist in @fig-dateiformate (rechts) dargestellt. Dabei repräsentieren die
-Zeilen experimentelle Einheiten (hier Versuchspersonen) und die Spalten verschiedene 
-Variablen, für die jeweils ein Wert bei der Versuchsperson bestimmt wurde. 
+Beispiel einer .csv-Datei ist in @fig-dateiformate (rechts) dargestellt. Dabei repräsentieren die
+Zeilen experimentelle Einheiten (hier Versuchspersonen) und die Spalten verschiedene
+Variablen, für die jeweils ein Wert bei der Versuchsperson bestimmt wurde.
 
-Im Kontext der Datenanalyse unterscheidet man bei .csv und .tsv Dateien eine
-*wide format* und eine *long format* Datenrepräsentation. Bei der wide format
-Datenrepräsentation werden alle Variablen einer experimentellen Einheit wie in 
-obigem Beispiel in einer Zeile repräsentiert, vgl. @tbl-wide-format. Allerdings ist es für manche 
+Im Kontext der Datenanalyse unterscheidet man bei .csv- und .tsv-Dateien eine
+*Wide-Format*- und eine *Long-Format*-Datenrepräsentation. Bei der Wide-Format-
+Datenrepräsentation werden alle Variablen einer experimentellen Einheit wie in
+obigem Beispiel in einer Zeile repräsentiert, vgl. @tbl-wide-format. Allerdings ist es für manche
 Datenanalysen hilfreicher, die Daten einer experimentellen Einheit über Zeilen
-zu verteilen. Dies führt auf das sogenannte long format, wie in @tbl-long-format 
-gezeigt. Generell ist das wide format für ein erstes intuitives Verständnis 
-eines Datensatzes oft hilfreicher, wohingegen das long format Daten im Rahmen
-modell-basierter Analysen meist konsistenter mit der Modellarchitektur repräsentiert.
+zu verteilen. Dies führt auf das sogenannte Long Format, wie in @tbl-long-format
+gezeigt. Generell ist das Wide Format für ein erstes intuitives Verständnis
+eines Datensatzes oft hilfreicher, wohingegen das Long Format Daten im Rahmen
+modellbasierter Analysen meist konsistenter mit der Modellarchitektur repräsentiert.
 
 
 | EE | V1    | V2    | V3   |
@@ -168,27 +168,27 @@ modell-basierter Analysen meist konsistenter mit der Modellarchitektur repräsen
 
 ### .json Dateien
 
-.json (JavaScript Object Notation), ist ein textuelles Datenformat, das 
-zum Speichern strukturierter Daten in Key-Value-Form verwendet wird. Es weist 
-Ähnlichkeiten mit R-Listen auf, insbesondere mit benannten Listenelementen, 
+.json (JavaScript Object Notation) ist ein textuelles Datenformat, das
+zum Speichern strukturierter Daten in Key-Value-Form verwendet wird. Es weist
+Ähnlichkeiten mit R-Listen auf, insbesondere mit benannten Listenelementen,
 und eignet sich daher gut als Format für die Speicherung von Metadaten.
 
-Eine .json-Datei besteht aus Objekten, die in geschweiften Klammern { } notiert 
-werden und eine durch Kommata getrennte Liste von Eigenschaften enthalten. 
-Jede Eigenschaft ist ein Key-Value-Paar, wobei der Key immer als String 
-in Hochkommata (" ") geschrieben wird. Der Value kann wiederum ein Objekt, 
+Eine .json-Datei besteht aus Objekten, die in geschweiften Klammern { } notiert
+werden und eine durch Kommata getrennte Liste von Eigenschaften enthalten.
+Jede Eigenschaft ist ein Key-Value-Paar, wobei der Key immer als String
+in Hochkommata (" ") geschrieben wird. Der Value kann wiederum ein Objekt,
 ein Array, ein String, ein Boolean oder eine Zahl sein. Abbildung @fig-json zeigt
-den Inhalt einer .json Datei zur Speicherung von Studierendeninformationen.
+den Inhalt einer .json-Datei zur Speicherung von Studierendeninformationen.
 
 ![.json Dateiformat.](./_figures/207-json){#fig-json fig-align="center" width=50%}
 
 ## Verzeichnismanagement {#sec-verzeichnismanagement}
 
-Da Verzeichnissysteme von Computern üblicherweise in Worten (z.B. `C:\Users`) 
-statt numerisch dargestellt sind, ist eine Grundlage für das automatisierte Einlesen 
-von langfristig gespeicherten Daten in den Arbeitsspeicher und umgekehrt des 
-Speicherns von Daten aus dem Arbeitsspeicher im langfristigen Speicher das 
-Arbeiten mit sogenannten *strings* (Zeichenketten). Strings werden in **R** mit 
+Da Verzeichnissysteme von Computern üblicherweise in Worten (z. B. `C:\Users`)
+statt numerisch dargestellt sind, ist eine Grundlage für das automatisierte Einlesen
+von langfristig gespeicherten Daten in den Arbeitsspeicher und umgekehrt des
+Speicherns von Daten aus dem Arbeitsspeicher im langfristigen Speicher das
+Arbeiten mit sogenannten *Strings* (Zeichenketten). Strings werden in **R** mit
 Anführungszeichen oder Hochkommata erzeugt:
 
 \footnotesize
@@ -197,7 +197,7 @@ Anführungszeichen oder Hochkommata erzeugt:
 c("Dies ist ein character vector")
 
 # Hochkommata koennen bei Anfuehrungszeichen im String helfen
-c('Dies ist ein "string"')		  
+c('Dies ist ein "string"')
 ```
 
 Die Funktion `paste()` konvertiert Vektoren in character und fügt sie elementweise zusammen.
@@ -205,26 +205,26 @@ Die Funktion `paste()` konvertiert Vektoren in character und fügt sie elementwe
 \footnotesize
 ```{r}
 # Konvertierung und Konkatenation einelementiger double vectors
-paste(1,2)						
+paste(1,2)
 
 # Konkatenation einelementiger character strings
 paste("Dies ist", "ein String")
 ```
 \normalsize
 
-Die Funktion `paste()` hat darüber hinaus eine Reihe weiterer Funktionalitäten, die 
+Die Funktion `paste()` hat darüber hinaus eine Reihe weiterer Funktionalitäten, die
 manchmal hilfreich sein können:
 
 \footnotesize
 ```{r}
-# Vector recylcing, elementweise Veknuepfungen
-paste(c("Rote", "Gelbe"), "Blume")	
+# Vector recycling, elementweise Verknuepfungen
+paste(c("Rote", "Gelbe"), "Blume")
 
-# Separatorspezifkation
-paste(c("Rote", "Gelbe"), "Blume", 	sep = "-")	  
+# Separatorspezifikation
+paste(c("Rote", "Gelbe"), "Blume", 	sep = "-")
 
 # Zusammenfuegen mit spezifiziertem  Separator
-paste(c("Rote", "Gelbe"), "Blume",  collapse = ", ") 
+paste(c("Rote", "Gelbe"), "Blume",  collapse = ", ")
 ```
 \normalsize
 
@@ -233,81 +233,81 @@ Die Funktion `toString()` ist eine `paste()` Variante für numerische Vektoren:
 \footnotesize
 ```{r}
 # Konversion eines double Vektors in formatierten String
-toString(1:10)				
+toString(1:10)
 
 # mit  Moeglichkeit der Beschraenkung auf width Zeichen
-toString(1:10, width = 10)	 
+toString(1:10, width = 10)
 ```
 \normalsize
 
-Um nun die Daten einer Datei im Langzeitspeicher in den Arbeitspeicher zu laden,
-benötig man ihre Addresse in der Verzeichnisstruktur des Computers. @fig-windows-verzeichnisstruktur
+Um nun die Daten einer Datei im Langzeitspeicher in den Arbeitsspeicher zu laden,
+benötigt man ihre Adresse in der Verzeichnisstruktur des Computers. @fig-windows-verzeichnisstruktur
 zeigt einen Ausschnitt der Verzeichnisstruktur eines typischen Windows-Rechners.
 
 ![Windows Verzeichnisstruktur](./_figures/207-windows-verzeichnisstruktur){#fig-windows-verzeichnisstruktur fig-align="center" width=70%}
 
-Die Addressen von Dateien in der Verzeichnisstruktur heißen *Dateipfade* (*paths*). Ein Pfad besteht 
+Die Adressen von Dateien in der Verzeichnisstruktur heißen *Dateipfade* (*paths*). Ein Pfad besteht
 aus einer durch Schrägstriche getrennten Liste von Verzeichnisnamen. Dabei werden
-unter Windows traditionell linksgeneigte Schrägstriche (`\`, *backslash*) und 
-unter Mac und Linux rechtsgeneigte Schrägstriche (`/`, *slash*) genutzt. 
-Bei Windows findet sich zusätzlich in der Regel an oberster Stelle der Verzeichnisstruktur 
-der Festplattenname (z.B. `C:\` oder `D:\`), unter Mac der Benutzername (`/Users/`) 
+unter Windows traditionell linksgeneigte Schrägstriche (`\`, *backslash*) und
+unter Mac und Linux rechtsgeneigte Schrägstriche (`/`, *slash*) genutzt.
+Unter Windows findet sich zusätzlich in der Regel an oberster Stelle der Verzeichnisstruktur
+der Festplattenname (z.B. `C:\` oder `D:\`), unter Mac der Benutzername (`/Users/`)
 und Linux das Heimverzeichnis (`/home/`). Die folgenden Beispiele sind Windows-basiert.
 
 \footnotesize
-```{r, eval = F}
+```{r, eval = FALSE}
 # Pfad der auf einem Verzeichnisnamen endet
-C:\Users\dirko\Nextcloud\Home\pdwp-online\dirk-ostwald.github.io\_data         
+C:\Users\dirko\Nextcloud\Home\pdwp-online\dirk-ostwald.github.io\_data
 
-# Pfad der auf einem Dateinamen endet 
-C:\Users\dirko\Nextcloud\Home\pdwp-online\dirk-ostwald.github.io\_data\cushny.csv  
+# Pfad der auf einem Dateinamen endet
+C:\Users\dirko\Nextcloud\Home\pdwp-online\dirk-ostwald.github.io\_data\cushny.csv
 ```
 \normalsize
 
-*Absolute Dateipfade* geben die Addresse eines Verzeichnisses oder einer Datei 
-in der Gesamtverzeichnisstruktur der Festplatte und sind wenig anfällig für 
-Dateiverwechselungen. *Relative Dateipfade* beziehen sich dagegen auf einen 
-Speicherort in Relation zum aktuellen Verzeichnis, wobei `.` und `..` das aktuelle 
-und das übergeordnetes Verzeichnis bezeichnen. Bei relativen Dateipfaden kann 
-es durchaus zu Dateiverwechselungen kommen. Generell wird also die Verwendung 
+*Absolute Dateipfade* geben die Adresse eines Verzeichnisses oder einer Datei
+in der Gesamtverzeichnisstruktur der Festplatte und sind wenig anfällig für
+Dateiverwechselungen. *Relative Dateipfade* beziehen sich dagegen auf einen
+Speicherort in Relation zum aktuellen Verzeichnis, wobei `.` und `..` das aktuelle
+und das übergeordnete Verzeichnis bezeichnen. Bei relativen Dateipfaden kann
+es durchaus zu Dateiverwechselungen kommen. Generell wird also die Verwendung
 adaptiv generierter absoluter Pfade empfohlen.
 
 \footnotesize
-```{r, eval = F}
-# Dateiname in absoluter Pfadform  
-fname =  "D:\Lehre\Daten\cushny.csv"       
+```{r, eval = FALSE}
+# Dateiname in absoluter Pfadform
+fname =  "D:\Lehre\Daten\cushny.csv"
 ```
 \normalsize
 
-**R** besitzt ein sogenanntes *working directory* aus dem per Default Dateien gelesen werden.
-Bei geöffnetem **R** Terminal gibt `getwd()` das working directory an.
+**R** besitzt ein sogenanntes *working directory*, aus dem per Default Dateien gelesen werden.
+Bei geöffnetem **R**-Terminal gibt `getwd()` das working directory an.
 
 \footnotesize
 ```{r}
 getwd()
 ```
-\normalsize 
+\normalsize
 
-`setwd()` ändert das working directory. Dabei ist zu beachten, dass **R** nur 
-mit forward slashes `/` arbeitet. Die manuelle Spezifikation von Windowspfaden 
+`setwd()` ändert das working directory. Dabei ist zu beachten, dass **R** nur
+mit forward slashes `/` arbeitet. Die manuelle Spezifikation von Windows-Pfaden
 benötigt deshalb doppelte backward slashes `\\`
 
 \footnotesize
-```{r, eval = F}
+```{r, eval = FALSE}
 setwd("C:\\Users\\dirko\\Nextcloud\\Home\\pdwp-online\\dirk-ostwald.github.io\\_data")
 getwd()
 ```
 \normalsize
 
-Mithilfe der `file.path()` Funktion können Betriebssystem-konforme Verzeichnis und Dateipfade erzeugt werden: 
+Mithilfe der Funktion `file.path()` können betriebssystemkonforme Verzeichnis- und Dateipfade erzeugt werden:
 
 \footnotesize
-```{r, eval = F}
+```{r, eval = FALSE}
 file.path("D:", "Nextcloud", "Home", "Teaching")
 ```
 \normalsize
 
-Die Funktion `dirname()`gibt das Verzeichnis an, das ein Verzeichnis oder eine Datei enthält:
+Die Funktion `dirname()` gibt das Verzeichnis an, das ein Verzeichnis oder eine Datei enthält:
 
 \footnotesize
 ```{r}
@@ -327,47 +327,50 @@ basename(getwd())
 
 ## Datenimport und Datenexport {#sec-datenimport-und-datenexport}
 
-Zum Einlesen von einfach strukturierten .csv Dateien bietet sich die
-**R** Funktion `read.csv()` an. Diese Funktion liest eine Datei ein und speichert 
-ihre Inhalte in einem Dataframe. 
+Zum Einlesen von einfach strukturierten .csv-Dateien bietet sich die
+**R**-Funktion `read.csv()` an. Diese Funktion liest eine Datei ein und speichert
+ihre Inhalte in einem Dataframe.
 
+\footnotesize
 ```{r}
 D = read.csv("C:\\Users\\dirko\\Nextcloud\\Home\\pdwp-online\\dirk-ostwald.github.io\\_part_2\\_data\\cushny.csv")
 print(D)
 ```
-Folgender **R** Code definiert den absoluten Pfad der Datei adaptiv in 
-der Verzeichnisstruktur des Computers mithilfe des **R** working directories. 
+\normalsize
 
-```{r, eval = F}
+Folgender **R**-Code definiert den absoluten Pfad der Datei adaptiv in
+der Verzeichnisstruktur des Computers mithilfe des **R** working directories.
+
+\footnotesize
+```{r, eval = FALSE}
 wdir    = getwd()                           # Working directory
-print(wdir)                                 # Ausgabe                           
+print(wdir)                                 # Ausgabe
 ddir    = file.path(wdir, "_part_2/_data")  # Datenverzeichnispfad
 print(ddir)                                 # Ausgabe
 fname   = "cushny.csv"                      # (base) filename
 print(fname)                                # Ausgabe
-fpath   = file.path(ddir, fname)            # filepath 
+fpath   = file.path(ddir, fname)            # filepath
 print(fpath)                                # Ausgabe
 D       = read.csv(fpath)                   # Einlesen der Datei
 print(D)                                    # Ausgabe des Dataframes
 ```
+\normalsize
 
 Darüber hinaus bietet **R** eine Vielzahl von Möglichkeiten des Datenimports mithilfe
-spezialisierte Funktionen:
+spezialisierter Funktionen:
 
 Für .csv und andere Textdateien:
 
 * `read.csv()`, `read.csv2()`, `read.delim()`, `read.delim2()` als `read.table()` Varianten.
-* `readlines` für low-level Textdateiimport.
-* `fromJSON()` aus dem Paket `rjson` für .json Dateien.
+* `readLines()` für Low-Level-Textdateiimport.
+* `fromJSON()` aus dem Paket `rjson` für .json-Dateien.
 
 Für binäre Dateien:
 
-* `read.xlsx()` und  `read.xlsx2()` aus dem Paket `xlsx` für Excel .xlsx Dateien.
-* `read.spss()` aus dem Paket `foreign` für SPSS .sav Dateien.
-* `readMat` aus dem Paket `R.matlab` für Matlab .mat Dateien.
+* `read.xlsx()` und  `read.xlsx2()` aus dem Paket `xlsx` für Excel-.xlsx-Dateien.
+* `read.spss()` aus dem Paket `foreign` für SPSS-.sav-Dateien.
+* `readMat()` aus dem Paket `R.matlab` für MATLAB-.mat-Dateien.
 
 Für Datenbanken:
 
-* SQL Datenbanken können mithilfe der Pakete `DBI` und `RSQLite` abgefragt werden.
-
-
+* SQL-Datenbanken können mithilfe der Pakete `DBI` und `RSQLite` abgefragt werden.

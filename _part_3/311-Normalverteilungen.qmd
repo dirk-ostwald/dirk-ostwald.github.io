@@ -1,30 +1,32 @@
 # Normalverteilungen {#sec-normalverteilungen}
 \normalsize
 
-Die multivariate Normalverteilung ist die multivariate Generalisierung der 
-univariaten Normalverteilung. Die Motivation für die verbreiteten 
+Die multivariate Normalverteilung ist die multivariate Generalisierung der
+univariaten Normalverteilung. Die Motivation für die verbreiteten
 Normalverteilungsannahmen in der probabilistischen Modellierung liegt bekanntermaßen
-im Zentralen Grenzwertsatz: In probabilistischen Modellen repräsentieren probabilistische 
-Terme die Summation sehr vieler Zufallsvorgänge, die durch die deterministischen Bestandteile 
-des jeweiligen Modells, also eine formalisierte wissenschaftliche Theorie, nicht 
+im Zentralen Grenzwertsatz: In probabilistischen Modellen repräsentieren probabilistische
+Terme die Summation sehr vieler Zufallsvorgänge, die durch die deterministischen Bestandteile
+des jeweiligen Modells, also eine formalisierte wissenschaftliche Theorie, nicht
 erklärt werden. Nach dem Zentralen Grenzwertsatz ist die Summe dieser nicht erklärten
-Zufallsvorgänge dann aber gerade normalverteilt. 
+Zufallsvorgänge dann aber gerade normalverteilt.
 
-Über diesen grundlegenden Aspekt hinaus hat die Normalverteilung viele günstige 
-mathematische Eigenschaften, die ihren Einsatz in vielen Bereichen der probabilistischen 
-Modellierung ermöglichen. Anwendungen multivariater Normalverteilungen finden 
-sich damit im Kontext des Allgemeinen linearen Modells, den Generalisierungen 
-des Allgemeinen Modells zu Hierarchischen linearen Modellen oder Multivariaten 
+Über diesen grundlegenden Aspekt hinaus hat die Normalverteilung viele günstige
+mathematische Eigenschaften, die ihren Einsatz in vielen Bereichen der probabilistischen
+Modellierung ermöglichen. Anwendungen multivariater Normalverteilungen finden
+sich damit im Kontext des Allgemeinen linearen Modells, den Generalisierungen
+des Allgemeinen Modells zu Hierarchischen linearen Modellen oder Multivariaten
 Allgemeinen linearen Modellen, der Bayesianischen Inferenz bei Normalverteilungsannahmen
-und nicht zuletzt der Theorie probabilistischer Filter, wie zum Beispiel 
-dem Kalman-Bucy Filter. 
+und nicht zuletzt der Theorie probabilistischer Filter, wie zum Beispiel
+dem Kalman-Bucy Filter.
 
 ## Konstruktion multivariater Normalverteilungen {#sec-konstruktion-multivariater-normalverteilungen}
 
-In diesem Abschnitt wollen wir zeigen, wie ein bivariat normalverteilter Zufallsvektor 
-durch Transformation und Konkatenation zweier univariat normalverteilter 
-Zufallsvariablen konstruiert werden kann. Dazu erinnern wir zunächst an den 
-Begriff der normalverteilten Zufallsvariable
+In diesem Abschnitt wollen wir zeigen, wie ein bivariat normalverteilter Zufallsvektor
+durch Transformation und Konkatenation zweier univariat normalverteilter
+Zufallsvariablen konstruiert werden kann. Dazu erinnern wir zunächst an den
+Begriff der normalverteilten Zufallsvariable. Wir wiederholen die entsprechende
+Definition aus @sec-zufallsvariablen hier, um die Terminologie für die multivariaten
+Normalverteilungen einzuführen.
 
 :::{#def-normalverteilte-zufallsvariable}
 ## Normalverteilte Zufallsvariable
@@ -33,80 +35,80 @@ $\xi$ sei eine Zufallsvariable mit Ergebnisraum $\mathbb{R}$ und WDF
 p : \mathbb{R} \to \mathbb{R}_{>0}, x\mapsto p(x)
 := \frac{1}{\sqrt{2\pi \sigma^2}}\exp\left(-\frac{1}{2\sigma^2}(x - \mu)^2\right).
 \end{equation}
-Dann sagen wir, dass $\xi$ einer *Normalverteilung (oder  Gauß-Verteilung)* mit 
-*Erwartungswertparameter $\mu \in \mathbb{R}$* und *Varianzparameter $\sigma^2 > 0$* 
-unterliegt und nennen $\xi$ eine *normalverteilte Zufallsvariable*. Wir kürzen dies 
-mit $\xi \sim N(\mu,\sigma^2)$ ab. Die WDF einer normalverteilten Zufallsvariable 
+Dann sagen wir, dass $\xi$ einer *Normalverteilung (oder Gauß-Verteilung)* mit
+*Erwartungswertparameter $\mu \in \mathbb{R}$* und *Varianzparameter $\sigma^2 > 0$*
+unterliegt und nennen $\xi$ eine *normalverteilte Zufallsvariable*. Wir kürzen dies
+mit $\xi \sim N(\mu,\sigma^2)$ ab. Die WDF einer normalverteilten Zufallsvariablen
 bezeichnen wir mit
 \begin{equation}
 N\left(x;\mu,\sigma^2\right) := \frac{1}{\sqrt{2\pi \sigma^2}}\exp\left(-\frac{1}{2\sigma^2}(x - \mu)^2\right).
 \end{equation}
 :::
 
-```{r, echo = F, eval = F}
+```{r, echo = FALSE, eval = FALSE}
 library(latex2exp)
 pdf(
 file        = file.path("./_figures/311-univariate-normal-wdf.pdf"),
 width       = 9,
 height      = 3)
-par(                                                                    
-mfcol      = c(1,3),                                           
-family     = "sans",                                                   
-pty        = "s",                                                       
-bty        = "l",                                                       
-lwd        = 1,                                                         
-las        = 1,                                                         
-mgp        = c(2,1,0),                                                  
-font.main  = 1,                                                         
-cex.main   = 1.4)                                                        
- 
+par(
+mfcol      = c(1,3),
+family     = "sans",
+pty        = "s",
+bty        = "l",
+lwd        = 1,
+las        = 1,
+mgp        = c(2,1,0),
+font.main  = 1,
+cex.main   = 1.4)
+
 # model formulation
-x_min   = -10                                                                    # minimum x-value
-x_max   = 10                                                                     # maximum x-value
-x_res   = 1e3                                                                    # x space resolution
-x       = seq(x_min,x_max,len = x_res)                                           # x space
-mu      = c(0,-2.5,3)                                                            # expectation parameters
-sigsqr  = c(1,10,0.5)                                                            # variance parameters
+x_min   = -10                                                                   # minimum x-value
+x_max   = 10                                                                    # maximum x-value
+x_res   = 1e3                                                                   # x space resolution
+x       = seq(x_min,x_max,len = x_res)                                          # x space
+mu      = c(0,-2.5,3)                                                           # expectation parameters
+sigsqr  = c(1,10,0.5)                                                           # variance parameters
 
 # parameter iterations
 for (i in 1:length(mu)){
 
   # Gaussian PDFs
   plot(
-       x,                                                                        # x values
-       dnorm(x,mu[i],sqrt(sigsqr[i])),                                           # y values
-       type         = "l",                                                       # line style
-       lwd          =  1.5,                                                      # line width
-       col          = "Black",                                                   # line color
-       ylab         = " ",                                                       # no y-axis label
-       xlab         = "x",                                                       # x-axis label
-       ylim         = c(0,0.6))                                                  # y-axis limits
-  title(sprintf("N(x; %g,%g)", mu[i], sigsqr[i]))                                # plot title, print formatted data to string
+  x,
+  dnorm(x,mu[i],sqrt(sigsqr[i])),
+  type         = "l",
+  lwd          =  1.5,
+  col          = "Black",
+  ylab         = " ",
+  xlab         = "x",
+  ylim         = c(0,0.6))
+  title(sprintf("N(x; %g,%g)", mu[i], sigsqr[i]))
 }
 dev.off()
 ```
 
-![Wahrscheinlichkeitsdichtefunktionen univariater Normalverteilungen.](./_figures/311-univariate-normal-wdf){#fig-univariate-normal-wdf fig-align="center" width=100%} 
+![Wahrscheinlichkeitsdichtefunktionen univariater Normalverteilungen.](./_figures/311-univariate-normal-wdf){#fig-univariate-normal-wdf fig-align="center" width=100%}
 
-Visuell entspricht der Parameter $\mu$ einer normalverteilten Zufallsvariable 
-dem Wert höchster Wahrscheinlichkeitsdichte und der Parameter $\sigma^2$ spezifiziert 
-die Breite der WDF (@fig-univariate-normal-wdf). Weiterhin gelten für den 
-Erwartungswert und die Varianz einer normalverteilten Zufallsvariable bekanntlich
+Visuell entspricht der Parameter $\mu$ einer normalverteilten Zufallsvariablen
+dem Wert höchster Wahrscheinlichkeitsdichte und der Parameter $\sigma^2$ spezifiziert
+die Breite der WDF (@fig-univariate-normal-wdf). Weiterhin gelten für den
+Erwartungswert und die Varianz einer normalverteilten Zufallsvariablen bekanntlich
 \begin{equation}
 \mathbb{E}(\xi) = \mu \mbox{ und } \mathbb{V}(\xi) = \sigma^2.
 \end{equation}
-Eine normalverteilte Zufallsvariable der Form $\xi \sim N(0,1)$ schließlich 
+Eine normalverteilte Zufallsvariable der Form $\xi \sim N(0,1)$ schließlich
 heißt auch *standardnormalverteilt*.
 
 Folgendes Theorem zeigt, wie zwei unabhängige, univariat standardnormalverteilte Zufallsvariablen
 kombiniert werden können, um einen bivariat verteilten Zufallsvektor zu konstruieren.
 Die Verteilung eines ebensolchen Zufallsvektors wird dann als *bivariate Normalverteilung*
-bezeichnet. 
-    
+bezeichnet.
+
 :::{#thm-konstruktion-bivariater-normalverteilungen}
 ## Konstruktion bivariater Normalverteilungen
 $\zeta_1 \sim N(0,1)$ und $\zeta_2 \sim N(0,1)$ seien zwei unabhängige
-standardnormalverteilte  Zufallsvariablen. Weiterhin seien $\mu_1,\mu_2\in \mathbb{R}$,
+standardnormalverteilte Zufallsvariablen. Weiterhin seien $\mu_1,\mu_2\in \mathbb{R}$,
 $\sigma_1,\sigma_2>0$ und $\rho \in ]-1,1[$. Schließlich seien
 \begin{align}
 \begin{split}
@@ -121,7 +123,7 @@ p : \mathbb{R}^2 \to \mathbb{R}_{>0},\, x \mapsto p(x) := (2\pi)^{-\frac{n}{2}}|
 \end{equation}
 wobei $n:=2$ und $\mu \in \mathbb{R}^{2}$ und  $\Sigma \in \mathbb{R}^{2\times 2}$ durch
 \begin{equation}
-\mu = 
+\mu =
 \begin{pmatrix}
 \mu_1 \\
 \mu_2
@@ -180,7 +182,7 @@ sowie die Isokonturen der durch @thm-konstruktion-bivariater-normalverteilungen
 postulierten WDF sind in @fig-konstruktion dargestellt.
 :::
 
-```{r echo = F, eval = F}
+```{r echo = FALSE, eval = FALSE}
 library(latex2exp)
 library(mvtnorm)
 pdf(
@@ -227,12 +229,12 @@ bg          = "gray60",
 cex         = .9)
 dev.off()
 ```
-![Konstruktion einer bivariaten Normalverteilungen.](./_figures/311-konstruktion){#fig-konstruktion fig-align="center" width=60%}
+![Konstruktion einer bivariaten Normalverteilung.](./_figures/311-konstruktion){#fig-konstruktion fig-align="center" width=60%}
 
 
-## Definition multivariater Normalverteilungen {#sec-definition-multivariater-normalverteilungen} 
+## Definition multivariater Normalverteilungen {#sec-definition-multivariater-normalverteilungen}
 
-Wir wollen die multivariate Normalverteilung nun formal einführen und erste 
+Wir wollen die multivariate Normalverteilung nun formal einführen und erste
 Eigenschaften angeben. Wir nutzen dazu folgende Definition.
 
 :::{#def-multivariate-normalverteilung}
@@ -252,20 +254,20 @@ N(x;\mu,\Sigma):= (2\pi)^{-\frac{n}{2}}|\Sigma|^{-\frac{1}{2}}\exp\left(-\frac{1
 :::
 
 :::{#exm-bivariate-normalverteilungen}
-## Bivariate Normalverteilungen 
+## Bivariate Normalverteilungen
 
-@fig-bivariate-normal-wdf A,B,C zeigen die Isokonturen der WDFen bivariat normlaverteilter
+@fig-bivariate-normal-wdf A,B,C zeigen die Isokonturen der WDFen bivariat normalverteilter
 Zufallsvektoren für $\mu = (1,1)^T$ und
 \begin{equation}
 \Sigma_A := \begin{pmatrix} 0.20 &  0.15  \\   0.15 & 0.20 \end{pmatrix}, \quad
 \Sigma_B := \begin{pmatrix} 0.20 &  0.00  \\   0.00 & 0.20 \end{pmatrix}, \quad
 \Sigma_C := \begin{pmatrix} 0.20 &  -0.15 \\  -0.15 & 0.20 \end{pmatrix}
 \end{equation}
-respektive. @fig-bivariate-normal-realisierungen A,B und C zeigen jeweils 200 
+respektive. @fig-bivariate-normal-realisierungen A,B und C zeigen jeweils 200
 Realisierungen der entsprechenden Zufallsvektoren.
-::: 
+:::
 
-```{r echo = F, eval = F}
+```{r echo = FALSE, eval = FALSE}
 library(latex2exp)
 library(mvtnorm)
 pdf(
@@ -325,7 +327,7 @@ dev.off()
 ![Wahrscheinlichkeitsdichtefunktionen bivariater Normalverteilungen.](./_figures/311-bivariate-normal-wdf){#fig-bivariate-normal-wdf fig-align="center" width=100%}
 
 
-```{r, eval = F, echo = F}
+```{r, eval = FALSE, echo = FALSE}
 library(mvtnorm)
 library(latex2exp)
 pdf(
@@ -410,9 +412,9 @@ mtext(LETTERS[3], adj=1, line=2, cex = 1.5, at = -1.5)
 dev.off()
 ```
 
-```{r, eval = F, echo = F}
+```{r, eval = FALSE, echo = FALSE}
 library(mvtnorm)
-library(latex2exp())
+library(latex2exp)
 pdf(
 file        = file.path("./_figures/311-bedingte-normalverteilungen.pdf"),
 width       = 10,
@@ -436,7 +438,7 @@ x_min  = 0                                           # x_i Minimum
 x_max  = 4                                           # x_i Maxim
 x_res  = 1e3                                         # x_i Auflösung
 x      = seq(x_min, x_max, length.out = x_res)       # x Raum
-y      = seq(x_min, x_max, length.out = x_res)        # y Raum
+y      = seq(x_min, x_max, length.out = x_res)       # y Raum
 X      = expand.grid(x,y)                            # (x,y)^T Raum
 
 # Parameterdefinition
@@ -495,7 +497,7 @@ dev.off()
 ```
 
 
-```{r echo = F, eval = F}
+```{r echo = FALSE, eval = FALSE}
 library(latex2exp)
 library(mvtnorm)
 
@@ -560,7 +562,7 @@ Zufallsvektors durch die entsprechenden Parameter gegeben sind.
 :::{#thm-erwartungswert-und-kovarianzmatrix-normalverteilter-zufallsvektoren}
 ## Erwartungswert und Kovarianzmatrix normalverteilter Zufallsvektoren
 $\xi \sim N(\mu,\Sigma)$ sei ein multivariat normalverteilter Zufallsvektor mit
-Erwartungswertparameter $\mu \in \mathbb{R}^n$ und Kovarianzmatrixparameter 
+Erwartungswertparameter $\mu \in \mathbb{R}^n$ und Kovarianzmatrixparameter
 $\Sigma \in \mathbb{R}^{n \times n} \mbox{ pd}$.
 Dann gelten
 \begin{equation}
@@ -568,14 +570,14 @@ Dann gelten
 \end{equation}
 :::
 
-Wie im Falle der univariat normalverteilten Zufallsvariable entspricht der 
+Wie im Falle der univariat normalverteilten Zufallsvariablen entspricht der
 Parameter $\mu \in \mathbb{R}^n$  dem Wert höchster Wahrscheinlichkeitsdichte
-der multivariaten Normalverteilung. Analog zum Varianzparameter der univariat 
-normalverteilten Zufallsvariable spezifizieren die  Diagonalelemente von 
+der multivariaten Normalverteilung. Analog zum Varianzparameter der univariat
+normalverteilten Zufallsvariable spezifizieren die  Diagonalelemente von
 $\Sigma \in \mathbb{R}^{n \times n} \mbox{ pd}$ die Breite der WDF bezüglich der
-Zufallsvektorkomponenten $\xi_1,...,\xi_n$. Allgemein spezifiziert im Falle des 
-multivariat normalverteilten Zufallsvektors das $i,j$te Element von 
-$\Sigma \in \mathbb{R}^{n \times n} \mbox{ pd}$ hier nun die Kovarianz der 
+Zufallsvektorkomponenten $\xi_1,...,\xi_n$. Allgemein spezifiziert im Falle des
+multivariat normalverteilten Zufallsvektors das $i,j$te Element von
+$\Sigma \in \mathbb{R}^{n \times n} \mbox{ pd}$ hier nun die Kovarianz der
 Zufallsvektorkomponenten $\xi_i$ und $\xi_j$.
 
 ## Sphärizität {#sec-sphaerizitaet}
@@ -587,13 +589,13 @@ Für $i = 1,...,n$ seien $N(x_i; \mu_i,\sigma^2)$ die WDFen von $n$ unabhängige
 univariaten normalverteilten Zufallsvariablen $\xi_1,...,\xi_n$ mit $\mu_1,...,\mu_n \in \mathbb{R}$
 und $\sigma^2 > 0$. Weiterhin sei $N(x;\mu,\sigma^2I_n)$ die WDF eines $n$-variaten
 normalverteilten Zufallsvektors $\xi$ mit Erwartungswertparameter $\mu := (\mu_1,...,\mu_n)^T \in \mathbb{R}^n$.
-Dann gilt 
+Dann gilt
 \begin{equation}
 p_\xi(x) = p_{\xi_1,...,\xi_n}(x_1,...,x_n) = \prod_{i=1}^n p_{\xi_i}(x_i)
 \end{equation}
 und insbesondere
 \begin{equation}
-N\left(x;\mu,\sigma^2I_n\right) = \prod_{i=1}^n N\left(x_i;\mu_i,\sigma^2\right) 
+N\left(x;\mu,\sigma^2I_n\right) = \prod_{i=1}^n N\left(x_i;\mu_i,\sigma^2\right)
 \end{equation}
 für alle $x = (x_1,...,x_n)^T \in \mathbb{R}^n$.
 :::
@@ -625,29 +627,29 @@ N\left(x;\mu,\sigma^{2}I_{n} \right)
 Einen Kovarianzmatrixparameter der Form $\Sigma = \sigma^2 I_n$ nennt man auch *sphärisch*,
 da die Isokonturen der WDF eines normalverteilten Zufallsvektors mit einem solchen
 Kovarianzmatrixparameter *Sphären* bilden (zum Beispiel Kreise bei $n = 2$ und
-Kugeln bei $n = 3$). Eine multivariate Normalverteilung mit sphärische Kovarianzmatrixparameter
+Kugeln bei $n = 3$). Eine multivariate Normalverteilung mit sphärischem Kovarianzmatrixparameter
 nennt man entsprechend eine *sphärische Normalverteilung*. @thm-sphärizität besagt,
-dass die WDF eines $n$-dimensionalen normalverteilten Zufallskvektors mit 
-sphärischem Kovarianzparameter der gemeinsamen WDF von $n$ unabhängigen 
-univariat normalverteilten Zufallsvariablen entspricht und umgekehrt. Eine 
-Realisierung eines $n$-dimensionalen normalverteilten Zufallsvektors entspricht 
-also den Realisierungen von $n$ unabhängigen univariat normalverteilten Zufallsvariablen 
-und umgekehrt. Man beachte, dass die Identität der Verteilungen der $\xi_i, i = 1,...,n$ hier 
-nicht voraussgesetzt ist, insbesondere können sich ihre Erwartungswertparameter 
-$\mu_i, i = 1,...,n$ explizit unterscheiden. 
+dass die WDF eines $n$-dimensionalen normalverteilten Zufallsvektors mit
+sphärischem Kovarianzparameter der gemeinsamen WDF von $n$ unabhängigen
+univariat normalverteilten Zufallsvariablen entspricht und umgekehrt. Eine
+Realisierung eines $n$-dimensionalen normalverteilten Zufallsvektors entspricht
+also den Realisierungen von $n$ unabhängigen univariat normalverteilten Zufallsvariablen
+und umgekehrt. Man beachte, dass die Identität der Verteilungen der $\xi_i, i = 1,...,n$ hier
+nicht vorausgesetzt ist, insbesondere können sich ihre Erwartungswertparameter
+$\mu_i, i = 1,...,n$ explizit unterscheiden.
 
-## Marginale, bedingte und gemeinsame Verteilungen {#sec-marginale-bedingte-und-bedingte-verteilungen}
+## Marginale, bedingte und gemeinsame Verteilungen {#sec-marginale-bedingte-und-gemeinsame-verteilungen}
 
 Multivariate Normalverteilungen haben die Eigenschaft, dass auch alle anderen
 assoziierten Verteilungen Normalverteilungen sind und deren Erwartungswert- und
 Kovarianzmatrixparameter aus den Parametern der jeweils komplementären Verteilung
-errechnet werden können. Speziell gilt zum einen, dass die uni- und multivariaten 
+errechnet werden können. Speziell gilt zum einen, dass die uni- und multivariaten
 Marginalverteilungen multivariater Normalverteilungen wiederum Normalverteilungen sind.
-Zum anderen lassen sich wie alle multivariaten Verteilungen multivariate Normalverteilungen 
-multiplikativ in eine marginale und eine bedingte Verteilung zerlegen. Insbesondere sind 
-nun aber bei multivariaten Normalverteilungen diese Verteilungen wiederum (multivariate) 
-Normalverteilungen, deren Parameter aus den Parametern der gemeinsame Verteilung errechnet 
-werden können und umgekehrt. Wir fassen obige Erkenntnisse formal in den 
+Zum anderen lassen sich wie alle multivariaten Verteilungen multivariate Normalverteilungen
+multiplikativ in eine marginale und eine bedingte Verteilung zerlegen. Insbesondere sind
+nun aber bei multivariaten Normalverteilungen diese Verteilungen wiederum (multivariate)
+Normalverteilungen, deren Parameter aus den Parametern der gemeinsamen Verteilung errechnet
+werden können und umgekehrt. Wir fassen obige Erkenntnisse formal in den
 folgenden drei Theoremen zusammen.
 
 :::{#thm-marginale-normalverteilungen}
@@ -690,8 +692,8 @@ Für Beweise dieses Theorems verweisen wir auf @mardia1979 und @anderson2003.
 @fig-marginale-normalverteilungen visualisiert @thm-marginale-normalverteilungen für den
 Fall $n := 2, k := 1, l := 1$,
 \begin{equation}
-\mu := \begin{pmatrix} 1 \\ 2 \end{pmatrix} \in \mathbb{R}^2 
-\mbox{ und } 
+\mu := \begin{pmatrix} 1 \\ 2 \end{pmatrix} \in \mathbb{R}^2
+\mbox{ und }
 \Sigma := \begin{pmatrix} 0.10 & 0.08 \\ 0.08 & 0.15 \end{pmatrix}  \in \mathbb{R}^{2 \times 2}.
 \end{equation}
 @fig-marginale-normalverteilungen A zeigt dabei die WDF des bivariaten Zufallsvektors
@@ -699,9 +701,9 @@ $\xi$ und @fig-marginale-normalverteilungen B und C die WDFen der entsprechenden
 marginalen Zufallsvariablen $\upsilon$ und $\zeta$.
 :::
 
-```{r, eval = F, echo = F}
+```{r, eval = FALSE, echo = FALSE}
 library(mvtnorm)
-library(latex2exp())
+library(latex2exp)
 pdf(
 file        = file.path("./_figures/311-marginale-normalverteilungen.pdf"),
 width       = 9,
@@ -753,7 +755,7 @@ nlevels   = 10)
 mtext(LETTERS[1], adj=1, line=2, cex = 1.5, at = -.3)
 
 # Visualisierung Marginalverteilungen
-p_marg   = list(dnorm(x_1, mu[1],Sigma[1,1]), dnorm(x_1, mu[2],Sigma[2,2]))
+p_marg   = list(dnorm(x_1, mu[1], sqrt(Sigma[1,1])), dnorm(x_1, mu[2], sqrt(Sigma[2,2])))
 l_marg   = c(TeX("$y$"), TeX("$z$"))
 L_marg   = c(TeX("$N(y;\\mu_\\upsilon,\\Sigma_{\\upsilon\\upsilon})$"), TeX("$N(z; \\mu_\\zeta,\\Sigma_{\\zeta\\zeta})$"))
 i        = 1
@@ -774,7 +776,7 @@ dev.off()
 
 Mithilfe einer marginalen und einer bedingten multivariaten Normalverteilung
 lässt sich eine gemeinsame multivariate Normalverteilung konstruieren, deren
-Parameter sich aus den Parametern der marginalen und bedingten Verteilung 
+Parameter sich aus den Parametern der marginalen und bedingten Verteilung
 ergeben. Dies ist die zentrale Aussage folgenden Theorems.
 
 :::{#thm-gemeinsame-normalverteilungen}
@@ -808,22 +810,22 @@ mit $\mu_{\xi,\upsilon} \in \mathbb{R}^{m+n}$ und $\Sigma_{\xi,\upsilon} \in \ma
 \end{equation}
 :::
 
-Die Parameter der gemeinsamen Verteilung ergeben sich also als linear-affine 
+Die Parameter der gemeinsamen Verteilung ergeben sich also als linear-affine
 Transformationen der Parameter der induzierenden marginalen und bedingten Verteilungen.
 
 :::{#exm-gemeinsame-normalverteilungen}
 ## Gemeinsame Normalverteilungen
 
 @fig-gemeinsame-normalverteilungen visualisiert @thm-gemeinsame-normalverteilungen für den
-Fall $m := 1, n := 1, \mu_\xi := 1, \Sigma_{\xi\xi} := 0.2, A := 1, b := 1$ und 
-$\Sigma_{\upsilon\upsilon} := 0.1$. @fig-gemeinsame-normalverteilungen A zeigt dabei 
+Fall $m := 1, n := 1, \mu_\xi := 1, \Sigma_{\xi\xi} := 0.2, A := 1, b := 1$ und
+$\Sigma_{\upsilon\upsilon} := 0.1$. @fig-gemeinsame-normalverteilungen A zeigt dabei
 die WDF der Zufallsvariable $\xi$,  @fig-gemeinsame-normalverteilungen B zeigt die
-WDF der bedingten Verteilung der Zufallsvariable  $\upsilon$ gegeben $\xi$ und 
+WDF der bedingten Verteilung der Zufallsvariable  $\upsilon$ gegeben $\xi$ und
 @fig-marginale-normalverteilungen C schließlich zeigt die WDFen des induzierten bivariaten
 Zufallsvektors $(\xi,\upsilon)$.
 :::
 
-![Gemeinsame Verteilungen einer marginalen und einer auf dieser bedingten normalverteilten Zufallsvariable.](./_figures/311-gemeinsame-normalverteilungen){#fig-gemeinsame-normalverteilungen fig-align="center" width=100%}
+![Gemeinsame Verteilungen einer marginalen und einer auf dieser bedingten normalverteilten Zufallsvariablen.](./_figures/311-gemeinsame-normalverteilungen){#fig-gemeinsame-normalverteilungen fig-align="center" width=100%}
 
 Die Definition einer multivariaten Normalverteilung erlaubt es weiterhin, die
 bedingten Verteilungen aller Komponenten des entsprechenden Zufallsvektors direkt
@@ -840,8 +842,8 @@ p_{\xi,\upsilon} : \mathbb{R}^{m + n} \to \mathbb{R}_{>0}, \begin{pmatrix} x \\ 
 \end{equation}
 mit
 \begin{equation}
-\mu_{\xi,\upsilon} 
-= \left(\begin{matrix} \mu_\xi \\ \mu_\upsilon \end{matrix} \right), 
+\mu_{\xi,\upsilon}
+= \left(\begin{matrix} \mu_\xi \\ \mu_\upsilon \end{matrix} \right),
 \Sigma_{\xi,\upsilon} = \left(\begin{matrix} \Sigma_{\xi\xi} & \Sigma_{\xi\upsilon} \\ \Sigma_{\upsilon\xi} & \Sigma_{\upsilon\upsilon} \end{matrix} \right),
 \end{equation}
 mit $x,\mu_\xi \in \mathbb{R}^m, y,\mu_\upsilon\in\mathbb{R}^n$ und $\Sigma_{\xi\xi} \in \mathbb{R}^{m\times m}, \Sigma_{\xi\upsilon} \in \mathbb{R}^{m\times n}, \Sigma_{\upsilon\upsilon} \in \mathbb{R}^{n \times n}$. Dann ist die
@@ -861,18 +863,18 @@ und
 \end{equation}
 :::
 
-Im Zusammenspiel mit @thm-gemeinsame-normalverteilungen und @thm-marginale-normalverteilungen 
-können die Parameter bedingter und marginaler Normalverteilungen also aus den 
+Im Zusammenspiel mit @thm-gemeinsame-normalverteilungen und @thm-marginale-normalverteilungen
+können die Parameter bedingter und marginaler Normalverteilungen also aus den
 Parametern der komplementären bedingten und marginalen Normalverteilungen bestimmt werden.
 
 :::{#exm-bedingte-normalverteilungen}
 ## Bedingte Normalverteilungen
 
 @fig-bedingte-normalverteilungen visualisiert @thm-bedingte-normalverteilungen für den Fall
-$m := 2, n := 1$, 
+$m := 2, n := 1$,
 \begin{equation}
-\mu := \begin{pmatrix} 1 \\ 2 \end{pmatrix} 
-\mbox{ und } 
+\mu := \begin{pmatrix} 1 \\ 2 \end{pmatrix}
+\mbox{ und }
 \Sigma := \begin{pmatrix} 0.12 & 0.09 \\ 0.09 & 0.12 \end{pmatrix}
 \end{equation}
 Dabei zeigt @fig-bedingte-normalverteilungen A die WDF des bivariaten Zufallsvektors $(\xi,\upsilon)^T$
@@ -887,21 +889,21 @@ der Zufallsvariable $\xi$ gegeben $\upsilon = 1.5$ und $\upsilon = 2.8$, respekt
 In diesem Abschnitt stellen wir einige Resultate zu den Verteilungen
 transformierter normalverteilter Zufallsvektoren zusammen. Wir verzichten
 dabei auf Beweise.
-    
+
 :::{#thm-invertierbare-lineare-transformation}
 ## Invertierbare lineare Transformation eines normalverteilten Zufallsvektors
 $\xi \sim N(\mu_\xi,\Sigma_\xi)$ sei ein normalverteilter $n$-dimensionaler Zufallsvektor
 und es sei $\zeta := A\xi$ mit einer invertierbaren Matrix $A \in \mathbb{R}^{n \times n}$.
 Dann gilt
 \begin{equation}
-\zeta \sim N\left(\mu_\zeta, \Sigma_\zeta\right) 
-\mbox{ mit } 
-\mu_\zeta = A\mu_\xi \mbox{ und } 
+\zeta \sim N\left(\mu_\zeta, \Sigma_\zeta\right)
+\mbox{ mit }
+\mu_\zeta = A\mu_\xi \mbox{ und }
 \Sigma_\zeta = A\Sigma_\xi A^T.
 \end{equation}
 :::
 
-Nach @thm-invertierbare-lineare-transformation ergibt die invertierbare lineare 
+Nach @thm-invertierbare-lineare-transformation ergibt die invertierbare lineare
 Transformation eines multivariat normalverteilten Zuallsvektors also wiederum einen
 multivariat normalverteilten Zufallsvektor und die Parameter der Verteilung
 dieses normalverteilten Zufallsvektors ergeben sich aus den Parametern der Verteilung
@@ -912,7 +914,7 @@ des ursprünglichen Zufallsvektors und der Transformationsmatrix.
 ## Invertierbare lineare Transformation einer bivariaten Normalverteilung
 
 Als Beispiel betrachten wir die invertierbare lineare Transformation eines
-bivariaten normalverteilten Zufallsvektors $\xi$. Es seien 
+bivariaten normalverteilten Zufallsvektors $\xi$. Es seien
 \begin{equation}
 \mu_\xi := \begin{pmatrix} 1 \\ 1 \end{pmatrix}
 \mbox{ und }
@@ -922,7 +924,7 @@ der Erwartungswert- und Kovarianzmatrixparameter von $\xi$, respektive, und es s
 \begin{equation}
 A := \begin{pmatrix} -2 & 1 \\ - 1 & 2 \end{pmatrix}
 \end{equation}
-die Transformationsmatrix. Da $|A| = -3 \neq 0$ ist $A$ invertierbar und es 
+die Transformationsmatrix. Da $|A| = -3 \neq 0$ ist $A$ invertierbar und es
 gilt nach @thm-invertierbare-lineare-transformation, dass
 \begin{equation}
 \zeta \sim N(\mu_\zeta,\Sigma_\zeta) \mbox{ mit }
@@ -930,13 +932,13 @@ gilt nach @thm-invertierbare-lineare-transformation, dass
 \mbox{ und }
 A\Sigma_\xi A^T = \begin{pmatrix} 0.40 & 0.05 \\ 0.05 & 0.40 \end{pmatrix}.
 \end{equation}
-@fig-lineare-transformation A zeigt Isokonturen der WDF von $\xi$ und Realisierungen 
+@fig-lineare-transformation A zeigt Isokonturen der WDF von $\xi$ und Realisierungen
 $x^{(i)} \in \mathbb{R}^2$ von $\xi$ für $i = 1,...,50$. @fig-lineare-transformation B
-zeigt die transfomierten Realisierungen $z^{(i)} = Ax^{(i)} \in \mathbb{R}^{2}$
+zeigt die transformierten Realisierungen $z^{(i)} = Ax^{(i)} \in \mathbb{R}^{2}$
 von $\zeta$ sowie die Isokonturen der WDF von $\zeta$ nach @thm-invertierbare-lineare-transformation.
-::: 
+:::
 
-```{r, eval = F, echo = F}
+```{r, eval = FALSE, echo = FALSE}
 library(latex2exp)
 library(mvtnorm)
 pdf(
@@ -1021,7 +1023,7 @@ print(A%*%Sigma%*%t(A))
 
 ![Invertierbare lineare Transformation eines normalverteilten Zufallsvektors](./_figures/311-lineare-transformation){#fig-lineare-transformation fig-align="center" width=100%}
 
-Die Tatsache, dass ein linear transfomierter normalverteilter Zufallsvektor wiederum
+Die Tatsache, dass ein linear transformierter normalverteilter Zufallsvektor wiederum
 normalverteilt ist und dass sich die Parameter der Verteilung des transformierten Zufallsvektors
 aus den Parametern der Verteilung des ursprünglichen Zufallsvektors sowie den Transformationsparametern
 bestimmen lassen, bleibt auch im Falle einer nicht notwendigerweise invertierbaren
@@ -1031,47 +1033,47 @@ linear-affinen Transformation wahr. Dies ist die Aussage folgenden zentralen The
 :::{#thm-linear-affine-transformation}
 ## Linear-affine Transformation eines normalverteilten Zufallsvektors
 $\xi \sim N(\mu_\xi,\Sigma_\xi)$ sei ein normalverteilter $n$-dimensionaler Zufallsvektor
-und es sei 
+und es sei
 \begin{equation}
 \zeta := Ax + b \mbox{ mit } A \in \mathbb{R}^{m \times n} \mbox{ und } b \in \mathbb{R}^m.
 \end{equation}
 Dann gilt
 \begin{equation}
-\zeta \sim N(\mu_\zeta, \Sigma_\zeta) 
-\mbox{ mit } 
-\mu_\zeta    = A\mu + b \in \mathbb{R}^m \mbox{ und } 
+\zeta \sim N(\mu_\zeta, \Sigma_\zeta)
+\mbox{ mit }
+\mu_\zeta    = A\mu + b \in \mathbb{R}^m \mbox{ und }
 \Sigma_\zeta = A\Sigma A^T \in \mathbb{R}^{m \times m}.
 \end{equation}
 :::
 
-Für einen Beweis verweisen wir auf @anderson2003. 
+Für einen Beweis verweisen wir auf @anderson2003.
 
 ## Transformationen normalverteilter Zufallsvariablen {#sec-normalverteilter-zufallsvariablen}
 
-In diesem Abschnitt diskutieren wir sechs Transformationen normalverteilter 
+In diesem Abschnitt diskutieren wir sechs Transformationen normalverteilter
 Zufallsvariablen, die in der Frequentistischen Inferenz zentrale Rollen spielen
 und bei denen es sich um Anwendungen von den in @sec-transformationen eingeführten
-Transformationstheoremen handelt. Unsere Aussagen sind dabei meist von der allgemeinen Form 
-"Wenn $\xi_i, i = 1,...,n$ unabhängig und identisch normalverteilte Zufallsvariablen 
-sind und $\upsilon := f(\xi_1,...,\xi_n)$ eine Transformation dieser Zufallsvariablen ist, 
-dann ist die WDF von $\upsilon$ durch die Formel $p_\upsilon := \{\mbox{Formel}\}$ gegeben und 
-man nennt die Verteilung von $\upsilon$ *Verteilungsname*". Aussagen dieser Form sind 
-für die Frequentistische Inferenz zentral, weil erstens die Zentralen Grenzwertsätze 
-die Annahme additiv unabhängig normalverteilter Störvariablen, und damit normalverteilter 
-Daten, begründet, zweitens, wie wir in @sec-grundbegriffe-frequentistischer-inferenz 
-sehen werden, es sich bei Schätzern und Statistiken um Transformationen von 
-Zufallsvariablen handelt, und drittens, Parameterschätzergütekriterien, 
-Konfidenzintervalle und Hypothesentests der Frequentistischen Inferenz durch die 
+Transformationstheoremen handelt. Unsere Aussagen sind dabei meist von der allgemeinen Form
+"Wenn $\xi_i, i = 1,...,n$ unabhängig und identisch normalverteilte Zufallsvariablen
+sind und $\upsilon := f(\xi_1,...,\xi_n)$ eine Transformation dieser Zufallsvariablen ist,
+dann ist die WDF von $\upsilon$ durch die Formel $p_\upsilon := \{\mbox{Formel}\}$ gegeben und
+man nennt die Verteilung von $\upsilon$ *Verteilungsname*". Aussagen dieser Form sind
+für die Frequentistische Inferenz zentral, weil erstens die Zentralen Grenzwertsätze
+die Annahme additiv unabhängig normalverteilter Störvariablen, und damit normalverteilter
+Daten, begründet, zweitens, wie wir in @sec-frequentistische-inferenz
+sehen werden, es sich bei Schätzern und Statistiken um Transformationen von
+Zufallsvariablen handelt, und drittens, Parameterschätzergütekriterien,
+Konfidenzintervalle und Hypothesentests der Frequentistischen Inferenz durch die
 Verteilungen der jeweiligen Schätzer und Statistiken charakterisiert und begründet sind.
 
 ### Summationstransformation {-}
 
-In diesem Abschnitt betrachten wir die resultierenden Verteilung bei Summation
+In diesem Abschnitt betrachten wir die resultierenden Verteilungen bei Summation
 und Mittelwertbildung von unabhängig und identisch normalverteilten Zufallsvariablen.
-Speziell besagt das @thm-summationstransformation besagt, dass die Summe
+Speziell besagt @thm-summationstransformation, dass die Summe
 unabhängig normalverteilter Zufallsvariablen wiederum normalverteilt ist und gibt die
 Parameter dieser Verteilung an, während @thm-mittelwerttransformation
-besagt, dass das Stichprobenmittel unabhängig normalverteilter Zufallsvariablen 
+besagt, dass das Stichprobenmittel unabhängig normalverteilter Zufallsvariablen
 wiederum normalverteilt ist und gibt die Parameter dieser Verteilung an.
 
 :::{#thm-summationstransformation}
@@ -1203,7 +1205,7 @@ Schließlich folgt, dass
 \begin{split}
 p_\upsilon(y)
 & = \frac{1}{\sqrt{2\pi(\sigma_1^2 + \sigma_2^2)}}
-    \exp\left(-\frac{1}{2(\sigma_1^2 + \sigma_2^2)}\left(y - (\mu_1 + \mu_2)\right)^2\right) 
+    \exp\left(-\frac{1}{2(\sigma_1^2 + \sigma_2^2)}\left(y - (\mu_1 + \mu_2)\right)^2\right)
   = N(y; \mu_1 + \mu_2, \sigma_1^2 + \sigma_2^2)
 \end{split}
 \end{align}
@@ -1215,33 +1217,33 @@ Funktionen entsprechen.
 
 Ein wichtiger Anwendungsfall von @thm-summationstransformation
 ist das nachfolgende @thm-mittelwerttransformation
-sowie die in @eq-generalisierung-zentraler-grenzwertsatz-lindenberg-levy und 
+sowie die in @eq-generalisierung-zentraler-grenzwertsatz-lindeberg-levy und
 @eq-generalisierung-zentraler-grenzwertsatz-liapunov erwähnten Generalisierungen
 der Zentralen Grenzwertsätze. Wir visualisieren @thm-summationstransformation
 exemplarisch in @fig-summation.
 
-```{r, echo = F, eval = F}
+```{r, echo = FALSE, eval = FALSE}
 library(latex2exp)
-pdf(file =  "./_figures/311-summation.pdf", width = 12, height = 5)                                                                      
-par(                                                                   
-family     = "sans",                                                 
-mfcol      = c(1,3),                                                  
-pty        = "m",                                                      
-bty        = "l",                                                     
-lwd        = 1,                                                       
-las        = 1,                                                      
-mgp        = c(2,1,0),                                                
-xaxs       = "i",                                                    
-yaxs       = "i",                                                     
-cex        = 1.1,                                                     
-font.main  = 1,                                                       
+pdf(file =  "./_figures/311-summation.pdf", width = 12, height = 5)
+par(
+family     = "sans",
+mfcol      = c(1,3),
+pty        = "m",
+bty        = "l",
+lwd        = 1,
+las        = 1,
+mgp        = c(2,1,0),
+xaxs       = "i",
+yaxs       = "i",
+cex        = 1.1,
+font.main  = 1,
 cex.main   = 1.2)
 
 # outcome space of interest
-x_min       = -5                                                                 
-x_max       = 5                                                                   
-x_res       = 1e3                                                                 
-x           = seq(x_min, x_max, len = x_res)                                     
+x_min       = -5
+x_max       = 5
+x_res       = 1e3
+x           = seq(x_min, x_max, len = x_res)
 
 # \xi_1 sample
 mu_1        = -2                                                                # \mu_1
@@ -1250,21 +1252,21 @@ n           = 1e4                                                               
 X_1         = rnorm(n, mu_1, sqrt(sigsqr_1))                                    # n samples of \xi_1 \sim N(\mu_1,\sigma_1^2)
 p_X_1       = dnorm(x, mu_1, sqrt(sigsqr_1))                                    # density
 hist(
-X_1,                                                                         
-breaks = 50,                                                                
-col   = "gray90",                                                           
-prob  = TRUE,                                                               
-xlim  = c(-5, 5),                                                           
-ylim  = c(0,.7),                                                             
-xlab  = expression("x"[1]),                                                                
-ylab  = "",                                                                 
-main  = TeX("$\\xi_1 \\sim N(-2.0,0.5)$"))                                      
+X_1,
+breaks = 50,
+col   = "gray90",
+prob  = TRUE,
+xlim  = c(-5, 5),
+ylim  = c(0,.7),
+xlab  = expression("x"[1]),
+ylab  = "",
+main  = TeX("$\\xi_1 \\sim N(-2.0,0.5)$"))
 
 lines(
-x,                                                                          
-p_X_1,                                                                      
-lwd   = 2,                                                                  
-col   = "darkorange")                                                       
+x,
+p_X_1,
+lwd   = 2,
+col   = "darkorange")
 
 # \xi_2 sample
 mu_2        = 1                                                                 # \mu_2
@@ -1273,45 +1275,45 @@ n           = 1e4                                                               
 X_2         = rnorm(n, mu_2, sqrt(sigsqr_2))                                    # n samples of \xi_2 \sim N(\mu_2,\sigma_2^2)
 p_X_2       = dnorm(x, mu_2, sqrt(sigsqr_2))                                    # density
 hist(
-X_2,                                                                        
-breaks = 50,                                                                
-col   = "gray90",                                                           
-prob  = TRUE,                                                               
-xlim  = c(-5, 5),                                                           
-ylim  = c(0,.7),                                                           
-xlab  = expression("x"[2]),                                                 
-ylab  = "",                                                                
+X_2,
+breaks = 50,
+col   = "gray90",
+prob  = TRUE,
+xlim  = c(-5, 5),
+ylim  = c(0,.7),
+xlab  = expression("x"[2]),
+ylab  = "",
 main  = TeX("$\\xi_2 \\sim N(1.0,0.7)$"))
 lines(
-x,                                                                          
-p_X_2,                                                                      
-lwd   = 2,                                                                  
-col   = "darkorange")                                                       
+x,
+p_X_2,
+lwd   = 2,
+col   = "darkorange")
 
 # Y = X_1 + \xi_2 sample
-Y           = X_1 + X_2                                                           
-p_Y        = dnorm(x, mu_1+mu_2, sqrt(sigsqr_1+sigsqr_2))                         
+Y           = X_1 + X_2
+p_Y        = dnorm(x, mu_1+mu_2, sqrt(sigsqr_1+sigsqr_2))
 hist(
-Y,                                                                          
-breaks = 50,                                                                
-col   = "gray90",                                                           
-prob  = TRUE,                                                              
-xlim  = c(-5, 5),                                                          
-ylim  = c(0,.7),                                                           
-xlab  = TeX("$x_1 + x_2$"),                                                
-ylab  = "",                                                                 
+Y,
+breaks = 50,
+col   = "gray90",
+prob  = TRUE,
+xlim  = c(-5, 5),
+ylim  = c(0,.7),
+xlab  = TeX("$x_1 + x_2$"),
+ylab  = "",
 main  = TeX("$\\xi_1 + \\xi_2 \\sim N(-1.0,1.2)$"))
 lines(
-x,                                                                          
-p_Y,                                                                        
-lwd   = 2,                                                                  
+x,
+p_Y,
+lwd   = 2,
 col   = "darkorange")
 dev.off()
 ```
 
 ![Summation normalverteilter Zufallsvariablen.](./_figures/311-summation){#fig-summation fig-align="center" width=100%}
 
-### Mittelwertstransformation {-}
+### Mittelwerttransformation {-}
 
 :::{#thm-mittelwerttransformation}
 ## Mittelwertstransformation
@@ -1364,95 +1366,96 @@ p_{\bar{\xi}_n}(\bar{x}_n)
 :::
 
 Wichtige Anwendungsfälle von @thm-mittelwerttransformation
-sind die Analyse von Erwartungswertschätzern in @sec-punktschaetzung sowie die in @eq-generalisierung-zentraler-grenzwertsatz-lindenberg-levy erwähnte Generalisierung
-des Zentralen Grenzwertsatzes nach Lindenberg-Lévy. Wir visualisieren 
+sind die Analyse von Erwartungswertschätzern in @sec-punktschaetzung sowie die
+in @eq-generalisierung-zentraler-grenzwertsatz-lindeberg-levy erwähnte Generalisierung
+des Zentralen Grenzwertsatzes nach Lindeberg-Lévy. Wir visualisieren
 @thm-mittelwerttransformation exemplarisch in @fig-mittelwert.
 
-```{r, echo = F, eval = F}
+```{r, echo = FALSE, eval = FALSE}
 # figure setup
 library(latex2exp)
-pdf(file = "./_figures/311-mittelwert.pdf", width = 12, height = 5)                                                                      
-par(                                                                   
-family      = "sans",                                                 
-mfcol       = c(1,2),                                                
-pty         = "m",                                                   
-bty         = "l",                                                   
-lwd         = 1,                                                      
-las         = 1,                                                      
-mgp         = c(2,1,0),                                               
-xaxs        = "i",                                                    
-yaxs        = "i",                                                    
-font.main   = 1,                                                      
-cex         = 1.2,                                                   
-cex.main    = 1.2)                                                     
+pdf(file = "./_figures/311-mittelwert.pdf", width = 12, height = 5)
+par(
+family      = "sans",
+mfcol       = c(1,2),
+pty         = "m",
+bty         = "l",
+lwd         = 1,
+las         = 1,
+mgp         = c(2,1,0),
+xaxs        = "i",
+yaxs        = "i",
+font.main   = 1,
+cex         = 1.2,
+cex.main    = 1.2)
 
 # N(\mu,\sigma^2) sample
-mu          = 2                                                                  
-sigsqr      = 4                                                                 
-sigma       = sqrt(sigsqr)                                                       
-n           = 1e1                                                                
-n_sim       = 1e4                                                                
-x_min       = -5                                                                 
-x_max       = 10                                                                  
-x_res       = 1e3                                                                 
-x           = seq(x_min, x_max, len = x_res)                                      
-p_X         = dnorm(x,mu, sigma)                                                  
-X           = matrix(rep(NaN,n*n_sim), nrow = n) 
+mu          = 2
+sigsqr      = 4
+sigma       = sqrt(sigsqr)
+n           = 1e1
+n_sim       = 1e4
+x_min       = -5
+x_max       = 10
+x_res       = 1e3
+x           = seq(x_min, x_max, len = x_res)
+p_X         = dnorm(x,mu, sigma)
+X           = matrix(rep(NaN,n*n_sim), nrow = n)
 
 # n_sim simulations of n samples of \xi \sim N(\mu,\sigma^2)
 for(i in 1:n_sim){
-    X[,i] = rnorm(n, mu, sqrt(sigsqr))                                           
+    X[,i] = rnorm(n, mu, sqrt(sigsqr))
 }
 
 # histogram
 hist(
-X,                                                                          
-breaks = 50,                                                               
-col   = "gray90",                                                          
-prob  = TRUE,                                                               
-xlim  = c(-5, 10),                                                          
-ylim  = c(0,.7),                                                           
-xlab  = "x",                                                               
-ylab  = "",                                                                
+X,
+breaks = 50,
+col   = "gray90",
+prob  = TRUE,
+xlim  = c(-5, 10),
+ylim  = c(0,.7),
+xlab  = "x",
+ylab  = "",
 main  = TeX("$\\xi_i \\sim N(2,4),\\, i = 1,...,10$"))
 
 # density
 lines(
-x,                                                                          
-p_X,                                                                        
-lwd   = 2,                                                                 
-col   = "darkorange")                                                       
+x,
+p_X,
+lwd   = 2,
+col   = "darkorange")
 
-X_bar       = colMeans(X)                                                         
-p_X_bar     = dnorm(x, mu, sqrt(sigsqr/n))                                        
+X_bar       = colMeans(X)
+p_X_bar     = dnorm(x, mu, sqrt(sigsqr/n))
 
 # histogram
 hist(
-X_bar,                                                                      
-breaks = 50,                                                                
-col   = "gray90",                                                           
-prob  = TRUE,                                                               
-xlim  = c(-5, 10),                                                          
-ylim  = c(0,.7),                                                           
-xlab  = TeX("$\\bar{x}_n$"),                                               
-ylab  = "",                                                                
+X_bar,
+breaks = 50,
+col   = "gray90",
+prob  = TRUE,
+xlim  = c(-5, 10),
+ylim  = c(0,.7),
+xlab  = TeX("$\\bar{x}_n$"),
+ylab  = "",
 main  = TeX("$\\bar{\\xi}_n \\sim N(2,4/10)$"))
 
 # density
 lines(
-x,                                                                        
-p_X_bar,                                                                  
-lwd   = 2,                                                                
-col   = "darkorange")                                                      
-dev.off()                                                                    
+x,
+p_X_bar,
+lwd   = 2,
+col   = "darkorange")
+dev.off()
 ```
 
 ![Mittelwertbildung bei normalverteilten Zufallsvariablen.](./_figures/311-mittelwert){#fig-mittelwert fig-align="center" width=100%}
 
 ### $Z$-Transformation {-}
 
-Das @thm-z-transformation besagt, dass Subtraktion des Erwartungswertparameters 
-und gleichzeitige Division mit der Wurzel des Varianzsparameters die Verteilung 
+Das @thm-z-transformation besagt, dass Subtraktion des Erwartungswertparameters
+und gleichzeitige Division mit der Wurzel des Varianzparameters die Verteilung
 einer normalverteilten Zufallsvariable in eine Standardnormalverteilung transformiert.
 
 :::{#thm-z-transformation}
@@ -1490,7 +1493,7 @@ f'(y)
 = \frac{d}{dy}\left(\frac{y}{\sigma} -\frac{\mu}{\sigma} \right)
 = \frac{1}{\sigma}.
 \end{equation}
-Einsetzen in @thm-univariates-wdf-transformationstheorem-bei-linear-affinen-abbildungen 
+Einsetzen in @thm-univariates-wdf-transformationstheorem-bei-linear-affinen-abbildungen
 ergibt dann
 \begin{align}
 \begin{split}
@@ -1502,28 +1505,28 @@ p_Z(z)
 & = N(z;0,1)
 \end{split}
 \end{align}
-also, dass $Z \sim N(0,1)$. 
+also, dass $Z \sim N(0,1)$.
 :::
-Wichtige Anwendungsfälle von @thm-z-transformation sind neben der häufig angewandten 
-Standardisierung von normalverteilten Zufallsvariablen im Sinne der sogenannten 
+Wichtige Anwendungsfälle von @thm-z-transformation sind neben der häufig angewandten
+Standardisierung von normalverteilten Zufallsvariablen im Sinne der sogenannten
 *$Z$-Werte ($Z$-Scores)* die $Z$-Konfidenzintervallstatistik und die $Z$-Teststatistik.
 Wir visualisieren @thm-z-transformation exemplarisch in @fig-z-transformation.
 
-```{r, echo = F, eval = F}
+```{r, echo = FALSE, eval = FALSE}
 # figure setup
 library(latex2exp)
-pdf(file = "./_figures/311-z-transformation.pdf", width = 5, height = 3)                                                                        
-par(                                                                    
-family     = "sans",                                                  
-mfcol      = c(1,2),                                                  
-pty        = "m",                                                     
-bty        = "l",                                                     
-lwd        = 1,                                                       
-las        = 1,                                                       
-mgp        = c(2,1,0),                                               
-xaxs       = "i",                                                     
-yaxs       = "i",                                                     
-font.main  = 1,                                                      
+pdf(file = "./_figures/311-z-transformation.pdf", width = 5, height = 3)
+par(
+family     = "sans",
+mfcol      = c(1,2),
+pty        = "m",
+bty        = "l",
+lwd        = 1,
+las        = 1,
+mgp        = c(2,1,0),
+xaxs       = "i",
+yaxs       = "i",
+font.main  = 1,
 cex        = .7,
 cex.main   = 1)
 
@@ -1541,21 +1544,21 @@ p_X         = dnorm(x,mu, sigma)                                                
 
 # histogram
 hist(
-X,                                                                          
-breaks = 50,                                                                
-col   = "gray90",                                                           
-prob  = TRUE,                                                               
-xlim  = c(-5, 10),                                                          
-ylim  = c(0,.42),                                                           
-xlab  = TeX("y"),                                                               
-ylab  = "",                                                                 
+X,
+breaks = 50,
+col   = "gray90",
+prob  = TRUE,
+xlim  = c(-5, 10),
+ylim  = c(0,.42),
+xlab  = TeX("y"),
+ylab  = "",
 main  = TeX("$\\upsilon \\sim N(2,3)$"))
 
 # density
-lines(x,                                                                          
-p_X,                                                                        
-lwd   = 2,                                                                  
-col   = "darkorange")                                                      
+lines(x,
+p_X,
+lwd   = 2,
+col   = "darkorange")
 
 # Transformation der  N(\mu,\sigma^2) sample
 Z           = (X - mu)/sigma                                                     # vector arithmetic
@@ -1568,23 +1571,23 @@ p_Z         = dnorm(z, 0, 1)                                                    
 
 # histogram
 hist(
-Z,                                                                          
-breaks = 50,                                                                
-col   = "gray90",                                                           
-prob  = TRUE,                                                               
-xlim  = c(-5, 10),                                                          
-ylim  = c(0,.42),                                                          
-xlab  = "z",                                                                
-ylab  = "",                                                                 
+Z,
+breaks = 50,
+col   = "gray90",
+prob  = TRUE,
+xlim  = c(-5, 10),
+ylim  = c(0,.42),
+xlab  = "z",
+ylab  = "",
 main  = TeX("$Z = \\frac{\\upsilon - \\mu}{\\sigma} \\sim N(0,1)$"))
 
 # density
 lines(
-z,                                                                          
-p_Z,                                                                        
-lwd   = 2,                                                                  
-col   = "darkorange")   
-dev.off()                                                                                                                        
+z,
+p_Z,
+lwd   = 2,
+col   = "darkorange")
+dev.off()
 ```
 
 ![$Z$-Transformation normalverteilter Zufallsvariablen.](./_figures/311-z-transformation){#fig-z-transformation fig-align="center" width=100%}
@@ -1592,9 +1595,9 @@ dev.off()
 ### $\chi^2$-Transformation {-}
 
 Mit der $\chi^2$-Transformation führen wir nun eine erste Transformation unabhängig
-und identisch normalverteilter Zufallsvariablen ein, die *nicht* wiederrum auf
-eine Normalverteilung führt. Speziell besagt @thm-chi2-transformation, dass 
-die Summe quadrierter unabhängiger standardnormalverteilter Zufallsvariablen 
+und identisch normalverteilter Zufallsvariablen ein, die *nicht* wiederum auf
+eine Normalverteilung führt. Speziell besagt @thm-chi2-transformation, dass
+die Summe quadrierter unabhängiger standardnormalverteilter Zufallsvariablen
 eine $\chi^2$-verteilte Zufallsvariable ist. Dazu erinnern wir zunächst an den
 Begriff der $\chi^2$-Zufallsvariable als Spezialfall der in @sec-zufallsvariablen
 betrachteten Gammazufallsvariablen (vgl. @def-gamma-zufallsvariable).
@@ -1618,25 +1621,25 @@ $U \sim \chi^2(n)$ ab. Die WDF einer $\chi^2$-Zufallsvariable bezeichnen wir mit
 u^{\frac{n}{2}-1}\exp\left(-\frac{1}{2}u\right).
 \end{equation}
 :::
-Wir erinnern daran, dass die WDF der $\chi^2$-Verteilung der WDF $G\left(u;\frac{n}{2},2\right)$ 
+Wir erinnern daran, dass die WDF der $\chi^2$-Verteilung der WDF $G\left(u;\frac{n}{2},2\right)$
 einer Gammaverteilung entspricht. In @fig-chi2-wdf visualisieren wir exemplarisch
 einige WDFen von $\chi^2$-Zufallsvariablen. Wir beobachten, dass mit ansteigendem
-$n$ sich  $\chi^2(u;n)$ verbreiter und  Wahrscheinlichkeitsmasse zur größeren Werten
+$n$ sich  $\chi^2(u;n)$ verbreitert und Wahrscheinlichkeitsmasse zu größeren Werten
 von $u$ verschoben wird.
 
-```{r, eval = F, echo = F}
+```{r, eval = FALSE, echo = FALSE}
 library(latex2exp)
-pdf(file = "./_figures/311-chi2-wdf.pdf", width = 6,height = 4)                                                                        
-par(                                                                    
-family     = "sans",                                                  
-pty        = "m",                                                     
-bty        = "l",                                                     
-lwd        = 1,                                                       
-las        = 1,                                                       
-mgp        = c(2,1,0),                                                
-xaxs         = "i",                                                   
-yaxs         = "i",                                                   
-font.main  = 1,                                                       
+pdf(file = "./_figures/311-chi2-wdf.pdf", width = 6,height = 4)
+par(
+family     = "sans",
+pty        = "m",
+bty        = "l",
+lwd        = 1,
+las        = 1,
+mgp        = c(2,1,0),
+xaxs         = "i",
+yaxs         = "i",
+font.main  = 1,
 cex.main   = 1.2)
 
 # chi^2 space
@@ -1658,48 +1661,48 @@ dchisq(u,n[3]),
 dchisq(u,n[4]),
 dchisq(u,n[5])),
 ncol  = 5),
-type  = "l",                                                       
-lty   = 1,                                                         
-lwd   = 2,                                                         
-col   = c("gray90","gray70", "gray50", "gray30", "gray10"),        
-ylim  = c(0,.6),                                                    
-xlim  = c(u_min,u_max),                                            
-ylab  = " ",                                                       
-xlab  = "u",                                                       
-main  = TeX("$\\chi^2(u;n)$"))                                     
+type  = "l",
+lty   = 1,
+lwd   = 2,
+col   = c("gray90","gray70", "gray50", "gray30", "gray10"),
+ylim  = c(0,.6),
+xlim  = c(u_min,u_max),
+ylab  = " ",
+xlab  = "u",
+main  = TeX("$\\chi^2(u;n)$"))
 
 legend(
-7,                                                                        
-.6,                                                                       
-c("n = 1", "n = 2", "n = 3", "n = 5", "n = 10"),                          
-lty         = 1,                                                          
-lwd         = 2,                                                          
-col         =  c("gray90","gray70", "gray50", "gray30", "gray10"),        
-bty         = "n",                                                         
-cex         = 1.1,                                                        
-y.intersp   = 1)                                                         
-dev.off()                                                                     
+7,
+.6,
+c("n = 1", "n = 2", "n = 3", "n = 5", "n = 10"),
+lty         = 1,
+lwd         = 2,
+col         =  c("gray90","gray70", "gray50", "gray30", "gray10"),
+bty         = "n",
+cex         = 1.1,
+y.intersp   = 1)
+dev.off()
 ```
 
 ![WDFen von $\chi^2$ Zufallsvariablen.](./_figures/311-chi2-wdf){#fig-chi2-wdf fig-align="center" width=80%}
 
 
-```{r, echo = F, eval = F}
-pdf(file = "./_figures/311-chi2-transform.pdf", width = 10, height = 5)                                                                         
+```{r, echo = FALSE, eval = FALSE}
+pdf(file = "./_figures/311-chi2-transform.pdf", width = 10, height = 5)
 library(latex2exp)
-par(                                                                    
-family     = "sans",                                                  
-mfcol      = c(1,2),                                                 
-pty        = "m",                                                     
-bty        = "l",                                                     
-lwd        = 1,                                                       
-las        = 1,                                                      
-mgp        = c(2,1,0),                                               
-xaxs         = "i",                                                   
-yaxs         = "i",                                                   
-font.main  = 1,                                                       
+par(
+family     = "sans",
+mfcol      = c(1,2),
+pty        = "m",
+bty        = "l",
+lwd        = 1,
+las        = 1,
+mgp        = c(2,1,0),
+xaxs         = "i",
+yaxs         = "i",
+font.main  = 1,
 cex        = 1.2,
-cex.main   = 1.3)                                                      
+cex.main   = 1.3)
 
 # Z sample
 n           = 1e5                                                                # number of samples
@@ -1712,22 +1715,22 @@ p_Z         = dnorm(z, 0, 1)                                                    
 
 # histogram
 hist(
-Z,                                                                         
-breaks = 50,                                                                
-col   = "gray90",                                                           
-prob  = TRUE,                                                               
-xlim  = c(-5, 10),                                                         
-ylim  = c(0,.42),                                                          
-xlab  = "z",                                                                
-ylab  = "",                                                                 
+Z,
+breaks = 50,
+col   = "gray90",
+prob  = TRUE,
+xlim  = c(-5, 10),
+ylim  = c(0,.42),
+xlab  = "z",
+ylab  = "",
 main  = TeX("$Z \\sim N(0,1)$"))
 
 # density
 lines(
-z,                                                                          
-p_Z,                                                                        
-lwd   = 2,                                                                 
-col   = "darkorange")                                                      
+z,
+p_Z,
+lwd   = 2,
+col   = "darkorange")
 
 # Transformation der N(0,1) sample
 U           = Z^2                                                                # vector arithmetic
@@ -1740,38 +1743,38 @@ p_U         = dchisq(u,1)                                                       
 
 # histogram
 hist(
-U,                                                                         
-breaks= 100,                                                                
-col   = "gray90",                                                           
-prob  = TRUE,                                                               
-xlim  = c(-5, 10),                                                         
-ylim  = c(0,1),                                                           
-xlab  = "x",                                                                
-ylab  = "",                                                                 
-main  = TeX("$U = Z^2 \\sim \\chi^2(1)$"))                                 
+U,
+breaks= 100,
+col   = "gray90",
+prob  = TRUE,
+xlim  = c(-5, 10),
+ylim  = c(0,1),
+xlab  = "x",
+ylab  = "",
+main  = TeX("$U = Z^2 \\sim \\chi^2(1)$"))
 
 # density
 lines(
-u,                                                                         
-p_U,                                                                        
-lwd   = 2,                                                                  
-col   = "darkorange")                                                       
-dev.off()                                                                     
+u,
+p_U,
+lwd   = 2,
+col   = "darkorange")
+dev.off()
 ```
 
 
-```{r, echo = F, eval = F}
-pdf(file  = "./_figures/311-t-wdf.pdf", width = 6, height = 5)                                                                         
-par(                                                                    
-family     = "sans",                                                  
-pty        = "m",                                                     
-bty        = "l",                                                     
-lwd        = 1,                                                       
-las        = 1,                                                       
-mgp        = c(2,1,0),                                                
-xaxs       = "i",                                                    
-yaxs       = "i",                                                     
-font.main  = 1,                                                       
+```{r, echo = FALSE, eval = FALSE}
+pdf(file  = "./_figures/311-t-wdf.pdf", width = 6, height = 5)
+par(
+family     = "sans",
+pty        = "m",
+bty        = "l",
+lwd        = 1,
+las        = 1,
+mgp        = c(2,1,0),
+xaxs       = "i",
+yaxs       = "i",
+font.main  = 1,
 cex        = 1.1,
 cex.main   = 1.4)
 
@@ -1794,43 +1797,43 @@ dt(t,n[3]),
 dt(t,n[4]),
 dt(t,n[5])),
 ncol = 5),
-type         = "l",                                                      
-lty          = 1,                                                          
-lwd          = 2,                                                         
-col          = c("gray90","gray70", "gray50", "gray30", "gray10"),       
-ylim         = c(0,.4),                                                   
-xlim         = c(t_min,t_max),                                            
-ylab         = " ",                                                       
-xlab         = "t",                                                       
-main         = TeX("$\\T(t;n)$"))                                         
+type         = "l",
+lty          = 1,
+lwd          = 2,
+col          = c("gray90","gray70", "gray50", "gray30", "gray10"),
+ylim         = c(0,.4),
+xlim         = c(t_min,t_max),
+ylab         = " ",
+xlab         = "t",
+main         = TeX("$\\T(t;n)$"))
 
 legend(
-2,                                                                         
-.4,                                                                       
-c("n = 2", "n = 3", "n = 5", "n = 10", "n = 30"),                         
-lty         = 1,                                                          
-lwd         = 2,                                                          
-col         =  c("gray90","gray70", "gray50", "gray30", "gray10"),        
-bty         = "n",                                                       
-cex         = 1,                                                        
-y.intersp   = 1)                                                        
-dev.off()                                                                   
+2,
+.4,
+c("n = 2", "n = 3", "n = 5", "n = 10", "n = 30"),
+lty         = 1,
+lwd         = 2,
+col         =  c("gray90","gray70", "gray50", "gray30", "gray10"),
+bty         = "n",
+cex         = 1,
+y.intersp   = 1)
+dev.off()
 ```
 
-```{r, eval = F, echo = F}
-pdf(file = "./_figures/311-t-transformation.pdf", width = 6, height = 2)                                                                        
+```{r, eval = FALSE, echo = FALSE}
+pdf(file = "./_figures/311-t-transformation.pdf", width = 6, height = 2)
 library(latex2exp)
-par(                                                                    
-family     = "sans",                                                  
-mfcol      = c(1,3),                                                  
-pty        = "m",                                                     
-bty        = "l",                                                     
-lwd        = .5,                                                       
-las        = 1,                                                       
-mgp        = c(2,1,0),                                                
-xaxs       = "i",                                                     
-yaxs       = "i",                                                     
-font.main  = 1,                                                      
+par(
+family     = "sans",
+mfcol      = c(1,3),
+pty        = "m",
+bty        = "l",
+lwd        = .5,
+las        = 1,
+mgp        = c(2,1,0),
+xaxs       = "i",
+yaxs       = "i",
+font.main  = 1,
 cex        = 0.5,
 cex.main   = 1.1)
 
@@ -1845,22 +1848,22 @@ p_Z         = dnorm(z, 0, 1)                                                    
 
 # histogram
 hist(
-Z,                                                                         
-breaks = 50,                                                               
-col   = "gray90",                                                           
-prob  = TRUE,                                                               
-xlim  = c(-5, 5),                                                           
-ylim  = c(0,.42),                                                           
-xlab  = "z",                                                                
-ylab  = "",                                                                 
-main  = TeX("$Z \\sim N(0,1)$"))                                             
+Z,
+breaks = 50,
+col   = "gray90",
+prob  = TRUE,
+xlim  = c(-5, 5),
+ylim  = c(0,.42),
+xlab  = "z",
+ylab  = "",
+main  = TeX("$Z \\sim N(0,1)$"))
 
 # density
 lines(
-z,                                                                          
-p_Z,                                                                       
-lwd   = 2,                                                                  
-col   = "darkorange")                                                       
+z,
+p_Z,
+lwd   = 2,
+col   = "darkorange")
 
 # chi^2 sample
 df          = 3                                                                  # degrees of freedom
@@ -1873,22 +1876,22 @@ p_U         = dchisq(u,df)                                                      
 
 # histogram
 hist(
-U,                                                                          
-breaks= 100,                                                                
-col   = "gray90",                                                           
-prob  = TRUE,                                                               
-xlim  = c(0, 10),                                                           
-ylim  = c(0,0.3),                                                           
-xlab  = "u",                                                                
-ylab  = "",                                                                 
-main  = TeX("$U \\sim \\chi^2(3)$"))                                         
+U,
+breaks= 100,
+col   = "gray90",
+prob  = TRUE,
+xlim  = c(0, 10),
+ylim  = c(0,0.3),
+xlab  = "u",
+ylab  = "",
+main  = TeX("$U \\sim \\chi^2(3)$"))
 
 # density
 lines(
-u,                                                                          
-p_U,                                                                       
-lwd   = 2,                                                                  
-col   = "darkorange")                                                       
+u,
+p_U,
+lwd   = 2,
+col   = "darkorange")
 
 # T-transformation
 Tee         = Z/(sqrt(U/df))                                                     # element-wise vector arithmetic
@@ -1901,26 +1904,26 @@ p_T         = dt(z,df)                                                          
 
 # histogram
 hist(
-Tee,                                                                        
-breaks      = 100,                                                                
-col         = "gray90",                                                           
-prob        = TRUE,                                                               
-xlim        = c(t_min, t_max),                                                     
-ylim        = c(0,0.4),                                                           
-xlab        = "t",                                                                
-ylab        = "",                                                                 
-main        = TeX("$T = Z/\\sqrt{U/n}\\sim \\t(3)$"))                        
- 
+Tee,
+breaks      = 100,
+col         = "gray90",
+prob        = TRUE,
+xlim        = c(t_min, t_max),
+ylim        = c(0,0.4),
+xlab        = "t",
+ylab        = "",
+main        = TeX("$T = Z/\\sqrt{U/n}\\sim t(3)$"))
+
 # density
 lines(
-t,                                                                          
-p_T,                                                                       
-lwd         = 2,                                                                  
-col         = "darkorange")                                                       
-dev.off()                                                                 
+t,
+p_T,
+lwd         = 2,
+col         = "darkorange")
+dev.off()
 ```
 
-```{r, echo = F, eval = F}
+```{r, echo = FALSE, eval = FALSE}
 options(warn=-1)                                                                # warning off
 t_min     = -5                                                                  # Minimum T-Wert
 t_max     = 30                                                                  # Maximum T-Wert
@@ -1982,7 +1985,7 @@ seg.len     = 1.75)
 dev.off()
 ```
 
-```{r, echo = F, eval = F}
+```{r, echo = FALSE, eval = FALSE}
 library(latex2exp)
 pdf(
 file        = "./_figures/311-nichtzentrale-t-transformation.pdf",
@@ -2077,7 +2080,7 @@ xlim        = c(t_min, t_max),
 ylim        = c(0,0.3),
 xlab        = "t",
 ylab        = "",
-main        = TeX("$T = y/\\sqrt{U/n} \\sim \\t(5,5)$"))
+main        = TeX("$T = y/\\sqrt{U/n} \\sim t(5,5)$"))
 lines(
 t,
 p_T,
@@ -2086,18 +2089,18 @@ col         = "darkorange")
 dev.off()
 ```
 
-```{r, echo = F, eval = F}
-pdf(file = "./_figures/311-f-wdf.pdf", width = 6, height = 5) 
-par(                                                                    
-family     = "sans",                                                 
-pty        = "m",                                                     
-bty        = "l",                                                    
-lwd        = 1,                                                       
-las        = 1,                                                       
-mgp        = c(2,1,0),                                                
-xaxs       = "i",                                                   
-yaxs       = "i",                                      
-font.main  = 1,                                                       
+```{r, echo = FALSE, eval = FALSE}
+pdf(file = "./_figures/311-f-wdf.pdf", width = 6, height = 5)
+par(
+family     = "sans",
+pty        = "m",
+bty        = "l",
+lwd        = 1,
+las        = 1,
+mgp        = c(2,1,0),
+xaxs       = "i",
+yaxs       = "i",
+font.main  = 1,
 cex.main   = 1.4)
 
 # f space
@@ -2121,48 +2124,48 @@ df(f,n[4],m[4]),
 df(f,n[5],m[5]),
 df(f,n[6],m[6])),
 ncol = 6),
-type         = "l",                                                      
-lty          = c(1,2,1,2,1,2),                                            
-lwd          = 2,                                                         
-col          = c("gray90","gray70", "gray50", "gray30", "gray10"),      
-ylim         = c(0,1),                                                    
-xlim         = c(f_min,f_max),                                            
-ylab         = " ",                                                       
-xlab         = "f",                                                       
-main         = TeX("$F(f;n,m)$"))                                        
+type         = "l",
+lty          = c(1,2,1,2,1,2),
+lwd          = 2,
+col          = c("gray90","gray70", "gray50", "gray30", "gray10"),
+ylim         = c(0,1),
+xlim         = c(f_min,f_max),
+ylab         = " ",
+xlab         = "f",
+main         = TeX("$F(f;n,m)$"))
 
 legend(
-2.40,                                                                        
-1,                                                                       
+2.40,
+1,
 c("n = 2,  m = 2",
 "n = 2,  m = 10",
 "n = 5,  m = 2",
 "n = 5,  m = 10",
 "n = 10, m = 5",
-"n = 10, m = 10"),                                                      
-lty         = c(1,2,1,2,1,2),                                             
-lwd         = 2,                                                          
-col         = c("gray90","gray70", "gray50", "gray30", "gray10"),       
-bty         = "n",                                                        
-cex         = 1,                                                        
-y.intersp   = 1)                                                        
-dev.off()                                                                  
+"n = 10, m = 10"),
+lty         = c(1,2,1,2,1,2),
+lwd         = 2,
+col         = c("gray90","gray70", "gray50", "gray30", "gray10"),
+bty         = "n",
+cex         = 1,
+y.intersp   = 1)
+dev.off()
 ```
 
 
-```{r, echo = F, eval = F}
-pdf(file = "./_figures/311-f-transformation.pdf", width = 12, height = 4)                                                                       
-par(                                                                    
-family     = "sans",                                                  
-mfcol      = c(1,3),                                                  
-pty        = "m",                                                     
-bty        = "l",                                                     
-lwd        = 1,                                                       
-las        = 1,                                                       
-mgp        = c(2,1,0),                                                
-xaxs         = "i",                                                   
-yaxs         = "i",                                                  
-font.main  = 1,                                                       
+```{r, echo = FALSE, eval = FALSE}
+pdf(file = "./_figures/311-f-transformation.pdf", width = 12, height = 4)
+par(
+family     = "sans",
+mfcol      = c(1,3),
+pty        = "m",
+bty        = "l",
+lwd        = 1,
+las        = 1,
+mgp        = c(2,1,0),
+xaxs         = "i",
+yaxs         = "i",
+font.main  = 1,
 cex        = 1.2,
 cex.main   = 1)
 
@@ -2182,41 +2185,41 @@ p_W         = dchisq(w,m)                                                       
 
 # V histogram
 hist(
-V,                                                                          
-breaks = 50,                                                                
-col   = "gray90",                                                           
-prob  = TRUE,                                                               
-xlim  = c(v_min,v_max),                                                     
-ylim  = c(0,.2),                                                            
-xlab  = "v",                                                                
-ylab  = "",                                                                
-main  = TeX("$V \\sim \\chi^2(5)$")) 
+V,
+breaks = 50,
+col   = "gray90",
+prob  = TRUE,
+xlim  = c(v_min,v_max),
+ylim  = c(0,.2),
+xlab  = "v",
+ylab  = "",
+main  = TeX("$V \\sim \\chi^2(5)$"))
 
 # density
 lines(
-v,                                                                          
-p_V,                                                                        
-lwd   = 2,                                                                  
-col   = "darkorange")                                                       
+v,
+p_V,
+lwd   = 2,
+col   = "darkorange")
 
 # W histogram
 hist(
-W,                                                                          
-breaks = 50,                                                                
-col   = "gray90",                                                           
-prob  = TRUE,                                                               
-xlim  = c(v_min,v_max),                                                     
-ylim  = c(0,.2),                                                            
-xlab  = "w",                                                                
-ylab  = "",                                                                  
-main  = TeX("$W \\sim \\chi^2(10)$"))                                       
+W,
+breaks = 50,
+col   = "gray90",
+prob  = TRUE,
+xlim  = c(v_min,v_max),
+ylim  = c(0,.2),
+xlab  = "w",
+ylab  = "",
+main  = TeX("$W \\sim \\chi^2(10)$"))
 
 # density
 lines(
-w,                                                                         
-p_W,                                                                        
-lwd   = 2,                                                                  
-col   = "darkorange")                                                       
+w,
+p_W,
+lwd   = 2,
+col   = "darkorange")
 
 # F-transformation
 Eff         = (V/n)/(W/m)                                                        # element-wise vector arithmetic
@@ -2224,32 +2227,32 @@ f_min       = 0                                                                 
 f_max       = 6                                                                  # maximum t-value
 f_res       = 1e3                                                                # t-space resolution
 f           = seq(f_min, f_max, len = f_res)                                     # t-space
-p_F         = df(f,n,m)                                                          # t density
+p_F         = df(f,n,m)                                                          # F density
 
 # histogram
 hist(
-Eff,                                                                       
-breaks= 100,                                                                
-col   = "gray90",                                                           
-prob  = TRUE,                                                               
-xlim  = c(f_min, f_max),                                                    
-ylim  = c(0,.8),                                                            
-xlab  = "f",                                                                
-ylab  = "",                                                                 
+Eff,
+breaks= 100,
+col   = "gray90",
+prob  = TRUE,
+xlim  = c(f_min, f_max),
+ylim  = c(0,.8),
+xlab  = "f",
+ylab  = "",
 main  = TeX("$F = \\frac{V/n}{W/m}\\sim \\F(5,10)$"))
 
 # density
 lines(
-f,                                                                          
-p_F,                                                                       
-lwd   = 2,                                                                  
-col   = "darkorange")                                                       
-dev.off()                                                                
+f,
+p_F,
+lwd   = 2,
+col   = "darkorange")
+dev.off()
 ```
 
 :::{#thm-chi2-transformation}
 ## $\chi^2$-Transformation
-$Z_1,...,Z_n \sim N(0,1)$ seien unabhängig und identisch standardnormalverteilte 
+$Z_1,...,Z_n \sim N(0,1)$ seien unabhängig und identisch standardnormalverteilte
 Zufallsvariablen. Dann ist die Zufallsvariable
 \begin{equation}
 U := \sum_{i=1}^n Z_i^2
@@ -2260,7 +2263,7 @@ $U \sim \chi^2(1)$.
 :::
 
 :::{.proof}
-Wir zeigen das Theorem nur für den Fall $n := 1$ mithilfe von  @thm-univariate-wdf-transformation-bei-stückweise-bijektiven-abbildungen. 
+Wir zeigen das Theorem nur für den Fall $n := 1$ mithilfe von  @thm-univariate-wdf-transformation-bei-stückweise-bijektiven-abbildungen.
 Danach ist die WDF einer Zufallsvariable $U := f(Z)$, welche aus der Transformation einer
 Zufallsvariable $Z$ mit WDF $p_\zeta$ durch eine stückweise bijektive Abbildung
 hervorgeht, gegeben durch
@@ -2292,11 +2295,11 @@ Einsetzen ergibt dann
 \begin{align}
 \begin{split}
 p_U(u)
-& = 1_{\mathcal{U}_1}(u) \frac{1}{|f'_1(f_1^{-1}(u))|}p_\zeta\left(f_1^{-1} (u)\right) + 
+& = 1_{\mathcal{U}_1}(u) \frac{1}{|f'_1(f_1^{-1}(u))|}p_\zeta\left(f_1^{-1} (u)\right) +
     1_{\mathcal{U}_2}(u) \frac{1}{|f'_2(f_2^{-1}(u))|}p_\zeta\left(f_2^{-1} (u)\right) \\
-& = \frac{1}{|2(-\sqrt{u})|}\frac{1}{\sqrt{2\pi}}\exp\left(-\frac{1}{2}(-\sqrt{u})^2\right) + 
+& = \frac{1}{|2(-\sqrt{u})|}\frac{1}{\sqrt{2\pi}}\exp\left(-\frac{1}{2}(-\sqrt{u})^2\right) +
     \frac{1}{|2( \sqrt{u})|}\frac{1}{\sqrt{2\pi}}\exp\left(-\frac{1}{2}( \sqrt{u})^2\right) \\
-& = \frac{1}{2\sqrt{u}}\frac{1}{\sqrt{2\pi}}\exp\left(-\frac{1}{2}u\right) + 
+& = \frac{1}{2\sqrt{u}}\frac{1}{\sqrt{2\pi}}\exp\left(-\frac{1}{2}u\right) +
      \frac{1}{2\sqrt{u}}\frac{1}{\sqrt{2\pi}}\exp\left(-\frac{1}{2}u\right)\\
 & = \frac{1}{\sqrt{2\pi}}\frac{1}{\sqrt{u}}\exp\left(-\frac{1}{2}u\right).
 \end{split}
@@ -2310,7 +2313,7 @@ gegeben ist. Also gilt, dass wenn $Z \sim N(0,1)$ ist, dann ist $U := Z^2 \sim \
 :::
 
 Wichtige Anwendungsfälle sind die $U$-Konfidenzintervallstatistik sowie die
-im folgenden eingeführten $t$- und $f$-Zufallsvariablen. Wir visualisieren 
+im Folgenden eingeführten $t$- und $F$-Zufallsvariablen. Wir visualisieren
 @thm-chi2-transformation exemplarisch in @fig-chi2-transform.
 
 
@@ -2318,14 +2321,14 @@ im folgenden eingeführten $t$- und $f$-Zufallsvariablen. Wir visualisieren
 
 ### $T$-Transformation {-}
 
-Das in diesem Abschnitt betrachtete Theorem geht auf @student1908 zurück und ist das 
-zentrale und stilprägende Resultat der Entwicklung der Frequentistischen Inferenz 
-in der ersten Hälfte der 20. Jahrhunderts. @hald2007 und @zabell2008 und geben 
-hierzu einen historischen Überblick. Das zentrale @thm-t-transformation besagt dabei, 
-dass die Zufallsvariable, die sich durch Division einer standardnormalverteilten 
-Zufallsvariable durch die Quadratwurzel einer $\chi^2$-verteilten Zufallsvariable 
+Das in diesem Abschnitt betrachtete Theorem geht auf @student1908 zurück und ist das
+zentrale und stilprägende Resultat der Entwicklung der Frequentistischen Inferenz
+in der ersten Hälfte der 20. Jahrhunderts. @hald2007 und @zabell2008 geben
+hierzu einen historischen Überblick. Das zentrale @thm-t-transformation besagt dabei,
+dass die Zufallsvariable, die sich durch Division einer standardnormalverteilten
+Zufallsvariable durch die Quadratwurzel einer $\chi^2$-verteilten Zufallsvariable
 geteilt durch ein $n$, ergibt, eine $t$-verteilte Zufallsvariable ist. Dabei ist
-eine $t$-verteilte Zufallsvariable wie folgt definiert. 
+eine $t$-verteilte Zufallsvariable wie folgt definiert.
 
 :::{#def-t-zufallsvariable}
 ## $t$-Zufallsvariable
@@ -2345,8 +2348,8 @@ T(t;n) := \frac{\Gamma\left(\frac{n+1}{2}\right)}{\sqrt{n\pi}\Gamma\left(\frac{n
 \end{equation}
 :::
 
-In @fig-t-wdf visualisieren wir exemplarisch einige WDFen von $t$-Zufallsvariablen. 
-Wir beobachten, dass die $t$-Verteilung immer um $0$ symmetrisch ist und ein 
+In @fig-t-wdf visualisieren wir exemplarisch einige WDFen von $t$-Zufallsvariablen.
+Wir beobachten, dass die $t$-Verteilung immer um $0$ symmetrisch ist und ein
 steigendes $n$ Wahrscheinlichkeitsmasse aus den Ausläufen zum Zentrum verschiebt.
 Wir merken an, dass ab etwa $n = 30$ gilt, dass $T(t;n) \approx N(0,1)$.
 
@@ -2354,7 +2357,7 @@ Wir merken an, dass ab etwa $n = 30$ gilt, dass $T(t;n) \approx N(0,1)$.
 
 :::{#thm-t-transformation}
 ## $T$-Transformation
-$Z \sim N(0,1)$ sei eine standarnormalverteilte Zufallsvariable, $U \sim \chi^2(n)$ 
+$Z \sim N(0,1)$ sei eine standardnormalverteilte Zufallsvariable, $U \sim \chi^2(n)$
 sei eine $\chi^2$-Zufallsvariable mit Freiheitsgradparameter $n$, und $Z$ und $U$ seien
 unabhängig. Dann ist die Zufallsvariable
 \begin{equation}
@@ -2432,7 +2435,7 @@ gegeben ist, sodass folgt, dass
 \frac{1}{|J^f\left(f^{-1}(z,u)\right)|}
 = \left(\frac{w}{n}\right)^{1/2}.
 \end{equation}
-Einsetzen in Gleichung \eqref{eq:pdftmv} ergibt dann
+Einsetzen ergibt dann
 \begin{equation}
 p_{T,W}(t,w) = \left(\frac{w}{n}\right)^{1/2}p_{Z,V}\left(\sqrt{w/n}t,w\right),
 \end{equation}
@@ -2512,8 +2515,8 @@ p_T(t) =
 Die Verteilung von $Z/\sqrt{U/n}$ hat also die WDF einer $t$-Zufallsvariable.
 :::
 
-Wichtige Anwendungsfälle sind die $T$-Konfidenzintervallstatistik sowie die 
-$T$-Teststatistiken der Theorie von Hypothesentests im Kontext des Allgemeinen 
+Wichtige Anwendungsfälle sind die $T$-Konfidenzintervallstatistik sowie die
+$T$-Teststatistiken der Theorie von Hypothesentests im Kontext des Allgemeinen
 Linearen Modells. Wir visualisieren @thm-t-transformation exemplarisch in @fig-t-transformation.
 
 ![$T$-Transformation normalverteilter Zufallsvariablen.](./_figures/311-t-transformation){#fig-t-transformation fig-align="center" width=100%}
@@ -2523,7 +2526,7 @@ Linearen Modells. Wir visualisieren @thm-t-transformation exemplarisch in @fig-t
 In diesem Abschnitt betrachten wir den Fall, dass der Erwartungswertparameter
 der Zählervariable der in @thm-t-transformation betrachteten Zufallsvariable $T$
 von null verschieden ist, dass es sich bei der Zählervariable also nicht um eine
-nach $N(0,1)$, sondern eine nach $N(\mu,1)$ verteilte Zufallsvariable für ein 
+nach $N(0,1)$, sondern eine nach $N(\mu,1)$ verteilte Zufallsvariable für ein
 beliebiges $\mu \in \mathbb{R}$ handelt. Die so entstehende Zufallsvariable $T$
 folgt dann einer sogenannten *nichtzentralen-t-Verteilung*. Eine frühe ausführliche
 Diskussion dieser Verteilung findet sich zum Beispiel in @johnson1940. Eine entsprechende
@@ -2538,30 +2541,30 @@ p : \mathbb{R} \to \mathbb{R}_{>0}, t \mapsto p(t) :=
 \times \int_{0}^\infty \tau^{\frac{n-1}{2}} \exp\left(-\frac{\tau}{2}\right)
 \exp\left(-\frac{1}{2}\left(t \left(\frac{\tau}{n}\right)^{\frac{1}{2}} - \delta \right)^2 \right)\,d\tau.
 \end{multline}
-Dann sagen wir, dass $T$ einer nichtzentralen $t$-Verteilung mit 
-Nichtzentralitätsparameter $\delta$ und Freiheitsgradparameter $n$ unterliegt 
-und nennen $T$ eine *nichtzentrale $t$-Zufallsvariable mit Nichtzentralitätsparameter $\delta$ und Freiheitsgradparameter $n$*. Wir kürzen dies mit $t(\delta, n)$ ab. 
+Dann sagen wir, dass $T$ einer nichtzentralen $t$-Verteilung mit
+Nichtzentralitätsparameter $\delta$ und Freiheitsgradparameter $n$ unterliegt
+und nennen $T$ eine *nichtzentrale $t$-Zufallsvariable mit Nichtzentralitätsparameter $\delta$ und Freiheitsgradparameter $n$*. Wir kürzen dies mit $t(\delta, n)$ ab.
 Die WDF einer nichtzentralen $t$-Zufallsvariable bezeichnen wir mit
 $t(T;\delta,n)$. Die KVF und inverse KVF einer nichtzentralen $t$-Zufallsvariable
 bezeichnen wir mit $\Psi(\cdot; \delta, n)$ und $\Psi^{-1}(\cdot; \delta, n)$, respektive.
 :::
 
-Ohne Beweis merken wir an, dass eine nichtzentrale $t$-Zufallsvariable mit 
-$\delta = 0$ einer $t$-Zufallsvariable enstpricht, es gelten also
+Ohne Beweis merken wir an, dass eine nichtzentrale $t$-Zufallsvariable mit
+$\delta = 0$ einer $t$-Zufallsvariable entspricht, es gelten also
 \begin{equation}
 t(T;0,n) = t(T;n)
 \end{equation}
-sowie 
+sowie
 \begin{equation}
 \Psi(T;0,n) = \Psi(T;n)  \mbox{ und } \Psi^{-1}(T;0,n) = \Psi^{-1}(T;n).
 \end{equation}
 
-In @fig-nichtzentrale-t-wdf visualisieren wir exemplarisch einige WDFen von nichtzentralen 
+In @fig-nichtzentrale-t-wdf visualisieren wir exemplarisch einige WDFen von nichtzentralen
 $t$-Zufallsvariablen. Wir beobachten, dass ein positiver Nichtzentralitätsparameter
 $\delta$ die Verteilung nach rechts verschiebt und die Verteilungen mit steigendem
-Freiheitsgradparameter $\delta$ sich entsprechend lokalisierten Normalverteilungen mit
-Varianzparameter 1 annähern. Man beachte auch die Nichtsymmetrie der WDFen für 
-kleine Freiheitsgradparameter bei von Null verschiedenem positivem Nichtzentralitätsparameter. 
+Freiheitsgradparameter $n$ sich entsprechend lokalisierten Normalverteilungen mit
+Varianzparameter 1 annähern. Man beachte auch die Nichtsymmetrie der WDFen für
+kleine Freiheitsgradparameter bei von Null verschiedenem positivem Nichtzentralitätsparameter.
 
 ![WDFen von Nichtzentralen-$T$-Zufallsvariablen.](./_figures/311-nichtzentrale-t-wdf){#fig-nichtzentrale-t-wdf fig-align="center" width=80%}
 
@@ -2570,7 +2573,7 @@ Eine nichtzentrale $t$-Zufallsvariable ist das Resultat einer nichtzentralen $T$
 :::{#thm-nichtzentrale-t-transformation}
 ## Nichtzentrale T-Transformation
 $\upsilon \sim N(\mu,1)$ sei eine normalverteilte Zufallsvariable, $U \sim \chi^2(n)$
-sei eine $\chi^2$ Zufallsvariable mit Freiheitsgradparameter $n$, und $\upsilon$ und
+sei eine $\chi^2$-Zufallsvariable mit Freiheitsgradparameter $n$, und $\upsilon$ und
 $U$ seien unabhängige Zufallsvariablen. Dann ist die Zufallsvariable
 \begin{equation}
 T := \frac{\upsilon}{\sqrt{U/n}}
@@ -2580,56 +2583,55 @@ Freiheitsgradparameter $n$, also $T \sim t(\mu,n)$.
 :::
 
 Wir verzichten auf einen Beweis. Wichtige Anwendungsfälle sind die Testgütefunktionen
-der T-Test Varianten im Kontext des Allgemeinen Linearen Modells. Wir visualisieren @thm-nichtzentrale-t-transformation exemplarisch in @fig-nichtzentrale-t-transformation.
+der T-Test-Varianten im Kontext des Allgemeinen Linearen Modells. Wir visualisieren @thm-nichtzentrale-t-transformation exemplarisch in @fig-nichtzentrale-t-transformation.
 
 ![Nichtzentrale $T$-Transformation normalverteilter Zufallsvariablen.](./_figures/311-nichtzentrale-t-transformation){#fig-nichtzentrale-t-transformation fig-align="center" width=100%}
 
 ### $F$-Transformation {-}
 
-Das in diesem Abschnitt zentrale @thm-f-transformation besagt, dass die Zufallsvariable, 
-die sich durch Division zweier $\chi^2$ verteilter Zufallsvariablen, jeweils geteilt
-durch ihre jeweiligen Freiheitsgradparameter, eine $F$-verteilte Zufallsvariable ist.
+Das in diesem Abschnitt zentrale @thm-f-transformation besagt, dass die Zufallsvariable,
+die sich durch Division zweier jeweils durch ihre Freiheitsgradparameter geteilter $\chi^2$-verteilter Zufallsvariablen ergibt, eine $F$-verteilte Zufallsvariable ist.
 Dabei ist eine $F$-verteilte Zufallsvariable wie folgt definiert.
 
 :::{#def-f-zufallsvariable}
-## $f$-Zufallsvariable
+## $F$-Zufallsvariable
 $F$ sei eine Zufallsvariable mit Ergebnisraum $\mathbb{R}_{>0}$ und WDF
 \begin{equation}
 p_F: \mathbb{R} \to \mathbb{R}_{>0}, f \mapsto p_F(f)
-:= m^{\frac{m}{2}}n^{\frac{n}{2}}
-   \frac{\Gamma\left(\frac{m+n}{2}\right)}{\Gamma\left(\frac{m}{2}\right)\Gamma\left(\frac{n}{2}\right)}
-   \frac{f^{\frac{m}{2}-1}}{\left(1 + \frac{m}{n}f \right)^{\frac{m+n}{2}}},
+:= \left(\frac{n}{m}\right)^{\frac{n}{2}}
+   \frac{\Gamma\left(\frac{n+m}{2}\right)}{\Gamma\left(\frac{n}{2}\right)\Gamma\left(\frac{m}{2}\right)}
+   \frac{f^{\frac{n}{2}-1}}{\left(1 + \frac{n}{m}f \right)^{\frac{n+m}{2}}},
 \end{equation}
 wobei $\Gamma$ die Gammafunktion bezeichne. Dann sagen wir, dass $F$ einer
-$f$-Verteilung mit Freiheitsgradparametern $n,m$ unterliegt und nennen $F$ eine
-$f$-Zufallsvariable mit Freiheitsgradparametern $n,m$. Wir kürzen dies mit $F \sim f(n,m)$ ab.
-Die WDF einer $f$-Zufallsvariable bezeichnen wir mit
+$F$-Verteilung mit Freiheitsgradparametern $n,m$ unterliegt und nennen $F$ eine
+$F$-Zufallsvariable mit Freiheitsgradparametern $n,m$. Wir kürzen dies mit $F \sim F(n,m)$ ab.
+Die WDF einer $F$-Zufallsvariable bezeichnen wir mit
 \begin{equation}
 F(f;n,m)
-:= m^{\frac{m}{2}}n^{\frac{n}{2}}
-   \frac{\Gamma\left(\frac{m+n}{2}\right)}{\Gamma\left(\frac{m}{2}\right)\Gamma\left(\frac{n}{2}\right)}
-   \frac{f^{\frac{m}{2}-1}}{\left(1 + \frac{m}{n}f \right)^{\frac{m+n}{2}}}.
+:= \left(\frac{n}{m}\right)^{\frac{n}{2}}
+   \frac{\Gamma\left(\frac{n+m}{2}\right)}{\Gamma\left(\frac{n}{2}\right)\Gamma\left(\frac{m}{2}\right)}
+   \frac{f^{\frac{n}{2}-1}}{\left(1 + \frac{n}{m}f \right)^{\frac{n+m}{2}}}.
 \end{equation}
 :::
 
-In @fig-f-wdf visualisieren wir exemplarisch einige WDFen von $f$-Zufallsvariablen.
-Wir beobachten, dass die Form der WDFen zunächt primär durch den Freiheitsgradparameter
+In @fig-f-wdf visualisieren wir exemplarisch einige WDFen von $F$-Zufallsvariablen.
+Wir beobachten, dass die Form der WDFen zunächst primär durch den Freiheitsgradparameter
 $n$ und dann sekundär durch den Freiheitsgradparameter $m$ bestimmt werden.
 
-![WDFen von $f$-verteilten Zufallsvariablen.](./_figures/311-f-wdf){#fig-f-wdf fig-align="center" width=60%}
+![WDFen von $F$-verteilten Zufallsvariablen.](./_figures/311-f-wdf){#fig-f-wdf fig-align="center" width=60%}
 
 :::{#thm-f-transformation}
 ## $F$-Transformation
 $V \sim \chi^2(n)$ und $W \sim \chi^2(m)$ seien zwei unabhängige
-$\chi^2$-Zufallfsvariablen mit Freiheitsgradparametern $n$ und $m$, respektive.
+$\chi^2$-Zufallsvariablen mit Freiheitsgradparametern $n$ und $m$, respektive.
 Dann ist die Zufallsvariable
 \begin{equation}
 F := \frac{V/n}{W/m}
 \end{equation}
-eine $f$-verteilte Zufallsvariable mit Freiheitsgradparametern $n,m$, es gilt also $F \sim f(n,m)$.
+eine $F$-verteilte Zufallsvariable mit Freiheitsgradparametern $n,m$, es gilt also $F \sim F(n,m)$.
 :::
 
-Das Theorem kann bewiesen werden, in dem man zunächst ein Transformationstheorem
+Das Theorem kann bewiesen werden, indem man zunächst ein Transformationstheorem
 für Quotienten von Zufallsvariablen mithilfe von @thm-transformation-eines-zufallsvektors
 und Marginalisierung herleitet und dieses Theorem dann auf die WDF von $\chi^2$-verteilten
 Zufallsvariablen anwendet. Wir visualisieren @thm-f-transformation exemplarisch in @fig-f-transform.
@@ -2642,18 +2644,18 @@ Theorie des Allgemeinen linearen Modells betrachteten $F$-Statistiken.
 ## Literaturhinweise
 
 Die Entwicklung der bivariaten Normalverteilung hat ihre Ursprünge in der statistischen
-Literatur zur Mitte des 19. Jahrhunderts, insbesondere in den Arbeiten von 
-Francis Galton (1822-1911). Die mathematische Formalisierung der bivariaten Normalverteilung 
+Literatur zur Mitte des 19. Jahrhunderts, insbesondere in den Arbeiten von
+Francis Galton (1822-1911). Die mathematische Formalisierung der bivariaten Normalverteilung
 geht dabei wohl auf @pearson1896 zurück (@seal1967). Die ursprüngliche Formulierung
-der multivariaten Normalverteilung wird bei @edgeworth1892 verortet. @tong1990 
-gibt eine umfassenden Überblick zur Theorie und Anwendung der multivariaten Normalverteilung.
+der multivariaten Normalverteilung wird bei @edgeworth1892 verortet. @tong1990
+gibt einen umfassenden Überblick zur Theorie und Anwendung der multivariaten Normalverteilung.
 
 
-## Selbskontrollfragen {.unnumbered .unlisted}
+## Selbstkontrollfragen {.unnumbered .unlisted}
 \footnotesize
 
 1. Geben Sie das Summationstransformationstheorem wieder.
-1. Geben Sie das Mittelwertstransformationstheorem wieder.
+1. Geben Sie das Mittelwerttransformationstheorem wieder.
 1. Geben Sie das $Z$-Transformationstheorem wieder.
 1. Geben Sie das $\chi^2$-Transformationstheorem wieder.
 1. Beschreiben Sie die WDF der $t$-Verteilung in Abhängigkeit ihres Freiheitsgradparameters.
@@ -2664,7 +2666,7 @@ gibt eine umfassenden Überblick zur Theorie und Anwendung der multivariaten Nor
 
 1. Siehe @thm-summationstransformation.
 1. Siehe @thm-mittelwerttransformation.
-1. Siehe @thm-z-transformation. 
+1. Siehe @thm-z-transformation.
 1. Siehe @thm-chi2-transformation.
 1. Siehe @fig-t-wdf.
 1. Siehe @thm-t-transformation.

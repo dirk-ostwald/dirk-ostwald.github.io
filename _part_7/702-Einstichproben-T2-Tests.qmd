@@ -1,5 +1,5 @@
 # Einstichproben-T$^2$-Tests {#sec-t2-tests}
-## Anwendungsszenario {#sec-anwendungsszenario}
+## Anwendungsszenario {#sec-t2-anwendungsszenario}
 
 Wie im univariaten Fall ist das Anwendungsszenario eines Einstichproben-T$^2$-Tests 
 dadurch gekennzeichnet, dass $n$ Datenpunkte einer Stichprobe (Gruppe) randomisierter
@@ -16,7 +16,7 @@ inferentiellen Vergleich des wahren, aber unbekannten, Erwartungswertparameters
 $\mu$ mit einem vorgegebenen Wert $\mu_0$, beispielsweise $\mu_0 := 0_m$, besteht. Wie im 
 univariaten Fall ergeben sich auch in diesem Anwendungsszenario eine Reihe möglicher 
 Hypothesenszenarien mit jeweils unterschiedlichen Testgütefunktionen und damit 
-Herangehensweisen an Testumfangkontrolle und Stichprobengrößenoptimierung. 
+Herangehensweisen an Testumfangskontrolle und Stichprobengrößenoptimierung.
 Wir wollen im Rahmen dieser Einführung nur das Szenario einer einfachen Nullhypothese 
 und einer zusammengesetzten Alternativhypothese, 
 $$
@@ -46,7 +46,7 @@ Vergleichswert $\mu_0 \in \mathbb{R}^2$, etwa einem Therapieerfolgsnormwert,
 zu quantifizieren. 
 
 \footnotesize
-```{r echo = F, eval = T}
+```{r echo = FALSE, eval = TRUE}
 #| label: tbl-bdi-glu
 #| tbl-cap : "Prä-Post-Interventions-Differenzwerte von BDI Scores und Glukokortikoidplasmaleveln von $n = 20$ Patient:innen"
 library(knitr)
@@ -69,7 +69,7 @@ Mahalanobisdistanz von $D = 0.4$ des Stichprobenmittels vom Therapienormwert
 in bezug auf die Stichprobenkovarianzmatrix des Datensatzes wiederspiegelt.
 
 \tiny
-```{r, message = F, warning = F}
+```{r, message = FALSE, warning = FALSE}
 # Datendeskription
 D      = read.csv("_data/702-einstichproben-t2-tests.csv")                      # Daten einlesen
 Y      = rbind(D$y_1i, D$y_2i)                                                  # Datenmatrix               
@@ -83,11 +83,11 @@ C      = (1/(n-1))*(Y %*% (I_n-(1/n)*J_n) %*% t(Y))                             
 D      = t(Y_bar - mu_0) %*% solve(C) %*% (Y_bar - mu_0)                        # Mahalanobis Distanz
 ```
 
-```{r, echo = F}
+```{r, echo = FALSE}
 cat("Y_bar =", Y_bar, "\nD     =", D)                                           # Ausgabe  
 ```
 \normalsize
-```{r, echo = F, eval = F}
+```{r, echo = FALSE, eval = FALSE}
 library(ellipse)
 library(matlib)
 library(latex2exp)
@@ -155,7 +155,7 @@ dev.off()
 ![Deskriptivstatisken der `dBDI`, `dGLU` Daten des Beispieldatensatzes. Jeder
 Punkt visualisiert die Daten einer Patient:in, die Stichprobenkovarianz ist durch
 die 0.4 Isokontur einer zweidimensionalen Normalverteilung mit Erwartungswertparameter
-und Kovarianzmatrixparameter entsPrächend dem Stichprobenmittel und der Stichprobenkovarianz
+und Kovarianzmatrixparameter entsprechend dem Stichprobenmittel und der Stichprobenkovarianz
 dargestellt](./_figures/702-einstichproben-t2-deskription){#fig-einstichproben-t2-deskription fig-align="center" width=60%}
 
 ## Modellformulierung und Modellevaluation {#sec-modellformulierung-modellevaluation}
@@ -165,7 +165,7 @@ Wir definieren zunächst das Einstichproben-T$^2$-Test-Modell wie folgt.
 :::{#def-einstichproben-t2-test-modell}
 ## Einstichproben-T$^2$-Test-Modell
 Für $i = 1,...,n$ seien $y_i$ $m$-dimensionale Zufallsvektoren, die die
-$n$ Datenpunkte eines Einstichproben-T$^2$-Test Szenarios modellieren. Dann
+$n$ Datenpunkte eines Einstichproben-T$^2$-Test-Szenarios modellieren. Dann
 hat das *Einstichproben-T$^2$-Test-Modell* die strukturelle Form
 $$
 y_i = \mu + \varepsilon_i 
@@ -183,10 +183,10 @@ Die Äquivalenz von struktureller Form und Datenverteilungsform des
 Einstichproben-T$^2$-Test-Modells folgt dabei direkt mit @thm-linear-affine-transformation 
 durch Transformation der Zufallsvektoren $\varepsilon_i$ anhand von @eq-einstichproben-t2-test-strukturelle-form.
 
-## Modellevaluation {#sec-modellevaluation}
+## Modellevaluation {#sec-t2-modellevaluation}
 ###  Teststatistik und Test {-}
 
-Wir definieren als nächstes eine Teststatistik für das Einstichproben-T$^2$-Test Szenario.
+Wir definieren als nächstes eine Teststatistik für das Einstichproben-T$^2$-Test-Szenario.
 
 :::{#def-einstichproben-t2-test-teststatistik}
 ## Einstichproben-T$^2$-Teststatistik
@@ -200,10 +200,10 @@ wobei $\bar{y}$ und $C$ das Stichprobenmittel und die Stichprobenkovarianzmatrix
 der $y_1,...,y_n$ bezeichnen.
 :::
 Die Einstichproben-T$^2$-Teststatistik ist offenbar die mit dem Stichprobenumfang $n$ 
-skalierte Mahalanobis-Distanz von $\bar{y}$ und $\mu_0$ hinsichtlich $C$ (vgl. @sec-deskriptivstatistiken). Damit gilt entsprechend, dass bei konstanter 
-Stichprobenkovarianzmatrix die Einstichproben-T$^2$-Test Teststatistik $T^2$ 
-größere Werte für eine größere Euklidische Distanz von $\bar{y}$ und $\mu_0$ annimmt und
-bei konstanter Euklidischer Distanz von $\bar{y}$ und $\mu_0$ der Wert der
+skalierte Mahalanobis-Distanz von $\bar{y}$ und $\mu_0$ hinsichtlich $C$ (vgl. @sec-multivariate-deskriptivstatistiken-inhalt). Damit gilt entsprechend, dass bei konstanter 
+Stichprobenkovarianzmatrix die Einstichproben-T$^2$-Teststatistik $T^2$
+größere Werte für eine größere euklidische Distanz von $\bar{y}$ und $\mu_0$ annimmt und
+bei konstanter euklidischer Distanz von $\bar{y}$ und $\mu_0$ der Wert der
 Teststatistik $T^2$ von der Höhe der Datenvariabilität abhängt. Hinsichtlich der 
 Verteilung der Einstichproben-T$^2$-Teststatistik halten wir zunächst 
 folgendes Theorem fest, das wir nicht beweisen wollen.
@@ -236,7 +236,7 @@ an die Begriffe der $f$-Zufallsvariable und der nichtzentralen $f$-Zufallsvariab
 für die wir exemplarische WDFen in @fig-f-zufallsvariable und 
 @fig-nichtzentrale-f-zufallsvariable darstellen.
 
-:::{#def-f-zufallsvariable}
+:::{#def-t2-f-zufallsvariable}
 ## $f$-Zufallsvariable
 $\xi$ sei eine Zufallsvariable mit Ergebnisraum $\mathbb{R}_{>0}$ und WDF
 \begin{equation}
@@ -254,7 +254,7 @@ bezeichnen wir mit $F(x;\nu_1,\nu_2)$, und die inverse KVF einer $f$-Zufallsvari
 bezeichnen wir mit $F^{-1}(x;\nu_1,\nu_2)$.
 :::
 
-```{r, echo = F, eval = F}
+```{r, echo = FALSE, eval = FALSE}
 library(latex2exp)
 pdf(
 file   = "_figures/702-f-zufallsvariable.pdf",
@@ -347,7 +347,7 @@ $f$-Zufallsvariable bezeichnen wir mit $F(x;\delta,\nu_1,\nu_2)$, und die invers
 einer nichtzentralen $f$-Zufallsvariable bezeichnen wir mit $F^{-1}(x;\delta,\nu_1,\nu_2)$.
 :::
 
-```{r, echo = F, eval = F}
+```{r, echo = FALSE, eval = FALSE}
 library(latex2exp)
 pdf(
 file       = "_figures/702-nichtzentrale-f-zufallsvariable.pdf",
@@ -426,22 +426,22 @@ im univariaten Fall $m := 1$ aus @eq-nu folgt, dass
 \begin{equation}
 \nu = \frac{n-1}{(n-1)\cdot 1} = 1
 \end{equation}
-und mit der Stichprobenvarianz $S^2$ einer univariaten Stichprobe entsPrächend folgt, dass
+und mit der Stichprobenvarianz $S^2$ einer univariaten Stichprobe entsprechend folgt, dass
 \begin{equation}
 T^2 = n\frac{(\bar{y} - \mu_0)^2}{S^2} = \left(\sqrt{n}\frac{\bar{y} - \mu_0}{S} \right)^2.
 \end{equation}
-Dies ist offenbar das Quadrat der bekannten univariaten Einstichproben-T-Test Teststatistik. 
+Dies ist offenbar das Quadrat der bekannten univariaten Einstichproben-T-Teststatistik.
 Damit ist nach @thm-verteilung-der-skalierten-einstichproben-t2-teststatistik
-das Quadrat der univariaten Einstichproben-T-Test Teststatistik nach $f(\delta,1,n-1)$ 
+das Quadrat der univariaten Einstichproben-T-Teststatistik nach $f(\delta,1,n-1)$
 verteilt. Intuitiv und verkürzt ausgedrückt ist also eine quadrierte $t$-Zufallsvariable 
 eine $f$-Zufallsvariable.
 
 Aus @thm-verteilung-der-skalierten-einstichproben-t2-teststatistik folgen nun 
 für Einstichproben-T$^2$-Teststatistik unmittelbar folgende Formen für ihre WDF und KVF.
 
-:::{#thm-wdf-und-kdf-der-einstichproben-t2-Ttststatistik}
-## WDF und KDF der Einstichproben-T$^2$-Teststatistik
-Im  Einstichproben-T$^2$-Test Szenario sei
+:::{#thm-wdf-und-kvf-der-einstichproben-t2-teststatistik}
+## WDF und KVF der Einstichproben-T$^2$-Teststatistik
+Im Einstichproben-T$^2$-Test-Szenario sei
 \begin{equation}
 \nu:= \frac{n-m}{(n-1)m}
 \end{equation}
@@ -466,7 +466,7 @@ $p_y(y) := (1/|a|)p_\xi((y-b)/a)$. Im vorliegenden Fall ist $\xi = \nu T^2$ mit 
 $f(\delta,m,n-m)$ und $y := T^2 = \frac{1}{\nu}\nu T^2$, also $a = 1/\nu$ und $b = 0$.
 Mit $\nu > 0$ ergibt sich \eqref{eq:pT1} also aus
 \begin{equation}
-p_{T^2}(t^2) = \frac{1}{a}p_{\nu T^2}\left(\frac{t^2}{a}\right) = \nu f(\nu t^2; m, n-m).
+p_{T^2}(t^2) = \frac{1}{a}p_{\nu T^2}\left(\frac{t^2}{a}\right) = \nu f(\nu t^2;\delta, m,n-m).
 \end{equation}
 \eqref{eq:PT2} folgt dann damit, dass WDFen bei kontinuierlichen Zufallsvariablen 
 die Ableitungen der entsprechenden KVFen sind. Mit der Kettenregel der Differentiation
@@ -474,17 +474,17 @@ ergibt sich
 \begin{align}
 \begin{split}
 \frac{d}{dt^2}P_{T^2}\left(t^2\right)
-& = \frac{d}{dt^2}\left(F(\nu t^2;m,n-m,\delta)\right) \\
-& = \frac{d}{dt^2}F(\nu t^2;m,n-m,\delta)\frac{d}{dt^2}\left(\nu t^2 \right) \\
-& = \nu f(\nu t^2;m,n-m,\delta) \\
+& = \frac{d}{dt^2}\left(F(\nu t^2;\delta,m,n-m)\right) \\
+& = \frac{d}{dt^2}F(\nu t^2;\delta,m,n-m)\frac{d}{dt^2}\left(\nu t^2 \right) \\
+& = \nu f(\nu t^2;\delta,m,n-m) \\
 & = p_{T^2}(t^2).
 \end{split}
 \end{align}
 :::
 
-Wir halten fest, dass die skalierte Einstichproben-T$^2$-Test Teststatitik $\nu T^2$ nach $f(\delta,m,n-m)$ 
-nichtzentral $f$-verteilt ist, die WDF der Einstichproben-T$^2$-Test Teststatitik $T^2$ selbst dagegen 
-durch $\nu f(\nu t^2;\delta, m,n-m)$ geben ist. Wir simulieren diese Verteilung 
+Wir halten fest, dass die skalierte Einstichproben-T$^2$-Teststatistik $\nu T^2$ nach $f(\delta,m,n-m)$
+nichtzentral $f$-verteilt ist, die WDF der Einstichproben-T$^2$-Teststatistik $T^2$ selbst dagegen
+durch $\nu f(\nu t^2;\delta, m,n-m)$ gegeben ist. Wir simulieren diese Verteilung
 mithilfe folgenden **R** Codes und visualisieren diese Simulation in @fig-einstichproben-t2-teststatistik.
 
 \tiny
@@ -514,7 +514,7 @@ for(s in 1:nsim){                                                               
 ```
 \normalsize
 
-```{r, echo = F, eval = F}
+```{r, echo = FALSE, eval = FALSE}
 # figure parameters
 library(latex2exp)
 pdf(
@@ -575,7 +575,7 @@ lwd         = 2,
 col         = "darkorange")
 mtext("C", adj=1, line=2, cex = 1.2, at = -50)
 
-# Unormalisierte T2-Teststatistik Sample
+# Unnormalisierte T2-Teststatistik Sample
 t2_min      = 0
 t2_max      = 50
 t2_res      = 1e3
@@ -656,7 +656,7 @@ des Ablehnens von $H_0$ und $\phi(y) = 0$ den Vorgang des Nichtablehnens von $H_
 
 ###  Analyse der Testgütefunktion {-}
 
-Um für den in @def-einstichproben-t2-test definierten Test Prozeduren zur Testumfangkontrolle 
+Um für den in @def-einstichproben-t2-test definierten Test Prozeduren zur Testumfangskontrolle
 (Typ I Fehlerbegrenzung) und zur Stichprobengrößenoptimierung (Typ II Fehlerbegrenzung) 
 zu entwickeln, betrachten wir zunächst seine Testgütefunktion. Es gilt folgendes Theorem.
 
@@ -684,7 +684,7 @@ Da die Wahrscheinlichkeiten für $\phi = 1$ und dafür, dass die zugehörige Tes
 im Ablehnungsbereich des Tests liegt, gleich sind, benötigen wir also zunächst die Verteilung
 der Teststatistik. Wir haben oben aber bereits gesehen, dass
 \begin{equation}
-\frac{n-m}{m(n-1)}T^2 \sim f(m,n-m,\delta_\mu) \mbox{ mit } \delta_\mu := n(\mu -\mu_0)^T\Sigma^{-1}(\mu-\mu_0)
+\frac{n-m}{m(n-1)}T^2 \sim f(\delta_\mu,m,n-m) \mbox{ mit } \delta_\mu := n(\mu -\mu_0)^T\Sigma^{-1}(\mu-\mu_0)
 \end{equation}
 gilt. Der Ablehnungsbereich des betrachteten Tests ist $A := ]k,\infty[$. Also ergibt sich
 \begin{align}
@@ -694,7 +694,7 @@ q_\phi(\mu)
 &  = \mathbb{P}_\mu\left(T^2 \in \,\,]k,\infty[\right) \\
 &  = \mathbb{P}_\mu\left(T^2 > k \right) \\
 &  = 1 - \mathbb{P}_\mu\left(T^2 \le k \right) \\
-&  = 1 - F(\nu k; \delta_\mu,m, m-n)
+&  = 1 - F(\nu k; \delta_\mu,m, n-m)
 \end{split}
 \end{align}
 :::
@@ -721,7 +721,7 @@ bei einem größeren kritischen Wert $k$ dagegen erst für größere Distanzen.
 Untenstehender **R** Code demonstriert das Vorgehen zur Evaluation dieser Testgütefunktionen
 
 \tiny
-```{r, eval = F}
+```{r, eval = FALSE}
 # Modellparameter
 m           = 2                                                                 # m
 n           = 15                                                                # n
@@ -749,7 +749,7 @@ for(k in 1:n_k){
 ```
 \normalsize
 
-```{r, echo = F, eval = F}
+```{r, echo = FALSE, eval = FALSE}
 library(latex2exp)
 pdf(
 file        = "_figures/702-einstichproben-t2-gütefunktion-1.pdf",
@@ -794,7 +794,7 @@ n:=15,
 \Sigma_1 :=   \begin{pmatrix} 1.0 & 0.0  \\ 0.0 & 1.0 \end{pmatrix}
 \end{equation}](./_figures/702-einstichproben-t2-gütefunktion-1){#fig-einstichproben-t2-gütefunktion-1 fig-align="center" width=100%}
 
-```{r, echo = F, eval = F}
+```{r, echo = FALSE, eval = FALSE}
 # Modellparameter
 library(matlib)                                                                 # R Paket
 m           = 2                                                                 # m
@@ -865,14 +865,14 @@ n:=15,
 \Sigma_1 :=   \begin{pmatrix} 1.0 & 0.9  \\ 0.9 & 1.0 \end{pmatrix}
 \end{equation}](./_figures/702-einstichproben-t2-gütefunktion-2){#fig-einstichproben-t2-gütefunktion-2 fig-align="center" width=100%}
   
-### Testumfangkontrolle {-}
+### Testumfangskontrolle {-}
 
-Bekanntlich erlaubt die Testumfangkontrolle die Begrenzung der größtmöglichen 
+Bekanntlich erlaubt die Testumfangskontrolle die Begrenzung der größtmöglichen
 Wahrscheinlichkeit für einen Typ I Fehler. Im aktuellen Testszenario haben wir
 folgendes Theorem.
 
 :::{#thm-testumfangkontrolle-des-einstichproben-t2-tests}
-## Testumfangkontrolle des Einstichproben-T$^2$- Tests
+## Testumfangskontrolle des Einstichproben-T$^2$-Tests
 $\phi$ sei der im obigen Testszenario definierte Test. Dann ist $\phi$ ein
 Level-$\alpha_0$-Test mit Testumfang $\alpha_0$, wenn der kritische Wert definiert
 ist durch
@@ -913,7 +913,7 @@ dass der Testumfang des betrachteten Tests bei Wahl von $k = k_{\alpha_0}$ gleic
 $\alpha_0$ ist.
 :::
 
-```{r,echo = F, eval = F}
+```{r,echo = FALSE, eval = FALSE}
 library(latex2exp)
 pdf(
 file        = "_figures/702-einstichproben-t2-testumfangkontrolle.pdf",
@@ -1022,15 +1022,15 @@ text(k_alpha_0,-0.03, TeX("$\\k_{\\alpha_0}$") , xpd = TRUE)
 text(10, .05, TeX("$P(T^2 >= k_{\\alpha_0}) = \\alpha_0$"), xpd = TRUE, cex = .8, col = "gray50")
 dev.off()
 ```
-![Testumfangkontrolle durch Selektion eines $\alpha_0$-abhängigen kritischen Wertes
-für den Einstichproben-T$^2$-Test anhand von KVF unf WDF der Einstichproben-T$^2$-Teststatistik.](./_figures/702-einstichproben-t2-testumfangkontrolle){#fig-einstichproben-t2-testumfangkontrolle fig-align="center" width=100%}
+![Testumfangskontrolle durch Selektion eines $\alpha_0$-abhängigen kritischen Wertes
+für den Einstichproben-T$^2$-Test anhand von KVF und WDF der Einstichproben-T$^2$-Teststatistik.](./_figures/702-einstichproben-t2-testumfangkontrolle){#fig-einstichproben-t2-testumfangkontrolle fig-align="center" width=100%}
 
 Wir visualisieren die Wahl von 
 \begin{equation}
 k_{\alpha_0} = \nu^{-1}F^{-1}\left(1-\alpha_0; m, n-m \right)
 \end{equation}
 für den Fall $m = 2, n = 15$ und ein Signifikanzlevel von $\alpha_0 := 0.05$ in 
-@fig-einstichproben-t2-testumfangkontrolle. Untenstehender **R** Code simuliert die Testumfangkontrolle für ein Einstichproben-T$^2$-Test Szenario mit
+@fig-einstichproben-t2-testumfangkontrolle. Untenstehender **R** Code simuliert die Testumfangskontrolle für ein Einstichproben-T$^2$-Test-Szenario mit
 \begin{equation}
 m := 2, n := 15, \mu := \mu0 := \begin{pmatrix} 1 \\ 1 \end{pmatrix}
 \mbox{ und }
@@ -1054,7 +1054,7 @@ Sigma     = matrix(c(0.5,0.3, 0.3,0.5), nrow = 2, byrow = TRUE)                 
 alpha_0   = 0.05                                                                # Signifikanzlevel
 k_alpha_0 = (1/nu)*qf(1-alpha_0, m,n-m)                                         # kritischer Wert
 
-# Simulation der Testumfangkontrolle
+# Simulation der Testumfangskontrolle
 library(MASS)                                                                   # R Paket für multivariate Normalverteilungen
 nsim  = 1e4                                                                     # Testentscheidungsarray
 phi   = rep(NaN,nsim)                                                           # Testentscheidungsarray
@@ -1065,20 +1065,20 @@ for(s in 1:nsim){                                                               
     Y      = t(mvrnorm(n,mu,Sigma))                                             # Y_i \sim N(\mu,\Sigma), i = 1,...,n
     Y_bar  = (1/n)*(Y %*% j_n)                                                  # Stichprobenmittel
     C      = (1/(n-1))*(Y %*% (I_n-(1/n)*J_n) %*% t(Y))                         # Stichprobenkovarianzmatrix
-    T2     = n*t(Y_bar - mu_0) %*% solve(C) %*% (Y_bar - mu_0)                  # Einstichproben-T$^2$-Test Statistik
+    T2     = n*t(Y_bar - mu_0) %*% solve(C) %*% (Y_bar - mu_0)                  # Einstichproben-T$^2$-Teststatistik
     if(T2 > k_alpha_0){                                                         # Test 1_{T^2 >= k_alpha_0}
         phi[s] = 1                                                              # Ablehnen von H_0
     } else {
-        phi[s] = 0}}                                                            # Nicht Ablehnen von H_0
+        phi[s] = 0}}                                                            # Nichtablehnen von H_0
 ```
-```{r,echo = F}
+```{r,echo = FALSE}
 cat("\nKritischer Wert              = ", k_alpha_0,
     "\nGeschätzter Testumfang alpha = ", mean(phi))                             # Ausgabe
 ```
 \normalsize
 
 
-In der Praxis entsPrächen obige Ergebnisse dann folgendem Vorgehen bei der
+In der Praxis entsprechen obige Ergebnisse dann folgendem Vorgehen bei der
 Durchführung eines Einstichproben-T$^2$-Tests. Man unterstellt, dass ein vorliegender Datensatz von 
 $m$-dimensionalen Datenvektoren eine Realisation von $n$ u.i.v. $m$-dimensionalen 
 Zufallsvektoren $y_1,...,y_n \sim N(\mu,\Sigma)$ mit unbekannten Parametern 
@@ -1093,7 +1093,7 @@ Stichprobenkovarianzmatrix $C$ berechnet man dann die Realisierung der Einstichp
 T^2 := n(\bar{y} - \mu_0)^T C^{-1}(\bar{y} - \mu_0).
 \end{equation}
 Wenn das berechnete $T^2$ größer als $k_{\alpha_0}$ ist, lehnt man die Nullhypothese ab, 
-andernfalls nicht. Die oben entwickelte Theorie zur Testumfangkontrolle des Einstichproben-T$^2$-Test 
+andernfalls nicht. Die oben entwickelte Theorie zur Testumfangskontrolle des Einstichproben-T$^2$-Test
 garantiert dann, dass man in höchstens $\alpha_0 \cdot 100$ von $100$ Fällen 
 die Nullhypothese fälschlicherweise ablehnt.
 
@@ -1152,7 +1152,7 @@ F(\nu t^2; m,n-m)
 \end{align}
 :::
 
-```{r, echo = F}
+```{r, echo = FALSE}
 # Beispiel p-Werte
 m  = c(2,2,2,4)
 n  = c(15,15,99,15)
@@ -1229,7 +1229,7 @@ for (a in 1:length(a_0_all)){
                 pi[i,j,l,a] = 1 - pf(nu*k_alpha_0, m, n-m, d_mu)}}}}            # Powerfunktionswert
 ```
 \normalsize
-```{r, echo = F, eval = F}
+```{r, echo = FALSE, eval = FALSE}
 library(latex2exp)
 pdf(
 file        = "_figures/702-einstichproben-t2-pi.pdf",
@@ -1258,7 +1258,7 @@ for(i in 1:length(m_all)){
         theta       = -45,
         phi         = 30,
         lwd         = .5,
-        scale       = T,
+        scale       = TRUE,
         ticktype    = "detailed",
         xlab        = "delta_mu",
         ylab        = "n",
@@ -1277,7 +1277,7 @@ sowie des Stichprobenumfangs $n$. Dabei bilden die Abbildungen der ersten Zeile
 die Powerfunktionen des Einstichproben-T$^2$-Tests für das Signifikanzlevel $\alpha_0 = 0.05$ und die
 Abbildungen der zweiten Zeile die Powerfunktionen des Einstichproben-T$^2$-Tests für das Signifikanzlevel
 $\alpha_0 = 0.01$ ab. Ein niedrigeres Signifikanzlevel resultiert wie üblich in
-einer geringeren Wahrscheinlichkeit für die Ablehung der Nullhypothese über den
+einer geringeren Wahrscheinlichkeit für die Ablehnung der Nullhypothese über den
 gesamten Bereich von $\delta_\mu$ und $n$. Die erste Spalte der Abbildung zeigt
 die beiden Signifikanzlevelszenarien für eine Datendimensionalität von $m := 2$,
 die zweite Spalte für eine Datendimensionalität von $m := 4$. Eine Erhöhung der
@@ -1348,11 +1348,11 @@ while(pi_n[i] < beta){                                                          
 }
 ```
 
-```{r, echo  = F}
+```{r, echo  = FALSE}
 cat("Minimal nötiges n =", ceiling(n_min))                   # Ausgabe
 ```
 \normalsize
-```{r, echo = F, eval = F}
+```{r, echo = FALSE, eval = FALSE}
 library(latex2exp)
 pdf(
 file        = "_figures/702-einstichproben-t2-stichprobenumfang.pdf",
@@ -1455,12 +1455,12 @@ T2        = n*t(Y_bar - mu_0) %*% solve(C) %*% (Y_bar - mu_0)                   
 if(T2 > k_alpha_0){                                                             # Test 1_{T^2 >= k_alpha_0}
     phi = 1                                                                     # Ablehnen von H_0
 } else {
-    phi = 0                                                                     # Nicht Ablehnen von H_0
+    phi = 0                                                                     # Nichtablehnen von H_0
 }
 p         = 1 - pf(nu*T2,m,n-m)                                                 # p-Wert
 ```
 
-```{r, echo = F}
+```{r, echo = FALSE}
 # Ausgabe
 cat("Y_bar   = ", Y_bar,
     "\nC       = ", C,
@@ -1474,9 +1474,8 @@ cat("Y_bar   = ", Y_bar,
 
 Im vorliegenden Fall nimmt die Einstichproben-T$^2$-Teststatistik einen
 größeren Wert als der kritische Wert an, es gilt damit $\phi(\Upsilon) = 1$ 
-und man lehnt die Nullhypothese ab. Der korrespondiere p-Wert ist durch 0.049 gegeben. 
+und man lehnt die Nullhypothese ab. Der korrespondierende p-Wert ist durch 0.049 gegeben.
 
 ## Literaturhinweise {#sec-literaturhinweise}
 
 Die Theorie des Einstichproben-T$^2$-Tests geht zurück auf @hotelling1931.
-

@@ -27,7 +27,7 @@ Beispieldatensatz bestehend aus Datenwerten von $n=20$ Patient:innen, wobei Alte
 das Patient:innenalter, Dauer die Therapiedauer und dBDI die Pre-Post-Interventions-BDI-Differenzwerte bezeichnen.
 
 \footnotesize
-```{r echo = F, eval = T, warning = F}
+```{r echo = FALSE, eval = TRUE, warning = FALSE}
 #| label: tbl-mr-dbdi
 #| tbl-cap : "Pre-Post-BDI-Differenzwerte in Abhängigkeit von Patient:innenalter und Therapiedauer"
 library(knitr)                                                                  # knitr für Tabellen
@@ -41,7 +41,7 @@ gemäß im dreidimensionalen Raum anhand ihrer Koordinaten in der Alter-Dauer-Eb
 abgetragen sind. Die Visualisierung der multiple Regression, insbesondere für 
 mehr als zwei unabhängige Variablen, stößt sehr schnell an ihre Grenzen.
 
-```{r, eval = F, echo = F, warning=FALSE, message=FALSE}
+```{r, eval = FALSE, echo = FALSE, warning=FALSE, message=FALSE}
 library(scatterplot3d)
 D          = read.csv("./_data/511-multiple-regression.csv")  
 pdf(
@@ -72,14 +72,14 @@ Linearen Modells identisch. Der Vollständigkeit halber geben wir folgende Defin
 
 :::{#def-modell-der-multiplen-regression}
 ## Modell der multiplen Regression 
-$y_{i}$ mit $i=1, \ldots, n$ sei die Zufallsvariable, die den $i$ten Wert 
+$y_{i}$ mit $i=1, \ldots, n$ sei die Zufallsvariable, die den $i$-ten Wert
 einer abhängigen Variable modelliert. Dann hat das *Modell der multiplen Regression* 
 die strukturelle Form
 $$
 y_{i}=x_{i1} \beta_{1}+\cdots+x_{ip} \beta_{p}+\varepsilon_{i} \mbox{ mit } \varepsilon_{i} \sim N\left(0, \sigma^{2}\right) \mbox{ u.i.v. für } i=1, \ldots, n \mbox{ und } \sigma^{2}>0,
 $$
-wobei $x_{i j} \in \mathbb{R}$ mit $1 \leq i \leq n$ und $1 \leq j \leq p$ den $i$ten
-Wert der $j$ ten unabhängigen Variable bezeichnet. Die unabhängigen Variablen 
+wobei $x_{i j} \in \mathbb{R}$ mit $1 \leq i \leq n$ und $1 \leq j \leq p$ den $i$-ten
+Wert der $j$-ten unabhängigen Variable bezeichnet. Die unabhängigen Variablen
 werden auch *Regressoren*, *Prädiktoren*, *Kovariaten* oder *Features* genannt. Mit
 $$
 x_{i} := \left(x_{i1}, \ldots, x_{ip}\right)^{T} \in \mathbb{R}^{p} \mbox{ und } \beta:=\left(\beta_{1}, \ldots, \beta_{p}\right)^{T} \in \mathbb{R}^{p}
@@ -584,7 +584,7 @@ Stichprobenkorrelationen, Stichprobenstandardabweichungen und partielle
 Stichprobenkorrelationen.
 
 \tiny
-```{r, warning = F}
+```{r, warning = FALSE}
 D          = read.csv("./_data/511-multiple-regression.csv")                    # Dateneinlesen
 y          = D$dBDI                                                             # Abhängige Variable
 n          = length(y)                                                          # Anzahl Datenpunkte
@@ -606,7 +606,7 @@ beta_hat_1 = pr[1,2]*sqrt((1-r[1,3]^2)/(1-r[2,3]^2))*(s[1]/s[2])                
 beta_hat_2 = pr[1,3]*sqrt((1-r[1,2]^2)/(1-r[3,2]^2))*(s[1]/s[3])                # \hat{\beta}_2
 beta_hat_0 = bars[1] - beta_hat_1*bars[2] - beta_hat_2*bars[3]                  # \hat{\beta}_0
 ```
-```{r, echo = F}
+```{r, echo = FALSE}
 # Ausgabe
 cat("Korrelationen  r(dPOMS,AGE),r(dPOMS,BRI),r(AGE,BRI)        :"  , round(c(r[1,2],r[1,3],r[2,3]), digits = 2),
      "\nPartielle Korrelationen r(dPOMS,AGE|BRI), r(dPOMS,BRI|AGE) :", round(c(pr[1,2],pr[1,3]), digits = 2),
@@ -624,7 +624,7 @@ f_{\hat{\beta}}: \mathbb{R}^{2} \rightarrow \mathbb{R},
 := \hat{\beta}_{0}+\hat{\beta}_{1} x_{1}+\hat{\beta}_{2} x_{2}
 $$
 
-```{r, eval = F, echo = F, warning=FALSE, message=FALSE}
+```{r, eval = FALSE, echo = FALSE, warning=FALSE, message=FALSE}
 library(scatterplot3d)
 D          = read.csv("./_data/511-multiple-regression.csv")  
 pdf(
@@ -648,14 +648,14 @@ spd$plane3d(alm)
 dev.off()
 ```
 
-![Visualisierung von Beispieldatensatz und Regressionebene](./_figures/511-multiple-regression-datensatz-und-regression){#fig-multiple-regression-datensatz-und-regression fig-align="center" width=70%}  
+![Visualisierung von Beispieldatensatz und Regressionsebene](./_figures/511-multiple-regression-datensatz-und-regression){#fig-multiple-regression-datensatz-und-regression fig-align="center" width=70%}
 
 ## Modellevaluation
 
 Die allgemeine Theorie der T- und F-Statistiken bietet eine Vielzahl von Möglichkeiten, 
 verschiedenste Hypothesen im Kontext der multiplen Regression inferenzstatistisch 
 zu evaluieren. Für das Anwendungsbeispiel könnte zum Beispiel folgende Auswahl 
-von Kontrastgewichtsvektoren und Null- und Alternativenhypothesen zunächst von Interesse sein:
+von Kontrastgewichtsvektoren und Null- und Alternativhypothesen zunächst von Interesse sein:
 
 $$
 c:=\begin{pmatrix}
@@ -700,7 +700,7 @@ oder der Therapiedauer.
 Folgender **R** Code evaluiert evaluiert die angesprochenen T-Tests.
 
 \tiny
-```{r, warning = F}
+```{r, warning = FALSE}
 D          = read.csv("./_data/511-multiple-regression.csv")                    # Datensatz
 y          = D$dBDI                                                             # Abhängige Variable
 n          = length(y)                                                          # Anzahl Datenpunkte
@@ -710,7 +710,7 @@ beta_hat   = solve(t(X) %*% X) %*% t(X) %*% y                                   
 eps_hat    = y - X %*% beta_hat                                                 # Residuenvektor
 sigsqr_hat = (t(eps_hat) %*% eps_hat) /(n-p)                                    # Varianzparameterschätzer
 C          = cbind(diag(p), matrix(c(0,1,-1), nrow = 3))                        # Kontrastgewichtsvektoren
-ste        = rep(NaN, ncol(C))                                                  # Konstraststandardfehler
+ste        = rep(NaN, ncol(C))                                                  # Kontraststandardfehler
 tee        = rep(NaN, ncol(C))                                                  # T-Statistiken
 pvals      = rep(NaN, ncol(C))                                                  # p-Werte
 for(i in 1:ncol(C)){                                                            # Kontrastiterationen
@@ -722,7 +722,7 @@ for(i in 1:ncol(C)){                                                            
 }
 ```
 
-```{r, echo = F}
+```{r, echo = FALSE}
 # R-style output
 R            = data.frame(round(c(beta_hat, t(C[,4]%*%beta_hat)),2),           
                           round(ste,2), round(tee,2), round(pvals,2))
@@ -744,7 +744,7 @@ und Therapie überhaupt zur Erklärung der Pre-Post-BDI-Differenzwertvariation,
 bestätigen. Folgender **R** Code evaluiert den angesprochenen F-Test.
 
 \tiny
-```{r, warning = F}
+```{r, warning = FALSE}
 D          = read.csv("./_data/511-multiple-regression.csv")                    # Datensatz
 y          = D$dBDI                                                             # Abhängige Variable
 n          = length(y)                                                          # Anzahl Datenpunkte
@@ -763,7 +763,7 @@ sigsqr_hat = eh_eh/(n-p)                                                        
 f          = ((eh0_eh0-eh_eh)/p_1)/sigsqr_hat                                   # F-Statistik
 pval       = 1 - pf(f,p_1,n-p)                                                  # p-Wert
 ```
-```{r, echo = F}
+```{r, echo = FALSE}
 # Ausgabe
 cat("F-statistic:", round(f,1), "on", p_1, "and", n-p, "DF", "p-value: ", paste(pval))
 ```

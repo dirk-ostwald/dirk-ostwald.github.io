@@ -13,7 +13,7 @@ des Eiskonsums mit eher niedrigen Werten der Sonnenbrandinziden zusammen auftret
 Die Bestimmung des Stichprobenkorrelationskoeffizienten zu diesem Datensatz
 ergibt mit $r=0.46$ eine mittelstarke positive Korrelation.
 
-```{r, eval = F, echo = F}
+```{r, eval = FALSE, echo = FALSE}
 library(MASS)                                                                   # Multivariate Normalverteilung
 set.seed(1)                                                                     # reproduzierbare Daten
 S     = matrix(c( 1,.5,.9,                                                      # Kovarianzmatrixparameter \Sigma
@@ -272,7 +272,7 @@ S_xy_z    = S[1:2,1:2] -  S[1:2,3] %*% solve(S[3,3]) %*%S[3,1:2]                
 rho_xy_z  = S_xy_z[1,2]/(sqrt(S_xy_z[1,1])*sqrt(S_xy_z[2,2]))                   # \rho(x,y|z)
 ```
 
-```{r, echo = F}
+```{r, echo = FALSE}
 # Ausgabe
 cat("rho(x,y)   :"  , round(rho_xy,2),                           
     "\nrho(x,y|z) :", round(rho_xy_z,2))                          
@@ -440,8 +440,8 @@ Definition der partiellen Korrelation. Weiterhin seien
 
 Schließlich seien für $i=1, \ldots, n$
 
-* $e_{i}^{x, z}     := x_{i}-\hat{\beta}_{0}^{x, z}      + \hat{\beta}_{1}^{x, z}z_{i}$
-* $e_{i}^{y, z}:= y_{i}-\hat{\beta}_{0}^{y, z} + \hat{\beta}_{1}^{y, z}z_{i}$
+* $e_{i}^{x, z}     := x_{i}-\hat{\beta}_{0}^{x, z}      - \hat{\beta}_{1}^{x, z}z_{i}$
+* $e_{i}^{y, z}:= y_{i}-\hat{\beta}_{0}^{y, z} - \hat{\beta}_{1}^{y, z}z_{i}$
 
 die Residualwerte der jeweiligen Ausgleichsgeraden. Dann heißt die Stichprobenkorrelation 
 der Wertemenge $\left\{\left(e_{i}^{y, z}, e_{i}^{x, z}\right)\right\}_{i=1, \ldots, n}$ 
@@ -487,7 +487,7 @@ partieller Stichprobenkorrelationen bereit, auch ihre Anwendung demonstrieren wi
 untenstehend. Das Resultat ist natürlich in allen drei Fällen identisch.
 
 \tiny
-```{r, warning = F}
+```{r, warning = FALSE}
 # Modellformulierung und Datenrealisierung
 library(MASS)                                                                   # Multivariate Normalverteilung
 set.seed(1)                                                                     # reproduzierbare Daten
@@ -520,7 +520,7 @@ library(ppcor)                                                                  
 pr_t   = pcor(xyz)                                                              # \rho(x,y\z),\rho(x,z\y),\rho(y,z\x) 
 ```
 
-```{r, echo = F}
+```{r, echo = FALSE}
 # Ausgabe
 cat("r(x,y)                           :"   , round(r[1,2],2),
     "\nr(x,y/z) aus Residuenkorrelation :" , round(pr_e,2),
@@ -539,7 +539,7 @@ Sommertage $\left(z_{i}\right)$ im betrachteten Erhebungszeitraum und Land verf�
 Dann eröffnet obige Theorie die Möglichkeit, die partielle Korrelation von 
 Eiskonsum und Sonnenbrandinziden nach Korrektur für die Anzahl der Sommertage zu bestimmen.
 
-```{r, eval = F, echo = F}
+```{r, eval = FALSE, echo = FALSE}
 # Modellformulierung und Sampling
 library(MASS)                                                                   # Multivariate Normalverteilung
 set.seed(1)                                                                     # reproduzierbare Daten
@@ -615,11 +615,11 @@ dev.off()
 Dazu stellt @fig-partielle-korrelation-anwendung mit der 
 Achsenbeschriftung  `Eiskonsum | Sommertage` die Residualwerte
 \begin{equation}
-e_{i}^{x, z} := x_{i} -\ hat{\beta}_{0}^{x, z}+\hat{\beta}_{1}^{x, z}z_{i}
+e_{i}^{x, z} := x_{i}-\hat{\beta}_{0}^{x, z}-\hat{\beta}_{1}^{x, z}z_{i}
 \end{equation}
-und mit der Achsenbeschriftung `Sonnenbrandinzidenz | Sommertage die Residualwerte`
+und mit der Achsenbeschriftung `Sonnenbrandinzidenz | Sommertage` die Residualwerte
 \begin{equation}
-e_{i}^{y, z} := y_{i}-\hat{\beta}_{0}^{y, z}+\hat{\beta}_{1}^{y, z}z_{i}
+e_{i}^{y, z} := y_{i}-\hat{\beta}_{0}^{y, z}-\hat{\beta}_{1}^{y, z}z_{i}
 \end{equation}
 dar. Man erkennt, dass kein systematischer Zusammenhang hoher bzw. niedriger Werte 
 von `Eiskonsum | Sommertage` mit hohen bzw. niedrigen Werten von `Sonnenbrandinzidenz | Sommertage` 

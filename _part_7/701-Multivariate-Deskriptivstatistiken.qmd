@@ -71,7 +71,7 @@ abgebildet und datenanalytisch behandelt werden kann.
 
 : Multivariate unabhängige Variable $x$ und multivariate abhängige Variable $y$ {#tbl-mm}
 
-## Deskriptivstatistiken {#sec-deskriptivstatistiken}
+## Deskriptivstatistiken {#sec-multivariate-deskriptivstatistiken-inhalt}
 
 Wir wollen nun einige Standarddeskriptivstatistiken zur Beschreibung multivariater 
 Datensätze diskutieren. Dazu verallgemeinern wir zunächst die aus der univariaten 
@@ -86,10 +86,10 @@ abhängigen Variablenkomponenten in Spalten ist dabei eine Organisation der zu
 einer experimentellen Einheit gehörenden Variablenkomponenten in Spaltenform
 zielführender und mit den Schreibweisen des univariaten Falles konsistenter.
 
-### Stichprobenmittel, -kovarianzmatrix,  und -korrelationsmatrix {-}
+### Stichprobenmittel, -kovarianzmatrix und -korrelationsmatrix {-}
 
 :::{#def-stichprobenmittel-stichprobenkovarianmatrix-stichprobenkorrelationsmatrix}
-## Stichprobenmittel, -kovarianmatrix und -korrelationsmatrix
+## Stichprobenmittel, -kovarianzmatrix und -korrelationsmatrix
 $y_1,...,y_n$ sei eine Menge von $m$-dimensionalen Zufallsvektoren, genannt 
 *Stichprobe*.
 
@@ -106,7 +106,7 @@ C := \frac{1}{n-1}\sum_{i=1}^n (y_i - \bar{y})(y_i - \bar{y})^T .
 \item Die \textit{Stichprobenkorrelationsmatrix} der $y_1,...,y_n$ ist 
 definiert als die $m \times m$ Matrix
 \begin{equation}
-D := \left(\frac{(C )_{ij}}{\sqrt{ (C )_{ii}}\sqrt{ (C )_{jj}}}\right)_{1 \le i,j \le m}.
+R := \left(\frac{(C )_{ij}}{\sqrt{ (C )_{ii}}\sqrt{ (C )_{jj}}}\right)_{1 \le i,j \le m}.
 \end{equation}
 \end{itemize}
 :::
@@ -116,8 +116,8 @@ bei unabhängig und identisch verteilten Zufallsvektoren $y_1,...,y_n$
 ein unverzerrter Schätzer des Stichprobenvariablenerwartungswerts 
 $\mathbb{E}(y_i) \in \mathbb{R}^m, i = 1,...,n$ ist. Ebenso ist in diesem Fall 
 die Stichprobenkovarianzmatrix ein unverzerrter Schätzer der Stichprobenvariablenkovarianzmatrix 
-$\mathbb{C}(y_i) \in \mathbb{R}^m, i = 1,...,n$. Zur konkreten Berechnung 
-von Stichprobenmittel, Stichprobenkovarianzmatrix und Stichprobenkorrrelationsmatrix 
+$\mathbb{C}(y_i) \in \mathbb{R}^{m \times m}, i = 1,...,n$. Zur konkreten Berechnung 
+von Stichprobenmittel, Stichprobenkovarianzmatrix und Stichprobenkorrelationsmatrix
 basierend auf einem Datensatz bieten sich die Aussagen des folgenden Theorems an.
 
 :::{#thm-datenmatrix-und-stichprobenstatistiken}
@@ -130,7 +130,7 @@ y_1 & \cdots & y_n
 \end{pmatrix}
 \end{equation}
 eine $m \times n$ \textit{Datenmatrix}, die durch die spaltenweise Konkatenation
-von $n$ $m$-dimensionalen Zufallvektoren $y_1, ...,y_n$ gegeben sei. 
+von $n$ $m$-dimensionalen Zufallsvektoren $y_1, ...,y_n$ gegeben sei.
 Dann ergeben sich
 \begin{itemize}
 \item für das Stichprobenmittel 
@@ -141,9 +141,9 @@ Dann ergeben sich
 \begin{equation}
 C = \frac{1}{n-1}\left(y\left(I_n - \frac{1}{n}1_{nn}\right)y^T\right),
 \end{equation}
-\item und für Stichprobenkorrelationsmatrix mit
+\item und für die Stichprobenkorrelationsmatrix mit
 \begin{equation}
-D := \mbox{diag}\left(\sqrt{C_{y_{ii}}}^{-1}, i = 1,...,m\right),
+D := \mbox{diag}\left(C_{ii}^{-1/2}, i = 1,...,m\right),
 \end{equation}
 dass
 \begin{equation}
@@ -188,9 +188,9 @@ y\left(I_n - \frac{1}{n}1_{nn}\right)y^T
 & = yy^T - \frac{1}{n}y 1_{nn}y^T                                                      \\
 & = \begin{pmatrix} y_1 & \cdots & y_n\end{pmatrix} \begin{pmatrix} y_1^T \\ \vdots \\ y_n^T\end{pmatrix} - \frac{1}{n}y 1_n 1_n^Ty^T    \\
 & = \sum_{i=1}^ny_iy_i^T- n\left(\frac{1}{n}y 1_n\right)\left(\frac{1}{n}1_n^Ty^T\right)              \\
-& = \sum_{i=1}^ny_iy_i^T- n\bar{y}\bar{y}^T                                                          \\
-& = \frac{1}{n-1}\sum_{i=1}^n (y_i - \bar{y})(y_i - \bar{y})^T \\
-& = C.
+& = \sum_{i=1}^ny_iy_i^T- n\bar{y}\bar{y}^T \\
+& = \sum_{i=1}^n (y_i - \bar{y})(y_i - \bar{y})^T \\
+& = (n-1)C.
 \end{split}
 \end{align}
 Hinsichtlich der Korrelationsmatrix ergibt sich nach Definition und für ein
@@ -206,7 +206,7 @@ R_{{y}_{ij}}
 :::
 
 
-```{r, echo = F, message = F}
+```{r, echo = FALSE, message = FALSE}
 library(matrixcalc)                                                             # Matrix Paket (is.positive.definite())
 library(MASS)                                                                   # Multivariate Normalverteilung (mvrnorm())
 set.seed(1)                                                                     # Reproduzierbare Randomisierung
@@ -234,13 +234,13 @@ Sigma   = diag(4)                                                               
 Y       = t(mvrnorm(n, mu,Sigma))                                               # Datensatzrealisierung    
 ```
 
-```{r, echo = F}
+```{r, echo = FALSE}
 print(Y)
 ```
 
 ```{r}
 # Auswertung von Deskriptivstatistiken
-n       = ncol(Y)                                                               # Anzahl Datenvektorealisierungen
+n       = ncol(Y)                                                               # Anzahl Datenvektorrealisierungen
 I_n     = diag(n)                                                               # Einheitsmatrix I_n
 J_n     = matrix(rep(1,n^2), nrow = n)                                          # 1_{nn}
 y_bar   = (1/n)* Y %*% J_n[,1]                                                  # Stichprobenmittel
@@ -249,7 +249,7 @@ D       = diag(1/sqrt(diag(C)))                                                 
 R       = D %*% C %*% D                                                         # Stichprobenkorrelationsmatrix
 ```
 
-```{r echo = F}
+```{r echo = FALSE}
 # Ausgabe
 print(y_bar)
 print(C)
@@ -279,10 +279,10 @@ D = \left(x_1 - x_2 \right)^TX^{-1}\left(x_1 - x_2\right)
 :::
 
 Eine Mahalanobis-Distanz ist damit eine durch eine Kovarianzmatrix normalisierte 
-quadrierte Euklidische Distanz (vgl. @sec-euklidischer-vektorraum). Ähnliche Maße 
+quadrierte euklidische Distanz (vgl. @sec-euklidischer-vektorraum). Ähnliche Maße
 für das Verhältnis eines Abstandes und einer Variabilität sind bekanntlich die 
 *$z$-Transformation* $z = (y - \mu)/\sigma$ für $y \in \mathbb{R}$ und die Parameter 
-$\mu,\sigma^2>0$ einer univariaten Normalverteilung sowie *Cohen's* 
+$\mu \in \mathbb{R}, \sigma^2>0$ einer univariaten Normalverteilung sowie *Cohen's* 
 $d = (\bar{y}_1-\bar{y}_2)/s_{12}$ für zwei Stichprobenmittel $\bar{y}_1$ und $\bar{y}_2$ 
 und ihre korrespondierende gepoolte Stichprobenstandardabweichung $s_{12}$. Im Unterschied
 zur Mahalanobis-Distanz sind diese Maße allerdings nicht quadriert und damit Vorzeichen
@@ -303,7 +303,7 @@ Vektoren $x_1 := (-1,-1)^T$ und $x_2 := (1,1)^T$ bei Kovarianzmatrizen von
 \Sigma_3 := \begin{pmatrix} 1.5 & 0.0 \\ 0.0 & 1.5\end{pmatrix},
 \end{equation}
 die mithilfe von Normalverteilungsisokonturen dargestellt sind. Für $\Sigma_1$ 
-entspricht die Mahalanobis-Distanz dabei der quadrierten Euklidischen Distanz von 
+entspricht die Mahalanobis-Distanz dabei der quadrierten euklidischen Distanz von
 $x_1$ und $x_2$. An der Darstellung zu $\Sigma_2$ erkennt man, dass im Fall 
 sphärischer Kovarianzmatrizen eine geringere Komponentenvarianz von $x_1$ 
 und $x_2$ zu einer größeren Mahalanobis-Distanz führt. Umgekehrt erkennt man
@@ -311,7 +311,7 @@ an der Darstellung zu $\Sigma_3$, dass im Fall sphärischer Kovarianzmatrizen ei
 höhere Komponentenvarianz von $x_1$ und $x_2$ in einer kleineren Mahalanobis-Distanz 
 resultiert. Intuitiv nähert die Komponentenvarianz die Komponenten also an.
 
-```{r, echo = F, eval = F}
+```{r, echo = FALSE, eval = FALSE}
 library(ellipse)
 library(matlib)
 library(latex2exp)
@@ -369,18 +369,18 @@ Mahalanobis-Distanzen derselben Vektoren bei Kovarianzmatrizen von
 \Sigma_2 := \begin{pmatrix} 1.0 & 0.9       \\ 0.9 & 1.0\end{pmatrix}\mbox{ und }
 \Sigma_3 := \begin{pmatrix*}[r] 1.0 & -0.9  \\ -0.9 & 1.0\end{pmatrix*},
 \end{equation}
-Für $\Sigma_1$ entspricht dabei wiederrum die die Mahalanobis-Distanz der 
-quadrierten Euklidischen Distanz von $x_1$ und $x_2$. An der Darstellung zu 
+Für $\Sigma_1$ entspricht dabei wiederum die Mahalanobis-Distanz der
+quadrierten euklidischen Distanz von $x_1$ und $x_2$. An der Darstellung zu
 $\Sigma_2$ erkennt man, dass eine stark positive Kovarianz der Komponenten von
 $x_1$ und $x_2$ in einer kleineren Mahalanobis-Distanz resultiert. Umgekehrt 
 erkennt man an der Darstellung zu $\Sigma_3$, dass eine stark negative Kovarianz
 der Komponenten von $x_1$ und $x_2$ zu einer größeren Mahalanobis-Distanz 
-führt. Intuitiv nähert also auch die Kovarianz von Komponenten $x_1$ und 
-$x_2$ an. Alternativ kann man die Höhe einer Mahalanobis-Distanz dabei auch 
+führt. Intuitiv berücksichtigt die Mahalanobis-Distanz also auch die Kovarianz der Komponenten $x_1$ und
+$x_2$. Alternativ kann man die Höhe einer Mahalanobis-Distanz dabei auch
 als ein Maß für die Unwahrscheinlichkeit der Realisierung zweier Werte eines 
 Zufallsvektors bei einer gegebenen Kovarianzmatrix verstehen.
 
-```{r, echo = F, eval = F}
+```{r, echo = FALSE, eval = FALSE}
 library(ellipse)
 library(matlib)
 library(latex2exp)

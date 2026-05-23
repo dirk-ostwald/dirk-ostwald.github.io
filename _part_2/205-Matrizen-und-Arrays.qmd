@@ -6,14 +6,14 @@ Vektoren verstanden werden. Wie bei den Vektoren ist es wichtig, Matrizen in der
 Programmierung von ihren gleichnamigen mathematischen Objekten abzugrenzen. So können
 Matrizen in der Programmierung einfach der tabellarischen Speicherung numerischer
 Daten dienen, ohne dass dabei das primäre Ziel die Anwendung der mathematischen
-Matrizenrechnung sein muss. Andersherum bilden die elementweisen arithmetischen 
-Operationen mit Matrizen in der Programmierung in der Mathematik eher sehr spezielle 
-mathematische Operationen, wie das Hadamard-Produkt ab. In diesem Abschnitt wollen 
+Matrizenrechnung sein muss. Andersherum bilden die elementweisen arithmetischen
+Operationen mit Matrizen in der Programmierung in der Mathematik eher sehr spezielle
+mathematische Operationen wie das Hadamard-Produkt ab. In diesem Abschnitt wollen
 wir Matrizen und Arrays primär als Datencontainer in der imperativen Programmierung
 mit **R** untersuchen. Eine Einführung in die Matrizenrechnung mit den gleichen
-Datenstrukturen gibt @sec-matrizen.   
+Datenstrukturen gibt @sec-matrizen.
 
-## Matrizen {#sec-matrizen}
+## Matrizen {#sec-r-matrizen}
 
 Abstrakt gesprochen sind **R** Matrizen zweidimensionale, rechteckige Datenstrukturen der Form
 \begin{equation}
@@ -24,75 +24,75 @@ m_{21} 		& m_{22} 	& \cdots	& m_{2n_c} \\
 m_{n_r1} 	& m_{n_r2} 	& \cdots	& {m_{n_rn_c}} \\
 \end{pmatrix}
 \end{equation}
-Die Elemente $m_{ij}, i = 1,...,n_r, j = 1,...,n_c$ der Matrix sind dabei 
-notwendigerweise vom gleichen Datentyp. In obigem Schema bezeichnet $n_r$ 
+Die Elemente $m_{ij}, i = 1,...,n_r, j = 1,...,n_c$ der Matrix sind dabei
+notwendigerweise vom gleichen Datentyp. In obigem Schema bezeichnet $n_r$
 die Anzahl der Zeilen (rows) und $n_c$ die Anzahl der Spalten (columns) der Matrix $M$.
 Jedes Element einer Matrix hat damit einen Zeilenindex $i$ und einen Spaltenindex $j$.
-Intuitiv sind **R** Matrizen also numerisch indizierte Tabellen. Formal sind Matrizen 
+Intuitiv sind **R** Matrizen also numerisch indizierte Tabellen. Formal sind Matrizen
 in **R** zweidimensional interpretierte atomare Vektoren.
 
-### Erzeugung {#sec-erzeugung}
+### Erzeugung {#sec-matrizen-erzeugung}
 
-Zur Erzeugung einer Matrix wird die **R** Funktion `matrix()` genutzt, die 
-Matrizen mit den Elementen eines Vektors befüllt. Die allgemeine Syntax dieser 
-Funktion ist `M = matrix(v, nrow, ncol, byrow)`, wobei 
+Zur Erzeugung einer Matrix wird die **R** Funktion `matrix()` genutzt, die
+Matrizen mit den Elementen eines Vektors befüllt. Die allgemeine Syntax dieser
+Funktion ist `M = matrix(v, nrow, ncol, byrow)`, wobei
 
 * `v` einen Vektor der Länge `nrow`$\cdot$ `ncol`,
-* `nrow` die gewünschte Zeilenanzahl von `M`, 
-* `ncol` die gewünschte Spaltenanzahl von `M`, 
+* `nrow` die gewünschte Zeilenanzahl von `M`,
+* `ncol` die gewünschte Spaltenanzahl von `M`,
 * die logische Variable `byrow` die Befüllungsordnung von `M`
 
-bezeichnen. Da sich bei gegebener Länge von `v` und gebener Zeilen- oder Spaltenanzahl
+bezeichnen. Da sich bei gegebener Länge von `v` und gegebener Zeilen- oder Spaltenanzahl
 die entsprechende Spalten- oder Zeilenanzahl der Matrix ergibt, ist es lediglich nötig,
 entweder `nrow` oder `ncol` zu spezifizieren, wie folgende Beispiele zeigen.
 
 \footnotesize
 ```{r}
-matrix(c(1:12), nrow = 3)               # 3 x 4 Matrix der Zahlen 1,...,12, byrow = F
-matrix(c(1:12), ncol = 4)               # 3 x 4 Matrix der Zahlen 1,...,12, byrow = F
-matrix(c(1:12), nrow = 3, byrow = T)    # 3 x 4 Matrix der Zahlen 1,...,12, byrow = T
+matrix(c(1:12), nrow = 3)                  # 3 x 4 Matrix der Zahlen 1,...,12, byrow = FALSE
+matrix(c(1:12), ncol = 4)                  # 3 x 4 Matrix der Zahlen 1,...,12, byrow = FALSE
+matrix(c(1:12), nrow = 3, byrow = TRUE)    # 3 x 4 Matrix der Zahlen 1,...,12, byrow = TRUE
 ```
-\normalsize 
+\normalsize
 
-Bestehende Matrizen gleicher Zeilenanzahl können mit der Funktion `cbind()` 
-spaltenweise konkateniert werden. 
+Bestehende Matrizen gleicher Zeilenanzahl können mit der Funktion `cbind()`
+spaltenweise konkateniert werden.
 
 \footnotesize
 ```{r}
 A = matrix(c(1:4) , nrow = 2)                # 2 x 2 Matrix der Zahlen 1,...,4
-A                                        
+A
 B = matrix(c(5:10), nrow = 2)		          # 2 x 3 Matrix der Zahlen 5,...,10
-B                                            
+B
 C = cbind(A,B)					          # spaltenweise Konkatenierung von A und B
-C                                            
+C
 ```
 \normalsize
 
-Äquivalent können bestehende Matrizen gleicher Spaltenanzahl mit der Funktion 
+Äquivalent können bestehende Matrizen gleicher Spaltenanzahl mit der Funktion
 `rbind()` zeilenweise konkateniert werden.
 
 \footnotesize
 ```{r}
-A = matrix(c(1:6) , nrow = 2, byrow = T)     # 2 x 3 Matrix der Zahlen 1,...,6
+A = matrix(c(1:6) , nrow = 2, byrow = TRUE)  # 2 x 3 Matrix der Zahlen 1,...,6
 print(A)
-B = matrix(c(7:9), nrow = 1)			     # 1 x 3 Matrix der Zahlen 5,...,10
+B = matrix(c(7:9), nrow = 1)			     # 1 x 3 Matrix der Zahlen 7,...,9
 print(B)
-C = rbind(A,B)                               # reihenweise Konkatenierung von A und B
+C = rbind(A,B)                               # zeilenweise Konkatenierung von A und B
 print(C)
 ```
 \normalsize
 
-### Charakterisierung {#sec-charakterisierung}
+### Charakterisierung {#sec-matrizen-charakterisierung}
 
-Mit der vertrauten Funktion `typeof()` kann der elementare Datentyp einer Matrix 
+Mit der vertrauten Funktion `typeof()` kann der elementare Datentyp einer Matrix
 ausgegeben werden:
 
 \footnotesize
-```{r}  
-typeof(matrix(c(1,0,0,1)    , nrow = 2))     # 2 x 2 double    Matrix  
+```{r}
+typeof(matrix(c(1,0,0,1)    , nrow = 2))     # 2 x 2 double    Matrix
 typeof(matrix(c(1L,0L,0L,1L), nrow = 2))     # 2 x 2 integer   Matrix
-typeof(matrix(c(T,T,F,F)    , nrow = 2))     # 2 x 2 logical   Matrix  
-typeof(matrix(c("a","b","c"), nrow = 1))     # 1 x 3 character Matrix  
+typeof(matrix(c(T,T,F,F)    , nrow = 2))     # 2 x 2 logical   Matrix
+typeof(matrix(c("a","b","c"), nrow = 1))     # 1 x 3 character Matrix
 ```
 \normalsize
 
@@ -107,19 +107,19 @@ ncol(C)                                   # Anzahl Spalten
 ```
 \normalsize
 
-### Indizierung {#sec-indizierung}
+### Indizierung {#sec-matrizen-indizierung}
 
-Generell gilt, dass Matrixelemente mit einem Zeilenindex und einem Spaltenindex 
+Generell gilt, dass Matrixelemente mit einem Zeilenindex und einem Spaltenindex
 indiziert werden. Der erste zweier Matrixindizes indiziert dabei immer die Zeile,
 der zweite immer die Spalte. Die übrigen Prinzipien der Indizierung von Matrizen
-entsprechen im Wesentlichen den Prinzipien der Indizierung von Vektoren. Eine 
+entsprechen im Wesentlichen den Prinzipien der Indizierung von Vektoren. Eine
 Besonderheit ist, dass ein fehlender Zeilen- oder Spaltenindex alle Elemente der
-entsprechenden Dimension indiziert. 
+entsprechenden Dimension indiziert.
 
 \footnotesize
 ```{r}
 A = matrix(c(2:7)^2, nrow = 2)     # 2 x 3 Matrix der Zahlen 2^2,...,7^2
-A                                  
+A
 A[1,3]                             # Element in 1. Zeile, 3. Spalte von A [36]
 A[2,2]                             # Element in 2. Zeile, 2. Spalte von A [35]
 A[2,]                              # Alle Elemente der 2. Zeile [9,25,49]
@@ -131,9 +131,9 @@ A[1,c(F,F,T)]                      # Element in 1. Zeile, 3. Spalte von A [36]
 \normalsize
 
 
-### Arithmetik {#sec-arithmetik}
+### Arithmetik {#sec-matrizen-arithmetik}
 
-Wendet man unitäre arithmetische Operatoren und Funktionen auf Matrizen an, so 
+Wendet man unitäre arithmetische Operatoren und Funktionen auf Matrizen an, so
 werden diese wie bei den Vektoren elementweise ausgewertet.
 
 \footnotesize
@@ -150,7 +150,7 @@ D
 \normalsize
 
 Wie Vektoren können auch Matrizen mit identischen Zeilen- und Spaltenanzahlen
-mit den binären arithmetischen Operatoren `+`, `-`, `*` und `/` elementweise 
+mit den binären arithmetischen Operatoren `+`, `-`, `*` und `/` elementweise
 verknüpft werden. Folgende Beispiele verdeutlichen dies:
 
 \footnotesize
@@ -161,14 +161,14 @@ B = matrix(c(5:8), nrow = 2)  # 2 x 2 Matrix der Zahlen 5,6,7,8
 B
 C = A + B                     # C[i,j] = A[i,j] + B[i,j], 1 <= i,j <= 2
 C
-D = A * B                     # D[i,j] = A[i,j] * D[i,j], 1 <= i,j <= 2
+D = A * B                     # D[i,j] = A[i,j] * B[i,j], 1 <= i,j <= 2
 D
 ```
 \normalsize
 
-Darüber hinaus kann mit **R** Matrizen im Sinne der Matrizenrechnung der linearen Algebra 
+Darüber hinaus kann mit **R** Matrizen im Sinne der Matrizenrechnung der linearen Algebra
 gerechnet werden. Wir zeigen hier nur einige wenige Beispiele, eine ausführliche
-Darstellung der mathematischen Prinzipien und ihrer **R** Implementation findet sich 
+Darstellung der mathematischen Prinzipien und ihrer **R**-Implementierung findet sich
 in @sec-matrizen.
 
 \footnotesize
@@ -184,9 +184,9 @@ A_det
 ```
 \normalsize
 
-### Attribute {#sec-attribute}
+### Attribute {#sec-matrizen-attribute}
 
-Formal sind Matrizen atomare Vektoren mit einem `dim` Attribut
+Formal sind Matrizen atomare Vektoren mit einem `dim`-Attribut.
 ```{r}
 A = matrix(1:12, nrow = 4 )   #  4 x 3 Matrix
 attributes(A)                 # Aufrufen der Attribute von A
@@ -209,21 +209,21 @@ attr(A, "dimnames")                     # Aufrufen des Attributs dimnames
 ## Arrays {#sec-arrays}
 
 **R** Arrays sind $d$-dimensionale, hyperrechteckige Datenstrukturen. Intuitiv
-können Arrays als die Generalisierung von Matrizen auf mehr als zwei Dimensionen 
+können Arrays als die Generalisierung von Matrizen auf mehr als zwei Dimensionen
 verstanden werden. Für $d = 1$ entspricht ein Array einem Vektor, für $d = 2$ entspricht
-ein Array einer Matrix. Wie bei Vektoren und Matrizen müssen die Elemente eines 
-Arrays vom gleichen Datentyp sein. Arrays sind dadurch charakterisiert, wieviele
-Elemente $d_i, i = 1,...,d$ in der $i$ten Dimension repräsentieren können, jedes
-Element eines Arrays wird dabei durch $d$-dimensionalen Index $i_1,i_2,...,i_d$ indiziert.
+ein Array einer Matrix. Wie bei Vektoren und Matrizen müssen die Elemente eines
+Arrays vom gleichen Datentyp sein. Arrays sind dadurch charakterisiert, wie viele
+Elemente $d_i, i = 1,...,d$ die $i$-te Dimension repräsentieren kann. Jedes
+Element eines Arrays wird dabei durch einen $d$-dimensionalen Index $i_1,i_2,...,i_d$ indiziert.
 
-### Erzeugung {#sec-erzeugung}
+### Erzeugung {#sec-arrays-erzeugung}
 
-In Analogie zur Funktion `matrix()` wird die Funktion `array()` genutzt, um einen
-Array mit Vektorelementen zu befüllen. Die allgemeine Syntax dieser Funktion ist 
-`A = array(v, dim)`, wobei `v` ein Vektor von Arraydaten und `dim` ein Vektor 
-ganzzahliger Werte ist, der die maximalen Indizes in jeder der `length(dim)` 
+In Analogie zur Funktion `matrix()` wird die Funktion `array()` genutzt, um ein
+Array mit Vektorelementen zu befüllen. Die allgemeine Syntax dieser Funktion ist
+`A = array(v, dim)`, wobei `v` ein Vektor von Arraydaten und `dim` ein Vektor
+ganzzahliger Werte ist, der die maximalen Indizes in jeder der `length(dim)`
 Dimensionen des Arrays repräsentiert. So erzeugt beispielsweise folgender Befehl
-einen $2 \times 2 \times 3$ Array.
+ein $2 \times 2 \times 3$ Array.
 
 \footnotesize
 ```{r}
@@ -232,14 +232,14 @@ A
 ```
 \normalsize
 
-Dreidimensionale Arrays kann man sich intuitiv als im Raum hintereinander 
-aufgestellte Matrizen vorstellen. Die dritte Dimension repräsentiert dann dabei 
-die "Seiten" des Arrays. Allerdings ist es im Umgang mit höherdimensionalen Arrays 
-sinnvoll, zu versuchen, sich von räumlichen Vorstellungen von Arrays zu lösen 
-und Arrays stattdessen als Datencontainer zu verstehen, deren Elemente eineindeutig 
-durch ihre Indizes addressiert werden können.
+Dreidimensionale Arrays kann man sich intuitiv als im Raum hintereinander
+aufgestellte Matrizen vorstellen. Die dritte Dimension repräsentiert dann dabei
+die "Seiten" des Arrays. Allerdings ist es im Umgang mit höherdimensionalen Arrays
+sinnvoll, zu versuchen, sich von räumlichen Vorstellungen von Arrays zu lösen
+und Arrays stattdessen als Datencontainer zu verstehen, deren Elemente eindeutig
+durch ihre Indizes adressiert werden können.
 
-### Charakterisierung {#sec-charakterisierung}
+### Charakterisierung {#sec-arrays-charakterisierung}
 
 Die `length()` Funktion gibt die Anzahl der Elemente eines Arrays aus.
 
@@ -266,42 +266,42 @@ dim(A)		                    # Dimension des Arrays
 ```
 \normalsize
 
-### Indizierung {#sec-indizierung}
+### Indizierung {#sec-arrays-indizierung}
 
 Die Indizierung von Arrays erfolgt analog zu Vektor- und Matrixindizierung, mit dem
-Unterschied, dass zur indizierung eines Arrayelements drei oder mehr Indizes 
+Unterschied, dass zur Indizierung eines Arrayelements drei oder mehr Indizes
 benötigt werden.
 
 \footnotesize
 ```{r}
 A 	     = array(1:12, dim = c(2,2,3)) # 2 x 2 x 3 Array der Zahlen 1,...,12
-a_223     = A[2,2,3]                    # Arrayelement mit Indexaddresse [2,2,3] (12)
+a_223     = A[2,2,3]                    # Arrayelement mit Indexadresse [2,2,3] (12)
 ```
 \normalsize
 
-### Arithmetik {#sec-arithmetik}
+### Arithmetik {#sec-arrays-arithmetik}
 
-Wie bei Vektoren und Matrizen werden unitäre arithmetische Operatoren bei Arrays 
-elementweise ausgewertet. Ebenso analog werden binäre arithmetische Operatoren 
-bei Arrays identischer Dimensionalität elementweise ausgwertet
+Wie bei Vektoren und Matrizen werden unitäre arithmetische Operatoren bei Arrays
+elementweise ausgewertet. Ebenso analog werden binäre arithmetische Operatoren
+bei Arrays identischer Dimensionalität elementweise ausgewertet.
 
 \footnotesize
 ```{r}
 A 		= array(1:4, dim = c(1,2,2))       # 1 x 2 x 2 Array der Zahlen 1,...,4
-A                                                
+A
 B 		= array(5:8, dim = c(1,2,2))       # 1 x 2 x 2 Array der Zahlen 5,...,8
 B
 C 		= A^2                              # elementweise Potenzierung
 C
-D         = A + B                            # elementweise Addition     
+D         = A + B                            # elementweise Addition
 D
 ```
 \normalsize
 
 
-### Attribute {#sec-attribute}
+### Attribute {#sec-arrays-attribute}
 
-Formal sind Arrays atomic vectors mit einem `dim` Attribut
+Formal sind Arrays atomare Vektoren mit einem `dim`-Attribut.
 
 \footnotesize
 ```{r}
@@ -310,7 +310,6 @@ attributes(A)                      # Aufrufen der Attribute von A
 ```
 \normalsize
 
-Wie bei den Matrizen kann die Funktion `dimnames()` zur Benennung der 
-Arraydimensionen benutzt werden, aber auch hier die Benennung von Arraydimensionen 
+Wie bei den Matrizen kann die Funktion `dimnames()` zur Benennung der
+Arraydimensionen benutzt werden, aber auch hier ist die Benennung von Arraydimensionen
 eher ungewöhnlich.
-

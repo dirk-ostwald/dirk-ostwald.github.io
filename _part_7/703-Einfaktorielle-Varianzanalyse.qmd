@@ -1,6 +1,6 @@
-# Einfaktorielle Varianzanalyse {#sec-einfaktorielle-varianzanalyse}
+# Einfaktorielle Varianzanalyse {#sec-manova-einfaktorielle-varianzanalyse}
 
-## Anwendungsszenario {#sec-anwendungsszenario}
+## Anwendungsszenario {#sec-manova-anwendungsszenario}
 
 Das Anwendungsszenario einer einfaktoriellen multivariaten Varianzanalyse ist
 durch das Vorliegen von multivariaten Datenpunkten von zwei oder mehr Gruppen
@@ -35,7 +35,7 @@ Werte dagegen einer Zunahme der Depressionssymptomatik an. @fig-anwendungsbeispi
 visualisiert diesen Datensatz sowie die gruppenspezifischen Stichprobenmittel und 
 Stichprobenkovarianzen als Normalverteilungsisokonturen.
 
-```{r, echo = F, warning = F}
+```{r, echo = FALSE, warning = FALSE}
 library(MASS)                                                                   # Multivariate Normalverteilung
 set.seed(1)                                                                     # Ergebnisreproduzierbarkeit
 n_i     = c(15,15,15)                                                           # Anzahl Patient:innen pro Gruppe
@@ -61,7 +61,7 @@ write.csv(D, file = fname, row.names = FALSE)                                   
 \newpage
 \footnotesize
 \renewcommand{\arraystretch}{1.2}
-```{r echo = F, warning = F}
+```{r echo = FALSE, warning = FALSE}
 #| label: tbl-bdi-glu
 #| tbl-cap : "Prä-Post-Interventions-BDI-II-Score und -Glukokortikoidplasmalevel Differenzenwerte von drei Studiengruppen (F2F: Face-to-face, ONL: online, WLC: waitlist control) jeweils 15 Patient:innen"
 library(knitr)                                                                  # knitr für Tabellen
@@ -75,7 +75,7 @@ Folgender **R** Code demonstriert die Auswertung gruppenspezifischer
 Deskriptivstatistiken für diesen Datensatz.
 
 \tiny
-```{r, warning = F}
+```{r, warning = FALSE}
 # Studiengruppenspezifische Deskriptivstatistiken
 D       = read.csv("./_data/703-einfaktorielle-varianzanalyse.csv")             # Dateneinlesen
 m       = 2                                                                     # Datendimension von Interesse
@@ -99,7 +99,7 @@ for (i in 1:p){                                                                 
 ```
 \normalsize
 
-```{r, echo = F, eval = F}
+```{r, echo = FALSE, eval = FALSE}
 library(ellipse)
 library(latex2exp)
 pdf(
@@ -213,7 +213,7 @@ ein unverzerrter Schätzer des Kovarianzmatrixparameters $\Sigma$.
 In @thm-parameterschätzer ist $\hat{\mu}_i$ offenbar das Stichprobenmittel der 
 Zufallsvektoren der $i$ten Gruppe. $\hat{\Sigma}$ ist die gruppenunspezifische 
 Stichprobenkovarianzmatrix aller Zufallsvektoren und entspricht der mit 
-$1/(n-p)$ skalierten *Within-Group Sum-of-Squares Matrix*, die wir in 
+$1/(n-p)$ skalierten *Within-Group Sum-of-Squares-Matrix*, die wir in
 @thm-kreuzproduktsummenmatrizenzerlegung einführen werden. Folgender **R** 
 demonstriert die Evaluation der Parameterschätzer mithilfe einer **R** Funktion.
 
@@ -260,7 +260,7 @@ der Schätzer durch ihre Stichprobenmittelwerte über Datensatzrealisierungen hi
 approximieren. 
 
 \tiny
-```{r, eval = F}
+```{r, eval = FALSE}
 # Modellparameter
 library(MASS)                                                                   # multivariate Normalverteilungen
 p          = 3                                                                  # Anzahl Gruppen
@@ -299,7 +299,7 @@ gute Korrespondenz zwischen wahren, aber unbekannten, Parameterwerten $\mu_i, i 
 und $\Sigma$ und den approximierten Erwartungswertparametern 
 $\mathbb{E}(\hat{\mu}_i)$ für $i = 1,...,p$ und $\mathbb{E}(\hat{\Sigma})$.
 
-```{r, echo = F, eval = F}
+```{r, echo = FALSE, eval = FALSE}
 library(ellipse)
 library(latex2exp)
 pdf(
@@ -372,13 +372,13 @@ Die Anwendung der Parameterschätzung auf die Daten des Beispieldatensatzes in
 ```{r}
 S = estimate(Y)                                                                 # Parameterschätzung
 ```
-```{r echo = F}
+```{r echo = FALSE}
 print(S$mu_hat_i)                                                               # Ausgabe
 print(S$Sigma_hat)                                                              # Ausgabe
 ``` 
 
 \normalsize
-## Modellevaluation {#sec-modellevaluation}
+## Modellevaluation {#sec-manova-modellevaluation}
 
 Primäres Ziel einer einfaktoriellen multifaktoriellen Varianzanalyse ist meist 
 das Testen der Nullhypothese
@@ -433,17 +433,17 @@ Schließlich seien
 \begin{tabular}{ll}
 $T := \sum_{i = 1}^p \sum_{j = 1}^{n_i} \left(y_{ij} - \bar{y}\right)\left(y_{ij} - \bar{y}\right)^T$
 &
-die \textit{Totale Sum-of-Squares Matrix}
+die \textit{Totale Sum-of-Squares-Matrix}
 \\
 \\
 $B := \sum_{i = 1}^p n_i \left(\bar{y}_{i} - \bar{y}\right)\left(\bar{y}_{i} - \bar{y}\right)^T$
 &
-die \textit{Between-Group Sum-of-Squares Matrix}
+die \textit{Between-Group Sum-of-Squares-Matrix}
 \\
 \\
 $W := \sum_{i = 1}^p \sum_{j = 1}^{n_i} \left(y_{ij} - \bar{y}_i\right)\left(y_{ij} - \bar{y}_i\right)^T$
 &
-die \textit{Within-Group Sum-of-Squares Matrix}.
+die \textit{Within-Group Sum-of-Squares-Matrix}.
 \end{tabular}
 Dann gilt
 \begin{equation}
@@ -536,7 +536,7 @@ sos = function(Y){
   #     $y_bar   : m x 1 Gesamtmittelwert
   #     $y_bar_i : m x p Gruppenmittelwerte
   #     $T       : m x m Total Sum of Squares Matrix
-  #     $B       : m x m Between-Group Sum-of-Squares Matrix
+  #     $B       : m x m Between-Group Sum-of-Squares-Matrix
   #     $W       : m x m Within  Group  Sum of Squares Matrix
   # ---------------------------------------------------------------------------
   d        = dim(Y)                                                             # Datensatzdimensionen
@@ -548,7 +548,7 @@ sos = function(Y){
   y_bar_i  = matrix(apply(Y,3,rowMeans), nrow = m)                              # Gruppenstichprobenmittel
   y_bar    = matrix(rowMeans(y_bar_i)  , nrow = m)                              # Gesamtstichprobenmittel
 
-  # Totale Sum-of-Squares Matrix
+  # Totale Sum-of-Squares-Matrix
   T = matrix(rep(0,m*m), nrow = m)
   for(i in 1:p){
       for(j in 1:k){
@@ -574,16 +574,16 @@ sos = function(Y){
 ### Modellevaluation mit der Wilks'-$\Lambda$-Statistik {-}
 
 Basierend auf der Kreuzproduktsummenmatrizenzerlegung in @thm-kreuzproduktsummenmatrizenzerlegung
-wurde eine Reihe von Teststatisken für die einfaktorielle multivariate Varianzanalyse 
+wurde eine Reihe von Teststatistiken für die einfaktorielle multivariate Varianzanalyse
 vorgeschlagen (@wilks1932, @pillai1955, @roy1953, @hotelling1951). Wir betrachten 
 hier exemplarisch lediglich die *Wilks'-$\Lambda$-Statistik* nach @wilks1932. 
 Im Gegensatz zur $F$-Teststatistik der univariaten einfaktoriellen Varianzanalyse 
-sind die Frequentistischen Verteilungen von der Wilks'-$\Lambda$-Statistik bei 
+sind die frequentistischen Verteilungen der Wilks'-$\Lambda$-Statistik bei
 Zutreffen der Nullhypothese nur für bestimmte Anwendungsszenarien, insbesondere 
-bei kleinen Werte der Datendimension $m$ und der Gruppenanzahl $p$, analytisch 
+bei kleinen Werten der Datendimension $m$ und der Gruppenanzahl $p$, analytisch
 exakt zu bestimmen. In diesen Szenarien ist man auf $f$-Verteilungen mit $m$- und $p$-abhängigen 
 Freiheitsgradparametern geführt. Für Anwendungsszenarien mit größeren Werten von 
-$m$ und/oder $p$ existieren lediglich Approximationen der Frequentistischen Verteilungen der
+$m$ und/oder $p$ existieren lediglich Approximationen der frequentistischen Verteilungen der
 Wilks'-$\Lambda$-Statistik, die nur asymptotisch für unendlich große Stichprobenumfänge 
 $n \to \infty$ exakt sind. Auch diese Approximationen sind wiederum durch $f$-Verteilungen 
 mit $m$- und $p$-abhängigen Freiheitsgradparametern gegeben. In der Anwendung 
@@ -598,7 +598,7 @@ Wir definieren zunächst die Wilks'-$\Lambda$-Statistik.
 :::{#def-wilks-lambda-statistik}
 ## Wilks'-$\Lambda$-Statistik
 Gegeben sei das Modell der einfaktoriellen multivariaten Varianzanalyse sowie die Between-Group 
-Sum-of-Squares Matrix $B$ und die Within-Group Sum-of-Squares Matrix $W$. Dann ist 
+Sum-of-Squares-Matrix $B$ und die Within-Group Sum-of-Squares-Matrix $W$. Dann ist
 *Wilks'-$\Lambda$-Statistik* definiert als
 \begin{equation}
 \Lambda := \frac{|W|}{|T|} = \frac{|W|}{|B+W|}.
@@ -627,12 +627,12 @@ $\Lambda$ für eine Abweichung von der Nullhypothese*.
 angegeben werden. Dabei ist die Matrix $W^{-1}B$ das multivariate Analogon
 zum dem aus der univariaten einfaktoriellen Varianzanalyse bekanntem Verhältnis
 von Between-Group Sum-of-Squares und Within-Group Sum-of-Squares, welches die 
-Grundlage für $F$-Teststatitik im univariaten Fall bildet. Es gilt folgendes Theorem.
+Grundlage für $F$-Teststatistik im univariaten Fall bildet. Es gilt folgendes Theorem.
 
 :::{#thm-eigenwertform-von-wilks-lambda}
-## Eigenwertform von der Wilks'-$\Lambda$-Statistik
+## Eigenwertform der Wilks'-$\Lambda$-Statistik
 Es seien das Modell der einfaktoriellen multivariaten Varianzanalyse, die Between-Group 
-Sum-of-Squares Matrix $B$, die Within-Group Sum-of-Squares Matrix $W$ und die 
+Sum-of-Squares-Matrix $B$, die Within-Group Sum-of-Squares-Matrix $W$ und die
 Wilks'-$\Lambda$-Statistik definiert wie oben. Weiterhin seien $\lambda_1,...,\lambda_s$ 
 die Eigenwerte von $W^{-1}B$.
 Dann gilt
@@ -696,7 +696,7 @@ In @fig-spezielle-lambda-verteilungen visualisieren wir exemplarische
 simulationsbasierte Validierungen der in @thm-spezielle-h0-verteilungen-von-wilks-lambda-transformationen
 angegebenen Verteilungen.
 
-```{r, echo = F, eval = F}
+```{r, echo = FALSE, eval = FALSE}
 # Szenarioparameter
 nsm = 1e4                                                                       # Datensimulationsanzahl
 M   = c(3,3,1,2)                                                                # Datendimension
@@ -739,7 +739,7 @@ for(sc in 1:nsc){                                                               
         T[sm,sc] = t}}
 ```
 
-```{r, echo = F, eval = F}
+```{r, echo = FALSE, eval = FALSE}
 # figure parameters
 pdf(
 file        = "_figures/703-spezielle-lambda-verteilungen.pdf",
@@ -798,11 +798,11 @@ for(sc in 1:nsc){
 dev.off()
 ```
 
-![Simulation spezieller Verteilungen der Wilks'-$\Lambda$-Statistik Transformationen bei Zutreffen der Nullhypothese.](./_figures/703-spezielle-lambda-verteilungen){#fig-spezielle-lambda-verteilungen fig-align="center" width=70%}
+![Simulation spezieller Verteilungen der Wilks'-$\Lambda$-Statistik-Transformationen bei Zutreffen der Nullhypothese.](./_figures/703-spezielle-lambda-verteilungen){#fig-spezielle-lambda-verteilungen fig-align="center" width=70%}
 
 
 @rao1951 hat für allgemeine Anwendungsszenarien die in folgendem Theorem angegebenen
-Approximationen von Verteilungen von Transformationen der Wilks'-$Lambda$-Statistik vorgeschlagen. 
+Approximationen von Verteilungen von Transformationen der Wilks'-$\Lambda$-Statistik vorgeschlagen.
 Man beachte, dass sich die in diesem Theorem definierte Teststatistik $\tau$ wie in @fig-tau-lambda
 gezeigt zu $\Lambda$ reziprok verhält. Geringe Werte von $\Lambda$ als Evidenz 
 *gegen* die Nullhypothese entsprechen also hohen Werten von $\tau$.
@@ -833,7 +833,7 @@ t   := \sqrt{\frac{m^2(p-1)^2 - 4}{m^2 + (p-1)^2 - 5}}
 approximativ $f$-verteilt mit Freiheitsgradparametern $\nu_1$ und $\nu_2$.
 :::
 
-```{r, echo = F, eval = F}
+```{r, echo = FALSE, eval = FALSE}
 library(latex2exp)
 pdf(
 file        = "_figures/703-tau-lambda.pdf",
@@ -879,14 +879,14 @@ cex = 0.9)
 dev.off()
 ```
 
-![Beziehung der Wilks'-$\Lambda$-Statistik und der von @rao1951 betrachteten $\tau$ Statistik in exemplarischen Anwendungsszenarien.](./_figures/703-tau-lambda){#fig-tau-lambda fig-align="center" width=70%}
+![Beziehung der Wilks'-$\Lambda$-Statistik und der von @rao1951 betrachteten $\tau$-Statistik in exemplarischen Anwendungsszenarien.](./_figures/703-tau-lambda){#fig-tau-lambda fig-align="center" width=70%}
 
 
 In @fig-approximative-lambda-verteilungen visualisieren wir exemplarische 
 simulationsbasierte Validierungen der in @thm-approximative-h0-verteilungen-von-wilks-lambda-transformationen angegebenen
 Verteilungen.
 
-```{r, eval = F, echo = F}
+```{r, eval = FALSE, echo = FALSE}
 # Szenarioparameter
 library(MASS)                                          # R Paket für multivariate Normalverteilungen
 nsm = 1e4                                              # Datensimulationsanzahl
@@ -932,7 +932,7 @@ for(sc in 1:nsc){                                      # Szenarioiterationen
         NU[2,sc]   = nu_2}}                            # \nu_2
 ```
 
-```{r, echo = F, eval = F}
+```{r, echo = FALSE, eval = FALSE}
 library(latex2exp)
 pdf(
 file        = "_figures/703-approximative-lambda-verteilungen.pdf",
@@ -980,16 +980,16 @@ for(sc in 1:nsc){
 dev.off()
 ```
 
-![Simulation approximativer Verteilungen der Wilks'-$\Lambda$-Statistik Transformationen bei Zutreffen der Nullhypothese.](./_figures/703-approximative-lambda-verteilungen){#fig-approximative-lambda-verteilungen fig-align="center" width=80%}
+![Simulation approximativer Verteilungen der Wilks'-$\Lambda$-Statistik-Transformationen bei Zutreffen der Nullhypothese.](./_figures/703-approximative-lambda-verteilungen){#fig-approximative-lambda-verteilungen fig-align="center" width=80%}
 
 Mithilfe der von @rao1951 bestimmten approximativen Verteilungen der transformierten
 Wilks'-$\Lambda$-Statistik $\tau$ bei Zutreffen der Nullhypothese können wir nun
 einen Hypothesentest für die einfaktorielle multivariate Varianzanalyse angeben. 
 
 :::{#thm-wilks-lambda-basierter-test-testumfangkontrolle-p-Wert}
-## Wilks'-$\Lambda$-basierter Test, Testumfangkontrolle, p-Wert
+## Wilks'-$\Lambda$-basierter Test, Testumfangskontrolle, p-Wert
 Gegeben seien Modell der einfaktoriellen multivariaten Varianzanalyse und die 
-transfomierte Wilks'-$\Lambda$-Statistik $\tau$ mit Verteilungsparametern 
+transformierte Wilks'-$\Lambda$-Statistik $\tau$ mit Verteilungsparametern
 $\nu_1,\nu_2$ wie oben definiert. Weiterhin sei für $Y = (y_1,...,y_n)$ 
 der kritische Wert-basierte Test
 \begin{equation}
@@ -1004,7 +1004,7 @@ $\alpha$, wenn
 \begin{equation}
 k := k_{\alpha_0} := F^{-1}(1-\alpha_0; \nu_1,\nu_2)
 \end{equation}
-ist und der p-Wert einer realisiertern $\tau$-Teststatistik $\tilde{\tau}$ ergibt 
+ist und der p-Wert einer realisierten $\tau$-Teststatistik $\tilde{\tau}$ ergibt
 sich zu
 \begin{equation}
 \mbox{p-Wert} = \mathbb{P}(\tau \ge \tilde{\tau}) = 1 - F(\tilde{\tau}; \nu_1,\nu_2)
@@ -1014,11 +1014,11 @@ sich zu
 Wir verzichten auf einen Beweis von @thm-wilks-lambda-basierter-test-testumfangkontrolle-p-Wert,
 welcher analog zu den entsprechenden Beweisen zum Beispiel beim Einstichproben-T$^2$-Test 
 geführt werden kann. Die in @thm-wilks-lambda-basierter-test-testumfangkontrolle-p-Wert
-implizite Wahl eines kritischen Wertes zur Testumfangkontrolle im Anwendungsszenario 
+implizite Wahl eines kritischen Wertes zur Testumfangskontrolle im Anwendungsszenario
 $m := 3, p := 4$ und $n_i = 15$ für $i = 1,..,p$ und damit $\nu_1 = 9$ und $\nu_2 = 132$ 
 bei einem Signifikanzlevel von $\alpha_0 = 0.05$ visualisieren wir in @fig-kritischer-wert-lambda.
 
-```{r,echo = F, eval = F}
+```{r,echo = FALSE, eval = FALSE}
 library(latex2exp)
 pdf(
 file        = "_figures/703-kritischer-wert-lambda.pdf",
@@ -1125,7 +1125,7 @@ text( 2.35, .2, TeX("$P(\\tau > k_{\\alpha_0}) = \\alpha_0$"), xpd = TRUE, cex =
 dev.off()
 ```
 
-![Testumfangkontrolle durch Selektion eines $\alpha_0$-abhängigen kritischen Wertes für den Wilks'$\Lambda$-Statistik-basierten Test anhand von KVF unf WDF der transformierten Wilks'$\Lambda$-Statistik $\tau$.](./_figures/703-kritischer-wert-lambda){#fig-kritischer-wert-lambda fig-align="center" width=80%}
+![Testumfangskontrolle durch Selektion eines $\alpha_0$-abhängigen kritischen Wertes für den Wilks'$\Lambda$-Statistik-basierten Test anhand von KVF und WDF der transformierten Wilks'$\Lambda$-Statistik $\tau$.](./_figures/703-kritischer-wert-lambda){#fig-kritischer-wert-lambda fig-align="center" width=80%}
 
 ### Praktisches Vorgehen {-}
 
@@ -1146,10 +1146,10 @@ Einheiten pro Gruppe und damit einer Gesamtzahl von $n = 60$ Datenpunkten, dass 
 und $\nu_2 = 132$ sind und sich der in @thm-wilks-lambda-basierter-test-testumfangkontrolle-p-Wert
 definierte kritische Wert zu  $k_{\alpha_0} = F^{-1}(1 - 0.05; 9, 132) \approx 1.95$ ergibt.
 Basierend auf den realisierten Datensatz berechnet man dann zunächst die 
-Wilk's-$\Lambda$-Statistik und den resultierenden, $m,p,n$-abhängigen realisierten
-Wert der transformierten Wilk's-$\Lambda$-Statistik $\tau$. Wenn der berechnete Wert von 
+Wilks'-$\Lambda$-Statistik und den resultierenden, $m,p,n$-abhängigen realisierten
+Wert der transformierten Wilks'-$\Lambda$-Statistik $\tau$. Wenn der berechnete Wert von
 $\tau$ größer als $k_{\alpha_0}$ ist, lehnt man die Nullhypothese ab, andernfalls nicht.
-Die oben entwickelte Theorie zur Testumfangkontrolle bei der einfaktoriellen multivariaten
+Die oben entwickelte Theorie zur Testumfangskontrolle bei der einfaktoriellen multivariaten
 Varianzanalyse auf Grundlage von Wilks'-$\Lambda$-Statistik garantiert dann, dass man 
 im Mittel in höchstens $\alpha_0 \cdot 100$ von 100 Fällen die Nullhypothese fälschlicherweise
 ablehnt.
@@ -1203,7 +1203,7 @@ for(sc in 1:nsc){                                                               
         tau        = ((1-L^(1/t))/L^(1/t))*(nu_2/nu_1)                          # Statistik
         PHI[sm,sc] = tau > KA[sc]}}                                             # Test
 ```
-```{r echo = F}
+```{r echo = FALSE}
 cat("Kritische Werte       : ", KA,
     "\nGeschätzte Testumfänge: ", apply(PHI, 2, mean))
 ```
@@ -1218,7 +1218,7 @@ Gruppenerwartungswertparameter überprüfen. Folgender **R** Code implementiert 
 praktische Vorgehen für ein Signifikanzlevel von $\alpha_0 := 0.05$.
 
 \tiny
-```{r, message = F}
+```{r, message = FALSE}
 # Einlesen und Präprozessierung des Datensatzes
 D           = read.csv("./_data/703-einfaktorielle-varianzanalyse.csv")         # Dateneinlesen
 m           = 2                                                                 # Datendimension von Interesse
@@ -1246,7 +1246,7 @@ k_alpha_0   = qf(1-alpha_0,nu_1,nu_2)                                           
 phi         = as.numeric(tau > k_alpha_0)                                       # Nullhypothesentest 
 P           = 1-pf(tau,nu_1,nu_2)                                               # Überschreitungswahrscheinlichkeit
 ```
-```{r echo = F}
+```{r echo = FALSE}
 # Ausgabe
 cat("Wilks' Lambda     "  , L,
     "\ntau               ", tau,
@@ -1262,7 +1262,7 @@ also verworfen. Schließlich validieren wir obige Analyse im Sinne eines Black-B
 mithilfe der **R** `lm()` und `Manova()` Funktionen.
 
 \tiny
-```{r, message = F}
+```{r, message = FALSE}
 library(car)
 D        = read.csv("./_data/703-einfaktorielle-varianzanalyse.csv")            # Dateneinlesen
 model    = lm(cbind(D$dBDI,D$dGLU) ~ D$COND, D)                                 # Modellspezifikation
