@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>20&nbsp; Elementary probabilities – Probabilistic Data Science for Psychology</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../References.html" rel="next">
+<link href="../_part_3/301-Probability-Spaces.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-d6825770f4e37b80aa8621686b79c10e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Probabilistic Data Science for Psychology</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://dirk-ostwald.github.io/"> 
+<span class="menu-text">Deutsch</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+    <a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="../Probabilistic-Data-Science-for-Psychology.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../_part_3/300-Probability-Theory.html">Probability theory</a></li><li class="breadcrumb-item"><a href="../_part_3/302-Elementary-Probabilities.html"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Elementary probabilities</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../_part_1/100-Mathematical-Foundations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Mathematical foundations</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/101-Language-and-Logic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Language and logic</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/102-Sets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Sets</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/103-Sums-Products-Powers.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Sums, products, powers</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/104-Functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Functions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/105-Sequences-Limits-Continuity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Sequences, limits, continuity</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/106-Differential-Calculus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Differential calculus</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/107-Integral-Calculus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Integral calculus</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/108-Vectors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Vectors</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/109-Matrices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Matrices</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/110-Descriptive-Statistics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Descriptive statistics</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../_part_2/200-Imperative-Programming.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Imperative programming</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/201-Basic-Concepts-of-Computer-Science.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Basic concepts of computer science</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/202-Arithmetic-and-Variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Arithmetic and variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/203-Data-Structures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Data structures</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/204-Vectors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Vectors</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/205-Matrices-and-Arrays.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Matrices and arrays</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/206-Lists-Dataframes-and-Tibbles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Lists, dataframes, and tibbles</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/207-Data-Management.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Data management</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/208-Control-Structures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Control structures</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../_part_3/300-Probability-Theory.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Probability theory</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/301-Probability-Spaces.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Probability spaces</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/302-Elementary-Probabilities.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Elementary probabilities</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../References.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sec-joint-probabilities" id="toc-sec-joint-probabilities" class="nav-link active" data-scroll-target="#sec-joint-probabilities"><span class="header-section-number">20.1</span> Joint probabilities</a>
+  <ul class="collapse">
+  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example">Example</a></li>
+  </ul></li>
+  <li><a href="#sec-conditional-probabilities" id="toc-sec-conditional-probabilities" class="nav-link" data-scroll-target="#sec-conditional-probabilities"><span class="header-section-number">20.2</span> Conditional probabilities</a>
+  <ul class="collapse">
+  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a></li>
+  </ul></li>
+  <li><a href="#sec-independent-events" id="toc-sec-independent-events" class="nav-link" data-scroll-target="#sec-independent-events"><span class="header-section-number">20.3</span> Independent events</a></li>
+  <li><a href="#literature-notes" id="toc-literature-notes" class="nav-link" data-scroll-target="#literature-notes"><span class="header-section-number">20.4</span> Literature notes</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/_part_3/302-Elementary-Probabilities.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../_part_3/300-Probability-Theory.html">Probability theory</a></li><li class="breadcrumb-item"><a href="../_part_3/302-Elementary-Probabilities.html"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Elementary probabilities</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-elementary-probabilities" class="quarto-section-identifier"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Elementary probabilities</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>In this section, with the concepts of the <em>joint probability</em> of two events and the <em>conditional probability</em> of an event, we introduce two elementary forms of probabilities. Intuitively, the concept of joint probability refers to the probability of the “simultaneous” occurrence of two events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>, and the concept of conditional probability refers to the probability of the occurrence of an event <span class="math inline">\(A\)</span> “when one knows about the occurrence of another event <span class="math inline">\(B\)</span>”. If it is irrelevant for the probability of an event <span class="math inline">\(A\)</span> whether or not an event <span class="math inline">\(B\)</span> has occurred, then <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are called <em>independent events</em>. Intuitively, independent events model the absence of mutual influences.</p>
+<section id="sec-joint-probabilities" class="level2" data-number="20.1">
+<h2 data-number="20.1" class="anchored" data-anchor-id="sec-joint-probabilities"><span class="header-section-number">20.1</span> Joint probabilities</h2>
+<p>The concept of the joint probability of two events is defined as follows.</p>
+<div id="def-joint-probability" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 20.1 (Joint probability)</strong></span> Let <span class="math inline">\((\Omega, \mathcal{A}, \mathbb{P})\)</span> be a probability space and let <span class="math inline">\(A,B \in \mathcal{A}\)</span>. Then <span class="math display">\[\begin{equation}
+\mathbb{P}(A \cap B)
+\end{equation}\]</span> is called the <em>joint probability of <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span></em>.</p>
+</div>
+<p>As noted above, <span class="math inline">\(\mathbb{P}(A \cap B)\)</span> corresponds to the probability that the events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> occur “simultaneously”. This is best understood against the background of the mechanics of the probability space model. According to this mechanics, <span class="math inline">\(\mathbb{P}(A \cap B)\)</span> is precisely the probability that, in one run of a random process, an <span class="math inline">\(\omega\)</span> is realized for which both <span class="math inline">\(\omega \in A\)</span> and <span class="math inline">\(\omega \in B\)</span> hold.</p>
+<section id="example" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="example">Example</h3>
+<p>As a first example of a joint probability of two events, we again consider the probability space model of throwing a fair die. Let <span class="math inline">\(A\)</span> be the event “An even number of pips appears”, that is, <span class="math inline">\(A := \{2,4,6\}\)</span>, and let <span class="math inline">\(B\)</span> be the event “A number of pips greater than three appears”, that is, <span class="math inline">\(B := \{4,5,6\}\)</span>. Set-theoretically, we then have <span class="math display">\[\begin{equation}
+A \cap B = \{2,4,6\} \cap \{4,5,6\} = \{4,6\}.
+\end{equation}\]</span> The interpretation of <span class="math inline">\(A \cap B = \{4,6\}\)</span> is exactly “An even number of pips appears <em>and</em> this number of pips is greater than three”. Assuming fairness of the die, that is, for <span class="math inline">\(\mathbb{P}(\{4\}) = \mathbb{P}(\{6\}) := 1/6\)</span>, we can easily calculate the probability of this event using the <span class="math inline">\(\sigma\)</span>-additivity of <span class="math inline">\(\mathbb{P}\)</span>. We obtain <span class="math display">\[\begin{align}
+\begin{split}
+\mathbb{P}(A \cap B)
+&amp; = \mathbb{P}(\{2,4,6\} \cap \{4,5,6\})       \\
+&amp; = \mathbb{P}(\{4,6\})                        \\
+&amp; = \mathbb{P}(\{4\}) + \mathbb{P}(\{6\})       \\
+&amp; = \frac{1}{6} + \frac{1}{6}                   \\
+&amp; = \frac{1}{3}.
+\end{split}
+\end{align}\]</span></p>
+<p>When thinking about joint probabilities, it is of course important not to confuse the joint probability <span class="math inline">\(\mathbb{P}(A \cap B)\)</span> with the probability <span class="math inline">\(\mathbb{P}(A \cup B)\)</span> of the event <span class="math inline">\(A \cup B\)</span>. Recall that the union of two sets <span class="math inline">\(\cup\)</span> corresponds to the <em>inclusive or</em>, that is, to an <em>and/or</em> (cf. <a href="../_part_1/101-Language-and-Logic.html#sec-propositional-logic" class="quarto-xref"><span>Section 1.3</span></a> and <a href="../_part_1/102-Sets.html#sec-set-operations" class="quarto-xref"><span>Section 2.2</span></a>). The event <span class="math inline">\(A \cup B\)</span> therefore corresponds to the event that event <span class="math inline">\(A\)</span> and/or event <span class="math inline">\(B\)</span> occurs. In particular, <span class="math inline">\(\omega \in A \cup B\)</span> is already satisfied if for the outcome of one run of a random process <em>only</em> <span class="math inline">\(\omega \in A\)</span> or <em>only</em> <span class="math inline">\(\omega \in B\)</span> holds. Concretely, for the events <span class="math inline">\(A := \{2,4,6\}\)</span> and <span class="math inline">\(B := \{4,5,6\}\)</span> from the die example above, we obtain <span class="math display">\[\begin{equation}
+A \cup B = \{2,4,6\} \cup \{4,5,6\} = \{2,4,5,6\}
+\end{equation}\]</span> with the interpretation “An even number of pips appears and/or a number of pips greater than three appears”. For the corresponding probability we obtain <span class="math display">\[\begin{equation}
+\mathbb{P}(\{2,4,5,6\}) = \frac{2}{3},
+\end{equation}\]</span> so in this case apparently <span class="math inline">\(\mathbb{P}(A \cap B) \neq \mathbb{P}(A \cup B)\)</span>.</p>
+<p>With the help of the following theorem, in this section we finally record a few useful properties for calculating with probabilities, which follow directly from the connection between set operations and the <span class="math inline">\(\sigma\)</span>-additivity of probability measures. We visualize the corresponding statements in <a href="#fig-calculation-rules" class="quarto-xref">Figure&nbsp;<span>20.1</span></a> using Venn diagrams.</p>
+<div id="fig-calculation-rules" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-calculation-rules-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/302-calculation-rules.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:85.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-calculation-rules-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;20.1: Venn diagrams for <a href="#thm-further-properties-of-probabilities" class="quarto-xref">Theorem&nbsp;<span>20.1</span></a>. The light-blue areas correspond to the probabilities of interest.
+</figcaption>
+</figure>
+</div>
+<div id="thm-further-properties-of-probabilities" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 20.1 (Further properties of probabilities)</strong></span> Let <span class="math inline">\((\Omega, \mathcal{A}, \mathbb{P})\)</span> be a probability space and let <span class="math inline">\(A,B \in \mathcal{A}\)</span> be events. Then</p>
+<ol type="1">
+<li><span class="math inline">\(\mathbb{P}(A^c) = 1 - \mathbb{P}(A)\)</span>.</li>
+<li><span class="math inline">\(A \subset B \Rightarrow \mathbb{P}(A) \le \mathbb{P}(B)\)</span>.</li>
+<li><span class="math inline">\(\mathbb{P}(A \cap B^c) = \mathbb{P}(A) - \mathbb{P}(A \cap B)\)</span></li>
+<li><span class="math inline">\(\mathbb{P}(A \cup B) = \mathbb{P}(A) + \mathbb{P}(B) - \mathbb{P}(A \cap B)\)</span>.</li>
+</ol>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>The second, third, and fourth statements of this theorem are based on elementary set-theoretic statements and the <span class="math inline">\(\sigma\)</span>-additivity of <span class="math inline">\(\mathbb{P}\)</span>. We do not prove these elementary set-theoretic statements here, but instead refer in each case to the intuition conveyed by the Venn diagrams in <a href="#fig-venn-diagrams" class="quarto-xref">Figure&nbsp;<span>20.2</span></a>.</p>
+<p>For 1.: We first note that from <span class="math inline">\(A^c := \Omega \setminus A\)</span> it follows that <span class="math inline">\(A^c \cup A = \Omega\)</span> and that <span class="math inline">\(A^c \cap A = \emptyset\)</span>. With normalization and <span class="math inline">\(\sigma\)</span>-additivity of <span class="math inline">\(\mathbb{P}\)</span> it then follows that <span class="math display">\[\begin{equation}
+\mathbb{P}(\Omega) = 1
+\Leftrightarrow
+\mathbb{P}(A^c \cup A) = 1
+\Leftrightarrow
+\mathbb{P}(A^c) + \mathbb{P}(A) = 1
+\Leftrightarrow
+\mathbb{P}(A^c) = 1 - \mathbb{P}(A).
+\end{equation}\]</span></p>
+<p>For 2.: First, we have (cf.&nbsp;Figure A) <span class="math display">\[\begin{equation}
+A \subset B \Rightarrow B = A \cup (B \cap A^c)
+\mbox{ with } A \cap (B \cap A^c) = \emptyset.
+\end{equation}\]</span> With the <span class="math inline">\(\sigma\)</span>-additivity of <span class="math inline">\(\mathbb{P}\)</span> it follows that <span class="math display">\[\begin{equation}
+\mathbb{P}(B) = \mathbb{P}(A) + \mathbb{P}(B \cap A^c).
+\end{equation}\]</span> With <span class="math inline">\(\mathbb{P}(B \cap A^c) \ge 0\)</span> it follows that <span class="math inline">\(\mathbb{P}(A) \le \mathbb{P}(B)\)</span>.</p>
+<p>For 3.: First, we have (cf.&nbsp;Figure B) <span class="math display">\[\begin{equation}
+(A \cap B) \cap (A \cap B^c)  = \emptyset
+\mbox{ and } A  = (A \cap B) \cup (A \cap B^c).
+\end{equation}\]</span> With the <span class="math inline">\(\sigma\)</span>-additivity of <span class="math inline">\(\mathbb{P}\)</span> it follows that <span class="math display">\[\begin{align}
+\begin{split}
+\mathbb{P}(A) = \mathbb{P}(A \cap B) + \mathbb{P}(A \cap B^c)
+\Leftrightarrow
+\mathbb{P}(A \cap B)
+= \mathbb{P}(A) - \mathbb{P}(A \cap B^c).
+\end{split}
+\end{align}\]</span></p>
+<p>For 4.: First, we have (cf.&nbsp;Figure C) <span class="math display">\[\begin{equation}
+B \cap (A \cap B^c)  = \emptyset
+\mbox{ and } A \cup B = B \cup (A \cap B^c).
+\end{equation}\]</span> With the <span class="math inline">\(\sigma\)</span>-additivity of <span class="math inline">\(\mathbb{P}\)</span> it follows that <span class="math display">\[\begin{equation}
+\mathbb{P}(A \cup B) = \mathbb{P}(B) + \mathbb{P}(A \cap B^c).
+\end{equation}\]</span> With 3. it then follows that <span class="math display">\[\begin{equation}
+\mathbb{P}(A \cup B) = \mathbb{P}(B) + \mathbb{P}(A) - \mathbb{P}(A \cap B).
+\end{equation}\]</span></p>
+</div>
+<div id="fig-venn-diagrams" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-venn-diagrams-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/302-venn-diagrams.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:85.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-venn-diagrams-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;20.2: Venn diagrams for the proof of <a href="#thm-further-properties-of-probabilities" class="quarto-xref">Theorem&nbsp;<span>20.1</span></a>
+</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="sec-conditional-probabilities" class="level2" data-number="20.2">
+<h2 data-number="20.2" class="anchored" data-anchor-id="sec-conditional-probabilities"><span class="header-section-number">20.2</span> Conditional probabilities</h2>
+<p>We now turn to the concept of conditional probability.</p>
+<div id="def-conditional-probability" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 20.2 (Conditional probability)</strong></span> Let <span class="math inline">\((\Omega,\mathcal{A}, \mathbb{P})\)</span> be a probability space and let <span class="math inline">\(A, B\in \mathcal{A}\)</span> be events with <span class="math inline">\(\mathbb{P}(B) &gt; 0\)</span>. The <em>conditional probability of event <span class="math inline">\(A\)</span> given event <span class="math inline">\(B\)</span></em> is defined as <span class="math display">\[\begin{equation}
+\mathbb{P}(A|B) := \frac{\mathbb{P}(A \cap B)}{\mathbb{P}(B)}.
+\end{equation}\]</span></p>
+</div>
+<p>We note: The conditional probability <span class="math inline">\(\mathbb{P}(A|B)\)</span> of an event <span class="math inline">\(A\)</span> given an event <span class="math inline">\(B\)</span> is the joint probability <span class="math inline">\(\mathbb{P}(A \cap B)\)</span> of the events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>, scaled by <span class="math inline">\(1/\mathbb{P}(B)\)</span>. Thus, if in the formulation of a probabilistic model one specifies the joint probability <span class="math inline">\(\mathbb{P}(A \cap B)\)</span> as well as the probability <span class="math inline">\(\mathbb{P}(B) &gt; 0\)</span> of the event <span class="math inline">\(B\)</span>, then in particular one also specifies the conditional probability <span class="math inline">\(\mathbb{P}(A|B)\)</span> of event <span class="math inline">\(A\)</span> given event <span class="math inline">\(B\)</span>. We further point out that there is no reason to confuse the conditional probabilities <span class="math display">\[\begin{equation}
+\mathbb{P}(A|B) = \frac{\mathbb{P}(A \cap B)}{\mathbb{P}(B)}
+\mbox{ and }
+\mathbb{P}(B|A) = \frac{\mathbb{P}(B \cap A)}{\mathbb{P}(A)} = \frac{\mathbb{P}(A \cap B)}{\mathbb{P}(A)}
+\end{equation}\]</span> (cf. <span class="citation" data-cites="herzog2013">Herzog &amp; Ostwald (<a href="#ref-herzog2013" role="doc-biblioref">2013</a>)</span>). In particular, from <span class="math inline">\(\mathbb{P}(A) \neq \mathbb{P}(B)\)</span> it always follows directly that <span class="math inline">\(\mathbb{P}(A|B) \neq \mathbb{P}(B|A)\)</span>. Finally, note that a generalization of the conditional probability in <a href="#def-conditional-probability" class="quarto-xref">Definition&nbsp;<span>20.2</span></a> to the case <span class="math inline">\(\mathbb{P}(B) = 0\)</span> is possible, but technically involved. For this we refer to the advanced literature, e.g. <span class="citation" data-cites="meintrup2005">Meintrup &amp; Schäffler (<a href="#ref-meintrup2005" role="doc-biblioref">2005</a>)</span> and <span class="citation" data-cites="schmidt2009">Schmidt (<a href="#ref-schmidt2009" role="doc-biblioref">2009</a>)</span>.</p>
+<section id="examples" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="examples">Examples</h3>
+<p><strong>Throwing one die</strong></p>
+<p>As a first example of a conditional probability, we again consider the model <span class="math inline">\((\Omega, \mathcal{A}, \mathbb{P})\)</span> of the fair die. We want to calculate the conditional probability of the event “An even number of pips appears” given the event “A number greater than three appears”. We have already seen above that the event “An even number of pips appears” corresponds to the subset <span class="math inline">\(A := \{2,4,6\}\)</span> of <span class="math inline">\(\Omega\)</span>, and that the event “A number greater than three appears” corresponds to the subset <span class="math inline">\(B := \{4,5,6\}\)</span> of <span class="math inline">\(\Omega\)</span>. Furthermore, we have seen that, under the assumption that the modeled die is fair, <span class="math display">\[\begin{align}
+\begin{split}
+\mathbb{P}(\{2,4,6\})
+= \mathbb{P}(\{2\}) + \mathbb{P}(\{4\}) + \mathbb{P}(\{6\})
+= \frac{1}{6} + \frac{1}{6} + \frac{1}{6}
+= \frac{3}{6}
+\end{split}
+\end{align}\]</span> and that <span class="math display">\[\begin{align}
+\begin{split}
+\mathbb{P}(\{4,5,6\})
+= \mathbb{P}(\{4\}) + \mathbb{P}(\{5\}) + \mathbb{P}(\{6\})
+= \frac{1}{6} + \frac{1}{6} + \frac{1}{6}
+= \frac{3}{6}.
+\end{split}
+\end{align}\]</span> Finally, we had also seen that the event <span class="math inline">\(A \cap B\)</span>, that is, the event “An even number of pips greater than three appears”, has probability <span class="math display">\[\begin{align}
+\begin{split}
+\mathbb{P}(A \cap B)
+= \mathbb{P}(\{2,4,6\} \cap \{4,5,6\})
+= \mathbb{P}(\{4,6\})
+= \mathbb{P}(\{4\}) + \mathbb{P}(\{6\})
+= \frac{1}{6} + \frac{1}{6}
+= \frac{2}{6}
+\end{split}
+\end{align}\]</span> By the definition of conditional probability, we then directly obtain <span class="math display">\[\begin{align}
+\begin{split}
+\mathbb{P}(A|B)
+= \frac{\mathbb{P}(A \cap B)}{\mathbb{P}(B)}
+= \frac{\mathbb{P}(\{4,6\})}{\mathbb{P}(\{4,5,6\})}
+= \frac{2}{6}\cdot\frac{6}{3}
+= \frac{2}{3}.
+\end{split}
+\end{align}\]</span></p>
+<p>In this context, an interpretation of the conditional probability <span class="math inline">\(\mathbb{P}(A|B)\)</span> as a decrease in subjective uncertainty or as a gain in subjective information relative to the unconditional probability <span class="math inline">\(\mathbb{P}(A)\)</span> suggests itself: if one knows that a number of pips greater than three has appeared, that is, that the event <span class="math inline">\(\omega \in B\)</span> is present, then the probability that <span class="math inline">\(\omega\)</span> is an even number of pips is <span class="math inline">\(2/3\)</span>. If, by contrast, one does not know that the event <span class="math inline">\(\omega \in B\)</span> is present (and has no other information about <span class="math inline">\(\omega\)</span>), then the probability of an even number of pips appearing is only <span class="math inline">\(1/2\)</span>. Conditioning on the presence of an event therefore corresponds to including information and thus to the decrease of uncertainty in probability-theoretic models. This is the basis of Bayesian statistics. A similar interpretation is also suggested by the following, perhaps more everyday, example.</p>
+<p><strong>Value of a BDI-II item</strong></p>
+<p>We again consider the example of the value of a patient for the item “Sadness” of the English version of the BDI-II. Above, we assigned the probabilities <span class="math display">\[\begin{equation}
+\mathbb{P}(\{0\}) := \frac{2}{10}, \quad
+\mathbb{P}(\{1\}) := \frac{3}{10}, \quad
+\mathbb{P}(\{2\}) := \frac{4}{10}, \quad
+\mathbb{P}(\{3\}) := \frac{1}{10}, \quad
+\end{equation}\]</span> to the possible item responses (0), (1), (2), (3). We now assume that we know of a patient that she chose a value greater than (1), and ask for the probabilities that the patient chose value (2) or (3). To this end, we first consider the probability of the event “The patient chose a value greater than (1)”. This obviously corresponds to the subset <span class="math inline">\(B := \{2,3\}\)</span> of <span class="math inline">\(\Omega\)</span>. With <span class="math inline">\(\sigma\)</span>-additivity, as seen above, the probability of this event is <span class="math inline">\(\mathbb{P}(\{2,3\}) = 1/2\)</span>. We therefore consider the events listed in <a href="#tbl-events-when-answering-a-bdi-ii-item" class="quarto-xref">Table&nbsp;<span>20.1</span></a>.</p>
+<div id="tbl-events-when-answering-a-bdi-ii-item" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-events-when-answering-a-bdi-ii-item-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;20.1: Events when answering a BDI-II item
+</figcaption>
+<div aria-describedby="tbl-events-when-answering-a-bdi-ii-item-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 63%">
+<col style="width: 36%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">Set form</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">The patient chose a value greater than (1)</td>
+<td style="text-align: left;"><span class="math inline">\(\omega \in B := \{2,3\}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">The patient chose response (2)</td>
+<td style="text-align: left;"><span class="math inline">\(\omega \in A_1 := \{2\}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">The patient chose response (3)</td>
+<td style="text-align: left;"><span class="math inline">\(\omega \in A_2 := \{3\}\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>We obtain <span class="math display">\[\begin{equation}
+\mathbb{P}(A_1|B)
+= \frac{\mathbb{P}(A_1 \cap B)}{\mathbb{P}(B)}
+= \frac{\mathbb{P}(\{2\} \cap \{2,3\})}{\mathbb{P}(\{2,3\})}
+= \frac{\mathbb{P}(\{2\})}{\mathbb{P}(\{2,3\})}
+= \frac{4}{10} \cdot \frac{2}{1} = \frac{8}{10}
+\end{equation}\]</span> and <span class="math display">\[\begin{equation}
+\mathbb{P}(A_2|B)
+= \frac{\mathbb{P}(A_2 \cap B)}{\mathbb{P}(B)}
+= \frac{\mathbb{P}(\{3\} \cap \{2,3\})}{\mathbb{P}(\{2,3\})}
+= \frac{\mathbb{P}(\{3\})}{\mathbb{P}(\{2,3\})}
+= \frac{1}{10} \cdot \frac{2}{1} = \frac{2}{10}.
+\end{equation}\]</span> Note that <span class="math display">\[\begin{equation}
+\mathbb{P}(A_1|B) + \mathbb{P}(A_2|B) = \frac{8}{10} + \frac{2}{10} = 1.
+\end{equation}\]</span></p>
+<p>Based on the definition of the conditional probability of an event under the condition of the occurrence of a fixed event <span class="math inline">\(B\)</span>, one can define a probability measure that gives the probabilities of <em>all</em> events of the event system under the condition of the occurrence of a fixed event <span class="math inline">\(B\)</span>. This probability measure is called the <em>conditional probability given event <span class="math inline">\(B\)</span></em>.</p>
+<div id="thm-conditional-probability" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 20.2 (Conditional probability)</strong></span> For a fixed <span class="math inline">\(B \in \mathcal{A}\)</span> with <span class="math inline">\(\mathbb{P}(B) &gt; 0\)</span>, let <span class="math display">\[\begin{equation}
+\mathbb{P}(\cdot|B) : \mathcal{A} \to [0,1],
+A \mapsto \mathbb{P}(A|B) := \frac{\mathbb{P}(A \cap B)}{\mathbb{P}(B)}
+\end{equation}\]</span> Then <span class="math inline">\(\mathbb{P}(\cdot|B)\)</span> is a probability measure and is called the <em>conditional probability given event <span class="math inline">\(B\)</span></em>.</p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>We verify the defining properties of a probability measure.</p>
+<p>(1) <span class="math inline">\(\mathbb{P}(A|B) \ge 0\)</span> for all <span class="math inline">\(A \in \mathcal{A}\)</span></p>
+<p>By the definition of conditional probability, <span class="math inline">\(\mathbb{P}(A|B) = \mathbb{P}(A \cap B)/\mathbb{P}(B)\)</span> with <span class="math inline">\(\mathbb{P}(B)&gt;0\)</span>. With the theorem on closure of <span class="math inline">\(\sigma\)</span>-algebras under intersections and the definition of <span class="math inline">\(\mathbb{P}\)</span>, <span class="math inline">\(\mathbb{P}(A \cap B) \ge 0\)</span> holds, and hence the statement follows.</p>
+<p>(2) <span class="math inline">\(\mathbb{P}(\Omega|B) =  1\)</span>.</p>
+<p>We have <span class="math display">\[\begin{equation}
+\mathbb{P}(\Omega|B) = \frac{\mathbb{P}(\Omega \cap B)}{\mathbb{P}(B)} = \frac{\mathbb{P}(B)}{\mathbb{P}(B)} = 1.
+\end{equation}\]</span></p>
+<p>(3) <span class="math inline">\(\mathbb{P}\left(\cup_{i=1}^\infty A_i|B \right) = \sum_{i=1}^\infty \mathbb{P}(A_i|B)\)</span> for pairwise disjoint <span class="math inline">\(A_1,A_2,... \in \mathcal{A}\)</span>.</p>
+<p>With the associative and distributive laws of union and intersection, first <span class="math display">\[\begin{equation}
+\left(\cup_{i=1}^\infty A_i\right) \cap B
+= \left(A_1 \cup A_2 \cup \cdots \right) \cap B
+= \left(A_1 \cap B\right) \cup \left(A_2 \cap B\right) \cup \cdots
+= \cup_{i=1}^\infty \left(A_i \cap B\right).
+\end{equation}\]</span> Furthermore, with <span class="math inline">\(A_i \cap A_j = \emptyset\)</span> and the associative and distributive laws of union and intersection, the <span class="math inline">\(A_i \cap B\)</span> for <span class="math inline">\(i = 1,2,...\)</span> are also pairwise disjoint, because <span class="math display">\[\begin{equation}
+\left(A_i \cap B\right) \cap \left(A_j \cap B\right) = \left(A_i \cap A_j\right) \cap (B \cap B) = \emptyset \cap B = \emptyset.
+\end{equation}\]</span> With the <span class="math inline">\(\sigma\)</span>-additivity of <span class="math inline">\(\mathbb{P}\)</span> it then follows that <span class="math display">\[\begin{align}
+\begin{split}
+\mathbb{P}\left(\cup_{i=1}^\infty A_i|B \right)
+&amp; = \frac{\mathbb{P}\left(\left(\cup_{i=1}^\infty A_i\right) \cap B\right)}{\mathbb{P}(B)} \\
+&amp; = \frac{\mathbb{P}\left(\cup_{i=1}^\infty \left(A_i \cap B\right) \right)}{\mathbb{P}(B)} \\
+&amp; = \frac{\sum_{i=1}^\infty \mathbb{P}\left(A_i \cap B\right)}{\mathbb{P}(B)} \\
+&amp; = \sum_{i=1}^\infty \frac{\mathbb{P}\left(A_i \cap B\right)}{\mathbb{P}(B)} \\
+&amp; = \sum_{i=1}^\infty \mathbb{P}(A_i|B).
+\end{split}
+\end{align}\]</span></p>
+</div>
+<p>Note that for the conditional probability <span class="math inline">\(\mathbb{P}(\cdot|B)\)</span>, the calculation rules of probability theory apply to the events to the left of the bar. In particular, in contrast to <span class="math inline">\(\mathbb{P}(\cdot \cap B)\)</span>, <span class="math inline">\(\mathbb{P}(\cdot \vert B)\)</span> defines a probability measure for all <span class="math inline">\(A \in \mathcal{A}\)</span>. Thus, for example, for <span class="math inline">\(0 &lt; \mathbb{P}(B) &lt; 1\)</span>, <span class="math inline">\(\mathbb{P}(\Omega|B) =  1\)</span>, but <span class="math inline">\(\mathbb{P}(\Omega \cap B) = \mathbb{P}(B) &lt; 1\)</span>. One therefore also says that <span class="math inline">\(\mathbb{P}(\cdot \vert B)\)</span> is <em>normalized</em>, whereas <span class="math inline">\(\mathbb{P}(\cdot \cap B)\)</span> is not.</p>
+<p>At the end of this section, we consider three technical consequences of the definition of conditional probability, which we formulate as theorems.</p>
+<p>The first theorem concerns the relation between joint and conditional probabilities and reiterates how joint probabilities can be calculated from conditional and total probabilities.</p>
+<div id="thm-joint-and-conditional-probabilities" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 20.3 (Joint and conditional probabilities)</strong></span> Let <span class="math inline">\((\Omega,\mathcal{A}, \mathbb{P})\)</span> be a probability space and let <span class="math inline">\(A,B\in \mathcal{A}\)</span> with <span class="math inline">\(\mathbb{P}(A) &gt; 0\)</span> and <span class="math inline">\(P(B)&gt;0\)</span>. Then <span class="math display">\[\begin{equation}
+\mathbb{P}(A \cap B)
+= \mathbb{P}(A|B)\mathbb{P}(B)
+= \mathbb{P}(B|A)\mathbb{P}(A).
+\end{equation}\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>With the definition of the respective conditional probability, it follows directly that <span class="math display">\[\begin{equation}
+\mathbb{P}(A|B) = \frac{\mathbb{P}(A \cap B)}{\mathbb{P}(B)}
+\Leftrightarrow
+\mathbb{P}(A \cap B) =\mathbb{P}(A|B)\mathbb{P}(B)
+\end{equation}\]</span> and <span class="math display">\[\begin{equation}
+\mathbb{P}(B|A) = \frac{\mathbb{P}(B \cap A)}{\mathbb{P}(A)}
+\Leftrightarrow
+\mathbb{P}(A \cap B) =\mathbb{P}(B|A)\mathbb{P}(A).
+\end{equation}\]</span></p>
+</div>
+<p>Just as specifying <span class="math inline">\(\mathbb{P}(A \cap B)\)</span> and <span class="math inline">\(\mathbb{P}(A)\)</span> specifies the conditional probability <span class="math inline">\(\mathbb{P}(B|A)\)</span>, specifying <span class="math inline">\(\mathbb{P}(A)\)</span> and <span class="math inline">\(\mathbb{P}(B|A)\)</span> therefore specifies the joint probability <span class="math inline">\(\mathbb{P}(A \cap B)\)</span>.</p>
+<p>The following so-called <em>law of total probability</em> states how unconditional, so-called <em>total probabilities</em> can be calculated based on joint probabilities.</p>
+<div id="thm-law-of-total-probability" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 20.4 (Law of total probability)</strong></span> Let <span class="math inline">\((\Omega,\mathcal{A},\mathbb{P})\)</span> be a probability space and let <span class="math inline">\(A_1,...,A_k\)</span> with <span class="math inline">\(\mathbb{P}(A_i) &gt; 0\)</span> be a partition of <span class="math inline">\(\Omega\)</span>. Then for every <span class="math inline">\(B \in \mathcal{A}\)</span>, <span class="math display">\[\begin{equation}
+\mathbb{P}(B) = \sum_{i=1}^k \mathbb{P}(B \cap A_i) = \sum_{i=1}^k \mathbb{P}(B|A_i)\mathbb{P}(A_i).
+\end{equation}\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>For <span class="math inline">\(i = 1,...,k\)</span>, let <span class="math inline">\(C_i := B \cap A_i\)</span>, so that <span class="math inline">\(\cup_{i=1}^k C_i = B\)</span> and <span class="math inline">\(C_i \cap C_j = \emptyset\)</span> for <span class="math inline">\(1 \le i,j \le k,i \neq j\)</span>. We illustrate these definitions in <a href="#fig-total-probability" class="quarto-xref">Figure&nbsp;<span>20.3</span></a> using a Venn diagram.</p>
+<div id="fig-total-probability" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-total-probability-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/302-total-probability.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:40.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-total-probability-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;20.3: Venn diagram for the proof of <a href="#thm-law-of-total-probability" class="quarto-xref">Theorem&nbsp;<span>20.4</span></a>.
+</figcaption>
+</figure>
+</div>
+<p>Thus, with the definition of conditional probability for <span class="math inline">\(\mathbb{P}(A_i) &gt; 0\)</span>, we have <span class="math display">\[\begin{equation}
+\mathbb{P}(B)
+= \sum_{i=1}^k \mathbb{P}(C_i)
+= \sum_{i=1}^k \mathbb{P}(B \cap A_i)
+= \sum_{i=1}^k \mathbb{P}(B|A_i)\mathbb{P}(A_i).
+\end{equation}\]</span></p>
+</div>
+<p>Intuitively, <span class="math inline">\(\mathbb{P}(B)\)</span> therefore corresponds to the weighted sum of the conditional probabilities <span class="math inline">\(\mathbb{P}(B|A_i)\)</span>, where the weighting factors are precisely the unconditional probabilities <span class="math inline">\(\mathbb{P}(A_i)\)</span> for <span class="math inline">\(i = 1,..,k\)</span>. The requirement <span class="math inline">\(\mathbb{P}(A_i) &gt; 0\)</span> for all <span class="math inline">\(i = 1,...,k\)</span> is necessary here to guarantee the representation of <span class="math inline">\(\mathbb{P}(B \cap A_i)\)</span> using <a href="#def-conditional-probability" class="quarto-xref">Definition&nbsp;<span>20.2</span></a>.</p>
+<p><strong>Example</strong></p>
+<p>As an example of representing the probability of an event using the law of total probability, we consider the probability space model of the fair die. For the outcome space <span class="math inline">\(\Omega := \{1,2,3,4,5,6\}\)</span>, we consider the event <span class="math inline">\(B := \{2,4,6\}\)</span> (“An even number appears”) with probability <span class="math inline">\(\mathbb{P}(B) = \frac{1}{2}\)</span> as well as the partition <span class="math inline">\(A_1 := \{1,2\}\)</span>, <span class="math inline">\(A_2 := \{3\}\)</span>, <span class="math inline">\(A_3 := \{4,5\}\)</span>, <span class="math inline">\(A_4 := \{6\}\)</span> of <span class="math inline">\(\Omega\)</span>. Then apparently</p>
+<p><span class="math display">\[\begin{equation}
+\begin{array}{lllllll}
+\mathbb{P}\left(B \cap A_1\right) &amp; = &amp; \mathbb{P}\left(\{2,4,6\} \cap \{1,2\}\right) &amp; = &amp; \mathbb{P}\left(\{2\}\right) &amp; = &amp; \frac{1}{6} \\
+\mathbb{P}\left(B \cap A_2\right) &amp; = &amp; \mathbb{P}\left(\{2,4,6\} \cap \{3\}\right) &amp; = &amp; \mathbb{P}\left(\emptyset\right) &amp; = &amp; 0 \\
+\mathbb{P}\left(B \cap A_3\right) &amp; = &amp; \mathbb{P}\left(\{2,4,6\} \cap \{4,5\}\right) &amp; = &amp; \mathbb{P}\left(\{4\}\right) &amp; = &amp; \frac{1}{6} \\
+\mathbb{P}\left(B \cap A_4\right) &amp; = &amp; \mathbb{P}\left(\{2,4,6\} \cap \{6\}\right) &amp; = &amp; \mathbb{P}\left(\{6\}\right) &amp; = &amp; \frac{1}{6}
+\end{array}
+\end{equation}\]</span></p>
+<p>Thus we obtain <span class="math display">\[\begin{align}
+\begin{split}
+\sum_{i=1}^4 \mathbb{P}(B \cap A_i)
+&amp; = \mathbb{P}(B \cap A_1) + \mathbb{P}(B \cap A_2) + \mathbb{P}(B \cap A_3) + \mathbb{P}(B \cap A_4) \\
+&amp; = \frac{1}{6} + 0 + \frac{1}{6} + \frac{1}{6} \\
+&amp; = \frac{1}{2}
+\end{split}
+\end{align}\]</span> and hence <span class="math display">\[\begin{equation}
+\mathbb{P}(B) = \sum_{i=1}^4 \mathbb{P}(B \cap A_i).
+\end{equation}\]</span> Note that the partition property of <span class="math inline">\(A_1,A_2,A_3,A_4\)</span> is essential for the validity of the theorem in this example. If, for example, <span class="math inline">\(A_4 = \{4,6\}\)</span> and thus <span class="math inline">\(A_3\)</span> and <span class="math inline">\(A_4\)</span> were not disjoint, then the right-hand side of the law of total probability would yield a value greater than <span class="math inline">\(\mathbb{P}(B)\)</span>. If, by contrast, the union of <span class="math inline">\(A_1,A_2,A_3,A_4\)</span> did not yield <span class="math inline">\(\Omega\)</span>, for example because <span class="math inline">\(A_4 = \emptyset\)</span>, then conversely a value smaller than <span class="math inline">\(\mathbb{P}(B)\)</span> would result.</p>
+<p>Finally, with <em>Bayes’ theorem</em>, we consider a formula for the alternative calculation of conditional probabilities.</p>
+<div id="thm-bayes-theorem" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 20.5 (Bayes’ theorem)</strong></span> Let <span class="math inline">\((\Omega,\mathcal{A},\mathbb{P})\)</span> be a probability space and let <span class="math inline">\(A_1, ...,A_k\)</span> be a partition of <span class="math inline">\(\Omega\)</span> with <span class="math inline">\(\mathbb{P}(A_i) &gt; 0\)</span> for all <span class="math inline">\(i = 1,...,k\)</span>. If <span class="math inline">\(\mathbb{P}(B) &gt; 0\)</span>, then for every <span class="math inline">\(i = 1,...,k\)</span>, <span class="math display">\[\begin{equation}
+\mathbb{P}(A_i|B) = \frac{\mathbb{P}(B|A_i)\mathbb{P}(A_i)}{\sum_{i=1}^k \mathbb{P}(B|A_i)\mathbb{P}(A_i)}.
+\end{equation}\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>With the definition of conditional probability and the law of total probability, <span class="math display">\[\begin{equation}
+\mathbb{P}(A_i|B)
+= \frac{\mathbb{P}(A_i \cap B)}{\mathbb{P}(B)}
+= \frac{\mathbb{P}(B|A_i)\mathbb{P}(A_i)}{\mathbb{P}(B)}
+= \frac{\mathbb{P}(B|A_i)\mathbb{P}(A_i)}{\sum_{i=1}^k \mathbb{P}(B|A_i)\mathbb{P}(A_i)}.
+\end{equation}\]</span></p>
+</div>
+<p>Note that Bayes’ theorem is independent of the frequentist or Bayesian interpretation of probability and merely makes a statement about calculating with conditional probabilities. In frequentist inference, however, Bayes’ theorem is used rather rarely. In Bayesian inference, by contrast, Bayes’ theorem is central. In this context, <span class="math inline">\(\mathbb{P}(A_i)\)</span> is then often called the <em>prior probability of event <span class="math inline">\(A_i\)</span></em> and <span class="math inline">\(\mathbb{P}(A_i|B)\)</span> the <em>posterior probability of event <span class="math inline">\(A_i\)</span></em>. As explained above, <span class="math inline">\(\mathbb{P}(A_i|B)\)</span> corresponds to the probability of <span class="math inline">\(A_i\)</span> when one knows about the occurrence of <span class="math inline">\(B\)</span>.</p>
+<p>In applications, the results formulated here as the <em>law of total probability</em> (<a href="#thm-law-of-total-probability" class="quarto-xref">Theorem&nbsp;<span>20.4</span></a>), the <em>theorem on joint and conditional probabilities</em> (<a href="#thm-joint-and-conditional-probabilities" class="quarto-xref">Theorem&nbsp;<span>20.3</span></a>), and <em>Bayes’ theorem</em> (<a href="#thm-bayes-theorem" class="quarto-xref">Theorem&nbsp;<span>20.5</span></a>) are often used as the central calculation rules of probability theory. In practice, they are usually called the <em>summation rule</em>, <em>multiplication rule</em>, and <em>Bayes rule</em> (cf. <a href="#tbl-calculation-rules-of-probability-theory" class="quarto-xref">Table&nbsp;<span>20.2</span></a>).</p>
+<div id="tbl-calculation-rules-of-probability-theory" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-calculation-rules-of-probability-theory-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;20.2: Central calculation rules of probability theory
+</figcaption>
+<div aria-describedby="tbl-calculation-rules-of-probability-theory-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 15%">
+<col style="width: 84%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Calculation rule</th>
+<th style="text-align: left;">Probability space form</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Multiplication rule</td>
+<td style="text-align: left;"><span class="math inline">\(\mathbb{P}(A \cap B) = \mathbb{P}(B|A) \, \mathbb{P}(A)\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Summation rule</td>
+<td style="text-align: left;"><span class="math inline">\(\mathbb{P}(B) = \sum_{i=1}^k \mathbb{P}(B \cap A_i)\)</span>, if <span class="math inline">\(\Omega = \cup_{i=1}^k A_i\)</span> and <span class="math inline">\(A_i \cap A_j = \emptyset\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Bayes rule</td>
+<td style="text-align: left;"><span class="math inline">\(\mathbb{P}(A|B) = \frac{\mathbb{P}(B|A)\mathbb{P}(A)}{\mathbb{P}(B)}\)</span>, if <span class="math inline">\(\mathbb{P}(B)&gt;0\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+</section>
+<section id="sec-independent-events" class="level2" data-number="20.3">
+<h2 data-number="20.3" class="anchored" data-anchor-id="sec-independent-events"><span class="header-section-number">20.3</span> Independent events</h2>
+<p>The independence of events serves to model the absence of mutual influences of events. Its definition states that the joint probability of two events should result from the product of the probabilities of the individual events. In this context, one also speaks of the <em>factorization of the joint probability</em> of the events. The meaning of this definition becomes clear in light of the concept of conditional probability in <a href="#thm-conditional-probability-under-independence" class="quarto-xref">Theorem&nbsp;<span>20.6</span></a>. We first consider the definition.</p>
+<div id="def-independent-events" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 20.3 (Independent events)</strong></span> Two events <span class="math inline">\(A \in \mathcal{A}\)</span> and <span class="math inline">\(B \in \mathcal{A}\)</span> are called <em>independent</em> if <span class="math display">\[\begin{equation}
+\mathbb{P}(A \cap B) = \mathbb{P}(A)\mathbb{P}(B).
+\end{equation}\]</span> A set of events <span class="math inline">\(\{A_i|i \in I\}\subset \mathcal{A}\)</span> with arbitrary index set <span class="math inline">\(I\)</span> is called <em>independent</em> if for every finite subset <span class="math inline">\(J \subseteq I\)</span>, <span class="math display">\[\begin{equation}
+\mathbb{P}\left(\cap_{j \in J} A_j \right) = \prod_{j \in J}\mathbb{P}(A_j).
+\end{equation}\]</span></p>
+</div>
+<p>Note that the independence of certain events can be assumed in the definition of a probabilistic model or can also follow from the definition of a probabilistic model. If two events are not independent, one also says that these events are <em>dependent</em>. The meaning of the product property under independence becomes clear, as we show below, in the context of conditional probabilities. First, we give an example that illustrates the relationship between independence and pairwise independence of events.</p>
+<p><strong>Example</strong></p>
+<p>Independent events are by definition always also pairwise independent. For example, for the set <span class="math inline">\(\{A_i| i \in \{1,2,3\}\}\)</span> of events and the possible subsets <span class="math inline">\(J_1 := \{1,2\}\)</span>, <span class="math inline">\(J_2 := \{1,3\}\)</span>, <span class="math inline">\(J_3 := \{2,3\}\)</span>, <span class="math inline">\(J := \{1,2,3\}\)</span> of <span class="math inline">\(I = \{1,2,3\}\)</span>, the defining condition of independence of <span class="math inline">\(A_1,A_2,A_3\)</span> implies the statements <span class="math display">\[\begin{align}
+\begin{split}
+\mathbb{P}\left(A_1 \cap A_2\right)             &amp; = \mathbb{P}\left(A_1\right)\mathbb{P}\left(A_2\right)                            \\
+\mathbb{P}\left(A_1 \cap A_3\right)             &amp; = \mathbb{P}\left(A_1\right)\mathbb{P}\left(A_3\right)                            \\
+\mathbb{P}\left(A_2 \cap A_3\right)             &amp; = \mathbb{P}\left(A_2\right)\mathbb{P}\left(A_3\right)                             \\
+\mathbb{P}\left(A_1 \cap A_2 \cap A_3\right)    &amp; = \mathbb{P}\left(A_1\right)\mathbb{P}\left(A_2\right)\mathbb{P}\left(A_2\right)
+\end{split}
+\end{align}\]</span> Conversely, pairwise independence of events does not imply independence of events, as the following example shows (cf. <span class="citation" data-cites="degroot2012">DeGroot &amp; Schervish (<a href="#ref-degroot2012" role="doc-biblioref">2012</a>)</span>). Consider the model of tossing a fair coin twice with outcome space <span class="math display">\[\begin{equation}
+\Omega := \{HH, HT, TH, TT\}
+\end{equation}\]</span> with elementary event probabilities <span class="math display">\[\begin{equation}
+\mathbb{P}\{HH\}
+= \mathbb{P}\{HT\}
+= \mathbb{P}\{TH\}
+= \mathbb{P}\{TT\}
+= \frac{1}{4}
+\end{equation}\]</span> Then the events listed in <a href="#tbl-coin-toss-example-for-independence" class="quarto-xref">Table&nbsp;<span>20.3</span></a> are pairwise independent, but not independent.</p>
+<div id="tbl-coin-toss-example-for-independence" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-coin-toss-example-for-independence-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;20.3: Coin-toss example for independence
+</figcaption>
+<div aria-describedby="tbl-coin-toss-example-for-independence-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Verbal description</th>
+<th style="text-align: left;">Set form</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Heads appears on the first toss</td>
+<td style="text-align: left;"><span class="math inline">\(A_1 := \{HH, HT\}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Heads appears on the second toss</td>
+<td style="text-align: left;"><span class="math inline">\(A_2 := \{HH, TH\}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">The same outcome appears on both tosses</td>
+<td style="text-align: left;"><span class="math inline">\(A_3 := \{HH, TT\}\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>Here, apparently, <span class="math display">\[\begin{equation}
+\mathbb{P}\left(A_1 \right) = \mathbb{P}\left(A_2 \right)= \mathbb{P}\left(A_2 \right) = \frac{1}{2},
+\end{equation}\]</span> and <span class="math display">\[\begin{align}
+\begin{split}
+\mathbb{P}\left(A_1 \cap A_2 \right) &amp; = \mathbb{P}\left(\{HH\}\right) = \frac{1}{4} = \frac{1}{2} \cdot \frac{1}{2} = \mathbb{P}\left(A_1 \right)\mathbb{P}\left(A_2 \right), \\
+\mathbb{P}\left(A_1 \cap A_3 \right) &amp; = \mathbb{P}\left(\{HH\}\right) = \frac{1}{4} = \frac{1}{2} \cdot \frac{1}{2} = \mathbb{P}\left(A_2 \right)\mathbb{P}\left(A_3 \right), \\
+\mathbb{P}\left(A_2 \cap A_3 \right) &amp; = \mathbb{P}\left(\{HH\}\right) = \frac{1}{4} = \frac{1}{2} \cdot \frac{1}{2} = \mathbb{P}\left(A_1 \right)\mathbb{P}\left(A_3 \right). \\
+\end{split}
+\end{align}\]</span> The events are therefore pairwise independent. However, it is also true that <span class="math display">\[\begin{equation}
+\mathbb{P}\left(A_1 \cap A_2 \cap A_3 \right)
+= \mathbb{P}\left(\{HH\}\right)
+= \frac{1}{4}
+\neq \frac{1}{8}
+= \frac{1}{2} \cdot \frac{1}{2} \cdot \frac{1}{2}
+= \mathbb{P}\left(A_1\right)\mathbb{P}\left(A_2\right)\mathbb{P}\left(A_3\right)
+\end{equation}\]</span> and the events <span class="math inline">\(A_1, A_2, A_3\)</span> are therefore not independent.</p>
+<p>Finally, with the relation between independence and conditional probability, we explain the meaning of the product property under independence.</p>
+<div id="thm-conditional-probability-under-independence" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 20.6 (Conditional probability under independence)</strong></span> Let <span class="math inline">\((\Omega,\mathcal{A}, \mathbb{P})\)</span> be a probability space and let <span class="math inline">\(A,B\in \mathcal{A}\)</span> be independent events with <span class="math inline">\(\mathbb{P}(B) &gt; 0\)</span>. Then <span class="math display">\[\begin{equation}
+\mathbb{P}(A|B) = \mathbb{P}(A).
+\end{equation}\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>Under the assumptions of the theorem, <span class="math display">\[\begin{equation}
+\mathbb{P}(A|B)
+= \frac{\mathbb{P}(A \cap B)}{\mathbb{P}(B)}
+= \frac{\mathbb{P}(A)\mathbb{P}(B)}{\mathbb{P}(B)}
+= \mathbb{P}(A).
+\end{equation}\]</span></p>
+</div>
+<p>Given independence of two events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>, it is therefore irrelevant for the probability of event <span class="math inline">\(A\)</span> whether <span class="math inline">\(B\)</span> also occurs or not; the probability <span class="math inline">\(\mathbb{P}(A)\)</span> remains the same. Independence of events is thus modeled precisely as factorization of the joint probability of <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> so that <span class="math inline">\(\mathbb{P}(A|B) = \mathbb{P}(A)\)</span> follows. From the perspective of modeling subjective uncertainty through probabilities, the independence of two events means that knowing about the presence of one of the two events does not change the probability of the presence of the other event. Conversely, dependence of two events means that knowing about the presence of one of the two events changes the probability of the presence of the other event, that is, either increases or decreases it.</p>
+<p><strong>Example</strong></p>
+<p>We want to illustrate the relation between independence, conditional probability, and factorization of the joint probability using the model of the fair die. To this end, we consider the event <span class="math inline">\(A := \{2,4,6\}\)</span> (“An even number appears”) and the event <span class="math inline">\(B := \{3,4,5,6\}\)</span> (“A number greater than two appears”). Intuitively, the probability that an even number has appeared does not change if one knows that a number greater than two has appeared: if one has the information that a number greater than two has appeared, then three of six cases correspond to the event of an even number appearing; if one has the information, then two of four cases correspond to the event of an even number appearing. The relative proportion of cases corresponding to the event “An even number appears” therefore remains the same in view of the absence or presence of the information “A number greater than two appears”.</p>
+<p>Formally, we first establish the factorization of the joint probability of the two events, that is, of the event “An even number appears and this number is greater than two”, into the product of the probabilities of the two events. Here, with the <span class="math inline">\(\sigma\)</span>-additivity of <span class="math inline">\(\mathbb{P}\)</span>, <span class="math display">\[\begin{align}
+\begin{split}
+\mathbb{P}(A \cap B)
+&amp; = \mathbb{P}\left(\{2,4,6\} \cap \{3,4,5,6\}\right)\\
+&amp; = \mathbb{P}\left(\{4,6\}\right)\\
+&amp; = \frac{2}{6}\\
+&amp; = \frac{1}{2}\cdot\frac{2}{3}\\
+&amp; = \mathbb{P}(\{2,4,6\})\cdot\mathbb{P}(\{3,4,5,6\})\\
+&amp; = \mathbb{P}(A)\mathbb{P}(B)\\
+\end{split}
+\end{align}\]</span> Thus the joint probability of <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> can be written as the product of the probabilities of <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>. For the conditional probability of <span class="math inline">\(A\)</span> given <span class="math inline">\(B\)</span>, we further have <span class="math display">\[\begin{align}
+\begin{split}
+\mathbb{P}(A|B)
+&amp; = \frac{\mathbb{P}(A \cap B)}{\mathbb{P}(B)}\\
+&amp; = \frac{\mathbb{P}\left(\{4,6\}\right)}{\mathbb{P}(\{3,4,5,6\})}\\
+&amp; = \frac{1}{3} \cdot \frac{3}{2}\\
+&amp; = \frac{1}{2}\\
+&amp; = \mathbb{P}(\{2,4,6\})\\
+&amp; = \mathbb{P}(A)
+\end{split}
+\end{align}\]</span> Thus in this example both <a href="#def-independent-events" class="quarto-xref">Definition&nbsp;<span>20.3</span></a> and <a href="#thm-conditional-probability-under-independence" class="quarto-xref">Theorem&nbsp;<span>20.6</span></a> are satisfied.</p>
+<p>The property of events of being independent should not be confused with the possibility that events can be disjoint. In fact, the following theorem holds.</p>
+<div id="thm-disjointness-and-dependence-of-events" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 20.7 (Disjointness and dependence of events)</strong></span> Let <span class="math inline">\(A \in \mathcal{A}\)</span> and <span class="math inline">\(B \in \mathcal{A}\)</span> be two disjoint events with <span class="math inline">\(\mathbb{P}(A)&gt;0\)</span> and <span class="math inline">\(\mathbb{P}(B)&gt;0\)</span>. Then <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are dependent events.</p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>First, because of the disjointness of <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>, <span class="math display">\[\begin{equation}
+\mathbb{P}(A \cap B) = \mathbb{P}(\emptyset) = 0
+\end{equation}\]</span> Second, <span class="math display">\[\begin{equation}
+\mathbb{P}(A)\mathbb{P}(B) &gt; 0,
+\end{equation}\]</span> because by assumption both <span class="math inline">\(\mathbb{P}(A)&gt;0\)</span> and <span class="math inline">\(\mathbb{P}(B)&gt;0\)</span> hold. Thus <span class="math display">\[\begin{equation}
+\mathbb{P}(A \cap B) \neq \mathbb{P}(A)\mathbb{P}(B)
+\end{equation}\]</span> and by <a href="#def-independent-events" class="quarto-xref">Definition&nbsp;<span>20.3</span></a>, <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are therefore not independent, hence dependent.</p>
+</div>
+<p><strong>Example</strong></p>
+<p>We want to illustrate <a href="#thm-disjointness-and-dependence-of-events" class="quarto-xref">Theorem&nbsp;<span>20.7</span></a> using the example of the fair die. Let <span class="math inline">\(A = \{2,4,6\}\)</span> be the event “An even number appears” and <span class="math inline">\(B = \{1,3,5\}\)</span> the event “An odd number appears”. Intuitively, the events are dependent, because the information that an even number has appeared reduces the subjective probability that an odd number has appeared to zero. Formally, on the one hand, <span class="math display">\[\begin{equation}
+\mathbb{P}(A)\mathbb{P}(B) = \frac{1}{2}\cdot \frac{1}{2} = \frac{1}{4},
+\end{equation}\]</span> but <span class="math display">\[\begin{equation}
+\mathbb{P}(A \cap B)
+= \mathbb{P}\left(\{2,4,6\} \cap \{1,3,5\}\right)
+= \mathbb{P}\left(\emptyset\right)
+= 0.
+\end{equation}\]</span> On the other hand, it is also true that <span class="math display">\[\begin{equation}
+\mathbb{P}(A|B)
+= \frac{\mathbb{P}(A \cap B)}{\mathbb{P}(B)}
+= \frac{\mathbb{P}(\emptyset)}{\mathbb{P}(B)}
+= \frac{0}{\mathbb{P}(B)}
+= 0
+\neq
+= \frac{1}{2}
+= \mathbb{P}(\{2,4,6\})
+= \mathbb{P}(A).
+\end{equation}\]</span></p>
+</section>
+<section id="literature-notes" class="level2" data-number="20.4">
+<h2 data-number="20.4" class="anchored" data-anchor-id="literature-notes"><span class="header-section-number">20.4</span> Literature notes</h2>
+<p>Many of the concepts introduced in this section are closely interwoven with the historical genesis of probability theory, so no individual references will be given. An introduction to the history of probability theory of the last two centuries is provided by <span class="citation" data-cites="hald1990">Hald (<a href="#ref-hald1990" role="doc-biblioref">1990</a>)</span>, and an overview of more modern developments is given by <span class="citation" data-cites="vonplato1994">Von Plato (<a href="#ref-vonplato1994" role="doc-biblioref">1994</a>)</span>. Bayes’ theorem is generally traced back to <span class="citation" data-cites="bayes1763">Bayes (<a href="#ref-bayes1763" role="doc-biblioref">1763</a>)</span>, even though it is not the actual main topic of this work.</p>
+</section>
+<section id="self-control-questions" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="self-control-questions">Self-control questions</h2>
+<ol type="1">
+<li>State the definition of the joint probability of two events.</li>
+<li>Explain the intuitive meaning of the joint probability of two events.</li>
+<li>State the theorem on further properties of probabilities.</li>
+<li>State the definition of the conditional probability of an event.</li>
+<li>State the theorem on conditional probability.</li>
+<li>State the theorem on joint and conditional probabilities.</li>
+<li>State the law of total probability.</li>
+<li>State Bayes’ theorem.</li>
+<li>Reproduce the proof of Bayes’ theorem.</li>
+<li>State the definition of the independence of two events.</li>
+<li>State the theorem on conditional probability under independence.</li>
+<li>Reproduce the proof of the theorem on conditional probability under independence.</li>
+<li>Explain the theorem on conditional probability under independence.</li>
+</ol>
+</section>
+<section id="solutions" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="solutions">Solutions</h2>
+<ol type="1">
+<li>See <a href="#def-joint-probability" class="quarto-xref">Definition&nbsp;<span>20.1</span></a>.</li>
+<li>See the remarks on <a href="#def-joint-probability" class="quarto-xref">Definition&nbsp;<span>20.1</span></a>.</li>
+<li>See <a href="#thm-further-properties-of-probabilities" class="quarto-xref">Theorem&nbsp;<span>20.1</span></a>.</li>
+<li>See <a href="#def-conditional-probability" class="quarto-xref">Definition&nbsp;<span>20.2</span></a>.</li>
+<li>See <a href="#thm-conditional-probability" class="quarto-xref">Theorem&nbsp;<span>20.2</span></a>.</li>
+<li>See <a href="#thm-joint-and-conditional-probabilities" class="quarto-xref">Theorem&nbsp;<span>20.3</span></a>.</li>
+<li>See <a href="#thm-law-of-total-probability" class="quarto-xref">Theorem&nbsp;<span>20.4</span></a>.</li>
+<li>See <a href="#thm-bayes-theorem" class="quarto-xref">Theorem&nbsp;<span>20.5</span></a>.</li>
+<li>See proof of <a href="#thm-bayes-theorem" class="quarto-xref">Theorem&nbsp;<span>20.5</span></a>.</li>
+<li>See <a href="#def-independent-events" class="quarto-xref">Definition&nbsp;<span>20.3</span></a>.</li>
+<li>See <a href="#thm-conditional-probability-under-independence" class="quarto-xref">Theorem&nbsp;<span>20.6</span></a>.</li>
+<li>See proof of <a href="#thm-conditional-probability-under-independence" class="quarto-xref">Theorem&nbsp;<span>20.6</span></a>.</li>
+<li>See remarks on <a href="#thm-conditional-probability-under-independence" class="quarto-xref">Theorem&nbsp;<span>20.6</span></a>.</li>
+</ol>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-bayes1763" class="csl-entry" role="listitem">
+Bayes, T. (1763). <span>An essay towards solving a problem in the doctrine of chances. By the late Rev. Mr. Bayes, F. R. S. communicated by Mr. Price, in a letter to John Canton, A. M. F. R. S</span>. <em>Philosophical Transactions of the Royal Society of London</em>, <em>53</em>, 370–418. <a href="https://doi.org/10.1098/rstl.1763.0053">https://doi.org/10.1098/rstl.1763.0053</a>
+</div>
+<div id="ref-degroot2012" class="csl-entry" role="listitem">
+DeGroot, M. H., &amp; Schervish, M. J. (2012). <em>Probability and statistics</em> (4th ed). Addison-Wesley.
+</div>
+<div id="ref-hald1990" class="csl-entry" role="listitem">
+Hald, A. (1990). <em>A history of probability and statistics and their applications before 1750</em>. Wiley.
+</div>
+<div id="ref-herzog2013" class="csl-entry" role="listitem">
+Herzog, S., &amp; Ostwald, D. (2013). Sometimes <span>Bayesian</span> statistics are better. <em>Nature</em>, <em>494</em>(7435), 35–35. <a href="https://doi.org/10.1038/494035b">https://doi.org/10.1038/494035b</a>
+</div>
+<div id="ref-meintrup2005" class="csl-entry" role="listitem">
+Meintrup, D., &amp; Schäffler, S. (2005). <em><span>Stochastik: Theorie und Anwendungen</span></em>. Springer.
+</div>
+<div id="ref-schmidt2009" class="csl-entry" role="listitem">
+Schmidt, K. D. (2009). <em><span>Maß und Wahrscheinlichkeit</span></em>. Springer.
+</div>
+<div id="ref-vonplato1994" class="csl-entry" role="listitem">
+Von Plato, J. (1994). <em>Creating modern probability: Its mathematics, physics, and philosophy in historical perspective</em>. Cambridge University Press.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script>
+(function () {
+  var base = "https://dirk-ostwald.github.io";
+  var pageMap = {
+    "/": "/en/",
+    "/index.html": "/en/",
+    "/Referenzen.html": "/en/References.html",
+    "/_part_1/100-Mathematische-Grundlagen.html": "/en/_part_1/100-Mathematical-Foundations.html",
+    "/_part_1/101-Sprache-und-Logik.html": "/en/_part_1/101-Language-and-Logic.html",
+    "/_part_1/102-Mengen.html": "/en/_part_1/102-Sets.html",
+    "/_part_1/103-Summen-Produkte-Potenzen.html": "/en/_part_1/103-Sums-Products-Powers.html",
+    "/_part_1/104-Funktionen.html": "/en/_part_1/104-Functions.html",
+    "/_part_1/105-Folgen-Grenzwerte-Stetigkeit.html": "/en/_part_1/105-Sequences-Limits-Continuity.html",
+    "/_part_1/106-Differenzialrechnung.html": "/en/_part_1/106-Differential-Calculus.html",
+    "/_part_1/107-Integralrechnung.html": "/en/_part_1/107-Integral-Calculus.html",
+    "/_part_1/108-Vektoren.html": "/en/_part_1/108-Vectors.html",
+    "/_part_1/109-Matrizen.html": "/en/_part_1/109-Matrices.html",
+    "/_part_1/110-Deskriptivstatistiken.html": "/en/_part_1/110-Descriptive-Statistics.html",
+    "/_part_2/200-Imperative-Programmierung.html": "/en/_part_2/200-Imperative-Programming.html",
+    "/_part_2/201-Informatische-Grundbegriffe.html": "/en/_part_2/201-Basic-Concepts-of-Computer-Science.html",
+    "/_part_2/202-Arithmetik-und-Variablen.html": "/en/_part_2/202-Arithmetic-and-Variables.html",
+    "/_part_2/203-Datenstrukturen.html": "/en/_part_2/203-Data-Structures.html",
+    "/_part_2/204-Vektoren.html": "/en/_part_2/204-Vectors.html",
+    "/_part_2/205-Matrizen-und-Arrays.html": "/en/_part_2/205-Matrices-and-Arrays.html",
+    "/_part_2/206-Listen-Dataframes-und-Tibbles.html": "/en/_part_2/206-Lists-Dataframes-and-Tibbles.html",
+    "/_part_2/207-Datenmanagement.html": "/en/_part_2/207-Data-Management.html",
+    "/_part_2/208-Kontrollstrukturen.html": "/en/_part_2/208-Control-Structures.html",
+    "/_part_3/300-Wahrscheinlichkeitstheorie.html": "/en/_part_3/300-Probability-Theory.html",
+    "/_part_3/301-Wahrscheinlichkeitsräume.html": "/en/_part_3/301-Probability-Spaces.html",
+    "/_part_3/302-Elementare-Wahrscheinlichkeiten.html": "/en/_part_3/302-Elementary-Probabilities.html"
+  };
+  var reversePageMap = {};
+  Object.keys(pageMap).forEach(function (key) {
+    reversePageMap[pageMap[key]] = key;
+  });
+  function headings() {
+    return Array.prototype.slice.call(document.querySelectorAll("main.content h1[id], main.content h2[id], main.content h3[id], main.content h4[id]"));
+  }
+  function currentHeadingIndex() {
+    var hash = window.location.hash;
+    if (!hash) return "";
+    var id = hash.slice(1);
+    try {
+      id = decodeURIComponent(id);
+    } catch (error) {}
+    var list = headings();
+    for (var i = 0; i < list.length; i++) {
+      if (list[i].id === id) return String(i);
+    }
+    return "";
+  }
+  function scrollToHeadingIndex() {
+    var params = new URLSearchParams(window.location.search);
+    var value = params.get("h");
+    if (value === null) return;
+    var index = Number(value);
+    var list = headings();
+    if (Number.isInteger(index) && index >= 0 && index < list.length) {
+      list[index].scrollIntoView();
+      if (history.replaceState) {
+        history.replaceState(null, "", window.location.pathname + "#" + list[index].id);
+      }
+    }
+  }
+  var path = window.location.pathname;
+  var target = pageMap[path] || reversePageMap[path];
+  if (target) {
+    document.querySelectorAll("a.nav-link").forEach(function (link) {
+      var text = link.textContent.trim();
+      if (text === "English" || text === "Deutsch") {
+        var index = currentHeadingIndex();
+        link.href = base + target + (index ? "?h=" + index : "");
+      }
+    });
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", scrollToHeadingIndex);
+  } else {
+    scrollToHeadingIndex();
+  }
+}());
+</script>
+
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../_part_3/301-Probability-Spaces.html" class="pagination-link" aria-label="Probability spaces">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Probability spaces</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../References.html" class="pagination-link" aria-label="References">
+        <span class="nav-page-text">References</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/_part_3/302-Elementary-Probabilities.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></div></div></footer></body></html>
