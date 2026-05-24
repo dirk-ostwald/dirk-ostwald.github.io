@@ -49,10 +49,10 @@ vorliegen haben.
 ```{r, echo = F, eval = F}
 # Simulation
 set.seed(5)
-n           = 50                                                                # Proband:innen pro Gruppe
-mu          = c(18, 12, 19, 14)                                                 # \mu PRE F2F, PRE ONL, POS F2F, POS ONL
-sigsqr      = 3                                                                 # Varianzparameter
-D           = data.frame(                                                       # Dataframe
+n           = 50  # Proband:innen pro Gruppe
+mu          = c(18, 12, 19, 14)  # \mu PRE F2F, PRE ONL, POS F2F, POS ONL
+sigsqr      = 3  # Varianzparameter
+D           = data.frame(  # Dataframe
                 c(rep("T",n), rep("C", n)),
                 c(round(rnorm(n, mu[1], sqrt(sigsqr))), round(rnorm(n, mu[3], sqrt(sigsqr)))),
                 c(round(rnorm(n, mu[2], sqrt(sigsqr))), round(rnorm(n, mu[4], sqrt(sigsqr)))))
@@ -64,8 +64,8 @@ write.csv(D, "./_data/110-deskriptive-statistik.csv", row.names = FALSE)
 ```{r}
 #| label: tbl-datensatz
 #| tbl-cap: "BDI-II-Werte (PRE) von n = 100 Patient:innen in einer Treatment (T) und einer Kontrollstudiengruppe (C) vor Beginn einer psychologischen Intervention"
-D  = read.csv("./_data/110-deskriptive-statistik.csv")                          # Laden des Datensatzes
-knitr::kable(D[,1:2], digits = 2, align = "c")                                  # R-Markdown-Tabellenoutput
+D  = read.csv("./_data/110-deskriptive-statistik.csv")  # Laden des Datensatzes
+knitr::kable(D[,1:2], digits = 2, align = "c")  # R-Markdown-Tabellenoutput
 ```
 
 \normalsize
@@ -97,13 +97,13 @@ Daten des Beispieldatensatzes.
 
 \tiny
 ```{r}
-D           = read.csv("./_data/110-deskriptive-statistik.csv")                 # Laden des Datensatzes
-y 			= D$PRE                                         					# Double vector der PRE Werte
-n 			= length(y)						                                    # Anzahl der Datenwerte (100)
-H 			= as.data.frame(table(y))	                                        # absolute Häufigkeitsverteilung (dataframe)
-names(H)    = c("w", "ah")					                                    # Spaltenbenennung
-H$rh 		= H$ah/n 						                                    # relative Häufigkeitsverteilung
-print(H, digits = 1)						                                    # Ausgabe
+D           = read.csv("./_data/110-deskriptive-statistik.csv")  # Laden des Datensatzes
+y             = D$PRE  # Double vector der PRE Werte
+n             = length(y)  # Anzahl der Datenwerte (100)
+H             = as.data.frame(table(y))  # absolute Häufigkeitsverteilung (dataframe)
+names(H)    = c("w", "ah")  # Spaltenbenennung
+H$rh         = H$ah/n  # relative Häufigkeitsverteilung
+print(H, digits = 1)  # Ausgabe
 ```
 \normalsize
 
@@ -126,34 +126,34 @@ niedrigere oder höhere Werte wie 13 bzw. 23 dagegen eher selten sind.
 
 \tiny
 ```{r eval = F, message = F, warning = F}
-pdf(								                                            # PDF Kopiefunktion
-file  		= "./_figures/110-haeufigkeitsverteilungen.pdf",                    # Dateiname
-width 		= 7, 							                                    # Breite (inch)
-height 		= 4)        					                                    # Höhe (inch)
-par(                                                                            # Abbildungsparameter
-mfcol       = c(1,2),                                                           # Zeilen und Spaltenlayout
-las         = 1,                                                                # x-Tick Orientierung
-cex         = 0.7,                                                              # Annotationsvergrößerung
-cex.main    = 1.3)                                                              # Titelvergrößerung
-h 		    = H$ah                      	                                    # h(w) Werte
-r 		    = H$rh                      	                                    # r(w) Werte
-names(h)    = H$w         					                                    # barplot braucht w Werte als names
-names(r)    = H$w         					                                    # barplot braucht w Werte als names
-barplot( 									                                    # Balkendiagramm
-h,     										                                    # absolute Haeufigkeiten
-col   	    = "gray90",        			 	                                    # Balkenfarbe
-xlab  		= "w",          				                                    # x Achsenbeschriftung
-ylab  		= "h(w)",     					                                    # y Achsenbeschriftung
-ylim        = c(0,25),                                                          # y Achsengrenzen
-main  		= "Absolute Häufigkeitsverteilung")        			                # Titel
-barplot( 									                                    # Balkendiagramm
-r,     										                                    # absolute Haeufigkeiten
-col   	    = "gray90",        			 	                                    # Balkenfarbe
-xlab  		= "w",          				                                    # x Achsenbeschriftung
-ylab  		= "r(w)",     					                                    # y Achsenbeschriftung
-ylim        = c(0,.25),                                                         # y Achsengrenzen
-main  		= "Relative Häufigkeitsverteilung")          		                # Titel
-dev.off()                                                                       # Beenden der Abbildungsbearbeitung
+pdf(  # PDF Kopiefunktion
+file          = "./_figures/110-haeufigkeitsverteilungen.pdf",  # Dateiname
+width         = 7,  # Breite (inch)
+height         = 4)  # Höhe (inch)
+par(  # Abbildungsparameter
+mfcol       = c(1,2),  # Zeilen und Spaltenlayout
+las         = 1,  # x-Tick Orientierung
+cex         = 0.7,  # Annotationsvergrößerung
+cex.main    = 1.3)  # Titelvergrößerung
+h             = H$ah  # h(w) Werte
+r             = H$rh  # r(w) Werte
+names(h)    = H$w  # barplot braucht w Werte als names
+names(r)    = H$w  # barplot braucht w Werte als names
+barplot(  # Balkendiagramm
+h,  # absolute Haeufigkeiten
+col           = "gray90",  # Balkenfarbe
+xlab          = "w",  # x Achsenbeschriftung
+ylab          = "h(w)",  # y Achsenbeschriftung
+ylim        = c(0,25),  # y Achsengrenzen
+main          = "Absolute Häufigkeitsverteilung")  # Titel
+barplot(  # Balkendiagramm
+r,  # absolute Haeufigkeiten
+col           = "gray90",  # Balkenfarbe
+xlab          = "w",  # x Achsenbeschriftung
+ylab          = "r(w)",  # y Achsenbeschriftung
+ylim        = c(0,.25),  # y Achsengrenzen
+main          = "Relative Häufigkeitsverteilung")  # Titel
+dev.off()  # Beenden der Abbildungsbearbeitung
 ```
 \normalsize
 ![Absolute und relative Häufigkeitsverteilungen der Pre-Interventions-BDI-II-Werte.](./_figures/110-haeufigkeitsverteilungen){#fig-haeufigkeitsverteilungen fig-align="center" width=80%}
@@ -211,16 +211,16 @@ und bestimmen seine minimalen und maximalen Werte $b_0$ und $b_k$.
 \tiny
 ```{r}
 # Datensatz
-D       = read.csv("./_data/110-deskriptive-statistik.csv")                     # Laden des Datensatzes
-y       = D$PRE                                                                 # Pre-Interventions-BDI-II-Daten
-b_0     = min(y)                                                                # b_0
-b_k     = max(y)                                                                # b_k
+D       = read.csv("./_data/110-deskriptive-statistik.csv")  # Laden des Datensatzes
+y       = D$PRE  # Pre-Interventions-BDI-II-Daten
+b_0     = min(y)  # b_0
+b_k     = max(y)  # b_k
 ```
 
 ```{r, echo = F}
-ds      = rep(NaN,5)                                                            # Vektorinitialisierung für Klassenbreiten
-ks      = rep(NaN,5)                                                            # Vektorinitialisierung für Anzahl der Klassen
-bs      = list()                                                                # Listeninitialisierung für breaks Argumente
+ds      = rep(NaN,5)  # Vektorinitialisierung für Klassenbreiten
+ks      = rep(NaN,5)  # Vektorinitialisierung für Anzahl der Klassen
+bs      = list()  # Listeninitialisierung für breaks Argumente
 cat("\nMinimum b_0                : " , b_0,
     "\nMaximum b_k                : " , b_k)
 ```
@@ -239,17 +239,17 @@ auch kleiner sein kann. Folgender **R** Code verdeutlicht diesen Effekt.
 \tiny
 ```{r}
 # Histogramm mit gewünschter Klassenbreite d = 2
-d       = 2                                                                     # gewünschte Klassenbreite
-b_0     = min(y)                                                                # b_0
-b_k     = max(y)                                                                # b_k
-k       = ceiling((b_k - b_0)/d)                                                # Anzahl der Klassen
-b       = seq(b_0, b_k, length.out = k + 1)                                     # Klassen [b_{j-1}, b_j[ (breaks)
+d       = 2  # gewünschte Klassenbreite
+b_0     = min(y)  # b_0
+b_k     = max(y)  # b_k
+k       = ceiling((b_k - b_0)/d)  # Anzahl der Klassen
+b       = seq(b_0, b_k, length.out = k + 1)  # Klassen [b_{j-1}, b_j[ (breaks)
 ```
 
 ```{r, echo = F}
-ks[1]   = k                                                                     # Speicherung in Klassenanzahlvektor
-ds[1]   = b[2]-b[1]                                                             # Speicherung in Klassenbreitenvektor
-bs[[1]] = b                                                                     # Speicherung in breaks Liste
+ks[1]   = k  # Speicherung in Klassenanzahlvektor
+ds[1]   = b[2]-b[1]  # Speicherung in Klassenbreitenvektor
+bs[[1]] = b  # Speicherung in breaks Liste
 ```
 ```{r, echo = F}
 cat("\nGewünschte Klassenbreite d : " , d,
@@ -266,15 +266,15 @@ entspricht.
 \tiny
 ```{r}
 # Histogramm mit gewünschter Klassenbreite d = 1.5
-d       = 1.5                                                                   # gewünschte Klassenbreite
-k       = ceiling((b_k - b_0)/d)                                                # Anzahl der Klassen
-b       = seq(b_0, b_k, length.out = k + 1)                                     # Klassen [b_{j-1}, b_j[ (breaks)
+d       = 1.5  # gewünschte Klassenbreite
+k       = ceiling((b_k - b_0)/d)  # Anzahl der Klassen
+b       = seq(b_0, b_k, length.out = k + 1)  # Klassen [b_{j-1}, b_j[ (breaks)
 ```
 
 ```{r, echo = F}
-ks[2]   = k                                                                     # Speicherung in Klassenanzahlvektor
-ds[2]   = b[2]-b[1]                                                             # Speicherung in Klassenbreitenvektor
-bs[[2]] = b                                                                     # Speicherung in breaks Liste
+ks[2]   = k  # Speicherung in Klassenanzahlvektor
+ds[2]   = b[2]-b[1]  # Speicherung in Klassenbreitenvektor
+bs[[2]] = b  # Speicherung in breaks Liste
 ```
 ```{r, echo = F}
 cat("\nGewünschte Klassenbreite d : " , d,
@@ -293,15 +293,15 @@ Folgender **R** Code implementiert diese Wahl für den vorliegenden Datensatz.
 \tiny
 ```{r}
 # Histogramm mit Excelstandard
-n       = length(y)                                                             # Anzahl Datenpunkte
-k       = ceiling(sqrt(n))                                                      # Anzahl der Klassen
-b       = seq(b_0, b_k, length.out = k + 1)                                     # Klassen [b_{j-1}, b_j[ (breaks)
+n       = length(y)  # Anzahl Datenpunkte
+k       = ceiling(sqrt(n))  # Anzahl der Klassen
+b       = seq(b_0, b_k, length.out = k + 1)  # Klassen [b_{j-1}, b_j[ (breaks)
 ```
 
 ```{r, echo = F}
-ks[3]   = k                                                                     # Speicherung in Klassenanzahlvektor
-ds[3]   = b[2]-b[1]                                                             # Speicherung in Klassenbreitenvektor
-bs[[3]] = b                                                                     # Speicherung in breaks Liste
+ks[3]   = k  # Speicherung in Klassenanzahlvektor
+ds[3]   = b[2]-b[1]  # Speicherung in Klassenbreitenvektor
+bs[[3]] = b  # Speicherung in breaks Liste
 ```
 ```{r, echo = F}
 cat("\nAnzahl Datenpunkte n       : " , n,
@@ -322,15 +322,15 @@ gegeben ist. Im vorliegenden Fall resultiert hier:
 \tiny
 ```{r}
 # Klassenanzahl nach Sturges (1926)
-n       = length(y)                                                             # Anzahl Datenpunkte
-k       = ceiling(log2(n)+1)                                                    # Anzahl der Klassen
-b       = seq(b_0, b_k, length.out = k + 1)                                     # Klassen [b_{j-1}, b_j[ (breaks)
+n       = length(y)  # Anzahl Datenpunkte
+k       = ceiling(log2(n)+1)  # Anzahl der Klassen
+b       = seq(b_0, b_k, length.out = k + 1)  # Klassen [b_{j-1}, b_j[ (breaks)
 ```
 
 ```{r, echo = F}
-ks[4]   = k                                                                     # Speicherung in Klassenanzahlvektor
-ds[4]   = b[2]-b[1]                                                             # Speicherung in Klassenbreitenvektor
-bs[[4]] = b                                                                     # Speicherung in breaks Liste
+ks[4]   = k  # Speicherung in Klassenanzahlvektor
+ds[4]   = b[2]-b[1]  # Speicherung in Klassenbreitenvektor
+bs[[4]] = b  # Speicherung in breaks Liste
 ```
 ```{r, echo = F}
 cat("\nAnzahl Datenpunkte n       : " , n,
@@ -361,17 +361,17 @@ vorliegenden Fall resultieren hier:
 \tiny
 ```{r}
 # Klassenanzahl nach Scott (1979)
-n       = length(y)                                                             # Anzahl Datenwerte
-S       = sd(y)                                                                 # empirische Standardabweichung
-d       = ceiling(3.49*S/(n^(1/3)))                                             # Klassenbreite
-k       = ceiling((b_k - b_0)/d)                                                # Anzahl der Klassen
-b       = seq(b_0, b_k, length.out = k + 1)                                     # Klassen [b_{j-1}, b_j[ (breaks)
+n       = length(y)  # Anzahl Datenwerte
+S       = sd(y)  # empirische Standardabweichung
+d       = ceiling(3.49*S/(n^(1/3)))  # Klassenbreite
+k       = ceiling((b_k - b_0)/d)  # Anzahl der Klassen
+b       = seq(b_0, b_k, length.out = k + 1)  # Klassen [b_{j-1}, b_j[ (breaks)
 ```
 
 ```{r, echo = F}
-ks[5]   = k                                                                     # Speicherung in Klassenanzahlvektor
-ds[5]   = b[2]-b[1]                                                             # Speicherung in Klassenbreitenvektor
-bs[[5]] = b                                                                     # Speicherung in breaks Liste
+ks[5]   = k  # Speicherung in Klassenanzahlvektor
+ds[5]   = b[2]-b[1]  # Speicherung in Klassenbreitenvektor
+bs[[5]] = b  # Speicherung in breaks Liste
 ```
 ```{r, echo = F}
 cat("\nAnzahl Datenpunkte n       : " , n,
@@ -392,43 +392,43 @@ der Werte des Beispieldatensatzes anhand der oben spezifizierten Klassen.
 \tiny
 ```{r, eval = F}
 # Abbildungsparameter
-pdf(								                                            # PDF Kopiefunktion
-file        = "./_figures/110-histogramme.pdf",                                 # Dateiname
-width       = 6, 							                                    # Breite (inch)
-height      = 9)        					                                    # Höhe (inch)
-par(                                                                            # Abbildungsparameter
-mfcol       = c(3,2),                                                           # Zeilen und Spaltenlayout
-las         = 1,                                                                # x-Tick Orientierung
-cex         = .7,                                                               # Annotationsvergrößerung
-cex.main    = .9)                                                               # Titelvergrößerung
-x_min       = 12                                                                # x-Achsenlimit
-x_max       = 25                                                                # x-Achsenlimit
-y_min       = 0                                                                 # y-Achsenlimit
-y_max       = 45                                                                # y-Achsenlimit
-label       = c("", "", "Excel", "Sturges", "Scott")                            # Titel
+pdf(  # PDF Kopiefunktion
+file        = "./_figures/110-histogramme.pdf",  # Dateiname
+width       = 6,  # Breite (inch)
+height      = 9)  # Höhe (inch)
+par(  # Abbildungsparameter
+mfcol       = c(3,2),  # Zeilen und Spaltenlayout
+las         = 1,  # x-Tick Orientierung
+cex         = .7,  # Annotationsvergrößerung
+cex.main    = .9)  # Titelvergrößerung
+x_min       = 12  # x-Achsenlimit
+x_max       = 25  # x-Achsenlimit
+y_min       = 0  # y-Achsenlimit
+y_max       = 45  # y-Achsenlimit
+label       = c("", "", "Excel", "Sturges", "Scott")  # Titel
 
 # Histogramme mit vordefinierter Klassenanzahl und Klassenbreite
 for(i in 1:5){
-    hist(                                                                       # Histogramm
-    y,                                                                          # Datensatz
-    breaks  = bs[[i]],                                                          # breaks Argument
-    xlim    = c(x_min, x_max),                                                  # x-Achsenlimits
-    ylim    = c(y_min, y_max),                                                  # y-Achsenlimits
-    ylab    = "Häufigkeit",                                                     # y-Achsenbezeichnung
-    xlab    = "BDI",                                                            # x-Achsenbezeichnung
-    main    = sprintf(paste(label[i], "k = %.0f, d = %.2f"), ks[i],ds[i]))      # Titel
+    hist(  # Histogramm
+    y,  # Datensatz
+    breaks  = bs[[i]],  # breaks Argument
+    xlim    = c(x_min, x_max),  # x-Achsenlimits
+    ylim    = c(y_min, y_max),  # y-Achsenlimits
+    ylab    = "Häufigkeit",  # y-Achsenbezeichnung
+    xlab    = "BDI",  # x-Achsenbezeichnung
+    main    = sprintf(paste(label[i], "k = %.0f, d = %.2f"), ks[i],ds[i]))  # Titel
 }
 
 # R Default Histogramm
-hist(                                                                           # Histogramm
-y,                                                                              # Datensatz
-xlim    = c(x_min, x_max),                                                      # x-Achsenlimits
-ylim    = c(y_min, y_max),                                                      # y-Achsenlimits
-ylab    = "Häufigkeit",                                                         # y-Achsenbezeichnung
-xlab    = "",                                                                   # x-Achsenbezeichnung
-main    = "R Default")                                                          # Titel
-mtext(LETTERS[6], adj=0, line=2, cex = 1.2, at = 8)                             # Subplot Buchs
-dev.off()                                                                       # Beenden der Abbildungsbearbeitung
+hist(  # Histogramm
+y,  # Datensatz
+xlim    = c(x_min, x_max),  # x-Achsenlimits
+ylim    = c(y_min, y_max),  # y-Achsenlimits
+ylab    = "Häufigkeit",  # y-Achsenbezeichnung
+xlab    = "",  # x-Achsenbezeichnung
+main    = "R Default")  # Titel
+mtext(LETTERS[6], adj=0, line=2, cex = 1.2, at = 8)  # Subplot Buchs
+dev.off()  # Beenden der Abbildungsbearbeitung
 ```
 \normalsize
 
@@ -483,14 +483,14 @@ ermöglicht damit die Auswertung kumulativer Häufigkeitsverteilungen, wie folge
 
 \tiny
 ```{r}
-D           = read.csv("./_data/110-deskriptive-statistik.csv")                 # Laden des Datensatzes
-y           = D$PRE                                                             # Pre-Interventions-BDI-II-Daten
-n           = length(y)                                                         # Anzahl der Datenwerte
-H           = as.data.frame(table(y))                                           # absolute Häufigkeitsverteilung als Dataframe
-names(H)    = c("w", "h")                                                       # Spaltenbenennung
-H$H         = cumsum(H$h)                                                       # kumulative absolute Häufigkeitsverteilung
-H$r         = H$h/n                                                             # relative Häufigkeitsverteilung
-H$R         = cumsum(H$r)                                                       # kumulative relative Häufigkeitsverteilung
+D           = read.csv("./_data/110-deskriptive-statistik.csv")  # Laden des Datensatzes
+y           = D$PRE  # Pre-Interventions-BDI-II-Daten
+n           = length(y)  # Anzahl der Datenwerte
+H           = as.data.frame(table(y))  # absolute Häufigkeitsverteilung als Dataframe
+names(H)    = c("w", "h")  # Spaltenbenennung
+H$H         = cumsum(H$h)  # kumulative absolute Häufigkeitsverteilung
+H$r         = H$h/n  # relative Häufigkeitsverteilung
+H$R         = cumsum(H$r)  # kumulative relative Häufigkeitsverteilung
 print(H, digits = 1)
 ```
 \normalsize
@@ -505,35 +505,35 @@ von Werten kleiner als der größte Wert im Datensatz ist dagegen $n$ bzw. $n/n 
 
 \tiny
 ```{r, eval = F}
-pdf(								                                            # PDF Kopiefunktion
-file        = "./_figures/110-kumulative-haeufigkeitsverteilungen.pdf",         # Dateiname
-width       = 10, 							                                    # Breite (inch)
-height      = 5)        					                                    # Höhe (inch)
-Hw          = H$H                                                               # H(w) Werte
-Rw          = H$R                                                               # R(w) Werte
-names(Hw)   = H$w                                                               # barplot braucht w Werte als names
-names(Rw)   = H$w                                                               # barplot braucht w Werte als names
-par(                                                                            # Abbildungsparameter
-mfcol   = c(1,2),                                                               # Zeilen und Spaltenlayout
-las     = 1,                                                                    # x-Tick Orientierung
-cex     = 1)                                                                    # Annotationsvergrößerung
-barplot(                                                                        # Balkendiagramm
-Hw,                                                                              # H(w) Werte
-col         = "gray90",                                                         # Balkenfarbe
-xlab        = "w",                                                              # x-Achsenbeschriftung
-ylab        = "H(w)",                                                           # y-Achsenbeschriftung
-ylim        = c(0,110),                                                         # y-Achsenlimits
-las         = 1,                                                                # Achsenticklabelorientierung
-main        = "Absolute kumulative Häufigkeit PRE")                             # Titel
-barplot(                                                                        # Balkendiagramm
-Rw,                                                                              # R(w) Werte
-col         = "gray90",                                                         # Balkenfarbe
-xlab        = "w",                                                              # x-Achsenbeschriftung
-ylab        = "R(w)",                                                           # y-Achsenbeschriftung
-ylim        = c(0,1),                                                           # y-Achsenlimits
-las         = 1,                                                                # Achsenticklabelorientierung
-main        = "Relative kumulative Häufigkeit PRE")                             # Titel
-dev.off()                                                                       # Beenden der Abbildungsbearbeitung
+pdf(  # PDF Kopiefunktion
+file        = "./_figures/110-kumulative-haeufigkeitsverteilungen.pdf",  # Dateiname
+width       = 10,  # Breite (inch)
+height      = 5)  # Höhe (inch)
+Hw          = H$H  # H(w) Werte
+Rw          = H$R  # R(w) Werte
+names(Hw)   = H$w  # barplot braucht w Werte als names
+names(Rw)   = H$w  # barplot braucht w Werte als names
+par(  # Abbildungsparameter
+mfcol   = c(1,2),  # Zeilen und Spaltenlayout
+las     = 1,  # x-Tick Orientierung
+cex     = 1)  # Annotationsvergrößerung
+barplot(  # Balkendiagramm
+Hw,  # H(w) Werte
+col         = "gray90",  # Balkenfarbe
+xlab        = "w",  # x-Achsenbeschriftung
+ylab        = "H(w)",  # y-Achsenbeschriftung
+ylim        = c(0,110),  # y-Achsenlimits
+las         = 1,  # Achsenticklabelorientierung
+main        = "Absolute kumulative Häufigkeit PRE")  # Titel
+barplot(  # Balkendiagramm
+Rw,  # R(w) Werte
+col         = "gray90",  # Balkenfarbe
+xlab        = "w",  # x-Achsenbeschriftung
+ylab        = "R(w)",  # y-Achsenbeschriftung
+ylim        = c(0,1),  # y-Achsenlimits
+las         = 1,  # Achsenticklabelorientierung
+main        = "Relative kumulative Häufigkeit PRE")  # Titel
+dev.off()  # Beenden der Abbildungsbearbeitung
 ```
 \normalsize
 
@@ -572,19 +572,19 @@ Werte kleiner als 17.8.
 
 \tiny
 ```{r, eval = F}
-D       = read.csv("./_data/110-deskriptive-statistik.csv")                     # Laden des Datensatzes
-y       = D$PRE                                                                 # Pre-Interventions-BDI-II-Daten
-evf	    = ecdf(y)                                                               # Evaluation der EVF
-pdf(								                                            # PDF Kopiefunktion
-file    = "./_figures/110-ecdf.pdf",                                            # Dateiname
-width   = 8, 							                                        # Breite (inch)
-height  = 5)        					                                        # Höhe (inch)
-plot(                                                                           # plot() weiß mit ecdf object umzugehen
-evf,                                                                            # ecdf Objekt
-xlab    = "BDI",                                                                # x-Achsenbeschriftung
-ylab    = "Relative Häufigkeit",                                                # y-Achsenbeschriftung
-main    = "Empirische Verteilungsfunktion")                                     # Titel
-dev.off()                                                                       # Beenden der Abbildungsbearbeitung
+D       = read.csv("./_data/110-deskriptive-statistik.csv")  # Laden des Datensatzes
+y       = D$PRE  # Pre-Interventions-BDI-II-Daten
+evf        = ecdf(y)  # Evaluation der EVF
+pdf(  # PDF Kopiefunktion
+file    = "./_figures/110-ecdf.pdf",  # Dateiname
+width   = 8,  # Breite (inch)
+height  = 5)  # Höhe (inch)
+plot(  # plot() weiß mit ecdf object umzugehen
+evf,  # ecdf Objekt
+xlab    = "BDI",  # x-Achsenbeschriftung
+ylab    = "Relative Häufigkeit",  # y-Achsenbeschriftung
+main    = "Empirische Verteilungsfunktion")  # Titel
+dev.off()  # Beenden der Abbildungsbearbeitung
 ```
 \normalsize
 
@@ -708,15 +708,15 @@ bestimmten Quantile wie folgt aus.
 
 \tiny
 ```{r}
-y   = c(8.5,1.5,75,4.5,6.0,3.0,3.0,2.5,6.0,9.0)                                 # Beispieldaten
-n   = length(y)                                                                 # Anzahl Datenwerte
-y_s = sort(y)                                                                   # sortierter Datensatz
-p   = 0.25                                                                      # np \notin \mathbb{N}
-y_p = y_s[floor(n*p + 1)]                                                       # 0.25 Quantil
-cat("0.25 Quantil: ", round(y_p,2))                                             # Ausgabe
-p   = 0.80                                                                      # np \in \mathbb{N}
-y_p = (1/2)*(y_s[n*p] + y_s[n*p + 1])                                           # 0.80 Quantil
-cat("0.80 Quantil: ", round(y_p,2))                                             # Ausgabe
+y   = c(8.5,1.5,75,4.5,6.0,3.0,3.0,2.5,6.0,9.0)  # Beispieldaten
+n   = length(y)  # Anzahl Datenwerte
+y_s = sort(y)  # sortierter Datensatz
+p   = 0.25  # np \notin \mathbb{N}
+y_p = y_s[floor(n*p + 1)]  # 0.25 Quantil
+cat("0.25 Quantil: ", round(y_p,2))  # Ausgabe
+p   = 0.80  # np \in \mathbb{N}
+y_p = (1/2)*(y_s[n*p] + y_s[n*p + 1])  # 0.80 Quantil
+cat("0.80 Quantil: ", round(y_p,2))  # Ausgabe
 ```
 \normalsize
 
@@ -732,12 +732,12 @@ BDI-II-Beispieldatensatzes anhand von `type = 8`.
 
 \tiny
 ```{r}
-D       = read.csv("./_data/110-deskriptive-statistik.csv")                     # Laden des Datensatzes
-y       = D$PRE                                                                 # Pre-Interventions-BDI-II-Daten
-y_p     = quantile(y, 0.25, type = 8)                                           # 0.25 Quantil, Definition 1
+D       = read.csv("./_data/110-deskriptive-statistik.csv")  # Laden des Datensatzes
+y       = D$PRE  # Pre-Interventions-BDI-II-Daten
+y_p     = quantile(y, 0.25, type = 8)  # 0.25 Quantil, Definition 1
 ```
 ```{r, echo = F}
-cat("0.25 Quantil (Type = 8): ", y_p)                                           # Ausgabe
+cat("0.25 Quantil (Type = 8): ", y_p)  # Ausgabe
 ```
 \normalsize
 
@@ -750,18 +750,18 @@ In **R** erstellt man einen Boxplot mithilfe der `boxplot()` Funktion, wie folge
 
 \tiny
 ```{r, eval = F}
-D           = read.csv("./_data/110-deskriptive-statistik.csv")                 # Laden des Datensatzes
-pdf(                                                                            # PDF Kopiefunktion
-file        = "./_figures/110-boxplot.pdf",                                     # Dateiname
-width       = 8, 							                                    # Breite (inch)
-height      = 5)                                                                # Höhe (inch)
-boxplot(                                                                        # Boxplot
-D$PRE,                                                                          # Datensatz
-horizontal  = T,                                                                # horizontale Darstellung
-range       = 0,                                                                # Whiskers bis zu min y und max y
-xlab        = "BDI",                                                            # x Achsenbeschriftung
-main        = "Boxplot")                                                        # Titel
-dev.off()                                                                       # Beenden der Abbildungsbearbeitung
+D           = read.csv("./_data/110-deskriptive-statistik.csv")  # Laden des Datensatzes
+pdf(  # PDF Kopiefunktion
+file        = "./_figures/110-boxplot.pdf",  # Dateiname
+width       = 8,  # Breite (inch)
+height      = 5)  # Höhe (inch)
+boxplot(  # Boxplot
+D$PRE,  # Datensatz
+horizontal  = T,  # horizontale Darstellung
+range       = 0,  # Whiskers bis zu min y und max y
+xlab        = "BDI",  # x Achsenbeschriftung
+main        = "Boxplot")  # Titel
+dev.off()  # Beenden der Abbildungsbearbeitung
 ```
 \normalsize
 ![Boxplot der Pre-Interventions-BDI-Werte des Beispieldatensatzes.](./_figures/110-boxplot){#fig-boxplot fig-align="center" width=80%}
@@ -802,13 +802,13 @@ Mittelwert eines Datensatzes in **R** wie folgt.
 
 \tiny
 ```{r}
-D       = read.csv("./_data/110-deskriptive-statistik.csv")                     # Laden des Datensatzes
-y 		= D$PRE 			                                                    # Pre-Interventions-BDI-II-Daten
-n 	    = length(y)	    		                                                # Anzahl der Werte
-y_bar   = (1/n)*sum(y)			                                                # Mittelwertsberechnung
+D       = read.csv("./_data/110-deskriptive-statistik.csv")  # Laden des Datensatzes
+y         = D$PRE  # Pre-Interventions-BDI-II-Daten
+n         = length(y)  # Anzahl der Werte
+y_bar   = (1/n)*sum(y)  # Mittelwertsberechnung
 ```
 ```{r, echo  = F}
-cat("Mittelwert der PRE-BDI-II-Daten ", y_bar)                                  # Ausgabe
+cat("Mittelwert der PRE-BDI-II-Daten ", y_bar)  # Ausgabe
 ```
 \normalsize
 
@@ -817,7 +817,7 @@ automatisierten Berechnung des Mittelwerts bereit.
 
 \tiny
 ```{r}
-cat("Mittelwert der PRE-BDI-II-Daten ", mean(y))                                   # Ausgabe
+cat("Mittelwert der PRE-BDI-II-Daten ", mean(y))  # Ausgabe
 ```
 \normalsize
 
@@ -881,11 +881,11 @@ am Beispieldatensatz wie folgt verifizieren.
 \tiny
 ```{r}
 # Datensatz
-D       = read.csv("./_data/110-deskriptive-statistik.csv")                     # Laden des Datensatzes
-y 		= D$PRE 			                                                    # Pre-Interventions-BDI-II-Daten
-s	    = sum(y - mean(y))				                                        # Summe der Abweichungen vom Mittelwert
-s_1     = sum(y[y <= mean(y)] - mean(y))	                                    # Summe aller negativen Abweichungen
-s_2     = sum(y[y > mean(y)]  - mean(y)) 	                                    # Summe aller positiven Abweichungen
+D       = read.csv("./_data/110-deskriptive-statistik.csv")  # Laden des Datensatzes
+y         = D$PRE  # Pre-Interventions-BDI-II-Daten
+s        = sum(y - mean(y))  # Summe der Abweichungen vom Mittelwert
+s_1     = sum(y[y <= mean(y)] - mean(y))  # Summe aller negativen Abweichungen
+s_2     = sum(y[y > mean(y)]  - mean(y))  # Summe aller positiven Abweichungen
 ```
 ```{r, echo  = F}
 # Ausgabe
@@ -929,13 +929,13 @@ des Beispieldatensatzes in **R** wie folgt.
 
 \tiny
 ```{r}
-D           = read.csv("./_data/110-deskriptive-statistik.csv")                 # Laden des Datensatzes
-y 		    = D$PRE 					                                        # Pre-Interventions-BDI-II-Daten
-y_bar       = mean(y)					                                        # Mittelwert der Pre-Interventions-BDI-II-Daten
-z 		    = D$POS    			                                                # Post-Interventions BDI-II-Daten
-z_bar       = mean(z)					                                        # Mittelwert der Post-Interventions BDI-II-Daten
-yz_bar_1    = mean(y + z)			                                            # Mittelwert der summierten Pre- und Post-Daten
-yz_bar_2 	= y_bar + z_bar	                                                    # Summe der Mittelwerte der Pre- und Post-Daten
+D           = read.csv("./_data/110-deskriptive-statistik.csv")  # Laden des Datensatzes
+y             = D$PRE  # Pre-Interventions-BDI-II-Daten
+y_bar       = mean(y)  # Mittelwert der Pre-Interventions-BDI-II-Daten
+z             = D$POS  # Post-Interventions BDI-II-Daten
+z_bar       = mean(z)  # Mittelwert der Post-Interventions BDI-II-Daten
+yz_bar_1    = mean(y + z)  # Mittelwert der summierten Pre- und Post-Daten
+yz_bar_2     = y_bar + z_bar  # Summe der Mittelwerte der Pre- und Post-Daten
 ```
 ```{r, echo  = F}
 cat("Mittelwert von z                  : " , yz_bar_1,
@@ -983,14 +983,14 @@ Addition der Konstante $b := 5$.
 
 \tiny
 ```{r}
-D           = read.csv("./_data/110-deskriptive-statistik.csv")                 # Laden des Datensatzes
-y 		    = D$PRE 					                                        # Pre-Interventions-BDI-II-Daten
-y_bar       = mean(y)						                                    # Mittelwert der Pre-Interventions-BDI-II-Daten
-a 		    = 2							                                        # Multiplikationskonstante
-b 		    = 5 							                                    # Additionskonstante
-z 		    = a*y + b						                                    # linear-affine Transformation der PRE-Daten
-z_bar       = mean(z)					                                        # Mittelwert der transformierten PRE-Daten
-ay_bar_b    = a*y_bar + b      			                                        # Transformation des PRE-Daten-Mittelwerts
+D           = read.csv("./_data/110-deskriptive-statistik.csv")  # Laden des Datensatzes
+y             = D$PRE  # Pre-Interventions-BDI-II-Daten
+y_bar       = mean(y)  # Mittelwert der Pre-Interventions-BDI-II-Daten
+a             = 2  # Multiplikationskonstante
+b             = 5  # Additionskonstante
+z             = a*y + b  # linear-affine Transformation der PRE-Daten
+z_bar       = mean(z)  # Mittelwert der transformierten PRE-Daten
+ay_bar_b    = a*y_bar + b  # Transformation des PRE-Daten-Mittelwerts
 ```
 ```{r, echo  = F}
 cat("Mittelwert des transformierten Datensatzes : ", z_bar,
@@ -1049,17 +1049,17 @@ Folgender **R** Code bestimmt den Median des Beispieldatensatzes anhand von @def
 
 \tiny
 ```{r}
-D           = read.csv("./_data/110-deskriptive-statistik.csv")                 # Laden des Datensatzes
-y 		    = D$PRE 					                                        # Pre-Interventions-BDI-II-Daten
-n 			= length(y)                                                         # Anzahl der Werte
-y_s  		= sort(y)                                                           # aufsteigend sortierter Vektor
-if(n %% 2 == 1){                                                                # n ungerade, n mod 2 == 1
-   y_tilde = y_s[(n+1)/2]                                                       # Medianformel, Fall n ungerade
-} else {                                                                        # n gerade, n mod 2 == 0
-   y_tilde = (y_s[n/2] + y_s[n/2 + 1])/2}                                       # Medianformel, Fall n gerade
+D           = read.csv("./_data/110-deskriptive-statistik.csv")  # Laden des Datensatzes
+y             = D$PRE  # Pre-Interventions-BDI-II-Daten
+n             = length(y)  # Anzahl der Werte
+y_s          = sort(y)  # aufsteigend sortierter Vektor
+if(n %% 2 == 1){  # n ungerade, n mod 2 == 1
+   y_tilde = y_s[(n+1)/2]  # Medianformel, Fall n ungerade
+} else {  # n gerade, n mod 2 == 0
+   y_tilde = (y_s[n/2] + y_s[n/2 + 1])/2}  # Medianformel, Fall n gerade
 ```
 ```{r, echo = F}
-cat("Median der PRE-BDI-II-Daten: ", y_tilde)                                    # Ausgabe
+cat("Median der PRE-BDI-II-Daten: ", y_tilde)  # Ausgabe
 ```
 \normalsize
 Natürlich stellt **R** mit `median()` auch eine Funktion zur direkten Bestimmung
@@ -1067,7 +1067,7 @@ des Medians bereit, wie folgender **R** Code demonstriert.
 
 \tiny
 ```{r}
-cat("Median der PRE-BDI-II-Daten: ", median(y))                                  # Ausgabe
+cat("Median der PRE-BDI-II-Daten: ", median(y))  # Ausgabe
 ```
 \normalsize
 
@@ -1076,18 +1076,18 @@ Datensatzes weniger anfällig für Ausreißer ist als der Mittelwert.
 
 \tiny
 ```{r}
-D           = read.csv("./_data/110-deskriptive-statistik.csv")                  # Laden des Datensatzes
-y 		    = D$PRE 					                                         # Pre-Interventions-BDI-II-Daten
+D           = read.csv("./_data/110-deskriptive-statistik.csv")  # Laden des Datensatzes
+y             = D$PRE  # Pre-Interventions-BDI-II-Daten
 ```
 ```{r, echo = F}
-cat("Mittelwert und Median für Datensatz ohne Ausreißer: ", mean(y), median(y))    # Ausgabe
+cat("Mittelwert und Median für Datensatz ohne Ausreißer: ", mean(y), median(y))  # Ausgabe
 ```
 ```{r}
-z 		    = y							                                         # neuer simulierter Datensatz
-z[1] 	    = 10000 					                                         # ... mit einem Extremwert
+z             = y  # neuer simulierter Datensatz
+z[1]         = 10000  # ... mit einem Extremwert
 ```
 ```{r, echo = F}
-cat("Mittelwert und Median für Datensatz mit Ausreißer: ", mean(z), median(z))     # Ausgabe
+cat("Mittelwert und Median für Datensatz mit Ausreißer: ", mean(z), median(z))  # Ausgabe
 ```
 \normalsize
 
@@ -1125,15 +1125,15 @@ In **R** kann man den Modalwert eines entsprechenden Datensatzes wie folgt besti
 
 \tiny
 ```{r}
-D           = read.csv("./_data/110-deskriptive-statistik.csv")                 # Laden des Datensatzes
-y 		    = D$PRE 					                                        # Pre-Interventions-BDI-II-Daten
-n           = length(y)                                                         # Anzahl der Datenwerte (100)
-H           = as.data.frame(table(y))                                           # absolute Haeufigkeitsverteilung (dataframe)
-names(H)    = c("a", "w")                                                       # konsistente Benennung
-mode        = H$w[which.max(H$w)]                                               # Modalwert
+D           = read.csv("./_data/110-deskriptive-statistik.csv")  # Laden des Datensatzes
+y             = D$PRE  # Pre-Interventions-BDI-II-Daten
+n           = length(y)  # Anzahl der Datenwerte (100)
+H           = as.data.frame(table(y))  # absolute Haeufigkeitsverteilung (dataframe)
+names(H)    = c("a", "w")  # konsistente Benennung
+mode        = H$w[which.max(H$w)]  # Modalwert
 ```
 ```{r}
-cat("Modalwert der PRE-BDI-II-Daten: ", as.numeric(as.vector(mode)))            # Ausgabe als numeric vector, nicht factor
+cat("Modalwert der PRE-BDI-II-Daten: ", as.numeric(as.vector(mode)))  # Ausgabe als numeric vector, nicht factor
 ```
 \normalsize
 
@@ -1389,15 +1389,15 @@ Anwendung der `max()` und `min()` Funktionen.
 
 \tiny
 ```{r}
-D           = read.csv("./_data/110-deskriptive-statistik.csv")                 # Laden des Datensatzes
-y 		    = D$PRE 					                                        # Pre-Interventions-BDI-II-Daten
-y_max 	    = max(y)							                                # Maximum der PRE Werte
-y_min 	    = min(y)							                                # Minimum der PRE-Werte
-r 	        = y_max - y_min 					                                # Spannbreite
+D           = read.csv("./_data/110-deskriptive-statistik.csv")  # Laden des Datensatzes
+y             = D$PRE  # Pre-Interventions-BDI-II-Daten
+y_max         = max(y)  # Maximum der PRE Werte
+y_min         = min(y)  # Minimum der PRE-Werte
+r             = y_max - y_min  # Spannbreite
 ```
 
 ```{r, echo = F}
-cat("Spannbreite der PRE-BDI-II-Daten: ", r)                                    # Ausgabe
+cat("Spannbreite der PRE-BDI-II-Daten: ", r)  # Ausgabe
 ```
 \normalsize
 
@@ -1405,12 +1405,12 @@ Folgender **R** Code demonstriert die Anwendung der `range()` Funktion.
 
 \tiny
 ```{r}
-MinMax	= range(y)							                                    # "automatische" Berechnung von min(x), max(x)
-r 		= MinMax[2] - MinMax[1]		                                            # Spannbreite
+MinMax    = range(y)  # "automatische" Berechnung von min(x), max(x)
+r         = MinMax[2] - MinMax[1]  # Spannbreite
 ```
 
 ```{r, echo = F}
-cat("Spannbreite der PRE-BDI-II-Daten: ", r)                                    # Ausgabe
+cat("Spannbreite der PRE-BDI-II-Daten: ", r)  # Ausgabe
 ```
 \normalsize
 
@@ -1534,14 +1534,14 @@ festgelegten Formeln.
 
 \tiny
 ```{r}
-D           = read.csv("./_data/110-deskriptive-statistik.csv")                 # Laden des Datensatzes
-y 		    = D$PRE 					                                        # Pre-Interventions-BDI-II-Daten
-n 			= length(y)							                                # Anzahl der Werte
-s2_tilde 	= (1/n)*sum((y - mean(y))^2)		                                # unkorrigierte empirische Varianz
-s2 			= (1/(n-1))*sum((y - mean(y))^2)	                                # empirische Varianz
+D           = read.csv("./_data/110-deskriptive-statistik.csv")  # Laden des Datensatzes
+y             = D$PRE  # Pre-Interventions-BDI-II-Daten
+n             = length(y)  # Anzahl der Werte
+s2_tilde     = (1/n)*sum((y - mean(y))^2)  # unkorrigierte empirische Varianz
+s2             = (1/(n-1))*sum((y - mean(y))^2)  # empirische Varianz
 ```
 ```{r, echo = F}
-cat("Unkorrigierte empirische Varianz der PRE-BDI-II-Daten : ", round(s2_tilde,3), # Ausgabe
+cat("Unkorrigierte empirische Varianz der PRE-BDI-II-Daten : ", round(s2_tilde,3),  # Ausgabe
     "\nEmpirische Varianz der PRE-BDI-II-Daten               : ", round(s2,3))  # Ausgabe
 ```
 \normalsize
@@ -1552,12 +1552,12 @@ kann basierend auf dieser Funktion auch die unkorrigierte empirische Varianz bes
 
 \tiny
 ```{r}
-s2 			= var(y)							                                # empirische Varianz
-s2_tilde 	= ((n-1)/n)*var(y)					                                # unkorrigierte empirische Varianz
+s2             = var(y)  # empirische Varianz
+s2_tilde     = ((n-1)/n)*var(y)  # unkorrigierte empirische Varianz
 ```
 ```{r, echo = F}
-cat("Unkorrigierte empirische Varianz der PRE-BDI-II-Daten: ", round(s2_tilde,3), # Ausgabe
-    "\nEmpirische Varianz der PRE-BDI-II-Daten              : ", round(s2,3))     # Ausgabe
+cat("Unkorrigierte empirische Varianz der PRE-BDI-II-Daten: ", round(s2_tilde,3),  # Ausgabe
+    "\nEmpirische Varianz der PRE-BDI-II-Daten              : ", round(s2,3))  # Ausgabe
 ```
 
 \normalsize
@@ -1595,15 +1595,15 @@ die Varianz des Ausgangsdatensatzes um den Faktor $100^2$. Wir reproduzieren
 
 \tiny
 ```{r}
-y		= D$PRE 	  				                                             # Pre-Interventions-BDI-II-Daten
-s2y		= var(y)								                                 # Empirische Varianz von y_1,...,y_n
-a		= 2 									                                 # Multiplikationskonstante
-b 		= 5 									                                 # Additionskonstante
-z 		= a*y + b							                                     # z_i = ay_i + b
-s2z		= var(z)	                                							 # Empirische Varianz von z_1,...,z_n
-cat("Empirische Varianz von z_1,...,z_n durch direkte Berechnung : ", round(s2z,3))                      # Ausgabe
-s2z 	= a^2*s2y    							                                 # Empirische Varianz von z_1,...,z_n
-cat("Empirische Varianz von z_1,...,z_n nach Theorem            : ", round(s2z,3))      # Ausgabe
+y        = D$PRE  # Pre-Interventions-BDI-II-Daten
+s2y        = var(y)  # Empirische Varianz von y_1,...,y_n
+a        = 2  # Multiplikationskonstante
+b         = 5  # Additionskonstante
+z         = a*y + b  # z_i = ay_i + b
+s2z        = var(z)  # Empirische Varianz von z_1,...,z_n
+cat("Empirische Varianz von z_1,...,z_n durch direkte Berechnung : ", round(s2z,3))  # Ausgabe
+s2z     = a^2*s2y  # Empirische Varianz von z_1,...,z_n
+cat("Empirische Varianz von z_1,...,z_n nach Theorem            : ", round(s2z,3))  # Ausgabe
 ```
 
 \normalsize
@@ -1642,9 +1642,9 @@ beispielhaft mithilfe folgenden **R** Codes.
 
 \tiny
 ```{r}
-y 			= D$PRE      	   	            	                                # Pre-Interventions-BDI-II-Daten
-s2_tilde 	= mean(y^2) - (mean(y))^2				                            # \bar{y^2} - \bar{y}^2
-cat("Unkorrigierte empirische Varianz nach dem Verschiebungssatz : ", round(s2_tilde,3)) # Ausgabe
+y             = D$PRE  # Pre-Interventions-BDI-II-Daten
+s2_tilde     = mean(y^2) - (mean(y))^2  # \bar{y^2} - \bar{y}^2
+cat("Unkorrigierte empirische Varianz nach dem Verschiebungssatz : ", round(s2_tilde,3))  # Ausgabe
 ```
 \normalsize
 
@@ -1691,13 +1691,13 @@ Standardabweichung und der empirischen Standardabweichung anhand der in
 
 \tiny
 ```{r}
-y   = D$PRE      	   	            	                                        # Pre-Interventions-BDI-II-Daten
-n 	= length(y)								                                    # Anzahl der Werte
-s 	= sqrt((1/(n-1))*sum((y - mean(y))^2))	                                    # Standardabweichung
+y   = D$PRE  # Pre-Interventions-BDI-II-Daten
+n     = length(y)  # Anzahl der Werte
+s     = sqrt((1/(n-1))*sum((y - mean(y))^2))  # Standardabweichung
 ```
 
 ```{r, echo = F}
-cat("Empirische Standardabweichung : ", round(s,3))                             # Ausgabe
+cat("Empirische Standardabweichung : ", round(s,3))  # Ausgabe
 ```
 \normalsize
 
@@ -1705,11 +1705,11 @@ Die **R** Funktion `sd()` bestimmt per Default die empirische Standardabweichung
 
 \tiny
 ```{r}
-s 	= sd(y)
+s     = sd(y)
 ```
 
 ```{r, echo = F}
-cat("Empirische Standardabweichung : ", round(s,3))                             # Ausgabe
+cat("Empirische Standardabweichung : ", round(s,3))  # Ausgabe
 ```
 \normalsize
 
@@ -1749,39 +1749,39 @@ für den Fall $a < 0$
 \tiny
 ```{r}
 # a >= 0
-D       = read.csv("./_data/110-deskriptive-statistik.csv")                     # Laden des Datensatzes
-y		= D$PRE 					                                            # Pre-Interventions-BDI-II-Daten
-a	    = 2 			                                                        # Multiplikationskonstante
-b 	    = 5 				                                                    # Additionskonstante
-z 	    = a*y + b			                                                    # z_i = ay_i + b
-sz	    = sd(z)				                                                    # Empirische Standardabweichung von z
+D       = read.csv("./_data/110-deskriptive-statistik.csv")  # Laden des Datensatzes
+y        = D$PRE  # Pre-Interventions-BDI-II-Daten
+a        = 2  # Multiplikationskonstante
+b         = 5  # Additionskonstante
+z         = a*y + b  # z_i = ay_i + b
+sz        = sd(z)  # Empirische Standardabweichung von z
 ```
 ```{r, echo = F}
-cat("Empirische Standardabweichung nach Transformation : ", round(sz,3))        # Ausgabe
+cat("Empirische Standardabweichung nach Transformation : ", round(sz,3))  # Ausgabe
 ```
 ```{r}
-sz	    = a*sd(y)  			                                                    # Empirische Standardabweichung nach Theorem
+sz        = a*sd(y)  # Empirische Standardabweichung nach Theorem
 ```
 ```{r, echo = F}
-cat("Empirische Standardabweichung nach Transformation : ", round(sz,3))        # Ausgabe
+cat("Empirische Standardabweichung nach Transformation : ", round(sz,3))  # Ausgabe
 ```
 ```{r}
 # a < 0
-D       = read.csv("./_data/110-deskriptive-statistik.csv")                     # Laden des Datensatzes
-y		= D$PRE 					                                            # Pre-Interventions-BDI-II-Daten
-a	    = -3 			                                                        # Multiplikationskonstante
-b 	    = 10 				                                                    # Additionskonstante
-z 	    = a*y + b			                                                    # z_i = ay_i + b
-sz	    = sd(z)				                                                    # Empirische Standardabweichung von z
+D       = read.csv("./_data/110-deskriptive-statistik.csv")  # Laden des Datensatzes
+y        = D$PRE  # Pre-Interventions-BDI-II-Daten
+a        = -3  # Multiplikationskonstante
+b         = 10  # Additionskonstante
+z         = a*y + b  # z_i = ay_i + b
+sz        = sd(z)  # Empirische Standardabweichung von z
 ```
 ```{r, echo = F}
-cat("Empirische Standardabweichung nach Transformation : ", round(sz,3))        # Ausgabe
+cat("Empirische Standardabweichung nach Transformation : ", round(sz,3))  # Ausgabe
 ```
 ```{r}
-sz	    = -a*sd(y)  			                                                # Empirische Standardabweichung nach Theorem
+sz        = -a*sd(y)  # Empirische Standardabweichung nach Theorem
 ```
 ```{r echo = F}
-cat("Empirische Standardabweichung nach Transformation : ", round(sz,3))        # Ausgabe
+cat("Empirische Standardabweichung nach Transformation : ", round(sz,3))  # Ausgabe
 ```
 
 
