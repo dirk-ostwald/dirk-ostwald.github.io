@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Imperative programming – Probabilistic Data Science for Psychology</title>
+<title>Probability theory – Probabilistic Data Science for Psychology</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,7 +20,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -30,8 +50,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../_part_2/201-Basic-Concepts-of-Computer-Science.html" rel="next">
-<link href="../_part_1/110-Descriptive-Statistics.html" rel="prev">
+<link href="../References.html" rel="next">
+<link href="../_part_2/208-Control-Structures.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
@@ -71,6 +91,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -108,7 +157,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../_part_2/200-Imperative-Programming.html">Imperative programming</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../_part_3/300-Probability-Theory.html">Probability theory</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -199,7 +248,7 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../_part_2/200-Imperative-Programming.html" class="sidebar-item-text sidebar-link active">
+            <a href="../_part_2/200-Imperative-Programming.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Imperative programming</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -268,7 +317,13 @@ ul.task-list li input[type="checkbox"] {
 </li>
     </ul>
     </div>
-    
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#preliminary-remarks" id="toc-preliminary-remarks" class="nav-link active" data-scroll-target="#preliminary-remarks">Preliminary remarks</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/_part_3/300-Probability-Theory.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></nav>
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
@@ -279,7 +334,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-imperative-programming" class="quarto-section-identifier">Imperative programming</span></h1>
+<h1 class="title">Probability theory</h1>
 </div>
 
 
@@ -296,16 +351,146 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p><strong>On the importance of imperative programming in psychology</strong></p>
-<p>Today, scientific data are usually available in digital form. To evaluate these digital data, they are analyzed with the help of a computer. For this purpose, one writes special computer programs that are tailored precisely to the research question at hand. Such programs are called data analysis scripts.</p>
-<p>Computer-assisted data analysis follows a typical structure. First, a digital data set is imported and cleaned in order to correct erroneous or incomplete data and prepare them for analysis. Descriptive statistics are then usually computed and visualized in order to obtain an initial overview of the data. This is often followed by a step of probabilistic modeling and inference, in which models based on probability theory are used to test hypotheses or make predictions. Finally, the results are documented and presented clearly, again with the help of the computer.</p>
-<p>The central element of computer-assisted data analysis is the <em>data analysis script</em>, a text file that documents all steps from the raw data to the final data visualization and thus makes data analysis processes transparent and reproducible. A data analysis script enables third parties to reproduce scientific results, which is a cornerstone of good scientific practice. Data analysis scripts are therefore indispensable tools of everyday scientific work and essential components of scientific publications. In the following sections, starting from a discussion of some basic concepts from computer science and structure-forming elements of imperative programming, we will become familiar with the development of data analysis scripts in the programming environment <a href="https://www.r-project.org/">R</a>.</p>
-<p>Various digital tools are used to analyze psychological data. Particularly common are freely available programming languages and platforms such as <a href="https://www.r-project.org/">R</a>, which is widely used in data science, statistics, and psychology, and <a href="https://www.python.org/psf/">Python</a>, with its broad range of applications in data science, machine learning, and artificial intelligence. The free programming language <a href="https://julialang.org/">Julia</a>, which is in fact optimized for data analysis, still occupies more of a niche and currently has not yet found wide adoption, especially in industrial applications. Free programming languages have the advantage that they are often further developed by a broad community of users and can in this way develop a versatile infrastructure.</p>
-<p>In addition, commercial programming environments whose source code cannot be inspected continue to be used in psychology. In neuroimaging and engineering applications, for example, the commercial programming environment <a href="https://de.mathworks.com/">MATLAB</a> remains popular even today. Some programs that now seem rather old-fashioned also continue to be used, including <a href="https://www.ibm.com/de-de/analytics/spss-statistics-software">SPSS</a>, which was very widespread in the social sciences and psychology around the turn of the millennium, <a href="https://www.jmp.com/de_de/home.html">JMP</a>, with areas of application in biology and psychology, and <a href="https://www.stata.com/">STATA</a>, which was popular in medicine and economics, among other fields.</p>
-<p>The popularity of digital tools is subject to constant change. One way to measure the current popularity of different programming languages and environments is to quantify Google searches for programming language tutorials. An overview of current trends is provided by the <a href="https://pypl.github.io/PYPL.html">PYPL Index</a>, which is based on the analysis of such search queries.</p>
-<p>In summary, digitalization has a lasting impact on science in particular. Effective research data management poses an acute challenge that researchers must face. Programming is increasingly becoming a central craft of scientific work, and basic knowledge of computer science has become indispensable in the modern working world. This applies not least to psychotherapists, for example in the context of online interventions, digitally supported treatment services, or psychotherapy research.</p>
+<section id="preliminary-remarks" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="preliminary-remarks">Preliminary remarks</h3>
+<p>Probability theory is a mathematical model for describing and quantitatively reasoning about <em>random processes</em> of reality (<a href="#fig-probability-theory" class="quarto-xref">Figure&nbsp;<span>1</span></a>). By random processes we mean all phenomena that cannot be predicted by us with absolute certainty, and whose outcome is therefore subject to uncertainty. Obvious and familiar examples of random processes are throwing a die or tossing a coin. However, the concept of a random process, and thus the domain of application of probability theory, should be understood much more broadly. For example, the outcome of an election, tomorrow’s weather, the measurement value of an electroencephalography electrode at a particular point in time, or the effect of a psychotherapy intervention on the health status of a patient cannot be predicted with complete certainty and are therefore subject to uncertainty. Once one begins to think about which phenomena of reality are subject to uncertainty, it becomes difficult to name nontrivial phenomena about whose outcome one has complete certainty.</p>
+<div id="fig-probability-theory" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-probability-theory-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/300-probability-theory.png" class="img-fluid quarto-figure quarto-figure-center figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-probability-theory-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: <em>Probability theory as a model of random processes.</em> The starting point of probability theory is the intention to draw logical-quantitative conclusions about a random process, that is, a phenomenon of reality subject to uncertainty. The representation of central aspects of the random process with the help of probability-theoretic terminology is called <em>modeling</em>. The probability-theoretic model itself then guarantees, in the sense of probability calculus, the correctness of logical-quantitative conclusions that can be used to predict aspects of the random process.
+</figcaption>
+</figure>
+</div>
+<p>As a mathematical model of random processes, probability theory in particular allows reason-based, quantitative reasoning about random processes. This is reflected primarily in so-called <em>probability calculus</em>. Quantitative conclusions of probability calculus have, for example, the following form: If I assume that event <span class="math inline">\(A\)</span> occurs with probability <span class="math inline">\(p_1\)</span> and event <span class="math inline">\(B\)</span> occurs with probability <span class="math inline">\(p_2\)</span>, then event <span class="math inline">\(C\)</span> has probability <span class="math inline">\(p_3\)</span>. The conclusion about the probability of <span class="math inline">\(C\)</span> is logically and mathematically secured in the same sense in which, for example, it is logically and mathematically secured that <span class="math inline">\(1+1=2\)</span>. Whether the assumptions about the probabilities of <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> correspond to the conditions of the random process in reality, however, is not something probability theory makes statements about.</p>
+<p>Probability theory itself uses the mathematical theory of sets and functions. At least since <span class="citation" data-cites="kolmogoroff1933">Kolmogoroff (<a href="#ref-kolmogoroff1933" role="doc-biblioref">1933</a>)</span>, an axiomatic approach has prevailed: in probability theory itself, one does not ask what a probability is or to what extent the predictions of probability theory agree with reality, but instead tries to develop a self-consistent formal-mathematical system of ungrounded but intuitively plausible basic assumptions and their consequences. The starting point of this development is the <em>probability space model</em> of a random process, which will be introduced in the section on probability spaces. Indeed, beyond the formal-mathematical system of probability theory, mathematical-philosophical discussions continue to this day about exactly what is to be understood by the term “probability of an event”. Roughly speaking, two somewhat opposing interpretations are predominant: on the one hand the so-called <em>frequentist interpretation</em> as a prototypical example of <em>realist interpretations</em>, and on the other hand the so-called <em>Bayesian interpretation</em> as a general form of so-called <em>evidential interpretations</em>. For a more detailed overview of different interpretations of the concept of probability, see <a href="#tbl-probability-interpretations" class="quarto-xref">Table&nbsp;<span>1</span></a> after <span class="citation" data-cites="hajek2019">Hájek (<a href="#ref-hajek2019" role="doc-biblioref">2019</a>)</span>.</p>
+<div id="tbl-probability-interpretations" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-probability-interpretations-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Interpretations of probability after <span class="citation" data-cites="hajek2019">Hájek (<a href="#ref-hajek2019" role="doc-biblioref">2019</a>)</span>. In its essential features, the <em>frequentist interpretation</em> corresponds to the <em>infinite frequentist realist interpretation</em> sketched in the table; in its essential features, the <em>Bayesian interpretation</em> corresponds to the <em>subjective evidential</em> and <em>epistemic evidential interpretations</em> sketched in the table.
+</figcaption>
+<div aria-describedby="tbl-probability-interpretations-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 22%">
+<col style="width: 15%">
+<col style="width: 30%">
+<col style="width: 14%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Interpretation</th>
+<th style="text-align: left;">Intuition</th>
+<th style="text-align: left;">Field of application</th>
+<th style="text-align: left;">Problems</th>
+<th style="text-align: left;">References</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Finite frequentist</td>
+<td style="text-align: left;">The probability of a coin showing heads corresponds to the relative frequency with which the coin shows heads in a finite number of observations.</td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;">A single coin toss does not yield a meaningful prediction; probabilities change depending on the observation series and are therefore not uniquely defined.</td>
+<td style="text-align: left;"><span class="citation" data-cites="venn1876">Venn (<a href="#ref-venn1876" role="doc-biblioref">1876</a>)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Infinite frequentist</td>
+<td style="text-align: left;">The probability of a coin showing heads corresponds to the relative frequency with which the coin shows heads in infinitely many observations.</td>
+<td style="text-align: left;">Frequentist inference</td>
+<td style="text-align: left;">There are no infinite observation series; for a finite number of coin tosses, the probability of an event is not defined.</td>
+<td style="text-align: left;"><span class="citation" data-cites="reichenbach1949">Reichenbach (<a href="#ref-reichenbach1949" role="doc-biblioref">1949</a>)</span> <span class="citation" data-cites="vonmises1951">von Mises (<a href="#ref-vonmises1951" role="doc-biblioref">1951</a>)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Propensity</td>
+<td style="text-align: left;">The probability of a coin showing heads corresponds to its inherent physical tendency to land heads up in the gravitational field of the Earth.</td>
+<td style="text-align: left;">Causal inference</td>
+<td style="text-align: left;">The connection to relative frequencies or physical theories is not immediately clear.</td>
+<td style="text-align: left;"><span class="citation" data-cites="peirce1957">Peirce (<a href="#ref-peirce1957" role="doc-biblioref">1957</a>)</span> <span class="citation" data-cites="popper1959">Popper (<a href="#ref-popper1959" role="doc-biblioref">1959</a>)</span> <span class="citation" data-cites="gillies2000">Gillies (<a href="#ref-gillies2000" role="doc-biblioref">2000</a>)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Classical</td>
+<td style="text-align: left;">In the absence of further information, the probabilities of a coin showing heads or tails are equal.</td>
+<td style="text-align: left;">Games of chance, textbooks</td>
+<td style="text-align: left;">Restriction to finite outcome spaces</td>
+<td style="text-align: left;"><span class="citation" data-cites="laplace1814">Laplace (<a href="#ref-laplace1814" role="doc-biblioref">1814</a>)</span> <span class="citation" data-cites="jaynes1968">Jaynes (<a href="#ref-jaynes1968" role="doc-biblioref">1968</a>)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Subjective</td>
+<td style="text-align: left;">The probability of a coin showing heads corresponds to the subjective degree of uncertainty that an observer assigns to the outcome of a coin toss.</td>
+<td style="text-align: left;">Bayesian inference</td>
+<td style="text-align: left;">No principled restriction to axiomatically valid probabilities</td>
+<td style="text-align: left;"><span class="citation" data-cites="definetti1975">De Finetti (<a href="#ref-definetti1975" role="doc-biblioref">1975</a>)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Epistemic</td>
+<td style="text-align: left;">The probability of a coin showing heads corresponds to the subjective degree of uncertainty that a rational observer assigns to the outcome of a coin toss.</td>
+<td style="text-align: left;">Bayesian inference</td>
+<td style="text-align: left;">The connection to relative frequencies or physical theories is not immediately clear</td>
+<td style="text-align: left;"><span class="citation" data-cites="ramsey1926">Ramsey (<a href="#ref-ramsey1926" role="doc-biblioref">1926</a>)</span> <span class="citation" data-cites="jeffreys1939">Jeffreys (<a href="#ref-jeffreys1939" role="doc-biblioref">1939</a>)</span> <span class="citation" data-cites="savage1954">Savage (<a href="#ref-savage1954" role="doc-biblioref">1954</a>)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>According to the <em>frequentist interpretation</em>, the probability of an event is the idealized relative frequency with which an event tends to occur under the same external conditions. For example, the frequentist interpretation of the statement “With a probability of 1/6, the die will show a 2 on the next throw” is the following: “If one were to throw a die infinitely often and determine the relative frequency of the event that the die shows a 2, then this relative frequency would be equal to 1/6.” Note that, in this interpretation, one de facto cannot empirically determine the probability of an event, since one cannot throw a die infinitely often. Of course, in this interpretation one can estimate the probability empirically. Estimation procedures themselves, however, are not part of probability theory, but of <em>inference</em>.</p>
+<p>According to the <em>Bayesian interpretation</em>, the probability of an event is the degree of certainty that an observer assigns to the occurrence of the event based on her subjective assessment of the situation. For example, the Bayesian interpretation of the statement “With a probability of 1/6, the die will show a two on the next throw” would then be something like the following: “Based on my own and transmitted experience with throwing a die, I am 16.6% certain that the die will show a two on the next throw.”</p>
+<p>In models of random processes that can in fact be repeated at least under similar circumstances, such as throwing a die, the difference between the frequentist and Bayesian interpretations is often rather subtle. However, as indicated above, there are many random processes that can be described with probabilities for which, because of their uniqueness, a frequentist interpretation is not appropriate. For example, statements of the form “The probability that the global heat records in 2023 are not attributable to climate change is less than 0.01” (cf. <span class="citation" data-cites="philip2020">Philip et al. (<a href="#ref-philip2020" role="doc-biblioref">2020</a>)</span>) make sense only under the Bayesian interpretation, because the weather records of the year 2023 are a unique, non-repeatable event.</p>
+<p>Although, then, the interpretation of the concept of probability is by no means unambiguous, the formal definitions and calculation rules for probabilities do not differ. Both frequentist and Bayesian inference have an identical mathematical reference system and common foundation in probability theory. In essence, this fact is not so different from many other forms of mathematical modeling. For example, the derivative of a function can be interpreted as the velocity of an object or as the growth rate of a bacterial population. Although these phenomena differ intuitively very strongly with respect to reality, logical reasoning about both phenomena is identical in the domain of mathematics.</p>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-definetti1975" class="csl-entry" role="listitem">
+De Finetti, B. (1975). <em>Theory of probability</em>. John Wiley &amp; Sons.
+</div>
+<div id="ref-gillies2000" class="csl-entry" role="listitem">
+Gillies, D. (2000). Varieties of <span>Propensity</span>. <em>The British Journal for the Philosophy of Science</em>, <em>51</em>(4), 807–835. <a href="https://doi.org/10.1093/bjps/51.4.807">https://doi.org/10.1093/bjps/51.4.807</a>
+</div>
+<div id="ref-hajek2019" class="csl-entry" role="listitem">
+Hájek, A. (2019). Interpretations of probability. In E. N. Zalta (Ed.), <em>The <span>Stanford</span> encyclopedia of philosophy</em> (Fall 2019). Metaphysics Research Lab, Stanford University.
+</div>
+<div id="ref-jaynes1968" class="csl-entry" role="listitem">
+Jaynes, E. (1968). Prior <span>Probabilities</span>. <em>IEEE Transactions on Systems Science and Cybernetics</em>, <em>4</em>(3), 227–241. <a href="https://doi.org/10.1109/TSSC.1968.300117">https://doi.org/10.1109/TSSC.1968.300117</a>
+</div>
+<div id="ref-jeffreys1939" class="csl-entry" role="listitem">
+Jeffreys, H. (1939). <em>Theory <span>Of Probability</span></em>. Oxford Classic Texts in the Physical Sciences.
+</div>
+<div id="ref-kolmogoroff1933" class="csl-entry" role="listitem">
+Kolmogoroff, A. (1933). <em><span>Grundbegriffe der Wahrscheinlichkeitsrechnung</span></em>. Springer Berlin Heidelberg. <a href="https://doi.org/10.1007/978-3-642-49888-6">https://doi.org/10.1007/978-3-642-49888-6</a>
+</div>
+<div id="ref-laplace1814" class="csl-entry" role="listitem">
+Laplace, P. S. (1814). <em>A philosophical essay on probabilities</em>.
+</div>
+<div id="ref-peirce1957" class="csl-entry" role="listitem">
+Peirce, C. S. (1957). Notes on the <span>Doctrine</span> of <span>Chances</span>. In <em>Essays in the <span>Philosophy</span> of <span>Science</span></em> (pp. 74–84). Bobbs-Merrill.
+</div>
+<div id="ref-philip2020" class="csl-entry" role="listitem">
+Philip, S., Kew, S., Van Oldenborgh, G. J., Otto, F., Vautard, R., Van Der Wiel, K., King, A., Lott, F., Arrighi, J., Singh, R., &amp; Van Aalst, M. (2020). A protocol for probabilistic extreme event attribution analyses. <em>Advances in Statistical Climatology, Meteorology and Oceanography</em>, <em>6</em>(2), 177–203. <a href="https://doi.org/10.5194/ascmo-6-177-2020">https://doi.org/10.5194/ascmo-6-177-2020</a>
+</div>
+<div id="ref-popper1959" class="csl-entry" role="listitem">
+Popper, K. R. (1959). The propensity interpreation of probability. <em>The British Journal for the Philosophy of Science</em>, <em>10</em>(37), 25–42. <a href="https://doi.org/10.1093/bjps/X.37.25">https://doi.org/10.1093/bjps/X.37.25</a>
+</div>
+<div id="ref-ramsey1926" class="csl-entry" role="listitem">
+Ramsey, F. P. (1926). Truth and <span>Probability</span>. In <em>The <span>Foundations</span> of <span>Mathematics</span> and other <span>Logical Essays</span>, <span>Chp VII</span></em> (pp. 156–198). <span>Harcourt, Brace and Company.</span>
+</div>
+<div id="ref-reichenbach1949" class="csl-entry" role="listitem">
+Reichenbach, H. (1949). Philosophical <span>Foundations</span> of <span>Probability</span>. <em>Proceedings of the <span>Berkeley Symposium</span> on <span>Mathematical Statistics</span> and <span>Probability</span></em>, 1–20.
+</div>
+<div id="ref-savage1954" class="csl-entry" role="listitem">
+Savage, L. J. (1954). <em>The foundations of statistics</em> (pp. xv, 294). John Wiley &amp; Sons.
+</div>
+<div id="ref-venn1876" class="csl-entry" role="listitem">
+Venn, J. (1876). <em>The logic of chance</em>. MacMillan.
+</div>
+<div id="ref-vonmises1951" class="csl-entry" role="listitem">
+von Mises, R. (1951). <em>Wahrscheinlichkeit, <span>Statistik</span> und <span>Wahrheit</span></em>. Springer International Publishing. <a href="https://doi.org/10.1007/978-3-319-29251-9_9">https://doi.org/10.1007/978-3-319-29251-9_9</a>
+</div>
+</div>
+</section>
 
 </main> <!-- /main -->
 <script>
@@ -791,13 +976,13 @@ ul.task-list li input[type="checkbox"] {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../_part_1/110-Descriptive-Statistics.html" class="pagination-link" aria-label="Descriptive statistics">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Descriptive statistics</span></span>
+      <a href="../_part_2/208-Control-Structures.html" class="pagination-link" aria-label="Control structures">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Control structures</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../_part_2/201-Basic-Concepts-of-Computer-Science.html" class="pagination-link" aria-label="Basic concepts of computer science">
-        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Basic concepts of computer science</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../References.html" class="pagination-link" aria-label="References">
+        <span class="nav-page-text">References</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -806,4 +991,4 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/_part_2/200-Imperative-Programming.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/_part_3/300-Probability-Theory.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></div></div></footer></body></html>
