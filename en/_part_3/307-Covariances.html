@@ -1,0 +1,1596 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>25&nbsp; Covariances – Probabilistic Data Science for Psychology</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../References.html" rel="next">
+<link href="../_part_3/306-Variances.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-d6825770f4e37b80aa8621686b79c10e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Probabilistic Data Science for Psychology</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://dirk-ostwald.github.io/"> 
+<span class="menu-text">Deutsch</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+    <a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="../Probabilistic-Data-Science-for-Psychology.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../_part_3/300-Probability-Theory.html">Probability theory</a></li><li class="breadcrumb-item"><a href="../_part_3/307-Covariances.html"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Covariances</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../_part_1/100-Mathematical-Foundations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Mathematical foundations</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/101-Language-and-Logic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Language and logic</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/102-Sets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Sets</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/103-Sums-Products-Powers.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Sums, products, powers</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/104-Functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Functions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/105-Sequences-Limits-Continuity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Sequences, limits, continuity</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/106-Differential-Calculus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Differential calculus</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/107-Integral-Calculus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Integral calculus</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/108-Vectors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Vectors</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/109-Matrices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Matrices</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/110-Descriptive-Statistics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Descriptive statistics</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../_part_2/200-Imperative-Programming.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Imperative programming</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/201-Basic-Concepts-of-Computer-Science.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Basic concepts of computer science</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/202-Arithmetic-and-Variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Arithmetic and variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/203-Data-Structures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Data structures</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/204-Vectors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Vectors</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/205-Matrices-and-Arrays.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Matrices and arrays</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/206-Lists-Dataframes-and-Tibbles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Lists, dataframes, and tibbles</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/207-Data-Management.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Data management</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/208-Control-Structures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Control structures</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../_part_3/300-Probability-Theory.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Probability theory</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/301-Probability-Spaces.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Probability spaces</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/302-Elementary-Probabilities.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Elementary probabilities</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/303-Random-Variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Random variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/304-Random-Vectors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Random vectors</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/305-Expectations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Expectations</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/306-Variances.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Variances</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/307-Covariances.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Covariances</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../References.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sec-covariances-definitions" id="toc-sec-covariances-definitions" class="nav-link active" data-scroll-target="#sec-covariances-definitions"><span class="header-section-number">25.1</span> Definitions</a></li>
+  <li><a href="#sec-covariances-properties" id="toc-sec-covariances-properties" class="nav-link" data-scroll-target="#sec-covariances-properties"><span class="header-section-number">25.2</span> Properties</a></li>
+  <li><a href="#sec-conditional-covariance" id="toc-sec-conditional-covariance" class="nav-link" data-scroll-target="#sec-conditional-covariance"><span class="header-section-number">25.3</span> Conditional covariance</a></li>
+  <li><a href="#sec-covariance-matrices" id="toc-sec-covariance-matrices" class="nav-link" data-scroll-target="#sec-covariance-matrices"><span class="header-section-number">25.4</span> Covariance matrices</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/_part_3/307-Covariances.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../_part_3/300-Probability-Theory.html">Probability theory</a></li><li class="breadcrumb-item"><a href="../_part_3/307-Covariances.html"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Covariances</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-covariances" class="quarto-section-identifier"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Covariances</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>With the <em>covariance</em> of two random variables and its standardized form, the <em>correlation</em>, we introduce in this chapter scalar quantities for the linear-affine dependence of random variables.</p>
+<section id="sec-covariances-definitions" class="level2" data-number="25.1">
+<h2 data-number="25.1" class="anchored" data-anchor-id="sec-covariances-definitions"><span class="header-section-number">25.1</span> Definitions</h2>
+<div id="def-covariance-and-correlation-of-two-random-variables" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 25.1 (Covariance and correlation of two random variables)</strong></span> The <em>covariance</em> of two random variables <span class="math inline">\(\xi_1\)</span> and <span class="math inline">\(\xi_2\)</span> is defined as <span class="math display">\[\begin{equation}
+\mathbb{C}(\xi_1,\xi_2) :=
+\mathbb{E}\left((\xi_1-\mathbb{E}(\xi_1))(\xi_2-\mathbb{E}(\xi_2))\right).
+\end{equation}\]</span> The <em>correlation</em> of two random variables <span class="math inline">\(\xi_1\)</span> and <span class="math inline">\(\xi_2\)</span> with <span class="math inline">\(\mathbb{S}(\xi_1) &gt; 0\)</span> and <span class="math inline">\(\mathbb{S}(\xi_2) &gt; 0\)</span> is defined as <span class="math display">\[\begin{equation}
+\rho(\xi_1,\xi_2)
+:= \frac{\mathbb{C}(\xi_1,\xi_2)}{\mathbb{S}(\xi_1)\mathbb{S}(\xi_2)}.
+\end{equation}\]</span></p>
+</div>
+<p>The covariance of a random variable with itself is its variance, since <span class="math display">\[\begin{equation}
+\mathbb{C}(\xi_1,\xi_1)
+= \mathbb{E}\left((\xi_1-\mathbb{E}(\xi_1))(\xi_1-\mathbb{E}(\xi_1))\right)
+= \mathbb{E}\left((\xi_1-\mathbb{E}(\xi_1))^2\right)
+= \mathbb{V}(\xi_1).
+\end{equation}\]</span> The number <span class="math inline">\(\rho(\xi_1,\xi_2)\)</span> is also called the <em>correlation coefficient of <span class="math inline">\(\xi_1\)</span> and <span class="math inline">\(\xi_2\)</span></em>. If <span class="math inline">\(\rho(\xi_1,\xi_2) = 0\)</span>, then <span class="math inline">\(\xi_1\)</span> and <span class="math inline">\(\xi_2\)</span> are called <em>uncorrelated</em>. In the chapter on inequalities, the correlation inequality shows that <span class="math display">\[\begin{equation}
+-1 \le \rho(\xi_1,\xi_2) \le 1.
+\end{equation}\]</span> The definition of covariance in <a href="#def-covariance-and-correlation-of-two-random-variables" class="quarto-xref">Definition&nbsp;<span>25.1</span></a> implicitly makes clear that the expectations appearing in it are of different kinds. The definition of covariance first assumes that <span class="math inline">\(\xi_1\)</span> and <span class="math inline">\(\xi_2\)</span> are the components of a random vector <span class="math inline">\(\xi := (\xi_1,\xi_2)\)</span> with outcome space <span class="math inline">\(\mathcal{X}_1 \times \mathcal{X}_2\)</span>, joint distribution <span class="math inline">\(\mathbb{P}(\xi_1,\xi_2)\)</span>, and marginal distributions <span class="math inline">\(\mathbb{P}(\xi_1)\)</span> and <span class="math inline">\(\mathbb{P}(\xi_2)\)</span>. The expectations <span class="math inline">\(\mathbb{E}(\xi_1)\)</span> and <span class="math inline">\(\mathbb{E}(\xi_2)\)</span> are the expectations of the components <span class="math inline">\(\xi_1\)</span> and <span class="math inline">\(\xi_2\)</span> with respect to these marginal distributions. The covariance itself is then the expectation of the function <span id="eq-f"><span class="math display">\[
+f : \mathcal{X}_1 \times \mathcal{X}_2 \to \mathcal{Z},
+(x_1,x_2) \mapsto f(x_1,x_2) := (x_1 - \mathbb{E}(\xi_1))(x_2 - \mathbb{E}(\xi_2))
+\tag{25.1}\]</span></span> with respect to the joint distribution <span class="math inline">\(\mathbb{P}(\xi_1,\xi_2)\)</span>. We illustrate this with the example of a discrete random vector.</p>
+<div id="exm-covariance-of-two-discrete-random-variables" class="theorem example">
+<p><span class="theorem-title"><strong>Example 25.1 (Covariance of two discrete random variables)</strong></span> Let <span class="math inline">\(\xi := (\xi_1,\xi_2)\)</span> be a discrete random vector with outcome space <span class="math inline">\(\mathcal{X} := \{1,2\} \times \{1,2,3\}\)</span> and the joint PMF <span class="math inline">\(p(x_1,x_2)\)</span> and marginal PMFs <span class="math inline">\(p(x_1)\)</span> and <span class="math inline">\(p(x_2)\)</span> shown in <a href="#tbl-joint-and-marginal-pmfs" class="quarto-xref">Table&nbsp;<span>25.1</span></a>.</p>
+<div id="tbl-joint-and-marginal-pmfs" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-joint-and-marginal-pmfs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;25.1: Joint and marginal PMFs of the random vector <span class="math inline">\(\xi\)</span>
+</figcaption>
+<div aria-describedby="tbl-joint-and-marginal-pmfs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: center;"><span class="math inline">\(p(x_1,x_2)\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(x_2 = 1\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(x_2 = 2\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(x_2 = 3\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(p(x_1)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(x_1 = 1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(0.10\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(0.05\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(0.15\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(0.30\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(x_1 = 2\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(0.60\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(0.05\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(0.05\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(0.70\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(p(x_2)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(0.70\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(0.10\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(0.20\)</span></td>
+<td style="text-align: center;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>Using the definition of the covariance of <span class="math inline">\(\xi_1\)</span> and <span class="math inline">\(\xi_2\)</span> and taking <a href="#eq-f" class="quarto-xref">Equation&nbsp;<span>25.1</span></a> into account, we have <span class="math display">\[\begin{align}
+\begin{split}
+\mathbb{C}(\xi_1,\xi_2)
+&amp; = \mathbb{E}(f(\xi_1,\xi_2))                                                                      \\
+&amp; = \sum_{x_1 = 1}^2  \sum_{x_2 = 1}^3 f(x_1, x_2)p(x_1,x_2)                                        \\
+&amp; = \sum_{x_1 =  1}^2 \sum_{x_2 =  1}^3 (x_1-\mathbb{E}(\xi_1))(x_2-\mathbb{E}(\xi_2))p(x_1,x_2).   \\
+\end{split}
+\end{align}\]</span> Substituting the values from <a href="#tbl-joint-and-marginal-pmfs" class="quarto-xref">Table&nbsp;<span>25.1</span></a> first gives <span class="math display">\[\begin{equation}
+\mathbb{E}(\xi_1) = \sum_{x_1 = 1}^2 x_1 p(x_1) = 1\cdot 0.3 + 2\cdot 0.7 = 1.7
+\end{equation}\]</span> and <span class="math display">\[\begin{equation}
+\mathbb{E}(\xi_2) = \sum_{x_2=1}^3 x_2 p(x_2) = 1\cdot 0.7 + 2\cdot 0.1 + 3\cdot 0.2 = 1.5.
+\end{equation}\]</span> Thus, finally, <span class="math display">\[\begin{align}
+\begin{split}
+\mathbb{C}(\xi_1,\xi_2)
+&amp; = \sum_{x_1 =  1}^2 \sum_{x_2 =  1}^3 \left(x_1-1.7\right)\left(x_2-1.5\right)p(x_1,x_2)                      \\
+&amp; = \sum_{x_1 =  1}^2 (x_1 -1.7)(1 - 1.5)p(x_1,1) + (x_1 -1.7)(2 - 1.5)p(x_1,2) + (x_1 -1.7)(3 - 1.5)p(x_1,3)   \\
+&amp; = \quad        (1 - 1.7)(1 - 1.5)p(1,1) + (1 - 1.7)(2 - 1.5)p(1,2) +  (1 - 1.7)(3 - 1.5)p(1,3)                \\
+&amp; \quad\quad\,\, (2 - 1.7)(1 - 1.5)p(2,1) + (2 - 1.7)(2 - 1.5)p(2,2) + (2 - 1.7)(3 - 1.5)p(2,3)                 \\
+&amp; = (-0.7)\cdot(-0.5)\cdot 0.10+ (-0.7)\cdot 0.5\cdot 0.05 + (-0.7)\cdot 1.5\cdot 0.15                          \\
+&amp; \quad\,\,  + 0.3\cdot(-0.5)\cdot 0.60 \,\, + 0.3\cdot 0.5\cdot 0.05 \quad\,\, + 0.3\cdot 1.5\cdot 0.05            \\
+&amp; = 0.035- 0.0175- 0.1575 - 0.09+ 0.0075+ 0.0225                                                                \\
+&amp; = - 0.2.
+\end{split}
+\end{align}\]</span> The covariance of the random variables <span class="math inline">\(\xi_1\)</span> and <span class="math inline">\(\xi_2\)</span> with the distribution specified in the table above is therefore <span class="math inline">\(\mathbb{C}(\xi_1,\xi_2) = -0.2\)</span>. Unlike the variance, the covariance can therefore evidently also take negative values.</p>
+</div>
+</section>
+<section id="sec-covariances-properties" class="level2" data-number="25.2">
+<h2 data-number="25.2" class="anchored" data-anchor-id="sec-covariances-properties"><span class="header-section-number">25.2</span> Properties</h2>
+<p>We next consider some basic properties of covariance.</p>
+<div id="thm-symmetry-of-covariance-and-correlation" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 25.1 (Symmetry of covariance and correlation)</strong></span> Let <span class="math inline">\(\xi_1\)</span> and <span class="math inline">\(\xi_2\)</span> be two random variables. Then <span class="math display">\[\begin{equation}
+\mathbb{C}(\xi_1,\xi_2) = \mathbb{C}(\xi_2,\xi_1)
+\mbox{ and }
+\rho(\xi_1,\xi_2) = \rho(\xi_2,\xi_1).
+\end{equation}\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>By the commutativity of multiplication, we first have <span class="math display">\[\begin{equation}
+\mathbb{C}(\xi_1,\xi_2)
+= \mathbb{E}\left((\xi_1-\mathbb{E}(\xi_1))(\xi_2-\mathbb{E}(\xi_2))\right)
+= \mathbb{E}\left((\xi_2-\mathbb{E}(\xi_2))(\xi_1-\mathbb{E}(\xi_1))\right)
+= \mathbb{C}(\xi_2,\xi_1).
+\end{equation}\]</span> Furthermore, <span class="math display">\[\begin{equation}
+\rho(\xi_1,\xi_2)
+= \frac{\mathbb{C}(\xi_1,\xi_2)}{\mathbb{S}(\xi_1)\mathbb{S}(\xi_2)}
+= \frac{\mathbb{C}(\xi_2,\xi_1)}{\mathbb{S}(\xi_2)\mathbb{S}(\xi_1)}
+= \rho(\xi_2,\xi_1).
+\end{equation}\]</span></p>
+</div>
+<p>As with the calculation of variances, calculating covariances is sometimes made easier by the following theorem.</p>
+<div id="thm-covariance-shift-theorem" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 25.2 (Covariance shift theorem)</strong></span> Let <span class="math inline">\(\xi_1\)</span> and <span class="math inline">\(\xi_2\)</span> be random variables. Then <span class="math display">\[\begin{equation}
+\mathbb{C}(\xi_1,\xi_2) = \mathbb{E}(\xi_1\xi_2) - \mathbb{E}(\xi_1)\mathbb{E}(\xi_2).
+\end{equation}\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>By <a href="#def-covariance-and-correlation-of-two-random-variables" class="quarto-xref">Definition&nbsp;<span>25.1</span></a>, <span class="math display">\[\begin{align}
+\begin{split}
+\mathbb{C}(\xi_1,\xi_2)
+&amp; = \mathbb{E}\left((\xi_1-\mathbb{E}(\xi_1))(\xi_2-\mathbb{E}(\xi_2))\right)                                                           \\
+&amp; = \mathbb{E}\left(\xi_1\xi_2-\xi_1\mathbb{E}(\xi_2)-\mathbb{E}(\xi_1)\xi_2+\mathbb{E}(\xi_1)\mathbb{E}(\xi_2)\right)                  \\
+&amp; = \mathbb{E}(\xi_1\xi_2)-\mathbb{E}(\xi_1)\mathbb{E}(\xi_2)-\mathbb{E}(\xi_1)\mathbb{E}(\xi_2)+\mathbb{E}(\xi_1)\mathbb{E}(\xi_2)     \\
+&amp; = \mathbb{E}(\xi_1\xi_2)-\mathbb{E}(\xi_1)\mathbb{E}(\xi_2).
+\end{split}
+\end{align}\]</span></p>
+</div>
+<p>Of course, <a href="#thm-covariance-shift-theorem" class="quarto-xref">Theorem&nbsp;<span>25.2</span></a> is only truly useful if <span class="math inline">\(\mathbb{E}(\xi_1\xi_2)\)</span> is easy to compute. The variance shift theorem from <a href="306-Variances.html#thm-variance-shift-theorem" class="quarto-xref">Theorem&nbsp;<span>24.2</span></a> follows from <a href="#thm-covariance-shift-theorem" class="quarto-xref">Theorem&nbsp;<span>25.2</span></a> for the case <span class="math inline">\(\xi_1 = \xi_2 := \xi\)</span> by <span class="math display">\[\begin{equation}
+\mathbb{V}(\xi)
+= \mathbb{C}(\xi,\xi)
+= \mathbb{E}(\xi\xi) - \mathbb{E}(\xi)\mathbb{E}(\xi)
+= \mathbb{E}(\xi^2) - \mathbb{E}(\xi)\mathbb{E}(\xi).
+\end{equation}\]</span></p>
+<p>With regard to the covariance <span class="math inline">\(\mathbb{C}(\xi_1,\xi_2)\)</span>, one is also interested in how it behaves under the application of linear-affine transformations to <span class="math inline">\(\xi_1\)</span> and <span class="math inline">\(\xi_2\)</span>. The following result shows that the covariance of two random variables depends on their scale, whereas the correlation does not. This motivates the frequent use of correlation as a general measure of association that is comparable across different application scenarios.</p>
+<div id="thm-covariance-and-correlation-under-linear-affine-transformation" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 25.3 (Covariance and correlation under linear-affine transformation)</strong></span> Let <span class="math inline">\(\xi_1\)</span> and <span class="math inline">\(\xi_2\)</span> be random variables with joint outcome space <span class="math inline">\(\mathcal{X}_1 \times \mathcal{X}_2\)</span>, and let <span class="math display">\[\begin{align}
+\begin{split}
+f_1 : \mathcal{X}_1 \to \mathcal{Z}_1, x_1 \mapsto f_1(x_1) := ax_1 + b \\
+f_2 : \mathcal{X}_2 \to \mathcal{Z}_2, x_2 \mapsto f_2(x_2) := cx_2 + d
+\end{split}
+\end{align}\]</span> be two linear-affine functions for <span class="math inline">\(a,b,c,d\in \mathbb{R}\)</span>. Then <span class="math display">\[\begin{equation}
+\mathbb{C}(f_1(\xi_1), f_2(\xi_2)) = \mathbb{C}(a\xi_1 + b, c\xi_2 + d) = ac\mathbb{C}(\xi_1,\xi_2)
+\end{equation}\]</span> and <span class="math display">\[\begin{equation}
+\rho(f_1(\xi_1), f_2(\xi_2)) = \rho(a\xi_1 + b, c\xi_2 + d) = \rho(\xi_1,\xi_2).
+\end{equation}\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>First, <span class="math display">\[\begin{align}
+\begin{split}
+\mathbb{C}(a\xi_1+b,c\xi_2+d)
+&amp; = \mathbb{E}((a\xi_1+b-\mathbb{E}(a\xi_1+b))(c\xi_2+d-\mathbb{E}(c\xi_2+d)))      \\
+&amp; = \mathbb{E}((a\xi_1+b-a\mathbb{E}(\xi_1)-b)(c\xi_2+d-c\mathbb{E}(\xi_2)-d))      \\
+&amp; = \mathbb{E}(a(\xi_1-\mathbb{E}(\xi_1))c(\xi_2-\mathbb{E}(\xi_2)))             \\
+&amp; = \mathbb{E}(ac((\xi_1-\mathbb{E}(\xi_1))(\xi_2-\mathbb{E}(\xi_2))))            \\
+&amp; = ac\mathbb{C}(\xi_1,\xi_2).
+\end{split}
+\end{align}\]</span> Thus, <span class="math display">\[\begin{align}
+\begin{split}
+\rho(a\xi_1 + b, c\xi_2 + d)
+&amp; = \frac{\mathbb{C}(a\xi_1+b,c\xi_2+d)}{\sqrt{\mathbb{V}(a\xi_1+b)}\sqrt{\mathbb{V}(c\xi_2+d)}}    \\
+&amp; = \frac{ac\mathbb{C}(\xi_1,\xi_2)}{\sqrt{a^2\mathbb{V}(\xi_1)}\sqrt{c^2\mathbb{V}(\xi_2)}}        \\
+&amp; = \frac{ac\mathbb{C}(\xi_1,\xi_2)}{a\mathbb{S}(\xi_1)c\mathbb{S}(\xi_2)}                          \\
+&amp; = \frac{\mathbb{C}(\xi_1,\xi_2)}{\mathbb{S}(\xi_1)\mathbb{S}(\xi_2)}                              \\
+&amp; = \rho(\xi_1,\xi_2).
+\end{split}
+\end{align}\]</span></p>
+</div>
+<p>With the concept of covariance, it is possible to make more general statements about the variances of sums and differences of random variables than in <a href="306-Variances.html" class="quarto-xref"><span>Chapter 24</span></a>, where only the variances of sums of independent random variables were considered. With the following theorem, we first investigate the very general case of the covariance of two random variables that arise as linear combinations of <span class="math inline">\(n\)</span> random variables <span class="math inline">\(\xi_1,...,\xi_n\)</span> and <span class="math inline">\(m\)</span> random variables <span class="math inline">\(\zeta_1,...,\zeta_m\)</span>, with real constants added. This yields a number of special cases that are important in applications, especially in classical test theory.</p>
+<div id="thm-covariance-of-linear-combinations-of-random-variables" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 25.4 (Covariance of linear combinations of random variables)</strong></span> Let <span class="math inline">\(n\)</span> random variables <span class="math inline">\(\xi_1,...,\xi_n\)</span> and <span class="math inline">\(n+1\)</span> real constants <span class="math inline">\(a_0,a_1,...,a_n\)</span> be given, and let <span class="math inline">\(m\)</span> random variables <span class="math inline">\(\zeta_1,...,\zeta_m\)</span> and <span class="math inline">\(m+1\)</span> real constants <span class="math inline">\(b_0,b_1,...,b_m\)</span> be given. Then <span class="math display">\[\begin{equation}
+\mathbb{C}\left(a_0 + \sum_{i=1}^n a_i \xi_i, b_0 + \sum_{j=1}^m b_j \zeta_j\right)
+= \sum_{i=1}^n \sum_{j=1}^m a_ib_j\mathbb{C}(\xi_i, \zeta_j).
+\end{equation}\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span><span class="math display">\[\begin{align*}
+\begin{split}
+&amp; \mathbb{C}\left(a_0 + \sum_{i=1}^n a_i \xi_i, b_0 + \sum_{j=1}^m b_j \zeta_j \right) \\
+&amp; = \mathbb{E}\left(
+    \left(a_0 + \sum_{i=1}^n a_i \xi_i  - \mathbb{E}\left(a_0 + \sum_{i=1}^n a_i \xi_i\right)\right)
+    \left(b_0 + \sum_{j=1}^m b_j \zeta_j - \mathbb{E}\left(b_0 + \sum_{j=1}^m b_j \zeta_j \right)\right)
+    \right)
+\\
+&amp; = \mathbb{E}\left(
+    \left(a_0 + \sum_{i=1}^n a_i \xi_i  - a_0 - \mathbb{E}\left(\sum_{i=1}^n a_i \xi_i\right)\right)
+    \left(b_0 + \sum_{j=1}^m b_j \zeta_j - b_0 - \mathbb{E}\left(\sum_{j=1}^m b_j \zeta_j \right)\right)
+    \right)
+\\
+&amp; = \mathbb{E}\left(
+    \left(\sum_{i=1}^n a_i \xi_i  - \sum_{i=1}^n a_i \mathbb{E}(\xi_i) \right)
+    \left(\sum_{j=1}^m b_j \zeta_j - \sum_{j=1}^m b_j \mathbb{E}(\zeta_j)\right)
+    \right)
+\\
+&amp; = \mathbb{E}
+    \left(
+    \sum_{i=1}^n a_i \xi_i\sum_{j=1}^m b_j \zeta_j  - \sum_{i=1}^n a_i \xi_i \sum_{j=1}^m b_j \mathbb{E}(\zeta_j)
+    - \sum_{i=1}^n a_i \mathbb{E}(\xi_i)\sum_{j=1}^m b_j \zeta_j +  \sum_{i=1}^n a_i \mathbb{E}(\xi_i) \sum_{j=1}^m b_j \mathbb{E}(\zeta_j)
+    \right)
+\\
+&amp; = \mathbb{E}\left(\sum_{i=1}^n a_i \xi_i\sum_{j=1}^m b_j \zeta_j\right)
+    - \mathbb{E}\left(\sum_{i=1}^n a_i \xi_i \sum_{j=1}^m b_j \mathbb{E}(\zeta_j)\right)
+    - \mathbb{E}\left(\sum_{i=1}^n a_i \mathbb{E}(\xi_i)\sum_{j=1}^m b_j \zeta_j\right)
+    + \mathbb{E}\left(\sum_{i=1}^n a_i \mathbb{E}(\xi_i) \sum_{j=1}^m b_j \mathbb{E}(\zeta_j)\right)
+\\
+&amp; =  \sum_{i=1}^n \sum_{j=1}^m a_ib_j \mathbb{E}(\xi_i\zeta_j)
+    - 2\sum_{i=1}^n \sum_{j=1}^m a_i  b_j \mathbb{E}(\xi_i)\mathbb{E}(\zeta_j)
+    + \sum_{i=1}^n\sum_{j=1}^m a_ib_j \mathbb{E}(\xi_i) \mathbb{E}(\zeta_j)
+\\
+&amp; =  \sum_{i=1}^n \sum_{j=1}^m a_ib_j \left(\mathbb{E}(\xi_i\zeta_j) -  2 \mathbb{E}(\xi_i)\mathbb{E}(\zeta_j) +\mathbb{E}(\xi_i)\mathbb{E}(\zeta_j)\right)
+\\
+&amp; =  \sum_{i=1}^n \sum_{j=1}^m a_ib_j
+     \mathbb{E}\left((\xi_i -  \mathbb{E}(\xi_i))(\zeta_j - \mathbb{E}(\zeta_j))\right)
+\\
+&amp; = \sum_{i=1}^n \sum_{j=1}^m a_ib_j\mathbb{C}(\xi_i, \zeta_j).
+\end{split}
+\end{align*}\]</span></p>
+</div>
+<p>With the following theorem, we now consider a first special case of <a href="#thm-covariance-of-linear-combinations-of-random-variables" class="quarto-xref">Theorem&nbsp;<span>25.4</span></a>.</p>
+<div id="thm-covariance-under-pairwise-addition-of-random-variables" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 25.5 (Covariance under pairwise addition of random variables)</strong></span> Let <span class="math inline">\(\xi_1,\xi_2,\zeta_1,\zeta_2\)</span> be four random variables. Then <span class="math display">\[\begin{equation}
+\mathbb{C}(\xi_1 + \xi_2, \zeta_1 + \zeta_2)
+= \mathbb{C}(\xi_1,\zeta_1) + \mathbb{C}(\xi_1,\zeta_2) + \mathbb{C}(\xi_2,\zeta_1) + \mathbb{C}(\xi_2,\zeta_2).
+\end{equation}\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>Let <span class="math inline">\(n := 2, m := 2, a_0 = b_0 := 0\)</span>, and <span class="math inline">\(a_i = b_i := 1\)</span> for <span class="math inline">\(i = 1,2\)</span>. Then, by <a href="#thm-covariance-of-linear-combinations-of-random-variables" class="quarto-xref">Theorem&nbsp;<span>25.4</span></a>, <span class="math display">\[\begin{align}
+\begin{split}
+\mathbb{C}\left(\xi_1 +\xi_2, \zeta_1 + \zeta_2 \right)
+&amp; = \mathbb{C}\left(a_0 + \sum_{i=1}^2 a_i \xi_i, b_0 + \sum_{j=1}^2 b_j \zeta_j \right) \\
+&amp; = \sum_{i=1}^2 \sum_{j=1}^2 a_i b_j\mathbb{C}\left(\xi_i, \zeta_j \right) \\
+&amp; = \sum_{i=1}^2 \sum_{j=1}^2 \mathbb{C}\left(\xi_i, \zeta_j \right) \\
+&amp; = \mathbb{C}\left(\xi_1, \zeta_1\right) + \mathbb{C}\left(\xi_1, \zeta_2 \right) + \mathbb{C}\left(\xi_2, \zeta_1\right) + \mathbb{C}\left(\xi_2, \zeta_2 \right).
+\end{split}
+\end{align}\]</span></p>
+</div>
+<p>The following theorem states how, in general, the variance of a linear combination of random variables with an added constant can be determined.</p>
+<div id="thm-variance-of-a-linear-combination-of-random-variables" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 25.6 (Variance of a linear combination of random variables)</strong></span> Let <span class="math inline">\(n\)</span> random variables <span class="math inline">\(\xi_1,...,\xi_n\)</span> and <span class="math inline">\(n+1\)</span> real constants <span class="math inline">\(a_0,a_1,...,a_n\)</span> be given. Then <span class="math display">\[\begin{equation}
+\mathbb{V}\left(a_0 + \sum_{i=1}^n a_i \xi_i \right)
+= \sum_{i=1}^n a_i^2 \mathbb{V}(\xi_i) + 2 \sum_{i=1}^{n-1}\sum_{j=i+1}^n a_ia_j\mathbb{C}(\xi_i,\xi_j).
+\end{equation}\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>With <span class="math inline">\(\mathbb{V}(\xi) = \mathbb{C}(\xi,\xi)\)</span> and <a href="#thm-covariance-of-linear-combinations-of-random-variables" class="quarto-xref">Theorem&nbsp;<span>25.4</span></a>, we first have <span class="math display">\[\begin{align}
+\begin{split}
+\mathbb{V}\left(a_0 + \sum_{i=1}^n a_i\xi_i\right)
+&amp; = \mathbb{C}\left(a_0 + \sum_{i=1}^n a_i\xi_i, a_0 + \sum_{i=1}^n a_i\xi_i\right)                                                                                 \\
+&amp; = \mathbb{C}\left(a_0 + \sum_{i=1}^n a_i\xi_i, a_0 + \sum_{j=1}^n a_j \xi_j \right)                                                                                   \\
+&amp; = \sum_{i=1}^n \sum_{j=1}^n a_ia_j \mathbb{C}(\xi_i,\xi_j)                                                                                                        \\
+&amp; = \sum_{i=1}^n\sum_{\substack{j=1 \\ j = i}}^n a_ia_j \mathbb{C}(\xi_i,\xi_j)  + \sum_{i=1}^n \sum_{\substack{j=1 \\ j \neq i}}^n a_ia_j \mathbb{C}(\xi_i,\xi_j)  \\
+&amp; = \sum_{i=1}^n a_i a_i\mathbb{C}(\xi_i,\xi_i)  + \sum_{i=1}^n \sum_{\substack{j=1 \\ j \neq i}}^n a_ia_j \mathbb{C}(\xi_i,\xi_j)                                  \\
+&amp; = \sum_{i=1}^n a_i^2\mathbb{V}(\xi_i)  + \sum_{i=1}^n \sum_{\substack{j=1 \\ j \neq i}}^n a_ia_j \mathbb{C}(\xi_i,\xi_j)                                          \\
+&amp; = \sum_{i=1}^n a_i^2\mathbb{V}(\xi_i)  + 2 \sum_{i=1}^{n-1}\sum_{j=i+1}^na_ia_j \mathbb{C}(\xi_i,\xi_j).
+\end{split}
+\end{align}\]</span> In the fourth equality, the double sum was split into those terms for which <span class="math inline">\(i = j\)</span> and those for which <span class="math inline">\(i \neq j\)</span>. In the seventh equality, we used that <span class="math display">\[\begin{equation}
+a_ia_j\mathbb{C}(\xi_i,\xi_j) = a_ja_i\mathbb{C}(\xi_j,\xi_i).
+\end{equation}\]</span> We illustrate the resulting identity <span class="math display">\[\begin{equation}
+\sum_{i=1}^n \sum_{\substack{j=1 \\ j \neq i}}^n a_ia_j \mathbb{C}(\xi_i,\xi_j)
+= 2 \sum_{i=1}^{n-1}\sum_{j=i+1}^na_ia_j \mathbb{C}(\xi_i,\xi_j),
+\end{equation}\]</span> for the example <span class="math inline">\(n = 3\)</span> below. Analogously, one may imagine summing over all elements except the diagonal elements of the <span class="math inline">\(i = 1,...,n\)</span> rows and <span class="math inline">\(j = 1,...,n\)</span> columns of a symmetric matrix with entries <span class="math inline">\(a_ia_j\mathbb{C}(\xi_i,\xi_j)\)</span>. The left side of the equation above then corresponds to summing row by row over all column entries except the one in the column of the row currently considered, that is, the diagonal entry. The right side corresponds to exploiting the symmetry of the matrix, that is, taking into account that the entries of the matrix above and below the diagonal are identical, so it is enough to add the entries of the upper triangle and double them. For each row <span class="math inline">\(i = 1,...,n\)</span>, only the columns <span class="math inline">\(j = i+1,...,n\)</span> to the right of the diagonal are considered and their entries are summed. The last row contains only a diagonal element, which is not part of the sum, so the index of the outer sum only runs to <span class="math inline">\(n-1\)</span>. Concretely, for <span class="math inline">\(n := 3\)</span>, <span class="math display">\[\begin{align}
+\begin{split}
+&amp; \sum_{i=1}^3\sum_{\substack{j=1 \\ j \neq i}}^3 a_ia_j \mathbb{C}(\xi_i,\xi_j) \\
+&amp; = \sum_{\substack{j=1 \\ j \neq 1}}^3 a_1a_j\mathbb{C}(\xi_1,\xi_j) +
+    \sum_{\substack{j=1 \\ j \neq 2}}^3 a_2a_j\mathbb{C}(\xi_2,\xi_j) +
+    \sum_{\substack{j=1 \\ j \neq 3}}^3 a_3a_j\mathbb{C}(\xi_3,\xi_j)\\
+&amp; = a_1a_2\mathbb{C}(\xi_1,\xi_2) + a_1a_3\mathbb{C}(\xi_1,\xi_3) + a_2a_1\mathbb{C}(\xi_2,\xi_1) + a_2a_3\mathbb{C}(\xi_2,\xi_3)  + a_3a_1\mathbb{C}(\xi_3,\xi_1) + a_3a_2\mathbb{C}(\xi_3,\xi_2)\\
+&amp; = a_1a_2\mathbb{C}(\xi_1,\xi_2) + a_2a_1\mathbb{C}(\xi_2,\xi_1) + a_1a_3\mathbb{C}(\xi_1,\xi_3) + a_3a_1\mathbb{C}(\xi_3,\xi_1) + a_2a_3\mathbb{C}(\xi_2,\xi_3) + a_3a_2\mathbb{C}(\xi_3,\xi_2)\\
+&amp; = 2a_1a_2\mathbb{C}(\xi_1,\xi_2) + 2a_1a_3\mathbb{C}(\xi_1,\xi_3) + 2a_2a_3\mathbb{C}(\xi_2,\xi_3)\\
+&amp; = 2\left(a_1a_2\mathbb{C}(\xi_1,\xi_2) + a_1a_3\mathbb{C}(\xi_1,\xi_3) + a_2a_3\mathbb{C}(\xi_2,\xi_3)\right)\\
+&amp; = 2\left(\sum_{j=2}^3 a_1a_j\mathbb{C}(\xi_1,\xi_j) + \sum_{j=3}^3 a_2a_j\mathbb{C}(\xi_2,\xi_j)\right)\\
+&amp; = 2\left(\sum_{j=1+1}^3 a_1a_j\mathbb{C}(\xi_1,\xi_j) + \sum_{j=2+1}^3 a_2a_j\mathbb{C}(\xi_2,\xi_j)\right)\\
+&amp; = 2\sum_{i=1}^{2}\sum_{j=i+1}^3 a_ia_j\mathbb{C}(\xi_i,\xi_j).
+\end{split}
+\end{align}\]</span></p>
+</div>
+<div id="thm-variances-of-special-linear-combinations-of-random-variables" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 25.7 (Variances of special linear combinations of random variables)</strong></span> &nbsp;</p>
+<p>(1) (Variance under addition of two random variables). Let two random variables <span class="math inline">\(\xi\)</span> and <span class="math inline">\(\zeta\)</span> be given. Then <span class="math display">\[\begin{equation}
+\mathbb{V}(\xi + \zeta)
+= \mathbb{V}(\xi) + \mathbb{V}(\zeta) + 2\mathbb{C}(\xi,\zeta).
+\end{equation}\]</span> (2) (Variance under subtraction of two random variables). Let two random variables <span class="math inline">\(\xi\)</span> and <span class="math inline">\(\zeta\)</span> be given. Then <span class="math display">\[\begin{equation}
+\mathbb{V}(\xi - \zeta)
+= \mathbb{V}(\xi) + \mathbb{V}(\zeta) - 2\mathbb{C}(\xi,\zeta).
+\end{equation}\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>Let <span class="math inline">\(n := 2\)</span>, <span class="math inline">\(\xi_1 := \xi\)</span>, <span class="math inline">\(\xi_2 := \zeta\)</span>, <span class="math inline">\(a_0 := 0\)</span>, <span class="math inline">\(a_1 := 1\)</span>, and <span class="math inline">\(a_2 := 1\)</span>. Then, by <a href="#thm-variance-of-a-linear-combination-of-random-variables" class="quarto-xref">Theorem&nbsp;<span>25.6</span></a>, <span class="math display">\[\begin{align}
+\begin{split}
+\mathbb{V}(\xi + \zeta)
+&amp; = \mathbb{V}(a_0 + a_1\xi_1 + a_2\xi_2)                                                                                   \\
+&amp; = \mathbb{V}\left(a_0 + \sum_{i=1}^2 a_i \xi_i \right)                                                                    \\
+&amp; = \sum_{i=1}^2 a_i^2 \mathbb{V}(\xi_i) + 2 \sum_{i=1}^{2-1}\sum_{j = i+ 1}^2 a_i a_j\mathbb{C}(\xi_i,\xi_j)               \\
+&amp; = \sum_{i=1}^2 a_i^2 \mathbb{V}(\xi_i) + 2 \sum_{i=1}^{1}\sum_{j = i + 1}^2 a_ia_j \mathbb{C}(\xi_i,\xi_j)                \\
+&amp; = \sum_{i=1}^2 a_i^2 \mathbb{V}(\xi_i) + 2 \sum_{j = 1 + 1}^2 a_ia_j \mathbb{C}(\xi_1,\xi_j)                              \\
+&amp; = \sum_{i=1}^2 a_i^2 \mathbb{V}(\xi_i) + 2 \sum_{j = 2}^2 a_1a_j\mathbb{C}(\xi_1,\xi_j)                                   \\
+&amp; = a_1^2\mathbb{V}(\xi_1) + a_2^2\mathbb{V}(\xi_2) + 2 a_1a_2\mathbb{C}(\xi_1,\xi_2)                                       \\
+&amp; = 1^2 \cdot \mathbb{V}(\xi)   +  1^2 \cdot \mathbb{V}(\zeta) + 2 \cdot  1 \cdot 1 \cdot  \mathbb{C}(\xi,\zeta)            \\
+&amp; = \mathbb{V}(\xi) + \mathbb{V}(\zeta) + 2 \mathbb{C}(\xi,\zeta).                                                          \\
+\end{split}
+\end{align}\]</span> Now let <span class="math inline">\(n := 2\)</span>, <span class="math inline">\(\xi_1 := \xi\)</span>, <span class="math inline">\(\xi_2 := \zeta\)</span>, <span class="math inline">\(a_0 := 0\)</span>, <span class="math inline">\(a_1 := 1\)</span>, and <span class="math inline">\(a_2 := -1\)</span>. Then, by <a href="#thm-variance-of-a-linear-combination-of-random-variables" class="quarto-xref">Theorem&nbsp;<span>25.6</span></a>, <span class="math display">\[\begin{align}
+\begin{split}
+\mathbb{V}(\xi - \zeta)
+&amp; = \mathbb{V}(a_0 + a_1\xi_1 + a_2\xi_2)                                                                                   \\
+&amp; = \mathbb{V}\left(a_0 + \sum_{i=1}^2 a_i \xi_i \right)                                                                    \\
+&amp; = \sum_{i=1}^2 a_i^2 \mathbb{V}(\xi_i) + 2 \sum_{i=1}^{2-1}\sum_{j = i+ 1}^2 a_i a_j\mathbb{C}(\xi_i,\xi_j)               \\
+&amp; = \sum_{i=1}^2 a_i^2 \mathbb{V}(\xi_i) + 2 \sum_{i=1}^{1}\sum_{j = i + 1}^2 a_ia_j \mathbb{C}(\xi_i,\xi_j)                \\
+&amp; = \sum_{i=1}^2 a_i^2 \mathbb{V}(\xi_i) + 2 \sum_{j = 1 + 1}^2 a_ia_j \mathbb{C}(\xi_1,\xi_j)                              \\
+&amp; = \sum_{i=1}^2 a_i^2 \mathbb{V}(\xi_i) + 2 \sum_{j = 2}^2 a_1a_j\mathbb{C}(\xi_1,\xi_j)                                   \\
+&amp; = a_1^2\mathbb{V}(\xi_1) + a_2^2\mathbb{V}(\xi_2) + 2 a_1a_2\mathbb{C}(\xi_1,\xi_2)                                       \\
+&amp; = 1^2\cdot \mathbb{V}(\xi)   +  (-1)^2 \cdot \mathbb{V}(\zeta) + 2 \cdot  1 \cdot (-1)\cdot  \mathbb{C}(\xi,\zeta) \\
+&amp; = \mathbb{V}(\xi) + \mathbb{V}(\zeta) - 2 \mathbb{C}(\xi,\zeta).                                                              \\
+\end{split}
+\end{align}\]</span> Alternatively, without using <a href="#thm-variance-of-a-linear-combination-of-random-variables" class="quarto-xref">Theorem&nbsp;<span>25.6</span></a> and with <a href="305-Expectations.html#thm-expectation-under-linear-affine-combination-of-random-variables" class="quarto-xref">Theorem&nbsp;<span>23.2</span></a>, we have <span class="math display">\[\begin{align}
+\begin{split}
+&amp; \mathbb{V}(a\xi + b\zeta + c)                                                                 \\
+&amp; = \mathbb{E}\left((a\xi + b\zeta + c - a\mathbb{E}(\xi) - b\mathbb{E}(\zeta) - c)^2\right)    \\
+&amp; = \mathbb{E}\left((a(\xi  - \mathbb{E}(\xi)) + b(\zeta  - \mathbb{E}(\zeta)))^2\right)        \\
+&amp; = \mathbb{E}\left(a^2(\xi - \mathbb{E}(\xi))^2
+                  + 2ab(\xi - \mathbb{E}(\xi))(\zeta - \mathbb{E}(\zeta)))
+                  + b^2(\zeta - \mathbb{E}(\zeta))^2\right)                                     \\
+&amp; = a^2\mathbb{E}\left((\xi - \mathbb{E}(\xi))^2\right) +
+    b^2\mathbb{E}\left((\zeta - \mathbb{E}(\zeta))^2\right) +
+    2ab\mathbb{E}\left((\xi - \mathbb{E}(\xi))(\zeta - \mathbb{E}(\zeta))\right)                \\
+&amp; = a^2\mathbb{V}(\xi)+ b^2\mathbb{V}(\zeta) + 2ab\mathbb{C}(\xi,\zeta).
+\end{split}
+\end{align}\]</span> The special cases then follow directly with <span class="math inline">\(a := b := 1\)</span> and <span class="math inline">\(a := 1, b := -1\)</span>, respectively.</p>
+</div>
+<p>Finally, the following theorem provides a first impression of the relationship between covariance and correlation and the concept of independence of random variables. It turns out that covariance and correlation are sensitive only to certain forms of dependence between random variables and, in particular, that a covariance of zero does not imply independence of the random variables. On the other hand, independence of two random variables always implies that their covariance is zero and that they are therefore uncorrelated. Dependence and independence of random variables are thus much more general concepts for describing the association between random variables than covariance and correlation.</p>
+<div id="thm-correlation-and-independence-of-random-variables" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 25.8 (Correlation and independence of random variables)</strong></span> Let <span class="math inline">\(\xi_1\)</span> and <span class="math inline">\(\xi_2\)</span> be two random variables. If <span class="math inline">\(\xi_1\)</span> and <span class="math inline">\(\xi_2\)</span> are independent, then <span class="math inline">\(\mathbb{C}(\xi_1,\xi_2) = 0\)</span>, and <span class="math inline">\(\xi_1\)</span> and <span class="math inline">\(\xi_2\)</span> are therefore uncorrelated. Conversely, if <span class="math inline">\(\mathbb{C}(\xi_1,\xi_2) = 0\)</span> and <span class="math inline">\(\xi_1\)</span> and <span class="math inline">\(\xi_2\)</span> are therefore uncorrelated, then <span class="math inline">\(\xi_1\)</span> and <span class="math inline">\(\xi_2\)</span> are not necessarily independent.</p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>In a first step, we show that independence of <span class="math inline">\(\xi_1\)</span> and <span class="math inline">\(\xi_2\)</span> implies <span class="math inline">\(\mathbb{C}(\xi_1,\xi_2) = 0\)</span>. We then provide an example showing that the covariance of dependent random variables <span class="math inline">\(\xi_1\)</span> and <span class="math inline">\(\xi_2\)</span> can indeed be zero.</p>
+<p>(1) We show that independence of <span class="math inline">\(\xi_1\)</span> and <span class="math inline">\(\xi_2\)</span> implies <span class="math inline">\(\mathbb{C}(\xi_1,\xi_2) = 0\)</span>. For this purpose, we first note that for independent random variables, <span class="math display">\[\begin{equation}
+\mathbb{E}(\xi_1\xi_2) = \mathbb{E}(\xi_1)\mathbb{E}(\xi_2).
+\end{equation}\]</span> With the covariance shift theorem, it follows that <span class="math display">\[\begin{equation}
+\mathbb{C}(\xi_1,\xi_2)
+= \mathbb{E}(\xi_1\xi_2) - \mathbb{E}(\xi_1)\mathbb{E}(\xi_2)
+= \mathbb{E}(\xi_1)\mathbb{E}(\xi_2) - \mathbb{E}(\xi_1)\mathbb{E}(\xi_2)
+= 0.
+\end{equation}\]</span> With the definition of the correlation coefficient, it then follows that <span class="math inline">\(\rho(\xi_1,\xi_2) = 0\)</span>, and thus <span class="math inline">\(\xi_1\)</span> and <span class="math inline">\(\xi_2\)</span> are uncorrelated.</p>
+<p>(2) We now provide an example showing that the covariance of dependent random variables <span class="math inline">\(\xi_1\)</span> and <span class="math inline">\(\xi_2\)</span> can be zero. For this purpose, we consider two discrete random variables <span class="math inline">\(\xi_1\)</span> and <span class="math inline">\(\xi_2\)</span> with outcome spaces <span class="math inline">\(\mathcal{X}_1 = \{-1,0,1\}\)</span> and <span class="math inline">\(\mathcal{X}_2 = \{0,1\}\)</span>, the marginal PMF of <span class="math inline">\(\xi_1\)</span> given by <span class="math inline">\(p(x_1) := \frac{1}{3}\)</span> for all <span class="math inline">\(x_1 \in \mathcal{X}_1\)</span>, and the definition <span class="math display">\[\begin{equation}
+\xi_2 := \xi_1^2.
+\end{equation}\]</span> The definition of <span class="math inline">\(\xi_2\)</span> then implies the conditional PMF shown in <a href="#tbl-conditional-pmf-proof" class="quarto-xref">Table&nbsp;<span>25.2</span></a>.</p>
+<div id="tbl-conditional-pmf-proof" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-conditional-pmf-proof-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;25.2: Conditional PMF for the proof of <a href="#thm-correlation-and-independence-of-random-variables" class="quarto-xref">Theorem&nbsp;<span>25.8</span></a>
+</figcaption>
+<div aria-describedby="tbl-conditional-pmf-proof-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: center;"><span class="math inline">\(p(x_2|x_1)\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(x_1 = -1\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(x_1 = 0\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(x_1 = 1\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(x_2 = 0\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(0\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(0\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(x_2 = 1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(0\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(1\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>The marginal PMF <span class="math inline">\(p(x_1)\)</span> and the conditional PMF <span class="math inline">\(p(x_2|x_1)\)</span> then imply the joint PMF shown in <a href="#tbl-joint-pmf-proof" class="quarto-xref">Table&nbsp;<span>25.3</span></a>.</p>
+<div id="tbl-joint-pmf-proof" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-joint-pmf-proof-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;25.3: Joint PMF for the proof of <a href="#thm-correlation-and-independence-of-random-variables" class="quarto-xref">Theorem&nbsp;<span>25.8</span></a>
+</figcaption>
+<div aria-describedby="tbl-joint-pmf-proof-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: center;"><span class="math inline">\(p(x_1,x_2)\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(x_1 = -1\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(x_1 = 0\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(x_1 = 1\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(p(x_2)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(x_2 = 0\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(0\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(1/3\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(0\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(1/3\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(x_2 = 1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(1/3\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(0\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(1/3\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(2/3\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(p(x_1)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(1/3\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(1/3\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(1/3\)</span></td>
+<td style="text-align: center;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>For example, by <a href="#tbl-joint-pmf-proof" class="quarto-xref">Table&nbsp;<span>25.3</span></a>, <span class="math display">\[\begin{equation}
+p(-1,0) = 0 \neq \frac{1}{9} = \frac{1}{3} \cdot \frac{1}{3} = p(-1)p(0).
+\end{equation}\]</span> The joint PMF of <span class="math inline">\(\xi_1\)</span> and <span class="math inline">\(\xi_2\)</span> therefore does not factorize, and <span class="math inline">\(\xi_1\)</span> and <span class="math inline">\(\xi_2\)</span> are thus not independent. However, with <span class="math display">\[\begin{equation}
+\mathbb{E}(\xi_1)
+= \sum_{x_1 \in \mathcal{X}_1} x_1 p(x_1)
+= -1 \cdot \frac{1}{3} + 0\cdot \frac{1}{3} + 1\cdot\frac{1}{3}
+= 0
+\end{equation}\]</span> and <span class="math display">\[\begin{equation}
+\mathbb{E}(\xi_1\xi_2)
+= \mathbb{E}(\xi_1\xi_1^2)
+= \mathbb{E}(\xi_1^3)
+= \sum_{x_1 \in \mathcal{X}_1} x_1^3 p(x_1)
+= -1^3 \cdot \frac{1}{3} + 0^3\cdot \frac{1}{3} + 1^3\cdot\frac{1}{3}
+= 0,
+\end{equation}\]</span> as well as the covariance shift theorem, it follows that <span class="math display">\[\begin{equation}
+\mathbb{C}(\xi_1,\xi_2)
+= \mathbb{E}(\xi_1\xi_2) - \mathbb{E}(\xi_1)\mathbb{E}(\xi_2)
+= \mathbb{E}(\xi_1^3) - \mathbb{E}(\xi_1)\mathbb{E}(\xi_2)
+= 0 - 0\cdot \mathbb{E}(\xi_2)
+= 0.
+\end{equation}\]</span> The covariance of <span class="math inline">\(\xi_1\)</span> and <span class="math inline">\(\xi_2\)</span> is therefore zero, and <span class="math inline">\(\xi_1\)</span> and <span class="math inline">\(\xi_2\)</span> are thus uncorrelated, even though <span class="math inline">\(\xi_1\)</span> and <span class="math inline">\(\xi_2\)</span> are not independent.</p>
+</div>
+</section>
+<section id="sec-conditional-covariance" class="level2" data-number="25.3">
+<h2 data-number="25.3" class="anchored" data-anchor-id="sec-conditional-covariance"><span class="header-section-number">25.3</span> Conditional covariance</h2>
+<p>Like the expectation and the variance, the covariance can also be considered in a conditional joint distribution of two random variables. This leads to the concept of <em>conditional covariance</em>.</p>
+<div id="def-conditional-covariance" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 25.2 (Conditional covariance)</strong></span> Let a random vector <span class="math inline">\(\xi := (\xi_1,\xi_2,\xi_3)\)</span> with outcome space <span class="math inline">\(\mathcal{X} := \mathcal{X}_1 \times \mathcal{X}_2\times \mathcal{X}_3\)</span> and PMF or PDF <span class="math inline">\(p(x_1,x_2,x_3)\)</span>, and conditional PMF or PDF <span class="math inline">\(p(x_1,x_2|x_3)\)</span> for all <span class="math inline">\(x_3 \in \mathcal{X}_3\)</span>, be given. Then the conditional covariance of <span class="math inline">\(\xi_1\)</span> and <span class="math inline">\(\xi_2\)</span> given <span class="math inline">\(\xi_3 = x_3\)</span> is defined as <span class="math display">\[\begin{equation}
+\mathbb{C}(\xi_1,\xi_2|\xi_3 = x_3)
+= \mathbb{E}
+  \left(
+  \left(\xi_1 - \mathbb{E}\left(\xi_1|\xi_3 = x_3\right)\right)
+  \left(\xi_2 - \mathbb{E}\left(\xi_2|\xi_3 = x_3\right)\right)|\xi_3 = x_3
+  \right).
+\end{equation}\]</span></p>
+</div>
+<p>Thus, conditional covariance is defined in the sense of the conditional expectation of the random vector <span class="math inline">\((\xi_1,\xi_2)\)</span> and, like the conditional expectation and the conditional variance, is generally a random variable. Finally, we note that the covariance shift theorem also holds for conditional covariance.</p>
+<div id="thm-shift-theorem-of-conditional-covariance" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 25.9 (Shift theorem of conditional covariance)</strong></span> Let a random vector <span class="math inline">\(\xi := (\xi_1,\xi_2,\xi_3)\)</span> be given. Then <span class="math display">\[\begin{equation}
+\mathbb{C}(\xi_1, \xi_2|\xi_3)
+= \mathbb{E}\left(\xi_1\xi_2|\xi_3\right) - \mathbb{E}\left(\xi_1|\xi_3\right)\mathbb{E}\left(\xi_2|\xi_3\right).
+\end{equation}\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>A proof is obtained by replacing the corresponding expectations in the proof of <a href="#thm-covariance-shift-theorem" class="quarto-xref">Theorem&nbsp;<span>25.2</span></a> with the corresponding conditional expectations.</p>
+</div>
+</section>
+<section id="sec-covariance-matrices" class="level2" data-number="25.4">
+<h2 data-number="25.4" class="anchored" data-anchor-id="sec-covariance-matrices"><span class="header-section-number">25.4</span> Covariance matrices</h2>
+<p>The multivariate analog of the variance of a random variable is the <em>covariance matrix of a random vector</em>. In addition to the variances of the components of the random vector, it also encodes their pairwise covariances and is defined as follows.</p>
+<div id="def-covariance-matrix-of-a-random-vector" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 25.3 (Covariance matrix of a random vector)</strong></span> Let <span class="math inline">\(\xi\)</span> be an <span class="math inline">\(n\)</span>-dimensional random vector. Then the <em>covariance matrix</em> of <span class="math inline">\(\xi\)</span> is defined as the <span class="math inline">\(n \times n\)</span> matrix <span class="math display">\[\begin{equation}
+\mathbb{C}(\xi) := \mathbb{E}\left((\xi - \mathbb{E}(\xi))(\xi - \mathbb{E}(\xi))^T \right).
+\end{equation}\]</span></p>
+</div>
+<p>The covariance matrix in <a href="#def-covariance-matrix-of-a-random-vector" class="quarto-xref">Definition&nbsp;<span>25.3</span></a> is formally defined analogously to the covariance of two random variables. The following theorem gives a direct reduction of the concept of the covariance matrix of a random vector to the concept of covariance of two random variables known from the univariate context.</p>
+<div id="thm-properties-of-the-covariance-matrix" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 25.10 (Properties of the covariance matrix)</strong></span> Let <span class="math inline">\(\xi\)</span> be an <span class="math inline">\(m\)</span>-dimensional random vector and let <span class="math inline">\(\mathbb{C}(\xi)\)</span> be its covariance matrix. Then:</p>
+<p>(1) (Elements) The elements of <span class="math inline">\(\mathbb{C}(\xi)\)</span> are the covariances of the components of <span class="math inline">\(\xi\)</span>, <span class="math display">\[\begin{equation}
+\mathbb{C}(\xi) = \left(\mathbb{C}(\xi_i,\xi_j)\right)_{1 \le i,j \le m}.
+\end{equation}\]</span></p>
+<p>(2) (Covariance matrix shift theorem) We have <span class="math display">\[\begin{equation}
+\mathbb{C}(\xi) = \mathbb{E}\left(\xi\xi^T\right) -  \mathbb{E}(\xi)\mathbb{E}(\xi)^T.
+\end{equation}\]</span> (3) (Linear-affine transformation) For <span class="math inline">\(A \in \mathbb{R}^{n \times m}\)</span> and <span class="math inline">\(b \in \mathbb{R}^n\)</span>, <span class="math display">\[\begin{equation}
+\mathbb{C}(A\xi +b) = A\mathbb{C}(\xi)A^T.
+\end{equation}\]</span> (4) (Matrix properties) <span class="math inline">\(\mathbb{C}(\xi)\)</span> is symmetric and positive semidefinite.</p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>(1) We have <span class="math display">\[\begin{align}
+\begin{split}
+\mathbb{C}(\xi)
+&amp; := \mathbb{E}\left((\xi - \mathbb{E}(\xi))(\xi - \mathbb{E}(\xi))^T \right) \\
+&amp; =
+\mathbb{E}
+\left(
+\left(
+\begin{pmatrix}
+\xi_1 \\
+\vdots \\
+\xi_n
+\end{pmatrix}
+-
+\begin{pmatrix}
+\mathbb{E}(\xi_1) \\
+\vdots \\
+\mathbb{E}(\xi_n)
+\end{pmatrix}
+\right)
+\left(
+\begin{pmatrix}
+\xi_1 \\
+\vdots \\
+\xi_n
+\end{pmatrix}
+-
+\begin{pmatrix}
+\mathbb{E}(\xi_1) \\
+\vdots \\
+\mathbb{E}(\xi_n)
+\end{pmatrix}
+\right)^T
+\right)
+\\
+&amp; =
+\mathbb{E}
+\left(
+\begin{pmatrix}
+\xi_1 - \mathbb{E}(\xi_1) \\
+\vdots \\
+\xi_n - \mathbb{E}(\xi_n)
+\end{pmatrix}
+\begin{pmatrix}
+\xi_1 - \mathbb{E}(\xi_1)\\
+\vdots \\
+\xi_n - \mathbb{E}(\xi_n)
+\end{pmatrix}^T
+\right)
+\\
+&amp; =
+\mathbb{E}
+\left(
+\begin{pmatrix}
+\xi_1 - \mathbb{E}(\xi_1) \\
+\vdots \\
+\xi_n - \mathbb{E}(\xi_n)
+\end{pmatrix}
+\begin{pmatrix}
+\xi_1 - \mathbb{E}(\xi_1)
+&amp; \dots
+&amp; \xi_n - \mathbb{E}(\xi_n)
+\end{pmatrix}
+\right) \\
+&amp; =
+\mathbb{E}
+\begin{pmatrix}
+  (\xi_1 - \mathbb{E}(\xi_1))(\xi_1 - \mathbb{E}(\xi_1))
+&amp; \dots
+&amp; (\xi_1 - \mathbb{E}(\xi_1))(\xi_n - \mathbb{E}(\xi_n))
+\\
+\vdots
+&amp; \ddots
+&amp; \vdots
+\\
+  (\xi_n - \mathbb{E}(\xi_n))(\xi_1 - \mathbb{E}(\xi_1))
+&amp; \dots
+&amp; (\xi_n - \mathbb{E}(\xi_n))(\xi_n - \mathbb{E}(\xi_n))
+\\
+\end{pmatrix}
+\\
+&amp; =
+\left(\mathbb{E}\left((\xi_i - \mathbb{E}(\xi_i))(\xi_j - \mathbb{E}(\xi_j)) \right) \right)_{1 \le i,j \le n} \\
+&amp; =
+\left(\mathbb{C}(\xi_i,\xi_j)\right)_{1 \le i,j \le n}. \\
+\end{split}
+\end{align}\]</span></p>
+<p>(2) With the properties of expectations, <span class="math display">\[\begin{align}
+\begin{split}
+\mathbb{C}(\xi)
+&amp; = \mathbb{E}\left((\xi - \mathbb{E}(\xi))(\xi - \mathbb{E}(\xi))^T \right)                                          \\
+&amp; = \mathbb{E}\left(\xi\xi^T - \xi\mathbb{E}(\xi)^T - \mathbb{E}(\xi)\xi^T + \mathbb{E}(\xi)\mathbb{E}(\xi)^T  \right) \\
+&amp; = \mathbb{E}\left(\xi\xi^T\right) - \mathbb{E}(\xi)\mathbb{E}(\xi)^T - \mathbb{E}(\xi)\mathbb{E}(\xi)^T + \mathbb{E}(\xi)\mathbb{E}(\xi)^T  \\
+&amp; = \mathbb{E}\left(\xi\xi^T\right) - \mathbb{E}(\xi)\mathbb{E}(\xi)^T.  \\
+\end{split}
+\end{align}\]</span></p>
+<p>(3) With the properties of expectations, <span class="math display">\[\begin{align}
+\begin{split}
+\mathbb{C}(A\xi+b)
+&amp; = \mathbb{E}\left((A\xi+b-\mathbb{E}(A\xi+b))(A\xi+b-\mathbb{E}(A\xi+b))^T \right)  \\
+&amp; = \mathbb{E}\left((A\xi+b-A\mathbb{E}(\xi)-b)(A\xi+b-A\mathbb{E}(\xi)-b)^T \right)  \\
+&amp; = \mathbb{E}\left((A(\xi-\mathbb{E}(\xi)))(A(\xi-\mathbb{E}(\xi)))^T \right)        \\
+&amp; = \mathbb{E}\left(A(\xi-\mathbb{E}(\xi))(\xi-\mathbb{E}(\xi))^T A^T\right)          \\
+&amp; = A\mathbb{E}\left((\xi-\mathbb{E}(\xi))(\xi-\mathbb{E}(\xi))^T\right)A^T           \\
+&amp; = A\mathbb{C}(\xi)A^T.                                                               \\
+\end{split}
+\end{align}\]</span></p>
+<p>(4) The symmetry of <span class="math inline">\(\mathbb{C}(\xi)\)</span> follows from the symmetry of the covariance of random variables, <span class="math display">\[\begin{equation}
+\mathbb{C}(\xi_i,\xi_j) = \mathbb{C}(\xi_j, \xi_i) \mbox{ for all } i = 1,...,m, j = 1,...,m.
+\end{equation}\]</span> To show the positive semidefiniteness of <span class="math inline">\(\mathbb{C}(\xi)\)</span>, we need to show that <span class="math inline">\(a^T\mathbb{C}(\xi)a \ge 0\)</span> for all <span class="math inline">\(a\in \mathbb{R}^m\)</span> with <span class="math inline">\(a \neq 0_m\)</span>. Let <span class="math inline">\(a \in \mathbb{R}^m\)</span> with <span class="math inline">\(a\neq 0\)</span>. Then, by statement (3) with <span class="math inline">\(A := a^T \in \mathbb{R}^{1\times m}\)</span>, <span class="math display">\[\begin{equation}
+a^T\mathbb{C}(\xi)a = \mathbb{C}(a^T\xi).
+\end{equation}\]</span> Furthermore, by the definition of the covariance matrix, <span class="math display">\[\begin{equation}
+\mathbb{C}(a^T\xi)
+= \mathbb{E}\left(\left(a^T\xi-\mathbb{E}(a^T\xi)\right)^2\right)
+= \mathbb{V}\left(a^T\xi\right).
+\end{equation}\]</span> Since, by the properties of variance, the variance of the random variable <span class="math inline">\(a^T\xi\)</span> is always nonnegative, it follows that <span class="math display">\[\begin{equation}
+a^T\mathbb{C}(\xi)a = \mathbb{V}(a^T\xi)\ge 0,
+\end{equation}\]</span> and thus that <span class="math inline">\(\mathbb{C}(\xi)\)</span> is positive semidefinite.</p>
+</div>
+<p>The diagonal elements of <span class="math inline">\(\mathbb{C}(\xi)\)</span> are the variances of the components of <span class="math inline">\(\xi\)</span>, since <span class="math display">\[\begin{equation}
+\mathbb{V}(\xi_i) = \mathbb{C}(\xi_i,\xi_i) \mbox{ for } i = 1,...,m.
+\end{equation}\]</span> Properties (2) and (3) are essentially analogous to the properties of variance.</p>
+<p>The covariance matrix of a random vector <span class="math inline">\(\xi\)</span> is therefore the matrix of the covariances of the components of <span class="math inline">\(\xi\)</span>. Thus, the covariance matrix is also directly given in terms of the concept of covariance of random variables. Since the covariance of a random variable with itself is known to be its variance, the covariance matrix contains the variances of the components of <span class="math inline">\(\xi\)</span> on its diagonal.</p>
+<p>The following theorem documents a notation for the covariance matrix of a partitioned random vector in terms of expectations of products of random vectors, which is helpful, for example, in canonical correlation analysis.</p>
+<div id="thm-covariance-matrices-of-random-vectors" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 25.11 (Covariance matrices of random vectors)</strong></span> Let <span class="math display">\[\begin{equation}
+\zeta = \begin{pmatrix} \xi \\ \upsilon \end{pmatrix}
+\mbox{ with }
+\mathbb{E}(\zeta)  := 0_m
+\end{equation}\]</span> be an <span class="math inline">\(m_\xi + m_\upsilon\)</span>-dimensional random vector and its expectation vector, respectively. Then the <span class="math inline">\(m \times m\)</span> covariance matrix of <span class="math inline">\(\zeta\)</span> can be written as <span class="math display">\[\begin{equation}
+\mathbb{C}(\zeta) =
+\begin{pmatrix}
+\Sigma_{\xi\xi} &amp; \Sigma_{\xi_1\xi_2} \\
+\Sigma_{\upsilon\xi} &amp; \Sigma_{\upsilon\upsilon} \\
+\end{pmatrix}
+\in \mathbb{R}^{m \times m}
+\end{equation}\]</span> where <span class="math display">\[\begin{align}
+\begin{split}
+\Sigma_{\xi\xi}   &amp; := \mathbb{E}\left(\xi\xi^T  \right) \in \mathbb{R}^{m_\xi  \times m_\xi}\\
+\Sigma_{\xi_1\xi_2}  &amp; := \mathbb{E}\left(\xi_1\xi_2^T \right) \in \mathbb{R}^{m_\xi  \times m_\upsilon}\\
+\Sigma_{\upsilon\xi}  &amp; := \mathbb{E}\left(\upsilon\xi^T \right) \in \mathbb{R}^{m_\upsilon \times m_\xi}\\
+\Sigma_{\upsilon\upsilon} &amp; := \mathbb{E}\left(\upsilon\upsilon^T\right) \in \mathbb{R}^{m_\xi  \times m_\upsilon}.
+\end{split}
+\end{align}\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>By the definition of the covariance matrix of a random vector, <span class="math display">\[\begin{align}
+\begin{split}
+\mathbb{C}(\zeta)
+&amp; = \mathbb{E}\left((\zeta - \mathbb{E}(\zeta))(\zeta - \mathbb{E}(\zeta))^T \right) \\
+&amp; = \mathbb{E}\left((\zeta - 0_m)(\zeta - 0_m)^T \right) \\
+&amp; = \mathbb{E}\left(\zeta\zeta^T\right)\\
+&amp; = \mathbb{E}\left(\begin{pmatrix} \xi \\ \upsilon \end{pmatrix} \begin{pmatrix} \xi^T &amp; \upsilon^T \end{pmatrix} \right) \\
+&amp; = \mathbb{E}\left(\begin{pmatrix} \xi\xi^T &amp; \xi_1\xi_2^T \\ \upsilon\xi^T &amp; \upsilon\upsilon^T \end{pmatrix}\right)
+\\
+&amp; =
+\begin{pmatrix}
+\mathbb{E}\left(\xi\xi^T\right)   &amp; \mathbb{E}\left(\xi_1\xi_2^T\right) \\
+\mathbb{E}\left(\upsilon\xi^T\right)  &amp; \mathbb{E}\left(\upsilon\upsilon^T\right)
+\end{pmatrix}
+\\
+&amp; =
+\begin{pmatrix}
+\Sigma_{\xi\xi}   &amp; \Sigma_{\xi_1\xi_2}  \\
+\Sigma_{\upsilon\xi}  &amp; \Sigma_{\upsilon\upsilon} \\
+\end{pmatrix}.
+\end{split}
+\end{align}\]</span></p>
+</div>
+<p>Finally, in some applications one is interested in a normalized, scale-independent representation of the covariances of a random vector. As in the univariate case, the natural approach is to normalize the covariance of two random variables by means of their respective variances in the sense of a correlation. This consideration leads to the concept of the <em>correlation matrix</em> of a random vector.</p>
+<div id="def-correlation-matrix" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 25.4 (Correlation matrix)</strong></span> Let <span class="math inline">\(\xi\)</span> be an <span class="math inline">\(n\)</span>-dimensional random vector. Then the <em>correlation matrix</em> of <span class="math inline">\(\xi\)</span> is defined as the <span class="math inline">\(n \times n\)</span> matrix <span class="math display">\[\begin{equation}
+\mathbb{R}(\xi)
+:= \left(\rho_{ij} \right)_{1 \le i,j\le n}
+= \left(\frac{\mathbb{C}(\xi_i,\xi_j)}{\sqrt{\mathbb{V}(\xi_i)}\sqrt{\mathbb{V}(\xi_j)}}\right)_{1 \le i,j\le n}.
+\end{equation}\]</span></p>
+</div>
+<p>Since the variances of the components of <span class="math inline">\(\xi\)</span> are the diagonal elements of the covariance matrix of <span class="math inline">\(\xi\)</span>, the correlation matrix is of course implicit in the covariance matrix. Furthermore, as always for correlations, the entries <span class="math inline">\(\rho_{ij}\)</span>, <span class="math inline">\(1 \le i,j \le n\)</span>, of the correlation matrix satisfy <span class="math display">\[\begin{equation}
+\rho_{ij} \in [-1,1] \mbox{ for } 1 \le i,j \le n \mbox{ and } \rho_{ii} = 1 \mbox{ for } 1 \le i \le n.
+\end{equation}\]</span></p>
+</section>
+<section id="self-control-questions" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="self-control-questions">Self-control questions</h2>
+<ol type="1">
+<li>State the definition of covariance and correlation of two random variables.</li>
+<li>Explain the definition of covariance and correlation of two random variables.</li>
+<li>State the theorem on symmetry of covariance and correlation.</li>
+<li>State the theorem on covariance and correlation under linear-affine transformation.</li>
+<li>Explain the theorem on covariance and correlation under linear-affine transformation.</li>
+<li>State the theorem on variances of special linear combinations of random variables.</li>
+<li>State the theorem on correlation and independence of random variables.</li>
+</ol>
+</section>
+<section id="solutions" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="solutions">Solutions</h2>
+<ol type="1">
+<li>See <a href="#def-covariance-and-correlation-of-two-random-variables" class="quarto-xref">Definition&nbsp;<span>25.1</span></a>.</li>
+<li>See the explanations of <a href="#def-covariance-and-correlation-of-two-random-variables" class="quarto-xref">Definition&nbsp;<span>25.1</span></a> and <a href="#exm-covariance-of-two-discrete-random-variables" class="quarto-xref">Example&nbsp;<span>25.1</span></a>.</li>
+<li>See <a href="#thm-symmetry-of-covariance-and-correlation" class="quarto-xref">Theorem&nbsp;<span>25.1</span></a>.</li>
+<li>See <a href="#thm-covariance-and-correlation-under-linear-affine-transformation" class="quarto-xref">Theorem&nbsp;<span>25.3</span></a>.</li>
+<li>See the explanations of <a href="#thm-covariance-and-correlation-under-linear-affine-transformation" class="quarto-xref">Theorem&nbsp;<span>25.3</span></a>.</li>
+<li>See <a href="#thm-variances-of-special-linear-combinations-of-random-variables" class="quarto-xref">Theorem&nbsp;<span>25.7</span></a>.</li>
+<li>See <a href="#thm-correlation-and-independence-of-random-variables" class="quarto-xref">Theorem&nbsp;<span>25.8</span></a>.</li>
+</ol>
+
+
+</section>
+
+</main> <!-- /main -->
+<script>
+(function () {
+  var base = "https://dirk-ostwald.github.io";
+  var pageMap = {
+    "/": "/en/",
+    "/index.html": "/en/",
+    "/Referenzen.html": "/en/References.html",
+    "/_part_1/100-Mathematische-Grundlagen.html": "/en/_part_1/100-Mathematical-Foundations.html",
+    "/_part_1/101-Sprache-und-Logik.html": "/en/_part_1/101-Language-and-Logic.html",
+    "/_part_1/102-Mengen.html": "/en/_part_1/102-Sets.html",
+    "/_part_1/103-Summen-Produkte-Potenzen.html": "/en/_part_1/103-Sums-Products-Powers.html",
+    "/_part_1/104-Funktionen.html": "/en/_part_1/104-Functions.html",
+    "/_part_1/105-Folgen-Grenzwerte-Stetigkeit.html": "/en/_part_1/105-Sequences-Limits-Continuity.html",
+    "/_part_1/106-Differenzialrechnung.html": "/en/_part_1/106-Differential-Calculus.html",
+    "/_part_1/107-Integralrechnung.html": "/en/_part_1/107-Integral-Calculus.html",
+    "/_part_1/108-Vektoren.html": "/en/_part_1/108-Vectors.html",
+    "/_part_1/109-Matrizen.html": "/en/_part_1/109-Matrices.html",
+    "/_part_1/110-Deskriptivstatistiken.html": "/en/_part_1/110-Descriptive-Statistics.html",
+    "/_part_2/200-Imperative-Programmierung.html": "/en/_part_2/200-Imperative-Programming.html",
+    "/_part_2/201-Informatische-Grundbegriffe.html": "/en/_part_2/201-Basic-Concepts-of-Computer-Science.html",
+    "/_part_2/202-Arithmetik-und-Variablen.html": "/en/_part_2/202-Arithmetic-and-Variables.html",
+    "/_part_2/203-Datenstrukturen.html": "/en/_part_2/203-Data-Structures.html",
+    "/_part_2/204-Vektoren.html": "/en/_part_2/204-Vectors.html",
+    "/_part_2/205-Matrizen-und-Arrays.html": "/en/_part_2/205-Matrices-and-Arrays.html",
+    "/_part_2/206-Listen-Dataframes-und-Tibbles.html": "/en/_part_2/206-Lists-Dataframes-and-Tibbles.html",
+    "/_part_2/207-Datenmanagement.html": "/en/_part_2/207-Data-Management.html",
+    "/_part_2/208-Kontrollstrukturen.html": "/en/_part_2/208-Control-Structures.html",
+    "/_part_3/300-Wahrscheinlichkeitstheorie.html": "/en/_part_3/300-Probability-Theory.html",
+    "/_part_3/301-Wahrscheinlichkeitsräume.html": "/en/_part_3/301-Probability-Spaces.html",
+    "/_part_3/302-Elementare-Wahrscheinlichkeiten.html": "/en/_part_3/302-Elementary-Probabilities.html",
+    "/_part_3/303-Zufallsvariablen.html": "/en/_part_3/303-Random-Variables.html",
+    "/_part_3/304-Zufallsvektoren.html": "/en/_part_3/304-Random-Vectors.html",
+    "/_part_3/305-Erwartungswerte.html": "/en/_part_3/305-Expectations.html",
+    "/_part_3/306-Varianzen.html": "/en/_part_3/306-Variances.html",
+    "/_part_3/307-Kovarianzen.html": "/en/_part_3/307-Covariances.html"
+  };
+  var reversePageMap = {};
+  Object.keys(pageMap).forEach(function (key) {
+    reversePageMap[pageMap[key]] = key;
+  });
+  function headings() {
+    return Array.prototype.slice.call(document.querySelectorAll("main.content h1[id], main.content h2[id], main.content h3[id], main.content h4[id]"));
+  }
+  function currentHeadingIndex() {
+    var hash = window.location.hash;
+    if (!hash) return "";
+    var id = hash.slice(1);
+    try {
+      id = decodeURIComponent(id);
+    } catch (error) {}
+    var list = headings();
+    for (var i = 0; i < list.length; i++) {
+      if (list[i].id === id) return String(i);
+    }
+    return "";
+  }
+  function scrollToHeadingIndex() {
+    var params = new URLSearchParams(window.location.search);
+    var value = params.get("h");
+    if (value === null) return;
+    var index = Number(value);
+    var list = headings();
+    if (Number.isInteger(index) && index >= 0 && index < list.length) {
+      list[index].scrollIntoView();
+      if (history.replaceState) {
+        history.replaceState(null, "", window.location.pathname + "#" + list[index].id);
+      }
+    }
+  }
+  var path = window.location.pathname;
+  var target = pageMap[path] || reversePageMap[path];
+  if (target) {
+    document.querySelectorAll("a.nav-link").forEach(function (link) {
+      var text = link.textContent.trim();
+      if (text === "English" || text === "Deutsch") {
+        var index = currentHeadingIndex();
+        link.href = base + target + (index ? "?h=" + index : "");
+      }
+    });
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", scrollToHeadingIndex);
+  } else {
+    scrollToHeadingIndex();
+  }
+}());
+</script>
+
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../_part_3/306-Variances.html" class="pagination-link" aria-label="Variances">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Variances</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../References.html" class="pagination-link" aria-label="References">
+        <span class="nav-page-text">References</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/_part_3/307-Covariances.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></div></div></footer></body></html>
