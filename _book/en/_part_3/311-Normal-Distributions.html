@@ -1,0 +1,1947 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>29&nbsp; Normal distributions – Probabilistic Data Science for Psychology</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../References.html" rel="next">
+<link href="../_part_3/310-Transformations.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-d6825770f4e37b80aa8621686b79c10e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Probabilistic Data Science for Psychology</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://dirk-ostwald.github.io/"> 
+<span class="menu-text">Deutsch</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+    <a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="../Probabilistic-Data-Science-for-Psychology.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../_part_3/300-Probability-Theory.html">Probability theory</a></li><li class="breadcrumb-item"><a href="../_part_3/311-Normal-Distributions.html"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Normal distributions</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../_part_1/100-Mathematical-Foundations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Mathematical foundations</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/101-Language-and-Logic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Language and logic</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/102-Sets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Sets</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/103-Sums-Products-Powers.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Sums, products, powers</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/104-Functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Functions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/105-Sequences-Limits-Continuity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Sequences, limits, continuity</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/106-Differential-Calculus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Differential calculus</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/107-Integral-Calculus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Integral calculus</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/108-Vectors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Vectors</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/109-Matrices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Matrices</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/110-Descriptive-Statistics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Descriptive statistics</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../_part_2/200-Imperative-Programming.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Imperative programming</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/201-Basic-Concepts-of-Computer-Science.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Basic concepts of computer science</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/202-Arithmetic-and-Variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Arithmetic and variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/203-Data-Structures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Data structures</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/204-Vectors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Vectors</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/205-Matrices-and-Arrays.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Matrices and arrays</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/206-Lists-Dataframes-and-Tibbles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Lists, dataframes, and tibbles</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/207-Data-Management.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Data management</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/208-Control-Structures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Control structures</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../_part_3/300-Probability-Theory.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Probability theory</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/301-Probability-Spaces.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Probability spaces</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/302-Elementary-Probabilities.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Elementary probabilities</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/303-Random-Variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Random variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/304-Random-Vectors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Random vectors</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/305-Expectations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Expectations</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/306-Variances.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Variances</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/307-Covariances.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Covariances</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/308-Inequalities.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Inequalities</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/309-Limits.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Limits</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/310-Transformations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Transformations</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/311-Normal-Distributions.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Normal distributions</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../References.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sec-construction-of-multivariate-normal-distributions" id="toc-sec-construction-of-multivariate-normal-distributions" class="nav-link active" data-scroll-target="#sec-construction-of-multivariate-normal-distributions"><span class="header-section-number">29.1</span> Construction of multivariate normal distributions</a></li>
+  <li><a href="#sec-definition-of-multivariate-normal-distributions" id="toc-sec-definition-of-multivariate-normal-distributions" class="nav-link" data-scroll-target="#sec-definition-of-multivariate-normal-distributions"><span class="header-section-number">29.2</span> Definition of multivariate normal distributions</a></li>
+  <li><a href="#sec-sphericity" id="toc-sec-sphericity" class="nav-link" data-scroll-target="#sec-sphericity"><span class="header-section-number">29.3</span> Sphericity</a></li>
+  <li><a href="#sec-marginal-conditional-and-joint-distributions" id="toc-sec-marginal-conditional-and-joint-distributions" class="nav-link" data-scroll-target="#sec-marginal-conditional-and-joint-distributions"><span class="header-section-number">29.4</span> Marginal, conditional, and joint distributions</a></li>
+  <li><a href="#sec-multivariate-transformations" id="toc-sec-multivariate-transformations" class="nav-link" data-scroll-target="#sec-multivariate-transformations"><span class="header-section-number">29.5</span> Multivariate transformations</a></li>
+  <li><a href="#sec-transformations-of-normally-distributed-random-variables" id="toc-sec-transformations-of-normally-distributed-random-variables" class="nav-link" data-scroll-target="#sec-transformations-of-normally-distributed-random-variables"><span class="header-section-number">29.6</span> Transformations of normally distributed random variables</a>
+  <ul class="collapse">
+  <li><a href="#summation-transformation" id="toc-summation-transformation" class="nav-link" data-scroll-target="#summation-transformation">Summation transformation</a></li>
+  <li><a href="#sample-mean-transformation" id="toc-sample-mean-transformation" class="nav-link" data-scroll-target="#sample-mean-transformation">Sample-mean transformation</a></li>
+  <li><a href="#z-transformation" id="toc-z-transformation" class="nav-link" data-scroll-target="#z-transformation"><span class="math inline">\(Z\)</span>-transformation</a></li>
+  <li><a href="#chi2-transformation" id="toc-chi2-transformation" class="nav-link" data-scroll-target="#chi2-transformation"><span class="math inline">\(\chi^2\)</span>-transformation</a></li>
+  <li><a href="#t-transformation" id="toc-t-transformation" class="nav-link" data-scroll-target="#t-transformation"><span class="math inline">\(T\)</span>-transformation</a></li>
+  <li><a href="#noncentral-t-transformation" id="toc-noncentral-t-transformation" class="nav-link" data-scroll-target="#noncentral-t-transformation">Noncentral <span class="math inline">\(T\)</span>-transformation</a></li>
+  <li><a href="#f-transformation" id="toc-f-transformation" class="nav-link" data-scroll-target="#f-transformation"><span class="math inline">\(F\)</span>-transformation</a></li>
+  </ul></li>
+  <li><a href="#literature-notes" id="toc-literature-notes" class="nav-link" data-scroll-target="#literature-notes"><span class="header-section-number">29.7</span> Literature notes</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/_part_3/311-Normal-Distributions.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../_part_3/300-Probability-Theory.html">Probability theory</a></li><li class="breadcrumb-item"><a href="../_part_3/311-Normal-Distributions.html"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Normal distributions</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-normal-distributions" class="quarto-section-identifier"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Normal distributions</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>The multivariate normal distribution is the multivariate generalization of the univariate normal distribution. The motivation for the widespread normality assumptions in probabilistic modeling is known to lie in the central limit theorem: in probabilistic models, probabilistic terms represent the summation of very many random processes that are not explained by the deterministic components of the respective model, that is, by a formalized scientific theory. According to the central limit theorem, the sum of these unexplained random processes is then precisely normally distributed.</p>
+<p>Beyond this fundamental aspect, the normal distribution has many favorable mathematical properties that enable its use in many areas of probabilistic modeling. Applications of multivariate normal distributions are therefore found in the context of the general linear model, the generalizations of the general model to hierarchical linear models or multivariate general linear models, Bayesian inference under normality assumptions, and not least the theory of probabilistic filters, such as the Kalman-Bucy filter.</p>
+<section id="sec-construction-of-multivariate-normal-distributions" class="level2" data-number="29.1">
+<h2 data-number="29.1" class="anchored" data-anchor-id="sec-construction-of-multivariate-normal-distributions"><span class="header-section-number">29.1</span> Construction of multivariate normal distributions</h2>
+<p>In this section, we show how a bivariately normally distributed random vector can be constructed by transforming and concatenating two univariately normally distributed random variables. To do so, we first recall the concept of a normally distributed random variable. We repeat the corresponding definition from <a href="303-Random-Variables.html" class="quarto-xref"><span>Chapter 21</span></a> here to introduce the terminology for multivariate normal distributions.</p>
+<div id="def-univariate-normal-random-variable" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 29.1 (Normally distributed random variable)</strong></span> <span class="math inline">\(\xi\)</span> be a random variable with outcome space <span class="math inline">\(\mathbb{R}\)</span> and PDF <span class="math display">\[\begin{equation}
+p : \mathbb{R} \to \mathbb{R}_{&gt;0}, x\mapsto p(x)
+:= \frac{1}{\sqrt{2\pi \sigma^2}}\exp\left(-\frac{1}{2\sigma^2}(x - \mu)^2\right).
+\end{equation}\]</span> Then we say that <span class="math inline">\(\xi\)</span> follows a <em>normal distribution (or Gaussian distribution)</em> with <em>expectation parameter <span class="math inline">\(\mu \in \mathbb{R}\)</span></em> and <em>variance parameter <span class="math inline">\(\sigma^2 &gt; 0\)</span></em> and call <span class="math inline">\(\xi\)</span> a <em>normally distributed random variable</em>. We abbreviate this by <span class="math inline">\(\xi \sim N(\mu,\sigma^2)\)</span>. We denote the PDF of a normally distributed random variable by <span class="math display">\[\begin{equation}
+N\left(x;\mu,\sigma^2\right) := \frac{1}{\sqrt{2\pi \sigma^2}}\exp\left(-\frac{1}{2\sigma^2}(x - \mu)^2\right).
+\end{equation}\]</span></p>
+</div>
+<div id="fig-univariate-normal-pdf" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-univariate-normal-pdf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/311-univariate-normal-pdf.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-univariate-normal-pdf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;29.1: Probability density functions of univariate normal distributions.
+</figcaption>
+</figure>
+</div>
+<p>Visually, the parameter <span class="math inline">\(\mu\)</span> of a normally distributed random variable corresponds to the value of highest probability density, and the parameter <span class="math inline">\(\sigma^2\)</span> specifies the width of the PDF (<a href="#fig-univariate-normal-pdf" class="quarto-xref">Figure&nbsp;<span>29.1</span></a>). Further, as is well known, the expectation and the variance of a normally distributed random variable are <span class="math display">\[\begin{equation}
+\mathbb{E}(\xi) = \mu \mbox{ and } \mathbb{V}(\xi) = \sigma^2.
+\end{equation}\]</span> Finally, a normally distributed random variable of the form <span class="math inline">\(\xi \sim N(0,1)\)</span> is also called <em>standard normally distributed</em>.</p>
+<p>The following theorem shows how two independent, univariately standard normally distributed random variables can be combined to construct a bivariately distributed random vector. The distribution of such a random vector is then called a <em>bivariate normal distribution</em>.</p>
+<div id="thm-construction-of-bivariate-normal-distributions" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 29.1 (Construction of bivariate normal distributions)</strong></span> Let <span class="math inline">\(\zeta_1 \sim N(0,1)\)</span> and <span class="math inline">\(\zeta_2 \sim N(0,1)\)</span> be two independent standard normally distributed random variables. Further, let <span class="math inline">\(\mu_1,\mu_2\in \mathbb{R}\)</span>, <span class="math inline">\(\sigma_1,\sigma_2&gt;0\)</span> and <span class="math inline">\(\rho \in ]-1,1[\)</span>. Finally, let <span class="math display">\[\begin{align}
+\begin{split}
+\xi_1 &amp; := \sigma_1\zeta_1 + \mu_1\\
+\xi_2 &amp; := \sigma_2\left(\rho\zeta_1 + (1 -\rho^2)^{1/2}\zeta_2\right) + \mu_2.
+\end{split}
+\end{align}\]</span> Then the PDF of the random vector <span class="math inline">\(\xi := (\xi_1,\xi_2)^T\)</span>, that is, the joint distribution of <span class="math inline">\(\xi_1\)</span> and <span class="math inline">\(\xi_2\)</span>, has the form <span class="math display">\[\begin{equation}
+p : \mathbb{R}^2 \to \mathbb{R}_{&gt;0},\, x \mapsto p(x) := (2\pi)^{-\frac{n}{2}}|\Sigma|^{-\frac{1}{2}}\exp\left(-\frac{1}{2}(x-\mu)^T \Sigma^{-1} (x-\mu)\right),
+\end{equation}\]</span> where <span class="math inline">\(n:=2\)</span> and <span class="math inline">\(\mu \in \mathbb{R}^{2}\)</span> and <span class="math inline">\(\Sigma \in \mathbb{R}^{2\times 2}\)</span> are given by <span class="math display">\[\begin{equation}
+\mu =
+\begin{pmatrix}
+\mu_1 \\
+\mu_2
+\end{pmatrix}
+\mbox{ and }
+\Sigma =
+\begin{pmatrix}
+\sigma_1^2           &amp; \rho\sigma_1\sigma_2 \\
+\rho\sigma_2\sigma_1 &amp; \sigma_2^2           \\
+\end{pmatrix}.
+\end{equation}\]</span></p>
+</div>
+<p>For a proof of the theorem, we refer to <span class="citation" data-cites="degroot2012">DeGroot &amp; Schervish (<a href="#ref-degroot2012" role="doc-biblioref">2012</a>)</span>.</p>
+<div id="exm-construction-of-a-bivariate-normal-distribution" class="theorem example">
+<p><span class="theorem-title"><strong>Example 29.1 (Construction of a bivariate normal distribution)</strong></span> The following <strong>R</strong> code traces the above theorem using concrete example values for <span class="math inline">\(\mu_1,\mu_2,\sigma_1,\sigma_2\)</span> and <span class="math inline">\(\rho\)</span> and prints the parameters <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\Sigma\)</span> of the resulting bivariate PDF.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># parameter definitions</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a>mu_1   <span class="ot">=</span> <span class="fl">5.0</span>                                              <span class="co"># \mu_1</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a>mu_2   <span class="ot">=</span> <span class="fl">4.0</span>                                              <span class="co"># \mu_2</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a>sig_1  <span class="ot">=</span> <span class="fl">1.5</span>                                              <span class="co"># \sigma_1</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a>sig_2  <span class="ot">=</span> <span class="fl">1.0</span>                                              <span class="co"># \sigma_2</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a>rho    <span class="ot">=</span> <span class="fl">0.9</span>                                              <span class="co"># \rho</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a></span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="co"># realizations of the standard normally distributed RVs</span></span>
+<span id="cb1-9"><a href="#cb1-9"></a>n      <span class="ot">=</span> <span class="dv">100</span>                                              <span class="co"># number of realizations</span></span>
+<span id="cb1-10"><a href="#cb1-10"></a>zeta_1 <span class="ot">=</span> <span class="fu">rnorm</span>(n)                                         <span class="co"># \zeta_1 \sim N(0,1)</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a>zeta_2 <span class="ot">=</span> <span class="fu">rnorm</span>(n)                                         <span class="co"># \zeta_1 \sim N(0,1)</span></span>
+<span id="cb1-12"><a href="#cb1-12"></a></span>
+<span id="cb1-13"><a href="#cb1-13"></a><span class="co"># evaluation of realizations of \xi_1 and \xi_2</span></span>
+<span id="cb1-14"><a href="#cb1-14"></a>xi_1   <span class="ot">=</span> sig_1<span class="sc">*</span>zeta_1 <span class="sc">+</span> mu_1                              <span class="co"># realizations of zeta_1</span></span>
+<span id="cb1-15"><a href="#cb1-15"></a>xi_2   <span class="ot">=</span> sig_2<span class="sc">*</span>(rho<span class="sc">*</span>zeta_1 <span class="sc">+</span> <span class="fu">sqrt</span>(<span class="dv">1</span><span class="sc">-</span>rho<span class="sc">^</span><span class="dv">2</span>)<span class="sc">*</span>zeta_2) <span class="sc">+</span> mu_2 <span class="co"># realizations of zeta_2</span></span>
+<span id="cb1-16"><a href="#cb1-16"></a></span>
+<span id="cb1-17"><a href="#cb1-17"></a><span class="co"># parameters of the joint distribution of \xi_1 and \xi_2</span></span>
+<span id="cb1-18"><a href="#cb1-18"></a>mu     <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(mu_1,                                   <span class="co"># \mu \in \mathbb{R}^2</span></span>
+<span id="cb1-19"><a href="#cb1-19"></a>                  mu_2),</span>
+<span id="cb1-20"><a href="#cb1-20"></a>                 <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-21"><a href="#cb1-21"></a>Sigma  <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(sig_1<span class="sc">^</span><span class="dv">2</span>        , rho<span class="sc">*</span>sig_1<span class="sc">*</span>sig_2,       <span class="co"># \Sigma \in \mathbb{R}^{2 x 2}</span></span>
+<span id="cb1-22"><a href="#cb1-22"></a>                 rho<span class="sc">*</span>sig_1<span class="sc">*</span>sig_2, sig_2<span class="sc">^</span><span class="dv">2</span>),</span>
+<span id="cb1-23"><a href="#cb1-23"></a>                 <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-24"><a href="#cb1-24"></a><span class="fu">print</span>(mu)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1]
+[1,]    5
+[2,]    4</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">print</span>(Sigma)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2]
+[1,] 2.25 1.35
+[2,] 1.35 1.00</code></pre>
+</div>
+</div>
+<p>The realizations of <span class="math inline">\(\xi = (\xi_1,\xi_2)^T\)</span> generated by the <strong>R</strong> code above, as well as the isocontours of the PDF postulated by <a href="#thm-construction-of-bivariate-normal-distributions" class="quarto-xref">Theorem&nbsp;<span>29.1</span></a>, are shown in <a href="#fig-construction" class="quarto-xref">Figure&nbsp;<span>29.2</span></a>.</p>
+</div>
+<div id="fig-construction" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-construction-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/311-construction.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-construction-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;29.2: Construction of a bivariate normal distribution.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="sec-definition-of-multivariate-normal-distributions" class="level2" data-number="29.2">
+<h2 data-number="29.2" class="anchored" data-anchor-id="sec-definition-of-multivariate-normal-distributions"><span class="header-section-number">29.2</span> Definition of multivariate normal distributions</h2>
+<p>We now formally introduce the multivariate normal distribution and state first properties. We use the following definition for this purpose.</p>
+<div id="def-multivariate-normal-distribution" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 29.2</strong></span> <span class="math inline">\(\xi\)</span> be an <span class="math inline">\(n\)</span>-dimensional random vector with outcome space <span class="math inline">\(\mathbb{R}^n\)</span> and PDF <span class="math display">\[\begin{equation}
+p : \mathbb{R}^n \to \mathbb{R}_{&gt;0},\, x \mapsto p(x) := (2\pi)^{-\frac{n}{2}}|\Sigma|^{-\frac{1}{2}}\exp\left(-\frac{1}{2}(x-\mu)^T \Sigma^{-1} (x-\mu)\right).
+\end{equation}\]</span> Then we say that <span class="math inline">\(\xi\)</span> follows a <em>multivariate (or <span class="math inline">\(n\)</span>-dimensional) normal distribution</em> with <em>expectation parameter</em> <span class="math inline">\(\mu \in \mathbb{R}^n\)</span> and positive-definite <em>covariance-matrix parameter</em> <span class="math inline">\(\Sigma \in \mathbb{R}^{n \times n}\)</span> and call <span class="math inline">\(\xi\)</span> a <em>(multivariately) normally distributed random vector</em>. We abbreviate this by <span class="math inline">\(\xi \sim N(\mu,\Sigma)\)</span>. We denote the PDF of a multivariately normally distributed random vector by <span class="math display">\[\begin{equation}
+N(x;\mu,\Sigma):= (2\pi)^{-\frac{n}{2}}|\Sigma|^{-\frac{1}{2}}\exp\left(-\frac{1}{2}(x-\mu)^T \Sigma^{-1} (x-\mu)\right).
+\end{equation}\]</span></p>
+</div>
+<div id="exm-bivariate-normal-distributions" class="theorem example">
+<p><span class="theorem-title"><strong>Example 29.2 (Bivariate normal distributions)</strong></span> <a href="#fig-bivariate-normal-pdf" class="quarto-xref">Figure&nbsp;<span>29.3</span></a> A, B, and C show the isocontours of the PDFs of bivariately normally distributed random vectors for <span class="math inline">\(\mu = (1,1)^T\)</span> and <span class="math display">\[\begin{equation}
+\Sigma_A := \begin{pmatrix} 0.20 &amp;  0.15  \\   0.15 &amp; 0.20 \end{pmatrix}, \quad
+\Sigma_B := \begin{pmatrix} 0.20 &amp;  0.00  \\   0.00 &amp; 0.20 \end{pmatrix}, \quad
+\Sigma_C := \begin{pmatrix} 0.20 &amp;  -0.15 \\  -0.15 &amp; 0.20 \end{pmatrix}
+\end{equation}\]</span> respectively. <a href="#fig-bivariate-normal-realizations" class="quarto-xref">Figure&nbsp;<span>29.4</span></a> A, B, and C each show 200 realizations of the corresponding random vectors.</p>
+</div>
+<div id="fig-bivariate-normal-pdf" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-bivariate-normal-pdf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/311-bivariate-normal-pdf.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bivariate-normal-pdf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;29.3: Probability density functions of bivariate normal distributions.
+</figcaption>
+</figure>
+</div>
+<div id="fig-bivariate-normal-realizations" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-bivariate-normal-realizations-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/311-bivariate-normal-realizations.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bivariate-normal-realizations-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;29.4: Realizations of bivariately normally distributed random vectors.
+</figcaption>
+</figure>
+</div>
+<p>Without proof, we note that, as in the case of a univariately normally distributed random variable, the expectation and the covariance matrix of a normally distributed random vector are given by the corresponding parameters.</p>
+<div id="thm-expectation-and-covariance-matrix-of-normally-distributed-random-vectors" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 29.2 (Expectation and covariance matrix of normally distributed random vectors)</strong></span> Let <span class="math inline">\(\xi \sim N(\mu,\Sigma)\)</span> be a multivariately normally distributed random vector with expectation parameter <span class="math inline">\(\mu \in \mathbb{R}^n\)</span> and covariance-matrix parameter <span class="math inline">\(\Sigma \in \mathbb{R}^{n \times n} \mbox{ pd}\)</span>. Then <span class="math display">\[\begin{equation}
+\mathbb{E}(\xi) = \mu \mbox{ and } \mathbb{C}(\xi) = \Sigma.
+\end{equation}\]</span></p>
+</div>
+<p>As in the case of univariately normally distributed random variables, the parameter <span class="math inline">\(\mu \in \mathbb{R}^n\)</span> corresponds to the value of highest probability density of the multivariate normal distribution. Analogously to the variance parameter of a univariately normally distributed random variable, the diagonal elements of <span class="math inline">\(\Sigma \in \mathbb{R}^{n \times n} \mbox{ pd}\)</span> specify the width of the PDF with respect to the random-vector components <span class="math inline">\(\xi_1,...,\xi_n\)</span>. In general, in the case of a multivariately normally distributed random vector, the <span class="math inline">\(i,j\)</span>th element of <span class="math inline">\(\Sigma \in \mathbb{R}^{n \times n} \mbox{ pd}\)</span> now specifies the covariance of the random-vector components <span class="math inline">\(\xi_i\)</span> and <span class="math inline">\(\xi_j\)</span>.</p>
+</section>
+<section id="sec-sphericity" class="level2" data-number="29.3">
+<h2 data-number="29.3" class="anchored" data-anchor-id="sec-sphericity"><span class="header-section-number">29.3</span> Sphericity</h2>
+<p>The following theorem is central for the basic theory of the general linear model.</p>
+<div id="thm-sphericity" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 29.3 (Spherical multivariate normal distribution)</strong></span> For <span class="math inline">\(i = 1,...,n\)</span>, let <span class="math inline">\(N(x_i; \mu_i,\sigma^2)\)</span> be the PDFs of <span class="math inline">\(n\)</span> independent univariately normally distributed random variables <span class="math inline">\(\xi_1,...,\xi_n\)</span> with <span class="math inline">\(\mu_1,...,\mu_n \in \mathbb{R}\)</span> and <span class="math inline">\(\sigma^2 &gt; 0\)</span>. Further, let <span class="math inline">\(N(x;\mu,\sigma^2I_n)\)</span> be the PDF of an <span class="math inline">\(n\)</span>-variate normally distributed random vector <span class="math inline">\(\xi\)</span> with expectation parameter <span class="math inline">\(\mu := (\mu_1,...,\mu_n)^T \in \mathbb{R}^n\)</span>. Then <span class="math display">\[\begin{equation}
+p_\xi(x) = p_{\xi_1,...,\xi_n}(x_1,...,x_n) = \prod_{i=1}^n p_{\xi_i}(x_i)
+\end{equation}\]</span> and, in particular, <span class="math display">\[\begin{equation}
+N\left(x;\mu,\sigma^2I_n\right) = \prod_{i=1}^n N\left(x_i;\mu_i,\sigma^2\right)
+\end{equation}\]</span> for all <span class="math inline">\(x = (x_1,...,x_n)^T \in \mathbb{R}^n\)</span>.</p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>We show the identity of the multivariate PDF <span class="math inline">\(N(x;\mu,\sigma^2 I_n)\)</span> with the product of <span class="math inline">\(n\)</span> univariate PDFs <span class="math inline">\(N(x_i;\mu_i,\sigma^2 I_n)\)</span>, where <span class="math inline">\(\mu_i\)</span> is the <span class="math inline">\(i\)</span>th entry of <span class="math inline">\(\mu \in \mathbb{R}^n\)</span>. We obtain <span class="math display">\[\begin{align}
+\begin{split}
+N\left(x;\mu,\sigma^{2}I_{n} \right)
+&amp; = \left(2\pi \right)^{-\frac{n}{2}}
+    \left|\sigma^2 I_n \right|^{-\frac{1}{2}}
+    \exp\left(-\frac{1}{2}(x-\mu)^{T}(\sigma^2 I_n)^{-1}(x-\mu)\right)\\
+&amp; = \left(\prod_{i=1}^n 2\pi ^{-\frac{1}{2}} \right)
+    \left(\sigma^2\right)^{-\frac{n}{2}}
+    \exp\left(-\frac{1}{2\sigma^2}(x-\mu)^{T}(x-\mu)\right) \\
+&amp; = \left(\prod_{i=1}^n \left(2\pi\sigma^2 \right) ^{-\frac{1}{2}} \right)
+    \exp\left(-\frac{1}{2\sigma^2} \sum_{i=1}^n (x_i - \mu_i)^2\right) \\
+&amp; = \prod_{i=1}^n \frac{1}{\sqrt{2\pi\sigma^2}}
+    \prod_{i=1}^n \exp\left(-\frac{1}{2\sigma^2} (x_i - \mu_i)^2\right) \\
+&amp; = \prod_{i=1}^n \frac{1}{\sqrt{2\pi\sigma^2}}
+                    \exp\left(-\frac{1}{2\sigma^2} (x_i - \mu_i)^2\right) \\
+&amp; = \prod_{i=1}^n N\left(x_i; \mu_i,\sigma^2\right).
+\end{split}
+\end{align}\]</span></p>
+</div>
+<p>A covariance-matrix parameter of the form <span class="math inline">\(\Sigma = \sigma^2 I_n\)</span> is also called <em>spherical</em>, because the isocontours of the PDF of a normally distributed random vector with such a covariance-matrix parameter form <em>spheres</em> (for example, circles for <span class="math inline">\(n = 2\)</span> and balls for <span class="math inline">\(n = 3\)</span>). A multivariate normal distribution with a spherical covariance-matrix parameter is correspondingly called a <em>spherical normal distribution</em>. <a href="#thm-sphericity" class="quarto-xref">Theorem&nbsp;<span>29.3</span></a> states that the PDF of an <span class="math inline">\(n\)</span>-dimensional normally distributed random vector with spherical covariance parameter corresponds to the joint PDF of <span class="math inline">\(n\)</span> independent univariately normally distributed random variables, and conversely. A realization of an <span class="math inline">\(n\)</span>-dimensional normally distributed random vector therefore corresponds to the realizations of <span class="math inline">\(n\)</span> independent univariately normally distributed random variables, and conversely. Note that the identity of the distributions of the <span class="math inline">\(\xi_i, i = 1,...,n\)</span> is not assumed here; in particular, their expectation parameters <span class="math inline">\(\mu_i, i = 1,...,n\)</span> may explicitly differ.</p>
+</section>
+<section id="sec-marginal-conditional-and-joint-distributions" class="level2" data-number="29.4">
+<h2 data-number="29.4" class="anchored" data-anchor-id="sec-marginal-conditional-and-joint-distributions"><span class="header-section-number">29.4</span> Marginal, conditional, and joint distributions</h2>
+<p>Multivariate normal distributions have the property that all other associated distributions are also normal distributions and that their expectation and covariance-matrix parameters can be calculated from the parameters of the respective complementary distribution. Specifically, on the one hand, the univariate and multivariate marginal distributions of multivariate normal distributions are again normal distributions. On the other hand, like all multivariate distributions, multivariate normal distributions can be decomposed multiplicatively into a marginal and a conditional distribution. In particular, however, for multivariate normal distributions these distributions are again (multivariate) normal distributions whose parameters can be calculated from the parameters of the joint distribution, and conversely. We summarize the above observations formally in the following three theorems.</p>
+<div id="thm-marginal-normal-distributions" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 29.4 (Marginal normal distributions)</strong></span> Let <span class="math inline">\(n := k + l\)</span> and let <span class="math inline">\(\xi = (\xi_1,...,\xi_n)^T\)</span> be an <span class="math inline">\(n\)</span>-dimensional normally distributed random vector with expectation parameter <span class="math display">\[\begin{equation}
+\mu =
+\left(\begin{matrix}
+\mu_\upsilon \\
+\mu_\zeta
+\end{matrix}\right) \in \mathbb{R}^n,
+\end{equation}\]</span> with <span class="math inline">\(\mu_\upsilon \in \mathbb{R}^k\)</span> and <span class="math inline">\(\mu_\zeta \in \mathbb{R}^l\)</span> and covariance-matrix parameter <span class="math display">\[\begin{equation}
+\Sigma =
+\left(\begin{matrix}
+\Sigma_{\upsilon\upsilon}   &amp; \Sigma_{\upsilon\zeta} \\
+\Sigma_{\zeta\upsilon}  &amp; \Sigma_{\zeta\zeta}
+\end{matrix}\right) \in \mathbb{R}^{n \times n},
+\end{equation}\]</span> with <span class="math inline">\(\Sigma_{\upsilon\upsilon}  \in \mathbb{R}^{k \times k}\)</span>, <span class="math inline">\(\Sigma_{\upsilon\zeta}     \in \mathbb{R}^{k \times l}\)</span>, <span class="math inline">\(\Sigma_{\zeta\upsilon}     \in \mathbb{R}^{l \times k}\)</span>, and <span class="math inline">\(\Sigma_{\zeta\zeta}        \in \mathbb{R}^{l \times l}\)</span>. Then <span class="math inline">\(\upsilon := (\xi_1,...,\xi_k)^T\)</span> and <span class="math inline">\(\zeta := (\xi_{k+1}, ...,\xi_n)^T\)</span> are <span class="math inline">\(k\)</span>- and <span class="math inline">\(l\)</span>-dimensional normally distributed random vectors, respectively, and <span class="math display">\[\begin{equation}
+\upsilon \sim N(\mu_\upsilon,\Sigma_{\upsilon\upsilon}) \mbox{ and } \zeta \sim N(\mu_\zeta,\Sigma_{\zeta\zeta}).
+\end{equation}\]</span></p>
+</div>
+<p>The marginal distributions of a multivariate normal distribution are therefore also normal distributions, and the parameters of the marginal distributions follow from the parameters of the joint distribution. For proofs of this theorem, we refer to <span class="citation" data-cites="mardia1979">Mardia et al. (<a href="#ref-mardia1979" role="doc-biblioref">1979</a>)</span> and <span class="citation" data-cites="anderson2003">Anderson (<a href="#ref-anderson2003" role="doc-biblioref">2003</a>)</span>.</p>
+<div id="exm-marginal-normal-distributions" class="theorem example">
+<p><span class="theorem-title"><strong>Example 29.3 (Marginal normal distributions)</strong></span> <a href="#fig-marginal-normal-distributions" class="quarto-xref">Figure&nbsp;<span>29.5</span></a> visualizes <a href="#thm-marginal-normal-distributions" class="quarto-xref">Theorem&nbsp;<span>29.4</span></a> for the case <span class="math inline">\(n := 2, k := 1, l := 1\)</span>, <span class="math display">\[\begin{equation}
+\mu := \begin{pmatrix} 1 \\ 2 \end{pmatrix} \in \mathbb{R}^2
+\mbox{ and }
+\Sigma := \begin{pmatrix} 0.10 &amp; 0.08 \\ 0.08 &amp; 0.15 \end{pmatrix}  \in \mathbb{R}^{2 \times 2}.
+\end{equation}\]</span> <a href="#fig-marginal-normal-distributions" class="quarto-xref">Figure&nbsp;<span>29.5</span></a> A shows the PDF of the bivariate random vector <span class="math inline">\(\xi\)</span>, and <a href="#fig-marginal-normal-distributions" class="quarto-xref">Figure&nbsp;<span>29.5</span></a> B and C show the PDFs of the corresponding marginal random variables <span class="math inline">\(\upsilon\)</span> and <span class="math inline">\(\zeta\)</span>.</p>
+</div>
+<div id="fig-marginal-normal-distributions" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-marginal-normal-distributions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/311-marginal-normal-distributions.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-marginal-normal-distributions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;29.5: Marginal distributions of a bivariate normally distributed random vector.
+</figcaption>
+</figure>
+</div>
+<p>Using a marginal and a conditional multivariate normal distribution, one can construct a joint multivariate normal distribution whose parameters follow from the parameters of the marginal and conditional distributions. This is the central statement of the following theorem.</p>
+<div id="thm-joint-normal-distributions" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 29.5 (Joint normal distributions)</strong></span> Let <span class="math inline">\(\xi\)</span> be an <span class="math inline">\(m\)</span>-dimensional normally distributed random vector with PDF <span class="math display">\[\begin{equation}
+p_\xi : \mathbb{R}^m \to \mathbb{R}_{&gt;0},\,x\mapsto
+p_\xi(x) := N(x;\mu_\xi,\Sigma_{\xi\xi}) \mbox{ with }
+\mu_\xi \in \mathbb{R}^m,
+\Sigma_{\xi\xi} \in \mathbb{R}^{m\times m},
+\end{equation}\]</span> let <span class="math inline">\(A\in\mathbb{R}^{n\times m}\)</span> be a matrix, let <span class="math inline">\(b\in\mathbb{R}^n\)</span> be a vector, and let <span class="math inline">\(\upsilon\)</span> be an <span class="math inline">\(n\)</span>-dimensional conditionally normally distributed random vector with conditional PDF <span class="math display">\[\begin{equation}
+p_{\upsilon|\xi}(\cdot|x) : \mathbb{R}^n \to \mathbb{R}_{&gt;0},\, y\mapsto
+p_{\upsilon|\xi}(y|x) := N(y;A\xi+b,\Sigma_{\upsilon\upsilon}) \mbox{ with }
+\Sigma_{\upsilon\upsilon} \in \mathbb{R}^{n\times n}.
+\end{equation}\]</span> Then the <span class="math inline">\(m+n\)</span>-dimensional random vector <span class="math inline">\((\xi,\upsilon)^T\)</span> is normally distributed with (joint) PDF <span class="math display">\[\begin{equation}\label{eq:gauss_joint}
+p_{\xi,\upsilon} : \mathbb{R}^{m+n} \to \mathbb{R}_{&gt;0},\, \begin{pmatrix} x \\ y \end{pmatrix} \mapsto
+p_{\xi,\upsilon}\left(\begin{pmatrix} x \\ y \end{pmatrix}\right) = N\left(\begin{pmatrix} x \\ y \end{pmatrix};
+\mu_{\xi,\upsilon}, \Sigma_{\xi,\upsilon} \right),
+\end{equation}\]</span> with <span class="math inline">\(\mu_{\xi,\upsilon} \in \mathbb{R}^{m+n}\)</span> and <span class="math inline">\(\Sigma_{\xi,\upsilon} \in \mathbb{R}^{m+n \times m+n}\)</span> and, in particular, <span class="math display">\[\begin{equation}
+\mu_{\xi,\upsilon} = \left( \begin{matrix} \mu_\xi \\ A\mu_\xi + b \end{matrix} \right)
+\mbox{ and }
+\Sigma_{\xi,\upsilon} = \left(\begin{matrix} \Sigma_{\xi\xi} &amp; \Sigma_{\xi\xi}A^T \\ A\Sigma_{\xi\xi} &amp; \Sigma_{\upsilon\upsilon} + A\Sigma_{\xi\xi}A^T \end{matrix} \right).
+\end{equation}\]</span></p>
+</div>
+<p>The parameters of the joint distribution therefore follow as linear-affine transformations of the parameters of the inducing marginal and conditional distributions.</p>
+<div id="exm-joint-normal-distributions" class="theorem example">
+<p><span class="theorem-title"><strong>Example 29.4 (Joint normal distributions)</strong></span> <a href="#fig-joint-normal-distributions" class="quarto-xref">Figure&nbsp;<span>29.6</span></a> visualizes <a href="#thm-joint-normal-distributions" class="quarto-xref">Theorem&nbsp;<span>29.5</span></a> for the case <span class="math inline">\(m := 1, n := 1, \mu_\xi := 1, \Sigma_{\xi\xi} := 0.2, A := 1, b := 1\)</span> and <span class="math inline">\(\Sigma_{\upsilon\upsilon} := 0.1\)</span>. <a href="#fig-joint-normal-distributions" class="quarto-xref">Figure&nbsp;<span>29.6</span></a> A shows the PDF of the random variable <span class="math inline">\(\xi\)</span>, <a href="#fig-joint-normal-distributions" class="quarto-xref">Figure&nbsp;<span>29.6</span></a> B shows the PDF of the conditional distribution of the random variable <span class="math inline">\(\upsilon\)</span> given <span class="math inline">\(\xi\)</span>, and <a href="#fig-joint-normal-distributions" class="quarto-xref">Figure&nbsp;<span>29.6</span></a> C finally shows the PDFs of the induced bivariate random vector <span class="math inline">\((\xi,\upsilon)\)</span>.</p>
+</div>
+<div id="fig-joint-normal-distributions" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-joint-normal-distributions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/311-joint-normal-distributions.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-joint-normal-distributions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;29.6: Joint distributions of a marginal and a normally distributed random variable conditional on it.
+</figcaption>
+</figure>
+</div>
+<p>The definition of a multivariate normal distribution further makes it possible to determine the conditional distributions of all components of the corresponding random vector directly using the parameters of the multivariate normal distribution. This is the central statement of the following theorem.</p>
+<div id="thm-conditional-normal-distributions" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 29.6 (Conditional normal distributions)</strong></span> Let <span class="math inline">\((\xi,\upsilon)\)</span> be an <span class="math inline">\(m+n\)</span>-dimensional normally distributed random vector with PDF <span class="math display">\[\begin{equation}
+p_{\xi,\upsilon} : \mathbb{R}^{m + n} \to \mathbb{R}_{&gt;0}, \begin{pmatrix} x \\ y \end{pmatrix}
+\mapsto p_{\xi,\upsilon}\left(\begin{pmatrix} x \\ y \end{pmatrix} \right)
+:= N\left(\begin{pmatrix} x \\ y \end{pmatrix}; \mu_{\xi,\upsilon}, \Sigma_{\xi,\upsilon}\right),
+\end{equation}\]</span> with <span class="math display">\[\begin{equation}
+\mu_{\xi,\upsilon}
+= \left(\begin{matrix} \mu_\xi \\ \mu_\upsilon \end{matrix} \right),
+\Sigma_{\xi,\upsilon} = \left(\begin{matrix} \Sigma_{\xi\xi} &amp; \Sigma_{\xi\upsilon} \\ \Sigma_{\upsilon\xi} &amp; \Sigma_{\upsilon\upsilon} \end{matrix} \right),
+\end{equation}\]</span> with <span class="math inline">\(x,\mu_\xi \in \mathbb{R}^m, y,\mu_\upsilon\in\mathbb{R}^n\)</span> and <span class="math inline">\(\Sigma_{\xi\xi} \in \mathbb{R}^{m\times m}, \Sigma_{\xi\upsilon} \in
+\mathbb{R}^{m\times n}, \Sigma_{\upsilon\upsilon} \in \mathbb{R}^{n \times n}\)</span>. Then the conditional distribution of <span class="math inline">\(\xi\)</span> given <span class="math inline">\(\upsilon\)</span> is an <span class="math inline">\(m\)</span>-dimensional normal distribution with conditional PDF <span class="math display">\[\begin{equation}
+p_{\xi|\upsilon}(\cdot|y) : \mathbb{R}^m \to \mathbb{R}_{&gt;0}, x \mapsto p_{\xi|\upsilon}(x|y) :=
+N(x;\mu_{\xi|\upsilon},\Sigma_{\xi|\upsilon})
+\end{equation}\]</span> with <span class="math display">\[\begin{equation}\label{eq:gauss_cond_exp}
+\mu_{\xi|\upsilon} = \mu_\xi  + \Sigma_{\xi\upsilon}\Sigma_{\upsilon\upsilon}^{-1}(y-\mu_\upsilon) \in \mathbb{R}^m
+\end{equation}\]</span> and <span class="math display">\[\begin{equation}\label{eq:gauss_cond_var}
+\Sigma_{\xi|\upsilon} = \Sigma_{\xi\xi}  - \Sigma_{\xi\upsilon}\Sigma_{\upsilon\upsilon}^{-1}\Sigma_{\upsilon\xi} \in \mathbb{R}^{m\times m}.
+\end{equation}\]</span></p>
+</div>
+<p>Together with <a href="#thm-joint-normal-distributions" class="quarto-xref">Theorem&nbsp;<span>29.5</span></a> and <a href="#thm-marginal-normal-distributions" class="quarto-xref">Theorem&nbsp;<span>29.4</span></a>, the parameters of conditional and marginal normal distributions can therefore be determined from the parameters of the complementary conditional and marginal normal distributions.</p>
+<div id="exm-conditional-normal-distributions" class="theorem example">
+<p><span class="theorem-title"><strong>Example 29.5 (Conditional normal distributions)</strong></span> <a href="#fig-conditional-normal-distributions" class="quarto-xref">Figure&nbsp;<span>29.7</span></a> visualizes <a href="#thm-conditional-normal-distributions" class="quarto-xref">Theorem&nbsp;<span>29.6</span></a> for the case <span class="math inline">\(m := 2, n := 1\)</span>, <span class="math display">\[\begin{equation}
+\mu := \begin{pmatrix} 1 \\ 2 \end{pmatrix}
+\mbox{ and }
+\Sigma := \begin{pmatrix} 0.12 &amp; 0.09 \\ 0.09 &amp; 0.12 \end{pmatrix}.
+\end{equation}\]</span> Here <a href="#fig-conditional-normal-distributions" class="quarto-xref">Figure&nbsp;<span>29.7</span></a> A shows the PDF of the bivariate random vector <span class="math inline">\((\xi,\upsilon)^T\)</span>, and <a href="#fig-conditional-normal-distributions" class="quarto-xref">Figure&nbsp;<span>29.7</span></a> B and C show the PDF of the conditional distribution of the random variable <span class="math inline">\(\xi\)</span> given <span class="math inline">\(\upsilon = 1.5\)</span> and <span class="math inline">\(\upsilon = 2.8\)</span>, respectively.</p>
+</div>
+<div id="fig-conditional-normal-distributions" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-conditional-normal-distributions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/311-conditional-normal-distributions.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-conditional-normal-distributions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;29.7: Conditional normal distributions.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="sec-multivariate-transformations" class="level2" data-number="29.5">
+<h2 data-number="29.5" class="anchored" data-anchor-id="sec-multivariate-transformations"><span class="header-section-number">29.5</span> Multivariate transformations</h2>
+<p>In this section, we collect some results on the distributions of transformed normally distributed random vectors. We omit proofs.</p>
+<div id="thm-invertible-linear-transformation" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 29.7 (Invertible linear transformation of a normally distributed random vector)</strong></span> Let <span class="math inline">\(\xi \sim N(\mu_\xi,\Sigma_\xi)\)</span> be a normally distributed <span class="math inline">\(n\)</span>-dimensional random vector and let <span class="math inline">\(\zeta := A\xi\)</span> with an invertible matrix <span class="math inline">\(A \in \mathbb{R}^{n \times n}\)</span>. Then <span class="math display">\[\begin{equation}
+\zeta \sim N\left(\mu_\zeta, \Sigma_\zeta\right)
+\mbox{ with }
+\mu_\zeta = A\mu_\xi \mbox{ and }
+\Sigma_\zeta = A\Sigma_\xi A^T.
+\end{equation}\]</span></p>
+</div>
+<p>By <a href="#thm-invertible-linear-transformation" class="quarto-xref">Theorem&nbsp;<span>29.7</span></a>, the invertible linear transformation of a multivariately normally distributed random vector therefore again yields a multivariately normally distributed random vector, and the parameters of the distribution of this normally distributed random vector follow from the parameters of the distribution of the original random vector and the transformation matrix.</p>
+<div id="exm-invertible-linear-transformation-of-a-bivariate-normal-distribution" class="theorem example">
+<p><span class="theorem-title"><strong>Example 29.6 (Invertible linear transformation of a bivariate normal distribution)</strong></span> As an example, we consider the invertible linear transformation of a bivariately normally distributed random vector <span class="math inline">\(\xi\)</span>. Let <span class="math display">\[\begin{equation}
+\mu_\xi := \begin{pmatrix} 1 \\ 1 \end{pmatrix}
+\mbox{ and }
+\Sigma_\xi := \begin{pmatrix} 0.20 &amp; 0.15 \\ 0.15 &amp; 0.20 \end{pmatrix}
+\end{equation}\]</span> be the expectation and covariance-matrix parameters of <span class="math inline">\(\xi\)</span>, respectively, and let <span class="math display">\[\begin{equation}
+A := \begin{pmatrix} -2 &amp; 1 \\ - 1 &amp; 2 \end{pmatrix}
+\end{equation}\]</span> be the transformation matrix. Since <span class="math inline">\(|A| = -3 \neq 0\)</span>, <span class="math inline">\(A\)</span> is invertible, and by <a href="#thm-invertible-linear-transformation" class="quarto-xref">Theorem&nbsp;<span>29.7</span></a>, <span class="math display">\[\begin{equation}
+\zeta \sim N(\mu_\zeta,\Sigma_\zeta) \mbox{ with }
+\mu_\zeta = A\mu_\xi = \begin{pmatrix} -1 \\ 1 \end{pmatrix}
+\mbox{ and }
+A\Sigma_\xi A^T = \begin{pmatrix} 0.40 &amp; 0.05 \\ 0.05 &amp; 0.40 \end{pmatrix}.
+\end{equation}\]</span> <a href="#fig-linear-transformation" class="quarto-xref">Figure&nbsp;<span>29.8</span></a> A shows isocontours of the PDF of <span class="math inline">\(\xi\)</span> and realizations <span class="math inline">\(x^{(i)} \in \mathbb{R}^2\)</span> of <span class="math inline">\(\xi\)</span> for <span class="math inline">\(i = 1,...,50\)</span>. <a href="#fig-linear-transformation" class="quarto-xref">Figure&nbsp;<span>29.8</span></a> B shows the transformed realizations <span class="math inline">\(z^{(i)} = Ax^{(i)} \in \mathbb{R}^{2}\)</span> of <span class="math inline">\(\zeta\)</span> as well as the isocontours of the PDF of <span class="math inline">\(\zeta\)</span> according to <a href="#thm-invertible-linear-transformation" class="quarto-xref">Theorem&nbsp;<span>29.7</span></a>.</p>
+</div>
+<div id="fig-linear-transformation" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-linear-transformation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/311-linear-transformation.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-linear-transformation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;29.8: Invertible linear transformation of a normally distributed random vector.
+</figcaption>
+</figure>
+</div>
+<p>The fact that a linearly transformed normally distributed random vector is again normally distributed and that the parameters of the distribution of the transformed random vector can be determined from the parameters of the distribution of the original random vector and the transformation parameters remains true in the case of a not necessarily invertible linear transformation and also in the case of a not necessarily invertible linear-affine transformation. This is the statement of the following central theorem.</p>
+<div id="thm-linear-affine-transformation" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 29.8 (Linear-affine transformation of a normally distributed random vector)</strong></span> Let <span class="math inline">\(\xi \sim N(\mu_\xi,\Sigma_\xi)\)</span> be a normally distributed <span class="math inline">\(n\)</span>-dimensional random vector and let <span class="math display">\[\begin{equation}
+\zeta := Ax + b \mbox{ with } A \in \mathbb{R}^{m \times n} \mbox{ and } b \in \mathbb{R}^m.
+\end{equation}\]</span> Then <span class="math display">\[\begin{equation}
+\zeta \sim N(\mu_\zeta, \Sigma_\zeta)
+\mbox{ with }
+\mu_\zeta    = A\mu + b \in \mathbb{R}^m \mbox{ and }
+\Sigma_\zeta = A\Sigma A^T \in \mathbb{R}^{m \times m}.
+\end{equation}\]</span></p>
+</div>
+<p>For a proof, we refer to <span class="citation" data-cites="anderson2003">Anderson (<a href="#ref-anderson2003" role="doc-biblioref">2003</a>)</span>.</p>
+</section>
+<section id="sec-transformations-of-normally-distributed-random-variables" class="level2" data-number="29.6">
+<h2 data-number="29.6" class="anchored" data-anchor-id="sec-transformations-of-normally-distributed-random-variables"><span class="header-section-number">29.6</span> Transformations of normally distributed random variables</h2>
+<p>In this section, we discuss six transformations of normally distributed random variables that play central roles in frequentist inference and are applications of the transformation theorems introduced in <a href="310-Transformations.html" class="quarto-xref"><span>Chapter 28</span></a>. Our statements are usually of the general form “If <span class="math inline">\(\xi_i, i = 1,...,n\)</span> are independent and identically normally distributed random variables and <span class="math inline">\(\upsilon := f(\xi_1,...,\xi_n)\)</span> is a transformation of these random variables, then the PDF of <span class="math inline">\(\upsilon\)</span> is given by the formula <span class="math inline">\(p_\upsilon := \{\mbox{formula}\}\)</span>, and the distribution of <span class="math inline">\(\upsilon\)</span> is called <em>distribution name</em>.” Statements of this form are central for frequentist inference because, first, the central limit theorems justify the assumption of additively independent normally distributed disturbance variables, and therefore normally distributed data; second, as we will see in frequentist inference, estimators and statistics are transformations of random variables; and third, quality criteria for parameter estimators, confidence intervals, and hypothesis tests in frequentist inference are characterized and justified by the distributions of the respective estimators and statistics.</p>
+<section id="summation-transformation" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="summation-transformation">Summation transformation</h3>
+<p>In this section, we consider the resulting distributions under summation and sample-mean formation of independently and identically normally distributed random variables. Specifically, <a href="#thm-summation-transformation" class="quarto-xref">Theorem&nbsp;<span>29.9</span></a> states that the sum of independently normally distributed random variables is again normally distributed and gives the parameters of this distribution, while <a href="#thm-sample-mean-transformation" class="quarto-xref">Theorem&nbsp;<span>29.10</span></a> states that the sample mean of independently normally distributed random variables is again normally distributed and gives the parameters of this distribution.</p>
+<div id="thm-summation-transformation" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 29.9 (Summation transformation)</strong></span> For <span class="math inline">\(i = 1,...,n\)</span>, let <span class="math inline">\(\xi_i \sim N(\mu_i,\sigma^2_i)\)</span> be independent normally distributed random variables. Then, for the sum <span class="math inline">\(\upsilon := \sum_{i=1}^n \xi_i\)</span>, <span class="math display">\[\begin{equation}
+\upsilon \sim N\left(\sum_{i=1}^n \mu_i, \sum_{i=1}^n \sigma^2_i\right).
+\end{equation}\]</span> For independent and identically normally distributed random variables <span class="math inline">\(\xi_i \sim N(\mu,\sigma^2)\)</span>, it consequently follows that <span class="math display">\[\begin{equation}
+\upsilon \sim N(n\mu, n \sigma^2).
+\end{equation}\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>Using <a href="310-Transformations.html#thm-sum-of-independent-random-variables-convolution" class="quarto-xref">Theorem&nbsp;<span>28.6</span></a>, we sketch that for <span class="math inline">\(\xi_1 \sim N(\mu_1,\sigma^2_1)\)</span>, <span class="math inline">\(\xi_2 \sim N(\mu_2,\sigma^2_2)\)</span>, and <span class="math inline">\(\upsilon := \xi_1 + \xi_2\)</span>, we have <span class="math inline">\(\upsilon \sim N(\mu_1 + \mu_2,\sigma_1^2 + \sigma_2^2)\)</span>. For <span class="math inline">\(n &gt; 2\)</span>, the theorem then follows by iteration. With the definition of the PDF of the normal distribution, we first obtain <span class="math display">\[\begin{align}
+\begin{split}
+p_\upsilon(y)
+&amp; = \int_{-\infty}^\infty p_{\xi_1}(x_1)p_{\xi_2}(y - x_1)\,dx_1
+\\
+&amp; = \int_{-\infty}^\infty
+    \frac{1}{\sqrt{2 \pi} \sigma_1} \exp\left(-\frac{1}{2}\left(\frac{x_1 - \mu_1}{\sigma_1}\right)^2\right)
+    \frac{1}{\sqrt{2 \pi} \sigma_2} \exp\left(-\frac{1}{2}\left(\frac{y - x_1 - \mu_2}{\sigma_2}\right)^2\right)
+    \,dx_1
+\\
+&amp; = \int_{-\infty}^\infty
+    \frac{1}{2 \pi \sigma_1\sigma_2}\exp
+    \left(
+    -\frac{1}{2}\left(\frac{x_1 - \mu_1}{\sigma_1}\right)^2
+    -\frac{1}{2}\left(\frac{y - x_1 - \mu_2}{\sigma_2}\right)^2
+    \right)
+    \,dx_1 .
+\\
+\end{split}
+\end{align}\]</span> With some algebraic effort, one obtains the identity <span class="math display">\[\begin{multline}
+-\frac{1}{2}\left(\frac{x_1 - \mu_1}{\sigma_1}\right)^2
+-\frac{1}{2}\left(\frac{y - x_1 - \mu_2}{\sigma_2}\right)^2
+=
+-\frac{(y - \mu_1 - \mu_2)^2}
+      {2(\sigma_1^2 + \sigma_2^2)}
+-\frac{((\sigma_1^2 + \sigma_2^2)x_1 -\sigma_1^2y + \mu_2 \sigma_1^2 - \mu_1 \sigma_2^2)^2}
+      {2\sigma_1^2\sigma_2^2(\sigma_1^2 + \sigma_2^2)},
+\end{multline}\]</span> so that we further have <span class="math display">\[\begin{align}
+\begin{split}
+p_\upsilon(y)
+&amp; = \int_{-\infty}^\infty
+    \frac{1}{2 \pi \sigma_1\sigma_2}
+    \exp\left(
+    -\frac{(y - \mu_1 - \mu_2)^2}
+      {2(\sigma_1^2 + \sigma_2^2)}
+    -\frac{((\sigma_1^2 + \sigma_2^2)x_1 -\sigma_1^2y + \mu_2 \sigma_1^2 - \mu_1 \sigma_2^2)^2}
+      {2\sigma_1^2\sigma_2^2(\sigma_1^2 + \sigma_2^2)}
+    \right)
+    \,dx_1
+\\
+&amp; = \int_{-\infty}^\infty
+    \frac{1}{2 \pi \sigma_1\sigma_2}
+    \exp\left(
+    -\frac{(y - \mu_1 - \mu_2)^2}
+      {2(\sigma_1^2 + \sigma_2^2)}
+    \right)
+    \exp\left(
+    -\frac{((\sigma_1^2 + \sigma_2^2)x_1 -\sigma_1^2y + \mu_2 \sigma_1^2 - \mu_1 \sigma_2^2)^2}
+      {2\sigma_1^2\sigma_2^2(\sigma_1^2 + \sigma_2^2)}
+    \right)
+    \,dx_1
+\\
+&amp; = \frac{1}{2 \pi \sigma_1\sigma_2}
+    \exp\left(
+    -\frac{(y - \mu_1 - \mu_2)^2}
+      {2(\sigma_1^2 + \sigma_2^2)}
+    \right)
+    \int_{-\infty}^\infty
+    \exp\left(
+    -\frac{((\sigma_1^2 + \sigma_2^2)x_1 -\sigma_1^2y + \mu_2 \sigma_1^2 - \mu_1 \sigma_2^2)^2}
+      {2\sigma_1^2\sigma_2^2(\sigma_1^2 + \sigma_2^2)}
+    \right)
+    \,dx_1.
+\end{split}
+\end{align}\]</span> For the remaining integral, one can show by integration through substitution that <span class="math display">\[\begin{equation}
+\int_{-\infty}^\infty
+    \exp\left(
+    -\frac{((\sigma_1^2 + \sigma_2^2)x_1 -\sigma_1^2y + \mu_2 \sigma_1^2 - \mu_1 \sigma_2^2)^2}
+      {2\sigma_1^2\sigma_2^2(\sigma_1^2 + \sigma_2^2)}
+    \right)
+    \,dx_1
+= \frac{\sqrt{2\pi}\sigma_1\sigma_2}{\sqrt{\sigma_1^2 + \sigma_2^2}}.
+\end{equation}\]</span> Thus <span class="math display">\[\begin{align}
+\begin{split}
+p_\upsilon(y)
+&amp; = \frac{1}{2 \pi \sigma_1\sigma_2}
+    \frac{\sqrt{2\pi}\sigma_1\sigma_2}{\sqrt{\sigma_1^2 + \sigma_2^2}}
+    \exp\left(
+    -\frac{(y - \mu_1 - \mu_2)^2}
+      {2(\sigma_1^2 + \sigma_2^2)}
+    \right)
+\\
+&amp; = \frac{(2\pi)^{-1}(2\pi)^2}{\sqrt{\sigma_1^2 + \sigma_2^2}}
+    \exp\left(
+    -\frac{(y - \mu_1 - \mu_2)^2}
+      {2(\sigma_1^2 + \sigma_2^2)}
+    \right)
+\\
+&amp; = \frac{1}{\sqrt{2\pi}\sqrt{\sigma_1^2 + \sigma_2^2}}
+    \exp\left(
+    -\frac{(y - \mu_1 - \mu_2)^2}
+      {2(\sigma_1^2 + \sigma_2^2)}
+    \right).
+\end{split}
+\end{align}\]</span> Finally, it follows that <span class="math display">\[\begin{align}
+\begin{split}
+p_\upsilon(y)
+&amp; = \frac{1}{\sqrt{2\pi(\sigma_1^2 + \sigma_2^2)}}
+    \exp\left(-\frac{1}{2(\sigma_1^2 + \sigma_2^2)}\left(y - (\mu_1 + \mu_2)\right)^2\right)
+  = N(y; \mu_1 + \mu_2, \sigma_1^2 + \sigma_2^2)
+\end{split}
+\end{align}\]</span> A simpler approach probably follows after Fourier transformation of the PDF in the sense of the so-called characteristic function of a random variable. In this case, the convolution of the PDFs would correspond to multiplication of the characteristic functions.</p>
+</div>
+<p>An important application of <a href="#thm-summation-transformation" class="quarto-xref">Theorem&nbsp;<span>29.9</span></a> is the following <a href="#thm-sample-mean-transformation" class="quarto-xref">Theorem&nbsp;<span>29.10</span></a> as well as the generalizations of the central limit theorems mentioned in <a href="309-Limits.html#eq-generalization-central-limit-theorem-lindeberg-levy" class="quarto-xref">Equation&nbsp;<span>27.2</span></a> and <a href="309-Limits.html#eq-generalization-central-limit-theorem-liapunov" class="quarto-xref">Equation&nbsp;<span>27.3</span></a>. We visualize <a href="#thm-summation-transformation" class="quarto-xref">Theorem&nbsp;<span>29.9</span></a> by example in <a href="#fig-summation" class="quarto-xref">Figure&nbsp;<span>29.9</span></a>.</p>
+<div id="fig-summation" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-summation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/311-summation.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-summation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;29.9: Summation of normally distributed random variables.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="sample-mean-transformation" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="sample-mean-transformation">Sample-mean transformation</h3>
+<div id="thm-sample-mean-transformation" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 29.10 (Sample-mean transformation)</strong></span> For <span class="math inline">\(i = 1,...,n\)</span>, let <span class="math inline">\(\xi_i \sim N(\mu,\sigma^2)\)</span> be independent and identically normally distributed random variables. Then, for the sample mean <span class="math inline">\(\bar{\xi}_n := \frac{1}{n}\sum_{i=1}^n \xi_i\)</span>, <span class="math display">\[\begin{equation}
+\bar{\xi}_n \sim N\left(\mu, \frac{\sigma^2}{n}\right).
+\end{equation}\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>We first note that, by the theorem on the sum of independent normally distributed random variables, <span class="math inline">\(\bar{\xi}_n = \frac{1}{n}\upsilon\)</span> with <span class="math inline">\(\upsilon := \sum_{i=1}^n \xi_i \sim N(n\mu,n\sigma^2)\)</span>. Substitution into <a href="310-Transformations.html#thm-univariate-pdf-transformation-theorem-for-linear-affine-mappings" class="quarto-xref">Theorem&nbsp;<span>28.3</span></a> then yields <span class="math display">\[\begin{align}
+\begin{split}
+p_{\bar{\xi}_n}(\bar{x}_n)
+&amp; = \frac{1}{|1/n|}N\left(n\bar{x}_n; n\mu , n\sigma^2 \right) \\
+&amp; = \frac{n}{\sqrt{2\pi n\sigma^2}}\exp\left(-\frac{1}{2n\sigma^2}
+\left(n\bar{x}_n - n\mu\right)^2 \right) \\
+&amp; = \frac{n}{\sqrt{2\pi n\sigma^2}}\exp\left(-\frac{1}{2n\sigma^2}
+\left(n\bar{x}_n - n\mu\right)^2 \right) \\
+&amp; = nn^{-\frac{1}{2}}\frac{1}{\sqrt{2\pi\sigma^2}}
+\exp\left(
+            -\frac{(n\bar{x}_n)^2}{2n\sigma^2}
+            + \frac{2(n\bar{x}_n)(n\mu)}{2n\sigma^2}
+            - \frac{(n\mu)^2}{2n\sigma^2}
+         \right) \\
+&amp; = \sqrt{n}\frac{1}{\sqrt{2\pi\sigma^2}}
+\exp\left(
+            -\frac{n\bar{x}_n^2}{2\sigma^2}
+            + \frac{2n\bar{x}_n\mu}{2\sigma^2}
+            - \frac{n\mu^2}{2\sigma^2}
+         \right) \\
+&amp; = \frac{1}{1/\sqrt{n}}\frac{1}{\sqrt{2\pi\sigma^2}}
+\exp\left(
+            -\frac{\bar{x}_n^2}{2(\sigma^2/n)}
+            + \frac{2\bar{x}_n\mu}{2(\sigma^2/n)}
+            - \frac{\mu^2}{2(\sigma^2/n)}
+         \right) \\
+&amp; = \frac{1}{\sqrt{2\pi(\sigma^2/n)}}
+\exp\left(-\frac{1}{2(\sigma^2/n)}
+            (\bar{x}_n - \mu)^2
+         \right) \\
+&amp; = N\left(\bar{x}_n;\mu,\sigma^2/n \right)
+\end{split}
+\end{align}\]</span></p>
+</div>
+<p>Important applications of <a href="#thm-sample-mean-transformation" class="quarto-xref">Theorem&nbsp;<span>29.10</span></a> are the analysis of expectation estimators in point estimation and the generalization of the central limit theorem after Lindeberg and Levy mentioned in <a href="309-Limits.html#eq-generalization-central-limit-theorem-lindeberg-levy" class="quarto-xref">Equation&nbsp;<span>27.2</span></a>. We visualize <a href="#thm-sample-mean-transformation" class="quarto-xref">Theorem&nbsp;<span>29.10</span></a> by example in <a href="#fig-sample-mean" class="quarto-xref">Figure&nbsp;<span>29.10</span></a>.</p>
+<div id="fig-sample-mean" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sample-mean-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/311-sample-mean.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sample-mean-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;29.10: Sample-mean formation for normally distributed random variables.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="z-transformation" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="z-transformation"><span class="math inline">\(Z\)</span>-transformation</h3>
+<p><a href="#thm-z-transformation" class="quarto-xref">Theorem&nbsp;<span>29.11</span></a> states that subtracting the expectation parameter and simultaneously dividing by the square root of the variance parameter transforms the distribution of a normally distributed random variable into a standard normal distribution.</p>
+<div id="thm-z-transformation" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 29.11 (<span class="math inline">\(Z\)</span>-transformation)</strong></span> Let <span class="math inline">\(\upsilon \sim N(\mu,\sigma^2)\)</span> be a normally distributed random variable. Then the random variable <span class="math display">\[\begin{equation}
+Z := \frac{\upsilon - \mu}{\sigma}
+\end{equation}\]</span> is a standard normally distributed random variable, that is, <span class="math inline">\(Z \sim N(0,1)\)</span>.</p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>We use <a href="310-Transformations.html#thm-univariate-pdf-transformation-theorem-for-linear-affine-mappings" class="quarto-xref">Theorem&nbsp;<span>28.3</span></a>. To do so, we first note that the <span class="math inline">\(Z\)</span>-transformation corresponds to a function of the form <span class="math display">\[\begin{equation}
+f(\upsilon) := \frac{\upsilon - \mu}{\sigma} =: Z.
+\end{equation}\]</span> We further observe that the inverse function of <span class="math inline">\(f\)</span> is given by <span class="math display">\[\begin{equation}
+f^{-1}(Z) := \sigma Z + \mu,
+\end{equation}\]</span> because for all <span class="math inline">\(z \in \mathbb{R}\)</span> with <span class="math inline">\(z = {y - \mu}{\sigma}\)</span>, <span class="math display">\[\begin{equation}
+\zeta^{-1}(z)
+= \zeta^{-1}\left(\frac{y - \mu}{\sigma}\right)
+= \frac{\sigma(y- \mu)}{\sigma} + \mu
+= y - \mu + \mu
+= y.
+\end{equation}\]</span> Finally, we observe that the derivative <span class="math inline">\(f'\)</span> of <span class="math inline">\(f\)</span> is <span class="math display">\[\begin{equation}
+f'(y)
+= \frac{d}{dy}\left(\frac{y - \mu}{\sigma} \right)
+= \frac{d}{dy}\left(\frac{y}{\sigma} -\frac{\mu}{\sigma} \right)
+= \frac{1}{\sigma}.
+\end{equation}\]</span> Substitution into <a href="310-Transformations.html#thm-univariate-pdf-transformation-theorem-for-linear-affine-mappings" class="quarto-xref">Theorem&nbsp;<span>28.3</span></a> then yields <span class="math display">\[\begin{align}
+\begin{split}
+p_Z(z)
+&amp; = \frac{1}{|1/\sigma|}N\left(\sigma z + \mu; \mu , \sigma^2 \right) \\
+&amp; = \frac{1}{1/\sqrt{\sigma^2}}\frac{1}{\sqrt{2\pi\sigma^2}}\exp\left(-\frac{1}{2\sigma^2}\left(\sigma z + \mu - \mu\right)^2 \right) \\
+&amp; = \frac{\sqrt{\sigma^2}}{\sqrt{2\pi\sigma^2}}\exp\left(-\frac{1}{2\sigma^2}\sigma^2 z^2\right)\\
+&amp; = \frac{1}{\sqrt{2\pi}}\exp\left(-\frac{1}{2} z^2\right)\\
+&amp; = N(z;0,1)
+\end{split}
+\end{align}\]</span> and hence <span class="math inline">\(Z \sim N(0,1)\)</span>.</p>
+</div>
+<p>Important applications of <a href="#thm-z-transformation" class="quarto-xref">Theorem&nbsp;<span>29.11</span></a> include the frequently used standardization of normally distributed random variables in the sense of so-called <em><span class="math inline">\(Z\)</span>-values (<span class="math inline">\(Z\)</span>-scores)</em>, the <span class="math inline">\(Z\)</span> confidence-interval statistic, and the <span class="math inline">\(Z\)</span> test statistic. We visualize <a href="#thm-z-transformation" class="quarto-xref">Theorem&nbsp;<span>29.11</span></a> by example in <a href="#fig-z-transformation" class="quarto-xref">Figure&nbsp;<span>29.11</span></a>.</p>
+<div id="fig-z-transformation" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-z-transformation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/311-z-transformation.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-z-transformation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;29.11: <span class="math inline">\(Z\)</span>-transformation of normally distributed random variables.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="chi2-transformation" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="chi2-transformation"><span class="math inline">\(\chi^2\)</span>-transformation</h3>
+<p>With the <span class="math inline">\(\chi^2\)</span>-transformation, we now introduce a first transformation of independent and identically normally distributed random variables that does <em>not</em> again lead to a normal distribution. Specifically, <a href="#thm-chi2-transformation" class="quarto-xref">Theorem&nbsp;<span>29.12</span></a> states that the sum of squared independent standard normally distributed random variables is a <span class="math inline">\(\chi^2\)</span>-distributed random variable. To do so, we first recall the concept of a <span class="math inline">\(\chi^2\)</span> random variable as a special case of the gamma random variables considered in <a href="303-Random-Variables.html" class="quarto-xref"><span>Chapter 21</span></a> (cf. <a href="303-Random-Variables.html#def-gamma-random-variable" class="quarto-xref">Definition&nbsp;<span>21.10</span></a>).</p>
+<div id="def-chi-squared-random-variable" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 29.3 (<span class="math inline">\(\chi^2\)</span> random variable)</strong></span> Let <span class="math inline">\(U\)</span> be a random variable with outcome space <span class="math inline">\(\mathbb{R}_{&gt;0}\)</span> and PDF <span class="math display">\[\begin{equation}
+p : \mathbb{R}_{&gt;0} \to \mathbb{R}_{&gt;0},
+u \mapsto p(u)
+:= \frac{1}{\Gamma\left(\frac{n}{2}\right)2^{\frac{n}{2}}}
+u^{\frac{n}{2}-1}\exp\left(-\frac{1}{2}u\right),
+\end{equation}\]</span> where <span class="math inline">\(\Gamma\)</span> denotes the gamma function. Then we say that <span class="math inline">\(U\)</span> follows a <span class="math inline">\(\chi^2\)</span> distribution with degrees-of-freedom parameter <span class="math inline">\(n\)</span> and call <span class="math inline">\(U\)</span> a <span class="math inline">\(\chi^2\)</span> random variable with degrees-of-freedom parameter <span class="math inline">\(n\)</span>. We abbreviate this by <span class="math inline">\(U \sim \chi^2(n)\)</span>. We denote the PDF of a <span class="math inline">\(\chi^2\)</span> random variable by <span class="math display">\[\begin{equation}
+\chi^2(u;n) :=
+\frac{1}{\Gamma\left(\frac{n}{2}\right)2^{\frac{n}{2}}}
+u^{\frac{n}{2}-1}\exp\left(-\frac{1}{2}u\right).
+\end{equation}\]</span></p>
+</div>
+<p>Recall that the PDF of the <span class="math inline">\(\chi^2\)</span> distribution corresponds to the PDF <span class="math inline">\(G\left(u;\frac{n}{2},2\right)\)</span> of a gamma distribution. In <a href="#fig-chi2-pdf" class="quarto-xref">Figure&nbsp;<span>29.12</span></a>, we visualize some PDFs of <span class="math inline">\(\chi^2\)</span> random variables by example. We observe that, as <span class="math inline">\(n\)</span> increases, <span class="math inline">\(\chi^2(u;n)\)</span> broadens and probability mass is shifted to larger values of <span class="math inline">\(u\)</span>.</p>
+<div id="fig-chi2-pdf" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-chi2-pdf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/311-chi2-pdf.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-chi2-pdf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;29.12: PDFs of <span class="math inline">\(\chi^2\)</span> random variables.
+</figcaption>
+</figure>
+</div>
+<div id="thm-chi2-transformation" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 29.12 (<span class="math inline">\(\chi^2\)</span>-transformation)</strong></span> Let <span class="math inline">\(Z_1,...,Z_n \sim N(0,1)\)</span> be independent and identically standard normally distributed random variables. Then the random variable <span class="math display">\[\begin{equation}
+U := \sum_{i=1}^n Z_i^2
+\end{equation}\]</span> is a <span class="math inline">\(\chi^2\)</span>-distributed random variable with degrees-of-freedom parameter <span class="math inline">\(n\)</span>, that is, <span class="math inline">\(U \sim \chi^2(n)\)</span>. In particular, for <span class="math inline">\(Z \sim N(0,1)\)</span> and <span class="math inline">\(U := Z^2\)</span>, we have <span class="math inline">\(U \sim \chi^2(1)\)</span>.</p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>We show the theorem only for the case <span class="math inline">\(n := 1\)</span> using <a href="310-Transformations.html#thm-univariate-pdf-transformation-for-piecewise-bijective-mappings" class="quarto-xref">Theorem&nbsp;<span>28.4</span></a>. According to that theorem, the PDF of a random variable <span class="math inline">\(U := f(Z)\)</span> that results from the transformation of a random variable <span class="math inline">\(Z\)</span> with PDF <span class="math inline">\(p_\zeta\)</span> by a piecewise bijective mapping is given by <span class="math display">\[\begin{equation}\label{eq:piecewise_pdf_transform}
+p_U(u) = \sum_{i=1}^k 1_{\mathcal{U}_i} \frac{1}{|f'_i(f_i^{-1}(u))|}p_\zeta\left(f_i^{-1} (u)\right).
+\end{equation}\]</span> We define <span class="math display">\[\begin{equation}
+\mathcal{U}_1 := ]-\infty,0[,
+\mathcal{U}_2 := ]0,\infty[, \mbox{ and }
+\mathcal{U}_i := \mathbb{R}_{&gt;0} \mbox{ for } i = 1,2,
+\end{equation}\]</span> as well as <span class="math display">\[\begin{equation}
+f_i : \mathcal{Z}_i \to \mathcal{U}_i, x \mapsto f_i(z) := z^2 =: u \mbox{ for } i = 1,2.
+\end{equation}\]</span> The derivative and the inverse function of the <span class="math inline">\(f_i\)</span> are <span class="math display">\[\begin{equation}
+f_i' : \mathcal{Z}_i \to \mathcal{Z}_i, x \mapsto f_i'(z) = 2z \mbox{ for } i = 1,2,
+\end{equation}\]</span> and <span class="math display">\[\begin{equation}
+f_1^{-1} : \mathcal{U}_1 \to \mathcal{U}_1, u \mapsto f_1^{-1}(u) = - \sqrt{u}
+\mbox{ and }
+f_2^{-1} : \mathcal{U}_2 \to \mathcal{U}_2, u \mapsto f_2^{-1}(u) = \sqrt{u},
+\end{equation}\]</span> respectively. Substitution then gives <span class="math display">\[\begin{align}
+\begin{split}
+p_U(u)
+&amp; = 1_{\mathcal{U}_1}(u) \frac{1}{|f'_1(f_1^{-1}(u))|}p_\zeta\left(f_1^{-1} (u)\right) +
+    1_{\mathcal{U}_2}(u) \frac{1}{|f'_2(f_2^{-1}(u))|}p_\zeta\left(f_2^{-1} (u)\right) \\
+&amp; = \frac{1}{|2(-\sqrt{u})|}\frac{1}{\sqrt{2\pi}}\exp\left(-\frac{1}{2}(-\sqrt{u})^2\right) +
+    \frac{1}{|2( \sqrt{u})|}\frac{1}{\sqrt{2\pi}}\exp\left(-\frac{1}{2}( \sqrt{u})^2\right) \\
+&amp; = \frac{1}{2\sqrt{u}}\frac{1}{\sqrt{2\pi}}\exp\left(-\frac{1}{2}u\right) +
+     \frac{1}{2\sqrt{u}}\frac{1}{\sqrt{2\pi}}\exp\left(-\frac{1}{2}u\right)\\
+&amp; = \frac{1}{\sqrt{2\pi}}\frac{1}{\sqrt{u}}\exp\left(-\frac{1}{2}u\right).
+\end{split}
+\end{align}\]</span> On the other hand, with <span class="math inline">\(\Gamma\left(\frac{1}{2}\right) = \sqrt{\pi}\)</span>, the PDF of a <span class="math inline">\(\chi^2\)</span> random variable <span class="math inline">\(U\)</span> with <span class="math inline">\(n = 1\)</span> is given by <span class="math display">\[\begin{equation}
+\frac{1}{\Gamma\left(\frac{1}{2}\right)2^{\frac{1}{2}}} u^{\frac{1}{2}-1}\exp\left(-\frac{1}{2}u\right)
+= \frac{1}{\sqrt{2\pi}}\frac{1}{\sqrt{u}}\exp\left(-\frac{1}{2}u\right).
+\end{equation}\]</span> Thus, if <span class="math inline">\(Z \sim N(0,1)\)</span>, then <span class="math inline">\(U := Z^2 \sim \chi^2(1)\)</span>.</p>
+</div>
+<p>Important applications are the <span class="math inline">\(U\)</span> confidence-interval statistic and the <span class="math inline">\(t\)</span> and <span class="math inline">\(F\)</span> random variables introduced below. We visualize <a href="#thm-chi2-transformation" class="quarto-xref">Theorem&nbsp;<span>29.12</span></a> by example in <a href="#fig-chi2-transformation" class="quarto-xref">Figure&nbsp;<span>29.13</span></a>.</p>
+<div id="fig-chi2-transformation" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-chi2-transformation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/311-chi2-transformation.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-chi2-transformation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;29.13: <span class="math inline">\(\chi^2\)</span>-transformation of normally distributed random variables.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="t-transformation" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="t-transformation"><span class="math inline">\(T\)</span>-transformation</h3>
+<p>The theorem considered in this section goes back to <span class="citation" data-cites="student1908">Student (<a href="#ref-student1908" role="doc-biblioref">1908</a>)</span> and is the central and style-defining result in the development of frequentist inference in the first half of the twentieth century. <span class="citation" data-cites="hald2007">Hald (<a href="#ref-hald2007" role="doc-biblioref">2007</a>)</span> and <span class="citation" data-cites="zabell2008">Zabell (<a href="#ref-zabell2008" role="doc-biblioref">2008</a>)</span> provide a historical overview. The central <a href="#thm-t-transformation" class="quarto-xref">Theorem&nbsp;<span>29.13</span></a> states that the random variable obtained by dividing a standard normally distributed random variable by the square root of a <span class="math inline">\(\chi^2\)</span>-distributed random variable divided by an <span class="math inline">\(n\)</span> is a <span class="math inline">\(t\)</span>-distributed random variable. A <span class="math inline">\(t\)</span>-distributed random variable is defined as follows.</p>
+<div id="def-t-random-variable" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 29.4 (<span class="math inline">\(t\)</span> random variable)</strong></span> Let <span class="math inline">\(T\)</span> be a random variable with outcome space <span class="math inline">\(\mathbb{R}\)</span> and PDF <span class="math display">\[\begin{equation}
+p : \mathbb{R} \to \mathbb{R}_{&gt;0}, t \mapsto p(t)
+:= \frac{\Gamma\left(\frac{n+1}{2}\right)}{\sqrt{n\pi}\Gamma\left(\frac{n}{2}\right)}
+\left(1 + \frac{t^2}{n} \right)^{-\frac{n+1}{2}},
+\end{equation}\]</span> where <span class="math inline">\(\Gamma\)</span> denotes the gamma function. Then we say that <span class="math inline">\(T\)</span> follows a <span class="math inline">\(t\)</span> distribution with degrees-of-freedom parameter <span class="math inline">\(n\)</span> and call <span class="math inline">\(T\)</span> a <span class="math inline">\(t\)</span> random variable with degrees-of-freedom parameter <span class="math inline">\(n\)</span>. We abbreviate this by <span class="math inline">\(T \sim t(n)\)</span>. We denote the PDF of a <span class="math inline">\(t\)</span> random variable by <span class="math display">\[\begin{equation}
+T(t;n) := \frac{\Gamma\left(\frac{n+1}{2}\right)}{\sqrt{n\pi}\Gamma\left(\frac{n}{2}\right)}
+\left(1 + \frac{t^2}{n} \right)^{-\frac{n+1}{2}}.
+\end{equation}\]</span></p>
+</div>
+<p>In <a href="#fig-t-pdf" class="quarto-xref">Figure&nbsp;<span>29.14</span></a>, we visualize some PDFs of <span class="math inline">\(t\)</span> random variables by example. We observe that the <span class="math inline">\(t\)</span> distribution is always symmetric around <span class="math inline">\(0\)</span> and that increasing <span class="math inline">\(n\)</span> shifts probability mass from the tails to the center. We note that from about <span class="math inline">\(n = 30\)</span> onward, <span class="math inline">\(T(t;n) \approx N(0,1)\)</span>.</p>
+<div id="fig-t-pdf" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-t-pdf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/311-t-pdf.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-t-pdf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;29.14: PDFs of <span class="math inline">\(T\)</span> random variables.
+</figcaption>
+</figure>
+</div>
+<div id="thm-t-transformation" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 29.13 (<span class="math inline">\(T\)</span>-transformation)</strong></span> Let <span class="math inline">\(Z \sim N(0,1)\)</span> be a standard normally distributed random variable, let <span class="math inline">\(U \sim \chi^2(n)\)</span> be a <span class="math inline">\(\chi^2\)</span> random variable with degrees-of-freedom parameter <span class="math inline">\(n\)</span>, and let <span class="math inline">\(Z\)</span> and <span class="math inline">\(U\)</span> be independent. Then the random variable <span class="math display">\[\begin{equation}
+T := \frac{Z}{\sqrt{U/n}}
+\end{equation}\]</span> is a <span class="math inline">\(t\)</span>-distributed random variable with degrees-of-freedom parameter <span class="math inline">\(n\)</span>, that is, <span class="math inline">\(T \sim t(n)\)</span>.</p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>We first note that the two-dimensional PDF of the joint (independent) distribution of <span class="math inline">\(Z\)</span> and <span class="math inline">\(U\)</span> is given by <span class="math display">\[\begin{equation}
+p_{Z,U}(z,u)
+=
+\frac{1}{\sqrt{2\pi}}\exp\left(-\frac{1}{2}z^2\right)
+\frac{1}{\Gamma(\frac{n}{2})2^{\frac{n}{2}}}u^{\frac{n}{2}-1} \exp\left(-\frac{1}{2}u\right).
+\end{equation}\]</span> We then consider the multivariate vector-valued mapping <span class="math display">\[\begin{equation}
+f : \mathbb{R}^2 \to \mathbb{R}^2,
+(z,u)
+\mapsto
+f(z,u)
+:=
+\left(\frac{z}{\sqrt{u/n}},u\right)
+=:
+(t,w)
+\end{equation}\]</span> and use the multivariate PDF transformation theorem for bijective mappings to derive the PDF of <span class="math inline">\((t,w)\)</span>. To do so, recall that if <span class="math inline">\(\xi\)</span> is an <span class="math inline">\(n\)</span>-dimensional random vector with PDF <span class="math inline">\(p_\xi\)</span> and <span class="math inline">\(\upsilon := f(\xi)\)</span> for a differentiable and bijective mapping <span class="math inline">\(f : \mathbb{R}^n \to \mathbb{R}^n\)</span>, the PDF of the random vector <span class="math inline">\(\upsilon\)</span> is given by <span class="math display">\[\begin{equation}\label{eq:pdftmv}
+p_\upsilon : \mathbb{R}^n \to \mathbb{R}_{\ge 0},
+y \mapsto p_\upsilon(y) :=
+\frac{1}{|J^f\left(f^{-1}(y)\right)|}p_\xi\left(f^{-1}(y)\right).
+\end{equation}\]</span> For the mapping considered here, we first note that <span class="math display">\[\begin{equation}
+f^{-1}:\mathbb{R}^2 \to \mathbb{R}^2,
+(t,w)
+\mapsto
+f^{-1}
+(t,w)
+:=\left(\sqrt{w/n}t, w\right).
+\end{equation}\]</span> This follows directly from <span class="math display">\[\begin{equation}
+f^{-1}(f(z,u))
+=
+f^{-1}\left(\frac{z}{\sqrt{u/n}},u\right)
+=
+\left(\frac{\sqrt{u/n}z}{\sqrt{u/n}}, u \right)
+=
+(z,u)
+\mbox{ for all }
+(z,u)
+\in \mathbb{R}^2.
+\end{equation}\]</span> We then note that the determinant of the Jacobian matrix of <span class="math inline">\(f\)</span> at <span class="math inline">\((z,u)\)</span> is given by <span class="math display">\[\begin{equation}
+|J^f(z,u)|
+=
+\begin{vmatrix}
+  \frac{\partial}{\partial z} \left(\frac{z}{\sqrt{u/n}}\right)
+&amp; \frac{\partial}{\partial u} \left(\frac{z}{\sqrt{u/n}}\right) \\
+  \frac{\partial}{\partial z} u
+&amp; \frac{\partial}{\partial u} u\\
+\end{vmatrix}
+= \left(\frac{v}{n}\right)^{-1/2},
+\end{equation}\]</span> so that <span class="math display">\[\begin{equation}
+\frac{1}{|J^f\left(f^{-1}(z,u)\right)|}
+= \left(\frac{w}{n}\right)^{1/2}.
+\end{equation}\]</span> Substitution then gives <span class="math display">\[\begin{equation}
+p_{T,W}(t,w) = \left(\frac{w}{n}\right)^{1/2}p_{Z,V}\left(\sqrt{w/n}t,w\right).
+\end{equation}\]</span> Thus <span class="math display">\[\begin{align}
+\begin{split}
+p_T(t)
+&amp; =
+\int_0^\infty  p_{T,W}(t,w)
+\,dw                                                    \\
+&amp; =
+\int_0^\infty
+\left(\frac{w}{n}\right)^{1/2}
+p_{Z,V}\left(\sqrt{w/n}t,w\right)
+\,dw  \\
+&amp; =
+\int_0^\infty
+\frac{1}{\sqrt{2\pi}}\exp\left(-\frac{1}{2}(\sqrt{w/n}t)^2\right)
+\frac{1}{\Gamma(\frac{n}{2})2^{\frac{n}{2}}}w^{\frac{n}{2}-1} \exp\left(-\frac{1}{2}w\right)
+\left(\frac{w}{n}\right)^{1/2}
+\,dw \\
+&amp; =
+\frac{1}{\sqrt{2\pi}}\frac{1}{\Gamma(\frac{n}{2})2^{\frac{n}{2}}n^{\frac{1}{2}}}
+\int_0^\infty
+\exp\left(-\frac{1}{2}\frac{w}{n}t^2\right)
+w^{\frac{n}{2}-1} \exp\left(-\frac{1}{2}w\right)w^{1/2}
+\,dw \\
+&amp; =
+\frac{1}{\sqrt{2\pi}}\frac{1}{\Gamma(\frac{n}{2})2^{\frac{n}{2}}n^{\frac{1}{2}}}
+\int_0^\infty
+\exp\left(-\frac{1}{2}\frac{w}{n}t^2 -\frac{1}{2}w\right)
+w^{\frac{n}{2}-1} w^{\frac{1}{2}}
+\,dw \\
+&amp; =
+\frac{1}{\sqrt{2\pi}}\frac{1}{\Gamma(\frac{n}{2})2^{\frac{n}{2}}n^{\frac{1}{2}}}
+\int_0^\infty
+\exp\left(-\frac{1}{2}\left(\frac{w}{n}t^2 + w\right)\right)
+w^{\frac{n + 1}{2}-1}
+\,dw \\
+&amp; =
+\frac{1}{\sqrt{2\pi}}\frac{1}{\Gamma(\frac{n}{2})2^{\frac{n}{2}}n^{\frac{1}{2}}}
+\int_0^\infty
+\exp\left(-\frac{1}{2}\left(1 + \frac{t^2}{n}\right)\right)
+w^{\frac{n + 1}{2}-1}
+\,dw \\
+\end{split}
+\end{align}\]</span> We then note that the integrand on the left-hand side of the equation above corresponds to the kernel of a gamma PDF with parameters <span class="math inline">\(\alpha = \frac{n+1}{2}\)</span> and <span class="math inline">\(\beta = \frac{2}{1+\frac{t^2}{n}}\)</span>, as is easily seen: <span class="math display">\[\begin{align*}
+\Gamma(w;\alpha,\beta)
+= \frac{1}{\Gamma(\alpha)\beta^{\alpha}}w^{\alpha-1}\exp\left(-\frac{w}{\beta}\right) &amp; \\
+\Rightarrow
+\Gamma\left(w;\frac{n+1}{2},\frac{2}{1+\frac{t^2}{n}}\right)
+&amp; = \frac{1}{\Gamma(\frac{n+1}{2})\left(\frac{2}{1+\frac{t^2}{n}}\right)^{\frac{n+1}{2}}}
+w^{\frac{n+1}{2}-1}\exp\left(-\frac{w}{\frac{2}{1+\frac{t^2}{n}}}\right) \\
+&amp; = \frac{1}{\Gamma( \frac{n+1}{2})\left(\frac{2}{1+\frac{t^2}{n}}\right)^{ \frac{n+1}{2}}}
+\exp\left(-\frac{1}{2}\left(1 + \frac{t^2}{n}\right)\right) w^{\frac{n+1}{2}-1}.
+\end{align*}\]</span> Thus <span class="math display">\[\begin{equation}
+p_T(t)
+=
+\frac{1}{\sqrt{2\pi}}\frac{1}{\Gamma(\frac{n}{2})2^{\frac{n}{2}}n^{\frac{1}{2}}}
+\int_0^\infty
+\Gamma\left(w;\frac{n+1}{2},\frac{2}{1+\frac{t^2}{n}}\right)
+\,dw .
+\end{equation}\]</span> Finally, we note that the integral term in the above equation corresponds to the normalization term of a gamma PDF. Hence, finally, <span class="math display">\[\begin{equation}
+p_T(t) =
+\frac{1}{\sqrt{2\pi}}\frac{1}{\Gamma(\frac{n}{2})2^{\frac{n}{2}}n^{\frac{1}{2}}}
+\Gamma\left(\frac{n+1}{2}\right)\left(\frac{2}{1 + \frac{t^2}{n}} \right)^{\frac{n+1}{2}}.
+\end{equation}\]</span> The distribution of <span class="math inline">\(Z/\sqrt{U/n}\)</span> therefore has the PDF of a <span class="math inline">\(t\)</span> random variable.</p>
+</div>
+<p>Important applications are the <span class="math inline">\(T\)</span> confidence-interval statistic and the <span class="math inline">\(T\)</span> test statistics of the theory of hypothesis tests in the context of the general linear model. We visualize <a href="#thm-t-transformation" class="quarto-xref">Theorem&nbsp;<span>29.13</span></a> by example in <a href="#fig-t-transformation" class="quarto-xref">Figure&nbsp;<span>29.15</span></a>.</p>
+<div id="fig-t-transformation" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-t-transformation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/311-t-transformation.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-t-transformation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;29.15: <span class="math inline">\(T\)</span>-transformation of normally distributed random variables.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="noncentral-t-transformation" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="noncentral-t-transformation">Noncentral <span class="math inline">\(T\)</span>-transformation</h3>
+<p>In this section, we consider the case in which the expectation parameter of the numerator variable of the random variable <span class="math inline">\(T\)</span> considered in <a href="#thm-t-transformation" class="quarto-xref">Theorem&nbsp;<span>29.13</span></a> is different from zero, so that the numerator variable is not distributed according to <span class="math inline">\(N(0,1)\)</span>, but according to <span class="math inline">\(N(\mu,1)\)</span> for arbitrary <span class="math inline">\(\mu \in \mathbb{R}\)</span>. The resulting random variable <span class="math inline">\(T\)</span> then follows a so-called <em>noncentral <span class="math inline">\(t\)</span> distribution</em>. An early detailed discussion of this distribution can be found, for example, in <span class="citation" data-cites="johnson1940">Johnson &amp; Welch (<a href="#ref-johnson1940" role="doc-biblioref">1940</a>)</span>. A corresponding noncentral <span class="math inline">\(t\)</span>-distributed random variable is defined as follows (cf. <span class="citation" data-cites="lehmann1986">Lehmann (<a href="#ref-lehmann1986" role="doc-biblioref">1986</a>)</span>).</p>
+<div id="def-noncentral-t-random-variable" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 29.5 (Noncentral <span class="math inline">\(t\)</span> random variable)</strong></span> Let <span class="math inline">\(T\)</span> be a random variable with outcome space <span class="math inline">\(\mathbb{R}\)</span> and PDF <span class="math display">\[\begin{multline}
+p : \mathbb{R} \to \mathbb{R}_{&gt;0}, t \mapsto p(t) :=
+\frac{1}{2^{\frac{n-1}{2}}\Gamma\left(\frac{n}{2} \right)(n \pi)^{\frac{1}{2}}} \\
+\times \int_{0}^\infty \tau^{\frac{n-1}{2}} \exp\left(-\frac{\tau}{2}\right)
+\exp\left(-\frac{1}{2}\left(t \left(\frac{\tau}{n}\right)^{\frac{1}{2}} - \delta \right)^2 \right)\,d\tau.
+\end{multline}\]</span> Then we say that <span class="math inline">\(T\)</span> follows a noncentral <span class="math inline">\(t\)</span> distribution with noncentrality parameter <span class="math inline">\(\delta\)</span> and degrees-of-freedom parameter <span class="math inline">\(n\)</span> and call <span class="math inline">\(T\)</span> a <em>noncentral <span class="math inline">\(t\)</span> random variable with noncentrality parameter <span class="math inline">\(\delta\)</span> and degrees-of-freedom parameter <span class="math inline">\(n\)</span></em>. We abbreviate this by <span class="math inline">\(t(\delta, n)\)</span>. We denote the PDF of a noncentral <span class="math inline">\(t\)</span> random variable by <span class="math inline">\(t(T;\delta,n)\)</span>. We denote the CDF and inverse CDF of a noncentral <span class="math inline">\(t\)</span> random variable by <span class="math inline">\(\Psi(\cdot; \delta, n)\)</span> and <span class="math inline">\(\Psi^{-1}(\cdot; \delta, n)\)</span>, respectively.</p>
+</div>
+<p>Without proof, we note that a noncentral <span class="math inline">\(t\)</span> random variable with <span class="math inline">\(\delta = 0\)</span> corresponds to a <span class="math inline">\(t\)</span> random variable, that is, <span class="math display">\[\begin{equation}
+t(T;0,n) = t(T;n)
+\end{equation}\]</span> as well as <span class="math display">\[\begin{equation}
+\Psi(T;0,n) = \Psi(T;n)  \mbox{ and } \Psi^{-1}(T;0,n) = \Psi^{-1}(T;n).
+\end{equation}\]</span></p>
+<p>In <a href="#fig-noncentral-t-pdf" class="quarto-xref">Figure&nbsp;<span>29.16</span></a>, we visualize some PDFs of noncentral <span class="math inline">\(t\)</span> random variables by example. We observe that a positive noncentrality parameter <span class="math inline">\(\delta\)</span> shifts the distribution to the right and that, with increasing degrees-of-freedom parameter <span class="math inline">\(n\)</span>, the distributions approach correspondingly localized normal distributions with variance parameter 1. Note also the lack of symmetry of the PDFs for small degrees-of-freedom parameters when the positive noncentrality parameter differs from zero.</p>
+<div id="fig-noncentral-t-pdf" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-noncentral-t-pdf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/311-noncentral-t-pdf.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-noncentral-t-pdf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;29.16: PDFs of noncentral <span class="math inline">\(T\)</span> random variables.
+</figcaption>
+</figure>
+</div>
+<p>A noncentral <span class="math inline">\(t\)</span> random variable is the result of a noncentral <span class="math inline">\(T\)</span>-transformation, as stated by the following theorem.</p>
+<div id="thm-noncentral-t-transformation" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 29.14 (Noncentral <span class="math inline">\(T\)</span>-transformation)</strong></span> Let <span class="math inline">\(\upsilon \sim N(\mu,1)\)</span> be a normally distributed random variable, let <span class="math inline">\(U \sim \chi^2(n)\)</span> be a <span class="math inline">\(\chi^2\)</span> random variable with degrees-of-freedom parameter <span class="math inline">\(n\)</span>, and let <span class="math inline">\(\upsilon\)</span> and <span class="math inline">\(U\)</span> be independent random variables. Then the random variable <span class="math display">\[\begin{equation}
+T := \frac{\upsilon}{\sqrt{U/n}}
+\end{equation}\]</span> is a noncentral <span class="math inline">\(t\)</span> random variable with noncentrality parameter <span class="math inline">\(\mu\)</span> and degrees-of-freedom parameter <span class="math inline">\(n\)</span>, that is, <span class="math inline">\(T \sim t(\mu,n)\)</span>.</p>
+</div>
+<p>We omit a proof. Important applications are the power functions of the <span class="math inline">\(T\)</span>-test variants in the context of the general linear model. We visualize <a href="#thm-noncentral-t-transformation" class="quarto-xref">Theorem&nbsp;<span>29.14</span></a> by example in <a href="#fig-noncentral-t-transformation" class="quarto-xref">Figure&nbsp;<span>29.17</span></a>.</p>
+<div id="fig-noncentral-t-transformation" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-noncentral-t-transformation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/311-noncentral-t-transformation.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-noncentral-t-transformation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;29.17: Noncentral <span class="math inline">\(T\)</span>-transformation of normally distributed random variables.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="f-transformation" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="f-transformation"><span class="math inline">\(F\)</span>-transformation</h3>
+<p>The central <a href="#thm-f-transformation" class="quarto-xref">Theorem&nbsp;<span>29.15</span></a> in this section states that the random variable obtained by dividing two <span class="math inline">\(\chi^2\)</span>-distributed random variables, each divided by its degrees-of-freedom parameter, is an <span class="math inline">\(F\)</span>-distributed random variable. An <span class="math inline">\(F\)</span>-distributed random variable is defined as follows.</p>
+<div id="def-f-random-variable" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 29.6 (<span class="math inline">\(F\)</span> random variable)</strong></span> Let <span class="math inline">\(F\)</span> be a random variable with outcome space <span class="math inline">\(\mathbb{R}_{&gt;0}\)</span> and PDF <span class="math display">\[\begin{equation}
+p_F: \mathbb{R} \to \mathbb{R}_{&gt;0}, f \mapsto p_F(f)
+:= \left(\frac{n}{m}\right)^{\frac{n}{2}}
+   \frac{\Gamma\left(\frac{n+m}{2}\right)}{\Gamma\left(\frac{n}{2}\right)\Gamma\left(\frac{m}{2}\right)}
+   \frac{f^{\frac{n}{2}-1}}{\left(1 + \frac{n}{m}f \right)^{\frac{n+m}{2}}},
+\end{equation}\]</span> where <span class="math inline">\(\Gamma\)</span> denotes the gamma function. Then we say that <span class="math inline">\(F\)</span> follows an <span class="math inline">\(F\)</span> distribution with degrees-of-freedom parameters <span class="math inline">\(n,m\)</span> and call <span class="math inline">\(F\)</span> an <span class="math inline">\(F\)</span> random variable with degrees-of-freedom parameters <span class="math inline">\(n,m\)</span>. We abbreviate this by <span class="math inline">\(F \sim F(n,m)\)</span>. We denote the PDF of an <span class="math inline">\(F\)</span> random variable by <span class="math display">\[\begin{equation}
+F(f;n,m)
+:= \left(\frac{n}{m}\right)^{\frac{n}{2}}
+   \frac{\Gamma\left(\frac{n+m}{2}\right)}{\Gamma\left(\frac{n}{2}\right)\Gamma\left(\frac{m}{2}\right)}
+   \frac{f^{\frac{n}{2}-1}}{\left(1 + \frac{n}{m}f \right)^{\frac{n+m}{2}}}.
+\end{equation}\]</span></p>
+</div>
+<p>In <a href="#fig-f-pdf" class="quarto-xref">Figure&nbsp;<span>29.18</span></a>, we visualize some PDFs of <span class="math inline">\(F\)</span> random variables by example. We observe that the shape of the PDFs is initially determined primarily by the degrees-of-freedom parameter <span class="math inline">\(n\)</span> and then secondarily by the degrees-of-freedom parameter <span class="math inline">\(m\)</span>.</p>
+<div id="fig-f-pdf" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-f-pdf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/311-f-pdf.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-f-pdf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;29.18: PDFs of <span class="math inline">\(F\)</span>-distributed random variables.
+</figcaption>
+</figure>
+</div>
+<div id="thm-f-transformation" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 29.15 (<span class="math inline">\(F\)</span>-transformation)</strong></span> Let <span class="math inline">\(V \sim \chi^2(n)\)</span> and <span class="math inline">\(W \sim \chi^2(m)\)</span> be two independent <span class="math inline">\(\chi^2\)</span> random variables with degrees-of-freedom parameters <span class="math inline">\(n\)</span> and <span class="math inline">\(m\)</span>, respectively. Then the random variable <span class="math display">\[\begin{equation}
+F := \frac{V/n}{W/m}
+\end{equation}\]</span> is an <span class="math inline">\(F\)</span>-distributed random variable with degrees-of-freedom parameters <span class="math inline">\(n,m\)</span>, that is, <span class="math inline">\(F \sim F(n,m)\)</span>.</p>
+</div>
+<p>The theorem can be proved by first deriving a transformation theorem for quotients of random variables using <a href="310-Transformations.html#thm-transformation-of-a-random-vector" class="quarto-xref">Theorem&nbsp;<span>28.1</span></a> and marginalization and then applying this theorem to the PDF of <span class="math inline">\(\chi^2\)</span>-distributed random variables. We visualize <a href="#thm-f-transformation" class="quarto-xref">Theorem&nbsp;<span>29.15</span></a> by example in <a href="#fig-f-transformation" class="quarto-xref">Figure&nbsp;<span>29.19</span></a>. Important applications of <a href="#thm-f-transformation" class="quarto-xref">Theorem&nbsp;<span>29.15</span></a> are the <span class="math inline">\(F\)</span> statistics considered in the theory of the general linear model.</p>
+<div id="fig-f-transformation" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-f-transformation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/311-f-transformation.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-f-transformation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;29.19: <span class="math inline">\(F\)</span>-transformation of normally distributed random variables.
+</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="literature-notes" class="level2" data-number="29.7">
+<h2 data-number="29.7" class="anchored" data-anchor-id="literature-notes"><span class="header-section-number">29.7</span> Literature notes</h2>
+<p>The development of the bivariate normal distribution has its origins in the statistical literature around the middle of the nineteenth century, especially in the work of Francis Galton (1822-1911). The mathematical formalization of the bivariate normal distribution probably goes back to <span class="citation" data-cites="pearson1896">Pearson (<a href="#ref-pearson1896" role="doc-biblioref">1896</a>)</span> (<span class="citation" data-cites="seal1967">Seal (<a href="#ref-seal1967" role="doc-biblioref">1967</a>)</span>). The original formulation of the multivariate normal distribution is located in <span class="citation" data-cites="edgeworth1892">Edgeworth (<a href="#ref-edgeworth1892" role="doc-biblioref">1892</a>)</span>. <span class="citation" data-cites="tong1990">Tong (<a href="#ref-tong1990" role="doc-biblioref">1990</a>)</span> provides a comprehensive overview of the theory and application of the multivariate normal distribution.</p>
+</section>
+<section id="self-check-questions" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="self-check-questions">Self-check questions</h2>
+<ol type="1">
+<li>State the summation transformation theorem.</li>
+<li>State the sample-mean transformation theorem.</li>
+<li>State the <span class="math inline">\(Z\)</span>-transformation theorem.</li>
+<li>State the <span class="math inline">\(\chi^2\)</span>-transformation theorem.</li>
+<li>Describe the PDF of the <span class="math inline">\(t\)</span> distribution as a function of its degrees-of-freedom parameter.</li>
+<li>State the <span class="math inline">\(T\)</span>-transformation theorem.</li>
+<li>State the <span class="math inline">\(F\)</span>-transformation theorem.</li>
+</ol>
+</section>
+<section id="solutions" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="solutions">Solutions</h2>
+<ol type="1">
+<li>See <a href="#thm-summation-transformation" class="quarto-xref">Theorem&nbsp;<span>29.9</span></a>.</li>
+<li>See <a href="#thm-sample-mean-transformation" class="quarto-xref">Theorem&nbsp;<span>29.10</span></a>.</li>
+<li>See <a href="#thm-z-transformation" class="quarto-xref">Theorem&nbsp;<span>29.11</span></a>.</li>
+<li>See <a href="#thm-chi2-transformation" class="quarto-xref">Theorem&nbsp;<span>29.12</span></a>.</li>
+<li>See <a href="#fig-t-pdf" class="quarto-xref">Figure&nbsp;<span>29.14</span></a>.</li>
+<li>See <a href="#thm-t-transformation" class="quarto-xref">Theorem&nbsp;<span>29.13</span></a>.</li>
+<li>See <a href="#thm-f-transformation" class="quarto-xref">Theorem&nbsp;<span>29.15</span></a>.</li>
+</ol>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-anderson2003" class="csl-entry" role="listitem">
+Anderson, T. W. (2003). <em>An introduction to multivariate statistical analysis</em> (3rd ed). Wiley-Interscience.
+</div>
+<div id="ref-degroot2012" class="csl-entry" role="listitem">
+DeGroot, M. H., &amp; Schervish, M. J. (2012). <em>Probability and statistics</em> (4th ed). Addison-Wesley.
+</div>
+<div id="ref-edgeworth1892" class="csl-entry" role="listitem">
+Edgeworth, F. Y. (1892). The law of error and correlated averages. <em>The London, Edinburgh, and Dublin Philosophical Magazine and Journal of Science</em>, <em>34</em>(210), 429–438. <a href="https://doi.org/10.1080/14786449208620355">https://doi.org/10.1080/14786449208620355</a>
+</div>
+<div id="ref-hald2007" class="csl-entry" role="listitem">
+Hald, A. (2007). <em>A history of parametric statistical inference from <span>Bernoulli</span> to <span>Fisher</span>, 1713-1935</em>. Springer.
+</div>
+<div id="ref-johnson1940" class="csl-entry" role="listitem">
+Johnson, N. L., &amp; Welch, B. L. (1940). Applications of the <span>Non-Central</span> t-<span>Distribution</span>. <em>Biometrika</em>, <em>31</em>(3/4), 362. <a href="https://doi.org/10.2307/2332616">https://doi.org/10.2307/2332616</a>
+</div>
+<div id="ref-lehmann1986" class="csl-entry" role="listitem">
+Lehmann, E. L. (1986). <em>Testing statistical hypotheses</em>. <span>Wiley Series in Probability and Statistics</span>.
+</div>
+<div id="ref-mardia1979" class="csl-entry" role="listitem">
+Mardia, K. V., Kent, J. T., &amp; Bibby, J. M. (1979). <em>Multivariate analysis</em>. Academic Press.
+</div>
+<div id="ref-pearson1896" class="csl-entry" role="listitem">
+Pearson, K. (1896). Mathematical <span>Contributions</span> to the <span>Theory</span> of <span>Evolution</span>. <span>III</span>. <span>Regression</span>, <span>Heredity</span>, and <span>Panmixia</span>. <em>Philosophical Transactions of the Royal Society of London. Series A, Containing Papers of a Mathematical or Physical Character</em>, <em>18</em>, 253–318. <a href="https://www.jstor.org/stable/90707">https://www.jstor.org/stable/90707</a>
+</div>
+<div id="ref-seal1967" class="csl-entry" role="listitem">
+Seal, H. L. (1967). Studies in the <span>History</span> of <span>Probability</span> and <span>Statistics</span>. <span>XV</span>: <span>The Historical Development</span> of the <span>Gauss Linear Model</span>. <em>Biometrika</em>, <em>54</em>(1/2), 1. <a href="https://doi.org/10.2307/2333849">https://doi.org/10.2307/2333849</a>
+</div>
+<div id="ref-student1908" class="csl-entry" role="listitem">
+Student. (1908). The <span>Probable Error</span> of a <span>Mean</span>. <em>Biometrika</em>, <em>6</em>(1), 1–25.
+</div>
+<div id="ref-tong1990" class="csl-entry" role="listitem">
+Tong, Y. L. (1990). <em>Multivariate normal distribution</em>. Springer.
+</div>
+<div id="ref-zabell2008" class="csl-entry" role="listitem">
+Zabell, S. L. (2008). On <span>Student</span>’s 1908 <span>Article</span> <span>“<span>The Probable Error</span> of a <span>Mean</span>.”</span> <em>Journal of the American Statistical Association</em>, <em>103</em>(481), 1–7. <a href="https://doi.org/10.1198/016214508000000030">https://doi.org/10.1198/016214508000000030</a>
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script>
+(function () {
+  var base = "https://dirk-ostwald.github.io";
+  var pageMap = {
+    "/": "/en/",
+    "/index.html": "/en/",
+    "/Referenzen.html": "/en/References.html",
+    "/_part_1/100-Mathematische-Grundlagen.html": "/en/_part_1/100-Mathematical-Foundations.html",
+    "/_part_1/101-Sprache-und-Logik.html": "/en/_part_1/101-Language-and-Logic.html",
+    "/_part_1/102-Mengen.html": "/en/_part_1/102-Sets.html",
+    "/_part_1/103-Summen-Produkte-Potenzen.html": "/en/_part_1/103-Sums-Products-Powers.html",
+    "/_part_1/104-Funktionen.html": "/en/_part_1/104-Functions.html",
+    "/_part_1/105-Folgen-Grenzwerte-Stetigkeit.html": "/en/_part_1/105-Sequences-Limits-Continuity.html",
+    "/_part_1/106-Differenzialrechnung.html": "/en/_part_1/106-Differential-Calculus.html",
+    "/_part_1/107-Integralrechnung.html": "/en/_part_1/107-Integral-Calculus.html",
+    "/_part_1/108-Vektoren.html": "/en/_part_1/108-Vectors.html",
+    "/_part_1/109-Matrizen.html": "/en/_part_1/109-Matrices.html",
+    "/_part_1/110-Deskriptivstatistiken.html": "/en/_part_1/110-Descriptive-Statistics.html",
+    "/_part_2/200-Imperative-Programmierung.html": "/en/_part_2/200-Imperative-Programming.html",
+    "/_part_2/201-Informatische-Grundbegriffe.html": "/en/_part_2/201-Basic-Concepts-of-Computer-Science.html",
+    "/_part_2/202-Arithmetik-und-Variablen.html": "/en/_part_2/202-Arithmetic-and-Variables.html",
+    "/_part_2/203-Datenstrukturen.html": "/en/_part_2/203-Data-Structures.html",
+    "/_part_2/204-Vektoren.html": "/en/_part_2/204-Vectors.html",
+    "/_part_2/205-Matrizen-und-Arrays.html": "/en/_part_2/205-Matrices-and-Arrays.html",
+    "/_part_2/206-Listen-Dataframes-und-Tibbles.html": "/en/_part_2/206-Lists-Dataframes-and-Tibbles.html",
+    "/_part_2/207-Datenmanagement.html": "/en/_part_2/207-Data-Management.html",
+    "/_part_2/208-Kontrollstrukturen.html": "/en/_part_2/208-Control-Structures.html",
+    "/_part_3/300-Wahrscheinlichkeitstheorie.html": "/en/_part_3/300-Probability-Theory.html",
+    "/_part_3/301-Wahrscheinlichkeitsräume.html": "/en/_part_3/301-Probability-Spaces.html",
+    "/_part_3/302-Elementare-Wahrscheinlichkeiten.html": "/en/_part_3/302-Elementary-Probabilities.html",
+    "/_part_3/303-Zufallsvariablen.html": "/en/_part_3/303-Random-Variables.html",
+    "/_part_3/304-Zufallsvektoren.html": "/en/_part_3/304-Random-Vectors.html",
+    "/_part_3/305-Erwartungswerte.html": "/en/_part_3/305-Expectations.html",
+    "/_part_3/306-Varianzen.html": "/en/_part_3/306-Variances.html",
+    "/_part_3/307-Kovarianzen.html": "/en/_part_3/307-Covariances.html",
+    "/_part_3/308-Ungleichungen.html": "/en/_part_3/308-Inequalities.html",
+    "/_part_3/309-Grenzwerte.html": "/en/_part_3/309-Limits.html",
+    "/_part_3/310-Transformationen.html": "/en/_part_3/310-Transformations.html",
+    "/_part_3/311-Normalverteilungen.html": "/en/_part_3/311-Normal-Distributions.html"
+  };
+  var reversePageMap = {};
+  Object.keys(pageMap).forEach(function (key) {
+    reversePageMap[pageMap[key]] = key;
+  });
+  function headings() {
+    return Array.prototype.slice.call(document.querySelectorAll("main.content h1[id], main.content h2[id], main.content h3[id], main.content h4[id]"));
+  }
+  function currentHeadingIndex() {
+    var hash = window.location.hash;
+    if (!hash) return "";
+    var id = hash.slice(1);
+    try {
+      id = decodeURIComponent(id);
+    } catch (error) {}
+    var list = headings();
+    for (var i = 0; i < list.length; i++) {
+      if (list[i].id === id) return String(i);
+    }
+    return "";
+  }
+  function scrollToHeadingIndex() {
+    var params = new URLSearchParams(window.location.search);
+    var value = params.get("h");
+    if (value === null) return;
+    var index = Number(value);
+    var list = headings();
+    if (Number.isInteger(index) && index >= 0 && index < list.length) {
+      list[index].scrollIntoView();
+      if (history.replaceState) {
+        history.replaceState(null, "", window.location.pathname + "#" + list[index].id);
+      }
+    }
+  }
+  var path = window.location.pathname;
+  var target = pageMap[path] || reversePageMap[path];
+  if (target) {
+    document.querySelectorAll("a.nav-link").forEach(function (link) {
+      var text = link.textContent.trim();
+      if (text === "English" || text === "Deutsch") {
+        var index = currentHeadingIndex();
+        link.href = base + target + (index ? "?h=" + index : "");
+      }
+    });
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", scrollToHeadingIndex);
+  } else {
+    scrollToHeadingIndex();
+  }
+}());
+</script>
+
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../_part_3/310-Transformations.html" class="pagination-link" aria-label="Transformations">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Transformations</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../References.html" class="pagination-link" aria-label="References">
+        <span class="nav-page-text">References</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/_part_3/311-Normal-Distributions.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></div></div></footer></body></html>
