@@ -1,0 +1,1842 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>33&nbsp; Hypothesis tests – Probabilistic Data Science for Psychology</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../References.html" rel="next">
+<link href="../_part_4/403-Confidence-Intervals.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-d6825770f4e37b80aa8621686b79c10e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Probabilistic Data Science for Psychology</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://dirk-ostwald.github.io/"> 
+<span class="menu-text">Deutsch</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+    <a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="../Probabilistic-Data-Science-for-Psychology.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../_part_4/400-Inference.html">Inference</a></li><li class="breadcrumb-item"><a href="../_part_4/404-Hypothesis-Tests.html"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Hypothesis tests</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../_part_1/100-Mathematical-Foundations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Mathematical foundations</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/101-Language-and-Logic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Language and logic</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/102-Sets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Sets</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/103-Sums-Products-Powers.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Sums, products, powers</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/104-Functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Functions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/105-Sequences-Limits-Continuity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Sequences, limits, continuity</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/106-Differential-Calculus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Differential calculus</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/107-Integral-Calculus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Integral calculus</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/108-Vectors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Vectors</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/109-Matrices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Matrices</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/110-Descriptive-Statistics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Descriptive statistics</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../_part_2/200-Imperative-Programming.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Imperative programming</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/201-Basic-Concepts-of-Computer-Science.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Basic concepts of computer science</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/202-Arithmetic-and-Variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Arithmetic and variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/203-Data-Structures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Data structures</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/204-Vectors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Vectors</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/205-Matrices-and-Arrays.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Matrices and arrays</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/206-Lists-Dataframes-and-Tibbles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Lists, dataframes, and tibbles</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/207-Data-Management.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Data management</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/208-Control-Structures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Control structures</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../_part_3/300-Probability-Theory.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Probability theory</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/301-Probability-Spaces.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Probability spaces</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/302-Elementary-Probabilities.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Elementary probabilities</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/303-Random-Variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Random variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/304-Random-Vectors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Random vectors</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/305-Expectations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Expectations</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/306-Variances.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Variances</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/307-Covariances.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Covariances</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/308-Inequalities.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Inequalities</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/309-Limits.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Limits</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/310-Transformations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Transformations</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/311-Normal-Distributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Normal distributions</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../_part_4/400-Inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Inference</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_4/401-Frequentist-Inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Frequentist inference</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_4/402-Point-Estimation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Point estimation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_4/403-Confidence-Intervals.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Confidence intervals</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_4/404-Hypothesis-Tests.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Hypothesis tests</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../References.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sec-test-hypotheses-and-tests" id="toc-sec-test-hypotheses-and-tests" class="nav-link active" data-scroll-target="#sec-test-hypotheses-and-tests"><span class="header-section-number">33.1</span> Test hypotheses and tests</a></li>
+  <li><a href="#sec-test-quality-criteria-and-test-construction" id="toc-sec-test-quality-criteria-and-test-construction" class="nav-link" data-scroll-target="#sec-test-quality-criteria-and-test-construction"><span class="header-section-number">33.2</span> Test quality criteria and test construction</a></li>
+  <li><a href="#sec-test-examples" id="toc-sec-test-examples" class="nav-link" data-scroll-target="#sec-test-examples"><span class="header-section-number">33.3</span> Test examples</a>
+  <ul class="collapse">
+  <li><a href="#sec-one-sample-t-test" id="toc-sec-one-sample-t-test" class="nav-link" data-scroll-target="#sec-one-sample-t-test"><span class="header-section-number">33.3.1</span> One-sample t-test</a></li>
+  <li><a href="#power-function-1" id="toc-power-function-1" class="nav-link" data-scroll-target="#power-function-1">Power function</a></li>
+  </ul></li>
+  <li><a href="#sec-confidence-intervals-and-hypothesis-tests" id="toc-sec-confidence-intervals-and-hypothesis-tests" class="nav-link" data-scroll-target="#sec-confidence-intervals-and-hypothesis-tests"><span class="header-section-number">33.4</span> Confidence intervals and hypothesis tests</a></li>
+  <li><a href="#literature-notes" id="toc-literature-notes" class="nav-link" data-scroll-target="#literature-notes"><span class="header-section-number">33.5</span> Literature notes</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/_part_4/404-Hypothesis-Tests.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../_part_4/400-Inference.html">Inference</a></li><li class="breadcrumb-item"><a href="../_part_4/404-Hypothesis-Tests.html"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Hypothesis tests</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-hypothesis-tests" class="quarto-section-identifier"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Hypothesis tests</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>The basic logic of frequentist hypothesis tests can be sketched using the normal distribution model. One assumes that an observed dataset is a realization of a sample <span class="math inline">\(y_1,...,y_n \sim N(\mu,\sigma^2)\)</span> and computes, based on the dataset, a <em>test statistic</em>, for example the sample mean standardized by the sample standard deviation and sample size, <span class="math inline">\(\sqrt{n}\frac{\bar{y}}{s}\)</span>.</p>
+<p>One then asks how likely it would be to observe the observed or a more extreme value of the test statistic under the assumption of a <em>null model</em>. Intuitively, a null model is a probability distribution model in which no “interesting effect” is present, for example <span class="math inline">\(\mu = 0\)</span> in the normal distribution model. The concept of probability is, of course, to be understood frequentistically, that is, as an idealized relative frequency one would obtain if many sample realizations of the null model were generated. Depending on the underlying frequentist inference model and the test statistic under consideration, it may be possible to determine this probability exactly.</p>
+<p>If the probability of observing the observed or a more extreme value of the test statistic under the null model is large, one intuitively concludes that “it is quite plausible that the null model generated the data”. In scientific jargon, this is called a “statistically non-significant result”. If the probability of observing the observed or a more extreme value of the test statistic under the null model is small, one intuitively concludes that “it is not very plausible that the null model generated the data”. In this case, scientific jargon speaks of a “statistically significant result”.</p>
+<p>As always in frequentist statistics, after carrying out such a procedure one does not know whether, in the present case, the null model or another model actually generated the data. One only knows how often one would be right or wrong on average with this procedure if all assumptions held and the procedure were repeated very often.</p>
+<p>In the following sections, we formalize these intuitive ideas. It is important to distinguish between hypotheses in the sense of frequentist inference and the general concept of a scientific hypothesis. Stating a scientific hypothesis by no means implies the necessity of a frequentist hypothesis test. It merely means that, in quantitative work, uncertainty should be quantified and communicated in a meaningful way using observed data relevant to the hypothesis. Frequentist hypothesis tests are only one, albeit very popular, way of doing this. It should already be noted here that “null-hypothesis significance testing”, as we present it below, is scientifically controversial (see, for example, <span class="citation" data-cites="amrhein2018">Amrhein &amp; Greenland (<a href="#ref-amrhein2018" role="doc-biblioref">2018</a>)</span> and <span class="citation" data-cites="mcshane2019">McShane et al. (<a href="#ref-mcshane2019" role="doc-biblioref">2019</a>)</span>).</p>
+<section id="sec-test-hypotheses-and-tests" class="level2" data-number="33.1">
+<h2 data-number="33.1" class="anchored" data-anchor-id="sec-test-hypotheses-and-tests"><span class="header-section-number">33.1</span> Test hypotheses and tests</h2>
+<p>In the context of a frequentist hypothesis test, the concept of a frequentist inference model (cf. <a href="401-Frequentist-Inference.html#def-frequentist-inference-model" class="quarto-xref">Definition&nbsp;<span>30.1</span></a>) is first extended by so-called <em>test hypotheses</em> to form a <em>test scenario</em>. We use the following definition.</p>
+<div id="def-test-hypotheses-and-test-scenario" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 33.1 (Test hypotheses and test scenario)</strong></span> Given a frequentist inference model with sample <span class="math inline">\(y\)</span>, outcome space <span class="math inline">\(\mathcal{Y}\)</span>, and parameter space <span class="math inline">\(\Theta\)</span>, let <span class="math inline">\(\{\Theta_0,\Theta_1\}\)</span> be a partition of the parameter space such that <span class="math display">\[\begin{equation}
+\Theta = \Theta_0 \cup \Theta_1 \mbox{ and } \Theta_0 \cap \Theta_1 = \emptyset.
+\end{equation}\]</span> Then a <em>test hypothesis</em> is a statement about the true, but unknown, parameter <span class="math inline">\(\theta\)</span> with respect to the subsets <span class="math inline">\(\Theta_0\)</span> and <span class="math inline">\(\Theta_1\)</span> of the parameter space. Specifically,</p>
+<ul>
+<li><span class="math inline">\(\theta \in \Theta_0\)</span> is called the <em>null hypothesis</em> and</li>
+<li><span class="math inline">\(\theta \in \Theta_1\)</span> is called the <em>alternative hypothesis</em>.</li>
+</ul>
+<p>For simplicity, <span class="math inline">\(\Theta_0\)</span> and <span class="math inline">\(\Theta_1\)</span> themselves are also referred to as the null hypothesis and alternative hypothesis, respectively. The unit consisting of a frequentist inference model and test hypotheses is called a <em>test scenario</em>.</p>
+</div>
+<p>Depending on the structure of <span class="math inline">\(\Theta_0\)</span> and <span class="math inline">\(\Theta_1\)</span>, one first distinguishes between <em>simple</em> and <em>composite</em> test hypotheses.</p>
+<div id="def-simple-and-composite-test-hypotheses" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 33.2 (Simple and composite test hypotheses)</strong></span> For the test hypotheses <span class="math inline">\(\Theta_i\)</span> with <span class="math inline">\(i = 0,1\)</span>:</p>
+<ul>
+<li>If <span class="math inline">\(\Theta_i\)</span> contains only a single element, then <span class="math inline">\(\Theta_i\)</span> is called <em>simple</em>.</li>
+<li>If <span class="math inline">\(\Theta_i\)</span> contains more than one element, then <span class="math inline">\(\Theta_i\)</span> is called <em>composite</em>.</li>
+</ul>
+</div>
+<p>Because, by assumption, the true, but unknown, parameter <span class="math inline">\(\theta\)</span> determines the distribution <span class="math inline">\(\mathbb{P}_\theta\)</span> of the sample, a simple test hypothesis fixes the sampling distribution to exactly one distribution. A composite test hypothesis, by contrast, corresponds to a set of possible sampling distributions. An example of a simple test hypothesis in a test scenario with parameter space <span class="math inline">\(\Theta := \mathbb{R}\)</span> is <span class="math display">\[\begin{equation}
+\Theta_0 := \{0\}.
+\end{equation}\]</span> The corresponding composite alternative hypothesis is then <span class="math display">\[\begin{equation}
+\Theta_1 = \mathbb{R} \setminus \{0\}.
+\end{equation}\]</span> The null hypothesis, that is, the statement “<span class="math inline">\(\theta \in \Theta_0\)</span>”, corresponds to the statement “<span class="math inline">\(\theta = 0\)</span>”, because <span class="math inline">\(\Theta_0\)</span> contains only the single element 0.</p>
+<p>If the parameter space of a test scenario is one-dimensional, one further distinguishes between <em>one-sided</em> and <em>two-sided</em> test hypotheses.</p>
+<div id="def-one-sided-and-two-sided-test-hypotheses" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 33.3 (One-sided and two-sided test hypotheses)</strong></span> Given a test scenario with one-dimensional parameter space <span class="math inline">\(\Theta := \mathbb{R}\)</span> and <span class="math inline">\(\theta_0 \in \Theta\)</span>, composite null hypotheses of the form <span class="math inline">\(\Theta_0 := ]-\infty,\theta_0]\)</span> or <span class="math inline">\(\Theta_0 := [\theta_0,\infty[\)</span> are called <em>one-sided null hypotheses</em> and are also written as <span class="math inline">\(H_0:\theta \le \theta_0\)</span> and <span class="math inline">\(H_0 : \theta \ge \theta_0\)</span>, respectively. The corresponding alternative hypotheses have the form <span class="math inline">\(\Theta_1 := ]\theta_0,\infty[\)</span> and <span class="math inline">\(\Theta_1:= ]-\infty, \theta_0[\)</span>, also written as <span class="math inline">\(H_1:\theta&gt;\theta_0\)</span> and <span class="math inline">\(H_1:\theta &lt; \theta_0\)</span>, respectively. For a simple null hypothesis of the form <span class="math inline">\(\Theta_0 := \{\theta_0\}\)</span>, also written as <span class="math inline">\(H_0:\theta = \theta_0\)</span>, the alternative hypothesis <span class="math inline">\(\Theta_1 := \Theta \setminus \{\theta_0\}\)</span>, also written as <span class="math inline">\(H_1:\theta \neq \theta_0\)</span>, is called a <em>two-sided alternative hypothesis</em>.</p>
+</div>
+<p>Against the background of a test scenario, we now define the concept of a <em>test</em>.</p>
+<div id="def-test" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 33.4 (Test)</strong></span> Given a test scenario, a <em>test</em> is a map <span class="math inline">\(\phi\)</span> from the sample outcome space <span class="math inline">\(\mathcal{Y}\)</span> to the set <span class="math inline">\(\{0,1\}\)</span>, that is, <span class="math display">\[\begin{equation}
+\phi: \mathcal{Y} \to \{0,1\}, y \mapsto \phi(y),
+\end{equation}\]</span> where</p>
+<ul>
+<li><span class="math inline">\(\phi(y) = 0\)</span> represents not rejecting the null hypothesis and</li>
+<li><span class="math inline">\(\phi(y) = 1\)</span> represents rejecting the null hypothesis.</li>
+</ul>
+</div>
+<p>The concept of a test is not trivial because tests, like estimators and confidence intervals, are themselves random variables as functions of the sample variables. Strictly speaking, tests are therefore defined on random-vector spaces. For simplicity, <a href="#def-test" class="quarto-xref">Definition&nbsp;<span>33.4</span></a> considers a concrete realization <span class="math inline">\(y \in \mathcal{Y}\)</span> of the sample <span class="math inline">\(y\)</span>, which is mapped by <span class="math inline">\(\phi\)</span> to the set <span class="math inline">\(\{0,1\}\)</span>. Against this background, the function value <span class="math inline">\(\phi(y)\)</span> of <span class="math inline">\(\phi\)</span> is a realization of the random variable <span class="math inline">\(\phi(y)\)</span>.</p>
+<p>In applications, one is often interested in tests that have a particular structure. We formalize this structure under the term <em>standard tests</em>.</p>
+<div id="def-standard-test" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 33.5 (Standard test)</strong></span> Given a test scenario, a <em>standard test</em> <span class="math inline">\(\phi\)</span> is defined as the composition of a <em>test statistic</em> <span class="math display">\[\begin{equation}
+\gamma : \mathcal{Y} \to \Gamma
+\end{equation}\]</span> and a <em>decision rule</em> <span class="math display">\[\begin{equation}
+\delta : \Gamma \to \{0,1\}
+\end{equation}\]</span> and can therefore be written as <span class="math display">\[\begin{equation}
+\phi := \delta \circ \gamma : \mathcal{Y} \to \{0,1\}.
+\end{equation}\]</span></p>
+</div>
+<p>As above, note that in <a href="#def-standard-test" class="quarto-xref">Definition&nbsp;<span>33.5</span></a> the test statistic is a function of the sample variables, that is, of random variables, which we have defined here as a function of the values of these random variables in <span class="math inline">\(\mathcal{Y}\)</span>. Likewise, the decision rule is a function of the random test statistic, which we have also written as a function of the values of this random variable with outcome space <span class="math inline">\(\Gamma\)</span>. In a test scenario, test statistic and decision rule are therefore random variables. Accordingly, if <span class="math inline">\(y\)</span> is a realization of the sample <span class="math inline">\(y\)</span>, <span class="math inline">\(\gamma(y) \in \Gamma\)</span> is a realization of <span class="math inline">\(\gamma(y)\)</span> and <span class="math inline">\((\delta \circ \gamma)(y)\)</span> is a realization of <span class="math inline">\((\delta \circ \gamma)(y)\)</span>.</p>
+<p>The distribution-theoretic properties of a test result from the distribution-theoretic properties of the corresponding frequentist inference model and hence, in particular, from the distribution of the sample variables. Important bridges between these two levels are the concepts of the <em>critical region</em> and the <em>rejection region</em> of a test.</p>
+<div id="def-critical-region-of-a-test" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 33.6 (Critical region of a test)</strong></span> Given a test scenario and a test <span class="math inline">\(\phi\)</span>, the set <span class="math display">\[\begin{equation}
+K := \{y \in \mathcal{Y} |\phi(y) = 1 \} \subset \mathcal{Y},
+\end{equation}\]</span> that is, the subset of the outcome space <span class="math inline">\(\mathcal{Y}\)</span> of the sample <span class="math inline">\(y\)</span> for which the test takes the value <span class="math inline">\(1\)</span>, is called the <em>critical region</em> of the test.</p>
+</div>
+<p>Against the background of <a href="#def-critical-region-of-a-test" class="quarto-xref">Definition&nbsp;<span>33.6</span></a>, the random events <span class="math inline">\(\{y\in K\}\)</span> and <span class="math inline">\(\{\phi(y) = 1\}\)</span>, that is, the event that the sample takes a value in the critical region of the test and the event that the test takes the value 1, are equivalent and thus have the same probability. Thus, asking for the probability that a test takes the value <span class="math inline">\(1\)</span>, that is, that the null hypothesis is rejected, is exactly the same as asking for the probability that the sample takes a value in the critical region of the test. Since the distribution of the sample is assumed to be known, this probability of rejecting the null hypothesis can be determined from it. If one has a standard test, the same consideration also applies directly to the test statistic placed between sample and test. This leads to the following definition.</p>
+<div id="def-rejection-region-of-a-standard-test" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 33.7 (Rejection region of a standard test)</strong></span> Given a test scenario and a standard test <span class="math inline">\(\phi\)</span> with test statistic <span class="math inline">\(\gamma\)</span>, the set <span class="math display">\[\begin{equation}
+A := \{\gamma(y) \in \Gamma |\phi(y) = 1 \} \subset \Gamma,
+\end{equation}\]</span> that is, the subset of the outcome space <span class="math inline">\(\Gamma\)</span> of the test statistic for which the test takes the value 1, is called the <em>rejection region</em> of the test.</p>
+</div>
+<p>As noted for the critical region, the events <span class="math inline">\(\{\phi(y) = 1\}\)</span> and <span class="math inline">\(\{\gamma(y) \in A\}\)</span> are equivalent and therefore have the same probability. Overall, for a standard test, <a href="#def-critical-region-of-a-test" class="quarto-xref">Definition&nbsp;<span>33.6</span></a> and <a href="#def-rejection-region-of-a-standard-test" class="quarto-xref">Definition&nbsp;<span>33.7</span></a> imply <span class="math display">\[\begin{equation}
+\{y\in K\} \Leftrightarrow \{\gamma(y) \in A\} \Leftrightarrow \{\phi(y) = 1\}
+\end{equation}\]</span> and <span class="math display">\[\begin{equation}
+\mathbb{P}_{\theta}\left(\{y\in K\}\right)
+=
+\mathbb{P}_{\theta}\left(\{\gamma(y) \in A\}\right)
+=
+\mathbb{P}_{\theta}\left(\{\phi(y) = 1\}\right).
+\end{equation}\]</span> The subscript <span class="math inline">\(\theta\)</span> indicates that the corresponding distributions are determined by the parameter of the sampling distribution.</p>
+<p>In applications, the general form of the decision rule of a standard test given in <a href="#def-standard-test" class="quarto-xref">Definition&nbsp;<span>33.5</span></a> is usually based on whether an observed test statistic with outcome space <span class="math inline">\(\Gamma := \mathbb{R}\)</span> exceeds or falls below a particular so-called <em>critical value</em> <span class="math inline">\(k\in \mathbb{R}\)</span>. This leads to the concepts of <em>one-sided</em> and <em>two-sided critical-value based tests</em>.</p>
+<div id="def-critical-value-based-tests" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 33.8 (Critical-value based tests)</strong></span> A <em>critical-value based test</em> is a standard test whose decision rule <span class="math inline">\(\delta\)</span> depends on a critical value <span class="math inline">\(k\)</span> of a test statistic with outcome space <span class="math inline">\(\mathbb{R}\)</span>. Specifically,</p>
+<ul>
+<li>a <em>one-sided critical-value based test</em> is of the form <span class="math display">\[\begin{equation}
+\phi : \mathcal{Y} \to \{0,1\}, y \mapsto \phi(y) := 1_{\{\gamma(y) \ge k\}} =
+\begin{cases}
+1 &amp; \gamma(y) \ge k \\
+0 &amp; \gamma(y) &lt; k
+\end{cases},
+\end{equation}\]</span></li>
+<li>a <em>two-sided critical-value based test</em> is of the form <span class="math display">\[\begin{equation}
+\phi : \mathcal{Y} \to \{0,1\}, y \mapsto \phi(y) := 1_{\{|\gamma(y)| \ge k\}} =
+\begin{cases}
+1 &amp; |\gamma(y)| \ge k \\
+0 &amp; |\gamma(y)| &lt; k
+\end{cases}.
+\end{equation}\]</span></li>
+</ul>
+</div>
+<p>With the definition of critical-value based tests, the practical implementation of a hypothesis test is now outlined. As always in frequentist inference, one first assumes a frequentist inference model for the observed data, that is, one assumes that the data are a realization of a sample. Based on this realization, one computes a test statistic and finally compares it with a critical value to either not reject or reject the null hypothesis. In the next section, we ask how, against the background of null and alternative hypotheses, the critical value of a critical-value based test can be determined so that good test decisions are made in the sense of frequentist probability.</p>
+</section>
+<section id="sec-test-quality-criteria-and-test-construction" class="level2" data-number="33.2">
+<h2 data-number="33.2" class="anchored" data-anchor-id="sec-test-quality-criteria-and-test-construction"><span class="header-section-number">33.2</span> Test quality criteria and test construction</h2>
+<p>The fact that, in a test scenario, the true, but unknown, parameter may lie in the null-hypothesis or alternative-hypothesis region, while the null hypothesis can either be rejected or not rejected based on the value of the test, implies that a test decision can be correct or incorrect. The following definition first clarifies the terminology.</p>
+<div id="def-correct-test-decisions-and-test-errors" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 33.9 (Correct test decisions and test errors)</strong></span> Given a test scenario and a test, there are two forms of <em>correct test decision</em>: not rejecting the null hypothesis, <span class="math inline">\(\phi(y) = 0\)</span>, when the null hypothesis <span class="math inline">\(\theta \in \Theta_0\)</span> holds, and rejecting the null hypothesis, <span class="math inline">\(\phi(y) = 1\)</span>, when the alternative hypothesis <span class="math inline">\(\theta \in \Theta_1\)</span> holds. Likewise, there are two types of <em>test error</em>. Rejecting the null hypothesis, <span class="math inline">\(\phi(y) = 1\)</span>, when the null hypothesis <span class="math inline">\(\theta \in \Theta_0\)</span> holds is called a <em>type I error</em>. Not rejecting the null hypothesis, <span class="math inline">\(\phi(y) = 0\)</span>, when the alternative hypothesis <span class="math inline">\(\theta \in \Theta_1\)</span> holds is called a <em>type II error</em>.</p>
+</div>
+<div id="fig-test-errors" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-test-errors-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/404-test-errors.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-test-errors-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;33.1: Correct test decisions and type I and type II errors.
+</figcaption>
+</figure>
+</div>
+<p><a href="#fig-test-errors" class="quarto-xref">Figure&nbsp;<span>33.1</span></a> gives an overview of the possible correct test decisions and test errors when carrying out a test. Naturally, one would prefer to make a correct test decision. The decisive tool for constructing tests that are as good as possible against the frequentist background of the test scenario is the so-called <em>power function</em>.</p>
+<div id="def-power-function" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 33.10 (Power function)</strong></span> Given a test scenario and a test <span class="math inline">\(\phi\)</span>, the <em>power function</em> of <span class="math inline">\(\phi\)</span> is defined as <span class="math display">\[\begin{equation}
+q_{\phi} : \Theta \to [0,1], \theta \mapsto q_{\phi}(\theta) := \mathbb{P}_\theta(\phi(y) = 1).
+\end{equation}\]</span> For <span class="math inline">\(\theta \in \Theta_1\)</span>, <span class="math inline">\(q_\phi\)</span> is also called the <em>sensitivity function</em> or <em>power function</em>.</p>
+</div>
+<p>Note that <span class="math inline">\(\mathbb{P}_\theta\)</span> in <a href="#def-power-function" class="quarto-xref">Definition&nbsp;<span>33.10</span></a> denotes the distribution of the random variable <span class="math inline">\(\phi(y)\)</span> under the assumption that the distribution of <span class="math inline">\(y\)</span> is determined by <span class="math inline">\(\theta\)</span>. For each <span class="math inline">\(\theta \in \Theta\)</span>, <span class="math inline">\(q_\phi\)</span> therefore gives the probability that the null hypothesis is rejected by the test <span class="math inline">\(\phi\)</span>. Using the concepts of the critical region (cf. <a href="#def-critical-region-of-a-test" class="quarto-xref">Definition&nbsp;<span>33.6</span></a>) and the rejection region (cf. <a href="#def-rejection-region-of-a-standard-test" class="quarto-xref">Definition&nbsp;<span>33.7</span></a>), these probabilities satisfy <span class="math display">\[\begin{equation}
+\mathbb{P}_\theta(\phi(y) = 1)
+= \mathbb{P}_\theta(\gamma(y) \in A)
+= \mathbb{P}_\theta (y \in K).
+\end{equation}\]</span> The power function is specific to a given test. If the test changes, for example because a different critical value is chosen in a critical-value based test, the above probabilities and therefore the power function change.</p>
+<p>Using the power function, test construction proceeds according to the following considerations. Ideally, one would have a test <span class="math inline">\(\phi\)</span> with <span class="math display">\[\begin{equation}
+q_\phi(\theta) = \mathbb{P}_\theta(\phi(y) = 1) = 0 \mbox{ for } \theta \in \Theta_0 \mbox{ and }
+q_\phi(\theta) = \mathbb{P}_\theta(\phi(y) = 1) = 1 \mbox{ for } \theta \in \Theta_1.
+\end{equation}\]</span> The test decision of such a test would be correct with probability 1, because such a test rejects the null hypothesis with probability 0 when it holds and rejects it with probability 1 when it does not hold. More generally, small values of <span class="math inline">\(q_\phi\)</span> for <span class="math inline">\(\theta \in \Theta_0\)</span>, that is, small probabilities of rejecting the null hypothesis when it holds, and large values of <span class="math inline">\(q_\phi\)</span> for <span class="math inline">\(\theta \in \Theta_1\)</span>, that is, large probabilities of rejecting the null hypothesis when it does not hold, are favorable for minimizing test errors. However, dependencies generally exist between the values of the power function for <span class="math inline">\(\theta \in \Theta_0\)</span> and <span class="math inline">\(\theta \in \Theta_1\)</span>, as the following examples illustrate.</p>
+<p><strong>Example (A)</strong> Let <span class="math inline">\(\phi_a\)</span> be a test defined by <span class="math display">\[\begin{equation}
+\phi_a: \mathcal{Y} \to \{0,1\},  y \mapsto \phi_a(y) := 0.
+\end{equation}\]</span> Thus, <span class="math inline">\(\phi_a\)</span> is a test that never rejects the null hypothesis, regardless of the observed data. For <span class="math inline">\(\phi_a\)</span>, <span class="math display">\[\begin{equation}
+q_{\phi_a}(\theta) = \mathbb{P}_\theta(\phi(y) = 1) = 0 \mbox{ for } \theta \in \Theta_0.
+\end{equation}\]</span> However, for <span class="math inline">\(\phi_a\)</span> it also automatically holds that <span class="math display">\[\begin{equation}
+q_{\phi_a}(\theta) = \mathbb{P}_\theta(\phi(y) = 1) = 0 \mbox{ for } \theta \in \Theta_1.
+\end{equation}\]</span> Thus, <span class="math inline">\(\phi_a\)</span> has minimal sensitivity for detecting the fact that the alternative hypothesis holds.</p>
+<p><strong>Example (B)</strong> Conversely, let <span class="math inline">\(\phi_b\)</span> be a test defined by <span class="math display">\[\begin{equation}
+\phi_b : \mathcal{Y} \to \{0,1\},  y \mapsto \phi_b(y) := 1.
+\end{equation}\]</span> Thus, <span class="math inline">\(\phi_b\)</span> is a test that always rejects the null hypothesis, regardless of the observed data. For <span class="math inline">\(\phi_b\)</span>, <span class="math display">\[\begin{equation}
+q_{\phi_b}(\theta) = \mathbb{P}_\theta(\phi(y) = 1) = 1 \mbox{ for } \theta \in \Theta_1.
+\end{equation}\]</span> Thus, <span class="math inline">\(\phi_b\)</span> is maximally sensitive to the alternative hypothesis being true. However, for <span class="math inline">\(\phi_b\)</span> it also automatically holds that <span class="math display">\[\begin{equation}
+q_{\phi_b}(\theta) = \mathbb{P}_\theta(\phi(y) = 1) = 1 \mbox{ for } \theta \in \Theta_0,
+\end{equation}\]</span> and <span class="math inline">\(\phi_b\)</span> therefore always rejects the null hypothesis when it holds and, in this sense, generates many false-positive results.</p>
+<p>Against the background of these examples, the goal of test construction must be to find an appropriate balance between small values of the power function when the null hypothesis holds and large values when the alternative hypothesis holds. The most popular way to achieve this is to choose, in a first step, a small value <span class="math inline">\(\alpha_0 \in [0,1]\)</span> and ensure that <span class="math display">\[\begin{equation}\label{eq:significance}
+q_\phi(\theta) \le \alpha_0 \mbox{ for all } \theta \in \Theta_0,
+\end{equation}\]</span> that is, that the probability of rejecting the null hypothesis when it holds, and hence the probability of a type I error, is at most <span class="math inline">\(\alpha_0\)</span>. Conventional values for such an <span class="math inline">\(\alpha_0\)</span> are <span class="math inline">\(\alpha_0 := 0.001\)</span> and <span class="math inline">\(\alpha_0 := 0.05\)</span>. Among all tests, and, when sample sizes are optimized, among all frequentist inference models, that satisfy <span class="math inline">\(\eqref{eq:significance}\)</span>, one then seeks, in a second step, a test for which <span class="math inline">\(q_\phi(\theta)\)</span> is as large as possible for <span class="math inline">\(\theta \in \Theta_1\)</span>. This two-step approach is not the only possible one; one could, for example, minimize a linear combination of type I and type II errors simultaneously. However, the sketched two-step approach is the most popular in applications, and we therefore restrict ourselves to it in what follows. Inequality <span class="math inline">\(\eqref{eq:significance}\)</span> motivates the definitions of a <em>level-<span class="math inline">\(\alpha_0\)</span> test</em>, the <em>significance level <span class="math inline">\(\alpha_0\)</span></em>, and the <em>test size <span class="math inline">\(\alpha\)</span></em>.</p>
+<div id="def-level-alpha-0-test-significance-level-alpha-0-test-size-alpha" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 33.11 (Level-<span class="math inline">\(\alpha_0\)</span> test, significance level <span class="math inline">\(\alpha_0\)</span>, and test size <span class="math inline">\(\alpha\)</span>)</strong></span> Given a test scenario, a test <span class="math inline">\(\phi\)</span>, its power function <span class="math inline">\(q_\phi\)</span>, and <span class="math inline">\(\alpha_0 \in [0,1]\)</span>, <span class="math inline">\(\phi\)</span> is called a <em>level-<span class="math inline">\(\alpha_0\)</span> test</em> if <span class="math display">\[\begin{equation}
+q_\phi(\theta) \le \alpha_0 \mbox{ for all } \theta \in \Theta_0.
+\end{equation}\]</span> If <span class="math inline">\(\phi\)</span> is a level-<span class="math inline">\(\alpha_0\)</span> test, the value <span class="math inline">\(\alpha_0\)</span> is also called the <em>significance level</em> of the test. Furthermore, the number <span class="math display">\[\begin{equation}
+\alpha := \max_{\theta \in \Theta_0} q_\phi(\theta)
+\end{equation}\]</span> is called the <em>test size</em> of <span class="math inline">\(\phi\)</span>.</p>
+</div>
+<p>According to <a href="#def-level-alpha-0-test-significance-level-alpha-0-test-size-alpha" class="quarto-xref">Definition&nbsp;<span>33.11</span></a>, the test size <span class="math inline">\(\alpha\)</span> is the maximal probability of a type I error, and a test is a level-<span class="math inline">\(\alpha_0\)</span> test if and only if this maximal probability is less than or equal to the significance level <span class="math inline">\(\alpha_0\)</span>. In applications, it is important to keep the subtle differences between the probability of a type I error, the test size, and the significance level of a test clear. Against the background of the difference between simple and composite null hypotheses (cf. <a href="#def-simple-and-composite-test-hypotheses" class="quarto-xref">Definition&nbsp;<span>33.2</span></a>), one must first distinguish the concepts of type I error probability and test size. For a simple null hypothesis <span class="math inline">\(\Theta_0\)</span>, the test size is always equal to the probability of a type I error, because <span class="math display">\[\begin{equation}
+\alpha
+:= \max_{\theta \in \Theta_0} q_\phi(\theta)
+=  \max_{\theta \in \{\theta_0\}} q_\phi(\theta)
+= q_\phi(\theta_0)
+= \mathbb{P}_{\theta_0}(\phi(y) = 1).
+\end{equation}\]</span> For a composite null hypothesis <span class="math inline">\(\Theta_0\)</span>, there are different probabilities of a type I error depending on the value of <span class="math inline">\(\theta \in \Theta_0\)</span>. The largest of these probabilities is the test size <span class="math display">\[\begin{equation}
+\alpha
+:= \max_{\theta \in \Theta_0} q_\phi(\theta)
+= \max_{\theta \in \Theta_0} \mathbb{P}_{\theta}(\phi(y) = 1).
+\end{equation}\]</span> Likewise, the terms significance level <span class="math inline">\(\alpha_0\)</span> and test size <span class="math inline">\(\alpha\)</span> should be clearly separated. A significance level is a freely chosen upper bound on the maximal probability of a type I error. The actual maximal probability of a type I error may be identical to it, as in most examples discussed in <a href="#sec-test-examples" class="quarto-xref"><span>Section 33.3</span></a>, but it need not be, for example in multiple testing scenarios with non-independent sample variables. Accordingly, a test is called <em>exact</em> if its test size is identical to its significance level, that is, if <span class="math display">\[\begin{equation}
+\alpha = \alpha_0.
+\end{equation}\]</span> A test whose test size is smaller than its significance level, that is, <span class="math display">\[\begin{equation}
+\alpha &lt; \alpha_0,
+\end{equation}\]</span> is called <em>conservative</em>. Finally, a test whose test size is larger than its significance level, <span class="math display">\[\begin{equation}
+\alpha &gt; \alpha_0
+\end{equation}\]</span> and which therefore cannot be a level-<span class="math inline">\(\alpha_0\)</span> test, is called <em>liberal</em>.</p>
+<section id="p-value" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="p-value">p-value</h4>
+<p>A defining characteristic of a test is its binary range. The result of a test is either <span class="math inline">\(\phi(y) = 0\)</span>, the null hypothesis is not rejected, or <span class="math inline">\(\phi(y) = 1\)</span>, the null hypothesis is rejected. As the final result of a data analysis, the information contained in a dataset is thus maximally compressed. In particular, reporting only the test result suppresses interesting information about the signal-to-noise ratio of the dataset under consideration. For example, it is possible that the null hypothesis is rejected in the context of a critical-value based test because the test statistic exceeded the critical value by only a few decimal places. Conversely, it is equally possible that the null hypothesis is rejected because the test statistic took a value that was a multiple of the critical value. In both cases, the test result <span class="math inline">\(\phi(y) = 1\)</span> would be identical. In addition to pure test-size control and the reporting of the binary test result, it has therefore become customary for critical-value based tests to consider, based on the observed value of the test statistic, all values of the significance level <span class="math inline">\(\alpha_0\)</span> for which a level-<span class="math inline">\(\alpha_0\)</span> test would have returned <span class="math inline">\(\phi(y) = 1\)</span>, that is, for which the null hypothesis would have been rejected. This consideration leads to the following general definition of the so-called p-value, where p stands for <em>probability</em>.</p>
+<div id="def-p-value" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 33.12 (p-value)</strong></span> Let <span class="math inline">\(\phi\)</span> be a test. The is the smallest significance level <span class="math inline">\(\alpha_0\)</span> at which the null hypothesis is rejected based on a given value of the test statistic.</p>
+</div>
+<p>Especially in simple application examples, such as the one-sample t-test scenario considered in <a href="#sec-one-sample-t-test" class="quarto-xref"><span>Section 33.3.1</span></a>, p-values then reflect the answer to the intuitive question of how likely it would be, in the frequentist sense, to observe the observed or a more extreme value of the test statistic under the assumption of a null model. Reporting p-values is very popular in many areas of basic science, but it is also controversial (cf. <span class="citation" data-cites="wasserstein2019">Wasserstein et al. (<a href="#ref-wasserstein2019" role="doc-biblioref">2019</a>)</span>). P-values should not be overinterpreted. Based on what has been said, there is no reason to draw the following fallacies, but we mention them as a precaution: p-values do not quantify the probability that the null hypothesis is true, one cannot conclude from <span class="math inline">\(\mbox{p} &lt; 0.05\)</span> that the alternative hypothesis holds, and one cannot conclude from <span class="math inline">\(\mbox{p} \ge 0.05\)</span> that the null hypothesis holds.</p>
+<p>Like the value of a test statistic and of a test, p-values quantify the signal-to-noise ratio observed in a given dataset. Nothing less, but also nothing more.</p>
+</section>
+<section id="notes-on-the-choice-of-null-and-alternative-hypothesis" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="notes-on-the-choice-of-null-and-alternative-hypothesis">Notes on the choice of null and alternative hypothesis</h4>
+<p>We conclude this section with some remarks on carrying out hypothesis tests. Against the background of the theory sketched above, the first question in a concrete application is how null and alternative hypotheses should be assigned to the objects of scientific interest, that is, to the scientific hypotheses.</p>
+<p>For example, if one wants to carry out a test to decide, in the sense of frequentist inference, whether a particular psychotherapy procedure was effective in a clinical study, the question arises whether the absence of a treatment effect should be formulated as the null or as the alternative hypothesis.</p>
+<p>The two-step procedure described above for test construction, in which the test size is first fixed by choosing a significance level and only in a second step the probability of rejecting the null hypothesis when the alternative hypothesis holds is made as large as possible, implies a clear asymmetry in the treatment of null and alternative hypotheses. In this procedure, type I errors are treated as more serious than type II errors.</p>
+<p>This suggests a possible strategy for specifying null and alternative hypotheses: the null hypothesis is the scientific hypothesis whose associated test decision is the one for which one especially wants to avoid an error, or whose error probability one primarily wants to control. In science, it is common practice to regard the false confirmation of one’s favored theory, for example the erroneous confirmation that a newly developed psychotherapy procedure is more effective than another, as a more serious error than its false rejection.</p>
+<p>Accordingly, the false confirmation of one’s own theory should be a type I error, whereas its false rejection should be classified as a type II error. For the false confirmation of one’s own theory to indeed be a type I error, that is, the rejection of the null hypothesis even though it holds, one’s own theory must be formulated as the alternative hypothesis. The erroneous rejection of the alternative hypothesis is then a type II error.</p>
+<p>Intuitively, this yields the following assignment: <span class="math display">\[\begin{align*}
+\begin{split}
+\mbox{Non-favored scientific hypothesis} &amp; \to \mbox{Null hypothesis}        \\
+\mbox{Favored scientific hypothesis}     &amp; \to \mbox{Alternative hypothesis}
+\end{split}
+\end{align*}\]</span></p>
+</section>
+<section id="hypothesis-tests-in-decision-contexts-and-basic-science" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="hypothesis-tests-in-decision-contexts-and-basic-science">Hypothesis tests in decision contexts and basic science</h4>
+<p>Another question is whether one should carry out a hypothesis test at all to evaluate scientific hypotheses. Superficially, hypothesis tests first provide simple binary statements of the form <em>“Given the evidence, the hypothesis is to be rejected or accepted”</em>. Such statements can be useful in concrete decision contexts if a decision actually has to be made. However, frequentist hypothesis tests, as we have seen, are formulated without an explicit decision-utility function, so potential decision costs are not explicitly included in decision making. For this purpose, there are several accessible theories that allow good long-run decisions under uncertainty, see for example <span class="citation" data-cites="pratt1995">Pratt et al. (<a href="#ref-pratt1995" role="doc-biblioref">1995</a>)</span>, <span class="citation" data-cites="puterman1994">Puterman (<a href="#ref-puterman1994" role="doc-biblioref">1994</a>)</span>, or <span class="citation" data-cites="kochenderfer2022">Kochenderfer et al. (<a href="#ref-kochenderfer2022" role="doc-biblioref">2022</a>)</span>.</p>
+<p>If one turns away from practically relevant decision contexts to basic science, whose essence is precisely not to establish final truths but to quantify and communicate the extent of uncertainty about the current state of theory, the binarity of the hypothesis-test decision appears, at best, unnecessary and, at worst, grossly misleading. Questions in basic science should therefore, in principle, not be formulated as decision problems.</p>
+<p>Despite the widespread view that Bayesian approaches such as positive predictive values or Bayes factors offer advantages here, this is not the case as long as the uncertainty associated with a particular model preference is not communicated clearly. Nevertheless, frequentist hypothesis testing remains very popular even in the basic-science community, sometimes merely under the guise of demands for basic studies with “higher power”. To retain access to the psychological and scientific literature, it is therefore still unavoidable to engage with hypothesis testing, even though it is not particularly meaningful from a basic-science perspective.</p>
+</section>
+</section>
+<section id="sec-test-examples" class="level2" data-number="33.3">
+<h2 data-number="33.3" class="anchored" data-anchor-id="sec-test-examples"><span class="header-section-number">33.3</span> Test examples</h2>
+<section id="sec-one-sample-t-test" class="level3" data-number="33.3.1">
+<h3 data-number="33.3.1" class="anchored" data-anchor-id="sec-one-sample-t-test"><span class="header-section-number">33.3.1</span> One-sample t-test</h3>
+<p>The application scenario of a one-sample t-test is characterized by considering <span class="math inline">\(n\)</span> univariate data points of a sample, or group, of randomized experimental units, which are assumed to be realizations of <span class="math inline">\(n\)</span> independent and identically normally distributed random variables. For the identical univariate normal distributions <span class="math inline">\(N(\mu,\sigma^2)\)</span> of these random variables, both the expectation parameter <span class="math inline">\(\mu\)</span> and the variance parameter <span class="math inline">\(\sigma^2\)</span> are assumed to be unknown. Finally, it is assumed that there is interest in an inferential comparison of the unknown expectation parameter <span class="math inline">\(\mu\)</span> with a specified value <span class="math inline">\(\mu_0\)</span> in the sense of a hypothesis test.</p>
+<p>There are, however, at least four scenarios that may be of interest. A first case is the scenario of a simple null hypothesis and a simple alternative hypothesis, <span class="math display">\[\begin{equation}
+H_0:\mu = \mu_0 \mbox{ and }  H_1: \mu = \mu_1.
+\end{equation}\]</span> This case is well understood theoretically and forms the basis of the so-called <em>Neyman-Pearson lemma</em> (<span class="citation" data-cites="neyman1933">Neyman &amp; Pearson (<a href="#ref-neyman1933" role="doc-biblioref">1933</a>)</span>). Its practical relevance is rather limited, however, because the alternative hypothesis assumes an exact specification of the expectation parameter. A second case is the scenario of a simple null hypothesis and a composite alternative hypothesis, <span class="math display">\[\begin{equation}
+H_0:\mu = \mu_0 \mbox{ and } H_1:\mu \neq \mu_0.
+\end{equation}\]</span> In this case, one also speaks of an <em>undirected hypothesis</em> and usually uses a two-sided test. Intuitively, this corresponds to the undirected question of inferential evidence for a difference. This is the case we consider in detail below. Finally, there are at least two scenarios with composite null and alternative hypotheses, for example of the form <span class="math display">\[\begin{equation}
+H_0:\mu \le \mu_0 \mbox{ and } H_1:\mu &gt; \mu_0 \mbox{ or }
+H_0:\mu \ge \mu_0 \mbox{ and } H_1:\mu &lt; \mu_0.
+\end{equation}\]</span> In this case, one also speaks of <em>directed</em> hypotheses and usually uses one-sided tests. We do not consider these cases below.</p>
+<section id="frequentist-inference-model" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="frequentist-inference-model">Frequentist inference model</h4>
+<div id="def-frequentist-inference-model-of-one-sample-t-test" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 33.13 (Frequentist inference model of the one-sample t-test)</strong></span> The frequentist inference model of the one-sample t-test is the normal distribution model <span class="math display">\[\begin{equation}
+y_1,...,y_n \sim N(\mu,\sigma^2) \mbox{ with } (\mu,\sigma^2)\in \mathbb{R} \times \mathbb{R}_{&gt;0}.
+\end{equation}\]</span></p>
+</div>
+<p>Recall that, from a generative perspective, the normal distribution model corresponds to <span class="math display">\[\begin{equation}
+y_i = \mu + \varepsilon_i \mbox{ with } \varepsilon_i \sim N(0,\sigma^2) \mbox{ for } i = 1,...,n
+\end{equation}\]</span> (cf. <a href="401-Frequentist-Inference.html#exm-application-example" class="quarto-xref">Example&nbsp;<span>30.5</span></a>). As seen in <a href="401-Frequentist-Inference.html#exm-application-example" class="quarto-xref">Example&nbsp;<span>30.5</span></a>, the assumption of independent and identically normally distributed random variables as the basis for modeling the observation of <span class="math inline">\(n\)</span> data points is equivalent to the assumption that each random variable <span class="math inline">\(y_i\)</span> modeling a data point is the sum of a fixed, true, but unknown, value <span class="math inline">\(\mu\)</span> that is constant across random variables and a random-variable- or data-point-specific deviation term <span class="math inline">\(\varepsilon_i\)</span>. As seen, <span class="math inline">\(\mu\)</span> models the actual effect of interest assumed in the scientific application context. In contrast, <span class="math inline">\(\varepsilon_i\)</span> models the aspect of data variability that cannot be explained by <span class="math inline">\(\mu\)</span> but, in the sense of the central limit theorem, results from the summation of infinitely many disturbance influences and therefore remains as uncertainty about the explanation of the data variability by <span class="math inline">\(\mu\)</span>.</p>
+</section>
+<section id="test-hypotheses" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="test-hypotheses">Test hypotheses</h4>
+<p>We consider the case of the one-sample t-test with a simple null hypothesis and a composite alternative hypothesis.</p>
+<div id="def-simple-null-hypothesis-and-composite-alternative-hypothesis-of-one-sample-t-test" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 33.14 (Simple null hypothesis and composite alternative hypothesis of the one-sample t-test)</strong></span> Given the frequentist inference model of the one-sample t-test <span class="math display">\[\begin{equation}
+y_1,...,y_n \sim N(\mu,\sigma^2) \mbox{ with } (\mu,\sigma^2)\in \mathbb{R} \times \mathbb{R}_{&gt;0}
+\end{equation}\]</span> and let <span class="math inline">\(\Theta := \mathbb{R}\)</span> be the parameter subspace of the parameter of interest <span class="math inline">\(\mu\)</span>. Then, for the <em>null-hypothesis parameter value</em> <span class="math inline">\(\mu_0 \in \mathbb{R}\)</span>, the <em>simple null hypothesis</em> and the <em>composite alternative hypothesis</em> of the one-sample t-test are <span class="math display">\[\begin{equation}
+\Theta_0 := \{\mu_0\} \Leftrightarrow H_0 : \mu = \mu_0
+\mbox{ and }
+\Theta_1 := \mathbb{R} \setminus \{\mu_0\} \Leftrightarrow  H_1 : \mu \neq \mu_0.
+\end{equation}\]</span></p>
+</div>
+<p>The simple null hypothesis and the composite alternative hypothesis are parameterized by the value <span class="math inline">\(\mu_0 \in \mathbb{R}\)</span>. Different hypothesis scenarios therefore arise depending on the choice of <span class="math inline">\(\mu_0\)</span>. If, for example, <span class="math inline">\(\mu_0 := 0\)</span> is chosen, the null hypothesis <span class="math inline">\(\Theta_0 := \{0\}\)</span> states that the true, but unknown, parameter <span class="math inline">\(\mu\)</span> is equal to <span class="math inline">\(0\)</span>, and the alternative hypothesis <span class="math inline">\(\Theta_1 := \mathbb{R} \setminus \{0\}\)</span> states that the true, but unknown, parameter <span class="math inline">\(\mu\)</span> is not equal to <span class="math inline">\(0\)</span>. If, by contrast, <span class="math inline">\(\mu_0 := 2\)</span> is chosen, the null hypothesis <span class="math inline">\(\Theta_0 := \{2\}\)</span> states that the true, but unknown, parameter <span class="math inline">\(\mu\)</span> is equal to <span class="math inline">\(2\)</span>, and the alternative hypothesis <span class="math inline">\(\Theta_1 := \mathbb{R} \setminus \{2\}\)</span> states that the true, but unknown, parameter <span class="math inline">\(\mu\)</span> is not equal to <span class="math inline">\(2\)</span>. In the application context, <span class="math inline">\(\mu_0\)</span> is therefore a freely chosen, and hence known, parameter of the one-sample t-test, whereas <span class="math inline">\(\mu\)</span> is, and remains, true but unknown.</p>
+</section>
+<section id="definition-of-the-test-statistic" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="definition-of-the-test-statistic">Definition of the test statistic</h4>
+<p>With the <em>one-sample t-test statistic</em>, we now define a test statistic that can serve as the basis of a critical-value based test and whose absolute value can indicate a deviation from the null hypothesis.</p>
+<div id="def-one-sample-t-test-statistic" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 33.15 (One-sample t-test statistic)</strong></span> Given the test scenario of a one-sample t-test with sample <span class="math inline">\(y_1,...,y_n\)</span>, sample mean <span class="math inline">\(\bar{y}\)</span>, sample standard deviation <span class="math inline">\(S\)</span>, and null-hypothesis parameter <span class="math inline">\(\mu_0\)</span>, the <em>one-sample t-test statistic</em> is defined as <span class="math display">\[\begin{equation}
+T := \sqrt{n}\frac{\bar{y} - \mu_0}{S}.
+\end{equation}\]</span></p>
+</div>
+<p>The one-sample t-test statistic is evidently very similar to the <span class="math inline">\(T\)</span> confidence-interval statistic (cf. <a href="403-Confidence-Intervals.html#def-t-confidence-interval-statistic" class="quarto-xref">Definition&nbsp;<span>32.2</span></a>). Note, however, that in the case of the one-sample t-test statistic the null-hypothesis parameter <span class="math inline">\(\mu_0\)</span> need not be identical to the true, but unknown, parameter value <span class="math inline">\(\mu\)</span> appearing in the <span class="math inline">\(T\)</span> confidence-interval statistic.</p>
+<p>Because the one-sample t-test statistic is central to the one-sample t-test, it is useful to be aware of its intuitive mechanics. In the numerator of the fraction, the difference between the sample mean <span class="math inline">\(\bar{y}\)</span> and the parameter <span class="math inline">\(\mu_0\)</span> assumed under the null hypothesis appears first. As already seen, the sample mean is an unbiased estimator of the expectation parameter <span class="math inline">\(\mu\)</span> of the sample variables. The difference <span class="math inline">\(\bar{y} - \mu_0\)</span> thus represents an estimate of the deviation of the true, but unknown, expectation parameter from the null-hypothesis parameter and provides evidence, in absolute value, for a deviation from the null hypothesis. Roughly speaking, the numerator <span class="math inline">\(\bar{y} - \mu_0\)</span> is therefore a measure of the “signal” contained in the sample, understood as deviation from the null hypothesis or as “systematic variability”.</p>
+<p>The denominator of the one-sample t-test statistic allows this signal to be expressed in units of the sample standard deviation <span class="math inline">\(S\)</span>. For example, if <span class="math inline">\(\bar{y} - \mu_0 = 2\)</span> and <span class="math inline">\(S = 1\)</span>, the deviation of the sample mean from the null-hypothesis parameter is two standard deviations. If, by contrast, <span class="math inline">\(S = 2\)</span>, the deviation corresponds to one standard deviation. Moreover, the denominator <span class="math inline">\(S\)</span> is a measure of the observed data variability and an estimator of the standard deviation <span class="math inline">\(\sigma\)</span> of the error terms in the generative form of the one-sample t-test model. Roughly speaking, the denominator of the one-sample t-test statistic therefore represents the “noise” contained in the data or their “unsystematic variability”. Overall, the fraction <span class="math inline">\(\frac{\bar{y} - \mu_0}{S}\)</span> can therefore be interpreted as an estimate of the signal-to-noise ratio of the data.</p>
+<p>Finally, in the one-sample t-test statistic, this ratio is weighted by the square root of the sample size, <span class="math inline">\(\sqrt{n}\)</span>. Intuitively, this weighting reflects the fact that a given signal-to-noise ratio can be assigned more validity if it is based on a larger number of observations than if it is based on only a few data points.</p>
+<p>Overall, the one-sample t-test statistic thus provides a scalar summary of the evidence contained in the data against the null hypothesis, taking into account both data variability and sample size.</p>
+</section>
+<section id="distribution-of-the-test-statistic" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="distribution-of-the-test-statistic">Distribution of the test statistic</h4>
+<p>For the distribution of the one-sample t-test statistic, the following theorem holds.</p>
+<div id="thm-distribution-of-one-sample-t-test-statistic" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 33.1 (Distribution of the one-sample t-test statistic)</strong></span> Given the test scenario of a one-sample t-test with sample <span class="math inline">\(y_1,...,y_n\)</span>, sample mean <span class="math inline">\(\bar{y}\)</span>, sample standard deviation <span class="math inline">\(S\)</span>, null-hypothesis parameter <span class="math inline">\(\mu_0\)</span>, and one-sample t-test statistic <span class="math display">\[\begin{equation}
+T := \sqrt{n}\frac{\bar{y} - \mu_0}{S}.
+\end{equation}\]</span> Then <span class="math inline">\(T\)</span> is a noncentral <span class="math inline">\(t\)</span> random variable with noncentrality parameter <span class="math display">\[\begin{equation}
+d = \sqrt{n}\frac{\mu - \mu_0}{\sigma}
+\end{equation}\]</span> and degrees-of-freedom parameter <span class="math inline">\(n-1\)</span>, that is, <span class="math inline">\(T \sim t(d,n-1)\)</span>.</p>
+</div>
+<p>If the null hypothesis holds, the null-hypothesis parameter <span class="math inline">\(\mu_0\)</span> is identical to the true, but unknown, expectation parameter <span class="math inline">\(\mu\)</span>, and the noncentrality parameter of the distribution of the one-sample t-test statistic takes the value <span class="math inline">\(d = 0\)</span>. If the null hypothesis of the one-sample t-test scenario holds, the one-sample t-test statistic is therefore a <span class="math inline">\(t\)</span>-distributed random variable with degrees-of-freedom parameter <span class="math inline">\(n-1\)</span>. In <a href="#fig-one-sample-t-test-statistic-distribution" class="quarto-xref">Figure&nbsp;<span>33.2</span></a>, we visualize the distribution of the one-sample t-test statistic by example for a one-sample t-test scenario with <span class="math inline">\(n = 12\)</span>, true, but unknown, parameters <span class="math inline">\(\mu = 3\)</span> and <span class="math inline">\(\sigma^2 = 2\)</span>, and null-hypothesis parameter <span class="math inline">\(\mu_0 = 0\)</span>. The parameters of this distribution are <span class="math display">\[\begin{equation}
+d
+= \sqrt{n}\frac{\mu - \mu_0}{\sigma}
+= \sqrt{12}\frac{3 - 0}{\sqrt{2}}
+\approx 7.34
+\end{equation}\]</span> and <span class="math display">\[\begin{equation}
+n - 1 = 11.
+\end{equation}\]</span></p>
+<div id="fig-one-sample-t-test-statistic-distribution" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-one-sample-t-test-statistic-distribution-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/404-one-sample-t-test-statistic-distribution.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-one-sample-t-test-statistic-distribution-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;33.2: Distribution of the one-sample t-test statistic for <span class="math inline">\(n = 12, \mu = 3, \sigma^2 = 2\)</span> and <span class="math inline">\(\mu_0 = 0\)</span>. (A) Distribution of the sample variable. (B) Distribution of the one-sample t-test statistic.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="test-definition" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="test-definition">Test definition</h4>
+<p>We can now define the two-sided one-sample t-test with a simple null hypothesis and composite alternative hypothesis and analyze its power function.</p>
+<div id="def-two-sided-one-sample-t-test-with-simple-null-hypothesis" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 33.16 (Two-sided one-sample t-test with simple null hypothesis and composite alternative hypothesis)</strong></span> Given the frequentist inference model of the one-sample t-test with simple null hypothesis and composite alternative hypothesis, and let <span class="math inline">\(T\)</span> denote the one-sample t-test statistic. Then the <em>two-sided one-sample t-test with simple null hypothesis and composite alternative hypothesis</em> is defined as the two-sided critical-value based test <span class="math display">\[\begin{equation}
+\phi : \mathcal{Y} \to \{0,1\}, y \mapsto \phi(y) := 1_{\{|T| \ge k\}} =
+\begin{cases}
+1 &amp; |T| &gt; k \\
+0 &amp; |T| \le k
+\end{cases}.
+\end{equation}\]</span></p>
+</div>
+<p>The two-sided one-sample t-test with simple null hypothesis and composite alternative hypothesis therefore takes the value <span class="math inline">\(0\)</span> if the absolute value of the one-sample t-test statistic is smaller than the critical value, and it takes the value <span class="math inline">\(1\)</span> if the absolute value of the one-sample t-test statistic is equal to or larger than the critical value.</p>
+</section>
+</section>
+<section id="power-function-1" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="power-function-1">Power function</h3>
+<p>For controlling the test size by choosing a critical value and for determining the power function of this test, the following theorem is central.</p>
+<div id="thm-power-function-of-two-sided-one-sample-t-test-with-simple-null-hypothesis-and-composite-alternative-hypothesis" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 33.2 (Power function of the two-sided one-sample t-test with simple null hypothesis and composite alternative hypothesis)</strong></span> Let <span class="math inline">\(\phi\)</span> be the two-sided one-sample t-test with simple null hypothesis and composite alternative hypothesis. Then the power function of <span class="math inline">\(\phi\)</span> is <span class="math display">\[\begin{equation}
+q_{\phi} : \mathbb{R} \to [0,1],
+\mu \mapsto q_{\phi}(\mu)
+:= 1 - \Psi(k;d_\mu,n-1) + \Psi(-k;d_\mu,n-1),
+\end{equation}\]</span> where <span class="math inline">\(\Psi(\cdot; d_\mu, n-1)\)</span> denotes the CDF of the noncentral <span class="math inline">\(t\)</span> distribution with noncentrality parameter <span class="math display">\[\begin{equation}
+d_\mu := \sqrt{n}\frac{\mu - \mu_0}{\sigma}
+\end{equation}\]</span> and degrees-of-freedom parameter <span class="math inline">\(n-1\)</span>.</p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>The power function of the test under consideration in the present test scenario is defined as <span class="math display">\[\begin{equation}
+q_{\phi} : \mathbb{R} \to [0,1],
+\mu \mapsto q_{\phi}(\mu) := \mathbb{P}_{\mu}(\phi(y) = 1).
+\end{equation}\]</span> Because the probability of <span class="math inline">\(\phi(y) = 1\)</span> is equal to the probability that the associated test statistic lies in the rejection region of the test, we first need the distribution of the test statistic. We have already seen above that the one-sample t-test statistic <span class="math inline">\(T\)</span> is distributed according to a noncentral <span class="math inline">\(t\)</span> distribution <span class="math inline">\(t(d_\mu,n-1)\)</span> with noncentrality parameter <span class="math inline">\(d_\mu\)</span>. The rejection region of the two-sided one-sample t-test is <span class="math display">\[\begin{equation}
+A  = \,]-\infty, -k]\, \cup \,]k,\infty[.
+\end{equation}\]</span> With this rejection region, we obtain <span class="math display">\[\begin{align}
+\begin{split}
+q_\phi(\mu)
+&amp; = \mathbb{P}_{\mu}(\phi(y) = 1)                                                   \\
+&amp; = \mathbb{P}_{\mu}\left(T \in ]-\infty, -k]\,
+                         \cup \,]k,\infty[ \right)                               \\
+&amp; = \mathbb{P}_{\mu}\left(T \in ]-\infty, -k]\right)
+  + \mathbb{P}_{\mu}\left(T \in ]k,\infty[ \right)                               \\
+&amp; = \mathbb{P}_{\mu}(T \le - k)  + \mathbb{P}_{\mu}(T &gt; k)                      \\
+&amp; = \mathbb{P}_{\mu}(T \le - k)  + (1-\mathbb{P}_{\mu}(T \le k))                  \\
+&amp; = 1 - \mathbb{P}_{\mu}(T \le k)  + \mathbb{P}_{\mu}(T \le - k)                 \\
+&amp; = 1 - \Psi(k; d_\mu, n-1) + \Psi(-k;d_\mu,n-1),
+\end{split}
+\end{align}\]</span> where <span class="math inline">\(\Psi(\cdot; d_\mu,n-1)\)</span> denotes the CDF of the noncentral <span class="math inline">\(t\)</span> distribution with noncentrality parameter <span class="math inline">\(d_\mu\)</span> and degrees-of-freedom parameter <span class="math inline">\(n-1\)</span>.</p>
+</div>
+<p>In <a href="#fig-one-sample-t-test-two-sided-simple-h0-power-function" class="quarto-xref">Figure&nbsp;<span>33.3</span></a>, we visualize the power function of the two-sided one-sample t-test with simple null hypothesis and composite alternative hypothesis from <a href="#thm-power-function-of-two-sided-one-sample-t-test-with-simple-null-hypothesis-and-composite-alternative-hypothesis" class="quarto-xref">Theorem&nbsp;<span>33.2</span></a> for <span class="math inline">\(\sigma^2 = 9\)</span> and <span class="math inline">\(\mu_0 = 4\)</span> as a function of the critical value <span class="math inline">\(k\)</span>. First, note that the power function as a function of <span class="math inline">\(\mu\)</span> covers both the scenario in which the null hypothesis holds, <span class="math inline">\(\mu = \mu_0\)</span>, and the scenario in which the alternative hypothesis holds, <span class="math inline">\(\mu \neq \mu_0\)</span>. Second, note that the value of the power function, that is, the probability that the test takes the value 1, increases for both positive and negative deviations of the true, but unknown, expectation parameter <span class="math inline">\(\mu\)</span> from the null-hypothesis parameter <span class="math inline">\(\mu_0\)</span>. This is due to the fact that the test decision is based on the absolute value of the test statistic. Finally, the exact shape and location of the power function depend on the choice of the critical value <span class="math inline">\(k\)</span>. If this critical value is chosen larger, a larger absolute value of the test statistic is necessary for the test to take the value 1, and the probability of doing so is smaller for otherwise constant parameters than for smaller critical values.</p>
+<div id="fig-one-sample-t-test-two-sided-simple-h0-power-function" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-one-sample-t-test-two-sided-simple-h0-power-function-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/404-one-sample-t-test-two-sided-simple-h0-power-function.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-one-sample-t-test-two-sided-simple-h0-power-function-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;33.3: Power function of the two-sided one-sample t-test with simple null hypothesis and composite alternative hypothesis for <span class="math inline">\(\sigma^2 = 9, \mu_0 = 4, n = 12\)</span> and <span class="math inline">\(k = 1,2,3\)</span>.
+</figcaption>
+</figure>
+</div>
+<section id="test-size-control" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="test-size-control">Test-size control</h4>
+<p>The values of the power function at <span class="math inline">\(\mu = \mu_0\)</span> in <a href="#fig-one-sample-t-test-two-sided-simple-h0-power-function" class="quarto-xref">Figure&nbsp;<span>33.3</span></a> give a visual impression of how the critical value controls the test size. The exact determination of the critical value for a desired test size is the content of the following theorem.</p>
+<div id="thm-one-sample-t-test-two-sided-simple-h0-size-control" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 33.3 (Test-size control for the two-sided one-sample t-test with simple null hypothesis and composite alternative hypothesis)</strong></span> Let <span class="math inline">\(\phi\)</span> be the two-sided one-sample t-test with simple null hypothesis and composite alternative hypothesis. Then <span class="math inline">\(\phi\)</span> is a level-<span class="math inline">\(\alpha_0\)</span> test with test size <span class="math inline">\(\alpha_0\)</span> if the critical value is defined by <span class="math display">\[\begin{equation}
+k_{\alpha_0} := \Psi^{-1}\left(1 - \frac{\alpha_0}{2}; n-1 \right),
+\end{equation}\]</span> where <span class="math inline">\(\Psi^{-1}(\cdot; n-1)\)</span> denotes the inverse CDF of the <span class="math inline">\(t\)</span> distribution with degrees-of-freedom parameter <span class="math inline">\(n-1\)</span>.</p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>For the test under consideration to be a level-<span class="math inline">\(\alpha_0\)</span> test, we must have <span class="math inline">\(q_\phi(\mu) \le \alpha_0\)</span> for all <span class="math inline">\(\mu \in \{\mu_0\}\)</span>, here <span class="math inline">\(q_\phi(\mu_0) \le \alpha_0\)</span>. Furthermore, the test size of the test under consideration is <span class="math inline">\(\alpha = \max_{\mu \in \{\mu_0\}} q_\phi(\mu)\)</span>, here <span class="math inline">\(\alpha = q_\phi(\mu_0)\)</span>. We therefore have to show that choosing <span class="math inline">\(k_{\alpha_0}\)</span> guarantees that <span class="math inline">\(\phi\)</span> is a level-<span class="math inline">\(\alpha_0\)</span> test with test size <span class="math inline">\(\alpha_0\)</span>. First, for <span class="math inline">\(\mu = \mu_0\)</span>, <span class="math display">\[\begin{align}
+\begin{split}
+q_\phi(\mu_0)
+&amp; =  1 - \Psi(k;d_{\mu_0},n-1) + \Psi(-k;d_{\mu_0},n-1)                          \\
+&amp; =  1 - \Psi(k;0,n-1) + \Psi(-k;0,n-1)                                          \\
+&amp; =  1 - \Psi(k;n-1) + \Psi(-k;n-1),                                             \\
+\end{split}
+\end{align}\]</span> where <span class="math inline">\(\Psi(\cdot;d,n-1)\)</span> and <span class="math inline">\(\Psi(\cdot;n-1)\)</span> denote the CDFs of the noncentral <span class="math inline">\(t\)</span> distribution with noncentrality parameter <span class="math inline">\(d\)</span> and degrees-of-freedom parameter <span class="math inline">\(n-1\)</span>, and of the <span class="math inline">\(t\)</span> distribution with degrees-of-freedom parameter <span class="math inline">\(n-1\)</span>, respectively. Now let <span class="math inline">\(k := k_{\alpha_0}\)</span>. Then <span class="math display">\[\begin{align}
+\begin{split}
+q_\phi(\mu_0)
+&amp; = 1 - \Psi(k_{\alpha_0};n-1) + \Psi(-k_{\alpha_0};n-1)                             \\
+&amp; = 1 - \Psi(k_{\alpha_0};n-1) + (1 - \Psi(k_{\alpha_0};n-1))                         \\
+&amp; = 2(1-\Psi(k_{\alpha_0};n-1))                                                      \\
+&amp; = 2\left(1-\Psi\left(\Psi^{-1}\left(1- \frac{\alpha_0}{2} , n-1\right), n-1\right)\right) \\
+&amp; = 2\left(1 - 1 + \frac{\alpha_0}{2}\right)                                    \\
+&amp; = \alpha_0,
+\end{split}
+\end{align}\]</span> where the second equality follows from the symmetry of the <span class="math inline">\(t\)</span> distribution. It follows directly that, with <span class="math inline">\(k = k_{\alpha_0}\)</span>, <span class="math inline">\(q_\phi(\mu_0)\le \alpha_0\)</span> and therefore the test under consideration is a level-<span class="math inline">\(\alpha_0\)</span> test. It also follows directly that the test size of the test under consideration equals <span class="math inline">\(\alpha_0\)</span> when <span class="math inline">\(k = k_{\alpha_0}\)</span>.</p>
+</div>
+<p>According to <a href="#thm-one-sample-t-test-two-sided-simple-h0-size-control" class="quarto-xref">Theorem&nbsp;<span>33.3</span></a>, the test considered here is exact; its test size is identical to the significance level. In <a href="#fig-one-sample-t-test-two-sided-simple-h0-size-control" class="quarto-xref">Figure&nbsp;<span>33.4</span></a>, we visualize the choice of the critical value <span class="math inline">\(k_{\alpha_0}\)</span> in a two-sided one-sample t-test scenario with simple null hypothesis and composite alternative hypothesis for <span class="math inline">\(\alpha_0 := 0.05\)</span> and <span class="math inline">\(n =12\)</span>.</p>
+<div id="fig-one-sample-t-test-two-sided-simple-h0-size-control" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-one-sample-t-test-two-sided-simple-h0-size-control-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/404-one-sample-t-test-two-sided-simple-h0-size-control.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-one-sample-t-test-two-sided-simple-h0-size-control-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;33.4: Determination of the critical value <span class="math inline">\(k_{\alpha_0}\)</span> for the two-sided one-sample t-test with simple null hypothesis for <span class="math inline">\(n =12\)</span> and <span class="math inline">\(\alpha_0 := 0.05\)</span> to control the test size. (A) For a chosen <span class="math inline">\(\alpha_0\)</span>, the critical value of the test under consideration is given by the value of the inverse CDF of the <span class="math inline">\(t\)</span> distribution with degrees-of-freedom parameter <span class="math inline">\(n-1\)</span> at <span class="math inline">\(1 - \frac{\alpha_0}{2}\)</span>. The figure shows this value as <span class="math inline">\(k_{0.05} = 2.2\)</span> using the CDF of the <span class="math inline">\(t\)</span> distribution with degrees-of-freedom parameter <span class="math inline">\(n-1\)</span>. (B) The figure shows the rejection region resulting from the choice of <span class="math inline">\(k_{\alpha_0}\)</span> as gray areas under the PDF of the <span class="math inline">\(t\)</span> distribution with degrees-of-freedom parameter <span class="math inline">\(n-1\)</span>. The symmetric distribution of the subsets of the rejection region in the tails of the PDF results from defining the test as a function of the absolute value of the one-sample t-test statistic, and hence from the two-sided character of the test considered here.
+</figcaption>
+</figure>
+</div>
+<p>The following <strong>R</strong> code demonstrates the determination of the critical value of the two-sided one-sample t-test with simple null hypothesis and composite alternative hypothesis using the inverse CDF of the <span class="math inline">\(t\)</span> distribution, which is implemented in <strong>R</strong> as the function <code>qt()</code>. In addition, the code simulates <span class="math inline">\(10^6\)</span> sample realizations for the test scenario under the null hypothesis and evaluates the test. The estimated probability that the test takes the value 1 when the null hypothesis holds agrees very well with the desired value <span class="math inline">\(\alpha_0 = 0.05\)</span>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># model parameters</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a>n         <span class="ot">=</span> <span class="dv">12</span>                                           <span class="co"># number of data points</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a>mu        <span class="ot">=</span> <span class="dv">0</span>                                            <span class="co"># true, but unknown, expectation parameter</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a>sigsqr    <span class="ot">=</span> <span class="dv">2</span>                                            <span class="co"># true, but unknown, variance parameter</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="co"># test parameters</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a>mu_0      <span class="ot">=</span> <span class="dv">0</span>                                            <span class="co"># null-hypothesis parameter, here \mu = \mu_0</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a>alpha_0   <span class="ot">=</span> <span class="fl">0.05</span>                                         <span class="co"># significance level</span></span>
+<span id="cb1-9"><a href="#cb1-9"></a>k_alpha_0 <span class="ot">=</span> <span class="fu">qt</span>(<span class="dv">1</span><span class="sc">-</span>alpha_0<span class="sc">/</span><span class="dv">2</span>,n<span class="dv">-1</span>)                          <span class="co"># critical value</span></span>
+<span id="cb1-10"><a href="#cb1-10"></a></span>
+<span id="cb1-11"><a href="#cb1-11"></a><span class="co"># simulation of test-size control</span></span>
+<span id="cb1-12"><a href="#cb1-12"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)                                              <span class="co"># random-number generator seed</span></span>
+<span id="cb1-13"><a href="#cb1-13"></a>nsim      <span class="ot">=</span> <span class="fl">1e6</span>                                          <span class="co"># number of simulations</span></span>
+<span id="cb1-14"><a href="#cb1-14"></a>phi       <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,nsim)                                <span class="co"># test-decision array</span></span>
+<span id="cb1-15"><a href="#cb1-15"></a><span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nsim){                                        <span class="co"># simulation iterations</span></span>
+<span id="cb1-16"><a href="#cb1-16"></a>    y      <span class="ot">=</span> <span class="fu">rnorm</span>(n, mu, <span class="fu">sqrt</span>(sigsqr))                  <span class="co"># y_i \sim N(\mu,\Sigma), i = 1,...,n</span></span>
+<span id="cb1-17"><a href="#cb1-17"></a>    y_bar  <span class="ot">=</span> <span class="fu">mean</span>(y)                                     <span class="co"># sample mean</span></span>
+<span id="cb1-18"><a href="#cb1-18"></a>    s      <span class="ot">=</span> <span class="fu">sd</span>(y)                                       <span class="co"># sample standard deviation</span></span>
+<span id="cb1-19"><a href="#cb1-19"></a>    Tee    <span class="ot">=</span> <span class="fu">sqrt</span>(n)<span class="sc">*</span>((y_bar <span class="sc">-</span> mu_0)<span class="sc">/</span>s)                  <span class="co"># one-sample t-test statistic</span></span>
+<span id="cb1-20"><a href="#cb1-20"></a>    <span class="cf">if</span>(<span class="fu">abs</span>(Tee) <span class="sc">&gt;</span> k_alpha_0){                            <span class="co"># test 1_{\vert t \vert &gt;= k_alpha_0}</span></span>
+<span id="cb1-21"><a href="#cb1-21"></a>        phi[j] <span class="ot">=</span> <span class="dv">1</span>                                       <span class="co"># reject the null hypothesis</span></span>
+<span id="cb1-22"><a href="#cb1-22"></a>    } <span class="cf">else</span> {</span>
+<span id="cb1-23"><a href="#cb1-23"></a>        phi[j] <span class="ot">=</span> <span class="dv">0</span>                                       <span class="co"># do not reject the null hypothesis</span></span>
+<span id="cb1-24"><a href="#cb1-24"></a>    }</span>
+<span id="cb1-25"><a href="#cb1-25"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Critical value          = 2.2 
+Estimated test size alpha = 0.05</code></pre>
+</div>
+</div>
+</section>
+<section id="p-value-2" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="p-value-2">p-value</h4>
+<p>The p-value associated with a given value of the test statistic of the two-sided one-sample t-test with simple null hypothesis and composite alternative hypothesis follows from the following theorem.</p>
+<div id="thm-one-sample-t-test-two-sided-simple-h0-p-value" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 33.4 (p-value of the two-sided one-sample t-test with simple null hypothesis and composite alternative hypothesis)</strong></span> Given the two-sided one-sample t-test with simple null hypothesis and composite alternative hypothesis, and let <span class="math inline">\(t\)</span> be a value of the one-sample t-test statistic. Then <span class="math display">\[\begin{equation}
+\mbox{p-value} = 2(1 - \Psi(\vert t \vert;n-1)),
+\end{equation}\]</span> where <span class="math inline">\(\Psi(\cdot; n-1)\)</span> denotes the CDF of the <span class="math inline">\(t\)</span> distribution with degrees-of-freedom parameter <span class="math inline">\(n-1\)</span>.</p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>According to <a href="#def-p-value" class="quarto-xref">Definition&nbsp;<span>33.12</span></a>, the p-value is the smallest significance level <span class="math inline">\(\alpha_0\)</span> at which the null hypothesis is rejected for the test under consideration based on the value of <span class="math inline">\(t\)</span>. In the present case, the null hypothesis is rejected for every <span class="math inline">\(\alpha_0\)</span> with <span class="math display">\[\begin{equation}
+\vert t \vert \ge \Psi^{-1}\left(1- \frac{\alpha_0}{2};n-1\right)
+\end{equation}\]</span> (cf. <a href="#thm-one-sample-t-test-two-sided-simple-h0-size-control" class="quarto-xref">Theorem&nbsp;<span>33.3</span></a>). For these <span class="math inline">\(\alpha_0\)</span>, <span class="math display">\[\begin{equation}
+\alpha_0 \ge 2(1 - \Psi(\vert t \vert;n-1)),
+\end{equation}\]</span> because <span class="math display">\[\begin{align}
+\begin{split}
+\vert t \vert
+&amp;
+\ge \Psi^{-1}\left(1 - \frac{\alpha_0}{2}; n-1\right)
+\\
+\Leftrightarrow
+\Psi(\vert t \vert; n-1)
+&amp;
+\ge \Psi\left(\Psi^{-1}\left(1 - \frac{\alpha_0}{2}; n-1\right); n-1\right)
+\\
+\Leftrightarrow
+\Psi(\vert t \vert; n-1)
+&amp; \ge 1 - \frac{\alpha_0}{2}
+\\
+\Leftrightarrow
+\mathbb{P}(T \le \vert t \vert)
+&amp;
+\ge 1 - \frac{\alpha_0}{2}
+\\
+\Leftrightarrow
+\frac{\alpha_0}{2}
+&amp; \ge 1 - \mathbb{P}(T \le \vert t \vert)
+\\
+\Leftrightarrow
+\alpha_0
+&amp; \ge
+2(1 - \Psi(\vert t \vert;n-1)).
+\end{split}
+\end{align}\]</span> The smallest <span class="math inline">\(\alpha_0 \in [0,1]\)</span> with <span class="math display">\[\begin{equation}
+\alpha_0 \ge 2 \mathbb{P}(T \ge \vert t \vert)
+\end{equation}\]</span> is therefore <span class="math display">\[\begin{equation}
+\alpha_0 = 2(1 - \Psi(\vert t \vert;n-1)).
+\end{equation}\]</span></p>
+</div>
+<p>In <a href="#fig-one-sample-t-test-two-sided-simple-h0-p-value" class="quarto-xref">Figure&nbsp;<span>33.5</span></a>, we visualize the determination of p-values for <span class="math inline">\(t = 2.26\)</span> and <span class="math inline">\(t = 3.81\)</span>, which are <span class="math inline">\(\mbox{p} = 0.045\)</span> and <span class="math inline">\(\mbox{p} = 0.003\)</span>, respectively. Note that, for example, the p-value for <span class="math inline">\(t = -2.26\)</span> is also <span class="math inline">\(\mbox{p} = 0.045\)</span>.</p>
+<div id="fig-one-sample-t-test-two-sided-simple-h0-p-value" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-one-sample-t-test-two-sided-simple-h0-p-value-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/404-one-sample-t-test-two-sided-simple-h0-p-value.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-one-sample-t-test-two-sided-simple-h0-p-value-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;33.5: p-values for two possible values of the one-sample t-test statistic at <span class="math inline">\(n = 12\)</span>. The regions in the outcome space of the one-sample t-test statistic over which the red areas are drawn mark the regions in which <span class="math inline">\(|T| \ge |t|\)</span>. The summed probabilities assigned to them, that is, the corresponding red areas under the PDFs of the <span class="math inline">\(t\)</span> distributions, equal the p-value.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="power-function-2" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="power-function-2">Power function</h4>
+<p>The power function of a test is the power function of a test restricted to the region of the parameter space corresponding to the alternative hypothesis. Changes in the value of the power function of a test, often simply referred to as the <em>power of the test</em>, therefore initially arise from changes in the value of the true, but unknown, parameter in the alternative-hypothesis region. However, it has become customary to consider the probability that a test takes the value 1, that is, that the null hypothesis is rejected, not only as a function of the true, but unknown, parameter, but also as a function of further parameters of the test scenario that are relevant in practical applications. The sample size <span class="math inline">\(n\)</span> is of primary interest here. In practical <em>power analyses</em>, one usually asks which sample size is associated with a certain probability of rejecting the null hypothesis under an assumed value of the true, but unknown, parameter in the alternative-hypothesis region. Based on the asymmetric treatment of type I and type II error probabilities (cf. <a href="#sec-test-quality-criteria-and-test-construction" class="quarto-xref"><span>Section 33.2</span></a>), one first fixes a significance level <span class="math inline">\(\alpha_0\)</span> to control the test size. For the two-sided one-sample t-test with simple null hypothesis and composite alternative hypothesis discussed here, we therefore consider the power function <span class="math display">\[\begin{equation}
+q_\phi : \mathbb{R} \to [0,1],
+\mu \mapsto q_\phi(\mu)
+:= 1 - \Psi(k_{\alpha_0}; d_\mu, n-1) + \Psi(-k_{\alpha_0}; d_\mu, n-1)
+\end{equation}\]</span> under controlled test size, that is, for <span class="math display">\[\begin{equation}
+k_{\alpha_0} := \Psi^{-1}\left(1-\frac{\alpha_0}{2};n-1\right)
+\end{equation}\]</span> with fixed <span class="math inline">\(\alpha_0\)</span> as a function of the noncentrality parameter <span class="math inline">\(d\)</span> and the sample size <span class="math inline">\(n\)</span>. In particular, the noncentrality parameter <span class="math inline">\(d\)</span> depends on the ratio of the true, but unknown, parameters <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma^2\)</span>, that is, the true, but unknown, signal-to-noise ratio of the test scenario, and <span class="math inline">\(k_{\alpha_0}\)</span> depends on <span class="math inline">\(n\)</span>. These considerations lead to the following definition.</p>
+<div id="def-one-sample-t-test-two-sided-simple-h0-power-function" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 33.17 (Power function of the two-sided one-sample t-test with simple null hypothesis and composite alternative hypothesis)</strong></span> Given the two-sided one-sample t-test with simple null hypothesis and composite alternative hypothesis, the <em>power function</em> of the test is <span class="math display">\[\begin{equation}
+\pi : \mathbb{R} \times \mathbb{N} \to [0,1],
+(d,n) \mapsto
+\pi(d,n) := 1 - \Psi(k_{\alpha_0}; d, n-1) + \Psi(-k_{\alpha_0}; d, n-1).
+\end{equation}\]</span></p>
+</div>
+<p>The following <strong>R</strong> code demonstrates the evaluation of the power function of the two-sided one-sample t-test with simple null hypothesis and composite alternative hypothesis in a scenario with <span class="math inline">\(\alpha_0 := 0.05\)</span> using the <strong>R</strong> implementations of the CDF and inverse CDF of the noncentral <span class="math inline">\(t\)</span> distribution, <code>pt()</code> and <code>qt()</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>alpha_0     <span class="ot">=</span> <span class="fl">0.05</span>                                                          <span class="co"># significance level</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>d_min       <span class="ot">=</span> <span class="sc">-</span><span class="dv">5</span>                                                            <span class="co"># minimal noncentrality parameter</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a>d_max       <span class="ot">=</span>  <span class="dv">5</span>                                                            <span class="co"># maximal noncentrality parameter</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a>d_res       <span class="ot">=</span> <span class="dv">50</span>                                                            <span class="co"># noncentrality-parameter resolution</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a>d           <span class="ot">=</span> <span class="fu">seq</span>(d_min, d_max, <span class="at">len =</span> d_res)                                <span class="co"># noncentrality-parameter space</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a>n_min       <span class="ot">=</span> <span class="dv">1</span>                                                             <span class="co"># minimal sample size</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a>n_max       <span class="ot">=</span> <span class="dv">30</span>                                                            <span class="co"># maximal sample size</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a>n_res       <span class="ot">=</span> <span class="dv">50</span>                                                            <span class="co"># sample-size resolution</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a>n           <span class="ot">=</span> <span class="fu">seq</span>(n_min,n_max, <span class="at">len =</span> n_res)                                 <span class="co"># sample-size space</span></span>
+<span id="cb3-10"><a href="#cb3-10"></a>pi          <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="cn">NaN</span>, d_res<span class="sc">*</span>n_res), <span class="at">nrow =</span> d_res)                   <span class="co"># power-function array</span></span>
+<span id="cb3-11"><a href="#cb3-11"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>d_res){                                                          <span class="co"># noncentrality-parameter iterations</span></span>
+<span id="cb3-12"><a href="#cb3-12"></a>  <span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_res){                                                        <span class="co"># sample-size iterations</span></span>
+<span id="cb3-13"><a href="#cb3-13"></a>    k_alpha_0 <span class="ot">=</span> <span class="fu">qt</span>(<span class="dv">1</span> <span class="sc">-</span> alpha_0<span class="sc">/</span><span class="dv">2</span>, n[j]<span class="sc">-</span><span class="dv">1</span>)                                   <span class="co"># critical value</span></span>
+<span id="cb3-14"><a href="#cb3-14"></a>    pi[i,j]   <span class="ot">=</span> <span class="dv">1</span><span class="sc">-</span><span class="fu">pt</span>(k_alpha_0, n[j]<span class="sc">-</span><span class="dv">1</span>, d[i])<span class="sc">+</span><span class="fu">pt</span>(<span class="sc">-</span>k_alpha_0, n[j]<span class="sc">-</span><span class="dv">1</span>, d[i])  <span class="co"># evaluation of the power function</span></span>
+<span id="cb3-15"><a href="#cb3-15"></a>  }</span>
+<span id="cb3-16"><a href="#cb3-16"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>We visualize the dependence of the power function of the two-sided one-sample t-test with simple null hypothesis and composite alternative hypothesis on the noncentrality parameter and sample size in <a href="#fig-one-sample-t-test-two-sided-simple-h0-power-functions" class="quarto-xref">Figure&nbsp;<span>33.6</span></a> and <a href="#fig-one-sample-t-test-two-sided-simple-h0-power-function-slices" class="quarto-xref">Figure&nbsp;<span>33.7</span></a>. In general, the power function of the test under consideration increases monotonically with positive or negative deviation of the noncentrality parameter from the null-hypothesis scenario <span class="math inline">\(d = 0\)</span> and with increasing sample size <span class="math inline">\(n\)</span>. Depending on the choice of the significance level, this increase is steeper or less steep.</p>
+<div id="fig-one-sample-t-test-two-sided-simple-h0-power-functions" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-one-sample-t-test-two-sided-simple-h0-power-functions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/404-one-sample-t-test-two-sided-simple-h0-power-functions.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-one-sample-t-test-two-sided-simple-h0-power-functions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;33.6: Power functions of the two-sided one-sample t-test with simple null hypothesis and composite alternative hypothesis. (A) Dependence of the power function <span class="math inline">\(\pi\)</span> on the noncentrality parameter <span class="math inline">\(d\)</span> and sample size <span class="math inline">\(n\)</span> for <span class="math inline">\(\alpha_0 := 0.05\)</span>. (B) Dependence of the power function <span class="math inline">\(\pi\)</span> on the noncentrality parameter <span class="math inline">\(d\)</span> and sample size <span class="math inline">\(n\)</span> for <span class="math inline">\(\alpha_0 := 0.001\)</span>.
+</figcaption>
+</figure>
+</div>
+<div id="fig-one-sample-t-test-two-sided-simple-h0-power-function-slices" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-one-sample-t-test-two-sided-simple-h0-power-function-slices-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/404-one-sample-t-test-two-sided-simple-h0-power-function-slices.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-one-sample-t-test-two-sided-simple-h0-power-function-slices-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;33.7: Slices of the power functions of the two-sided one-sample t-test with simple null hypothesis and composite alternative hypothesis. (A) Dependence of the power function <span class="math inline">\(\pi\)</span> on the noncentrality parameter <span class="math inline">\(d\)</span> at constant sample size <span class="math inline">\(n = 12\)</span> and <span class="math inline">\(\alpha_0 := 0.05\)</span>. (B) Dependence of the power function <span class="math inline">\(\pi\)</span> on sample size <span class="math inline">\(n\)</span> at noncentrality parameter <span class="math inline">\(d = 3\)</span> and <span class="math inline">\(\alpha_0 := 0.05\)</span>. (C) Dependence of the power function <span class="math inline">\(\pi\)</span> on the noncentrality parameter <span class="math inline">\(d\)</span> at constant sample size <span class="math inline">\(n = 12\)</span> and <span class="math inline">\(\alpha_0 := 0.001\)</span>. (D) Dependence of the power function <span class="math inline">\(\pi\)</span> on sample size <span class="math inline">\(n\)</span> at noncentrality parameter <span class="math inline">\(d = 3\)</span> and <span class="math inline">\(\alpha_0 := 0.001\)</span>.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="practical-implementation" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="practical-implementation">Practical implementation</h4>
+<p>Against the background of the theory of the two-sided one-sample t-test with simple null hypothesis and composite alternative hypothesis discussed so far, the routine implementation of the test is as follows. One assumes that a given univariate dataset is a realization of the frequentist inference model <span class="math inline">\(y_1,...,y_n \sim N(\mu,\sigma^2)\)</span> of the one-sample t-test with true, but unknown, parameters <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma^2 &gt; 0\)</span>. One further assumes that one must decide whether, for a chosen null-hypothesis parameter <span class="math inline">\(\mu_0\)</span>, the null hypothesis <span class="math inline">\(H_0 : \mu = \mu_0\)</span> or the alternative hypothesis <span class="math inline">\(H_1: \mu \neq \mu_0\)</span> is more plausible. To control the test size over many repetitions of this testing procedure, one chooses a significance level <span class="math inline">\(\alpha_0\)</span> and determines the corresponding critical value <span class="math inline">\(k_{\alpha_0}\)</span>, so that, for example, at sample size <span class="math inline">\(n=12\)</span> and <span class="math inline">\(\alpha_0 := 0.05\)</span>, a critical value of <span class="math inline">\(k_{0.05} = 2.20\)</span> is chosen. Using the sample size <span class="math inline">\(n\)</span>, the null-hypothesis parameter <span class="math inline">\(\mu_0\)</span>, the sample mean <span class="math inline">\(\bar{y}\)</span>, and the sample standard deviation <span class="math inline">\(s\)</span>, one then computes the value of the one-sample t-test statistic <span class="math display">\[\begin{equation}
+t := \sqrt{n}\left(\frac{\bar{y} - \mu_0}{s}\right).
+\end{equation}\]</span> If the value <span class="math inline">\(t\)</span> determined in this way for the present dataset is greater than <span class="math inline">\(k_{\alpha_0}\)</span> or less than <span class="math inline">\(-k_{\alpha_0}\)</span>, one rejects the null hypothesis. Otherwise, one does not reject the null hypothesis. The theory developed here then guarantees that, in the long-run average, one falsely rejects the null hypothesis in at most <span class="math inline">\(\alpha_0 \cdot 100\)</span> out of <span class="math inline">\(100\)</span> cases. Furthermore, based on the present value of the one-sample t-test statistic, one determines the associated p-value by <span class="math display">\[\begin{equation}
+\mbox{p-value} = 2(1 - \Psi(\vert t \vert;n-1)).
+\end{equation}\]</span> The following <strong>R</strong> code demonstrates this procedure under the assumption of a given data vector <code>y</code> of length <code>n</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>n           <span class="ot">=</span> <span class="fu">length</span>(y)                                   <span class="co"># sample size</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a>mu_0        <span class="ot">=</span> <span class="dv">0</span>                                           <span class="co"># null-hypothesis parameter</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a>alpha_0     <span class="ot">=</span> <span class="fl">0.05</span>                                        <span class="co"># significance level</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a>k_alpha_0   <span class="ot">=</span> <span class="fu">qt</span>(<span class="dv">1</span><span class="sc">-</span>alpha_0<span class="sc">/</span><span class="dv">2</span>,n<span class="dv">-1</span>)                         <span class="co"># critical value</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a>Tee         <span class="ot">=</span> <span class="fu">sqrt</span>(n)<span class="sc">*</span>((<span class="fu">mean</span>(y) <span class="sc">-</span> mu_0)<span class="sc">/</span><span class="fu">sd</span>(y))            <span class="co"># one-sample t-test statistic</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="cf">if</span>(<span class="fu">abs</span>(Tee) <span class="sc">&gt;</span> k_alpha_0){phi <span class="ot">=</span> <span class="dv">1</span>} <span class="cf">else</span> {phi <span class="ot">=</span> <span class="dv">0</span>}          <span class="co"># test evaluation</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a>p           <span class="ot">=</span> <span class="dv">2</span><span class="sc">*</span>(<span class="dv">1</span> <span class="sc">-</span> <span class="fu">pt</span>(<span class="fu">abs</span>(Tee),n<span class="dv">-1</span>))                   <span class="co"># p-value evaluation</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>If one wants to carry out a power analysis to optimize the sample size, then, in principle, the power function of the test increases as sample size increases. From the perspective of test power, a larger sample size is therefore always better than a smaller sample size. However, possible costs of increasing the sample size, such as possible risks for study participants, are not taken into account. Furthermore, the value that the power function takes at a chosen sample size always depends on the true, but unknown, parameter values <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span>, which enter the value of the noncentrality parameter <span class="math inline">\(d\)</span>. If one already knew these values very precisely in a given application context, one would probably not carry out a study. In study planning, the following procedure is therefore generally favored. First, one chooses a significance level <span class="math inline">\(\alpha_0\)</span> to control the test size and evaluates the power function. One then chooses a noncentrality value <span class="math inline">\(d^*\)</span> that one would like to detect with power at least <span class="math inline">\(\beta\)</span>, where a conventional value is <span class="math inline">\(\beta = 0.8\)</span>. One then evaluates the sample size required for a power-function value <span class="math display">\[\begin{equation}
+\pi(d = d^*,n) = \beta.
+\end{equation}\]</span> Because of the monotonicity of the power function of the two-sided one-sample t-test with simple null hypothesis and composite alternative hypothesis in the range of nonnegative noncentrality parameters, this guarantees that the power of the test for noncentrality parameters greater than <span class="math inline">\(d^*\)</span> is greater than or equal to <span class="math inline">\(\beta\)</span>. The following <strong>R</strong> code implements this procedure for optimizing the sample size, and <a href="#fig-one-sample-t-test-two-sided-simple-h0-sample-size" class="quarto-xref">Figure&nbsp;<span>33.8</span></a> visualizes it.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># power-function based sample-size optimization</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>alpha_0   <span class="ot">=</span> <span class="fl">0.05</span>                                                        <span class="co"># significance level</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a>beta      <span class="ot">=</span> <span class="fl">0.8</span>                                                         <span class="co"># desired power-function value</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>d_stern   <span class="ot">=</span> <span class="dv">3</span>                                                           <span class="co"># fixed noncentrality parameter</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a>n_min     <span class="ot">=</span> <span class="dv">2</span>                                                           <span class="co"># minimal considered sample size</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a>n_max     <span class="ot">=</span> <span class="dv">20</span>                                                          <span class="co"># maximal considered sample size</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a>n_res     <span class="ot">=</span> <span class="fl">1e2</span>                                                         <span class="co"># sample-size-space resolution</span></span>
+<span id="cb5-8"><a href="#cb5-8"></a>n         <span class="ot">=</span> <span class="fu">seq</span>(n_min,n_max, <span class="at">len =</span> n_res)                               <span class="co"># sample-size space</span></span>
+<span id="cb5-9"><a href="#cb5-9"></a>k_alpha_0 <span class="ot">=</span> <span class="fu">qt</span>(<span class="dv">1</span><span class="sc">-</span>alpha_0<span class="sc">/</span><span class="dv">2</span>, n<span class="dv">-1</span>)                                        <span class="co"># critical values as function of sample size</span></span>
+<span id="cb5-10"><a href="#cb5-10"></a>pi_n      <span class="ot">=</span> <span class="dv">1</span><span class="sc">-</span><span class="fu">pt</span>(k_alpha_0, n<span class="dv">-1</span>, d_stern)<span class="sc">+</span><span class="fu">pt</span>(<span class="sc">-</span>k_alpha_0, n<span class="dv">-1</span>, d_stern)  <span class="co"># power function at fixed noncentrality parameter</span></span>
+<span id="cb5-11"><a href="#cb5-11"></a>i         <span class="ot">=</span> <span class="dv">1</span>                                                           <span class="co"># index initialization</span></span>
+<span id="cb5-12"><a href="#cb5-12"></a>n_min     <span class="ot">=</span> <span class="cn">NaN</span>                                                         <span class="co"># minimal n initialization</span></span>
+<span id="cb5-13"><a href="#cb5-13"></a><span class="cf">while</span>(pi_n[i] <span class="sc">&lt;</span> beta){                                                  <span class="co"># while \pi(d*,n) &lt; \beta</span></span>
+<span id="cb5-14"><a href="#cb5-14"></a>    n_min <span class="ot">=</span> n[i]                                                        <span class="co"># record minimal required n</span></span>
+<span id="cb5-15"><a href="#cb5-15"></a>    i     <span class="ot">=</span> i <span class="sc">+</span> <span class="dv">1</span>}                                                      <span class="co"># and increase index</span></span>
+<span id="cb5-16"><a href="#cb5-16"></a><span class="fu">cat</span>(<span class="st">"Minimal required n ="</span>, <span class="fu">ceiling</span>(n_min))                             <span class="co"># output</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Minimal required n = 16</code></pre>
+</div>
+</div>
+<div id="fig-one-sample-t-test-two-sided-simple-h0-sample-size" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-one-sample-t-test-two-sided-simple-h0-sample-size-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/404-one-sample-t-test-two-sided-simple-h0-sample-size.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-one-sample-t-test-two-sided-simple-h0-sample-size-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;33.8: Practical implementation of a power-function based sample-size optimization. At a chosen significance level <span class="math inline">\(\alpha_0\)</span> and fixed assumed noncentrality parameter <span class="math inline">\(d^*\)</span>, one evaluates the sample size for which the test power function has a value of <span class="math inline">\(\beta\)</span> or larger.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="application-example" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="application-example">Application example</h4>
+<p>Finally, we demonstrate the procedure sketched above using <a href="401-Frequentist-Inference.html#exm-application-example" class="quarto-xref">Example&nbsp;<span>30.5</span></a>. Substantively, in this case the simple null hypothesis <span class="math inline">\(H_0 : \mu = 0\)</span> corresponds to the hypothesis that the therapy has no effect on BDI-II reduction scores. The composite alternative hypothesis <span class="math inline">\(H_1 : \mu \neq 0\)</span> corresponds to the hypothesis that the therapy has a systematic nonzero effect on BDI-II reduction scores. The <strong>R</strong> code below applies the procedure demonstrated above to the pre-post therapy BDI-II reduction-score dataset of <span class="math inline">\(n = 12\)</span> patients and, in addition, evaluates the <span class="math inline">\(95\%\)</span> confidence interval for the expectation parameter.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>D         <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"./_data/bdi-ii-dataset.csv"</span>)        <span class="co"># read dataset</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>y         <span class="ot">=</span> D<span class="sc">$</span>dBDI                                        <span class="co"># select data</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a>n         <span class="ot">=</span> <span class="fu">length</span>(y)                                     <span class="co"># sample size</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a>mu_hat    <span class="ot">=</span> <span class="fu">mean</span>(y)                                       <span class="co"># expectation-parameter estimator</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a>delta     <span class="ot">=</span> <span class="fl">0.95</span>                                          <span class="co"># confidence level</span></span>
+<span id="cb7-6"><a href="#cb7-6"></a>t_delta   <span class="ot">=</span> <span class="fu">qt</span>((<span class="dv">1</span><span class="sc">+</span>delta)<span class="sc">/</span><span class="dv">2</span>,n<span class="dv">-1</span>)                           <span class="co"># \Psi^-1((\delta + 1)/2, n-1)</span></span>
+<span id="cb7-7"><a href="#cb7-7"></a>G_u       <span class="ot">=</span> <span class="fu">mean</span>(y) <span class="sc">-</span> (<span class="fu">sd</span>(y)<span class="sc">/</span><span class="fu">sqrt</span>(n))<span class="sc">*</span>t_delta             <span class="co"># lower confidence-interval bound</span></span>
+<span id="cb7-8"><a href="#cb7-8"></a>G_o       <span class="ot">=</span> <span class="fu">mean</span>(y) <span class="sc">+</span> (<span class="fu">sd</span>(y)<span class="sc">/</span><span class="fu">sqrt</span>(n))<span class="sc">*</span>t_delta             <span class="co"># upper confidence-interval bound</span></span>
+<span id="cb7-9"><a href="#cb7-9"></a>mu_0      <span class="ot">=</span> <span class="dv">0</span>                                             <span class="co"># null-hypothesis parameter, here \mu = \mu_0</span></span>
+<span id="cb7-10"><a href="#cb7-10"></a>alpha_0   <span class="ot">=</span> <span class="fl">0.05</span>                                          <span class="co"># significance level</span></span>
+<span id="cb7-11"><a href="#cb7-11"></a>k_alpha_0 <span class="ot">=</span> <span class="fu">qt</span>(<span class="dv">1</span><span class="sc">-</span>alpha_0<span class="sc">/</span><span class="dv">2</span>,n<span class="dv">-1</span>)                           <span class="co"># critical value</span></span>
+<span id="cb7-12"><a href="#cb7-12"></a>Tee       <span class="ot">=</span> <span class="fu">sqrt</span>(n)<span class="sc">*</span>((<span class="fu">mean</span>(y) <span class="sc">-</span> mu_0)<span class="sc">/</span><span class="fu">sd</span>(y))              <span class="co"># t-test statistic</span></span>
+<span id="cb7-13"><a href="#cb7-13"></a><span class="cf">if</span>(<span class="fu">abs</span>(Tee) <span class="sc">&gt;</span> k_alpha_0){phi <span class="ot">=</span> <span class="dv">1</span>} <span class="cf">else</span> {phi <span class="ot">=</span> <span class="dv">0</span>}          <span class="co"># test 1_{\vert t \vert &gt;= k_alpha_0}</span></span>
+<span id="cb7-14"><a href="#cb7-14"></a>p         <span class="ot">=</span> <span class="dv">2</span><span class="sc">*</span>(<span class="dv">1</span> <span class="sc">-</span> <span class="fu">pt</span>(<span class="fu">abs</span>(Tee),n<span class="dv">-1</span>))                      <span class="co"># p-value</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Parameter estimate      = 3.17 
+95% confidence interval = 0.81 5.53 
+Significance level     = 0.05 
+Critical value         = 2.2 
+Test statistic         = 2.95 
+Test value             = 1 
+p-value                = 0.01</code></pre>
+</div>
+</div>
+<p>The same analysis can also be carried out with the <strong>R</strong> function <code>t.test()</code>; the syntax for using it and the formatting of the results it determines are shown below.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">t.test</span>(y)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    One Sample t-test
+
+data:  y
+t = 2.9542, df = 11, p-value = 0.01311
+alternative hypothesis: true mean is not equal to 0
+95 percent confidence interval:
+ 0.8074098 5.5259235
+sample estimates:
+mean of x 
+ 3.166667 </code></pre>
+</div>
+</div>
+<p>In the present case, one would reject the null hypothesis at a significance level of <span class="math inline">\(\alpha_0 = 0.05\)</span>. Whether the null hypothesis actually holds in the present case, however, remains unknown, just like the true, but unknown, expectation parameter. In the long-run average, based on the assumptions described above, one falsely rejects the null hypothesis in only 5 out of 100 cases.</p>
+</section>
+</section>
+</section>
+<section id="sec-confidence-intervals-and-hypothesis-tests" class="level2" data-number="33.4">
+<h2 data-number="33.4" class="anchored" data-anchor-id="sec-confidence-intervals-and-hypothesis-tests"><span class="header-section-number">33.4</span> Confidence intervals and hypothesis tests</h2>
+<p>In this section, we examine the extent to which confidence intervals and hypothesis tests can be regarded as equivalent. We start from the scenario of a confidence interval.</p>
+<div id="thm-duality-of-confidence-intervals-and-hypothesis-tests" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 33.5 (Duality of confidence intervals and hypothesis tests)</strong></span> Let <span class="math inline">\(y\)</span> be the sample of a frequentist inference model with outcome space <span class="math inline">\(\mathcal{Y}\)</span> and parameter space <span class="math inline">\(\Theta\)</span>. Furthermore, for <span class="math inline">\(\delta \in \,]0,1[\)</span>, let <span class="math inline">\([G_u(y), G_o(y)]\)</span> be a <span class="math inline">\(\delta\)</span> confidence interval for the true, but unknown, parameter <span class="math inline">\(\theta \in \Theta\)</span>. Then the hypothesis test defined by <span class="math display">\[\begin{equation}
+\phi_\theta : \mathcal{Y} \to \{0,1\},
+y \mapsto \phi(y)
+:=
+\begin{cases}
+0, &amp; [G_u(y), G_o(y)]   \ni      \theta_0 \\
+1, &amp; [G_u(y), G_o(y)] \,\not\ni\, \theta_0 \\
+\end{cases}
+\end{equation}\]</span> is a hypothesis test with significance level <span class="math inline">\(\alpha_0 = 1 - \delta\)</span> for the hypotheses <span class="math display">\[\begin{equation}
+\Theta_0 := \{\theta_0\} \mbox{ and } \Theta_1 := \Theta \setminus \{\theta_0\}.
+\end{equation}\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>Because of the simple null hypothesis and hence <span class="math inline">\(\alpha_0 = \alpha\)</span>, it follows that <span class="math display">\[\begin{equation}
+\alpha_0
+= \alpha
+= \mathbb{P}_{\theta_0}(\phi(y) = 1)
+= \mathbb{P}_{\theta_0}([G_u(y), G_o(y)]     \,\not\ni\, \theta_0)
+= 1 - \mathbb{P}_{\theta_0}([G_u(y), G_o(y)]    \ni     \theta_0)
+= 1 - \delta.
+\end{equation}\]</span></p>
+</div>
+<p><a href="#thm-duality-of-confidence-intervals-and-hypothesis-tests" class="quarto-xref">Theorem&nbsp;<span>33.5</span></a> thus states that one can use a <span class="math inline">\(\delta\)</span> confidence interval to construct a hypothesis test with significance level <span class="math inline">\(\alpha_0 = 1 -\delta\)</span> with simple null hypothesis and composite alternative hypothesis. In this test, the null hypothesis <span class="math inline">\(\theta = \theta_0\)</span> is rejected whenever the confidence interval does not cover the null-hypothesis parameter <span class="math inline">\(\theta_0\)</span>. With the following theorem, we concretize <a href="#thm-duality-of-confidence-intervals-and-hypothesis-tests" class="quarto-xref">Theorem&nbsp;<span>33.5</span></a> for the confidence interval for the expectation parameter of the normal distribution model considered in <a href="403-Confidence-Intervals.html#sec-examples-of-confidence-intervals" class="quarto-xref"><span>Section 32.2</span></a> and the one-sample t-test considered in <a href="#sec-one-sample-t-test" class="quarto-xref"><span>Section 33.3.1</span></a>.</p>
+<div id="thm-duality-of-expectation-confidence-interval-and-one-sample-t-test" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 33.6 (Duality of expectation confidence interval and one-sample t-test)</strong></span> Given the normal distribution model, let <span class="math display">\[\begin{equation}
+\kappa :=
+\left[\bar{y} - \frac{S}{\sqrt{n}}t_\delta,\bar{y} + \frac{S}{\sqrt{n}}t_\delta\right].
+\end{equation}\]</span> be the <span class="math inline">\(\delta\)</span> confidence interval for the expectation parameter defined by <span class="math display">\[\begin{equation}
+t_\delta := \Psi^{-1}\left(\frac{1 + \delta}{2}; n-1 \right)
+\end{equation}\]</span> in <a href="403-Confidence-Intervals.html#thm-confidence-interval-for-expectation-parameter-of-normal-distribution-model" class="quarto-xref">Theorem&nbsp;<span>32.2</span></a>. Then, by <a href="#thm-duality-of-confidence-intervals-and-hypothesis-tests" class="quarto-xref">Theorem&nbsp;<span>33.5</span></a>, the test <span class="math display">\[\begin{equation}
+\phi : \mathcal{Y} \to \{0,1\},
+y \mapsto \phi(y)
+:=
+\begin{cases}
+0, &amp; \left[\bar{y} - \frac{S}{\sqrt{n}}t_\delta,\bar{y} + \frac{S}{\sqrt{n}}t_\delta\right]
+           \ni \mu_0
+          \\
+1, &amp;\left[\bar{y} - \frac{S}{\sqrt{n}}t_\delta,\bar{y} + \frac{S}{\sqrt{n}}t_\delta\right]
+          \,\not\ni\, \mu_0
+          \\
+\end{cases}
+\end{equation}\]</span> is a test of the simple null hypothesis <span class="math inline">\(H_0: \mu = \mu_0\)</span> and the composite alternative hypothesis <span class="math inline">\(H_1: \mu \neq \mu_0\)</span> with significance level <span class="math inline">\(\alpha_0 = 1 - \delta\)</span>.</p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>It holds that <span class="math display">\[\begin{align}
+\begin{split}
+\mathbb{P}_{\mu_0}\left(\phi(y) = 1 \right)
+= 1 - \mathbb{P}_{\mu_0}\left(\phi(y) = 0 \right)
+= 1 - \mathbb{P}_{\mu_0}\left(
+            \left[\bar{y} - \frac{S}{\sqrt{n}}t_\delta,
+                  \bar{y} + \frac{S}{\sqrt{n}}t_\delta\right]
+            \ni \mu_0\right)
+= 1 - \delta.
+\end{split}
+\end{align}\]</span></p>
+</div>
+<p>The following <strong>R</strong> code simulates this confidence-interval based hypothesis test under the null hypothesis and reports estimates of the confidence level and the significance level over 100 realizations of a sample with sample size <span class="math inline">\(n = 12\)</span> and true, but unknown, parameters <span class="math inline">\(\mu = 2\)</span> and <span class="math inline">\(\sigma^2 = 1\)</span>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>n       <span class="ot">=</span> <span class="dv">12</span>                                          <span class="co"># sample size</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a>mu      <span class="ot">=</span> <span class="dv">2</span>                                           <span class="co"># true, but unknown, expectation parameter</span></span>
+<span id="cb11-3"><a href="#cb11-3"></a>sigsqr  <span class="ot">=</span> <span class="dv">1</span>                                           <span class="co"># true, but unknown, variance parameter</span></span>
+<span id="cb11-4"><a href="#cb11-4"></a>delta   <span class="ot">=</span> <span class="fl">0.95</span>                                        <span class="co"># confidence level</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a>t_delta <span class="ot">=</span> <span class="fu">qt</span>((<span class="dv">1</span><span class="sc">+</span>delta)<span class="sc">/</span><span class="dv">2</span>, n<span class="dv">-1</span>)                        <span class="co"># \Psi^{-1}((\delta + 1)/2, n-1)</span></span>
+<span id="cb11-6"><a href="#cb11-6"></a>mu_0    <span class="ot">=</span> mu                                          <span class="co"># null-hypothesis parameter when H_0 holds</span></span>
+<span id="cb11-7"><a href="#cb11-7"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)                                           <span class="co"># random-number generator seed</span></span>
+<span id="cb11-8"><a href="#cb11-8"></a>ns      <span class="ot">=</span> <span class="fl">1e2</span>                                         <span class="co"># number of simulations</span></span>
+<span id="cb11-9"><a href="#cb11-9"></a>y_bar   <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                                 <span class="co"># sample-mean array</span></span>
+<span id="cb11-10"><a href="#cb11-10"></a>s       <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                                 <span class="co"># sample-standard-deviation array</span></span>
+<span id="cb11-11"><a href="#cb11-11"></a>kappa   <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="cn">NaN</span>,<span class="dv">2</span><span class="sc">*</span>ns), <span class="at">ncol =</span> <span class="dv">2</span>)             <span class="co"># confidence-interval array</span></span>
+<span id="cb11-12"><a href="#cb11-12"></a>kfn     <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                                 <span class="co"># coverage-indicator array</span></span>
+<span id="cb11-13"><a href="#cb11-13"></a>phi     <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                                 <span class="co"># test array</span></span>
+<span id="cb11-14"><a href="#cb11-14"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>ns){                                       <span class="co"># simulation iterations</span></span>
+<span id="cb11-15"><a href="#cb11-15"></a>  y          <span class="ot">=</span> <span class="fu">rnorm</span>(n,mu_0,<span class="fu">sqrt</span>(sigsqr))             <span class="co"># sample realization</span></span>
+<span id="cb11-16"><a href="#cb11-16"></a>  y_bar[i]   <span class="ot">=</span> <span class="fu">mean</span>(y)                                <span class="co"># sample mean</span></span>
+<span id="cb11-17"><a href="#cb11-17"></a>  s[i]       <span class="ot">=</span> <span class="fu">sd</span>(y)                                  <span class="co"># sample standard deviation</span></span>
+<span id="cb11-18"><a href="#cb11-18"></a>  kappa[i,<span class="dv">1</span>] <span class="ot">=</span> y_bar[i] <span class="sc">-</span> (s[i]<span class="sc">/</span><span class="fu">sqrt</span>(n))<span class="sc">*</span>t_delta      <span class="co"># lower confidence-interval bound</span></span>
+<span id="cb11-19"><a href="#cb11-19"></a>  kappa[i,<span class="dv">2</span>] <span class="ot">=</span> y_bar[i] <span class="sc">+</span> (s[i]<span class="sc">/</span><span class="fu">sqrt</span>(n))<span class="sc">*</span>t_delta      <span class="co"># upper confidence-interval bound</span></span>
+<span id="cb11-20"><a href="#cb11-20"></a>  <span class="cf">if</span>(kappa[i,<span class="dv">1</span>] <span class="sc">&lt;=</span> mu_0 <span class="sc">&amp;</span> mu_0 <span class="sc">&lt;=</span> kappa[i,<span class="dv">2</span>]){</span>
+<span id="cb11-21"><a href="#cb11-21"></a>      kfn[i] <span class="ot">=</span> <span class="dv">1</span>} <span class="cf">else</span>{kfn[i] <span class="ot">=</span> <span class="dv">0</span>}                    <span class="co"># coverage-indicator evaluation</span></span>
+<span id="cb11-22"><a href="#cb11-22"></a>  <span class="cf">if</span>(kappa[i,<span class="dv">1</span>] <span class="sc">&lt;=</span> mu_0 <span class="sc">&amp;</span> mu_0 <span class="sc">&lt;=</span> kappa[i,<span class="dv">2</span>]){</span>
+<span id="cb11-23"><a href="#cb11-23"></a>      phi[i] <span class="ot">=</span> <span class="dv">0</span>} <span class="cf">else</span>{phi[i] <span class="ot">=</span> <span class="dv">1</span>}}                   <span class="co"># test evaluation</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">cat</span>(   <span class="st">"Estimated confidence level ="</span>, <span class="fu">round</span>(<span class="fu">mean</span>(kfn),<span class="dv">2</span>),    <span class="co"># output</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a>     <span class="st">"</span><span class="sc">\n</span><span class="st">Estimated test size        ="</span>, <span class="fu">round</span>(<span class="fu">mean</span>(phi),<span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Estimated confidence level = 0.96 
+Estimated test size        = 0.04</code></pre>
+</div>
+</div>
+<p>We visualize the results of this simulation in <a href="#fig-confidence-interval-hypothesis-test-duality" class="quarto-xref">Figure&nbsp;<span>33.9</span></a>.</p>
+<div id="fig-confidence-interval-hypothesis-test-duality" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-confidence-interval-hypothesis-test-duality-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/404-duality.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-confidence-interval-hypothesis-test-duality-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;33.9: Duality of confidence interval and hypothesis test by example of the normal distribution model. If the <span class="math inline">\(\delta\)</span> confidence interval for the expectation parameter is used to reject the null hypothesis whenever it does not cover the null-hypothesis parameter, the result is a hypothesis test with significance level <span class="math inline">\(\alpha_0 = 1 - \delta\)</span>.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="literature-notes" class="level2" data-number="33.5">
+<h2 data-number="33.5" class="anchored" data-anchor-id="literature-notes"><span class="header-section-number">33.5</span> Literature notes</h2>
+<p>The theory of hypothesis tests presented here goes back essentially to <span class="citation" data-cites="neyman1928">Neyman &amp; Pearson (<a href="#ref-neyman1928" role="doc-biblioref">1928</a>)</span> and <span class="citation" data-cites="neyman1933">Neyman &amp; Pearson (<a href="#ref-neyman1933" role="doc-biblioref">1933</a>)</span>. <span class="citation" data-cites="gigerenzer2004">Gigerenzer (<a href="#ref-gigerenzer2004" role="doc-biblioref">2004</a>)</span> and <span class="citation" data-cites="lehmann2011">Lehmann (<a href="#ref-lehmann2011" role="doc-biblioref">2011</a>)</span> provide historical classifications of the genesis of the concept of hypothesis testing.</p>
+</section>
+<section id="self-check-questions" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="self-check-questions">Self-check questions</h2>
+<ol type="1">
+<li>Explain the basic logic of frequentist hypothesis tests.</li>
+<li>State the definitions of test hypotheses and a test scenario.</li>
+<li>State the definitions of simple and composite test hypotheses.</li>
+<li>State the definitions of one-sided and two-sided test hypotheses.</li>
+<li>State the definition of the concept of a test.</li>
+<li>State the definition of the concept of a standard test.</li>
+<li>State the definition of the concept of a critical region.</li>
+<li>State the definition of the concept of a rejection region.</li>
+<li>State the definition of the concept of a critical-value based test.</li>
+<li>State the definitions of correct test decisions and test errors.</li>
+<li>State the definition of the concept of a power function.</li>
+<li>Explain the importance of the power function for constructing hypothesis tests.</li>
+<li>State the definition of the concept of a level-<span class="math inline">\(\alpha_0\)</span> test.</li>
+<li>State the definition of the concept of a significance level <span class="math inline">\(\alpha_0\)</span>.</li>
+<li>State the definition of the concept of a test size <span class="math inline">\(\alpha\)</span>.</li>
+<li>State the definition of the concept of a p-value.</li>
+</ol>
+</section>
+<section id="solutions" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="solutions">Solutions</h2>
+<ol type="1">
+<li>See the introductory remarks of this chapter.</li>
+<li>See <a href="#def-test-hypotheses-and-test-scenario" class="quarto-xref">Definition&nbsp;<span>33.1</span></a>.</li>
+<li>See <a href="#def-simple-and-composite-test-hypotheses" class="quarto-xref">Definition&nbsp;<span>33.2</span></a>.</li>
+<li>See <a href="#def-one-sided-and-two-sided-test-hypotheses" class="quarto-xref">Definition&nbsp;<span>33.3</span></a>.</li>
+<li>See <a href="#def-test" class="quarto-xref">Definition&nbsp;<span>33.4</span></a>.</li>
+<li>See <a href="#def-standard-test" class="quarto-xref">Definition&nbsp;<span>33.5</span></a>.</li>
+<li>See <a href="#def-critical-region-of-a-test" class="quarto-xref">Definition&nbsp;<span>33.6</span></a>.</li>
+<li>See <a href="#def-rejection-region-of-a-standard-test" class="quarto-xref">Definition&nbsp;<span>33.7</span></a>.</li>
+<li>See <a href="#def-critical-value-based-tests" class="quarto-xref">Definition&nbsp;<span>33.8</span></a>.</li>
+<li>See <a href="#def-correct-test-decisions-and-test-errors" class="quarto-xref">Definition&nbsp;<span>33.9</span></a>.</li>
+<li>See <a href="#def-power-function" class="quarto-xref">Definition&nbsp;<span>33.10</span></a>.</li>
+<li>See the explanations following <a href="#def-power-function" class="quarto-xref">Definition&nbsp;<span>33.10</span></a>.</li>
+<li>See <a href="#def-level-alpha-0-test-significance-level-alpha-0-test-size-alpha" class="quarto-xref">Definition&nbsp;<span>33.11</span></a>.</li>
+<li>See <a href="#def-level-alpha-0-test-significance-level-alpha-0-test-size-alpha" class="quarto-xref">Definition&nbsp;<span>33.11</span></a>.</li>
+<li>See <a href="#def-level-alpha-0-test-significance-level-alpha-0-test-size-alpha" class="quarto-xref">Definition&nbsp;<span>33.11</span></a>.</li>
+<li>See <a href="#def-p-value" class="quarto-xref">Definition&nbsp;<span>33.12</span></a>.</li>
+</ol>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-amrhein2018" class="csl-entry" role="listitem">
+Amrhein, V., &amp; Greenland, S. (2018). Remove, rather than redefine, statistical significance. <em>Nature Human Behaviour</em>, <em>2</em>(1), 4–4. <a href="https://doi.org/10.1038/s41562-017-0224-0">https://doi.org/10.1038/s41562-017-0224-0</a>
+</div>
+<div id="ref-gigerenzer2004" class="csl-entry" role="listitem">
+Gigerenzer, G. (2004). Mindless statistics. <em>The Journal of Socio-Economics</em>, <em>33</em>(5), 587–606. <a href="https://doi.org/10.1016/j.socec.2004.09.033">https://doi.org/10.1016/j.socec.2004.09.033</a>
+</div>
+<div id="ref-kochenderfer2022" class="csl-entry" role="listitem">
+Kochenderfer, M. J., Wheeler, T. A., &amp; Wray, K. H. (2022). <em>Algorithms for decision making</em>. The MIT Press.
+</div>
+<div id="ref-lehmann2011" class="csl-entry" role="listitem">
+Lehmann, E. L. (2011). <em>Fisher, <span>Neyman</span>, and the <span>Creation</span> of <span>Classical Statistics</span></em>. Springer New York. <a href="https://doi.org/10.1007/978-1-4419-9500-1">https://doi.org/10.1007/978-1-4419-9500-1</a>
+</div>
+<div id="ref-mcshane2019" class="csl-entry" role="listitem">
+McShane, B. B., Gal, D., Gelman, A., Robert, C., &amp; Tackett, J. L. (2019). Abandon <span>Statistical Significance</span>. <em>The American Statistician</em>, <em>73</em>(sup1), 235–245. <a href="https://doi.org/10.1080/00031305.2018.1527253">https://doi.org/10.1080/00031305.2018.1527253</a>
+</div>
+<div id="ref-neyman1928" class="csl-entry" role="listitem">
+Neyman, J., &amp; Pearson, E. S. (1928). On the <span>Use</span> and <span>Interpretation</span> of <span>Certain Test Criteria</span> for <span>Purposes</span> of <span>Statistical Inference</span>: <span>Part I</span>. <em>Biometrika</em>, <em>20A</em>(1/2), 175. <a href="https://doi.org/10.2307/2331945">https://doi.org/10.2307/2331945</a>
+</div>
+<div id="ref-neyman1933" class="csl-entry" role="listitem">
+Neyman, J., &amp; Pearson, E. S. (1933). On the problem of the most efficient tests of statistical hypotheses. <em>Phil. Trans. R. Soc. Lond. A</em>, <em>231</em>(694-706), 289–337.
+</div>
+<div id="ref-pratt1995" class="csl-entry" role="listitem">
+Pratt, J., Raiffa, H., &amp; Schlaifer, R. (1995). <em>Statistical <span>Decision Theory</span></em>. MIT Press.
+</div>
+<div id="ref-puterman1994" class="csl-entry" role="listitem">
+Puterman, M. (1994). <em>Markov <span>Decision Processes</span>: <span>Discrete Stochastic Dynamic Programming</span></em>. John Wiley &amp; Sons.
+</div>
+<div id="ref-wasserstein2019" class="csl-entry" role="listitem">
+Wasserstein, R. L., Schirm, A. L., &amp; Lazar, N. A. (2019). Moving to a <span>World Beyond</span> <span>“ <span><em>p</em></span> <span><span class="math inline">\(&lt;\)</span></span> 0.05.”</span> <em>The American Statistician</em>, <em>73</em>(sup1), 1–19. <a href="https://doi.org/10.1080/00031305.2019.1583913">https://doi.org/10.1080/00031305.2019.1583913</a>
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script>
+(function () {
+  var base = "https://dirk-ostwald.github.io";
+  var pageMap = {
+    "/": "/en/",
+    "/index.html": "/en/",
+    "/Referenzen.html": "/en/References.html",
+    "/_part_1/100-Mathematische-Grundlagen.html": "/en/_part_1/100-Mathematical-Foundations.html",
+    "/_part_1/101-Sprache-und-Logik.html": "/en/_part_1/101-Language-and-Logic.html",
+    "/_part_1/102-Mengen.html": "/en/_part_1/102-Sets.html",
+    "/_part_1/103-Summen-Produkte-Potenzen.html": "/en/_part_1/103-Sums-Products-Powers.html",
+    "/_part_1/104-Funktionen.html": "/en/_part_1/104-Functions.html",
+    "/_part_1/105-Folgen-Grenzwerte-Stetigkeit.html": "/en/_part_1/105-Sequences-Limits-Continuity.html",
+    "/_part_1/106-Differenzialrechnung.html": "/en/_part_1/106-Differential-Calculus.html",
+    "/_part_1/107-Integralrechnung.html": "/en/_part_1/107-Integral-Calculus.html",
+    "/_part_1/108-Vektoren.html": "/en/_part_1/108-Vectors.html",
+    "/_part_1/109-Matrizen.html": "/en/_part_1/109-Matrices.html",
+    "/_part_1/110-Deskriptivstatistiken.html": "/en/_part_1/110-Descriptive-Statistics.html",
+    "/_part_2/200-Imperative-Programmierung.html": "/en/_part_2/200-Imperative-Programming.html",
+    "/_part_2/201-Informatische-Grundbegriffe.html": "/en/_part_2/201-Basic-Concepts-of-Computer-Science.html",
+    "/_part_2/202-Arithmetik-und-Variablen.html": "/en/_part_2/202-Arithmetic-and-Variables.html",
+    "/_part_2/203-Datenstrukturen.html": "/en/_part_2/203-Data-Structures.html",
+    "/_part_2/204-Vektoren.html": "/en/_part_2/204-Vectors.html",
+    "/_part_2/205-Matrizen-und-Arrays.html": "/en/_part_2/205-Matrices-and-Arrays.html",
+    "/_part_2/206-Listen-Dataframes-und-Tibbles.html": "/en/_part_2/206-Lists-Dataframes-and-Tibbles.html",
+    "/_part_2/207-Datenmanagement.html": "/en/_part_2/207-Data-Management.html",
+    "/_part_2/208-Kontrollstrukturen.html": "/en/_part_2/208-Control-Structures.html",
+    "/_part_3/300-Wahrscheinlichkeitstheorie.html": "/en/_part_3/300-Probability-Theory.html",
+    "/_part_3/301-Wahrscheinlichkeitsräume.html": "/en/_part_3/301-Probability-Spaces.html",
+    "/_part_3/302-Elementare-Wahrscheinlichkeiten.html": "/en/_part_3/302-Elementary-Probabilities.html",
+    "/_part_3/303-Zufallsvariablen.html": "/en/_part_3/303-Random-Variables.html",
+    "/_part_3/304-Zufallsvektoren.html": "/en/_part_3/304-Random-Vectors.html",
+    "/_part_3/305-Erwartungswerte.html": "/en/_part_3/305-Expectations.html",
+    "/_part_3/306-Varianzen.html": "/en/_part_3/306-Variances.html",
+    "/_part_3/307-Kovarianzen.html": "/en/_part_3/307-Covariances.html",
+    "/_part_3/308-Ungleichungen.html": "/en/_part_3/308-Inequalities.html",
+    "/_part_3/309-Grenzwerte.html": "/en/_part_3/309-Limits.html",
+    "/_part_3/310-Transformationen.html": "/en/_part_3/310-Transformations.html",
+    "/_part_3/311-Normalverteilungen.html": "/en/_part_3/311-Normal-Distributions.html",
+    "/_part_4/400-Inferenz.html": "/en/_part_4/400-Inference.html",
+    "/_part_4/401-Frequentistische-Inferenz.html": "/en/_part_4/401-Frequentist-Inference.html",
+    "/_part_4/402-Punktschätzung.html": "/en/_part_4/402-Point-Estimation.html",
+    "/_part_4/403-Konfidenzintervalle.html": "/en/_part_4/403-Confidence-Intervals.html",
+    "/_part_4/404-Hypothesentests.html": "/en/_part_4/404-Hypothesis-Tests.html"
+  };
+  var reversePageMap = {};
+  Object.keys(pageMap).forEach(function (key) {
+    reversePageMap[pageMap[key]] = key;
+  });
+  function headings() {
+    return Array.prototype.slice.call(document.querySelectorAll("main.content h1[id], main.content h2[id], main.content h3[id], main.content h4[id]"));
+  }
+  function currentHeadingIndex() {
+    var hash = window.location.hash;
+    if (!hash) return "";
+    var id = hash.slice(1);
+    try {
+      id = decodeURIComponent(id);
+    } catch (error) {}
+    var list = headings();
+    for (var i = 0; i < list.length; i++) {
+      if (list[i].id === id) return String(i);
+    }
+    return "";
+  }
+  function scrollToHeadingIndex() {
+    var params = new URLSearchParams(window.location.search);
+    var value = params.get("h");
+    if (value === null) return;
+    var index = Number(value);
+    var list = headings();
+    if (Number.isInteger(index) && index >= 0 && index < list.length) {
+      list[index].scrollIntoView();
+      if (history.replaceState) {
+        history.replaceState(null, "", window.location.pathname + "#" + list[index].id);
+      }
+    }
+  }
+  var path = window.location.pathname;
+  var target = pageMap[path] || reversePageMap[path];
+  if (target) {
+    document.querySelectorAll("a.nav-link").forEach(function (link) {
+      var text = link.textContent.trim();
+      if (text === "English" || text === "Deutsch") {
+        var index = currentHeadingIndex();
+        link.href = base + target + (index ? "?h=" + index : "");
+      }
+    });
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", scrollToHeadingIndex);
+  } else {
+    scrollToHeadingIndex();
+  }
+}());
+</script>
+
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../_part_4/403-Confidence-Intervals.html" class="pagination-link" aria-label="Confidence intervals">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Confidence intervals</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../References.html" class="pagination-link" aria-label="References">
+        <span class="nav-page-text">References</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/_part_4/404-Hypothesis-Tests.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></div></div></footer></body></html>
