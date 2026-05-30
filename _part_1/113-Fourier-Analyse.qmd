@@ -1,0 +1,818 @@
+# Fourier-Analyse {#sec-fourier-analyse}
+
+```{r}
+#| label: setup-fourier-analyse
+#| include: false
+knitr::opts_chunk$set(
+  echo       = FALSE,
+  message    = FALSE,
+  warning    = FALSE,
+  fig.align  = "center",
+  fig.width  = 8,
+  fig.height = 5
+)
+
+theme_fourier = function() {
+  par(
+    family    = "sans",
+    bty       = "l",
+    las       = 1,
+    lwd       = 1,
+    font.main = 1,
+    cex       = 0.9,
+    cex.main  = 1.0
+  )
+}
+
+axis_pi = function(side = 1, at, labels) {
+  axis(side, at = at, labels = labels)
+}
+```
+
+Die Fähigkeit, Signale aus dem Zeit- oder Ortsbereich im Frequenzbereich darzustellen,
+ist ein grundlegender Bestandteil moderner Signalverarbeitung. In der funktionellen
+Neurobildgebung ist die Darstellung von Frequenzinhalten allgegenwärtig: Methoden zur
+Analyse neuronaler Oszillationen in kognitiven Aufgaben, Filter in der EEG-Datenverarbeitung,
+die Visualisierung elektromagnetischer MRT-Signale, die Analyse von FMRI-Ruhezustandsnetzwerken
+und die Analyse aufgabenbezogener FMRI-Daten im Kontext des Allgemeinen Linearen Modells
+beruhen alle auf Transformationen zwischen Zeit- oder Ortsbereich und Frequenzbereich.
+
+Die Darstellung von Signalen als Linearkombinationen von Sinus- und Kosinusfunktionen
+hat ihren Ursprung in der Theorie partieller Differentialgleichungen, prominent in
+Fouriers Arbeiten zur Wärmediffusion. Die heutige Bedeutung von Frequenzzerlegungen
+in der digitalen Signalverarbeitung hängt eng mit der Entwicklung des Algorithmus der
+Fast Fourier Transform (FFT) zusammen. In diesem Kapitel entwickeln wir die Grundideen
+der Fourier-Analyse ausgehend von Frequenz- und Phaseninhalten reellwertiger Funktionen
+und endlicher Datenfolgen. Wir beginnen mit verallgemeinerten Sinus- und Kosinusfunktionen,
+führen dann die reelle, komplexe und polare Form der Fourier-Reihe ein und schließen
+mit der Fourier-Transformation und der diskreten Fourier-Transformation.
+
+## Verallgemeinerte Kosinus- und Sinusfunktionen {#sec-verallgemeinerte-kosinus-und-sinusfunktionen}
+
+Die elementaren Bausteine der Fourier-Analyse sind die verallgemeinerten Kosinus- und
+Sinusfunktionen
+\begin{align}
+f &: \mathbb{R} \to [-a,a],        & x &\mapsto f(x) := a\cos(2\pi\omega x - \varphi), \\
+g &: \mathbb{R} \to [-b,b],        & x &\mapsto g(x) := b\sin(2\pi\omega x - \phi).
+\end{align}
+Die Konstanten $a$ und $b$ heißen *Amplituden*. Sie skalieren die Höhe der Kosinus-
+und Sinusfunktionen, so dass diese nicht zwischen $-1$ und $1$, sondern zwischen
+$-a$ und $a$ bzw. zwischen $-b$ und $b$ variieren. Die Multiplikation mit einer
+Amplitude verändert weder die Periodizität noch die Nullstellenstruktur der zugrunde
+liegenden Sinus- und Kosinusfunktionen.
+
+Wir betrachten zunächst die Terme $\cos(2\pi\omega x)$ und $\sin(2\pi\omega x)$.
+Zur Vereinfachung setzen wir
+\begin{equation}
+\mu := 2\pi\omega.
+\end{equation}
+$\mu$ heißt *radiale Frequenz*. Sie beschreibt, wie oft sich Sinus- und Kosinusfunktionen
+bezogen auf Einheiten von $\pi$ wiederholen. Konkret wiederholen sich $\cos(\mu x)$
+und $\sin(\mu x)$ alle $2\pi/\mu$ Einheiten. Man kann also sagen, dass sie innerhalb
+eines Intervalls der Länge $2\pi$ genau $\mu$ volle Umläufe ausführen.
+
+In Anwendungen werden Oszillationen meist nicht relativ zu $\pi$, sondern relativ zu
+einer Zeit- oder Ortseinheit ausgedrückt, etwa Sekunden oder Meter. Dafür nutzt man
+die *zirkuläre Frequenz* $\omega$. Die Funktion $\sin(2\pi\omega x)$ hat die Periode
+\begin{equation}
+T = \frac{1}{\omega}.
+\end{equation}
+Sie benötigt also $1/\omega$ Einheiten auf der $x$-Achse für einen vollständigen Zyklus.
+Wenn $x$ eine Zeitvariable in Sekunden ist, wird $\omega$ in $1/\mathrm{s}$, also Hertz,
+gemessen. Wenn $x$ eine Ortsvariable ist, heißt die Periode üblicherweise Wellenlänge
+und wird mit $\lambda$ bezeichnet.
+
+```{r}
+#| label: fig-radiale-zirkulaere-frequenz
+#| fig-cap: "Radiale und zirkuläre Frequenz der Sinusfunktion. Links werden Sinusfunktionen der Form $\\sin(\\mu x)$ auf einer in $\\pi$-Einheiten skalierten Achse gezeigt. Rechts werden Sinusfunktionen der Form $\\sin(2\\pi\\omega x)$ auf einer gewöhnlichen $x$-Achse gezeigt."
+#| fig.width: 8
+#| fig.height: 7
+theme_fourier()
+oldpar = par(mfrow = c(4, 2), mar = c(3.2, 3.2, 2.3, 0.5))
+ticks  = seq(0, 4*pi, by = pi/2)
+labs   = c("0", expression(pi/2), expression(pi), expression(3*pi/2),
+           expression(2*pi), expression(5*pi/2), expression(3*pi),
+           expression(7*pi/2), expression(4*pi))
+mu     = c(0.5, 1, 2, 3)
+omega  = c(0.5, 1, 2, 3)
+x_r    = seq(0, 4*pi, length.out = 1000)
+x_c    = seq(0, 10, length.out = 1000)
+for(i in seq_along(mu)) {
+  plot(x_r, sin(mu[i]*x_r), type = "l", col = "blue", lwd = 1.5,
+       xaxt = "n", xlab = "", ylab = "", ylim = c(-1.1, 1.1),
+       main = bquote(sin(mu*x) * "," ~ mu == .(mu[i])))
+  axis_pi(1, ticks, labs)
+  abline(h = 0)
+  plot(x_c, sin(2*pi*omega[i]*x_c), type = "l", col = "blue", lwd = 1.5,
+       xlab = "", ylab = "", ylim = c(-1.1, 1.1),
+       main = bquote(sin(2*pi*omega*x) * "," ~ omega == .(omega[i]) * "," ~ T == .(1/omega[i])))
+  abline(h = 0)
+}
+par(oldpar)
+```
+
+Die Phasenparameter $\phi$ und $\varphi$ verschieben Sinus- und Kosinusfunktionen
+entlang der $x$-Achse. Für $x = 0$ gilt $\sin(2\pi\omega x) = 0$ und
+$\cos(2\pi\omega x) = 1$. In vielen Anwendungen ist es hilfreich, diese Startwerte
+zu verändern. Dies geschieht durch Addition bzw. Subtraktion eines Phasenterms im
+Argument der Funktion. Die Funktion $\sin(2\pi\omega x - \phi)$ ist gegenüber
+$\sin(2\pi\omega x)$ nach rechts verschoben. Da eine Sinusfunktion durch Verschiebung
+um $\pi/2$ in eine Kosinusfunktion überführt werden kann, werden Phasenparameter häufig
+als *Phasenwinkel* interpretiert.
+
+```{r}
+#| label: fig-phasenverschiebung
+#| fig-cap: "Einfluss des Phasenparameters $\\phi$ auf eine Sinusfunktion. Der Term $-\\phi$ verschiebt $\\sin(x)$ nach rechts; bei $\\phi = \\pi/2$ ergibt sich $-\\cos(x)$."
+#| fig.width: 7
+#| fig.height: 4
+theme_fourier()
+oldpar = par(mar = c(4, 4, 2.5, 1))
+ticks = seq(0, 2*pi, by = pi/2)
+labs  = c("0", expression(pi/2), expression(pi), expression(3*pi/2), expression(2*pi))
+x     = seq(0, 2*pi, length.out = 1000)
+phi   = c(0, .25, .5, .75, 1)
+cols  = c("black", "blue", "red", "cyan4", "magenta")
+plot(x, sin(x - phi[1]*(pi/2)), type = "l", col = cols[1], lwd = 1.5,
+     xaxt = "n", ylim = c(-1.1, 1.1), xlab = "x", ylab = "", main = expression(sin(x - phi)))
+for(i in 2:length(phi)) lines(x, sin(x - phi[i]*(pi/2)), col = cols[i], lwd = 1.5)
+axis_pi(1, ticks, labs)
+abline(h = 0)
+legend("topright", legend = paste0(phi, " * pi/2"), col = cols, lwd = 1.5, bty = "n")
+par(oldpar)
+```
+
+## Linearkombinationen verallgemeinerter Kosinus- und Sinusfunktionen {#sec-linearkombinationen-sinus-kosinus}
+
+Mit $n \in \mathbb{N}$ verallgemeinerten Kosinus- und Sinusfunktionen mit Phase $0$
+lassen sich Linearkombinationen der Form
+\begin{equation}
+f : \mathbb{R} \to \mathbb{R}, \quad
+x \mapsto f(x) := \sum_{k=0}^{n-1} a_k\cos(2\pi\omega_k x) + b_k\sin(2\pi\omega_k x)
+\end{equation}
+bilden. Dabei sind $a_k$ die Amplitudenkoeffizienten der Kosinusterme, $b_k$ die
+Amplitudenkoeffizienten der Sinusterme und $\omega_k$ die zugehörigen zirkulären
+Frequenzen. Solche Linearkombinationen sind sehr flexibel und können eine große
+Vielfalt periodischer Funktionen darstellen.
+
+Als erstes Beispiel betrachten wir $n = 2$ mit
+$\omega_0 = 10$, $a_0 = 0$, $b_0 = 3$, $\omega_1 = 15$, $a_1 = 2$ und $b_1 = 0$.
+Dann ist
+\begin{align}
+f(x)
+&= 0\cos(2\pi 10x) + 3\sin(2\pi 10x) \\
+&\quad + 2\cos(2\pi 15x) + 0\sin(2\pi 15x).
+\end{align}
+
+```{r}
+#| label: fig-linearkombination-1
+#| fig-cap: "Linearkombination verallgemeinerter Kosinus- und Sinusfunktionen, Beispiel 1."
+#| fig.width: 6
+#| fig.height: 7
+theme_fourier()
+oldpar = par(mfrow = c(5, 1), mar = c(2.4, 3.2, 2.0, 0.8))
+x = seq(0, 1, length.out = 1000)
+o = c(10, 15)
+A = c(0, 2)
+B = c(3, 0)
+fx = rbind(
+  A[1]*sin(2*pi*o[1]*x),
+  B[1]*cos(2*pi*o[1]*x),
+  A[2]*sin(2*pi*o[2]*x),
+  B[2]*cos(2*pi*o[2]*x)
+)
+titles = c("Sinus, k = 1", "Kosinus, k = 1", "Sinus, k = 2", "Kosinus, k = 2", "f(x)")
+for(i in 1:5) {
+  y = if(i == 5) colSums(fx) else fx[i,]
+  plot(x, y, type = "l", lwd = 1.2, xlab = "", ylab = "", ylim = c(-7, 7), main = titles[i])
+  abline(h = 0, col = "gray70")
+}
+par(oldpar)
+```
+
+Als zweites Beispiel betrachten wir $n = 3$ mit
+$\omega_0 = 1$, $\omega_1 = 4$, $\omega_2 = 10$,
+$a_0 = 2$, $a_1 = 4$, $a_2 = 0$, $b_0 = 0$, $b_1 = -1$ und $b_2 = 3$.
+Dann ist
+\begin{align}
+f(x)
+&= 2\cos(2\pi 1x) + 0\sin(2\pi 1x) \\
+&\quad + 4\cos(2\pi 4x) - 1\sin(2\pi 4x) \\
+&\quad + 0\cos(2\pi 10x) + 3\sin(2\pi 10x).
+\end{align}
+
+```{r}
+#| label: fig-linearkombination-2
+#| fig-cap: "Linearkombination verallgemeinerter Kosinus- und Sinusfunktionen, Beispiel 2."
+#| fig.width: 6
+#| fig.height: 8
+theme_fourier()
+oldpar = par(mfrow = c(7, 1), mar = c(2.2, 3.2, 1.8, 0.8))
+x = seq(0, 1, length.out = 1000)
+o = c(1, 4, 10)
+A = c(0, -1, 3)
+B = c(2, 4, 0)
+fx = matrix(NA_real_, nrow = 6, ncol = length(x))
+for(i in 1:3) {
+  fx[2*i - 1,] = A[i]*sin(2*pi*o[i]*x)
+  fx[2*i,]     = B[i]*cos(2*pi*o[i]*x)
+}
+titles = c("Sinus, k = 1", "Kosinus, k = 1", "Sinus, k = 2", "Kosinus, k = 2",
+           "Sinus, k = 3", "Kosinus, k = 3", "f(x)")
+for(i in 1:7) {
+  y = if(i == 7) colSums(fx) else fx[i,]
+  plot(x, y, type = "l", lwd = 1.2, xlab = "", ylab = "", ylim = c(-10, 10), main = titles[i])
+  abline(h = 0, col = "gray70")
+}
+par(oldpar)
+```
+
+## Die reelle Fourier-Reihe {#sec-reelle-fourier-reihe}
+
+Im vorangehenden Abschnitt haben wir gesehen, dass sich durch Wahl von Frequenzen
+und Amplituden flexible Linearkombinationen von Sinus- und Kosinusfunktionen bilden
+lassen. Die Fourier-Analyse betrachtet gewissermaßen die umgekehrte Frage: Gegeben
+sei eine Funktion $f$. Können wir Frequenzen und Koeffizienten so bestimmen, dass
+$f$ durch eine unendliche Summe verallgemeinerter Sinus- und Kosinusfunktionen
+dargestellt wird?
+
+Formal fragen wir, ob es reelle Zahlen $a_k$, $b_k$ und $\omega_k$ gibt, so dass
+\begin{equation}
+f(x) =
+\sum_{k=0}^{\infty}
+a_k\cos(2\pi\omega_k x) + b_k\sin(2\pi\omega_k x)
+\quad \mbox{für alle } x \in \mathbb{R}
+\end{equation}
+gilt. Im Folgenden beschränken wir uns auf Funktionen, für die eine solche Darstellung
+sinnvoll ist. Solche Funktionen erfüllen unter geeigneten Regularitätsannahmen die
+Dirichlet-Bedingungen. Eine zentrale Bedingung ist Periodizität: $f$ sei auf
+$\mathbb{R}$ definiert und habe die Periode $T$, also
+\begin{equation}
+f(x + T) = f(x) \quad \mbox{für alle } x \in \mathbb{R}.
+\end{equation}
+
+Für eine periodische Funktion $f$ mit Periode $T$ sind die Frequenzen der Fourier-Reihe
+\begin{equation}
+\omega_k = \frac{k}{T}, \quad k = 0,1,2,\ldots.
+\end{equation}
+Alle Frequenzen sind also ganzzahlige Vielfache der Grundfrequenz $1/T$. Die
+Kosinuskoeffizienten sind
+\begin{equation}
+a_0 = \frac{1}{T}\int_{-T/2}^{T/2} f(x)\,dx
+\end{equation}
+und
+\begin{equation}
+a_k = \frac{2}{T}\int_{-T/2}^{T/2}
+f(x)\cos\left(2\pi\frac{k}{T}x\right)\,dx
+\quad \mbox{für } k = 1,2,3,\ldots.
+\end{equation}
+Die Sinuskoeffizienten sind
+\begin{equation}
+b_0 = 0
+\end{equation}
+und
+\begin{equation}
+b_k = \frac{2}{T}\int_{-T/2}^{T/2}
+f(x)\sin\left(2\pi\frac{k}{T}x\right)\,dx
+\quad \mbox{für } k = 1,2,3,\ldots.
+\end{equation}
+Damit ergibt sich die reelle Fourier-Reihe in der Form
+\begin{equation}
+f(x) =
+a_0 +
+\sum_{k=1}^{\infty}
+a_k\cos\left(2\pi\frac{k}{T}x\right)
++ b_k\sin\left(2\pi\frac{k}{T}x\right),
+\end{equation}
+wobei die genaue Normierung des konstanten Terms in der Literatur teilweise durch
+$a_0/2$ statt $a_0$ formuliert wird. Entscheidend ist die konsistente Definition der
+Koeffizienten.
+
+### Herleitung der Koeffizienten {-}
+
+Die Formeln für $a_k$ und $b_k$ beruhen auf Orthogonalitätseigenschaften von Sinus-
+und Kosinusfunktionen. Für $k,j \in \mathbb{N}_0$ gilt
+\begin{equation}
+\int_{-T/2}^{T/2}
+\cos\left(2\pi\frac{k}{T}x\right)
+\cos\left(2\pi\frac{j}{T}x\right)\,dx
+=
+\begin{cases}
+0, & k \neq j,\\
+T/2, & k = j \neq 0,
+\end{cases}
+\end{equation}
+\begin{equation}
+\int_{-T/2}^{T/2}
+\sin\left(2\pi\frac{k}{T}x\right)
+\sin\left(2\pi\frac{j}{T}x\right)\,dx
+=
+\begin{cases}
+0, & k \neq j,\\
+T/2, & k = j \neq 0,
+\end{cases}
+\end{equation}
+und
+\begin{equation}
+\int_{-T/2}^{T/2}
+\sin\left(2\pi\frac{k}{T}x\right)
+\cos\left(2\pi\frac{j}{T}x\right)\,dx
+= 0.
+\end{equation}
+
+```{r}
+#| label: fig-trigonometrische-orthogonalitaet
+#| fig-cap: "Orthogonalitätseigenschaften von Sinus- und Kosinusfunktionen. Die Produktfunktionen haben über eine volle Periode verschwindende orientierte Fläche, sofern verschiedene Frequenzen oder Sinus- und Kosinusterme kombiniert werden."
+#| fig.width: 9
+#| fig.height: 7
+theme_fourier()
+oldpar = par(mfrow = c(3, 2), mar = c(3.2, 3.2, 2.5, 0.8))
+x = seq(0, 2*pi, length.out = 1000)
+ticks = seq(0, 2*pi, by = pi/2)
+labs = c("0", expression(pi/2), expression(pi), expression(3*pi/2), expression(2*pi))
+panels = list(
+  list(y1 = sin(x),   y2 = sin(2*x), prod = sin(x)*sin(2*x), title = "Sinus-Orthogonalität, k = 1, j = 2",
+       leg = c("sin(x)", "sin(2x)", "Produkt")),
+  list(y1 = cos(x),   y2 = cos(2*x), prod = cos(x)*cos(2*x), title = "Kosinus-Orthogonalität, k = 1, j = 2",
+       leg = c("cos(x)", "cos(2x)", "Produkt")),
+  list(y1 = sin(x),   y2 = NULL,     prod = sin(x)^2,        title = "Sinus-Norm, k = j = 1",
+       leg = c("sin(x)", "sin(x)^2")),
+  list(y1 = cos(x),   y2 = NULL,     prod = cos(x)^2,        title = "Kosinus-Norm, k = j = 1",
+       leg = c("cos(x)", "cos(x)^2")),
+  list(y1 = sin(x),   y2 = cos(2*x), prod = sin(x)*cos(2*x), title = "Sinus/Kosinus-Orthogonalität, k = 1, j = 2",
+       leg = c("sin(x)", "cos(2x)", "Produkt")),
+  list(y1 = sin(2*x), y2 = cos(2*x), prod = sin(2*x)*cos(2*x), title = "Sinus/Kosinus-Orthogonalität, k = j = 2",
+       leg = c("sin(2x)", "cos(2x)", "Produkt"))
+)
+for(p in panels) {
+  plot(x, p$y1, type = "l", col = "blue", lwd = 1.2, xaxt = "n",
+       ylim = c(-1.1, 1.1), xlab = "", ylab = "", main = p$title)
+  if(!is.null(p$y2)) lines(x, p$y2, col = "red", lwd = 1.2)
+  lines(x, p$prod, col = "black", lwd = 1.2)
+  abline(h = 0, lty = 2)
+  axis_pi(1, ticks, labs)
+  legend("topright", legend = p$leg, col = c("blue", if(!is.null(p$y2)) "red", "black"),
+         lwd = 1.2, bty = "n", cex = 0.8)
+}
+par(oldpar)
+```
+
+Zur Herleitung multipliziert man die Fourier-Reihe mit einem Kosinusterm einer
+festen Frequenz $j/T$ und integriert über ein Intervall der Länge $T$. Wegen der
+Orthogonalität verschwinden alle Terme außer demjenigen mit $k=j$. Dadurch bleibt
+\begin{equation}
+\int_{-T/2}^{T/2}
+f(x)\cos\left(2\pi\frac{j}{T}x\right)\,dx
+= a_j\frac{T}{2},
+\end{equation}
+und damit
+\begin{equation}
+a_j =
+\frac{2}{T}
+\int_{-T/2}^{T/2}
+f(x)\cos\left(2\pi\frac{j}{T}x\right)\,dx.
+\end{equation}
+Für $j=0$ erhält man separat
+\begin{equation}
+a_0 = \frac{1}{T}\int_{-T/2}^{T/2} f(x)\,dx.
+\end{equation}
+Analog erhält man durch Multiplikation mit einem Sinusterm und Integration die
+Sinuskoeffizienten $b_k$. Die gesamte Konstruktion beruht also auf Frequenzen als
+ganzzahligen Vielfachen der Grundfrequenz, Multiplikation mit einem Basisbaustein,
+Integration über eine Periode und Orthogonalität.
+
+## Periodische und protrahierte Funktionen {#sec-periodische-protrahierte-funktionen}
+
+Die Fourier-Reihe wurde oben für Funktionen auf $\mathbb{R}$ mit Periode $T$ formuliert.
+In datenanalytischen Anwendungen liegen Funktionen oder Daten aber häufig nur auf einem
+endlichen Intervall vor, etwa ein EEG-Signal in einem peristimulusbezogenen Zeitfenster
+oder ein BOLD-Zeitverlauf während eines experimentellen Durchgangs. Aus einer Funktion
+mit endlicher Definitionsmenge kann man eine periodische Funktion auf $\mathbb{R}$
+konstruieren, indem man identische Kopien der Funktion aneinanderreiht. Diese periodische
+Fortsetzung nennen wir hier die *Protraktion* der Funktion.
+
+```{r}
+#| label: fig-protraktion
+#| fig-cap: "Protraktion einer Funktion mit endlicher Definitionsmenge. Durch Aneinanderreihung identischer Kopien entsteht eine periodische Funktion."
+#| fig.width: 7
+#| fig.height: 4
+theme_fourier()
+oldpar = par(mfrow = c(2, 1), mar = c(3.4, 4, 2.5, 1))
+x_fin = seq(0, 2, length.out = 1000)
+y_fin = dnorm(x_fin, 1, .8) - 0.2*dnorm(x_fin, .5, .4)
+x_inf = seq(-2, 4, length.out = 3000)
+y_inf = rep(y_fin, 3)
+plot(x_fin, y_fin, type = "l", lwd = 2, xlim = c(-2, 4), xlab = "", ylab = "",
+     main = "f(x) mit Definitionsmenge [0, 2]")
+abline(v = c(0, 2), lty = 2, col = "gray50")
+plot(x_inf, y_inf, type = "l", lwd = 2, xlim = c(-2, 4), xlab = "x", ylab = "",
+     main = "Protrahiertes f(x)")
+abline(v = seq(-2, 4, by = 2), lty = 2, col = "gray50")
+par(oldpar)
+```
+
+Das Konzept der Protraktion klärt auch die Integrationsgrenzen $-T/2$ und $T/2$:
+Sie stehen für ein Intervall der Länge einer Periode und nicht für eine zwingende
+Zentrierung um Null. Für eine periodische Funktion mit Periode $T$ kann das Integral
+über jedes Intervall der Länge $T$ ausgewertet werden. Für beliebiges $\delta < T$
+gilt
+\begin{equation}
+\int_{-T/2+\delta}^{T/2+\delta} f(x)\,dx
+=
+\int_{-T/2}^{T/2} f(x)\,dx.
+\end{equation}
+Anschaulich wird auf der einen Seite des Intervalls genauso viel Fläche entfernt,
+wie auf der anderen Seite aufgrund der Periodizität wieder hinzugefügt wird.
+
+```{r}
+#| label: fig-verschiebungsinvarianz-integral
+#| fig-cap: "Verschiebungsinvarianz des Integrals periodischer Funktionen über Intervalle der Länge $T$."
+#| fig.width: 7
+#| fig.height: 4
+theme_fourier()
+oldpar = par(mar = c(4, 4, 2.5, 1))
+Tper  = 2
+delta = .55
+x     = seq(-1.2, 1.8, length.out = 1000)
+y     = 1 + .7*cos(2*pi*x/Tper) + .25*sin(4*pi*x/Tper)
+plot(x, y, type = "l", lwd = 2, xlab = "x", ylab = "f(x)",
+     main = "Periodische Funktion und verschobenes Integrationsintervall")
+abline(v = c(-Tper/2, Tper/2), lty = 2, col = "blue")
+abline(v = c(-Tper/2 + delta, Tper/2 + delta), lty = 2, col = "red")
+legend("topright", c("Intervall [-T/2, T/2]", "verschobenes Intervall"),
+       col = c("blue", "red"), lty = 2, bty = "n")
+par(oldpar)
+```
+
+## Komplexe Zahlen {#sec-komplexe-zahlen-fourier}
+
+Für die komplexe Form der Fourier-Reihe benötigen wir die komplexen Zahlen. Ihre
+Einführung lässt sich durch quadratische Gleichungen motivieren. Für
+\begin{equation}
+ax^2 + bx + c = 0
+\end{equation}
+lauten die Lösungen
+\begin{equation}
+x_{1,2} = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}.
+\end{equation}
+Wenn $b^2 - 4ac < 0$, tritt die Wurzel aus einer negativen Zahl auf. Für die Gleichung
+\begin{equation}
+x^2 - 2x + 2 = 0
+\end{equation}
+ist beispielsweise $b^2 - 4ac = -4$. Um solche Gleichungen dennoch lösen zu können,
+definiert man die imaginäre Einheit
+\begin{equation}
+i := \sqrt{-1}, \quad i^2 = -1.
+\end{equation}
+Damit ist $\sqrt{-4} = 2i$ und die Gleichung hat die Lösungen $1-i$ und $1+i$.
+
+Eine Zahl der Form
+\begin{equation}
+z = a + ib \quad \mbox{mit } a,b \in \mathbb{R}
+\end{equation}
+heißt *komplexe Zahl*. Die Menge aller komplexen Zahlen ist
+\begin{equation}
+\mathbb{C} := \{a + ib \mid a,b \in \mathbb{R}, i = \sqrt{-1}\}.
+\end{equation}
+Für $z = a + ib$ heißt $a$ der Realteil und $b$ der Imaginärteil:
+\begin{equation}
+\mathrm{Re}(z) = a, \quad \mathrm{Im}(z) = b.
+\end{equation}
+Der Betrag und das Argument von $z$ sind
+\begin{equation}
+|z| = \sqrt{a^2 + b^2},
+\quad
+\mathrm{Arg}(z) = \arctan\left(\frac{b}{a}\right).
+\end{equation}
+Die komplex konjugierte Zahl zu $z$ ist
+\begin{equation}
+\overline{z} = a - ib.
+\end{equation}
+Multiplikation mit der komplex Konjugierten ergibt stets eine reelle Zahl:
+\begin{equation}
+z\overline{z}
+= (a + ib)(a - ib)
+= a^2 + b^2.
+\end{equation}
+
+## Euler-Identitäten {#sec-euler-identitaeten}
+
+Mithilfe komplexer Zahlen lassen sich Exponentialfunktion, Sinus und Kosinus durch
+die Euler-Identitäten verbinden:
+\begin{equation}
+\exp(ix) = \cos(x) + i\sin(x),
+\quad
+\exp(-ix) = \cos(x) - i\sin(x).
+\end{equation}
+Diese Identitäten folgen aus den Reihenentwicklungen von Exponentialfunktion, Sinus
+und Kosinus. Aus ihnen erhält man
+\begin{equation}
+\cos(x) = \frac{e^{ix} + e^{-ix}}{2},
+\quad
+\sin(x) = \frac{e^{ix} - e^{-ix}}{2i}.
+\end{equation}
+Diese Darstellung ist der Schlüssel zur komplexen Form der Fourier-Reihe.
+
+## Komplexe Form der Fourier-Reihe {#sec-komplexe-form-fourier-reihe}
+
+Wir schreiben die reelle Fourier-Reihe nun kompakter. Für eine Funktion mit Periode
+$T$ setzen wir
+\begin{equation}
+\omega_0 := \frac{2\pi}{T}.
+\end{equation}
+Dann gilt
+\begin{equation}
+2\pi\frac{k}{T}x = k\omega_0 x
+\end{equation}
+und die reelle Fourier-Reihe kann als
+\begin{equation}
+f(x) = \frac{1}{2}a_0 +
+\sum_{k=1}^{\infty}
+a_k\cos(k\omega_0 x) + b_k\sin(k\omega_0 x)
+\end{equation}
+geschrieben werden. Setzt man die Euler-Darstellungen von Kosinus und Sinus ein,
+erhält man eine Darstellung mit komplexen Exponentialfunktionen:
+\begin{equation}
+f(x) =
+\sum_{k=-\infty}^{\infty}
+c_k e^{ik\omega_0 x}.
+\end{equation}
+Die komplexen Koeffizienten $c_k$ sind dabei durch
+\begin{equation}
+c_k :=
+\begin{cases}
+\frac{1}{2}(a_{-k} + ib_{-k}), & k < 0,\\
+a_0,                           & k = 0,\\
+\frac{1}{2}(a_k - ib_k),        & k > 0
+\end{cases}
+\end{equation}
+gegeben, wobei auch hier unterschiedliche Konventionen für die Normierung des konstanten
+Terms möglich sind. Im Unterschied zur reellen Form laufen die Indizes der komplexen
+Form über negative und positive ganze Zahlen.
+
+## Polare Form der Fourier-Reihe {#sec-polare-form-fourier-reihe}
+
+Die komplexen Koeffizienten enthalten Frequenzamplituden und Phaseninformation. Die
+polare Form der Fourier-Reihe schreibt die reelle Reihe als
+\begin{equation}
+f(x) = d_0 + \sum_{k=1}^{\infty} d_k\cos(k\omega_0 x - \phi_k),
+\end{equation}
+wobei
+\begin{equation}
+d_0 = a_0,\quad
+d_k = \sqrt{a_k^2 + b_k^2},
+\quad
+\phi_k = \arctan\left(\frac{b_k}{a_k}\right)
+\quad \mbox{für } k = 1,2,\ldots
+\end{equation}
+gilt. Die Größe $d_k$ kann als frequenzspezifische Amplitude und $\phi_k$ als
+frequenzspezifische Phase interpretiert werden.
+
+```{r}
+#| label: fig-komplexe-ebene-fourier-koeffizient
+#| fig-cap: "Darstellung eines komplexen Fourier-Koeffizienten in der Real-Imaginär-Ebene. Die Länge des Pfeils entspricht der Amplitude, der Winkel zur Realachse der Phase."
+#| fig.width: 5.5
+#| fig.height: 5
+theme_fourier()
+oldpar = par(mar = c(4, 4, 2.5, 1), pty = "s")
+a = 3
+b = 2
+plot(c(-.5, 3.8), c(-.5, 2.8), type = "n", xlab = "Re(c_k) = a_k",
+     ylab = "Im(c_k) = b_k", main = "Komplexer Fourier-Koeffizient")
+abline(h = 0, v = 0, col = "gray60")
+arrows(0, 0, a, b, lwd = 2, length = .1)
+points(a, b, pch = 19)
+segments(a, 0, a, b, lty = 2)
+segments(0, b, a, b, lty = 2)
+text(a + .25, b, expression(c[k] == a[k] + i*b[k]))
+text(a/2, b/2 + .25, expression(d[k] == sqrt(a[k]^2 + b[k]^2)))
+theta = seq(0, atan(b/a), length.out = 100)
+lines(.65*cos(theta), .65*sin(theta), col = "red", lwd = 1.5)
+text(.85, .25, expression(phi[k]), col = "red")
+par(oldpar)
+```
+
+Die polare Darstellung folgt direkt aus der Additionstheorie des Kosinus,
+\begin{equation}
+\cos(x-y) = \cos(x)\cos(y) + \sin(x)\sin(y),
+\end{equation}
+und der Definition des Tangens. Denn mit
+\begin{equation}
+a_k = d_k\cos(\phi_k),
+\quad
+b_k = d_k\sin(\phi_k)
+\end{equation}
+ist die polare Form identisch zur reellen Form.
+
+## Fourier-Transformation {#sec-fourier-transformation}
+
+Die Fourier-Transformation ist eine Integraltransformation. Sie bildet eine Funktion,
+deren Argumente typischerweise Zeit- oder Ortswerte sind, auf eine Funktion ab, deren
+Argumente Frequenzen sind. Für eine Funktion
+\begin{equation}
+f : \mathbb{R} \to \mathbb{R}, \quad x \mapsto f(x)
+\end{equation}
+ist die Fourier-Transformierte definiert als
+\begin{equation}
+F : \mathbb{R} \to \mathbb{C}, \quad
+\omega \mapsto F(\omega) :=
+\int_{-\infty}^{\infty} f(x)\exp(-2\pi i\omega x)\,dx.
+\end{equation}
+Die inverse Fourier-Transformation ist
+\begin{equation}
+f(x) =
+\int_{-\infty}^{\infty} F(\omega)\exp(2\pi i\omega x)\,d\omega.
+\end{equation}
+
+Die Fourier-Transformation kann als Grenzfall der komplexen Fourier-Reihe verstanden
+werden. Für eine periodische Funktion mit Periode $T$ lassen sich die komplexen
+Fourier-Koeffizienten direkt als
+\begin{equation}
+c_k = \frac{1}{T}
+\int_{-T/2}^{T/2}
+f(x)\exp\left(-2\pi i\frac{k}{T}x\right)\,dx,
+\quad k \in \mathbb{Z}
+\end{equation}
+schreiben. Wenn $T$ wächst, wird der Abstand der diskreten Frequenzen
+\begin{equation}
+\Delta \omega_k =
+\frac{k+1}{T} - \frac{k}{T}
+= \frac{1}{T}
+\end{equation}
+immer kleiner. Im Grenzfall $T \to \infty$ entsteht ein kontinuierliches Frequenzspektrum.
+Ersetzt man die diskrete Frequenz $k/T$ durch eine kontinuierliche Frequenz $\omega$,
+erhält man die Fourier-Transformationsformel.
+
+## Diskrete Fourier-Transformation {#sec-diskrete-fourier-transformation}
+
+In der Datenanalyse berechnet man Frequenzspektren meist nicht für analytische Funktionen,
+sondern für beobachtete Datenfolgen. Ein Computer repräsentiert keine kontinuierlichen
+Funktionen, sondern endliche Zahlenfolgen. Die diskrete Fourier-Transformation (DFT)
+ist das diskrete Analogon der kontinuierlichen Fourier-Transformation.
+
+Eine Folge $n$-ter Ordnung ist eine endliche geordnete Liste
+\begin{equation}
+y = (y_k)_{k=0,\ldots,n-1}
+\end{equation}
+mit $n$ Werten. Die diskrete Fourier-Transformation einer beschränkten Folge $y$ ist
+definiert durch
+\begin{equation}
+Y_j :=
+\frac{1}{n}
+\sum_{k=0}^{n-1}
+y_k\exp\left(-2\pi i\frac{j}{n}k\right),
+\quad j = 0,1,\ldots,n-1.
+\end{equation}
+Die inverse diskrete Fourier-Transformation ist
+\begin{equation}
+y_k =
+\sum_{j=0}^{n-1}
+Y_j\exp\left(2\pi i\frac{j}{n}k\right),
+\quad k = 0,1,\ldots,n-1.
+\end{equation}
+
+Die Werte $Y_j$ sind im Allgemeinen komplex. Wenn die Folge $y$ gleichabständig über
+Zeit oder Raum abgetastet wurde, hängt die Frequenzauflösung von der Anzahl der Datenpunkte
+und der Abtastfrequenz ab. Bei Abtastfrequenz $f_s$ entspricht der Index $j$ der
+Frequenz
+\begin{equation}
+\frac{j}{n}f_s.
+\end{equation}
+Für reellwertige Daten sind die Koeffizienten der zweiten Hälfte redundant. In der
+Praxis betrachtet man deshalb häufig nur die Frequenzen von $0$ bis zur Nyquist-Frequenz
+$f_s/2$.
+
+Für eine kompaktere Notation definiert man den Gewichtungskern
+\begin{equation}
+w_n := \exp\left(\frac{2\pi i}{n}\right).
+\end{equation}
+Damit lässt sich die DFT als
+\begin{equation}
+Y_j =
+\frac{1}{n}\sum_{k=0}^{n-1} y_k w_n^{-kj}
+\end{equation}
+und die inverse DFT als
+\begin{equation}
+y_k =
+\sum_{j=0}^{n-1} Y_j w_n^{kj}
+\end{equation}
+schreiben.
+
+### Direkte DFT und FFT in R {-}
+
+Eine direkte Implementierung der DFT benötigt für jedes $Y_j$ eine Summe über alle
+$n$ Datenpunkte und damit insgesamt $n^2$ numerische Operationen. Der FFT-Algorithmus
+nutzt Symmetrien der komplexen Exponentialterme und reduziert den Aufwand auf ungefähr
+$n\log_2 n$ Operationen.
+
+```{r}
+#| label: fig-dft-fft-aufwand
+#| fig-cap: "Anzahl numerischer Operationen bei direkter DFT und FFT als Funktion der Folgenlänge $n$."
+#| fig.width: 7
+#| fig.height: 4.5
+theme_fourier()
+oldpar = par(mar = c(4, 4, 2.5, 1))
+n = 1:100
+plot(n, n^2, type = "l", col = "blue", lwd = 3,
+     xlab = "Folgenlänge n", ylab = "Operationen",
+     main = "Numerischer Aufwand")
+lines(n, n*log2(n), col = "red", lwd = 3)
+legend("topleft", c("Direkte DFT", "FFT"), col = c("blue", "red"), lwd = 3, bty = "n")
+par(oldpar)
+```
+
+Die folgende R-Implementierung übersetzt die Matlab-Logik der direkten DFT in eine
+R-Funktion. Sie dient nur der Verdeutlichung; in Anwendungen nutzt man `fft()`.
+
+```{r}
+dft = function(y) {
+  n = length(y)
+  j = 0:(n - 1)
+  k = 0:(n - 1)
+  Y = rep(NA_complex_, n)
+  for(a in seq_len(n)) {
+    Y[a] = sum(y * exp(-2*pi*1i*j[a]*k/n))/n
+  }
+  return(Y)
+}
+```
+
+Für ein simuliertes Signal mit zwei Sinuskomponenten und normalverteiltem Rauschen
+berechnen wir die DFT mit R's `fft()` Funktion. Da `fft()` die unnormierte DFT liefert,
+dividieren wir durch $n$, um die obige Definition zu erhalten.
+
+```{r}
+#| label: fig-fft-beispiel
+#| fig-cap: "FFT-Beispiel in R. Oben ist eine verrauschte Zeitreihe mit zwei Sinuskomponenten dargestellt. Unten links sieht man das zentrierte Leistungsspektrum, unten rechts den für reellwertige Daten interessierenden Frequenzbereich von 0 bis zur Nyquist-Frequenz."
+#| fig.width: 8
+#| fig.height: 6
+theme_fourier()
+set.seed(1)
+n  = 2^9
+fs = 200
+nf = fs/2
+dt = 1/fs
+t  = (0:(n - 1))/fs
+s  = 1.5
+y  = 2*sin(2*pi*5*t) + 3*sin(2*pi*20*t) + s*rnorm(length(t))
+
+f  = (0:(n - 1))*(fs/n)
+Y  = fft(y)/n
+p  = Mod(Y)^2*n
+
+Y0 = c(Y[(n/2 + 1):n], Y[1:(n/2)])
+f0 = ((-n/2):(n/2 - 1))*(fs/n)
+p0 = Mod(Y0)^2*n
+
+oldpar = par(mfrow = c(2, 2), mar = c(4, 4, 2.5, 1))
+plot(t, y, type = "l", col = "black", lwd = 1, xlab = "Zeit (s)", ylab = "",
+     main = paste0("n = ", n, ", fs = ", fs, " Hz, dt = ", dt, " s"))
+plot(f0, p0, type = "l", col = "black", lwd = 1, xlab = "Frequenz (Hz)", ylab = "Power",
+     xlim = c(-nf, nf), main = "Vollständiges Spektrum")
+plot(f[1:(n/2 + 1)], p[1:(n/2 + 1)], type = "l", col = "black", lwd = 1,
+     xlab = "Frequenz (Hz)", ylab = "Power", xlim = c(0, nf),
+     main = "Spektrum von Interesse")
+plot.new()
+par(oldpar)
+```
+
+## Fast Fourier Transform {#sec-fast-fourier-transform}
+
+Der FFT-Algorithmus berechnet die DFT-Koeffizienten, ohne die Definitionsformel naiv
+für jedes $j$ vollständig auszuwerten. Für eine Folge gerader Länge $n$ wird die Folge
+in gerade und ungerade indizierte Teilfolgen zerlegt:
+\begin{equation}
+y_1(k) := y(2k),
+\quad
+y_2(k) := y(2k + 1),
+\quad k = 0,\ldots,m-1,\quad m = n/2.
+\end{equation}
+Die DFT der ursprünglichen Folge lässt sich aus den DFTs dieser beiden Teilfolgen
+zusammensetzen:
+\begin{equation}
+Y(j) =
+\frac{1}{2}\left(Y_1(j) + Y_2(j)w_n^{-j}\right),
+\end{equation}
+\begin{equation}
+Y(j+m) =
+\frac{1}{2}\left(Y_1(j) - Y_2(j)w_n^{-j}\right),
+\quad j = 0,\ldots,m-1.
+\end{equation}
+Diese Zerlegung kann rekursiv wiederholt werden. Wenn $n = 2^p$ gilt, wird die Folge
+vollständig in Teilfolgen erster Ordnung zerlegt, die selbst ihre eigene Fourier-
+Transformation sind. Der Aufwand reduziert sich dann von $n^2$ auf $n\log_2 n$.
+
+### Selbstkontrollfragen {-}
+
+1. Schreiben Sie die verallgemeinerte Kosinusfunktion auf und erläutern Sie die intuitive
+Bedeutung ihrer Komponenten.
+2. Skizzieren Sie $f(x) := 3\sin(2\pi x)$ und $g(x) := 0.5\sin(2\pi 3x)$.
+3. Schreiben Sie die Formeln für $\omega_k$, $a_k$ und $b_k$ in der reellen Fourier-Reihe
+einer periodischen Funktion mit Periode $T$ auf.
+4. Skizzieren Sie verbal, warum Orthogonalität zur Bestimmung der Fourier-Koeffizienten
+führt.
+5. Was ist der Unterschied zwischen reeller, komplexer und polarer Form der Fourier-Reihe?
+6. Wie sind Betrag und Phase eines komplexen Fourier-Koeffizienten geometrisch zu
+interpretieren?
+7. Definieren Sie die diskrete Fourier-Transformation und ihre Inverse.
+8. Warum ist bei reellwertigen Daten nur die erste Hälfte des DFT-Spektrums von Interesse?
+9. Worin besteht die Grundidee der Fast Fourier Transform?

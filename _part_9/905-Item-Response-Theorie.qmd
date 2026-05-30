@@ -1,0 +1,997 @@
+# Item-Response-Theorie {#sec-item-response-theorie}
+\normalsize
+
+Item-Response-Theorien sind probabilistische Modelle für die funktionalen
+Beziehungen zwischen latenten Personeneigenschaften, Itemparametern und
+Itemantwortwahrscheinlichkeiten. Typische latente Personeneigenschaften sind
+Fähigkeiten in der Leistungsmessung und Einstellungen in der
+Persönlichkeitsmessung. Typische Itemparameter sind Schwierigkeit,
+Diskriminationsfähigkeit und Ratewahrscheinlichkeit. Item-Response-Theorien
+bilden dabei eine große Modellfamilie, die von eindimensionalen zu
+mehrdimensionalen Personeneigenschaften und von dichotomen zu polytomen Items
+reicht. Wir betrachten hier nur eindimensionale Personeneigenschaften und
+dichotome Items, wobei dichotome Items als binär ausgewertete Items verstanden
+werden. Item-Response-Theorien finden weite Verbreitung in Bildungsforschung
+wie PISA und GRE, Medizin wie PROMIS, Psychometrie und Sozialwissenschaften und
+bilden eine theoretische Grundlage für adaptive Testverfahren mit interaktiver
+Itemauswahl. Eine grundlegende Einführung gibt das dreibändige *Handbook of
+Item Response Theory* von @linden2016.
+
+![Modellbasierte Datenwissenschaft.](./_figures/905-modellbasierte-datenwissenschaft.pdf){#fig-irt-modellbasierte-datenwissenschaft fig-align="center" width=90%}
+
+![Psychologische Datenwissenschaft.](./_figures/905-psychologische-datenwissenschaft.pdf){#fig-irt-psychologische-datenwissenschaft fig-align="center" width=80%}
+
+Frühe Ansätze von Item-Response-Theorien finden sich unter anderem bei
+@binet1904. In einer statistischen Tradition stehen datenanalytisch geprägte
+Ansätze nach @mosier1940, @richardson1936, @lawley1943 und @lord1951 sowie die
+seminalen Arbeiten von Allan Birnbaum in @lord1968, vgl. auch @birnbaum1962.
+1PL-, 2PL- und 3PL-Modelle können dabei als Weiterentwicklung des
+Normal-Ogive-Modells verstanden werden; die Schätzung ist mit
+Marginal-Maximum-Likelihood und Expectation-Maximization verbunden und wurde
+früh in Programmen wie LOGIST, BILOG-MG, TESTFACT und MULTILOG implementiert.
+Dieser Ansatz ist recht klar im datenanalytischen Mainstream verortet.
+
+In einer messtheoretischen Tradition steht der axiomatisch geprägte europäische
+Ansatz nach Georg Rasch (@rasch1960, @rasch1966). Dazu gehören die Arbeiten von
+Erling Bernhard Andersen in @andersen1970 und @andersen1977, die
+Popularisierung in den USA unter anderem durch @wright1977 und @andrich1978
+sowie die europäische Weiterführung durch Fischer und Molenaar, vgl.
+@fischer1995. Hier sind Conditional-Maximum-Likelihood und Suffizienz zentral.
+Frühe Implementationen finden sich in Programmen wie WinSteps, ConQuest und
+RUMM. Der Ansatz ist nicht im datenanalytischen Mainstream verortet, aber bei
+psychologischen Anwendern populär, vgl. @embretson2000.
+
+## Birnbaum-Modell {#sec-irt-birnbaum-modell}
+
+:::{#def-irt-logistische-funktion}
+## Logistische Funktion
+Die Funktion
+\begin{equation}
+f:\mathbb{R} \to ]0,1[, x \mapsto f(x) := \frac{1}{1 + \exp(-a(x-b))} \mbox{ mit }  a, b \in \mathbb{R}
+\end{equation}
+heißt *logistische Funktion*.
+:::
+
+Die logistische Funktion geht auf @verhulst1845 zurück und findet breite
+mathematische Anwendung. Sie wird zur Modellierung von Wachstumsprozessen,
+Kondensatorladung und Pharmakokinetik genutzt und findet auch in der
+logistischen Regression, im Deep Learning und im Reinforcement Learning
+Verwendung. Wir betrachten im Folgenden immer den Fall einer ansteigenden
+logistischen Funktion mit $a > 0$. Die **R**-Funktion `plogis()` implementiert
+die logistische Standardfunktion
+\begin{equation}
+h:\mathbb{R} \to ]0,1[, x \mapsto h(x) := \frac{1}{1 + \exp(-x)}.
+\end{equation}
+Formal ist `plogis` die KVF der logistischen Verteilung; es gilt also
+$h(a(x-b)) = f(x)$. Die logistische Funktion ist die zentrale Komponente von
+Birnbaum- und Rasch-Modell.
+
+![Logistische Funktion. Der Parameter $b$ verschiebt die logistische Funktion bezüglich der $x$-Achse, der Parameter $a$ moduliert ihre Steigung.](./_figures/905-logistische-funktion.pdf){#fig-irt-logistische-funktion fig-align="center" width=90%}
+
+:::{#thm-irt-eigenschaften-logistische-funktion}
+## Eigenschaften der logistischen Funktion
+Für $a > 0, b \in \mathbb{R}$ sei
+\begin{equation}
+f:\mathbb{R} \to ]0,1[, x \mapsto f(x) := \frac{1}{1 + \exp(-a(x-b))}
+\end{equation}
+die *logistische Funktion*. Dann gilt: $f(x) \to 0$ für $x \to -\infty$ und
+$f(x) \to 1$ für $x \to \infty$; weiterhin gilt
+\begin{equation}
+f(x)  = \frac{\exp(a(x-b))}{1 + \exp(a(x-b))}, \quad f(b) = \frac{1}{2},
+\quad f'(x) = a(1-f(x))f(x).
+\end{equation}
+Außerdem gilt $f'(x) > 0$ für alle $x \in \mathbb{R}$, $f'(b) = a/4$ und
+$\argmax f'(x) = b$.
+:::
+
+:::{.proof}
+Die Grenzwerte folgen mit den Eigenschaften der Exponentialfunktion aus
+\begin{equation}
+x \to -\infty \Rightarrow \exp(-a(x-b)) \to \infty \Rightarrow \frac{1}{1 + \exp(-a(x-b))} \to 0
+\end{equation}
+und
+\begin{equation}
+x \to \infty \Rightarrow \exp(-a(x-b)) \to 0 \Rightarrow \frac{1}{1 + \exp(-a(x-b))} \to 1.
+\end{equation}
+Die alternative Form ergibt sich durch Multiplikation mit $\exp(a(x-b))$,
+\begin{equation}
+\frac{1}{1 + \exp(-a(x-b))}
+= \frac{\exp(a(x-b))}{1 + \exp(a(x-b))}.
+\end{equation}
+Der spezielle Wert folgt aus
+\begin{equation}
+f(b) = \frac{1}{1 + \exp(-a(b-b))} = \frac{1}{2}.
+\end{equation}
+Für die Ableitung gilt
+\begin{align}
+\begin{split}
+f'(x)
+& = \frac{d}{dx} \left(1 + \exp(-a(x-b))\right)^{-1} \\
+& = a\left(\frac{\exp(-a(x-b))}{\left(1 + \exp(-a(x-b))\right)^2}\right) \\
+& = a f(x)(1 - f(x)).
+\end{split}
+\end{align}
+Damit ist $f'(x) > 0$ für alle $x \in \mathbb{R}$ und
+$f'(b) = a(1 - 1/2)1/2 = a/4$. Da $a$ konstant ist, nimmt $f'$ sein Maximum genau
+dann an, wenn $(1-y)y$ für $y=f(x)$ maximal ist. Für $g(y)=(1-y)y$ gilt
+$g'(y)=1-2y$ und $g''(y)=-2$, also liegt das Maximum bei $y=1/2$. Wegen
+$f(b)=1/2$ und strenger Monotonie folgt $\argmax f'(x)=b$.
+:::
+
+:::{#def-irt-birnbaum-modell}
+## Birnbaum-Modell
+Für $i = 1,...,n$ Personen und $j = 1,...,m$ dichotome Items seien $x_i$ die
+Zufallsvariable zur Modellierung der Eigenschaft von Person $i$, $y_{ij}$ die
+Zufallsvariable zur Modellierung der $j$-ten Itemantwort von Person $i$ mit
+Wertebereich $\{0,1\}$, $y_i := (y_{i1},...,y_{im})^T$ der Zufallsvektor der
+Itemantworten von Person $i$, $a_j \in \mathbb{R}_{>0}$,
+$b_j \in \mathbb{R}$ und $c_j \in [0,1]$ die
+Itemdiskriminations-, Itemschwierigkeits- bzw. Itemrateparameter von Item $j$,
+$\kappa_j := (a_j, b_j, c_j)$ der Itemparametervektor von Item $j$ und
+$\kappa := (\kappa_1,...,\kappa_m)$ die Gesamtheit der Itemparameter. Dann heißt
+die bedingte Item-Response-Verteilung
+\begin{equation}
+p_\kappa(y_{i}|x_i) := \prod_{j=1}^m p_{\kappa_j}(y_{ij}|x_i)
+\end{equation}
+mit
+\begin{equation}
+p_{\kappa_j}(y_{ij}|x_i) := \mbox{Bern}\left(\mu_{ij}^{\kappa}\right) \mbox{ und }
+\mu_{ij}^{\kappa} := c_j + (1-c_j)\frac{1}{1 +\exp\left(-a_j(x_i - b_j)\right)}
+\end{equation}
+*Birnbaum-Modell* oder *3-Parameter-Logistisches-Modell (3PL-Modell)*.
+Für $c_j:= 0$ heißt es *2PL-Modell* und für $c_j:= 0$ und $a_j := 1$
+*1PL-Modell* oder *Rasch-Modell*.
+:::
+
+Das Modell wird ausführlich in den Kapiteln 17 bis 20 von @lord1968 diskutiert.
+Die Modellierung von Personeneigenschaften $x_i$ als Zufallsvariablen
+unterstellt MML-Schätzung. $p_{\kappa_j}(y_{ij}|x_i)$ wird
+*Item-Response-Funktion* oder *Item-Characteristic-Curve (ICC)* des Modells
+genannt. Die Faktorisierung $\prod_{j=1}^m p_{\kappa_j}(y_{ij}|x_i)$ enkodiert
+die bedingte Unabhängigkeit von Itemantworten bei gegebener Eigenschaft $x_i$;
+diese Faktorisierungseigenschaft wird klassisch auch lokale Unkorreliertheit
+genannt. Für den Parameterraum eines Items gilt
+$(a_j, b_j, c_j) \in ]0,\infty[ \times ]-\infty,\infty[ \times [0,1]$. In der
+Literatur findet man oft die Bezeichnung *ability* und das Symbol $\theta_i$
+für $x_i$.
+
+@lord1951 entwickelte ursprünglich das sogenannte Normal-Ogive-Modell mit
+\begin{equation}
+\mu_{ij} := \int_{-\infty}^{a_j(x_i-b_j)} \frac{1}{\sqrt{2\pi}}\exp\left(-\frac{1}{2} s^2\right) \,ds = \Phi(a_j(x_i-b_j)),
+\end{equation}
+bei dem also die KVF der Standardnormalverteilung als Item-Response-Funktion
+diente. Die logistische Funktion approximiert die KVF der Standardnormalverteilung
+und ist mathematisch einfacher. Birnbaum adaptierte in @lord1968 frühere Arbeiten
+durch zum Beispiel @finney1952 im Bereich Bioassays. @haley1952 hat gezeigt, dass
+$|f(1.7x) - \Phi(x)| < 0.01$ für alle $x \in \mathbb{R}$.
+
+![Haley-Approximation der Standardnormalverteilungs-KVF durch die logistische Funktion.](./_figures/905-haley-approximation.pdf){#fig-irt-haley-approximation fig-align="center" width=60%}
+
+Für den Itemschwierigkeitsparameter gilt bei $c_j=0$ und $x_i=b_j$
+\begin{equation}
+p_{\kappa_j}(y_{ij}=1|x_i)
+= \frac{1}{1 +\exp(-a_j(b_j-b_j))}
+= \frac{1}{2}.
+\end{equation}
+Der Itemschwierigkeitsparameter $b_j$ entspricht hier also dem Eigenschaftswert
+$x_i$, für den $p_{\kappa_j}(y_{ij} = 1|x_i) = 1/2$ ist. Höhere
+Schwierigkeitsparameter $b_j$ implizieren höhere Eigenschaften $x_i$, für die
+diese Lösungswahrscheinlichkeit $1/2$ beträgt.
+
+![Effekt des Itemschwierigkeitsparameters im 3PL-Modell.](./_figures/905-3pl-bj.pdf){#fig-irt-3pl-bj fig-align="center" width=60%}
+
+Für den Itemdiskriminationsparameter gilt bei $c_j=0$ mit
+@thm-irt-eigenschaften-logistische-funktion
+\begin{equation}
+\left.\frac{d}{dx_i} p_{\kappa_j}(y_{ij} = 1|x_i)\right|_{x_i = b_j} = \frac{1}{4}a_j.
+\end{equation}
+Für $x_i^{(1)} < b_j < x_i^{(2)}$ gilt damit bei identischer Differenz
+$x_i^{(2)} - x_i^{(1)}$, dass eine Erhöhung von $a_j$ die Differenz
+$p_{\kappa_j}(y_{ij} = 1|x_i^{(2)}) - p_{\kappa_j}(y_{ij} = 1|x_i^{(1)})$
+erhöht. In diesem Sinne diskriminiert ein Item mit höherem $a_j$ stärker
+zwischen zwei Eigenschaftswerten $x_i^{(1)}$ und $x_i^{(2)}$.
+
+![Effekt des Itemdiskriminationsparameters im 3PL-Modell.](./_figures/905-3pl-aj.pdf){#fig-irt-3pl-aj fig-align="center" width=45%}
+
+Der Itemrateparameter $c_j$ entspricht $p_{\kappa_j}(y_{ij}=1|x_i)$ für
+$x_i \to -\infty$. Mit $c_j\neq 0$ ist das 3PL-Modell kein logistisches Modell,
+und $c_j$ wird sicherlich besser als Pseudorateparameter gedacht. Die
+Parameterinterpretationen sind Parameterinteraktionen unterworfen: Für
+$c_j \neq 0$ ist die Steigung in $b_j$ auch von $c_j$ abhängig, und für
+$c_j \neq 0$ ist der Wert $x_i$ für
+$p_\kappa(y_{ij}=1|x_i) = 0.5$ ebenfalls von $c_j$ abhängig. Die
+Interpretationen von $a_j$ und $b_j$ sind also nicht absolut. Als
+*Item*parameter modelliert $c_j$ nicht das Raten von individuellen Personen.
+
+![Effekt des Itemrateparameters im 3PL-Modell.](./_figures/905-3pl-cj.pdf){#fig-irt-3pl-cj fig-align="center" width=60%}
+
+### Marginal-Maximum-Likelihood-Schätzung {#sec-irt-birnbaum-mml}
+
+Die Joint-Maximum-Likelihood-Schätzung ist eher historisch mit der Anwendung
+nach Birnbaum in @lord1968 für 1PL und 2PL verbunden und wird selten für 3PL
+verwendet. Personeneigenschaften $x_i$ werden dabei als feste unbekannte
+Parameter, nicht als latente Zufallsvariablen konzeptualisiert. Die
+Likelihood-Funktion wird iterativ bezüglich Personeneigenschaften und
+Itemparametern maximiert, wobei die Anzahl der Personeneigenschaftsparameter
+$x_1,...,x_n$ mit dem Stichprobenumfang steigt. Daraus folgt keine Konsistenz
+der Itemparameterschätzer.
+
+Die Marginal-Maximum-Likelihood-Schätzung wird für 1PL, 2PL und 3PL verwendet,
+wobei 1PL im Rasch-Kontext weniger zentral ist. Personeneigenschaften werden als
+latente Zufallsvariablen konzeptualisiert. Durch Marginalisierung der Likelihood
+über Personeneigenschaften entsteht die marginale Likelihood, und die
+Itemparameterschätzung erfolgt durch Maximierung dieser marginalen Likelihood.
+Dies führt zu konsistenten und asymptotisch unverzerrten Itemparameterschätzungen.
+
+Im Rahmen der MML-Schätzung wird das Birnbaum-Modell als parametrisiertes Modell
+mit latenten Zufallsvariablen konzipiert, wobei die Personeneigenschaften
+$x_i, i = 1,...,n$ die Rolle der latenten Zufallsvariablen einnehmen. Seien dazu
+$y$ die Gesamtheit aller $nm$ beobachtbaren Datenpunkte, $x$ die Gesamtheit aller
+$n$ latenten Personeneigenschaften und $\theta$ die Gesamtheit aller Item- und
+Personenpopulationsparameter. Dann entspricht ein Birnbaum-Modell einer
+gemeinsamen Wahrscheinlichkeitsverteilung $p_\theta(x,y)$. Grundlegende Idee der
+MML-Schätzung ist es, über die latenten Variablen zu mitteln und analog zur
+Maximum-Likelihood-Schätzung zu fragen, welche Parameterwerte die
+*Marginal-Likelihood-Funktion*
+\begin{equation}
+L : \theta \to \mathbb{R}_{\ge 0},
+\theta \mapsto L(\theta) := p_\theta(y) = \int p_\theta(x,y)\,dx,
+\end{equation}
+oder äquivalent die *Log-Marginal-Likelihood-Funktion*
+\begin{equation}
+\ell : \theta \to \mathbb{R},
+\theta \mapsto \ell(\theta) := \ln p_\theta(y) = \ln \int p_\theta(x,y)\,dx
+\end{equation}
+für einen festen beobachteten Datensatz $y$ maximieren. Für das Birnbaum-Modell
+nutzt man dazu Varianten des Expectation-Maximization-Algorithmus, vgl.
+@bock1981, @thissen1982 und @rigdon1983.
+
+:::{#thm-irt-jensensche-ungleichung}
+## Jensensche Ungleichung
+Sei $C \subseteq \mathbb{R}$ eine konvexe Menge, sei
+$f : C \to \mathbb{R}$ eine konvexe Funktion und sei $\xi$ eine reelle
+Zufallsvariable mit Werten in $C$. Dann gilt
+\begin{equation}
+f\left(\mathbb{E}(\xi)\right) \le \mathbb{E}\left(f(\xi)\right).
+\end{equation}
+Für konkave Funktionen kehrt sich die Ungleichung um.
+:::
+
+![Jensensche Ungleichung.](./_figures/905-jensensche-ungleichung.pdf){#fig-irt-jensensche-ungleichung fig-align="center" width=55%}
+
+:::{#thm-irt-elbo}
+## Evidence Lower Bound
+Für einen Datensatz $y$ sei $\ln p_\theta(y)$ die Log-Marginal-Likelihood eines
+latenten Variablenmodells $p_{\theta}(x,y)$. Dann gilt für eine beliebige
+Verteilung $q(x)$ der latenten Variablen, dass
+\begin{align*}
+\ln p_\theta(y)
+\ge  \int q(x) \ln p_\theta(x,y)\,dx - \int q(x) \ln q(x)\,dx
+=: \mbox{ELBO}(q(x),\theta).
+\end{align*}
+$\mbox{ELBO}(q(x),\theta)$ heißt *Evidence Lower Bound*.
+:::
+
+:::{.proof}
+Mit der Jensenschen Ungleichung gilt
+\begin{equation*}
+\ln p_\theta(y)
+= \ln \int p_\theta(x,y)\,dx
+= \ln \int q(x) \left(\frac{p_\theta(x,y)}{q(x)}\right)\,dx
+\ge \int q(x) \ln \left(\frac{p_\theta(x,y)}{q(x)} \right)\,dx.
+\end{equation*}
+Damit folgt
+\begin{align*}
+\ln p_\theta(y)
+&\ge  \int q(x) \left(\ln p_\theta(x,y) - \ln q(x) \right)\,dx \\
+&= \int q(x) \ln p_\theta(x,y)\,dx - \int q(x) \ln q(x)\,dx.
+\end{align*}
+:::
+
+Für einen festen Datensatz $y$ ist $\mbox{ELBO}(q(x),\theta)$ eine Funktion von
+$q(x)$ und $\theta$. Die Bezeichnung Evidence Lower Bound geht auf den Begriff
+*Evidence* für $p_\theta(y)$ zurück. In den kognitiven Neurowissenschaften ist
+die ELBO weiterhin als freie Energie bekannt. Ihre Bedeutung geht weit über das
+Birnbaum-Modell hinaus; sie ist zentral für Variational Inference. Variational
+Inference ist auch für zeitgenössische Gehirntheorien zentral, vgl. @parr2022.
+Es gibt zudem einen expliziten VI-Zugang zum Birnbaum-Modell, vgl. @linden2016
+II.14 und @wu2020. Hier liegt der Fokus auf dem traditionelleren MML/EM-Ansatz.
+
+:::{#def-irt-em-algorithmus}
+## Expectation-Maximization-Algorithmus
+Die iterative koordinatenweise Maximierung der ELBO heißt
+*Expectation-Maximization (EM)-Algorithmus*. Der Algorithmus wird mit
+$q^{(0)}(x)$ und $\theta^{(0)}$ initialisiert. Für $k = 1,2,...$ setzt der
+E-Schritt
+\begin{equation}
+q^{(k)}(x) := \argmax_{q(x)} \mbox{ELBO}\left(q(x),\theta^{(k-1)}\right),
+\end{equation}
+und der M-Schritt setzt
+\begin{equation}
+\theta^{(k)} := \argmax_{\theta} \mbox{ELBO}\left(q^{(k)}(x),\theta\right).
+\end{equation}
+Nach Konvergenz wird $\hat{\theta} := \theta^{(k)}$ als Parameterschätzer
+genutzt.
+:::
+
+Die Bezeichnung *Expectation-Schritt* ist eine Fehlbezeichnung, weil es sich
+auch um einen Maximierungsschritt handelt. Sie ergibt im sogenannten exakten
+EM-Algorithmus dennoch Sinn, weil der M-Schritt dort einen bedingten
+Erwartungswert der vollständigen Log-Likelihood maximiert.
+
+:::{#thm-irt-exakter-em}
+## Exakter Expectation-Maximization-Algorithmus
+Das Setzen von
+\begin{equation}
+q^{(k)}(x) := p_{\theta^{(k-1)}}(x|y) \mbox{ für alle } k = 1,2,...
+\end{equation}
+im E-Schritt des EM-Algorithmus maximiert die ELBO hinsichtlich $q(x)$ und heißt
+*exakter E-Schritt*. Der Algorithmus wird mit $\theta^{(0)}$ initialisiert. Für
+$k = 1,2,...$ setzt der E-Schritt $q^{(k)}(x) := p_{\theta^{(k-1)}}(x|y)$, und
+der M-Schritt setzt
+\begin{equation}
+\theta^{(k)} := \argmax_{\theta} \int p_{\theta^{(k-1)}}(x|y) \ln p_\theta(x,y)\,dx.
+\end{equation}
+Nach Konvergenz wird $\hat{\theta} := \theta^{(k)}$ als Parameterschätzer
+genutzt.
+:::
+
+:::{.proof}
+Für $q^{(k)}(x) := p_{\theta^{(k-1)}}(x|y)$ gilt
+\begin{align*}
+\mbox{ELBO}(p_{\theta^{(k-1)}}(x|y),\theta^{(k-1)})
+& = \int p_{\theta^{(k-1)}}(x|y)
+\ln \left(\frac{p_{\theta^{(k-1)}}(x,y)}{p_{\theta^{(k-1)}}(x|y)}\right)\,dx \\
+& = \int p_{\theta^{(k-1)}}(x|y) \ln p_{\theta^{(k-1)}}(y)\,dx \\
+& = \ln  p_{\theta^{(k-1)}}(y).
+\end{align*}
+Der M-Schritt hat dementsprechend die Form
+\begin{align*}
+\theta^{(k)}
+& = \argmax_{\theta} \mbox{ELBO}\left(p_{\theta^{(k-1)}}(x|y),\theta\right) \\
+& = \argmax_{\theta} \int p_{\theta^{(k-1)}}(x|y) \ln p_\theta(x,y)\,dx,
+\end{align*}
+da der zweite Integralterm der ELBO hier nicht von $\theta$ abhängt.
+:::
+
+![Visuelle Intuition für $q^{(k)}(x) := p_{\theta^{(k-1)}}(x|y)$.](./_figures/905-exakter-em-algorithmus.pdf){#fig-irt-exakter-em fig-align="center" width=75%}
+
+Der M-Schritt der $k$-ten Iteration des exakten EM-Algorithmus entspricht der
+Maximierung des Erwartungswertes der logarithmierten WDF der gemeinsamen
+Datenverteilung $p_\theta(x,y)$ hinsichtlich $\theta$, wobei der Erwartungswert
+hinsichtlich der WDF der bedingten Datenverteilung von $x$ gegeben $y$ basierend
+auf der Parameterschätzung $\theta^{(k-1)}$ gebildet wird. Aufgrund der Logik des
+EM-Algorithmus führt die Maximierung dieses Erwartungswertes bei exaktem
+E-Schritt und adäquatem M-Schritt zu einer nicht fallenden
+Log-Marginal-Likelihood,
+\begin{equation}
+\ell\left(\theta^{(k)}\right) \ge \ell\left(\theta^{(k-1)}\right) \mbox{ für } k = 1,2,....
+\end{equation}
+
+@bock1981 haben die MML-EM-Methode für das Birnbaum-Modell eingeführt. Dabei
+werden die Personeneigenschaften $x_1,...,x_n$ als kontinuierliche
+normalverteilte latente Zufallsvariablen behandelt und das M-Schritt-
+Likelihood-Integral wird durch numerische Integration, etwa
+Gauss-Hermite-Quadratur, evaluiert. @woodruff1996 hat die MML-EM-Methode als
+endliches Mischungsmodell neu konzeptualisiert. Dabei werden die
+Personeneigenschaften $x_1,...,x_n$ als diskrete latente Zufallsvariablen
+behandelt, sodass das Modell direkt als MML-EM-Algorithmus für endliche
+Mischungsmodelle formulierbar ist. Dies verortet IRT innerhalb von endlichen
+Mischungsmodellen, vgl. @titterington1994, und es ist keine spezielle
+Item-Response-Theorie-spezifische EM-Theorie erforderlich, vgl. @murphy2023.
+Viele Konvergenzeigenschaften können aus der Theorie endlicher Mischungsmodelle
+übernommen werden. Wird das Modell als Mischung aufgefasst, können nicht-normale
+latente Verteilungen geschätzt werden. Aktuelle **R**-Pakete wie `ltm` oder
+`mirt` implementieren quadraturbasierte MML-EM-Verfahren, die sich bei fester
+Quadraturpunktmenge als endliche Mischungsmodelle auffassen lassen.
+
+:::{#def-irt-woodruff-verteilungsform}
+## Verteilungsform des Birnbaum-Modells nach Woodruff
+Für $i = 1,...,n$ Personen, $j = 1,...,m$ dichotome Items und
+$s = 1,...,r$ diskrete Eigenschaftswerte seien $x_i$ die Zufallsvariable zur
+Modellierung der Eigenschaft von Person $i$ mit Wertebereich
+$\{\xi_1,...,\xi_r\}\subset\mathbb{R}$, $x := (x_1,...,x_n)$ der Zufallsvektor
+der $x_i$, $y_{ij}$ die Zufallsvariable zur Modellierung der $j$-ten Itemantwort
+von Person $i$ mit Wertebereich $\{0,1\}$, $y_i := (y_{i1}, ...,y_{im})^T$ der
+Zufallsvektor der Itemantworten von Person $i$, $y := (y_1,...,y_n)$ die
+Zufallsmatrix der $y_i$, $\kappa := (a_j,b_j,c_j)_{j = 1,...,m}$ die
+Itemparameter des Birnbaum-Modells mit $a_j > 0$, $b_j\in\mathbb{R}$ und
+$0\le c_j < 1$, $\pi$ mit $\pi_s \ge 0$ und $\sum_{s=1}^r \pi_s = 1$ der
+Parameter der Personeneigenschaftsverteilung und $\theta := (\pi, \kappa)$ der
+Gesamtparameter. Dann ist die *Verteilungsform des Birnbaum-Modells nach
+Woodruff* gegeben durch
+\begin{equation}
+p_\theta(x,y)
+:= \prod_{i=1}^n p_\theta(x_i, y_i)
+:= \prod_{i=1}^n p_\pi(x_i)p_\kappa(y_i|x_i)
+:= \prod_{i=1}^n p_\pi(x_i) \prod_{j=1}^m p_{\kappa_j}(y_{ij}|x_i)
+\end{equation}
+mit der *Personeneigenschaftsverteilung*
+\begin{equation}
+p_\pi(x_i) = \prod_{s=1}^r \pi_s^{\mathbb{I}\{x_i = \xi_s\}}
+\end{equation}
+und der *Item-Response-Verteilung*
+\begin{equation}
+p_{\kappa_j}(y_{ij}|x_i)
+:= \mbox{Bern}\left(\mu_{ij}^\kappa \right) \mbox{ mit }
+\mu_{ij}^\kappa := c_j + (1-c_j)\frac{1}{1+\exp\left(-a_j(x_i-b_j)\right)}.
+\end{equation}
+:::
+
+Die Personeneigenschaft nimmt hier die $r$ diskreten Werte $\xi_1,...,\xi_r$
+an. $\mathbb{I}\{x_i = \xi_s\}$ bezeichnet die Indikatorfunktion mit Wert 1 für
+$x_i = \xi_s$ und Wert 0 sonst. Die Wahrscheinlichkeit, dass die
+Personeneigenschaft für Person $i$ den Wert $\xi_s$ annimmt, ist also
+\begin{equation}
+p_\pi(x_i = \xi_s) = \pi_s.
+\end{equation}
+Die Definition $p_\theta(x,y) := \prod_{i=1}^n p_\theta(x_i, y_i)$ enkodiert die
+Unabhängigkeitsannahme über Personen; die Definition
+$p_\theta(x_i, y_i) := p_\pi(x_i)p_\kappa(y_i|x_i)$ enkodiert die partielle
+Wirksamkeit der Parameter $\pi$ und $\kappa$; die oft als lokale
+Unkorreliertheit bezeichnete Faktorisierung
+$p_\kappa(y_i|x_i)=\prod_{j=1}^m p_{\kappa_j}(y_{ij}|x_i)$ enkodiert die
+bedingte Unabhängigkeit der Itemantworten von Person $i$ bei gegebener
+Eigenschaft $x_i$.
+
+:::{#thm-irt-woodruff-em}
+## Birnbaum-Modell-EM-Algorithmus nach Woodruff
+Gegeben sei die Verteilungsform des Birnbaum-Modells nach Woodruff. Dann hat der
+exakte EM-Algorithmus zur Schätzung der Personeneigenschaftsverteilungsparameter
+$\pi$ und der Itemparameter $\kappa$ folgende Form. Initialisiert wird
+$\theta^{(0)} = (\pi^{(0)}, \kappa^{(0)})$. Für $k = 1,2,...$ setzt der
+E-Schritt $q^{(k)}(x) := p_{\theta^{(k-1)}}(x|y)$ mit
+\begin{equation}
+p_{\theta^{(k-1)}}(x|y)
+= \prod_{i=1}^n p_{\theta^{(k-1)}}(x_i|y_i)
+\end{equation}
+und
+\begin{equation}
+p_{\theta^{(k-1)}}(x_i = \xi_s|y_i)
+= \frac{\pi_s^{(k-1)} p_{\kappa^{(k-1)}}(y_i|x_i = \xi_s)}{\sum_{\tilde{s} = 1}^r \pi_{\tilde{s}}^{(k-1)} p_{\kappa^{(k-1)}}(y_i|x_i = \xi_{\tilde{s}})}
+\end{equation}
+für alle $i = 1,...,n$ und $s = 1,...,r$. Im M-Schritt seien
+$\nu_s^{(k-1)}  := \sum_{i=1}^n p_{\theta^{(k-1)}}(x_i = \xi_s|y_i)$ und
+$\rho_{js}^{(k-1)} := \sum_{i=1}^n y_{ij} p_{\theta^{(k-1)}}(x_i = \xi_s|y_i)$.
+Dann gilt für $\theta^{(k)} = (\pi^{(k)}, \kappa^{(k)})$, dass
+\begin{equation}
+\pi_s^{(k)} := \frac{1}{n}\nu_s^{(k-1)} \mbox{ für } s = 1,...,r
+\end{equation}
+und mit
+\begin{equation}
+\mu_{sj}^{\kappa} := c_j + (1-c_j)\frac{1}{1+\exp\left(-a_j(\xi_s-b_j)\right)}
+\end{equation}
+\begin{equation}
+\kappa_j^{(k)}
+= \argmax_{\kappa_j \in \mathbb{R}_{>0}\times\mathbb{R}\times[0,1)}
+\sum_{s = 1}^r
+\left(
+\ln\left(\mu_{sj}^{\kappa}\right) \rho_{js}^{(k-1)}  +
+\ln\left(1-\mu_{sj}^{\kappa}\right)\left(\nu_s^{(k-1)} - \rho_{js}^{(k-1)}\right)
+\right)
+\end{equation}
+für $j = 1,...,m$.
+:::
+
+![Gemeinsame Visualisierung des Bock-Aitkin-EM-Algorithmus.](./_figures/905-bock-aitkin-em-visualisierung.pdf){#fig-irt-bock-aitkin-em fig-align="center" width=80%}
+
+## Rasch-Modell {#sec-irt-rasch-modell}
+
+Das Rasch-Modell wurde in den 1950er Jahren in der dänischen Bildungsforschung
+durch Georg Rasch entwickelt und für Anwender:innen zum Beispiel durch
+@wright1969 und @wright1977 popularisiert. Eine grundlegende Motivationsrhetorik
+ist die spezifisch objektive Messung psychologischer Eigenschaften von
+Einzelpersonen und der Verzicht auf die Schätzung von Populationsparametern im
+Sinne der klassischen Testtheorie. Die messtheoretische Anbindung erfolgt
+rhetorisch über physikalische Messungen: Vergleiche von Objekteigenschaften wie
+Masse oder Temperatur sollten unabhängig von Messinstrumenten sein, und
+Vergleiche von Messinstrumenten sollten unabhängig von Objekten sein. Für
+psychologische Messungen sollen Personenvergleiche unabhängig von den
+verwendeten Items und Itemvergleiche unabhängig von den verwendeten Personen
+sein.
+
+Rasch bezeichnete die invarianten Vergleichseigenschaften seines Modells als
+*spezifische Objektivität*. Das rhetorische Ziel war die Abgrenzung sowohl von
+naiver Messobjektivität als auch von klassischen Testtheorien. Die Objektivität
+ist hier spezifisch in Bezug auf die betrachteten Vergleiche, denn Objektivität
+gilt immer für einzelne konkrete Vergleiche wie Person 1 vs. Person 2 und Item 1
+vs. Item 2. Sie ist spezifisch in Bezug auf das Modell, weil sie nur gilt, wenn
+das Rasch-Modell korrekt spezifiziert ist und die Annahmen des Modells erfüllt
+sind. Schließlich ist sie spezifisch in Bezug auf die Datenbasis:
+Personenparameter sind objektiv bei gegebenen Items, Itemparameter sind
+objektiv bei gegebenen Personen. Messung erscheint damit als Konstruktion von
+Bedingungen, unter denen Vergleiche sinnvoll und invariant sind. Das
+Rasch-Modell hat Bezüge zur additiven Konjunktmessung der
+Repräsentationstheorie, ist mit dieser aber nicht identisch, vgl. @kyngdon2008.
+
+:::{#def-irt-rasch-modell}
+## Rasch-Modell
+Für $i = 1,...,n$ Personen und $j = 1,...,m$ dichotome Items seien
+$\xi_i > 0$ die *Personeneigenschaft* von Person $i$, $\beta_j > 0$ der
+*Schwierigkeitsparameter* von Item $j$,
+$\lambda_{ij} := \xi_i/\beta_j$ der *Situationsparameter* von Person $i$ und
+Item $j$, $\lambda_i := (\lambda_{ij})_{j = 1,...,m}$ der
+*Situationsparametervektor* von Person $i$, $y_{ij}$ die Zufallsvariable zur
+Modellierung der $j$-ten Itemantwort von Person $i$ mit Wertebereich $\{0,1\}$
+und $y_i := (y_{i1},...,y_{im})^T$ der Zufallsvektor der Itemantworten von
+Person $i$. Dann heißt die Item-Response-Verteilung
+\begin{equation}
+p_{\lambda_i}(y_{i}) := \prod_{j=1}^m p_{\lambda_{ij}}(y_{ij})
+\mbox{ mit }
+p_{\lambda_{ij}}(y_{ij}) := \left(\frac{\lambda_{ij}}{1 + \lambda_{ij}}\right)^{y_{ij}}\left(\frac{1}{1 + \lambda_{ij}}\right)^{1 - y_{ij}}
+\end{equation}
+*Rasch-Modell*.
+:::
+
+Im Gegensatz zum zeitgenössischen Birnbaum-Modell sind die Personeneigenschaften
+keine Zufallsvariablen. Notationell schreiben wir $p(y|\theta)$, wenn $\theta$
+zufällig ist, und $p_\theta(y)$, wenn es dies nicht ist. Die Produktform
+$\prod_{j=1}^m p_{\lambda_{ij}}(y_{ij})$ modelliert die
+personeneigenschaftsbedingte Unabhängigkeit der Itemantworten. Für alle
+$i = 1,...,n$ und $j = 1,...,m$ gilt
+\begin{equation}
+p_{\lambda_{ij}}(y_{ij} = 1) = \frac{\lambda_{ij}}{1 + \lambda_{ij}}
+\quad\mbox{und}\quad
+p_{\lambda_{ij}}(y_{ij} = 0) = \frac{1}{1 + \lambda_{ij}}.
+\end{equation}
+
+Auf Parameterebene ist der Vergleich der Personeneigenschaft zweier Personen
+$i = 1,2$ unabhängig von dem betrachteten Item $j$, denn für jedes Item gilt
+\begin{equation}
+\frac{\lambda_{1j}}{\lambda_{2j}}
+= \frac{\frac{\xi_1}{\beta_j}}{\frac{\xi_2}{\beta_j}}
+= \frac{\xi_1}{\xi_2}.
+\end{equation}
+Der Vergleich der Itemschwierigkeiten zweier Items $j = 1,2$ ist unabhängig von
+der betrachteten Person $i$, denn für jede Person gilt
+\begin{equation}
+\frac{\lambda_{i1}}{\lambda_{i2}}
+= \frac{\frac{\xi_i}{\beta_1}}{\frac{\xi_i}{\beta_2}}
+= \frac{\beta_2}{\beta_1}.
+\end{equation}
+
+:::{#thm-irt-rasch-1pl}
+## Rasch-Modell und 1PL-Birnbaum-Modell
+Gegeben sei das Rasch-Modell. Seien ferner
+\begin{equation}
+x_i := \ln (\xi_i) \mbox{ und } b_j := \ln (\beta_j)
+\end{equation}
+und $x_i$ als Zufallsvariable konzipiert. Dann sind die Item-Response-Verteilungen
+des Rasch-Modells und des 1PL-Birnbaum-Modells identisch, es gilt also
+\begin{equation}
+p_{\lambda_i}(y_{i}) = p_\kappa(y_{i}|x_i).
+\end{equation}
+:::
+
+:::{.proof}
+Für $y_{ij}=1$ gilt
+\begin{align}
+\begin{split}
+p_{\lambda_{ij}}(y_{ij} = 1)
+& = \frac{\lambda_{ij}}{1 + \lambda_{ij}} \\
+& = \frac{\frac{\xi_i}{\beta_j}}{1 + \frac{\xi_i}{\beta_j}} \\
+& = \frac{\exp(\ln (\xi_i) -\ln (\beta_j))}{1 + \exp(\ln (\xi_i) -\ln (\beta_j))} \\
+& = \frac{\exp(x_i-b_j)}{1 + \exp(x_i-b_j)} \\
+& = \frac{1}{1+\exp(-(x_i-b_j))} \\
+& = p_{\kappa_j}(y_{ij} = 1|x_i) \mbox{ mit } \kappa_j = (1, b_j, 0).
+\end{split}
+\end{align}
+Der Fall $y_{ij}=0$ folgt analog. Die lokale Unkorreliertheit von Birnbaum- und
+Rasch-Modell impliziert dann die behauptete Äquivalenz.
+:::
+
+Man schreibt die Item-Response-Verteilung im Rasch-Modell bzw. 1PL-Birnbaum-
+Modell häufig kompakt als
+\begin{equation}
+p_{x_i,b_j}\left(y_{ij}\right) = \frac{\exp(y_{ij}(x_i-b_j))}{1 + \exp(x_i-b_j)}.
+\end{equation}
+Dies gilt für $y_{ij}=1$ und $y_{ij}=0$, weil
+\begin{equation}
+p_{x_i,b_j}\left(y_{ij} = 1\right)
+= \frac{\exp(x_i-b_j)}{1 + \exp(x_i-b_j)}
+\end{equation}
+und
+\begin{equation}
+p_{x_i,b_j}\left(y_{ij} = 0\right)
+= \frac{1}{1 + \exp(x_i-b_j)}
+= \frac{\exp(0\cdot (x_i-b_j))}{1 + \exp(x_i-b_j)}.
+\end{equation}
+
+Bei dichotomen Ereignissen $y=0$ oder $y=1$ wird häufig von Odds gesprochen.
+Odds bezeichnen das Verhältnis der Eintrittschance zur Nichteintrittschance,
+\begin{equation}
+\mbox{Odds} := \frac{p(y = 1)}{p(y = 0)}.
+\end{equation}
+Die Odds für eine richtige Antwort von Person $i$ in Item $j$ sind nach dem
+Rasch-Modell
+\begin{equation}
+\mbox{Odds}_{ij}
+= \frac{p_{x_i,b_j}(y_{ij}=1)}{p_{x_i,b_j}(y_{ij}=0)}
+= \exp(x_i-b_j).
+\end{equation}
+Die Odds-Ratio für eine richtige Antwort von Person 1 und Person 2 in Item $j$
+ist nach dem Rasch-Modell
+\begin{equation}
+\mbox{Odds-Ratio}_{1j,2j}
+= \frac{\exp(x_1-b_j)}{\exp(x_2-b_j)}
+= \exp(x_1-x_2),
+\end{equation}
+und die Log-Odds-Ratio ist $x_1-x_2$ und hängt damit nur von den
+Personeneigenschaften, aber nicht vom gewählten Item ab. Die Odds-Ratio für eine
+richtige Antwort von Person $i$ in Item 1 und Item 2 ist
+\begin{equation}
+\mbox{Odds-Ratio}_{i1,i2}
+= \frac{\exp(x_i-b_1)}{\exp(x_i-b_2)}
+= \exp(b_2-b_1),
+\end{equation}
+und die Log-Odds-Ratio ist $b_2-b_1$ und hängt damit nur von den
+Itemschwierigkeiten, aber nicht von der betrachteten Person ab.
+
+:::{#thm-irt-rasch-additive-repraesentation}
+## Rasch-Modell als additive Repräsentation der Lösungsordnung
+Sei $X \subseteq \mathbb{R}$ eine Menge von Personeneigenschaften und
+$B \subseteq \mathbb{R}$ eine Menge von Itemschwierigkeiten. Für $x_i \in X$
+und $b_j \in B$ sei $p_{x_i,b_j}(y_{ij}=1)$ die Lösungswahrscheinlichkeit bei
+Personeneigenschaft $x_i$ und Itemschwierigkeit $b_j$ unter dem Rasch-Modell.
+Sei weiterhin $\succeq$ die durch die Lösungswahrscheinlichkeiten induzierte
+Relation auf $X \times B$, also
+\begin{equation}
+(x_i,b_j) \succeq (x_{i'},b_{j'})
+\Leftrightarrow
+p_{x_i,b_j}(y_{ij}=1)
+\ge
+p_{x_{i'},b_{j'}}(y_{i'j'}=1).
+\end{equation}
+Dann existieren Funktionen
+\begin{equation}
+f : X \to \mathbb{R} \mbox{ und } g : B \to \mathbb{R},
+\end{equation}
+so dass für alle $x_i,x_{i'} \in X$ und $b_j,b_{j'} \in B$ gilt
+\begin{equation}
+(x_i,b_j) \succeq (x_{i'},b_{j'})
+\Leftrightarrow
+f(x_i)+g(b_j)
+\ge
+f(x_{i'})+g(b_{j'}),
+\end{equation}
+nämlich
+\begin{equation}
+f(x_i) := x_i
+\mbox{ und }
+g(b_j) := -b_j.
+\end{equation}
+:::
+
+:::{.proof}
+Für die Odds unter dem Rasch-Modell gilt $\mbox{Odds}_{ij}=\exp(x_i-b_j)$.
+Für die Log-Odds folgt
+\begin{equation}
+\mbox{Log-Odds}_{ij} = \ln \left(\mbox{Odds}_{ij}\right) = x_i - b_j.
+\end{equation}
+Da
+\begin{equation}
+\pi : (0,1) \to \mathbb{R}, p \mapsto \pi(p) :=  \frac{p}{1-p}
+\end{equation}
+streng monoton wachsend ist und auch der Logarithmus streng monoton wachsend
+ist, gilt
+\begin{equation}
+p_{x_i,b_j}(y_{ij}=1)
+\ge
+p_{x_{i'},b_{j'}}(y_{i'j'}=1)
+\Leftrightarrow
+x_i-b_j
+\ge
+x_{i'}-b_{j'}.
+\end{equation}
+Mit $f(x_i)=x_i$ und $g(b_j)=-b_j$ folgt die Behauptung.
+:::
+
+Die Relation $\succeq$ ordnet Personeneigenschafts-Itemschwierigkeits-Paare
+entsprechend ihrer Lösungswahrscheinlichkeit unter dem Rasch-Modell.
+@thm-irt-rasch-additive-repraesentation zeigt, dass die durch das Rasch-Modell
+induzierte Lösungsordnung additiv repräsentierbar ist. Diese additive
+Repräsentation ergibt sich hier jedoch nicht aus qualitativen Axiomen an
+$\succeq$, sondern aus der bereits vorausgesetzten Rasch-Form der
+Lösungswahrscheinlichkeiten. Das Theorem ist daher keine Anwendung des Theorems
+zur Repräsentation und Eindeutigkeit additiver Konjunktstrukturen, sondern die
+Aussage, dass, wenn das Rasch-Modell gilt, die induzierte Lösungsordnung die
+Form einer additiv repräsentierbaren Ordnung auf $X \times B$ besitzt. Ob
+$(X,B,\succeq)$ darüber hinaus eine additive Konjunktstruktur im vollen
+axiomatischen Sinn ist, hängt von den zusätzlich geforderten Strukturannahmen an
+$X$, $B$ und $\succeq$ ab. Informell gilt also
+\begin{equation}
+\mbox{Rasch-Modell} \Rightarrow \mbox{additiv repräsentierbare Ordnung}.
+\end{equation}
+Die additive Konjunktmessung interessiert sich aber für die andere Richtung,
+\begin{equation}
+\mbox{qualitativ gegebene Ordnung} \Rightarrow \mbox{Existenz additiver Skalen}.
+\end{equation}
+Aus einer Parameterschätzung des Rasch-Modells basierend auf empirischen Daten
+folgt also keineswegs, dass die empirisch gegebenen
+Personeneigenschafts-Itemschwierigkeits-Paare additiv repräsentierbar sind,
+sondern nur, dass die durch das Rasch-Modell induzierte Ordnung additiv
+repräsentierbar ist. Für eine Überprüfung der additiven Konjunktstruktur der
+empirischen Datenordnung sind weitere Analysen notwendig, um die qualitativen
+Axiome der additiven Konjunktmessung zu überprüfen. Ansätze finden sich zum
+Beispiel in @kyngdon2011, @domingue2014 und @karabatsos2018.
+
+### Conditional-Maximum-Likelihood-Schätzung {#sec-irt-rasch-cml}
+
+Bei der Conditional-Maximum-Likelihood-Schätzung werden Personeneigenschaften
+durch eine suffiziente Statistik aus der Likelihood herauskonditioniert. Die
+Itemparameter werden dann durch Maximierung dieser bedingten Likelihood
+geschätzt. Itemparameterschätzungen sind konsistent, ohne dass Annahmen über
+Eigenschaftsverteilungen nötig sind. Das Verfahren ist beim Rasch-Modell
+anwendbar, aber auf 2PL oder 3PL nicht übertragbar, weil dort keine
+suffizienten Statistiken dieser Form vorliegen. Damit ergibt sich eine klare
+Trennung zwischen Itemkalibrierung und Personenmessung.
+
+:::{#thm-irt-suffiziente-statistik}
+## Suffiziente Statistik
+Es sei $y := (y_1,...,y_n)$ eine Stichprobe mit durch $\theta$ parameterisierter
+gemeinsamer Verteilung $p_\theta(y)$ und $s=s(y)$ sei eine Statistik. $s$ wird
+*suffiziente Statistik* für den Parameter $\theta$ genannt, wenn eine der
+folgenden äquivalenten Bedingungen gilt. Erstens hängt die bedingte Verteilung
+von $y$ gegeben $s$ nicht von $\theta$ ab,
+\begin{equation}
+p_\theta(y|s) = p(y|s).
+\end{equation}
+Zweitens existieren Funktionen $g_\theta(s)$ und $h(y)$, sodass
+\begin{equation}
+p_\theta(y) = g_\theta(s)h(y) \mbox{ für alle } y \mbox{ und alle } \theta.
+\end{equation}
+:::
+
+Die Darstellung in @thm-irt-suffiziente-statistik ist mathematisch sehr
+unpräzise. Eine Einführung zum Prinzip der Suffizienz findet sich zum Beispiel
+in @casella2002, Abschnitt 6. Würde man $\theta$ als Zufallsvariable betrachten,
+so wäre die erste Aussage äquivalent zu der bedingten Unabhängigkeit
+$p(y|s,\theta)=p(y|s)$. Die zweite Aussage wird nach oder trotz @halmos1949
+Neyman-Fisher-Faktorisierung genannt.
+
+Wie im Rahmen der MML-Schätzung wird das Rasch-Modell auch im Rahmen der
+Conditional-Maximum-Likelihood-Schätzung als parameterisiertes Modell
+konzipiert, wobei die Personeneigenschaften $x_i, i = 1,...,n$ allerdings als
+nicht zufällige Parameter eingehen. In diesem Kontext werden sie zum Teil als
+*nuisance parameter* bezeichnet. Seien $y$ die Gesamtheit aller $nm$
+beobachteten Datenpunkte, $x$ die Gesamtheit aller $n$ Personeneigenschaften
+und $b$ der Vektor aller Itemschwierigkeitsparameter. Das Rasch-Modell
+entspricht dann der durch $x$ und $b$ parameterisierten
+Wahrscheinlichkeitsverteilung $p_{x,b}(y)$. Grundlegende Idee der
+CML-Schätzung ist es, durch Konditionierung auf eine suffiziente Statistik $s$
+für $x$ die Personeneigenschaftsparameter aus der Likelihood-Funktion
+herauszurechnen und dann die Itemschwierigkeitsparameter ohne Schätzung der
+Personeneigenschaften schätzen zu können. Betrachtet wird also die bedingte
+Likelihood-Funktion
+\begin{equation}
+L : b \to \mathbb{R}_{> 0 }, b \mapsto L(b) := p_b(y|s).
+\end{equation}
+Statistisch abgesichert im Sinne konsistenter und asymptotisch normalverteilter
+Schätzer für die Itemparameter $b$ ist dieses Verfahren durch @andersen1970.
+Die Anwendung der CML-Schätzung für das Rasch-Modell wurde durch @andersen1977
+geprägt.
+
+:::{#def-irt-rasch-verteilungsform}
+## Verteilungsform des Rasch-Modells
+Für $i = 1,\dots,n$ Personen und $j = 1,\dots,m$ dichotome Items seien
+$x_i \in \mathbb{R}$ die Personeneigenschaft von Person $i$, $x := (x_1,...,x_n)$
+die Eigenschaften aller $n$ Personen, $b_j \in \mathbb{R}$ der
+Schwierigkeitsparameter des $j$-ten Items, $b := (b_1,\dots,b_m)$ der
+Itemparametervektor, $y_{ij}$ die Zufallsvariable zur Modellierung der $j$-ten
+Itemantwort von Person $i$ mit Wertebereich $\{0,1\}$,
+$y_i := (y_{i1},\dots,y_{im})$ der Zufallsvektor der Itemantworten von Person
+$i$ und $y := (y_1,...,y_n)$ die Zufallsmatrix der Itemantworten aller Personen.
+Dann hat das Rasch-Modell die Verteilungsform
+\begin{equation}
+p_{x,b}(y)
+:= \prod_{i=1}^n p_{x_i,b}(y_i)
+:= \prod_{i=1}^n \prod_{j=1}^m p_{x_i,b_j}(y_{ij}),
+\end{equation}
+mit
+\begin{equation}
+p_{x_i,b_j}\left(y_{ij}\right)
+:= \frac{\exp\left(y_{ij}(x_i - b_j)\right)}{1 + \exp(x_i - b_j)}.
+\end{equation}
+:::
+
+Im Gegensatz zur EM-Schätzung sind die Personeneigenschaften hier nicht als
+Zufallsvariablen modelliert. Die Produktform $\prod_{i=1}^n p_{x_i,b}(y_i)$
+enkodiert die Unabhängigkeitsannahme über Personen, und
+$\prod_{j=1}^m p_{x_i,b_j}(y_{ij})$ enkodiert die bedingte Unabhängigkeit der
+Itemantworten von Person $i$ bei gegebenem $x_i$.
+
+:::{#thm-irt-summenscore-bedingte-verteilung}
+## Summenscore-bedingte Verteilung des Rasch-Modells
+Gegeben sei die Verteilungsform des Rasch-Modells und für $i = 1,...,n$ sei
+\begin{equation}
+s_i := \sum_{j=1}^m y_{ij}
+\end{equation}
+der Summenscore von Person $i$. Sei weiterhin für alle $s_i \in \{0,...,m\}$
+\begin{equation}
+Y_{s_i} :=
+\left\lbrace
+y_i \in \{0,1\}^m \big\vert \sum_{j=1}^m y_{ij} = s_i
+\right\rbrace
+\end{equation}
+die Menge aller zu einem Summenscore $s_i$ kongruenten Itemantwortvektoren einer
+Person. Sei schließlich $s := (s_1,...,s_n)$ der Vektor der Summenscores aller
+$n$ Personen. Dann gilt für die Verteilungsform des Rasch-Modells
+\begin{equation}
+p_{x,b}(y|s) = p_{b}(y|s)
+\end{equation}
+und speziell
+\begin{equation}
+p_{b}(y|s) = \prod_{i=1}^n p_b(y_i|s_i) \mbox{ mit }
+p_b(y_i|s_i)
+= \frac{\exp\left(-\sum_{j=1}^m y_{ij}b_j\right)}{\sum_{y_i \in Y_{s_i}}\exp\left(-\sum_{j=1}^m y_{ij}b_j\right)}.
+\end{equation}
+:::
+
+Die Aussage von @thm-irt-summenscore-bedingte-verteilung wird auch als
+Parameterseparierbarkeit bezeichnet.
+
+:::{#def-irt-rasch-cml}
+## CML-Schätzung der Rasch-Modell-Itemparameter
+Gegeben sei die Verteilungsform des Rasch-Modells und es sei $p_b(y|s)$ die
+Summenscore-bedingte Verteilung des Rasch-Modells. Dann heißt die Funktion
+\begin{equation}
+L: \mathbb{R}^m \to \mathbb{R}_{>0},
+b \mapsto L(b) := p_b(y|s)
+\end{equation}
+die *Conditional-Likelihood-Funktion* des Rasch-Modells. Ein
+\begin{equation}
+\hat{b} \in \arg\max_{b \in \mathbb{R}^m} L(b)
+\end{equation}
+heißt *Conditional-Maximum-Likelihood-Schätzer* der Itemparameter $b$.
+:::
+
+Die Schätzung der Itemparameter $b$ kommt ohne die Bestimmung der
+Personeneigenschaften $x_1,...,x_n$ aus. Für $m > 2$ muss $\hat{b}$ durch
+numerische Maximierung von $L$ bestimmt werden. Für $m > 15$ ist eine explizite
+Summation über $Y_{s_i}$ nicht möglich, denn
+\begin{equation}
+|Y_{s_i}| = \begin{pmatrix} m \\ s_i \end{pmatrix}
+\mbox{ mit z.B. }
+\begin{pmatrix} 30 \\ 15 \end{pmatrix} = 155.117.520.
+\end{equation}
+Es gibt rekursive Ansätze, um diese explizite Summation zu umgehen
+(@gustafsson1977, @gustafsson1980). Diese Ansätze heißen *elementary symmetric
+functions* (@fischer1995, @baker1996). Der Ansatz ist nicht symmetrisch,
+Eigenschaften können nicht ohne Itemparameter bestimmt werden. Generell sind
+CML-Ansätze möglich, wenn die Datenverteilung zur Exponentialfamilie gehört und
+suffiziente Statistiken für Nebeneffekt-Parameter wie die Personeneigenschaften
+existieren. Beispielmodelle sind das Partial-Credit-Modell oder das
+Cox-Proportional-Hazards-Modell der Survival-Analyse.
+
+:::{#def-irt-personenparameter-ml}
+## Maximum-Likelihood-Schätzung der Personeneigenschaften
+Gegeben sei die Verteilungsform des Rasch-Modells und
+$\hat{b} \in \mathbb{R}^m$ sei ein Conditional-Maximum-Likelihood-Schätzer des
+Itemparametervektors $b$. Dann heißt für $i = 1,\dots,n$ die Funktion
+\begin{equation}
+L_i : \mathbb{R} \to \mathbb{R}_{>0},
+x_i \mapsto L_i(x_i)
+:=
+p_{x_i,\hat{b}}(y_i)
+=
+\prod_{j=1}^m
+\frac{\exp\left(y_{ij}(x_i-\hat{b}_j)\right)}{1 + \exp(x_i-\hat{b}_j)}
+\end{equation}
+die *Personenparameter-Likelihood-Funktion der $i$-ten Person*. Ein
+\begin{equation}
+\hat{x}_i \in \arg\max_{x_i \in \mathbb{R}} L_i(x_i)
+\end{equation}
+heißt *Maximum-Likelihood-Schätzer der Personeneigenschaft von Person $i$*.
+:::
+
+Die Itemparameterschätzer werden für die ML-Schätzung der Personeneigenschaften
+als bekannt vorausgesetzt. Unsicherheiten in der Schätzung der Itemparameter
+werden dabei nicht berücksichtigt.
+
+:::{#thm-irt-personenparameter-momentengleichung}
+## Momentengleichung der Personenparameterschätzung
+Gegeben sei die Personenparameter-Likelihood-Funktion
+\begin{equation}
+L_i(x_i)
+= p_{x_i,\hat{b}}(y_i)
+= \prod_{j=1}^m\frac{\exp\left(y_{ij}(x_i-\hat{b}_j)\right)}{1 + \exp(x_i-\hat{b}_j)}
+\end{equation}
+der $i$-ten Person. Weiterhin seien $s_i$ der Summenscore der $i$-ten Person und
+$\hat{s}_i$ der beobachtete Summenscore der $i$-ten Person. Dann erfüllt jeder
+Maximum-Likelihood-Schätzer $\hat{x}_i \in \mathbb{R}$ die Gleichung
+\begin{equation}
+\hat{s}_i
+= \sum_{j=1}^m \frac{\exp(\hat{x}_i-\hat{b}_j)}{1+\exp(\hat{x}_i-\hat{b}_j)}
+= \mathbb{E}_{p_{\hat{x}_i,\hat{b}}(s_i)}\left(s_i\right)
+\end{equation}
+mit
+\begin{equation}
+p_{x_i,b}(s_i) := \sum_{y_i \in Y_{s_i}} p_{x_i,b}(y_i).
+\end{equation}
+:::
+
+ML-Schätzer von $x_i$ sind also auch Momentenschätzer. Sie können durch
+numerische Lösung der Gleichung
+\begin{equation}
+\hat{s}_i = \sum_{j=1}^m \frac{\exp(\hat{x}_i-\hat{b}_j)}{1+\exp(\hat{x}_i-\hat{b}_j)}
+\end{equation}
+bestimmt werden.
+
+### Anwendungsbeispiel {#sec-irt-rasch-anwendungsbeispiel}
+
+Das Anwendungsbeispiel analysiert GEB-50-Daten im Sinne des Campbell Paradigms
+(@kaiser2010, @kaiser2015). Der Datensatz nach @kaiser2004 ist unter
+[https://osf.io/trpn5](https://osf.io/trpn5) erhältlich. Der GEB-50-Fragebogen
+(@kaiser1998, @kaiser2020) ist die General Ecological Behavior Scale zur
+Erfassung von *pro-environmental behavior*. Er umfasst 50 Items, davon 32
+polytome und 18 dichotome Items; 10 polytome und 6 dichotome Items sind invers
+formuliert.
+
+![GEB-50-Beispiel.](./_figures/905-geb-1.pdf){#fig-irt-geb-1 fig-align="center" width=48%}
+
+![GEB-50-Beispiel.](./_figures/905-geb-2.pdf){#fig-irt-geb-2 fig-align="center" width=48%}
+
+Für dichotomisierte GEB-50-Daten steht $y_{ij}$ für die binäre Antwort von
+Person $i$ bezüglich des pro-environmental behaviors von Item $j$, $x_i$ für
+das Umweltbewusstsein (*environmental attitude*) von Person $i$ und $b_j$ für
+die Verhaltenskosten (*behavioral costs*, *difficulty*) des
+pro-environmental behaviors von Item $j$. Die Log-Odds von $y_{ij}=1$ bei
+gegebenem $x_i$ und $b_j$ sind
+\begin{equation}
+\ln\left(\frac{p_{x_i,b_j}(y_{ij} = 1)}{p_{x_i,b_j}(y_{ij} = 0)}\right)
+= \ln \left(\exp\left(x_i - b_j\right)\right)
+= x_i - b_j.
+\end{equation}
+Damit gilt
+\begin{equation}
+x_i \ge b_j \Rightarrow p_{x_i,b_j}(y_{ij} = 1) \ge p_{x_i,b_j}(y_{ij} = 0)
+\end{equation}
+und
+\begin{equation}
+x_i < b_j \Rightarrow p_{x_i,b_j}(y_{ij} = 1) < p_{x_i,b_j}(y_{ij} = 0).
+\end{equation}
+Je höher $x_i$ im Vergleich zu $b_j$ ist, desto höher ist die Wahrscheinlichkeit,
+dass Person $i$ Item $j$ bejaht. Je höher $b_j$ im Vergleich zu $x_i$ ist, desto
+höher ist die Wahrscheinlichkeit, dass Person $i$ Item $j$ verneint.
+
+![Deskriptivstatistiken der analysierten GEB-50-Daten.](./_figures/905-rasch-deskriptivstatistiken.pdf){#fig-irt-rasch-deskriptivstatistiken fig-align="center" width=90%}
+
+![Fehlende Werte in den analysierten GEB-50-Daten.](./_figures/905-rasch-na-deskriptivstatistiken.pdf){#fig-irt-rasch-na-deskriptivstatistiken fig-align="center" width=90%}
+
+Die Parameterschätzung mit `eRm` (@mair2007) erfolgt als
+Conditional-Maximum-Likelihood-Schätzung des Rasch-Modells. In der Vorlesung
+werden dabei die Item- und Personenparameter mit `RM(D)` und
+`person.parameter(M)` geschätzt und anschließend als `erm-hat-beta.csv` und
+`erm-hat-x.csv` gespeichert.
+
+![Parameterschätzung mit `eRm`.](./_figures/905-rasch-erm-parameterschaetzung.pdf){#fig-irt-rasch-erm-parameterschaetzung fig-align="center" width=90%}
+
+![Korrelation von Deskriptivstatistiken und Parameterschätzern für `eRm`.](./_figures/905-rasch-erm-korrelationen.pdf){#fig-irt-rasch-erm-korrelationen fig-align="center" width=90%}
+
+Die Parameterschätzung mit `mirt` (@chalmers2012) erfolgt als
+Marginal-Maximum-Likelihood-Schätzung mit Bock-Aitkin-EM. In der Vorlesung wird
+dazu `mirt(data = D, model = 1, itemtype = "Rasch", method = "EM",
+quadpts = 61, verbose = FALSE, technical = list(NCYCLES = 1000))` verwendet.
+Die Itemparameter werden mit `coef(M, IRTpars = TRUE, simplify = TRUE)` und die
+Personenparameter mit `fscores(M, method = "EAP", full.scores = TRUE)`
+ausgelesen.
+
+![Parameterschätzung mit `mirt`.](./_figures/905-rasch-mirt-parameterschaetzung.pdf){#fig-irt-rasch-mirt-parameterschaetzung fig-align="center" width=90%}
+
+![Korrelation von Deskriptivstatistiken und Parameterschätzern für `mirt`.](./_figures/905-rasch-mirt-korrelationen.pdf){#fig-irt-rasch-mirt-korrelationen fig-align="center" width=90%}
+
+![Korrelation von Parameterschätzern aus `eRm` und `mirt`.](./_figures/905-rasch-erm-mirt-korrelationen.pdf){#fig-irt-rasch-erm-mirt-korrelationen fig-align="center" width=90%}
+
+## Selbstkontrollfragen {#sec-irt-selbstkontrollfragen}
+
+1. Geben Sie die Definition der logistischen Funktion wieder.
+2. Geben Sie das Theorem zu den Eigenschaften der logistischen Funktion wieder.
+3. Geben Sie die Definition des Birnbaum-Modells wieder.
+4. Erläutern Sie die Bedeutung des Itemschwierigkeitsparameters des Birnbaum-Modells.
+5. Erläutern Sie die Bedeutung des Itemdiskriminationsparameters des Birnbaum-Modells.
+6. Erläutern Sie die Bedeutung des Itemrateparameters des Birnbaum-Modells.
+7. Erläutern Sie den Begriff der spezifischen Objektivität im Kontext des Rasch-Modells.
+8. Geben Sie die Definition des Rasch-Modells wieder.
+9. Geben Sie das Theorem zum Rasch-Modell und 1PL-Birnbaum-Modell wieder.
+10. Erläutern Sie die invarianten Vergleichseigenschaften des Rasch-Modells auf Parameterebene.
+11. Erläutern Sie die invarianten Vergleichseigenschaften des Rasch-Modells auf Odds-Ratio-Ebene.
