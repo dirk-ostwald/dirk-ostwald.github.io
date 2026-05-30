@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>17&nbsp; Data management – Probabilistic Data Science for Psychology</title>
+<title>36&nbsp; Model formulation – Probabilistic Data Science for Psychology</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -85,8 +85,8 @@ div.csl-indent {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../_part_2/208-Control-Structures.html" rel="next">
-<link href="../_part_2/206-Lists-Dataframes-and-Tibbles.html" rel="prev">
+<link href="../References.html" rel="next">
+<link href="../_part_5/502-Correlation.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
@@ -126,6 +126,35 @@ div.csl-indent {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -163,7 +192,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../_part_2/200-Imperative-Programming.html">Imperative programming</a></li><li class="breadcrumb-item"><a href="../_part_2/207-Data-Management.html"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Data management</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../_part_5/500-General-Linear-Model.html">General linear model</a></li><li class="breadcrumb-item"><a href="../_part_5/503-Model-Formulation.html"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Model formulation</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -299,7 +328,7 @@ div.csl-indent {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../_part_2/207-Data-Management.html" class="sidebar-item-text sidebar-link active">
+  <a href="../_part_2/207-Data-Management.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Data management</span></span></a>
   </div>
 </li>
@@ -446,7 +475,7 @@ div.csl-indent {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../_part_5/503-Model-Formulation.html" class="sidebar-item-text sidebar-link">
+  <a href="../_part_5/503-Model-Formulation.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Model formulation</span></span></a>
   </div>
 </li>
@@ -464,16 +493,16 @@ div.csl-indent {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#sec-the-fair-data-ideal" id="toc-sec-the-fair-data-ideal" class="nav-link active" data-scroll-target="#sec-the-fair-data-ideal"><span class="header-section-number">17.1</span> The FAIR data ideal</a></li>
-  <li><a href="#sec-file-formats" id="toc-sec-file-formats" class="nav-link" data-scroll-target="#sec-file-formats"><span class="header-section-number">17.2</span> File formats</a>
+  <li><a href="#general-theory" id="toc-general-theory" class="nav-link active" data-scroll-target="#general-theory"><span class="header-section-number">36.1</span> General theory</a>
   <ul class="collapse">
-  <li><a href="#csv-and-.tsv-files" id="toc-csv-and-.tsv-files" class="nav-link" data-scroll-target="#csv-and-.tsv-files"><span class="header-section-number">17.2.1</span> .csv and .tsv files</a></li>
-  <li><a href="#json-files" id="toc-json-files" class="nav-link" data-scroll-target="#json-files"><span class="header-section-number">17.2.2</span> .json files</a></li>
+  <li><a href="#example-1-independent-and-identically-normally-distributed-random-variables" id="toc-example-1-independent-and-identically-normally-distributed-random-variables" class="nav-link" data-scroll-target="#example-1-independent-and-identically-normally-distributed-random-variables">Example (1) Independent and identically normally distributed random variables</a></li>
+  <li><a href="#example-2-simple-linear-regression" id="toc-example-2-simple-linear-regression" class="nav-link" data-scroll-target="#example-2-simple-linear-regression">Example (2) Simple linear regression</a></li>
   </ul></li>
-  <li><a href="#sec-directory-management" id="toc-sec-directory-management" class="nav-link" data-scroll-target="#sec-directory-management"><span class="header-section-number">17.3</span> Directory management</a></li>
-  <li><a href="#sec-data-import-and-data-export" id="toc-sec-data-import-and-data-export" class="nav-link" data-scroll-target="#sec-data-import-and-data-export"><span class="header-section-number">17.4</span> Data import and data export</a></li>
+  <li><a href="#identifiability-and-estimability" id="toc-identifiability-and-estimability" class="nav-link" data-scroll-target="#identifiability-and-estimability"><span class="header-section-number">36.2</span> Identifiability and estimability</a></li>
+  <li><a href="#design-spectrum" id="toc-design-spectrum" class="nav-link" data-scroll-target="#design-spectrum"><span class="header-section-number">36.3</span> Design spectrum</a></li>
+  <li><a href="#bibliographic-remarks" id="toc-bibliographic-remarks" class="nav-link" data-scroll-target="#bibliographic-remarks"><span class="header-section-number">36.4</span> Bibliographic remarks</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/_part_2/207-Data-Management.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/_part_5/503-Model-Formulation.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></nav>
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
@@ -482,9 +511,9 @@ div.csl-indent {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../_part_2/200-Imperative-Programming.html">Imperative programming</a></li><li class="breadcrumb-item"><a href="../_part_2/207-Data-Management.html"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Data management</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../_part_5/500-General-Linear-Model.html">General linear model</a></li><li class="breadcrumb-item"><a href="../_part_5/503-Model-Formulation.html"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Model formulation</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span id="sec-data-management" class="quarto-section-identifier"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Data management</span></span></h1>
+<h1 class="title"><span id="sec-model-formulation" class="quarto-section-identifier"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Model formulation</span></span></h1>
 </div>
 
 
@@ -501,403 +530,253 @@ div.csl-indent {
 </header>
 
 
-<p>In this section, we want to introduce some general terminology for dealing with research data, discuss common formats for the longer-term storage of data, and finally consider the practical reading and saving of data in the context of <strong>R</strong> directory management.</p>
-<section id="sec-the-fair-data-ideal" class="level2" data-number="17.1">
-<h2 data-number="17.1" class="anchored" data-anchor-id="sec-the-fair-data-ideal"><span class="header-section-number">17.1</span> The FAIR data ideal</h2>
-<p>The FAIR data ideal is a principle for the management of research data that takes into account the broad dissemination, usefulness, and transparency of research data in the digital age. <em>Research data</em> are generally understood as “electronically represented analog or digital data that arise or are used in the course of scientific projects, for example through observations, experiments, simulations, surveys, questionnaires, source research, recordings of audio and video sequences, digitization of objects, and analyses” (<span class="citation" data-cites="ratfurinformationsinfrastrukturen2017">Rat für Informationsinfrastrukturen (<a href="#ref-ratfurinformationsinfrastrukturen2017" role="doc-biblioref">2017</a>)</span>). Specifically, these include numerical arrays or character arrays, but also computer software such as <strong>R</strong> scripts, digital tools, workflows, and analysis pipelines.</p>
-<p>In addition to these data forms, sometimes also referred to as <em>primary data</em>, so-called <em>metadata</em> are important for the FAIR data ideal. These are data that represent information about other data. One distinguishes, for example, <em>descriptive</em>, <em>structural</em>, and <em>administrative metadata</em> (<span class="citation" data-cites="riley2017">Riley (<a href="#ref-riley2017" role="doc-biblioref">2017</a>)</span>, <span class="citation" data-cites="ulrich2022">Ulrich et al. (<a href="#ref-ulrich2022" role="doc-biblioref">2022</a>)</span>).</p>
+<section id="general-theory" class="level2" data-number="36.1">
+<h2 data-number="36.1" class="anchored" data-anchor-id="general-theory"><span class="header-section-number">36.1</span> General theory</h2>
+<p>We define the general linear model (GLM) as follows.</p>
+<div id="def-general-linear-model" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 36.1 (General linear model)</strong></span> Let <span id="eq-glm"><span class="math display">\[
+y = X\beta + \varepsilon
+\tag{36.1}\]</span></span> where</p>
 <ul>
-<li><em>Descriptive metadata</em> serve to find and identify a data source. Examples of descriptive metadata include the title of a scientific publication or its Digital Object Identifier (DOI, <span class="citation" data-cites="rosenblatt1997">Rosenblatt (<a href="#ref-rosenblatt1997" role="doc-biblioref">1997</a>)</span>). DOIs are alphanumeric identifiers that uniquely identify digital objects and function as persistent links to objects on the internet.</li>
-<li><em>Structural metadata</em> are metadata about data containers and represent the structural composition of a data source. Examples are the order of the pages of a book or the for-loop encoding of three-dimensional data objects.</li>
-<li><em>Administrative metadata</em>, finally, are data that facilitate the management of a data source. Examples of administrative metadata are provenance, file format, access rights, or other technical information about a data source.</li>
+<li><span class="math inline">\(y\)</span> is an <span class="math inline">\(n\)</span>-dimensional observable random vector, called the <em>data</em>,</li>
+<li><span class="math inline">\(X \in \mathbb{R}^{n \times p}\)</span> for <span class="math inline">\(n&gt;p\)</span> and <span class="math inline">\(\mbox{rank}(X)=p\)</span> is a matrix, called the <em>design matrix</em>,</li>
+<li><span class="math inline">\(\beta \in \mathbb{R}^{p}\)</span> is an unknown parameter vector, called the <em>beta-parameter vector</em>,</li>
+<li><span class="math inline">\(\varepsilon\)</span> is an <span class="math inline">\(n\)</span>-dimensional unobservable random vector, called the <em>random error</em>, for which it is assumed that, with an unknown variance parameter <span class="math inline">\(\sigma^{2}&gt;0\)</span>, <span class="math display">\[\begin{equation}
+\varepsilon \sim N\left(0_{n}, \sigma^{2} I_{n}\right)
+\end{equation}\]</span></li>
 </ul>
-<p>The FAIR ideal for research data management has its origin in discussions within the FORCE11 conference series and was communicated academically in 2016 by <span class="citation" data-cites="wilkinson2016">Wilkinson et al. (<a href="#ref-wilkinson2016" role="doc-biblioref">2016</a>)</span>. In essence, it states that research data should be prepared and maintained as <em>Findable</em>, <em>Accessible</em>, <em>Interoperable</em>, and <em>Reusable</em> for humans and machines. Specifically, the FAIR data ideal formulates the following requirements for the management of research (meta)data:</p>
-<p><strong>Findability</strong></p>
-<ul>
-<li>F1. (Meta)data have a persistent globally unique identifier.</li>
-<li>F2. Data are enriched with metadata.</li>
-<li>F3. Metadata are clearly assigned to a dataset.</li>
-<li>F4. (Meta)data are indexed in a searchable resource.</li>
-</ul>
-<p><strong>Accessibility</strong></p>
-<ul>
-<li>A1. (Meta)data are retrievable with standardized protocols.</li>
-<li>A1.1. The protocol used is open, free, and usable.</li>
-<li>A1.2. The protocol enables authentication and assignment of rights.</li>
-<li>A2. Metadata remain accessible even if data are no longer available.</li>
-</ul>
-<p><strong>Interoperability</strong></p>
-<ul>
-<li>I1. (Meta)data use a formal, accessible, shared, and broadly applicable language for knowledge representation.</li>
-<li>I2. (Meta)data use vocabularies that follow the FAIR principles.</li>
-<li>I3. (Meta)data contain qualified references to other (meta)data.</li>
-</ul>
-<p><strong>Reusability</strong></p>
-<ul>
-<li>R1. (Meta)data have a variety of accurate and relevant attributes.</li>
-<li>R1.1. (Meta)data contain a clear usage license.</li>
-<li>R1.2. (Meta)data contain detailed provenance information.</li>
-<li>R1.3. (Meta)data meet the standards of the respective disciplinary community.</li>
-</ul>
-<p>The demand for fair research data management is now quite widespread, although the FAIR principles can be implemented with varying degrees of bureaucratic effort. It remains to be noted, however, that at present the FAIR principles are essentially an ideal of data management to be aspired to, and by no means all research data are available in FAIR form. In fact, dealing with digital research data remains very unstructured, and the German university system in particular only very slowly understands digital data management as a core task. On a larger, although project-based and thus not sustainable, scale, the initiative for a <a href="https://www.nfdi.de/">National Research Data Infrastructure (NFDI)</a> is trying to improve German digital research data management. Unfortunately, it must still be noted that many publicly funded researchers neither want to systematically prepare the research data they collect nor make them available to the public. Here, a cultural change toward greater scientific transparency therefore remains to be hoped for, and open, publicly funded research (Open Research, cf., e.g., <span class="citation" data-cites="toelch2018">Toelch &amp; Ostwald (<a href="#ref-toelch2018" role="doc-biblioref">2018</a>)</span>, <span class="citation" data-cites="miedema2022">Miedema (<a href="#ref-miedema2022" role="doc-biblioref">2022</a>)</span>, <span class="citation" data-cites="bertram2023">Bertram et al. (<a href="#ref-bertram2023" role="doc-biblioref">2023</a>)</span>) remains an ideal to be aspired to.</p>
+<p>Then <a href="#eq-glm" class="quarto-xref">Equation&nbsp;<span>36.1</span></a> is called the <em>general linear model (GLM)</em>.</p>
+</div>
+<p>In <a href="#eq-glm" class="quarto-xref">Equation&nbsp;<span>36.1</span></a>, we refer to <span class="math inline">\(X\beta \in \mathbb{R}^{n}\)</span> as the <em>deterministic aspect</em> of the GLM and to <span class="math inline">\(\varepsilon\)</span> as the <em>probabilistic aspect</em> of the GLM. The GLM thus postulates that data arise by adding a deterministic aspect <span class="math inline">\(X\beta \in \mathbb{R}^{n}\)</span> and a multivariate normally distributed probabilistic aspect <span class="math inline">\(\varepsilon\)</span>. Note that <span class="math inline">\(X\beta \in \mathbb{R}^{n}\)</span> is an <span class="math inline">\(n\)</span>-dimensional vector and <span class="math inline">\(\varepsilon\)</span> is an <span class="math inline">\(n\)</span>-dimensional random vector. The resulting vector <span class="math inline">\(y\)</span> is a random vector because it results from adding the random vector <span class="math inline">\(\varepsilon\)</span> to the vector <span class="math inline">\(X\beta \in \mathbb{R}^{n}\)</span>. The GLM is thus a probabilistic model in which datasets represented by <span class="math inline">\(y\)</span> are modeled. From a generative perspective, in the GLM a dataset <span class="math inline">\(y \in \mathbb{R}^{n}\)</span> arises as a realization of <span class="math inline">\(y\)</span> by adding the deterministic model aspect and an unobservable realization <span class="math inline">\(e \in \mathbb{R}^{n}\)</span> of <span class="math inline">\(\varepsilon\)</span>, <span class="math display">\[\begin{equation}
+y=X\beta+e
+\end{equation}\]</span> with <span class="math inline">\(y \in \mathbb{R}^{n}, X\beta \in \mathbb{R}^{n}\)</span>, and <span class="math inline">\(e \in \mathbb{R}^{n}\)</span>.</p>
+<p>The total number of parameters of the GLM is <span class="math inline">\(p+1\)</span>, consisting of <span class="math inline">\(p\)</span> scalar beta parameters and one variance parameter <span class="math inline">\(\sigma^{2}\)</span>. The beta-parameter vector <span class="math inline">\(\beta \in \mathbb{R}^{p}\)</span> is also called a weight vector or effect vector. Its entries weight the entries of the columns of the design matrix <span class="math inline">\(X \in \mathbb{R}^{n \times p}\)</span> in generating the deterministic model aspect <span class="math inline">\(X\beta \in \mathbb{R}^{n}\)</span>. The columns of the design matrix are named differently in different contexts; common terms are, for example, predictors, regressors, or covariates. In general, the columns of the design matrix model independent variables, and the data vector models dependent variables.</p>
+<p>Note that the covariance-matrix parameter of <span class="math inline">\(\varepsilon\)</span> is assumed to be spherical. It follows directly that <span class="math inline">\(\varepsilon_{1}, \ldots, \varepsilon_{n}\)</span> are independent normally distributed random variables with identical variance parameter. Because the expectation parameter of <span class="math inline">\(\varepsilon\)</span> is additionally assumed to be <span class="math inline">\(0_{n} \in \mathbb{R}^{n}\)</span>, the <span class="math inline">\(\varepsilon_{1}, \ldots, \varepsilon_{n}\)</span> are also identically normally distributed random variables. If <span class="math inline">\(x_{ij} \in \mathbb{R}\)</span> denotes the <span class="math inline">\(ij\)</span>th element of the design matrix <span class="math inline">\(X \in \mathbb{R}^{n \times p}\)</span>, then, for each component <span class="math inline">\(y_{i}, i=1, \ldots, n\)</span> of <span class="math inline">\(y\)</span>, <a href="#eq-glm" class="quarto-xref">Equation&nbsp;<span>36.1</span></a> implies that <span class="math display">\[\begin{equation}
+y_{i}
+= x_{i 1}\beta_{1} + x_{i2}\beta_{2} + \cdots + x_{ip}\beta_{p} + \varepsilon_{i}
+\mbox{ with }
+\varepsilon_{1},\ldots,\varepsilon_{n} \sim N\left(0, \sigma^{2}\right).
+\end{equation}\]</span> We record the distribution of the data vector <span class="math inline">\(y\)</span> implied by <a href="#eq-glm" class="quarto-xref">Equation&nbsp;<span>36.1</span></a> in the following theorem.</p>
+<div id="thm-data-distribution-of-the-general-linear-model" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 36.1 (Data distribution of the general linear model)</strong></span> Let <span class="math display">\[\begin{equation}
+y=X\beta+\varepsilon \mbox{ with } \varepsilon \sim N\left(0_{n},\sigma^{2} I_{n}\right)
+\end{equation}\]</span> be the GLM. Then <span class="math display">\[\begin{equation}
+y \sim N\left(\mu, \sigma^{2} I_{n}\right) \mbox{ with } \mu:=X\beta \in \mathbb{R}^{n}
+\end{equation}\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>By the theorem on linear-affine transformations of multivariate normal distributions, for <span class="math display">\[\begin{equation}
+\varepsilon \sim N\left(0_{n}, \sigma^{2} I_{n}\right) \mbox{ and } y  := I_{n} \varepsilon + X\beta,
+\end{equation}\]</span> we have <span class="math display">\[\begin{equation}
+y
+\sim N\left(I_{n} 0_{n}+X\beta, I_{n}\left(\sigma^{2} I_{n}\right) I_{n}^{T}\right)
+= N\left(X\beta, \sigma^{2} I_{n}\right).
+\end{equation}\]</span> With the definition <span class="math inline">\(\mu:=X\beta \in \mathbb{R}^{n}\)</span>, the statement of the theorem follows directly.</p>
+</div>
+<p>In the GLM, the data <span class="math inline">\(y\)</span> are therefore an <span class="math inline">\(n\)</span>-dimensional normally distributed random vector with expectation parameter <span class="math inline">\(\mu=X\beta \in \mathbb{R}^{n}\)</span> and covariance-matrix parameter <span class="math inline">\(\sigma^{2} I_{n} \in \mathbb{R}^{n \times n}\)</span>. The GLM is thus a multivariate normal distribution whose expectation parameter is parameterized by means of a design matrix and a beta-parameter vector. Moreover, the components <span class="math inline">\(y_{1}, \ldots, y_{n}\)</span> of <span class="math inline">\(y\)</span>, that is, the random variables that model scalar data points, are independent normally distributed random variables of the form <span class="math display">\[\begin{equation}
+y_{i} \sim N\left((X\beta)_{i}, \sigma^{2}\right) \mbox{ for } i=1, \ldots, n.
+\end{equation}\]</span> Because, however, <span class="math inline">\((X\beta)_{i} \neq(X\beta)_{j}\)</span> generally holds for <span class="math inline">\(i \neq j\)</span>, the <span class="math inline">\(y_{i}, i=1, \ldots, n\)</span> are generally not identically distributed. The scenario of independent and identically normally distributed random variables can, of course, be formulated as a special case of the GLM.</p>
+<section id="example-1-independent-and-identically-normally-distributed-random-variables" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="example-1-independent-and-identically-normally-distributed-random-variables">Example (1) Independent and identically normally distributed random variables</h3>
+<p>We consider the scenario of <span class="math inline">\(n\)</span> independent and identically normally distributed random variables with expectation parameter <span class="math inline">\(\mu \in \mathbb{R}\)</span> and variance parameter <span class="math inline">\(\sigma^{2}\)</span>, <span id="eq-iid-nrvs"><span class="math display">\[
+y_{1}, \ldots, y_{n} \sim N\left(\mu, \sigma^{2}\right).
+\tag{36.2}\]</span></span> Then <a href="#eq-iid-nrvs" class="quarto-xref">Equation&nbsp;<span>36.2</span></a> is equivalent to <span class="math display">\[\begin{equation}
+y_{i} = \mu+\varepsilon_{i},
+\varepsilon_{i} \sim N\left(0, \sigma^{2}\right)
+\mbox{ for } i=1, \ldots, n
+\mbox{ with independent } \varepsilon_{i}.
+\end{equation}\]</span> In matrix notation, this is in turn equivalent to the GLM special case <span class="math display">\[\begin{equation}
+y \sim N\left(X\beta, \sigma^{2} I_{n}\right)
+\mbox{ with } X:=1_{n} \in \mathbb{R}^{n \times 1}, \beta:=\mu \in \mathbb{R}^{1}, \sigma^{2}&gt;0.
+\end{equation}\]</span> In <strong>R</strong>, realizations of the GLM can easily be obtained using a random-number generator for multivariate normal distributions by specifying the corresponding expectation and covariance parameters. The following <strong>R</strong> code shows how <span class="math inline">\(n\)</span> independent and identically normally distributed scalar data points can be realized in the sense of the GLM. Note that <span class="math inline">\(n\)</span> scalar data points correspond to one realization of the GLM.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># model formulation</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(MASS)                                                                   <span class="co"># multivariate normal distribution</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">set.seed</span>(<span class="dv">0</span>)                                                                     <span class="co"># random number generator seed</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a>n      <span class="ot">=</span> <span class="dv">12</span>                                                                     <span class="co"># number of data points</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a>p      <span class="ot">=</span> <span class="dv">1</span>                                                                      <span class="co"># number of beta parameters</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a>X      <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="dv">1</span>,n), <span class="at">nrow =</span> n)                                             <span class="co"># design matrix</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a>I_n    <span class="ot">=</span> <span class="fu">diag</span>(n)                                                                <span class="co"># n x n identity matrix</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a>beta   <span class="ot">=</span> <span class="dv">2</span>                                                                      <span class="co"># true, but unknown, beta parameter</span></span>
+<span id="cb1-9"><a href="#cb1-9"></a>sigsqr <span class="ot">=</span> <span class="dv">1</span>                                                                      <span class="co"># true, but unknown, variance parameter</span></span>
+<span id="cb1-10"><a href="#cb1-10"></a></span>
+<span id="cb1-11"><a href="#cb1-11"></a><span class="co"># data realization</span></span>
+<span id="cb1-12"><a href="#cb1-12"></a>y      <span class="ot">=</span> <span class="fu">mvrnorm</span>(<span class="dv">1</span>, X <span class="sc">%*%</span> beta, sigsqr<span class="sc">*</span>I_n)                                     <span class="co"># one realization of an n-dimensional random vector</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Realizations:  1.2 2.76 4.4 1.99 1.71 1.07 0.46 2.41 3.27 3.33 1.67 3.26</code></pre>
+</div>
+</div>
 </section>
-<section id="sec-file-formats" class="level2" data-number="17.2">
-<h2 data-number="17.2" class="anchored" data-anchor-id="sec-file-formats"><span class="header-section-number">17.2</span> File formats</h2>
-<p>In general, file formats define the syntax and semantics of data within a file. File formats are bijective mappings of information onto binary long-term storage. In general, one distinguishes <em>data file formats</em> from <em>software file formats</em>, <em>textual</em> from <em>binary file formats</em>, and <em>open</em> from <em>proprietary</em>, that is, copyright-protected, file formats. For binary data file formats, reading data, inspecting them, and manipulating them is generally possible only with special software. Examples of binary file formats are <em>.docx</em>, <em>.pdf</em>, <em>.xlsx</em>, <em>.jpg</em>, and <em>.mp4</em> files. Binary file formats are often proprietary. In the past, binary file formats were also preferred for research data because of their lower storage requirements. Today, by contrast, textual data file formats such as <em>.txt</em>, <em>.csv</em>, <em>.tsv</em>, and <em>.json</em> are favored. In these formats, reading the stored data, inspecting them, and manipulating them with simple general editors such as VS Code is straightforward, and the file formats are generally not proprietary. <a href="#fig-file-formats" class="quarto-xref">Figure&nbsp;<span>17.1</span></a> shows the representation of a binary data format and a textual data format in Windows Notepad. In general, open textual data file formats are therefore appropriate in the research context and in the spirit of the FAIR principles. As examples, we want to consider the .csv, .tsv, and .json file formats as textual file formats in more detail here.</p>
-<div id="fig-file-formats" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<section id="example-2-simple-linear-regression" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="example-2-simple-linear-regression">Example (2) Simple linear regression</h3>
+<p>We consider the generative model of simple linear regression <span class="math display">\[\begin{equation}
+y_{i}=\beta_{0}+\beta_{1} x_{i}+\varepsilon_{i}, \varepsilon_{i} \sim N\left(0, \sigma^{2}\right) \mbox{ for } i=1, \ldots, n \text {, }
+\end{equation}\]</span> We have already seen that this model is equivalent to the normal-distribution model of regression <span class="math display">\[\begin{equation}
+y_{i} \sim N\left(\mu_{i}, \sigma^{2}\right) \mbox{ with } \mu_{i}:=\beta_{0}+\beta_{1} x_{i} \mbox{ for } i=1, \ldots, n.
+\end{equation}\]</span> In matrix notation, this is in turn equivalent to the GLM special case <span id="eq-glm-slr"><span class="math display">\[
+y \sim N\left(X\beta, \sigma^{2} I_{n}\right) \mbox{ with } X:=\left(\begin{array}{cc}
+1 &amp; x_{1} \\
+1 &amp; x_{2} \\
+\vdots &amp; \vdots \\
+1 &amp; x_{n}
+\end{array}\right) \in \mathbb{R}^{n \times 2}, \beta:=\left(\begin{array}{c}
+\beta_{0} \\
+\beta_{1}
+\end{array}\right) \in \mathbb{R}^{2}, \sigma^{2}&gt;0.
+\tag{36.3}\]</span></span> <strong>R</strong> code for simulating realizations of a simple linear regression therefore has a very similar structure to the <strong>R</strong> code above for simulating realizations of <span class="math inline">\(n\)</span> independent and identically normally distributed random variables.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># model formulation</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="fu">library</span>(MASS)                                                                   <span class="co"># multivariate normal distribution</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="fu">set.seed</span>(<span class="dv">0</span>)                                                                     <span class="co"># random number generator seed</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a>n      <span class="ot">=</span> <span class="dv">10</span>                                                                     <span class="co"># number of data points</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a>p      <span class="ot">=</span> <span class="dv">2</span>                                                                      <span class="co"># number of beta parameters</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a>x      <span class="ot">=</span> <span class="dv">1</span><span class="sc">:</span>n                                                                    <span class="co"># predictor values</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a>X      <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">1</span>,n),x), <span class="at">nrow =</span> n)                                        <span class="co"># design matrix</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a>I_n    <span class="ot">=</span> <span class="fu">diag</span>(n)                                                                <span class="co"># n x n identity matrix</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a>beta   <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="at">nrow =</span> p)                                               <span class="co"># true, but unknown, beta parameter</span></span>
+<span id="cb3-10"><a href="#cb3-10"></a>sigsqr <span class="ot">=</span> <span class="dv">1</span>                                                                      <span class="co"># true, but unknown, variance parameter</span></span>
+<span id="cb3-11"><a href="#cb3-11"></a></span>
+<span id="cb3-12"><a href="#cb3-12"></a><span class="co"># data realization</span></span>
+<span id="cb3-13"><a href="#cb3-13"></a>y      <span class="ot">=</span> <span class="fu">mvrnorm</span>(<span class="dv">1</span>, X <span class="sc">%*%</span> beta, sigsqr<span class="sc">*</span>I_n)                                     <span class="co"># one realization of an n-dimensional random vector</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Realizations:  3.4 1.99 2.71 3.07 3.46 6.41 8.27 9.33 8.67 11.26</code></pre>
+</div>
+</div>
+<p>We visualize the above realization in <a href="#fig-glm-slr" class="quarto-xref">Figure&nbsp;<span>36.1</span></a>.</p>
+<div id="fig-glm-slr" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-file-formats-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="./_figures/207-file-formats.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+<div aria-describedby="fig-glm-slr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/503-glm-slr.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-file-formats-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;17.1: Binary and textual file formats as represented in an editor.
-</figcaption>
-</figure>
-</div>
-<section id="csv-and-.tsv-files" class="level3" data-number="17.2.1">
-<h3 data-number="17.2.1" class="anchored" data-anchor-id="csv-and-.tsv-files"><span class="header-section-number">17.2.1</span> .csv and .tsv files</h3>
-<p>.csv (comma-separated values) and .tsv files (tab-separated values) are important file formats for storing simple, tabularly structured data. In general, .csv and .tsv represent datasets linked row by row. Data fields within a row are separated by commas (.csv) or tab characters (.tsv), and individual datasets are separated from one another by line breaks. The dataset in the first row of a .csv or .tsv file typically contains the definition of the column names and is called the header record. A typical example of a .csv file is shown in <a href="#fig-file-formats" class="quarto-xref">Figure&nbsp;<span>17.1</span></a> (right). Here, the rows represent experimental units (here participants), and the columns represent different variables for which a value was determined for the participant.</p>
-<p>In the context of data analysis, one distinguishes a <em>wide-format</em> and a <em>long-format</em> data representation for .csv and .tsv files. In wide-format data representation, all variables of an experimental unit are represented in one row, as in the example above; cf. <a href="#tbl-wide-format" class="quarto-xref">Table&nbsp;<span>17.1</span></a>. For some data analyses, however, it is more helpful to distribute the data of an experimental unit across rows. This leads to the so-called long format, as shown in <a href="#tbl-long-format" class="quarto-xref">Table&nbsp;<span>17.2</span></a>. In general, the wide format is often more helpful for a first intuitive understanding of a dataset, whereas the long format usually represents data more consistently with the model architecture in model-based analyses.</p>
-<div id="tbl-wide-format" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-wide-format-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;17.1: Wide format (EU: experimental unit, V1,V2,V3: variables)
-</figcaption>
-<div aria-describedby="tbl-wide-format-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>EU</th>
-<th>V1</th>
-<th>V2</th>
-<th>V3</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>1</td>
-<td>10.1</td>
-<td>67.5</td>
-<td>4</td>
-</tr>
-<tr class="even">
-<td>2</td>
-<td>12.9</td>
-<td>51.2</td>
-<td>2</td>
-</tr>
-<tr class="odd">
-<td>3</td>
-<td>20.4</td>
-<td>70.8</td>
-<td>5</td>
-</tr>
-<tr class="even">
-<td>4</td>
-<td>17.5</td>
-<td>60.3</td>
-<td>7</td>
-</tr>
-</tbody>
-</table>
-</div>
-</figure>
-</div>
-<div id="tbl-long-format" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-long-format-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;17.2: Long format (EU: experimental unit, V1,V2,V3: variables)
-</figcaption>
-<div aria-describedby="tbl-long-format-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Unit</th>
-<th>Variable</th>
-<th>Measured value</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>1</td>
-<td>V1</td>
-<td>10.1</td>
-</tr>
-<tr class="even">
-<td>1</td>
-<td>V2</td>
-<td>67.5</td>
-</tr>
-<tr class="odd">
-<td>1</td>
-<td>V3</td>
-<td>4</td>
-</tr>
-<tr class="even">
-<td>2</td>
-<td>V1</td>
-<td>12.9</td>
-</tr>
-<tr class="odd">
-<td>2</td>
-<td>V2</td>
-<td>51.2</td>
-</tr>
-<tr class="even">
-<td>2</td>
-<td>V3</td>
-<td>2</td>
-</tr>
-<tr class="odd">
-<td>3</td>
-<td>V1</td>
-<td>20.4</td>
-</tr>
-<tr class="even">
-<td>3</td>
-<td>V2</td>
-<td>70.8</td>
-</tr>
-<tr class="odd">
-<td>3</td>
-<td>V3</td>
-<td>5</td>
-</tr>
-<tr class="even">
-<td>4</td>
-<td>V1</td>
-<td>17.5</td>
-</tr>
-<tr class="odd">
-<td>4</td>
-<td>V2</td>
-<td>60.3</td>
-</tr>
-<tr class="even">
-<td>4</td>
-<td>V3</td>
-<td>7</td>
-</tr>
-</tbody>
-</table>
-</div>
-</figure>
-</div>
-</section>
-<section id="json-files" class="level3" data-number="17.2.2">
-<h3 data-number="17.2.2" class="anchored" data-anchor-id="json-files"><span class="header-section-number">17.2.2</span> .json files</h3>
-<p>.json (JavaScript Object Notation) is a textual data format used to store structured data in key-value form. It has similarities to R lists, especially to named list elements, and is therefore well suited as a format for storing metadata.</p>
-<p>A .json file consists of objects that are written in curly braces { } and contain a comma-separated list of properties. Each property is a key-value pair, where the key is always written as a string in quotation marks (” “). The value can in turn be an object, an array, a string, a Boolean, or a number. Figure <a href="#fig-json" class="quarto-xref">Figure&nbsp;<span>17.2</span></a> shows the content of a .json file for storing student information.</p>
-<div id="fig-json" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-json-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="./_figures/207-json.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:50.0%">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-json-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;17.2: .json file format.
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-glm-slr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;36.1: Realization of a simple linear regression.
 </figcaption>
 </figure>
 </div>
 </section>
 </section>
-<section id="sec-directory-management" class="level2" data-number="17.3">
-<h2 data-number="17.3" class="anchored" data-anchor-id="sec-directory-management"><span class="header-section-number">17.3</span> Directory management</h2>
-<p>Because computer directory systems are usually represented in words (e.g., <code>C:\Users</code>) rather than numerically, a basis for the automated reading of long-term stored data into memory and, conversely, for saving data from memory in long-term storage is working with so-called <em>strings</em> (character strings). Strings are generated in <strong>R</strong> with quotation marks or apostrophes:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># quotation marks are the string standard</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">c</span>(<span class="st">"This is a character vector"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "This is a character vector"</code></pre>
+<section id="identifiability-and-estimability" class="level2" data-number="36.2">
+<h2 data-number="36.2" class="anchored" data-anchor-id="identifiability-and-estimability"><span class="header-section-number">36.2</span> Identifiability and estimability</h2>
+<p>Above, we saw that the data distribution of the GLM is given by <span class="math display">\[\begin{equation}
+y \sim N\left(\mu, \sigma^{2} I_{n}\right)
+\mbox{ with } \mu:=X\beta \in \mathbb{R}^{n} \mbox{ for } X \in \mathbb{R}^{n \times p}, \beta \in \mathbb{R}^{p}.
+\end{equation}\]</span> The GLM is therefore a multivariate normal distribution with a special expectation-parameterization. To introduce the concepts of identifiability and estimability in the context of GLMs, it is helpful first to generalize the concept of a <em>parameterization of a multivariate normal distribution</em> somewhat.</p>
+<div id="def-beta-parameterization" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 36.2 (Beta parameterization)</strong></span> Let <span class="math inline">\(N\left(\mu, \sigma^{2} I_{n}\right)\)</span> be a multivariate normal distribution with spherical covariance-matrix parameter. We then call a multivariate, vector-valued function of the form <span class="math display">\[\begin{equation}
+f: \mathbb{R}^{p} \rightarrow \mathbb{R}^{n}, \beta \mapsto f(\beta)=: \mu
+\end{equation}\]</span> a beta parameterization of <span class="math inline">\(\mu\)</span>.</p>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># apostrophes can help with quotation marks in the string</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="fu">c</span>(<span class="st">'This is a "string"'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "This is a \"string\""</code></pre>
+<p>The GLM is evidently based on the design-matrix-dependent beta parameterization <span class="math display">\[\begin{equation}
+f: \mathbb{R}^{p} \rightarrow \mathbb{R}^{n}, \beta \mapsto f(\beta):=X\beta.
+\end{equation}\]</span> Using the concept of beta parameterization, we can now formulate the concept of <em>beta-parameter identifiability</em>:</p>
+<div id="def-beta-parameter-identifiability" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 36.3 (Beta-parameter identifiability)</strong></span> Let <span class="math inline">\(N\left(\mu, \sigma^{2} I_{n}\right)\)</span> be a multivariate normal distribution with spherical covariance-matrix parameter, and let <span class="math inline">\(f\)</span> be a beta parameterization of <span class="math inline">\(\mu\)</span>. <span class="math inline">\(\beta\)</span> is called identifiable if and only if, for arbitrary <span class="math inline">\(\beta_{1}, \beta_{2} \in \mathbb{R}^{p}\)</span>, it holds that <span class="math inline">\(f\left(\beta_{1}\right)=f\left(\beta_{2}\right)\)</span> implies <span class="math inline">\(\beta_{1}=\beta_{2}\)</span>.</p>
 </div>
+<p>The beta parameters of general linear models whose design matrix has full rank are identifiable. This is the statement of the following theorem:</p>
+<div id="thm-beta-parameter-identifiability-under-full-design-matrix-rank" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 36.2 (Beta-parameter identifiability under full design-matrix rank)</strong></span> Let <span class="math inline">\(y \sim N\left(X\beta, \sigma^{2} I_{n}\right)\)</span> be the data distribution of a GLM with <span class="math inline">\(\mbox{rank}(X)=p\)</span>. Then <span class="math inline">\(\beta\)</span> is identifiable.</p>
 </div>
-<p>The function <code>paste()</code> converts vectors to character and concatenates them element by element.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># conversion and concatenation of one-element double vectors</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a><span class="fu">paste</span>(<span class="dv">1</span>,<span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "1 2"</code></pre>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>For <span class="math inline">\(X \in \mathbb{R}^{n \times p}\)</span>, <span class="math inline">\(\mbox{rank}(X)=p\)</span> implies that <span class="math inline">\(\left(X^{T} X\right) \in \mathbb{R}^{p \times p}\)</span> is an invertible matrix. It then follows, for arbitrary <span class="math inline">\(\beta_{1}, \beta_{2} \in \mathbb{R}^{p}\)</span>, that <span class="math display">\[\begin{equation}
+\begin{aligned}
+f\left(\beta_{1}\right) = f\left(\beta_{2}\right)
+&amp; \Leftrightarrow X\beta_{1}=X\beta_{2} \\
+&amp; \Leftrightarrow X^{T} X\beta_{1}=X^{T} X\beta_{2} \\
+&amp; \Leftrightarrow\left(X^{T} X\right)^{-1} X^{T} X\beta_{1}=\left(X^{T} X\right)^{-1} X^{T} X\beta_{2} \\
+&amp; \Leftrightarrow \beta_{1}=\beta_{2}.
+\end{aligned}
+\end{equation}\]</span></p>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># concatenation of one-element character strings</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a><span class="fu">paste</span>(<span class="st">"This is"</span>, <span class="st">"a string"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "This is a string"</code></pre>
+<p>For the analysis of estimable functions, we also need the concept of identifiability of vector-valued functions of the beta parameters. We define:</p>
+<div id="def-identifiability-of-functions-of-the-beta-parameters" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 36.4 (Identifiability of functions of the beta parameters)</strong></span> Let <span class="math inline">\(N\left(\mu, \sigma^{2} I_{n}\right)\)</span> be a multivariate normal distribution with spherical covariance-matrix parameter, and let <span class="math inline">\(f\)</span> be a beta parameterization of <span class="math inline">\(\mu\)</span>. Furthermore, let <span class="math display">\[\begin{equation}
+g: \mathbb{R}^{p} \rightarrow \mathbb{R}^{k}, \beta \mapsto g(\beta)
+\end{equation}\]</span> be a function of the beta-parameter vector. <span class="math inline">\(g\)</span> is called identifiable if and only if, for arbitrary <span class="math inline">\(f\left(\beta_{1}\right), f\left(\beta_{2}\right) \in \mathbb{R}^{n}\)</span>, <span class="math inline">\(f\left(\beta_{1}\right)=f\left(\beta_{2}\right)\)</span> implies <span class="math inline">\(g\left(\beta_{1}\right)=g\left(\beta_{2}\right)\)</span>.</p>
 </div>
+<p><em>Estimable functions</em> are linear functions of <span class="math inline">\(\beta\)</span> that are identifiable. In general, the following theorem holds:</p>
+<div id="thm-identifiable-beta-parameter-functions" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 36.3 (Identifiable beta-parameter functions)</strong></span> Let <span class="math inline">\(N\left(\mu, \sigma^{2} I_{n}\right)\)</span> be a multivariate normal distribution with spherical covariance-matrix parameter, and let <span class="math inline">\(f\)</span> be a beta parameterization of <span class="math inline">\(\mu\)</span>. Furthermore, let <span class="math display">\[\begin{equation}
+g: \mathbb{R}^{p} \rightarrow \mathbb{R}^{k}, \beta \mapsto g(\beta)
+\end{equation}\]</span> be a function of the beta-parameter vector. The function <span class="math inline">\(g\)</span> is identifiable if and only if <span class="math inline">\(g\)</span> is a function of <span class="math inline">\(f\)</span>, that is, if there exists a function <span class="math inline">\(\phi\)</span> such that <span class="math display">\[\begin{equation}
+g = \phi \circ f
+\end{equation}\]</span></p>
 </div>
-<p>The function <code>paste()</code> also has a number of other functionalities that can sometimes be helpful:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># vector recycling, elementwise links</span></span>
-<span id="cb9-2"><a href="#cb9-2"></a><span class="fu">paste</span>(<span class="fu">c</span>(<span class="st">"Red"</span>, <span class="st">"Yellow"</span>), <span class="st">"flower"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "Red flower"    "Yellow flower"</code></pre>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>We show the statement only in one direction. <span class="math inline">\(\Rightarrow\)</span> We assume that there exists a function <span class="math inline">\(\phi\)</span> such that <span class="math display">\[\begin{equation}
+g=\phi \circ f .
+\end{equation}\]</span> Then the fact that a function assigns exactly one function value to an argument implies that <span class="math display">\[\begin{equation}
+f\left(\beta_{1}\right)=f\left(\beta_{2}\right)
+\Leftrightarrow
+\phi\left(f\left(\beta_{1}\right)\right)=\phi\left(f\left(\beta_{2}\right)\right)
+\Leftrightarrow g\left(\beta_{1}\right)=g\left(\beta_{2}\right)
+\end{equation}\]</span> Thus <span class="math inline">\(g\)</span> is identifiable, because <span class="math inline">\(f\left(\beta_{1}\right)=f\left(\beta_{2}\right)\)</span> implies <span class="math inline">\(g\left(\beta_{1}\right)=g\left(\beta_{2}\right)\)</span>.</p>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co"># separator specification</span></span>
-<span id="cb11-2"><a href="#cb11-2"></a><span class="fu">paste</span>(<span class="fu">c</span>(<span class="st">"Red"</span>, <span class="st">"Yellow"</span>), <span class="st">"flower"</span>, <span class="at">sep =</span> <span class="st">"-"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "Red-flower"    "Yellow-flower"</code></pre>
+<p>As mentioned above, estimable functions are linear functions of <span class="math inline">\(\beta\)</span> that are identifiable. The classical definition of an estimable function is the following.</p>
+<div id="def-estimable-function" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 36.5 (Estimable function)</strong></span> Let <span class="math inline">\(N\left(X\beta, \sigma^{2} I_{n}\right)\)</span> be a GLM. Then a linear function <span class="math display">\[\begin{equation}
+g: \mathbb{R}^{p} \rightarrow \mathbb{R}^{k}, \beta \mapsto g(\beta):=C^{T} \beta
+\end{equation}\]</span> with <span class="math inline">\(C \in \mathbb{R}^{p \times k}\)</span> is called estimable if there exists a matrix <span class="math inline">\(P \in \mathbb{R}^{n \times k}\)</span> such that <span class="math display">\[\begin{equation}
+C^{T} \beta=P^{T} X\beta.
+\end{equation}\]</span></p>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="co"># concatenation with specified separator</span></span>
-<span id="cb13-2"><a href="#cb13-2"></a><span class="fu">paste</span>(<span class="fu">c</span>(<span class="st">"Red"</span>, <span class="st">"Yellow"</span>), <span class="st">"flower"</span>, <span class="at">collapse =</span> <span class="st">", "</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "Red flower, Yellow flower"</code></pre>
-</div>
-</div>
-<p>The function <code>toString()</code> is a <code>paste()</code> variant for numerical vectors:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="co"># conversion of a double vector to a formatted string</span></span>
-<span id="cb15-2"><a href="#cb15-2"></a><span class="fu">toString</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "1, 2, 3, 4, 5, 6, 7, 8, 9, 10"</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="co"># with the option to restrict output to width characters</span></span>
-<span id="cb17-2"><a href="#cb17-2"></a><span class="fu">toString</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">width =</span> <span class="dv">10</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "1, 2, ...."</code></pre>
-</div>
-</div>
-<p>To load the data of a file in long-term storage into memory, one needs its address in the computer’s directory structure. <a href="#fig-windows-directory-structure" class="quarto-xref">Figure&nbsp;<span>17.3</span></a> shows an excerpt from the directory structure of a typical Windows computer.</p>
-<div id="fig-windows-directory-structure" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-windows-directory-structure-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="./_figures/207-windows-directory-structure.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-windows-directory-structure-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;17.3: Windows directory structure
-</figcaption>
-</figure>
-</div>
-<p>The addresses of files in the directory structure are called <em>file paths</em> (<em>paths</em>). A path consists of a list of directory names separated by slashes. Under Windows, left-leaning slashes (<code>\</code>, <em>backslash</em>) are traditionally used, whereas under Mac and Linux right-leaning slashes (<code>/</code>, <em>slash</em>) are used. Under Windows, the disk name (e.g., <code>C:\</code> or <code>D:\</code>) is usually found at the top level of the directory structure, under Mac the user name (<code>/Users/</code>), and under Linux the home directory (<code>/home/</code>). The following examples are Windows-based.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="co"># path that ends in a directory name</span></span>
-<span id="cb19-2"><a href="#cb19-2"></a>C<span class="sc">:</span>\Users\dirko\Nextcloud\Home\pdwp<span class="sc">-</span>online\dirk<span class="sc">-</span>ostwald.github.io\_data</span>
-<span id="cb19-3"><a href="#cb19-3"></a></span>
-<span id="cb19-4"><a href="#cb19-4"></a><span class="co"># path that ends in a file name</span></span>
-<span id="cb19-5"><a href="#cb19-5"></a>C<span class="sc">:</span>\Users\dirko\Nextcloud\Home\pdwp<span class="sc">-</span>online\dirk<span class="sc">-</span>ostwald.github.io\_data\cushny.csv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p><em>Absolute file paths</em> give the address of a directory or file in the overall directory structure of the hard drive and are not very susceptible to file confusions. <em>Relative file paths</em>, by contrast, refer to a storage location in relation to the current directory, where <code>.</code> and <code>..</code> denote the current and the superordinate directory. Relative file paths can certainly lead to file confusions. In general, therefore, the use of adaptively generated absolute paths is recommended.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="co"># file name in absolute path form</span></span>
-<span id="cb20-2"><a href="#cb20-2"></a>fname <span class="ot">=</span>  <span class="st">"D:\Teaching\Data\cushny.csv"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p><strong>R</strong> has a so-called <em>working directory</em> from which files are read by default. When an <strong>R</strong> terminal is open, <code>getwd()</code> indicates the working directory.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="fu">getwd</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "C:/Users/dirko/Nextcloud/Home/pdwp-online/dirk-ostwald.github.io-en/_part_2"</code></pre>
-</div>
-</div>
-<p><code>setwd()</code> changes the working directory. Note that <strong>R</strong> works only with forward slashes <code>/</code>. The manual specification of Windows paths therefore requires double backward slashes <code>\\</code></p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="fu">setwd</span>(<span class="st">"C:</span><span class="sc">\\</span><span class="st">Users</span><span class="sc">\\</span><span class="st">dirko</span><span class="sc">\\</span><span class="st">Nextcloud</span><span class="sc">\\</span><span class="st">Home</span><span class="sc">\\</span><span class="st">pdwp-online</span><span class="sc">\\</span><span class="st">dirk-ostwald.github.io</span><span class="sc">\\</span><span class="st">_data"</span>)</span>
-<span id="cb23-2"><a href="#cb23-2"></a><span class="fu">getwd</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>With the function <code>file.path()</code>, operating-system-compliant directory and file paths can be generated:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="fu">file.path</span>(<span class="st">"D:"</span>, <span class="st">"Nextcloud"</span>, <span class="st">"Home"</span>, <span class="st">"Teaching"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>The function <code>dirname()</code> gives the directory that contains a directory or file:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="fu">getwd</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "C:/Users/dirko/Nextcloud/Home/pdwp-online/dirk-ostwald.github.io-en/_part_2"</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="fu">dirname</span>(<span class="fu">getwd</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "C:/Users/dirko/Nextcloud/Home/pdwp-online/dirk-ostwald.github.io-en"</code></pre>
-</div>
-</div>
-<p>The function <code>basename()</code> gives the lowest level of a file or directory path:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="fu">getwd</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "C:/Users/dirko/Nextcloud/Home/pdwp-online/dirk-ostwald.github.io-en/_part_2"</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a><span class="fu">basename</span>(<span class="fu">getwd</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "_part_2"</code></pre>
-</div>
-</div>
+<p>This definition can be understood as follows: by the theorem on identifiable functions, an identifiable linear function of <span class="math inline">\(\beta\)</span> must be a function of the form <span class="math display">\[\begin{equation}
+g(\beta)=(\phi \circ f)(\beta)
+\end{equation}\]</span> Because, furthermore, for a GLM <span class="math inline">\(f(\beta)=X\beta\)</span> and <span class="math inline">\(g\)</span> is a linear function, and can therefore be written using a matrix <span class="math inline">\(C^{T}\)</span>, <span class="math inline">\(\phi\)</span> must also be a linear function. Hence <span class="math inline">\(\phi\)</span> can also be written as <span class="math display">\[\begin{equation}
+\phi(f(\beta))=\phi(X\beta)=P^{T} X\beta
+\end{equation}\]</span> with a suitable matrix <span class="math inline">\(P \in \mathbb{R}^{n \times k}\)</span>.</p>
 </section>
-<section id="sec-data-import-and-data-export" class="level2" data-number="17.4">
-<h2 data-number="17.4" class="anchored" data-anchor-id="sec-data-import-and-data-export"><span class="header-section-number">17.4</span> Data import and data export</h2>
-<p>For reading simply structured .csv files, the <strong>R</strong> function <code>read.csv()</code> is a good choice. This function reads a file and stores its contents in a dataframe.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a>D <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"C:</span><span class="sc">\\</span><span class="st">Users</span><span class="sc">\\</span><span class="st">dirko</span><span class="sc">\\</span><span class="st">Nextcloud</span><span class="sc">\\</span><span class="st">Home</span><span class="sc">\\</span><span class="st">pdwp-online</span><span class="sc">\\</span><span class="st">dirk-ostwald.github.io</span><span class="sc">\\</span><span class="st">_part_2</span><span class="sc">\\</span><span class="st">_data</span><span class="sc">\\</span><span class="st">cushny.csv"</span>)</span>
-<span id="cb33-2"><a href="#cb33-2"></a><span class="fu">print</span>(D)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   Control drug1 drug2L drug2R delta1 delta2L delta2R
-1      0.6   1.3    2.5    2.1    0.7     1.9     1.5
-2      3.3   1.4    3.8    4.4    1.6     0.8     1.4
-3      4.7   4.5    5.8    4.7    0.2     1.1     0.0
-4      5.5   4.3    5.6    4.8    1.2     0.1     0.7
-5      6.2   6.1    6.1    6.7    0.1     0.1     0.5
-6      3.2   6.6    7.6    8.3    3.4     4.4     5.1
-7      2.5   6.2    8.0    8.2    3.7     5.5     5.7
-8      2.8   3.6    4.4    4.3    0.8     1.6     1.5
-9      1.1   1.1    5.7    5.8    0.0     4.6     4.7
-10     2.9   4.9    6.3    6.4    2.0     3.4     3.5</code></pre>
-</div>
-</div>
-<p>The following <strong>R</strong> code defines the absolute path of the file adaptively in the directory structure of the computer with the help of the <strong>R</strong> working directory.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a>wdir  <span class="ot">=</span> <span class="fu">getwd</span>()                           <span class="co"># working directory</span></span>
-<span id="cb35-2"><a href="#cb35-2"></a><span class="fu">print</span>(wdir)                               <span class="co"># output</span></span>
-<span id="cb35-3"><a href="#cb35-3"></a>ddir  <span class="ot">=</span> <span class="fu">file.path</span>(wdir, <span class="st">"_part_2/_data"</span>)  <span class="co"># data directory path</span></span>
-<span id="cb35-4"><a href="#cb35-4"></a><span class="fu">print</span>(ddir)                               <span class="co"># output</span></span>
-<span id="cb35-5"><a href="#cb35-5"></a>fname <span class="ot">=</span> <span class="st">"cushny.csv"</span>                      <span class="co"># (base) filename</span></span>
-<span id="cb35-6"><a href="#cb35-6"></a><span class="fu">print</span>(fname)                              <span class="co"># output</span></span>
-<span id="cb35-7"><a href="#cb35-7"></a>fpath <span class="ot">=</span> <span class="fu">file.path</span>(ddir, fname)            <span class="co"># filepath</span></span>
-<span id="cb35-8"><a href="#cb35-8"></a><span class="fu">print</span>(fpath)                              <span class="co"># output</span></span>
-<span id="cb35-9"><a href="#cb35-9"></a>D     <span class="ot">=</span> <span class="fu">read.csv</span>(fpath)                   <span class="co"># reading the file</span></span>
-<span id="cb35-10"><a href="#cb35-10"></a><span class="fu">print</span>(D)                                  <span class="co"># output of the dataframe</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>In addition, <strong>R</strong> offers a variety of possibilities for data import using specialized functions:</p>
-<p>For .csv and other text files:</p>
-<ul>
-<li><code>read.csv()</code>, <code>read.csv2()</code>, <code>read.delim()</code>, <code>read.delim2()</code> as <code>read.table()</code> variants.</li>
-<li><code>readLines()</code> for low-level text file import.</li>
-<li><code>fromJSON()</code> from the <code>rjson</code> package for .json files.</li>
-</ul>
-<p>For binary files:</p>
-<ul>
-<li><code>read.xlsx()</code> and <code>read.xlsx2()</code> from the <code>xlsx</code> package for Excel .xlsx files.</li>
-<li><code>read.spss()</code> from the <code>foreign</code> package for SPSS .sav files.</li>
-<li><code>readMat()</code> from the <code>R.matlab</code> package for MATLAB .mat files.</li>
-</ul>
-<p>For databases:</p>
-<ul>
-<li>SQL databases can be queried with the help of the <code>DBI</code> and <code>RSQLite</code> packages.</li>
-</ul>
+<section id="design-spectrum" class="level2" data-number="36.3">
+<h2 data-number="36.3" class="anchored" data-anchor-id="design-spectrum"><span class="header-section-number">36.3</span> Design spectrum</h2>
+<p>The choice of design matrix and beta parameters opens up great freedom for implementing a wide range of expectation-parameter scenarios of the GLM data distribution. In principle, all special designs lie on a continuum between the following two extremes:</p>
+<ol type="1">
+<li>The expectations of all data variables are identical, that is, <span class="math display">\[\begin{equation}
+y_{i} \sim N\left(\mu, \sigma^{2}\right) \text { i.i.d. for } i=1, \ldots, n
+\end{equation}\]</span> that is, <span class="math display">\[\begin{equation}
+y=X\beta+\varepsilon \operatorname{with} X:=1_{n} \in \mathbb{R}^{n \times 1}, \beta:=\mu \in \mathbb{R}, \varepsilon \sim N\left(0_{n}, \sigma^{2} I_{n}\right) .
+\end{equation}\]</span></li>
+<li>The expectations of all data variables are pairwise different, that is, <span class="math display">\[\begin{equation}
+y_{i} \sim N\left(\mu_{i}, \sigma^{2}\right) \text { independently for } i=1, \ldots, n \text {, }
+\end{equation}\]</span> that is, <span class="math display">\[\begin{equation}
+y=X\beta+\varepsilon \operatorname{with} X:=I_{n} \in \mathbb{R}^{n \times n}, \beta:=\left(\mu_{1}, \ldots, \mu_{n}\right)^{T} \in \mathbb{R}^{n}, \varepsilon \sim N\left(0_{n}, \sigma^{2} I_{n}\right).
+\end{equation}\]</span></li>
+</ol>
+<p>In scenario (1), all data variability is attributed to the random-error term; in scenario (2), by contrast, all data variability is attributed to the expectation parameter. Both extreme scenarios are not scientifically fruitful, because they do not represent any theory-guided systematic dependence between independent and dependent variables. All GLM designs considered in the following chapters therefore lie between these two extreme scenarios and represent different forms of systematic dependence between independent and dependent variables. In particular, one distinguishes</p>
+<ol type="1">
+<li><em>Factorial designs</em>, in which the design matrix essentially contains only 1s and 0s and sometimes -1s. In this case, the beta parameters represent group expectations, and we will see that the beta-parameter estimators result in representations of group sample means. One sometimes says that factorial designs serve the investigation of <em>difference hypotheses</em>. Examples of factorial designs are different designs for implementing <em><span class="math inline">\(T\)</span>-tests</em> and <em>analyses of variance</em>.</li>
+<li><em>Parametric designs</em>, in which the design matrix consists of columns with continuous real values. Especially in this context, the columns of the design matrix are often called <em>regressors</em> or <em>predictors</em>. In this case, the beta parameters represent partial slope parameters, and we will see that the corresponding beta-parameter estimators arise as normalized regressor-data covariances. One sometimes says that parametric designs serve the investigation of <em>association hypotheses</em>. Examples of parametric designs are different designs for implementing <em>simple linear regression</em> and, in particular, <em>multiple linear regression</em>.</li>
+<li><em>Factorial-parametric designs</em>, in which the columns of the design matrix represent both factorial and parametric predictors. In this context, the parametric regressors are often considered <em>covariates</em>. Mixed factorial-parametric designs are the central characteristic of <em>analysis of covariance</em>, which aims at a controlled investigation of difference hypotheses in the presence of further possible dependencies between independent and dependent variables, or at the controlled investigation of association hypotheses in the presence of further possible group differences.</li>
+</ol>
+</section>
+<section id="bibliographic-remarks" class="level2" data-number="36.4">
+<h2 data-number="36.4" class="anchored" data-anchor-id="bibliographic-remarks"><span class="header-section-number">36.4</span> Bibliographic remarks</h2>
+<p>The general linear model has a long history, whose modern incarnation is usually traced back to the work of <span class="citation" data-cites="legendre1805">Legendre (<a href="#ref-legendre1805" role="doc-biblioref">1805</a>)</span> and <span class="citation" data-cites="gauss1809">Gauss (<a href="#ref-gauss1809" role="doc-biblioref">1809</a>)</span>. Matrix-based formulations of multiple regression can be found at least as early as <span class="citation" data-cites="aitken1936">Aitken (<a href="#ref-aitken1936" role="doc-biblioref">1936</a>)</span> and <span class="citation" data-cites="scheffe1959">Scheffé (<a href="#ref-scheffe1959" role="doc-biblioref">1959</a>)</span>. The general linear model entered the canon of psychological methods at least with <span class="citation" data-cites="cohen1968">Cohen (<a href="#ref-cohen1968" role="doc-biblioref">1968</a>)</span>. <span class="citation" data-cites="seal1967">Seal (<a href="#ref-seal1967" role="doc-biblioref">1967</a>)</span> gives a detailed overview of the history of the general linear model in the nineteenth and first half of the twentieth century. The discussion of identifiability and estimability given in this section is based on the presentation in <span class="citation" data-cites="christensen2011">Christensen (<a href="#ref-christensen2011" role="doc-biblioref">2011</a>)</span>.</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
-<div id="ref-bertram2023" class="csl-entry" role="listitem">
-Bertram, M. G., Sundin, J., Roche, D. G., Sánchez-Tójar, A., Thoré, E. S. J., &amp; Brodin, T. (2023). Open science. <em>Current Biology</em>, <em>33</em>(15), R792–R797. <a href="https://doi.org/10.1016/j.cub.2023.05.036">https://doi.org/10.1016/j.cub.2023.05.036</a>
+<div id="ref-aitken1936" class="csl-entry" role="listitem">
+Aitken, A. C. (1936). <span>IV</span>.—<span>On Least Squares</span> and <span>Linear Combination</span> of <span>Observations</span>. <em>Proceedings of the Royal Society of Edinburgh</em>, <em>55</em>, 42–48. <a href="https://doi.org/10.1017/S0370164600014346">https://doi.org/10.1017/S0370164600014346</a>
 </div>
-<div id="ref-miedema2022" class="csl-entry" role="listitem">
-Miedema, F. (2022). <em>Open <span>Science</span>: The <span>Very Idea</span></em>. Springer Netherlands. <a href="https://doi.org/10.1007/978-94-024-2115-6">https://doi.org/10.1007/978-94-024-2115-6</a>
+<div id="ref-christensen2011" class="csl-entry" role="listitem">
+Christensen, R. (2011). <em>Plane <span>Answers</span> to <span>Complex Questions</span></em>. Springer New York. <a href="https://doi.org/10.1007/978-1-4419-9816-3">https://doi.org/10.1007/978-1-4419-9816-3</a>
 </div>
-<div id="ref-ratfurinformationsinfrastrukturen2017" class="csl-entry" role="listitem">
-Rat für Informationsinfrastrukturen. (2017). <em>Datenschutz und <span>Foschungsdaten</span> - <span>Aktuelle Empfehlungen</span></em>.
+<div id="ref-cohen1968" class="csl-entry" role="listitem">
+Cohen, J. (1968). Multiple regression as a general data-analytic system. <em>Psychological Bulletin</em>, <em>70</em>(6, Pt.1), 426–443. <a href="https://doi.org/10.1037/h0026714">https://doi.org/10.1037/h0026714</a>
 </div>
-<div id="ref-riley2017" class="csl-entry" role="listitem">
-Riley, J. (2017). <em>Understanding metadata: What is metadata, and what is it for</em>. National Information Standards Organization.
+<div id="ref-gauss1809" class="csl-entry" role="listitem">
+Gauss, C. F. (1809). <em>Theoria <span>Motus Corporum Coelestium</span> in <span>Sectionibus Conicis Solem Ambientium</span></em>. Cambridge University Press.
 </div>
-<div id="ref-rosenblatt1997" class="csl-entry" role="listitem">
-Rosenblatt, B. (1997). The <span>Digital Object Identifier</span>: <span>Solving</span> the <span>Dilemma</span> of <span>Copyright Protection Online</span>. <em>Journal of Electronic Publishing</em>, <em>3</em>(2). <a href="https://doi.org/10.3998/3336451.0003.204">https://doi.org/10.3998/3336451.0003.204</a>
+<div id="ref-legendre1805" class="csl-entry" role="listitem">
+Legendre, A. M. (1805). <em>Nouvelles methodes pour la determination des orbites des cometes</em>. Didot Paris.
 </div>
-<div id="ref-toelch2018" class="csl-entry" role="listitem">
-Toelch, U., &amp; Ostwald, D. (2018). Digital open science—<span>Teaching</span> digital tools for reproducible and transparent research. <em>PLOS Biology</em>, <em>16</em>(7), e2006022. <a href="https://doi.org/10.1371/journal.pbio.2006022">https://doi.org/10.1371/journal.pbio.2006022</a>
+<div id="ref-scheffe1959" class="csl-entry" role="listitem">
+Scheffé, H. (1959). <em>The analysis of variance</em> (Wiley classics library ed). Wiley-Interscience Publication.
 </div>
-<div id="ref-ulrich2022" class="csl-entry" role="listitem">
-Ulrich, H., Kock-Schoppenhauer, A.-K., Deppenwiese, N., Gött, R., Kern, J., Lablans, M., Majeed, R. W., Stöhr, M. R., Stausberg, J., Varghese, J., Dugas, M., &amp; Ingenerf, J. (2022). Understanding the <span>Nature</span> of <span>Metadata</span>: <span>Systematic Review</span>. <em>Journal of Medical Internet Research</em>, <em>24</em>(1), e25440. <a href="https://doi.org/10.2196/25440">https://doi.org/10.2196/25440</a>
-</div>
-<div id="ref-wilkinson2016" class="csl-entry" role="listitem">
-Wilkinson, M. D., Dumontier, M., Aalbersberg, Ij. J., Appleton, G., Axton, M., Baak, A., Blomberg, N., Boiten, J.-W., da Silva Santos, L. B., Bourne, P. E., Bouwman, J., Brookes, A. J., Clark, T., Crosas, M., Dillo, I., Dumon, O., Edmunds, S., Evelo, C. T., Finkers, R., … Mons, B. (2016). The <span>FAIR Guiding Principles</span> for scientific data management and stewardship. <em>Scientific Data</em>, <em>3</em>(1), 160018. <a href="https://doi.org/10.1038/sdata.2016.18">https://doi.org/10.1038/sdata.2016.18</a>
+<div id="ref-seal1967" class="csl-entry" role="listitem">
+Seal, H. L. (1967). Studies in the <span>History</span> of <span>Probability</span> and <span>Statistics</span>. <span>XV</span>: <span>The Historical Development</span> of the <span>Gauss Linear Model</span>. <em>Biometrika</em>, <em>54</em>(1/2), 1. <a href="https://doi.org/10.2307/2333849">https://doi.org/10.2307/2333849</a>
 </div>
 </div>
 </section>
@@ -1406,13 +1285,13 @@ Wilkinson, M. D., Dumontier, M., Aalbersberg, Ij. J., Appleton, G., Axton, M., B
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../_part_2/206-Lists-Dataframes-and-Tibbles.html" class="pagination-link" aria-label="Lists, dataframes, and tibbles">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Lists, dataframes, and tibbles</span></span>
+      <a href="../_part_5/502-Correlation.html" class="pagination-link" aria-label="Correlation">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Correlation</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../_part_2/208-Control-Structures.html" class="pagination-link" aria-label="Control structures">
-        <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Control structures</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../References.html" class="pagination-link" aria-label="References">
+        <span class="nav-page-text">References</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -1421,4 +1300,4 @@ Wilkinson, M. D., Dumontier, M., Aalbersberg, Ij. J., Appleton, G., Axton, M., B
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/_part_2/207-Data-Management.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/_part_5/503-Model-Formulation.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></div></div></footer></body></html>
