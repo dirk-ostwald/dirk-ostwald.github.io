@@ -1,0 +1,1974 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>47&nbsp; One-way analysis of variance – Probabilistic Data Science for Psychology</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../_part_7/704-Canonical-Correlation-Analysis.html" rel="next">
+<link href="../_part_7/702-One-Sample-T2-Tests.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-d6825770f4e37b80aa8621686b79c10e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Probabilistic Data Science for Psychology</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://dirk-ostwald.github.io/"> 
+<span class="menu-text">Deutsch</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+    <a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="../Probabilistic-Data-Science-for-Psychology.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../_part_7/700-Multivariate-Inference.html">Multivariate inference</a></li><li class="breadcrumb-item"><a href="../_part_7/703-One-Way-Analysis-of-Variance.html"><span class="chapter-number">47</span>&nbsp; <span class="chapter-title">One-way analysis of variance</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../_part_1/100-Mathematical-Foundations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Mathematical foundations</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/101-Language-and-Logic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Language and logic</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/102-Sets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Sets</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/103-Sums-Products-Powers.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Sums, products, powers</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/104-Functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Functions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/105-Sequences-Limits-Continuity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Sequences, limits, continuity</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/106-Differential-Calculus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Differential calculus</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/107-Integral-Calculus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Integral calculus</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/108-Vectors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Vectors</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/109-Matrices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Matrices</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/110-Descriptive-Statistics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Descriptive statistics</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../_part_2/200-Imperative-Programming.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Imperative programming</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/201-Basic-Concepts-of-Computer-Science.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Basic concepts of computer science</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/202-Arithmetic-and-Variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Arithmetic and variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/203-Data-Structures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Data structures</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/204-Vectors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Vectors</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/205-Matrices-and-Arrays.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Matrices and arrays</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/206-Lists-Dataframes-and-Tibbles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Lists, dataframes, and tibbles</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/207-Data-Management.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Data management</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/208-Control-Structures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Control structures</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../_part_3/300-Probability-Theory.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Probability theory</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/301-Probability-Spaces.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Probability spaces</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/302-Elementary-Probabilities.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Elementary probabilities</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/303-Random-Variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Random variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/304-Random-Vectors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Random vectors</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/305-Expectations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Expectations</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/306-Variances.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Variances</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/307-Covariances.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Covariances</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/308-Inequalities.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Inequalities</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/309-Limits.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Limits</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/310-Transformations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Transformations</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/311-Normal-Distributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Normal distributions</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../_part_4/400-Inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Inference</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_4/401-Frequentist-Inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Frequentist inference</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_4/402-Point-Estimation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Point estimation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_4/403-Confidence-Intervals.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Confidence intervals</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_4/404-Hypothesis-Tests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Hypothesis tests</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../_part_5/500-General-Linear-Model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">General linear model</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_5/501-Regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Regression</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_5/502-Correlation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Correlation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_5/503-Model-Formulation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Model formulation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_5/504-Parameter-Estimation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Parameter estimation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_5/505-T-Statistics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">T-statistics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_5/506-F-Statistics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">F-statistics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_5/507-T-Tests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">40</span>&nbsp; <span class="chapter-title">T-tests</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_5/508-One-Way-Analysis-of-Variance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">41</span>&nbsp; <span class="chapter-title">One-way analysis of variance</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_5/509-Two-Way-Analysis-of-Variance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">42</span>&nbsp; <span class="chapter-title">Two-way analysis of variance</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_5/510-Partial-Correlation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">43</span>&nbsp; <span class="chapter-title">Partial correlation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_5/511-Multiple-Regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">44</span>&nbsp; <span class="chapter-title">Multiple regression</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../_part_7/700-Multivariate-Inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Multivariate inference</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_7/701-Multivariate-Descriptive-Statistics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">45</span>&nbsp; <span class="chapter-title">Multivariate descriptive statistics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_7/702-One-Sample-T2-Tests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">46</span>&nbsp; <span class="chapter-title">One-sample T<span class="math inline">\(^2\)</span> tests</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_7/703-One-Way-Analysis-of-Variance.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">47</span>&nbsp; <span class="chapter-title">One-way analysis of variance</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_7/704-Canonical-Correlation-Analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">48</span>&nbsp; <span class="chapter-title">Canonical correlation analysis</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../_part_9/900-Psychometric-Procedures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Psychometric procedures</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_9/901-Psychological-Tests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">49</span>&nbsp; <span class="chapter-title">Psychological tests</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_9/903-Classical-Test-Theory.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">50</span>&nbsp; <span class="chapter-title">Classical test theory</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_9/904-Factor-Analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">51</span>&nbsp; <span class="chapter-title">Factor Analysis</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../References.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sec-manova-application-scenario" id="toc-sec-manova-application-scenario" class="nav-link active" data-scroll-target="#sec-manova-application-scenario"><span class="header-section-number">47.1</span> Application scenario</a>
+  <ul class="collapse">
+  <li><a href="#application-example" id="toc-application-example" class="nav-link" data-scroll-target="#application-example">Application example</a></li>
+  </ul></li>
+  <li><a href="#sec-manova-model-formulation-and-model-estimation" id="toc-sec-manova-model-formulation-and-model-estimation" class="nav-link" data-scroll-target="#sec-manova-model-formulation-and-model-estimation"><span class="header-section-number">47.2</span> Model formulation and model estimation</a></li>
+  <li><a href="#sec-manova-model-evaluation" id="toc-sec-manova-model-evaluation" class="nav-link" data-scroll-target="#sec-manova-model-evaluation"><span class="header-section-number">47.3</span> Model evaluation</a>
+  <ul class="collapse">
+  <li><a href="#cross-product-sum-matrix-decomposition" id="toc-cross-product-sum-matrix-decomposition" class="nav-link" data-scroll-target="#cross-product-sum-matrix-decomposition">Cross-product sum matrix decomposition</a></li>
+  <li><a href="#model-evaluation-with-wilks-lambda-statistic" id="toc-model-evaluation-with-wilks-lambda-statistic" class="nav-link" data-scroll-target="#model-evaluation-with-wilks-lambda-statistic">Model evaluation with Wilks’ <span class="math inline">\(\Lambda\)</span> statistic</a></li>
+  <li><a href="#practical-procedure" id="toc-practical-procedure" class="nav-link" data-scroll-target="#practical-procedure">Practical procedure</a></li>
+  </ul></li>
+  <li><a href="#application-example-1" id="toc-application-example-1" class="nav-link" data-scroll-target="#application-example-1"><span class="header-section-number">47.4</span> Application example</a></li>
+  <li><a href="#bibliographic-remarks" id="toc-bibliographic-remarks" class="nav-link" data-scroll-target="#bibliographic-remarks"><span class="header-section-number">47.5</span> Bibliographic remarks</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/_part_7/703-One-Way-Analysis-of-Variance.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../_part_7/700-Multivariate-Inference.html">Multivariate inference</a></li><li class="breadcrumb-item"><a href="../_part_7/703-One-Way-Analysis-of-Variance.html"><span class="chapter-number">47</span>&nbsp; <span class="chapter-title">One-way analysis of variance</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-manova-one-way-analysis-of-variance" class="quarto-section-identifier"><span class="chapter-number">47</span>&nbsp; <span class="chapter-title">One-way analysis of variance</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="sec-manova-application-scenario" class="level2" data-number="47.1">
+<h2 data-number="47.1" class="anchored" data-anchor-id="sec-manova-application-scenario"><span class="header-section-number">47.1</span> Application scenario</h2>
+<p>The application scenario of a one-way multivariate analysis of variance is characterized by multivariate data points from two or more groups of randomized experimental units that differ with respect to the levels of an experimental factor. If the number of data points in each group is equal, one speaks of a balanced one-way multivariate analysis-of-variance design. The data points of the <em>i</em>th group or the <em>i</em>th factor level are assumed to be realizations of <span class="math inline">\(n_i\)</span> independent and identically multivariate normally distributed random vectors whose true, but unknown, expected-value parameters may differ across groups and whose true, but unknown, covariance-matrix parameter is identical across groups. In these basic assumptions, the application scenario of one-way multivariate analysis of variance is therefore a generalization of the one-sample T<span class="math inline">\(^2\)</span> test scenario to two or more groups of experimental units. It is fundamentally assumed that there is interest in an inferential comparison of the true, but unknown, factor-level-specific expected-value parameters.</p>
+<section id="application-example" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="application-example">Application example</h3>
+<p>As a concrete application example, we consider the analysis of pre-post intervention BDI score and pre-post intervention glucocorticoid plasma-level difference values from three groups of 15 patients each, who underwent different psychotherapy settings (face-to-face and online) or a waitlist control condition. For this purpose, <a href="#tbl-bdi-glu" class="quarto-xref">Table&nbsp;<span>47.1</span></a> shows a simulated example data set. The first column of <a href="#tbl-bdi-glu" class="quarto-xref">Table&nbsp;<span>47.1</span></a> (<code>COND</code>) lists the specific therapy setting (<code>F2F</code>: face-to-face, <code>ONL</code>: online, <code>WLC</code>: waitlist control) of the patients. The second column (<code>dBDI</code>) lists the corresponding BDI score difference values, and the third column (<code>dGLU</code>) lists the corresponding glucocorticoid plasma-level difference values. In both cases, positive values indicate a decrease in depressive symptomatology, whereas negative values indicate an increase in depressive symptomatology. <a href="#fig-application-example" class="quarto-xref">Figure&nbsp;<span>47.1</span></a> visualizes this data set as well as the group-specific sample means and sample covariances as normal distribution isocontours.</p>
+<div class="cell">
+<div id="tbl-bdi-glu" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-bdi-glu-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;47.1: Pre-post intervention BDI-II score and glucocorticoid plasma-level difference values from three study groups (F2F: face-to-face, ONL: online, WLC: waitlist control), each with 15 patients
+</figcaption>
+<div aria-describedby="tbl-bdi-glu-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: center;">COND</th>
+<th style="text-align: center;">dBDI</th>
+<th style="text-align: center;">dGLU</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">F2F</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">4.3</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">F2F</td>
+<td style="text-align: center;">10</td>
+<td style="text-align: center;">3.9</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">F2F</td>
+<td style="text-align: center;">12</td>
+<td style="text-align: center;">3.5</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">F2F</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">2.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">F2F</td>
+<td style="text-align: center;">10</td>
+<td style="text-align: center;">3.3</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">F2F</td>
+<td style="text-align: center;">12</td>
+<td style="text-align: center;">3.5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">F2F</td>
+<td style="text-align: center;">9</td>
+<td style="text-align: center;">3.1</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">F2F</td>
+<td style="text-align: center;">9</td>
+<td style="text-align: center;">3.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">F2F</td>
+<td style="text-align: center;">9</td>
+<td style="text-align: center;">5.6</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">F2F</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">3.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">F2F</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">3.4</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">F2F</td>
+<td style="text-align: center;">9</td>
+<td style="text-align: center;">4.0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">F2F</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">5.6</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">F2F</td>
+<td style="text-align: center;">14</td>
+<td style="text-align: center;">5.3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">F2F</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">3.2</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">ONL</td>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">3.1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">ONL</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">2.7</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">ONL</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">2.1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">ONL</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">3.1</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">ONL</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">2.8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">ONL</td>
+<td style="text-align: center;">9</td>
+<td style="text-align: center;">2.8</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">ONL</td>
+<td style="text-align: center;">9</td>
+<td style="text-align: center;">3.7</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">ONL</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">2.7</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">ONL</td>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">3.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">ONL</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">1.4</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">ONL</td>
+<td style="text-align: center;">9</td>
+<td style="text-align: center;">1.3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">ONL</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">3.4</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">ONL</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">3.7</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">ONL</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">2.3</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">ONL</td>
+<td style="text-align: center;">9</td>
+<td style="text-align: center;">3.4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">WLC</td>
+<td style="text-align: center;">-2</td>
+<td style="text-align: center;">0.7</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">WLC</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">1.4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">WLC</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">WLC</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">0.9</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">WLC</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">1.6</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">WLC</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">1.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">WLC</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">1.1</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">WLC</td>
+<td style="text-align: center;">-1</td>
+<td style="text-align: center;">-0.2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">WLC</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">2.5</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">WLC</td>
+<td style="text-align: center;">-2</td>
+<td style="text-align: center;">0.4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">WLC</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0.7</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">WLC</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">-0.1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">WLC</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1.3</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">WLC</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">0.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">WLC</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">0.7</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>The following <strong>R</strong> code demonstrates the evaluation of group-specific descriptive statistics for this data set.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># study-group-specific descriptive statistics</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a>D       <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"./_data/703-one-way-analysis-of-variance.csv"</span>)             <span class="co"># read data</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a>m       <span class="ot">=</span> <span class="dv">2</span>                                                                    <span class="co"># data dimension of interest</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a>p       <span class="ot">=</span> <span class="dv">3</span>                                                                    <span class="co"># number of groups</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a>k       <span class="ot">=</span> <span class="dv">15</span>                                                                   <span class="co"># number of data points per group</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a>Y       <span class="ot">=</span> <span class="fu">array</span>(<span class="at">dim =</span> <span class="fu">c</span>(m,k,p))                                                <span class="co"># data-array initialization</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a>Y[,,<span class="dv">1</span>]  <span class="ot">=</span> <span class="fu">rbind</span>(D<span class="sc">$</span>dBDI[D<span class="sc">$</span>COND <span class="sc">==</span> <span class="st">"F2F"</span>],                                       <span class="co"># F2F dBDI values</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a>                D<span class="sc">$</span>dGLU[D<span class="sc">$</span>COND <span class="sc">==</span> <span class="st">"F2F"</span>])                                       <span class="co"># F2F dGLU values</span></span>
+<span id="cb1-9"><a href="#cb1-9"></a>Y[,,<span class="dv">2</span>]  <span class="ot">=</span> <span class="fu">rbind</span>(D<span class="sc">$</span>dBDI[D<span class="sc">$</span>COND <span class="sc">==</span> <span class="st">"ONL"</span>],                                       <span class="co"># ONL dBDI values</span></span>
+<span id="cb1-10"><a href="#cb1-10"></a>                D<span class="sc">$</span>dGLU[D<span class="sc">$</span>COND <span class="sc">==</span> <span class="st">"ONL"</span>])                                       <span class="co"># ONL dGLU values</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a>Y[,,<span class="dv">3</span>]  <span class="ot">=</span> <span class="fu">rbind</span>(D<span class="sc">$</span>dBDI[D<span class="sc">$</span>COND <span class="sc">==</span> <span class="st">"WLC"</span>],                                       <span class="co"># WLC dBDI values</span></span>
+<span id="cb1-12"><a href="#cb1-12"></a>                D<span class="sc">$</span>dGLU[D<span class="sc">$</span>COND <span class="sc">==</span> <span class="st">"WLC"</span>])                                       <span class="co"># WLC dGLU values</span></span>
+<span id="cb1-13"><a href="#cb1-13"></a>y_bar_i <span class="ot">=</span> <span class="fu">array</span>(<span class="at">dim =</span> <span class="fu">c</span>(m,p))                                                  <span class="co"># sample-mean array</span></span>
+<span id="cb1-14"><a href="#cb1-14"></a>C_i     <span class="ot">=</span> <span class="fu">array</span>(<span class="at">dim =</span> <span class="fu">c</span>(m,m,p))                                                <span class="co"># sample-covariance-matrices array</span></span>
+<span id="cb1-15"><a href="#cb1-15"></a>j_k     <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="dv">1</span>,k), <span class="at">nrow =</span> k)                                           <span class="co"># 1_{l}</span></span>
+<span id="cb1-16"><a href="#cb1-16"></a>I_k     <span class="ot">=</span> <span class="fu">diag</span>(k)                                                              <span class="co"># identity matrix I_l</span></span>
+<span id="cb1-17"><a href="#cb1-17"></a>J_k     <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="dv">1</span>,k<span class="sc">^</span><span class="dv">2</span>), <span class="at">nrow =</span> k)                                         <span class="co"># 1_{ll}</span></span>
+<span id="cb1-18"><a href="#cb1-18"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>p){                                                                <span class="co"># group iterations</span></span>
+<span id="cb1-19"><a href="#cb1-19"></a>    y_bar_i[,i] <span class="ot">=</span> (<span class="dv">1</span><span class="sc">/</span>k)<span class="sc">*</span>(Y[,,i] <span class="sc">%*%</span> j_k)                                       <span class="co"># sample mean \bar{y}_i</span></span>
+<span id="cb1-20"><a href="#cb1-20"></a>    C_i[,,i]    <span class="ot">=</span> (<span class="dv">1</span><span class="sc">/</span>(k<span class="dv">-1</span>))<span class="sc">*</span>(Y[,,i] <span class="sc">%*%</span> (I_k<span class="sc">-</span>(<span class="dv">1</span><span class="sc">/</span>k)<span class="sc">*</span>J_k) <span class="sc">%*%</span> <span class="fu">t</span>(Y[,,i]))}        <span class="co"># sample covariance matrix C_i</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="fig-application-example" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-application-example-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/703-application-example.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:50.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-application-example-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;47.1: Descriptive statistics of the <code>dBDI</code>, <code>dGLU</code> data of the example data set. Each point visualizes the data of one patient. The sample covariance is shown by the 0.7 isocontour of a two-dimensional normal distribution whose expected-value parameter and covariance-matrix parameter correspond to the sample mean and sample covariance of the respective group.
+</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="sec-manova-model-formulation-and-model-estimation" class="level2" data-number="47.2">
+<h2 data-number="47.2" class="anchored" data-anchor-id="sec-manova-model-formulation-and-model-estimation"><span class="header-section-number">47.2</span> Model formulation and model estimation</h2>
+<p>We define the model of one-way multivariate analysis of variance as follows.</p>
+<div id="def-model-one-way-analysis-of-variance" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 47.1 (Model of one-way multivariate analysis of variance)</strong></span> For <span class="math inline">\(i = 1,...,p\)</span> and <span class="math inline">\(j = 1,...,n_i\)</span>, let <span class="math inline">\(y_{ij}\)</span> be <span class="math inline">\(m\)</span>-dimensional random vectors that model the <span class="math inline">\(n := \sum_{i=1}^p n_i\)</span> <span class="math inline">\(m\)</span>-dimensional data points of a one-way multivariate analysis-of-variance scenario. Then the model of one-way multivariate analysis of variance has the structural form <span class="math display">\[\begin{equation}
+y_{ij} = \mu_i + \varepsilon_{ij}
+\mbox{ with } \varepsilon_{ij} \sim N(0_m,\Sigma) \mbox{ i.i.d. }
+\mbox{ with } \mu_i \in \mathbb{R}^m \mbox{ and } \Sigma \in \mathbb{R}^{m \times m} \mbox{ pd }
+\end{equation}\]</span> and the data distribution form <span class="math display">\[\begin{equation}
+y_{ij} \sim N(\mu_i,\Sigma) \mbox{ independently distributed with }  \mu_i \in \mathbb{R}^m  \mbox{ and } \Sigma \in \mathbb{R}^{m \times m} \mbox{ pd}.
+\end{equation}\]</span></p>
+</div>
+<p>In <a href="#def-model-one-way-analysis-of-variance" class="quarto-xref">Definition&nbsp;<span>47.1</span></a>, <span class="math inline">\(n_i\)</span> denotes the number of random vectors <span class="math inline">\(y_{ij}\)</span> in the <span class="math inline">\(i\)</span>th of <span class="math inline">\(p\)</span> groups of experimental units. In the case of a balanced design, evidently <span class="math inline">\(n_1 = \cdots = n_p\)</span>. In this case, for simplicity, we set <span class="math inline">\(k := n_i\)</span> for <span class="math inline">\(i = 1,...,p\)</span>. The total number of random vectors is then <span class="math inline">\(n = pk\)</span>. The equivalence of the structural form and the data distribution form of one-way multivariate analysis of variance follows from <a href="../_part_3/311-Normal-Distributions.html#thm-linear-affine-transformation" class="quarto-xref">Theorem&nbsp;<span>29.8</span></a> by transforming the <span class="math inline">\(\varepsilon_{ij}\)</span> under multiplication with the identity matrix and addition of the respective group-specific expected-value parameters. The true, but unknown, parameters <span class="math inline">\(\mu_i, i = 1,...,p\)</span> and <span class="math inline">\(\Sigma\)</span> of the one-way multivariate analysis-of-variance model can be estimated using the estimators defined in the following theorem.</p>
+<div id="thm-parameter-estimators" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 47.1 (Parameter estimators of one-way multivariate analysis of variance)</strong></span> Given the model of one-way multivariate analysis of variance, for <span class="math inline">\(i = 1,...,p\)</span>, <span class="math display">\[\begin{equation}
+\hat{\mu}_i := \frac{1}{n_i}\sum_{j = 1}^{n_i} y_{ij}
+\end{equation}\]</span> is an unbiased estimator of the group-specific expected-value parameter <span class="math inline">\(\mu_i\)</span>, and <span class="math display">\[\begin{equation}
+\hat{\Sigma} := \frac{1}{n-p}\sum_{i = 1}^p \sum_{j = 1}^{n_i} \left(y_{ij} - \hat{\mu}_i\right)\left(y_{ij} - \hat{\mu}_i\right)^T
+\end{equation}\]</span> is an unbiased estimator of the covariance-matrix parameter <span class="math inline">\(\Sigma\)</span>.</p>
+</div>
+<p>In <a href="#thm-parameter-estimators" class="quarto-xref">Theorem&nbsp;<span>47.1</span></a>, <span class="math inline">\(\hat{\mu}_i\)</span> is evidently the sample mean of the random vectors of the <span class="math inline">\(i\)</span>th group. <span class="math inline">\(\hat{\Sigma}\)</span> is the group-unspecific sample covariance matrix of all random vectors and corresponds to the <em>within-group sum-of-squares matrix</em> scaled by <span class="math inline">\(1/(n-p)\)</span>, which we will introduce in <a href="#thm-cross-product-sum-matrix-decomposition" class="quarto-xref">Theorem&nbsp;<span>47.2</span></a>. The following <strong>R</strong> code demonstrates the evaluation of the parameter estimators using an <strong>R</strong> function.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>estimate <span class="ot">=</span> <span class="cf">function</span>(Y){</span>
+<span id="cb2-2"><a href="#cb2-2"></a></span>
+<span id="cb2-3"><a href="#cb2-3"></a>  <span class="co"># this function evaluates the parameter estimators of a one-way</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a>  <span class="co"># multivariate analysis of variance based on an m x k x p data set Y.</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a>  <span class="co">#</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a>  <span class="co"># input</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a>  <span class="co">#     Y          : m x k x p data array</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a>  <span class="co">#</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a>  <span class="co"># output</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a>  <span class="co">#     $mu_hat    : m x p \mu_i parameter estimators</span></span>
+<span id="cb2-11"><a href="#cb2-11"></a>  <span class="co">#     $Sigma_hat : m x m \Sigma parameter estimator</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a>  <span class="co"># ---------------------------------------------------------------------------</span></span>
+<span id="cb2-13"><a href="#cb2-13"></a>  <span class="co"># dimension parameters</span></span>
+<span id="cb2-14"><a href="#cb2-14"></a>  d         <span class="ot">=</span> <span class="fu">dim</span>(Y)                                                           <span class="co"># data-set dimensions</span></span>
+<span id="cb2-15"><a href="#cb2-15"></a>  m         <span class="ot">=</span> d[<span class="dv">1</span>]                                                             <span class="co"># data dimension</span></span>
+<span id="cb2-16"><a href="#cb2-16"></a>  k         <span class="ot">=</span> d[<span class="dv">2</span>]                                                             <span class="co"># number of data points per group</span></span>
+<span id="cb2-17"><a href="#cb2-17"></a>  p         <span class="ot">=</span> d[<span class="dv">3</span>]                                                             <span class="co"># number of groups</span></span>
+<span id="cb2-18"><a href="#cb2-18"></a></span>
+<span id="cb2-19"><a href="#cb2-19"></a>  <span class="co"># expected-value-parameter estimators</span></span>
+<span id="cb2-20"><a href="#cb2-20"></a>  mu_hat_i  <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">apply</span>(Y,<span class="dv">3</span>,rowMeans), <span class="at">nrow =</span> m)</span>
+<span id="cb2-21"><a href="#cb2-21"></a></span>
+<span id="cb2-22"><a href="#cb2-22"></a>  <span class="co"># covariance-matrix-parameter estimator</span></span>
+<span id="cb2-23"><a href="#cb2-23"></a>  Sigma_hat <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="dv">0</span>,m<span class="sc">*</span>m), <span class="at">nrow =</span> m)</span>
+<span id="cb2-24"><a href="#cb2-24"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>p){</span>
+<span id="cb2-25"><a href="#cb2-25"></a>      <span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>k){</span>
+<span id="cb2-26"><a href="#cb2-26"></a>          Sigma_hat <span class="ot">=</span> Sigma_hat <span class="sc">+</span> (<span class="dv">1</span><span class="sc">/</span>(k<span class="sc">*</span>p<span class="sc">-</span>p))<span class="sc">*</span>(Y[,j,i] <span class="sc">-</span> mu_hat_i[,i]) <span class="sc">%*%</span> <span class="fu">t</span>(Y[,j,i] <span class="sc">-</span> mu_hat_i[,i])</span>
+<span id="cb2-27"><a href="#cb2-27"></a>    }</span>
+<span id="cb2-28"><a href="#cb2-28"></a>  }</span>
+<span id="cb2-29"><a href="#cb2-29"></a></span>
+<span id="cb2-30"><a href="#cb2-30"></a>  <span class="co"># output specification</span></span>
+<span id="cb2-31"><a href="#cb2-31"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">mu_hat_i =</span> mu_hat_i, <span class="at">Sigma_hat =</span> Sigma_hat))}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Instead of a proof, we validate the statement of <a href="#thm-parameter-estimators" class="quarto-xref">Theorem&nbsp;<span>47.1</span></a> by example using the following <strong>R</strong> simulation, in which we approximate the expectations of the estimators by their sample means across data-set realizations.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># model parameters</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="fu">library</span>(MASS)                                                                  <span class="co"># multivariate normal distributions</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a>p          <span class="ot">=</span> <span class="dv">3</span>                                                                 <span class="co"># number of groups</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a>k          <span class="ot">=</span> <span class="dv">15</span>                                                                <span class="co"># number of data points per group</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a>m          <span class="ot">=</span> <span class="dv">2</span>                                                                 <span class="co"># data dimension</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a>mu_i       <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">3</span>,<span class="fl">2.5</span>), <span class="at">ncol =</span> p)                                <span class="co"># expected-value parameters</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a>Sigma      <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>,.<span class="dv">5</span>,.<span class="dv">5</span>,<span class="dv">1</span>)    , <span class="at">ncol =</span> m)                                <span class="co"># covariance-matrix parameter</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a></span>
+<span id="cb3-9"><a href="#cb3-9"></a><span class="co"># simulation parameters and arrays</span></span>
+<span id="cb3-10"><a href="#cb3-10"></a>nsm        <span class="ot">=</span> <span class="fl">1e2</span>                                                               <span class="co"># number of simulations</span></span>
+<span id="cb3-11"><a href="#cb3-11"></a>mu_hat_is  <span class="ot">=</span> <span class="fu">array</span>(<span class="at">dim =</span> <span class="fu">c</span>(m,p,nsm))                                           <span class="co"># \hat{\mu}_i array</span></span>
+<span id="cb3-12"><a href="#cb3-12"></a>Sigma_hats <span class="ot">=</span> <span class="fu">array</span>(<span class="at">dim =</span> <span class="fu">c</span>(m,m,nsm))                                           <span class="co"># \hat{\Sigma} array</span></span>
+<span id="cb3-13"><a href="#cb3-13"></a></span>
+<span id="cb3-14"><a href="#cb3-14"></a><span class="co"># simulations</span></span>
+<span id="cb3-15"><a href="#cb3-15"></a><span class="cf">for</span>(s <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nsm){</span>
+<span id="cb3-16"><a href="#cb3-16"></a></span>
+<span id="cb3-17"><a href="#cb3-17"></a>    <span class="co"># data generation</span></span>
+<span id="cb3-18"><a href="#cb3-18"></a>    Y               <span class="ot">=</span> <span class="fu">array</span>(<span class="at">dim =</span> <span class="fu">c</span>(m,k,p))                                    <span class="co"># data array</span></span>
+<span id="cb3-19"><a href="#cb3-19"></a>    <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>p){</span>
+<span id="cb3-20"><a href="#cb3-20"></a>        Y[,,i] <span class="ot">=</span> <span class="fu">t</span>(<span class="fu">mvrnorm</span>(k,mu_i[,i],Sigma))                                  <span class="co"># data generation</span></span>
+<span id="cb3-21"><a href="#cb3-21"></a>    }</span>
+<span id="cb3-22"><a href="#cb3-22"></a>    S               <span class="ot">=</span> <span class="fu">estimate</span>(Y)                                              <span class="co"># parameter estimation</span></span>
+<span id="cb3-23"><a href="#cb3-23"></a>    mu_hat_is[,,s]  <span class="ot">=</span> S<span class="sc">$</span>mu_hat_i                                               <span class="co"># \hat{\mu}_i</span></span>
+<span id="cb3-24"><a href="#cb3-24"></a>    Sigma_hats[,,s] <span class="ot">=</span> S<span class="sc">$</span>Sigma_hat                                              <span class="co"># \hat{\Sigma}</span></span>
+<span id="cb3-25"><a href="#cb3-25"></a>}</span>
+<span id="cb3-26"><a href="#cb3-26"></a></span>
+<span id="cb3-27"><a href="#cb3-27"></a><span class="co"># estimator-expectation estimation</span></span>
+<span id="cb3-28"><a href="#cb3-28"></a>E_hat_mu_i_hat  <span class="ot">=</span> <span class="fu">apply</span>(mu_hat_is , <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), mean)</span>
+<span id="cb3-29"><a href="#cb3-29"></a>E_hat_Sigma_hat <span class="ot">=</span> <span class="fu">apply</span>(Sigma_hats, <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), mean)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>As shown in <a href="#fig-parameter-estimators" class="quarto-xref">Figure&nbsp;<span>47.2</span></a>, even with the relatively small simulation effort of 100 data-set realizations, there is already good correspondence between the true, but unknown, parameter values <span class="math inline">\(\mu_i, i = 1,...,p\)</span> and <span class="math inline">\(\Sigma\)</span> and the approximated expected values of the estimators <span class="math inline">\(\mathbb{E}(\hat{\mu}_i)\)</span> for <span class="math inline">\(i = 1,...,p\)</span> and <span class="math inline">\(\mathbb{E}(\hat{\Sigma})\)</span>.</p>
+<div id="fig-parameter-estimators" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-parameter-estimators-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/703-parameter-estimators.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:50.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-parameter-estimators-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;47.2: Simulation-based validation of the theorem on the parameter estimators of one-way multivariate analysis of variance using the example <span class="math inline">\(m := 2,p := 3,
+k := 15\)</span> and 100 realizations of the corresponding multivariate normally distributed random vectors.
+</figcaption>
+</figure>
+</div>
+<p>Applying the parameter estimation to the data of the example data set in <a href="#tbl-bdi-glu" class="quarto-xref">Table&nbsp;<span>47.1</span></a> yields the following results. </p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>S <span class="ot">=</span> <span class="fu">estimate</span>(Y)                                                                <span class="co"># parameter estimation</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>         [,1]     [,2]      [,3]
+[1,] 9.933333 7.933333 1.6666667
+[2,] 3.900525 2.803179 0.9594878</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          [,1]      [,2]
+[1,] 3.3142857 0.4022937
+[2,] 0.4022937 0.6381336</code></pre>
+</div>
+</div>
+</section>
+<section id="sec-manova-model-evaluation" class="level2" data-number="47.3">
+<h2 data-number="47.3" class="anchored" data-anchor-id="sec-manova-model-evaluation"><span class="header-section-number">47.3</span> Model evaluation</h2>
+<p>The primary goal of a one-way multivariate analysis of variance is usually to test the null hypothesis <span class="math display">\[\begin{equation}
+H_0 : \mu_1 =  \cdots = \mu_p.
+\end{equation}\]</span> This null hypothesis states that there are no differences between the true, but unknown, expected-value parameters of the sample groups. The alternative hypothesis is thus <span class="math display">\[\begin{align}
+\begin{split}
+H_1 : \mu_{i_l} \neq \mu_{j_l}
+&amp;
+\mbox{ for at least one pair } i,j
+\mbox{ with } i \neq j,  1 \le i,j \le p
+\\
+&amp;
+\mbox{ and at least one } l
+\mbox{ with } 1 \le l \le m.
+\end{split}
+\end{align}\]</span> The alternative hypothesis therefore states that at least two true, but unknown, expected-value parameters differ in at least one of their components. As is known from the context of univariate one-way analysis of variance, rejecting the null hypothesis here also does not imply any statement about the exact form of the inferred expected-value-parameter difference.</p>
+<p>Within one-way multivariate analysis of variance, tests of the null hypothesis can be constructed using different test statistics. What these test statistics have in common is that they are based on a generalization of the sum-of-squares decomposition of one-way analysis of variance known from the univariate case. In the next section, we first introduce this so-called <em>cross-product sum matrix decomposition</em> of one-way multivariate analysis of variance. Subsequently, we consider model evaluation using <em>Wilks’ <span class="math inline">\(\Lambda\)</span> statistic</em>.</p>
+<section id="cross-product-sum-matrix-decomposition" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="cross-product-sum-matrix-decomposition">Cross-product sum matrix decomposition</h3>
+<p>The following theorem generalizes the sum-of-squares decomposition of one-way analysis of variance to the multivariate application scenario.</p>
+<div id="thm-cross-product-sum-matrix-decomposition" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 47.2 (Cross-product sum matrix decomposition)</strong></span> &nbsp;</p>
+Given the model of one-way multivariate analysis of variance. Furthermore, let <span class="math display">\[\begin{equation}
+\bar{y}    := \frac{1}{n}\sum_{i = 1}^p \sum_{j = 1}^{n_i} y_{ij}
+\mbox{ and }
+\bar{y}_i  := \frac{1}{n_i} \sum_{j = 1}^{n_i} y_{ij}
+\end{equation}\]</span> be the and the , respectively. Finally, let
+<p>Then <span class="math display">\[\begin{equation}
+T = B + W.
+\end{equation}\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>It holds that <span class="math display">\[\begin{align}
+\begin{split}
+T
+&amp; = \sum_{i=1}^p \sum_{j=1}^{n_i}(y_{ij}-\bar{y})(y_{ij}-\bar{y})^T
+\\
+&amp; = \sum_{i=1}^p \sum_{j=1}^{n_i} (y_{ij}-\bar{y}_i+\bar{y}_i-\bar{y})(y_{ij}-\bar{y}_i+\bar{y}_i-\bar{y})^T
+\\
+&amp; = \sum_{i=1}^p \sum_{j=1}^{n_i} \left((y_{ij}-\bar{y}_i)+(\bar{y}_i-\bar{y})\right)\left((y_{ij}-\bar{y}_i)+(\bar{y}_i-\bar{y})\right)^T
+\\
+&amp; = \sum_{i=1}^p \sum_{j=1}^{n_i} \left(
+                                      (y_{ij}-\bar{y}_i)(y_{ij}-\bar{y}_i)^T
+                                    +2(y_{ij}-\bar{y}_i)(\bar{y}_i-\bar{y})^T
+                                    + (\bar{y}_i-\bar{y})(\bar{y}_i-\bar{y})^T
+                                \right)
+\\
+&amp; = \sum_{i=1}^p \left(
+                       \sum_{j=1}^{n_i} (y_{ij}-\bar{y}_i)(y_{ij}-\bar{y}_i)^T
+                      +\sum_{j=1}^{n_i}2(y_{ij}-\bar{y}_i)(\bar{y}_i-\bar{y})^T
+                      +\sum_{j=1}^{n_i}(\bar{y}_i-\bar{y})(\bar{y}_i-\bar{y})^T
+                 \right)
+\\
+&amp; = \sum_{i=1}^p \left(
+                       \sum_{j=1}^{n_i} (y_{ij}-\bar{y}_i)(y_{ij}-\bar{y}_i)^T
+                      +2\left(\sum_{j=1}^{n_i}(y_{ij}-\bar{y}_i)\right)(\bar{y}_i-\bar{y})^T
+                      +n_i(\bar{y}_i-\bar{y})(\bar{y}_i-\bar{y})^T
+                 \right)
+\\
+&amp; = \sum_{i=1}^p \left(
+                       \sum_{j=1}^{n_i} (y_{ij}-\bar{y}_i)(y_{ij}-\bar{y}_i)^T
+                      +2\left(\sum_{j=1}^{n_i}\left(y_{ij}-\frac{1}{n_i}\sum_{j=1}^{n_i} y_{ij}\right)\right)(\bar{y}_i-\bar{y})^T
+                      +n_i(\bar{y}_i-\bar{y})(\bar{y}_i-\bar{y})^T
+                 \right)
+\\
+&amp; = \sum_{i=1}^p \left(
+                       \sum_{j=1}^{n_i} (y_{ij}-\bar{y}_i)(y_{ij}-\bar{y}_i)^T
+                      +2\left(\sum_{j=1}^{n_i} y_{ij}-\sum_{j=1}^{n_i} y_{ij}\right) (\bar{y}_i-\bar{y})^T
+                      +n_i(\bar{y}_i-\bar{y})(\bar{y}_i-\bar{y})^T
+                 \right)
+\\
+&amp; = \sum_{i=1}^p \left(
+                       \sum_{j=1}^{n_i} (y_{ij}-\bar{y}_i)(y_{ij}-\bar{y}_i)^T
+                       +n_i(\bar{y}_i-\bar{y})(\bar{y}_i-\bar{y})^T
+                 \right)
+\\
+&amp; = \sum_{i=1}^p n_i(\bar{y}_i-\bar{y})(\bar{y}_i-\bar{y})^T
+   +\sum_{i=1}^p \sum_{j=1}^{n_i} (y_{ij}-\bar{y}_i)(y_{ij}-\bar{y}_i)^T
+\\
+&amp; = B + W.
+\end{split}
+\end{align}\]</span></p>
+</div>
+<p>The intuitive interpretation of the total, between-group, and within-group sum-of-squares matrices is analogous to the concepts known from the univariate scenario: the matrix <span class="math inline">\(T\)</span> represents the total variability of the data vectors around the grand sample mean, the matrix <span class="math inline">\(B\)</span> represents the variability of the group sample means around the grand sample mean, and the matrix <span class="math inline">\(W\)</span> represents the variability of the data vectors around their respective group sample means. As in the univariate case, the total data variability is thus additively decomposed into two independent contributions. The matrix <span class="math inline">\(W\)</span> can also be understood as a measure of residual variability because it quantifies the remaining variability after estimating the group expected-value parameters. Evidently, for the estimator <span class="math inline">\(\hat{\Sigma}\)</span> of the common sample covariance matrix parameter from <a href="#thm-parameter-estimators" class="quarto-xref">Theorem&nbsp;<span>47.1</span></a>, <span class="math display">\[\begin{equation}
+W = (n - p)\hat{\Sigma}.
+\end{equation}\]</span> The following <strong>R</strong> code demonstrates the evaluation of the matrices defined in <a href="#thm-cross-product-sum-matrix-decomposition" class="quarto-xref">Theorem&nbsp;<span>47.2</span></a> using an <strong>R</strong> function.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>sos <span class="ot">=</span> <span class="cf">function</span>(Y){</span>
+<span id="cb7-2"><a href="#cb7-2"></a></span>
+<span id="cb7-3"><a href="#cb7-3"></a>  <span class="co"># this function evaluates the cross-product sum matrices T,B,W of a</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a>  <span class="co"># one-way analysis of variance based on an m x k x p data set Y.</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a>  <span class="co">#</span></span>
+<span id="cb7-6"><a href="#cb7-6"></a>  <span class="co"># input</span></span>
+<span id="cb7-7"><a href="#cb7-7"></a>  <span class="co">#     Y        : m x k x p data array</span></span>
+<span id="cb7-8"><a href="#cb7-8"></a>  <span class="co">#</span></span>
+<span id="cb7-9"><a href="#cb7-9"></a>  <span class="co"># output</span></span>
+<span id="cb7-10"><a href="#cb7-10"></a>  <span class="co">#     $y_bar   : m x 1 grand mean</span></span>
+<span id="cb7-11"><a href="#cb7-11"></a>  <span class="co">#     $y_bar_i : m x p group means</span></span>
+<span id="cb7-12"><a href="#cb7-12"></a>  <span class="co">#     $T       : m x m total sum-of-squares matrix</span></span>
+<span id="cb7-13"><a href="#cb7-13"></a>  <span class="co">#     $B       : m x m between-group sum-of-squares matrix</span></span>
+<span id="cb7-14"><a href="#cb7-14"></a>  <span class="co">#     $W       : m x m within-group sum-of-squares matrix</span></span>
+<span id="cb7-15"><a href="#cb7-15"></a>  <span class="co"># ---------------------------------------------------------------------------</span></span>
+<span id="cb7-16"><a href="#cb7-16"></a>  d        <span class="ot">=</span> <span class="fu">dim</span>(Y)                                                            <span class="co"># data-set dimensions</span></span>
+<span id="cb7-17"><a href="#cb7-17"></a>  m        <span class="ot">=</span> d[<span class="dv">1</span>]                                                              <span class="co"># data dimension</span></span>
+<span id="cb7-18"><a href="#cb7-18"></a>  k        <span class="ot">=</span> d[<span class="dv">2</span>]                                                              <span class="co"># number of data points per group</span></span>
+<span id="cb7-19"><a href="#cb7-19"></a>  p        <span class="ot">=</span> d[<span class="dv">3</span>]                                                              <span class="co"># number of groups</span></span>
+<span id="cb7-20"><a href="#cb7-20"></a></span>
+<span id="cb7-21"><a href="#cb7-21"></a>  <span class="co"># means</span></span>
+<span id="cb7-22"><a href="#cb7-22"></a>  y_bar_i  <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">apply</span>(Y,<span class="dv">3</span>,rowMeans), <span class="at">nrow =</span> m)                             <span class="co"># group sample means</span></span>
+<span id="cb7-23"><a href="#cb7-23"></a>  y_bar    <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">rowMeans</span>(y_bar_i)  , <span class="at">nrow =</span> m)                             <span class="co"># grand sample mean</span></span>
+<span id="cb7-24"><a href="#cb7-24"></a></span>
+<span id="cb7-25"><a href="#cb7-25"></a>  <span class="co"># total sum-of-squares matrix</span></span>
+<span id="cb7-26"><a href="#cb7-26"></a>  T <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="dv">0</span>,m<span class="sc">*</span>m), <span class="at">nrow =</span> m)</span>
+<span id="cb7-27"><a href="#cb7-27"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>p){</span>
+<span id="cb7-28"><a href="#cb7-28"></a>      <span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>k){</span>
+<span id="cb7-29"><a href="#cb7-29"></a>          T <span class="ot">=</span> T <span class="sc">+</span> (Y[,j,i] <span class="sc">-</span> y_bar) <span class="sc">%*%</span> <span class="fu">t</span>(Y[,j,i] <span class="sc">-</span> y_bar)}}</span>
+<span id="cb7-30"><a href="#cb7-30"></a></span>
+<span id="cb7-31"><a href="#cb7-31"></a>  <span class="co"># between sum-of-squares matrix</span></span>
+<span id="cb7-32"><a href="#cb7-32"></a>  B <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="dv">0</span>,m<span class="sc">*</span>m), <span class="at">nrow =</span> m)</span>
+<span id="cb7-33"><a href="#cb7-33"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>p){</span>
+<span id="cb7-34"><a href="#cb7-34"></a>    B <span class="ot">=</span> B <span class="sc">+</span> k<span class="sc">*</span>(y_bar_i[,i] <span class="sc">-</span> y_bar) <span class="sc">%*%</span> <span class="fu">t</span>(y_bar_i[,i] <span class="sc">-</span> y_bar)}</span>
+<span id="cb7-35"><a href="#cb7-35"></a></span>
+<span id="cb7-36"><a href="#cb7-36"></a>  <span class="co"># within sum-of-squares matrix</span></span>
+<span id="cb7-37"><a href="#cb7-37"></a>  W <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="dv">0</span>,m<span class="sc">*</span>m), <span class="at">nrow =</span> m)</span>
+<span id="cb7-38"><a href="#cb7-38"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>p){</span>
+<span id="cb7-39"><a href="#cb7-39"></a>      <span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>k){</span>
+<span id="cb7-40"><a href="#cb7-40"></a>          W <span class="ot">=</span> W <span class="sc">+</span> (Y[,j,i] <span class="sc">-</span> y_bar_i[,i]) <span class="sc">%*%</span> <span class="fu">t</span>(Y[,j,i] <span class="sc">-</span> y_bar_i[,i])}}</span>
+<span id="cb7-41"><a href="#cb7-41"></a></span>
+<span id="cb7-42"><a href="#cb7-42"></a>  <span class="co"># output specification</span></span>
+<span id="cb7-43"><a href="#cb7-43"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">y_bar_i =</span> y_bar_i, <span class="at">y_bar =</span> y_bar, <span class="at">T =</span> T, <span class="at">B =</span> B, <span class="at">W =</span> W))}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="model-evaluation-with-wilks-lambda-statistic" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="model-evaluation-with-wilks-lambda-statistic">Model evaluation with Wilks’ <span class="math inline">\(\Lambda\)</span> statistic</h3>
+<p>Based on the cross-product sum matrix decomposition in <a href="#thm-cross-product-sum-matrix-decomposition" class="quarto-xref">Theorem&nbsp;<span>47.2</span></a>, a number of test statistics for one-way multivariate analysis of variance have been proposed (<span class="citation" data-cites="wilks1932">Wilks (<a href="#ref-wilks1932" role="doc-biblioref">1932</a>)</span>, <span class="citation" data-cites="pillai1955">Pillai (<a href="#ref-pillai1955" role="doc-biblioref">1955</a>)</span>, <span class="citation" data-cites="roy1953">Roy &amp; Bose (<a href="#ref-roy1953" role="doc-biblioref">1953</a>)</span>, <span class="citation" data-cites="hotelling1951">Hotelling (<a href="#ref-hotelling1951" role="doc-biblioref">1951</a>)</span>). Here, we consider only <em>Wilks’ <span class="math inline">\(\Lambda\)</span> statistic</em> according to <span class="citation" data-cites="wilks1932">Wilks (<a href="#ref-wilks1932" role="doc-biblioref">1932</a>)</span> as an example. In contrast to the <span class="math inline">\(F\)</span> test statistic of univariate one-way analysis of variance, the frequentist distributions of Wilks’ <span class="math inline">\(\Lambda\)</span> statistic under the null hypothesis can be determined analytically exactly only for certain application scenarios, especially for small values of the data dimension <span class="math inline">\(m\)</span> and the number of groups <span class="math inline">\(p\)</span>. In these scenarios, one is led to <span class="math inline">\(f\)</span> distributions with <span class="math inline">\(m\)</span>- and <span class="math inline">\(p\)</span>-dependent degree-of-freedom parameters. For application scenarios with larger values of <span class="math inline">\(m\)</span> and/or <span class="math inline">\(p\)</span>, there exist only approximations to the frequentist distributions of Wilks’ <span class="math inline">\(\Lambda\)</span> statistic, which are exact only asymptotically for infinitely large sample sizes <span class="math inline">\(n \to \infty\)</span>. These approximations are again given by <span class="math inline">\(f\)</span> distributions with <span class="math inline">\(m\)</span>- and <span class="math inline">\(p\)</span>-dependent degree-of-freedom parameters. In applications, test decisions based on exact or approximate distributions of the different test statistics usually do not differ. In a concrete case of data dimension and group size, simulations may help to assess possible differences between Wilks’ <span class="math inline">\(\Lambda\)</span> statistic and other test statistics, as well as the approximation of their distributions.</p>
+<p>We first define Wilks’ <span class="math inline">\(\Lambda\)</span> statistic.</p>
+<div id="def-wilks-lambda-statistic" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 47.2 (Wilks’ <span class="math inline">\(\Lambda\)</span> statistic)</strong></span> Given the model of one-way multivariate analysis of variance as well as the between-group sum-of-squares matrix <span class="math inline">\(B\)</span> and the within-group sum-of-squares matrix <span class="math inline">\(W\)</span>, <em>Wilks’ <span class="math inline">\(\Lambda\)</span> statistic</em> is defined as <span class="math display">\[\begin{equation}
+\Lambda := \frac{|W|}{|T|} = \frac{|W|}{|B+W|}.
+\end{equation}\]</span></p>
+</div>
+<p>Intuitively, <span class="math inline">\(\Lambda\)</span> measures the ratio of residual data variability, represented by the determinant of <span class="math inline">\(W\)</span>, and total data variability, represented by the determinant of <span class="math inline">\(T = B+W\)</span>. <span class="math inline">\(\Lambda\)</span> is therefore defined analogously to the effect-size measure <span class="math inline">\(\eta^2\)</span> of univariate one-way analysis of variance. In the case of equality of the group-specific sample means, for <span class="math inline">\(\Lambda\)</span> in particular, <span class="math display">\[\begin{equation}
+\bar{y}_1 = \cdots = \bar{y}_p = \bar{y}
+\Rightarrow
+B = 0_{mm}
+\Rightarrow
+\Lambda = \frac{|W|}{|T|} = \frac{|W|}{|B+W|} = \frac{|W|}{|0_{mm} + W|} = \frac{|W|}{|W|} = 1.
+\end{equation}\]</span> For increasing differences between the group-specific sample means <span class="math inline">\(\bar{y}_i\)</span>, <span class="math inline">\(|B+W|\)</span> increases relative to <span class="math inline">\(|W|\)</span> and <span class="math inline">\(\Lambda\)</span> therefore decreases. Without proof, we record that <span class="math inline">\(0 \le \Lambda \le 1\)</span>. In contrast to most familiar test statistics, <em>small values of the test statistic <span class="math inline">\(\Lambda\)</span> therefore speak for a deviation from the null hypothesis</em>.</p>
+<p>Equivalently, <span class="math inline">\(\Lambda\)</span> can also be given in terms of the eigenvalues of the matrix <span class="math inline">\(W^{-1}B\)</span>. Here, the matrix <span class="math inline">\(W^{-1}B\)</span> is the multivariate analogue of the ratio of between-group sum of squares and within-group sum of squares known from univariate one-way analysis of variance, which forms the basis of the <span class="math inline">\(F\)</span> test statistic in the univariate case. The following theorem holds.</p>
+<div id="thm-eigenvalue-form-wilks-lambda" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 47.3 (Eigenvalue form of Wilks’ <span class="math inline">\(\Lambda\)</span> statistic)</strong></span> Let the model of one-way multivariate analysis of variance, the between-group sum-of-squares matrix <span class="math inline">\(B\)</span>, the within-group sum-of-squares matrix <span class="math inline">\(W\)</span>, and Wilks’ <span class="math inline">\(\Lambda\)</span> statistic be defined as above. Furthermore, let <span class="math inline">\(\lambda_1,...,\lambda_s\)</span> be the eigenvalues of <span class="math inline">\(W^{-1}B\)</span>. Then <span class="math display">\[\begin{equation}
+\Lambda = \prod_{i=1}^s \frac{1}{1 + \lambda_i}.
+\end{equation}\]</span></p>
+</div>
+<p>We omit a proof.</p>
+<p>For special application scenarios characterized by the data dimension <span class="math inline">\(m\)</span> and the number of groups <span class="math inline">\(p\)</span>, <span class="citation" data-cites="wilks1932">Wilks (<a href="#ref-wilks1932" role="doc-biblioref">1932</a>)</span> provides analytic forms for the distributions of transformations of <span class="math inline">\(\Lambda\)</span> under the null hypothesis. These analytic forms correspond to the distributions of <span class="math inline">\(f\)</span> random variables with certain degree-of-freedom parameters determined by the data dimension and number of groups of the application scenario. We summarize the application scenarios, the corresponding transformation of <span class="math inline">\(\Lambda\)</span>, and the analytic forms of their frequentist distributions when the null hypothesis is true in the following theorem.</p>
+<div id="thm-special-h0-distributions-wilks-lambda-transformations" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 47.4 (Special <span class="math inline">\(H_0\)</span> distributions of transformations of Wilks’ <span class="math inline">\(\Lambda\)</span> statistic)</strong></span> &nbsp;</p>
+Let the model of one-way analysis of variance and Wilks’ <span class="math inline">\(\Lambda\)</span> statistic be defined as above, and let the null hypothesis <span class="math display">\[\begin{equation}
+H_0 : \mu_1 =  \cdots = \mu_p.
+\end{equation}\]</span> hold. Then, for the special cases listed in the first two table columns, the statistics listed in the third table column are <span class="math inline">\(f\)</span> random variables, with the degree-of-freedom parameters listed in the fourth table column.
+</div>
+<p>In <a href="#fig-special-lambda-distributions" class="quarto-xref">Figure&nbsp;<span>47.3</span></a>, we visualize exemplary simulation-based validations of the distributions given in <a href="#thm-special-h0-distributions-wilks-lambda-transformations" class="quarto-xref">Theorem&nbsp;<span>47.4</span></a>.</p>
+<div id="fig-special-lambda-distributions" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-special-lambda-distributions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/703-special-lambda-distributions.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-special-lambda-distributions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;47.3: Simulation of special distributions of Wilks’ <span class="math inline">\(\Lambda\)</span> statistic transformations when the null hypothesis is true.
+</figcaption>
+</figure>
+</div>
+<p><span class="citation" data-cites="rao1951">Rao (<a href="#ref-rao1951" role="doc-biblioref">1951</a>)</span> proposed the approximations of distributions of transformations of Wilks’ <span class="math inline">\(\Lambda\)</span> statistic given in the following theorem for general application scenarios. Note that the test statistic <span class="math inline">\(\tau\)</span> defined in this theorem is reciprocal to <span class="math inline">\(\Lambda\)</span>, as shown in <a href="#fig-tau-lambda" class="quarto-xref">Figure&nbsp;<span>47.4</span></a>. Small values of <span class="math inline">\(\Lambda\)</span> as evidence <em>against</em> the null hypothesis therefore correspond to high values of <span class="math inline">\(\tau\)</span>.</p>
+<div id="thm-approximate-h0-distributions-wilks-lambda-transformations" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 47.5 (Approximate <span class="math inline">\(H_0\)</span> distributions of transformations of Wilks’ <span class="math inline">\(\Lambda\)</span> statistic)</strong></span> Let the model of one-way analysis of variance and Wilks’ <span class="math inline">\(\Lambda\)</span> statistic be defined as above, and let the null hypothesis <span class="math display">\[\begin{equation}
+H_0 : \mu_1 =  \cdots = \mu_p.
+\end{equation}\]</span> hold. Then the statistic <span class="math display">\[\begin{equation}
+\tau := \frac{1 - \Lambda^{1/t}}{\Lambda^{1/t}} \frac{\nu_2}{\nu_1}
+\end{equation}\]</span> with <span class="math display">\[\begin{equation}
+\nu_1 := m(p-1)
+\mbox{ and }
+\nu_2 := wt-\frac{1}{2}(m(p-1)-2)
+\end{equation}\]</span> and <span class="math display">\[\begin{equation}
+w := n-1-\frac{1}{2}(m+p)
+\mbox{ and }
+t   := \sqrt{\frac{m^2(p-1)^2 - 4}{m^2 + (p-1)^2 - 5}}
+\end{equation}\]</span> is approximately <span class="math inline">\(f\)</span> distributed with degree-of-freedom parameters <span class="math inline">\(\nu_1\)</span> and <span class="math inline">\(\nu_2\)</span>.</p>
+</div>
+<div id="fig-tau-lambda" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-tau-lambda-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/703-tau-lambda.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tau-lambda-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;47.4: Relationship between Wilks’ <span class="math inline">\(\Lambda\)</span> statistic and the <span class="math inline">\(\tau\)</span> statistic considered by <span class="citation" data-cites="rao1951">Rao (<a href="#ref-rao1951" role="doc-biblioref">1951</a>)</span> in exemplary application scenarios.
+</figcaption>
+</figure>
+</div>
+<p>In <a href="#fig-approximate-lambda-distributions" class="quarto-xref">Figure&nbsp;<span>47.5</span></a>, we visualize exemplary simulation-based validations of the distributions given in <a href="#thm-approximate-h0-distributions-wilks-lambda-transformations" class="quarto-xref">Theorem&nbsp;<span>47.5</span></a>.</p>
+<div id="fig-approximate-lambda-distributions" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-approximate-lambda-distributions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/703-approximate-lambda-distributions.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-approximate-lambda-distributions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;47.5: Simulation of approximate distributions of Wilks’ <span class="math inline">\(\Lambda\)</span> statistic transformations when the null hypothesis is true.
+</figcaption>
+</figure>
+</div>
+<p>Using the approximate distributions of the transformed Wilks’ <span class="math inline">\(\Lambda\)</span> statistic <span class="math inline">\(\tau\)</span> determined by <span class="citation" data-cites="rao1951">Rao (<a href="#ref-rao1951" role="doc-biblioref">1951</a>)</span> when the null hypothesis is true, we can now specify a hypothesis test for one-way multivariate analysis of variance.</p>
+<div id="thm-wilks-lambda-based-test-size-control-p-value" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 47.6 (Wilks’ <span class="math inline">\(\Lambda\)</span>-based test, size control, p-value)</strong></span> Given the model of one-way multivariate analysis of variance and the transformed Wilks’ <span class="math inline">\(\Lambda\)</span> statistic <span class="math inline">\(\tau\)</span> with distribution parameters <span class="math inline">\(\nu_1,\nu_2\)</span> as defined above. Furthermore, for <span class="math inline">\(Y = (y_1,...,y_n)\)</span>, let the critical-value-based test <span class="math display">\[\begin{equation}
+\phi(Y) := 1_{\{\tau &gt; k\}} :=
+\begin{cases}
+1 &amp; \tau &gt;   k \\
+0 &amp; \tau \le k
+\end{cases}
+\end{equation}\]</span> be defined. Then <span class="math inline">\(\phi\)</span> is a level-<span class="math inline">\(\alpha_0\)</span> test with size <span class="math inline">\(\alpha\)</span> if and only if <span class="math display">\[\begin{equation}
+k := k_{\alpha_0} := F^{-1}(1-\alpha_0; \nu_1,\nu_2)
+\end{equation}\]</span> and the p-value of a realized <span class="math inline">\(\tau\)</span> test statistic <span class="math inline">\(\tilde{\tau}\)</span> is <span class="math display">\[\begin{equation}
+\mbox{p-value} = \mathbb{P}(\tau \ge \tilde{\tau}) = 1 - F(\tilde{\tau}; \nu_1,\nu_2).
+\end{equation}\]</span></p>
+</div>
+<p>We omit a proof of <a href="#thm-wilks-lambda-based-test-size-control-p-value" class="quarto-xref">Theorem&nbsp;<span>47.6</span></a>, which can be conducted analogously to the corresponding proofs, for example for the one-sample T<span class="math inline">\(^2\)</span> test. The choice of a critical value for size control implicit in <a href="#thm-wilks-lambda-based-test-size-control-p-value" class="quarto-xref">Theorem&nbsp;<span>47.6</span></a> in the application scenario <span class="math inline">\(m := 3, p := 4\)</span> and <span class="math inline">\(n_i = 15\)</span> for <span class="math inline">\(i = 1,..,p\)</span>, and hence <span class="math inline">\(\nu_1 = 9\)</span> and <span class="math inline">\(\nu_2 = 132\)</span>, at a significance level of <span class="math inline">\(\alpha_0 = 0.05\)</span> is visualized in <a href="#fig-critical-value-lambda" class="quarto-xref">Figure&nbsp;<span>47.6</span></a>.</p>
+<div id="fig-critical-value-lambda" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-critical-value-lambda-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./_figures/703-critical-value-lambda.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-critical-value-lambda-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;47.6: Size control by selecting an <span class="math inline">\(\alpha_0\)</span>-dependent critical value for the Wilks’ <span class="math inline">\(\Lambda\)</span> statistic-based test using the CDF and PDF of the transformed Wilks’ <span class="math inline">\(\Lambda\)</span> statistic <span class="math inline">\(\tau\)</span>.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="practical-procedure" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="practical-procedure">Practical procedure</h3>
+<p>In practice, the above results correspond to the following procedure when carrying out a one-way multivariate analysis of variance: one assumes that an available data set of <span class="math inline">\(i = 1,...,p\)</span> groups of <span class="math inline">\(m\)</span>-dimensional data vectors, for each <span class="math inline">\(j = 1,...,n_i\)</span>, is a realization of random vectors <span class="math inline">\(y_{ij} \sim N(\mu_i,\Sigma)\)</span> with unknown group-specific expected-value parameters <span class="math inline">\(\mu_i \in \mathbb{R}^m\)</span> and a group-unspecific covariance-matrix parameter <span class="math inline">\(\Sigma \in \mathbb{R}^{m \times m} \mbox{ pd}\)</span>. One wants to decide whether the null hypothesis <span class="math inline">\(H_0 : \mu_1 = \cdots = \mu_p\)</span> of identical true, but unknown, expected-value parameters is more plausible or not. For this purpose, one first chooses a significance level <span class="math inline">\(\alpha_0\)</span> and then determines the associated degree-of-freedom-parameter-dependent critical value <span class="math inline">\(k_{\alpha_0}\)</span>. For example, choosing <span class="math inline">\(\alpha_0 := 0.05\)</span> in the scenario of three-dimensional data vectors (<span class="math inline">\(m = 3\)</span>), four groups (<span class="math inline">\(p = 4\)</span>), and <span class="math inline">\(n_i = 15\)</span> experimental units per group, and thus a total of <span class="math inline">\(n = 60\)</span> data points, yields <span class="math inline">\(\nu_1 = 9\)</span> and <span class="math inline">\(\nu_2 = 132\)</span>, and the critical value defined in <a href="#thm-wilks-lambda-based-test-size-control-p-value" class="quarto-xref">Theorem&nbsp;<span>47.6</span></a> is <span class="math inline">\(k_{\alpha_0} = F^{-1}(1 - 0.05; 9, 132) \approx 1.95\)</span>. Based on the realized data set, one then first computes Wilks’ <span class="math inline">\(\Lambda\)</span> statistic and the resulting, <span class="math inline">\(m,p,n\)</span>-dependent realized value of the transformed Wilks’ <span class="math inline">\(\Lambda\)</span> statistic <span class="math inline">\(\tau\)</span>. If the computed value of <span class="math inline">\(\tau\)</span> is larger than <span class="math inline">\(k_{\alpha_0}\)</span>, one rejects the null hypothesis; otherwise one does not. The theory of size control for one-way multivariate analysis of variance developed above on the basis of Wilks’ <span class="math inline">\(\Lambda\)</span> statistic then guarantees that, on average, one falsely rejects the null hypothesis in at most <span class="math inline">\(\alpha_0 \cdot 100\)</span> out of 100 cases.</p>
+<p>The following <strong>R</strong> code demonstrates the application of the hypothesis test defined in <a href="#thm-wilks-lambda-based-test-size-control-p-value" class="quarto-xref">Theorem&nbsp;<span>47.6</span></a> to data generated under the model of one-way multivariate analysis of variance when the null hypothesis is true, and validates its control of test size for the application scenarios sketched in <a href="#fig-approximate-lambda-distributions" class="quarto-xref">Figure&nbsp;<span>47.5</span></a>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co"># scenario parameters</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="fu">library</span>(MASS)                                                                  <span class="co"># multivariate normal distributions</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a>nsm       <span class="ot">=</span> <span class="fl">1e4</span>                                                                <span class="co"># number of data simulations</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a>M         <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">9</span>)                                                         <span class="co"># data dimension</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a>P         <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">9</span>,<span class="dv">4</span>,<span class="dv">4</span>)                                                         <span class="co"># number of groups</span></span>
+<span id="cb8-6"><a href="#cb8-6"></a>k         <span class="ot">=</span> <span class="dv">15</span>                                                                 <span class="co"># data points per group</span></span>
+<span id="cb8-7"><a href="#cb8-7"></a>N         <span class="ot">=</span> k<span class="sc">*</span>P                                                                <span class="co"># total number of data points</span></span>
+<span id="cb8-8"><a href="#cb8-8"></a>alpha_0   <span class="ot">=</span> <span class="fl">0.05</span>                                                               <span class="co"># \alpha_0</span></span>
+<span id="cb8-9"><a href="#cb8-9"></a>nsc       <span class="ot">=</span> <span class="fu">length</span>(M)                                                          <span class="co"># number of scenarios</span></span>
+<span id="cb8-10"><a href="#cb8-10"></a>TAU       <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="cn">NaN</span>,nsm<span class="sc">*</span>nsc), <span class="at">ncol =</span> nsc)                               <span class="co"># statistic array</span></span>
+<span id="cb8-11"><a href="#cb8-11"></a>NU        <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="cn">NaN</span>,<span class="dv">2</span><span class="sc">*</span>nsc)  , <span class="at">ncol =</span> nsc)                               <span class="co"># parameter array</span></span>
+<span id="cb8-12"><a href="#cb8-12"></a>KA        <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>, nsc)                                                      <span class="co"># critical values</span></span>
+<span id="cb8-13"><a href="#cb8-13"></a>PHI       <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="dv">0</span>,nsm<span class="sc">*</span>nsc)  , <span class="at">ncol =</span> nsc)                               <span class="co"># test array</span></span>
+<span id="cb8-14"><a href="#cb8-14"></a></span>
+<span id="cb8-15"><a href="#cb8-15"></a><span class="co"># simulations</span></span>
+<span id="cb8-16"><a href="#cb8-16"></a><span class="cf">for</span>(sc <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nsc){                                                              <span class="co"># scenario iterations</span></span>
+<span id="cb8-17"><a href="#cb8-17"></a></span>
+<span id="cb8-18"><a href="#cb8-18"></a>    <span class="co"># model parameters</span></span>
+<span id="cb8-19"><a href="#cb8-19"></a>    m         <span class="ot">=</span> M[sc]                                                          <span class="co"># data dimension</span></span>
+<span id="cb8-20"><a href="#cb8-20"></a>    p         <span class="ot">=</span> P[sc]                                                          <span class="co"># number of groups</span></span>
+<span id="cb8-21"><a href="#cb8-21"></a>    n         <span class="ot">=</span> N[sc]                                                          <span class="co"># total number of data points</span></span>
+<span id="cb8-22"><a href="#cb8-22"></a>    mu_i      <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="dv">0</span>,m), <span class="at">nrow =</span> m)                                     <span class="co"># identical group expected-value parameters under H_0</span></span>
+<span id="cb8-23"><a href="#cb8-23"></a>    Sigma     <span class="ot">=</span> <span class="fu">diag</span>(m)                                                        <span class="co"># identical group covariance-matrix parameters</span></span>
+<span id="cb8-24"><a href="#cb8-24"></a></span>
+<span id="cb8-25"><a href="#cb8-25"></a>    <span class="co"># analysis-of-variance parameters</span></span>
+<span id="cb8-26"><a href="#cb8-26"></a>    w         <span class="ot">=</span> n<span class="dv">-1</span><span class="sc">-</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>)<span class="sc">*</span>(m<span class="sc">+</span>p)                                                <span class="co"># w</span></span>
+<span id="cb8-27"><a href="#cb8-27"></a>    t         <span class="ot">=</span> <span class="fu">sqrt</span>((m<span class="sc">^</span><span class="dv">2</span><span class="sc">*</span>(p<span class="dv">-1</span>)<span class="sc">^</span><span class="dv">2-4</span>)<span class="sc">/</span>(m<span class="sc">^</span><span class="dv">2</span><span class="sc">+</span>(p<span class="dv">-1</span>)<span class="sc">^</span><span class="dv">2-5</span>))                          <span class="co"># t</span></span>
+<span id="cb8-28"><a href="#cb8-28"></a>    nu_1      <span class="ot">=</span> m<span class="sc">*</span>(p<span class="dv">-1</span>)                                                        <span class="co"># \nu_1</span></span>
+<span id="cb8-29"><a href="#cb8-29"></a>    nu_2      <span class="ot">=</span> w<span class="sc">*</span>t<span class="sc">-</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>)<span class="sc">*</span>(m<span class="sc">*</span>(p<span class="dv">-1</span>)<span class="sc">-</span><span class="dv">2</span>)                                          <span class="co"># \nu_2</span></span>
+<span id="cb8-30"><a href="#cb8-30"></a>    KA[sc]    <span class="ot">=</span> <span class="fu">qf</span>(<span class="dv">1</span><span class="sc">-</span>alpha_0,nu_1,nu_2)                                        <span class="co"># critical value</span></span>
+<span id="cb8-31"><a href="#cb8-31"></a></span>
+<span id="cb8-32"><a href="#cb8-32"></a>    <span class="co"># data simulations</span></span>
+<span id="cb8-33"><a href="#cb8-33"></a>    <span class="cf">for</span>(sm <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nsm){</span>
+<span id="cb8-34"><a href="#cb8-34"></a>        Y     <span class="ot">=</span> <span class="fu">array</span>(<span class="at">dim =</span> <span class="fu">c</span>(m,k,p))                                          <span class="co"># data-array initialization</span></span>
+<span id="cb8-35"><a href="#cb8-35"></a>        <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>p){                                                         <span class="co"># group iterations</span></span>
+<span id="cb8-36"><a href="#cb8-36"></a>            Y[,,i] <span class="ot">=</span>  <span class="fu">t</span>(<span class="fu">mvrnorm</span>(k,mu_i,Sigma))}                                <span class="co"># data simulation</span></span>
+<span id="cb8-37"><a href="#cb8-37"></a>        S          <span class="ot">=</span> <span class="fu">sos</span>(Y)                                                    <span class="co"># sample means and sum-of-squares matrices</span></span>
+<span id="cb8-38"><a href="#cb8-38"></a>        L          <span class="ot">=</span> <span class="fu">det</span>(S<span class="sc">$</span>W)<span class="sc">/</span><span class="fu">det</span>(S<span class="sc">$</span>W <span class="sc">+</span> S<span class="sc">$</span>B)                                   <span class="co"># Wilks' Lambda</span></span>
+<span id="cb8-39"><a href="#cb8-39"></a>        tau        <span class="ot">=</span> ((<span class="dv">1</span><span class="sc">-</span>L<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span>t))<span class="sc">/</span>L<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span>t))<span class="sc">*</span>(nu_2<span class="sc">/</span>nu_1)                         <span class="co"># statistic</span></span>
+<span id="cb8-40"><a href="#cb8-40"></a>        PHI[sm,sc] <span class="ot">=</span> tau <span class="sc">&gt;</span> KA[sc]}}                                            <span class="co"># test</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Critical values       :  1.951729 1.547641 1.821661 1.565152 
+Estimated test sizes:  0.0472 0.0496 0.0522 0.0488</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="application-example-1" class="level2" data-number="47.4">
+<h2 data-number="47.4" class="anchored" data-anchor-id="application-example-1"><span class="header-section-number">47.4</span> Application example</h2>
+<p>We consider the application example of a simulated two-dimensional data set of three therapy groups discussed at the beginning. We now want to use one-way analysis of variance to test the null hypothesis of identical group expected-value parameters for this data set. The following <strong>R</strong> code implements the practical procedure for a significance level of <span class="math inline">\(\alpha_0 := 0.05\)</span>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="co"># reading and preprocessing the data set</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a>D           <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"./_data/703-one-way-analysis-of-variance.csv"</span>)         <span class="co"># read data</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a>m           <span class="ot">=</span> <span class="dv">2</span>                                                                <span class="co"># data dimension of interest</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a>p           <span class="ot">=</span> <span class="dv">3</span>                                                                <span class="co"># number of groups</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a>k           <span class="ot">=</span> <span class="dv">15</span>                                                               <span class="co"># number of data points per group</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a>n           <span class="ot">=</span> p<span class="sc">*</span>k                                                              <span class="co"># total number of data points</span></span>
+<span id="cb10-7"><a href="#cb10-7"></a>Y           <span class="ot">=</span> <span class="fu">array</span>(<span class="at">dim =</span> <span class="fu">c</span>(m,k,p))                                            <span class="co"># data-array initialization</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a>Y[,,<span class="dv">1</span>]      <span class="ot">=</span> <span class="fu">rbind</span>(D<span class="sc">$</span>dBDI[D<span class="sc">$</span>COND <span class="sc">==</span> <span class="st">"F2F"</span>],                                   <span class="co"># F2F dBDI values</span></span>
+<span id="cb10-9"><a href="#cb10-9"></a>                    D<span class="sc">$</span>dGLU[D<span class="sc">$</span>COND <span class="sc">==</span> <span class="st">"F2F"</span>])                                   <span class="co"># F2F dGLU values</span></span>
+<span id="cb10-10"><a href="#cb10-10"></a>Y[,,<span class="dv">2</span>]      <span class="ot">=</span> <span class="fu">rbind</span>(D<span class="sc">$</span>dBDI[D<span class="sc">$</span>COND <span class="sc">==</span> <span class="st">"ONL"</span>],                                   <span class="co"># ONL dBDI values</span></span>
+<span id="cb10-11"><a href="#cb10-11"></a>                    D<span class="sc">$</span>dGLU[D<span class="sc">$</span>COND <span class="sc">==</span> <span class="st">"ONL"</span>])                                   <span class="co"># ONL dGLU values</span></span>
+<span id="cb10-12"><a href="#cb10-12"></a>Y[,,<span class="dv">3</span>]      <span class="ot">=</span> <span class="fu">rbind</span>(D<span class="sc">$</span>dBDI[D<span class="sc">$</span>COND <span class="sc">==</span> <span class="st">"WLC"</span>],                                   <span class="co"># WLC dBDI values</span></span>
+<span id="cb10-13"><a href="#cb10-13"></a>                    D<span class="sc">$</span>dGLU[D<span class="sc">$</span>COND <span class="sc">==</span> <span class="st">"WLC"</span>])                                   <span class="co"># WLC dGLU values</span></span>
+<span id="cb10-14"><a href="#cb10-14"></a></span>
+<span id="cb10-15"><a href="#cb10-15"></a><span class="co"># one-way analysis of variance</span></span>
+<span id="cb10-16"><a href="#cb10-16"></a>alpha_0     <span class="ot">=</span> <span class="fl">0.05</span>                                                             <span class="co"># significance level</span></span>
+<span id="cb10-17"><a href="#cb10-17"></a>S           <span class="ot">=</span> <span class="fu">sos</span>(Y)                                                           <span class="co"># sum-of-squares matrices</span></span>
+<span id="cb10-18"><a href="#cb10-18"></a>L           <span class="ot">=</span> <span class="fu">det</span>(S<span class="sc">$</span>W)<span class="sc">/</span><span class="fu">det</span>(S<span class="sc">$</span>W <span class="sc">+</span> S<span class="sc">$</span>B)                                          <span class="co"># Wilks' Lambda</span></span>
+<span id="cb10-19"><a href="#cb10-19"></a>w           <span class="ot">=</span> n<span class="dv">-1</span><span class="sc">-</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>)<span class="sc">*</span>(m<span class="sc">+</span>p)                                                  <span class="co"># w</span></span>
+<span id="cb10-20"><a href="#cb10-20"></a>t           <span class="ot">=</span> <span class="fu">sqrt</span>((m<span class="sc">^</span><span class="dv">2</span><span class="sc">*</span>(p<span class="dv">-1</span>)<span class="sc">^</span><span class="dv">2-4</span>)<span class="sc">/</span>(m<span class="sc">^</span><span class="dv">2</span><span class="sc">+</span>(p<span class="dv">-1</span>)<span class="sc">^</span><span class="dv">2-5</span>))                            <span class="co"># t</span></span>
+<span id="cb10-21"><a href="#cb10-21"></a>nu_1        <span class="ot">=</span> m<span class="sc">*</span>(p<span class="dv">-1</span>)                                                          <span class="co"># \nu_1</span></span>
+<span id="cb10-22"><a href="#cb10-22"></a>nu_2        <span class="ot">=</span> w<span class="sc">*</span>t<span class="sc">-</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>)<span class="sc">*</span>(m<span class="sc">*</span>(p<span class="dv">-1</span>)<span class="sc">-</span><span class="dv">2</span>)                                            <span class="co"># \nu_2</span></span>
+<span id="cb10-23"><a href="#cb10-23"></a>tau         <span class="ot">=</span> ((<span class="dv">1</span><span class="sc">-</span>L<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span>t))<span class="sc">/</span>L<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span>t))<span class="sc">*</span>(nu_2<span class="sc">/</span>nu_1)                                <span class="co"># test statistic</span></span>
+<span id="cb10-24"><a href="#cb10-24"></a>k_alpha_0   <span class="ot">=</span> <span class="fu">qf</span>(<span class="dv">1</span><span class="sc">-</span>alpha_0,nu_1,nu_2)                                          <span class="co"># critical value</span></span>
+<span id="cb10-25"><a href="#cb10-25"></a>phi         <span class="ot">=</span> <span class="fu">as.numeric</span>(tau <span class="sc">&gt;</span> k_alpha_0)                                      <span class="co"># null-hypothesis test</span></span>
+<span id="cb10-26"><a href="#cb10-26"></a>P           <span class="ot">=</span> <span class="dv">1</span><span class="sc">-</span><span class="fu">pf</span>(tau,nu_1,nu_2)                                              <span class="co"># exceedance probability</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Wilks' Lambda      0.1569049 
+tau                31.25301 
+nu_1               4 
+nu_2               82 
+phi                1 
+P(tau &gt; tau_tilde) 8.881784e-16</code></pre>
+</div>
+</div>
+<p>In the present case, the null hypothesis of identical group expected-value parameters is therefore rejected. Finally, we validate the above analysis in the sense of a black-box procedure using the <strong>R</strong> <code>lm()</code> and <code>Manova()</code> functions.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">library</span>(car)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Paket 'car' wurde unter R Version 4.5.3 erstellt</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Paket 'carData' wurde unter R Version 4.5.3 erstellt</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>D        <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"./_data/703-one-way-analysis-of-variance.csv"</span>)            <span class="co"># read data</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a>model    <span class="ot">=</span> <span class="fu">lm</span>(<span class="fu">cbind</span>(D<span class="sc">$</span>dBDI,D<span class="sc">$</span>dGLU) <span class="sc">~</span> D<span class="sc">$</span>COND, D)                                <span class="co"># model specification</span></span>
+<span id="cb15-3"><a href="#cb15-3"></a><span class="fu">Manova</span>(model, <span class="at">test.statistic =</span> <span class="st">"Wilks"</span>)                                        <span class="co"># one-way analysis of variance</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Type II MANOVA Tests: Wilks test statistic
+       Df test stat approx F num Df den Df    Pr(&gt;F)    
+D$COND  2    0.1569   31.253      4     82 8.346e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+</section>
+<section id="bibliographic-remarks" class="level2" data-number="47.5">
+<h2 data-number="47.5" class="anchored" data-anchor-id="bibliographic-remarks"><span class="header-section-number">47.5</span> Bibliographic remarks</h2>
+<p>The theory of one-way multivariate analysis of variance goes back to <span class="citation" data-cites="wilks1932">Wilks (<a href="#ref-wilks1932" role="doc-biblioref">1932</a>)</span>. <span class="citation" data-cites="anderson2003">Anderson (<a href="#ref-anderson2003" role="doc-biblioref">2003</a>)</span> gives an introduction to the approximation theory for multivariate models, and the state of knowledge around 1970 about the exact distributions of the test statistics is summarized by <span class="citation" data-cites="rao1972">Rao (<a href="#ref-rao1972" role="doc-biblioref">1972</a>)</span>.</p>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-anderson2003" class="csl-entry" role="listitem">
+Anderson, T. W. (2003). <em>An introduction to multivariate statistical analysis</em> (3rd ed). Wiley-Interscience.
+</div>
+<div id="ref-hotelling1951" class="csl-entry" role="listitem">
+Hotelling, H. (1951). <em>A generalized <span>T Test</span> and measure of multivariate dispersion</em>.
+</div>
+<div id="ref-pillai1955" class="csl-entry" role="listitem">
+Pillai, K. C. S. (1955). Some <span>New Test Criteria</span> in <span>Multivariate Analysis</span>. <em>The Annals of Mathematical Statistics</em>, <em>26</em>(1), 117–121. <a href="https://doi.org/10.1214/aoms/1177728599">https://doi.org/10.1214/aoms/1177728599</a>
+</div>
+<div id="ref-rao1951" class="csl-entry" role="listitem">
+Rao, C. R. (1951). An <span>Asymptotic Expansion</span> of the <span>Distribution</span> of <span>Wilk</span>’s <span>Criterion</span>. <em>Bulletin of the International Statistical Institute</em>, <em>33</em>(2), 177–180.
+</div>
+<div id="ref-rao1972" class="csl-entry" role="listitem">
+Rao, C. R. (1972). Recent <span>Trends</span> of <span>Research Work</span> in <span>Multivariate Analysis</span>. <em>Biometrics</em>, <em>28</em>(1), 3. <a href="https://doi.org/10.2307/2528958">https://doi.org/10.2307/2528958</a>
+</div>
+<div id="ref-roy1953" class="csl-entry" role="listitem">
+Roy, S. N., &amp; Bose, R. C. (1953). Simultaneous <span>Confidence Interval Estimation</span>. <em>The Annals of Mathematical Statistics</em>, <em>24</em>(4), 513–536. <a href="https://doi.org/10.1214/aoms/1177728912">https://doi.org/10.1214/aoms/1177728912</a>
+</div>
+<div id="ref-wilks1932" class="csl-entry" role="listitem">
+Wilks, S. S. (1932). Certain <span>Generalizations</span> in the <span>Analysis</span> of <span>Variance</span>. <em>Biometrika</em>, <em>24</em>(3-4), 471–494. <a href="https://doi.org/10.1093/biomet/24.3-4.471">https://doi.org/10.1093/biomet/24.3-4.471</a>
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script>
+(function () {
+  var base = "https://dirk-ostwald.github.io";
+  var pageMap = {
+    "/": "/en/",
+    "/index.html": "/en/",
+    "/Referenzen.html": "/en/References.html",
+    "/_part_1/100-Mathematische-Grundlagen.html": "/en/_part_1/100-Mathematical-Foundations.html",
+    "/_part_1/101-Sprache-und-Logik.html": "/en/_part_1/101-Language-and-Logic.html",
+    "/_part_1/102-Mengen.html": "/en/_part_1/102-Sets.html",
+    "/_part_1/103-Summen-Produkte-Potenzen.html": "/en/_part_1/103-Sums-Products-Powers.html",
+    "/_part_1/104-Funktionen.html": "/en/_part_1/104-Functions.html",
+    "/_part_1/105-Folgen-Grenzwerte-Stetigkeit.html": "/en/_part_1/105-Sequences-Limits-Continuity.html",
+    "/_part_1/106-Differenzialrechnung.html": "/en/_part_1/106-Differential-Calculus.html",
+    "/_part_1/107-Integralrechnung.html": "/en/_part_1/107-Integral-Calculus.html",
+    "/_part_1/108-Vektoren.html": "/en/_part_1/108-Vectors.html",
+    "/_part_1/109-Matrizen.html": "/en/_part_1/109-Matrices.html",
+    "/_part_1/110-Deskriptivstatistiken.html": "/en/_part_1/110-Descriptive-Statistics.html",
+    "/_part_2/200-Imperative-Programmierung.html": "/en/_part_2/200-Imperative-Programming.html",
+    "/_part_2/201-Informatische-Grundbegriffe.html": "/en/_part_2/201-Basic-Concepts-of-Computer-Science.html",
+    "/_part_2/202-Arithmetik-und-Variablen.html": "/en/_part_2/202-Arithmetic-and-Variables.html",
+    "/_part_2/203-Datenstrukturen.html": "/en/_part_2/203-Data-Structures.html",
+    "/_part_2/204-Vektoren.html": "/en/_part_2/204-Vectors.html",
+    "/_part_2/205-Matrizen-und-Arrays.html": "/en/_part_2/205-Matrices-and-Arrays.html",
+    "/_part_2/206-Listen-Dataframes-und-Tibbles.html": "/en/_part_2/206-Lists-Dataframes-and-Tibbles.html",
+    "/_part_2/207-Datenmanagement.html": "/en/_part_2/207-Data-Management.html",
+    "/_part_2/208-Kontrollstrukturen.html": "/en/_part_2/208-Control-Structures.html",
+    "/_part_3/300-Wahrscheinlichkeitstheorie.html": "/en/_part_3/300-Probability-Theory.html",
+    "/_part_3/301-Wahrscheinlichkeitsräume.html": "/en/_part_3/301-Probability-Spaces.html",
+    "/_part_3/302-Elementare-Wahrscheinlichkeiten.html": "/en/_part_3/302-Elementary-Probabilities.html",
+    "/_part_3/303-Zufallsvariablen.html": "/en/_part_3/303-Random-Variables.html",
+    "/_part_3/304-Zufallsvektoren.html": "/en/_part_3/304-Random-Vectors.html",
+    "/_part_3/305-Erwartungswerte.html": "/en/_part_3/305-Expectations.html",
+    "/_part_3/306-Varianzen.html": "/en/_part_3/306-Variances.html",
+    "/_part_3/307-Kovarianzen.html": "/en/_part_3/307-Covariances.html",
+    "/_part_3/308-Ungleichungen.html": "/en/_part_3/308-Inequalities.html",
+    "/_part_3/309-Grenzwerte.html": "/en/_part_3/309-Limits.html",
+    "/_part_3/310-Transformationen.html": "/en/_part_3/310-Transformations.html",
+    "/_part_3/311-Normalverteilungen.html": "/en/_part_3/311-Normal-Distributions.html",
+    "/_part_4/400-Inferenz.html": "/en/_part_4/400-Inference.html",
+    "/_part_4/401-Frequentistische-Inferenz.html": "/en/_part_4/401-Frequentist-Inference.html",
+    "/_part_4/402-Punktschätzung.html": "/en/_part_4/402-Point-Estimation.html",
+    "/_part_4/403-Konfidenzintervalle.html": "/en/_part_4/403-Confidence-Intervals.html",
+    "/_part_4/404-Hypothesentests.html": "/en/_part_4/404-Hypothesis-Tests.html",
+    "/_part_5/500-Allgemeines-Lineares-Modell.html": "/en/_part_5/500-General-Linear-Model.html",
+    "/_part_5/501-Regression.html": "/en/_part_5/501-Regression.html",
+    "/_part_5/502-Korrelation.html": "/en/_part_5/502-Correlation.html",
+    "/_part_5/503-Modellformulierung.html": "/en/_part_5/503-Model-Formulation.html",
+    "/_part_5/504-Parameterschätzung.html": "/en/_part_5/504-Parameter-Estimation.html",
+    "/_part_5/505-T-Statistiken.html": "/en/_part_5/505-T-Statistics.html",
+    "/_part_5/506-F-Statistiken.html": "/en/_part_5/506-F-Statistics.html",
+    "/_part_5/507-T-Tests.html": "/en/_part_5/507-T-Tests.html",
+    "/_part_5/508-Einfaktorielle-Varianzanalyse.html": "/en/_part_5/508-One-Way-Analysis-of-Variance.html",
+    "/_part_5/509-Zweifaktorielle-Varianzanalyse.html": "/en/_part_5/509-Two-Way-Analysis-of-Variance.html",
+    "/_part_5/510-Partielle-Korrelation.html": "/en/_part_5/510-Partial-Correlation.html",
+    "/_part_5/511-Multiple-Regression.html": "/en/_part_5/511-Multiple-Regression.html",
+    "/_part_7/700-Multivariate-Inferenz.html": "/en/_part_7/700-Multivariate-Inference.html",
+    "/_part_7/701-Multivariate-Deskriptivstatistiken.html": "/en/_part_7/701-Multivariate-Descriptive-Statistics.html",
+    "/_part_7/702-Einstichproben-T2-Tests.html": "/en/_part_7/702-One-Sample-T2-Tests.html",
+    "/_part_7/703-Einfaktorielle-Varianzanalyse.html": "/en/_part_7/703-One-Way-Analysis-of-Variance.html",
+    "/_part_7/704-Kanonische-Korrelationsanalyse.html": "/en/_part_7/704-Canonical-Correlation-Analysis.html",
+    "/_part_9/900-Psychometrische-Verfahren.html": "/en/_part_9/900-Psychometric-Procedures.html",
+    "/_part_9/901-Psychologische-Tests.html": "/en/_part_9/901-Psychological-Tests.html",
+    "/_part_9/903-Klassische-Testtheorie.html": "/en/_part_9/903-Classical-Test-Theory.html",
+    "/_part_9/904-Faktorenanalyse.html": "/en/_part_9/904-Factor-Analysis.html"
+  };
+  var reversePageMap = {};
+  Object.keys(pageMap).forEach(function (key) {
+    reversePageMap[pageMap[key]] = key;
+  });
+  function headings() {
+    return Array.prototype.slice.call(document.querySelectorAll("main.content h1[id], main.content h2[id], main.content h3[id], main.content h4[id]"));
+  }
+  function currentHeadingIndex() {
+    var hash = window.location.hash;
+    if (!hash) return "";
+    var id = hash.slice(1);
+    try {
+      id = decodeURIComponent(id);
+    } catch (error) {}
+    var list = headings();
+    for (var i = 0; i < list.length; i++) {
+      if (list[i].id === id) return String(i);
+    }
+    return "";
+  }
+  function scrollToHeadingIndex() {
+    var params = new URLSearchParams(window.location.search);
+    var value = params.get("h");
+    if (value === null) return;
+    var index = Number(value);
+    var list = headings();
+    if (Number.isInteger(index) && index >= 0 && index < list.length) {
+      list[index].scrollIntoView();
+      if (history.replaceState) {
+        history.replaceState(null, "", window.location.pathname + "#" + list[index].id);
+      }
+    }
+  }
+  var path = window.location.pathname;
+  var target = pageMap[path] || reversePageMap[path];
+  if (target) {
+    document.querySelectorAll("a.nav-link").forEach(function (link) {
+      var text = link.textContent.trim();
+      if (text === "English" || text === "Deutsch") {
+        var index = currentHeadingIndex();
+        link.href = base + target + (index ? "?h=" + index : "");
+      }
+    });
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", scrollToHeadingIndex);
+  } else {
+    scrollToHeadingIndex();
+  }
+}());
+</script>
+
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../_part_7/702-One-Sample-T2-Tests.html" class="pagination-link" aria-label="One-sample T$^2$ tests">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">46</span>&nbsp; <span class="chapter-title">One-sample T<span class="math inline">\(^2\)</span> tests</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../_part_7/704-Canonical-Correlation-Analysis.html" class="pagination-link" aria-label="Canonical correlation analysis">
+        <span class="nav-page-text"><span class="chapter-number">48</span>&nbsp; <span class="chapter-title">Canonical correlation analysis</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/_part_7/703-One-Way-Analysis-of-Variance.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></div></div></footer></body></html>

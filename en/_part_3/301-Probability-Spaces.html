@@ -1,0 +1,1732 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>19&nbsp; Probability spaces – Probabilistic Data Science for Psychology</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../_part_3/302-Elementary-Probabilities.html" rel="next">
+<link href="../_part_3/300-Probability-Theory.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-d6825770f4e37b80aa8621686b79c10e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Probabilistic Data Science for Psychology</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://dirk-ostwald.github.io/"> 
+<span class="menu-text">Deutsch</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+    <a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="../Probabilistic-Data-Science-for-Psychology.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../_part_3/300-Probability-Theory.html">Probability theory</a></li><li class="breadcrumb-item"><a href="../_part_3/301-Probability-Spaces.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Probability spaces</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../_part_1/100-Mathematical-Foundations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Mathematical foundations</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/101-Language-and-Logic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Language and logic</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/102-Sets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Sets</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/103-Sums-Products-Powers.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Sums, products, powers</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/104-Functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Functions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/105-Sequences-Limits-Continuity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Sequences, limits, continuity</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/106-Differential-Calculus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Differential calculus</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/107-Integral-Calculus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Integral calculus</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/108-Vectors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Vectors</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/109-Matrices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Matrices</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_1/110-Descriptive-Statistics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Descriptive statistics</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../_part_2/200-Imperative-Programming.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Imperative programming</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/201-Basic-Concepts-of-Computer-Science.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Basic concepts of computer science</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/202-Arithmetic-and-Variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Arithmetic and variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/203-Data-Structures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Data structures</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/204-Vectors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Vectors</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/205-Matrices-and-Arrays.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Matrices and arrays</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/206-Lists-Dataframes-and-Tibbles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Lists, dataframes, and tibbles</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/207-Data-Management.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Data management</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_2/208-Control-Structures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Control structures</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../_part_3/300-Probability-Theory.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Probability theory</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/301-Probability-Spaces.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Probability spaces</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/302-Elementary-Probabilities.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Elementary probabilities</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/303-Random-Variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Random variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/304-Random-Vectors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Random vectors</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/305-Expectations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Expectations</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/306-Variances.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Variances</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/307-Covariances.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Covariances</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/308-Inequalities.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Inequalities</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/309-Limits.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Limits</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/310-Transformations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Transformations</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_3/311-Normal-Distributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Normal distributions</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../_part_4/400-Inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Inference</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_4/401-Frequentist-Inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Frequentist inference</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_4/402-Point-Estimation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Point estimation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_4/403-Confidence-Intervals.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Confidence intervals</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_4/404-Hypothesis-Tests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Hypothesis tests</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../_part_5/500-General-Linear-Model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">General linear model</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_5/501-Regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Regression</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_5/502-Correlation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Correlation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_5/503-Model-Formulation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Model formulation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_5/504-Parameter-Estimation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Parameter estimation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_5/505-T-Statistics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">T-statistics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_5/506-F-Statistics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">F-statistics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_5/507-T-Tests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">40</span>&nbsp; <span class="chapter-title">T-tests</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_5/508-One-Way-Analysis-of-Variance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">41</span>&nbsp; <span class="chapter-title">One-way analysis of variance</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_5/509-Two-Way-Analysis-of-Variance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">42</span>&nbsp; <span class="chapter-title">Two-way analysis of variance</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_5/510-Partial-Correlation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">43</span>&nbsp; <span class="chapter-title">Partial correlation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_5/511-Multiple-Regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">44</span>&nbsp; <span class="chapter-title">Multiple regression</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../_part_7/700-Multivariate-Inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Multivariate inference</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_7/701-Multivariate-Descriptive-Statistics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">45</span>&nbsp; <span class="chapter-title">Multivariate descriptive statistics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_7/702-One-Sample-T2-Tests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">46</span>&nbsp; <span class="chapter-title">One-sample T<span class="math inline">\(^2\)</span> tests</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_7/703-One-Way-Analysis-of-Variance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">47</span>&nbsp; <span class="chapter-title">One-way analysis of variance</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_7/704-Canonical-Correlation-Analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">48</span>&nbsp; <span class="chapter-title">Canonical correlation analysis</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../_part_9/900-Psychometric-Procedures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Psychometric procedures</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_9/901-Psychological-Tests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">49</span>&nbsp; <span class="chapter-title">Psychological tests</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_9/903-Classical-Test-Theory.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">50</span>&nbsp; <span class="chapter-title">Classical test theory</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_part_9/904-Factor-Analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">51</span>&nbsp; <span class="chapter-title">Factor Analysis</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../References.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sec-definition-and-first-properties" id="toc-sec-definition-and-first-properties" class="nav-link active" data-scroll-target="#sec-definition-and-first-properties"><span class="header-section-number">19.1</span> Definition and first properties</a>
+  <ul class="collapse">
+  <li><a href="#outcome-set-and-mechanics" id="toc-outcome-set-and-mechanics" class="nav-link" data-scroll-target="#outcome-set-and-mechanics">Outcome set and mechanics</a></li>
+  <li><a href="#events-and-event-system" id="toc-events-and-event-system" class="nav-link" data-scroll-target="#events-and-event-system">Events and event system</a></li>
+  <li><a href="#probability-measure-mathbbp" id="toc-probability-measure-mathbbp" class="nav-link" data-scroll-target="#probability-measure-mathbbp">Probability measure <span class="math inline">\(\mathbb{P}\)</span></a></li>
+  </ul></li>
+  <li><a href="#sec-probability-functions" id="toc-sec-probability-functions" class="nav-link" data-scroll-target="#sec-probability-functions"><span class="header-section-number">19.2</span> Probability functions</a></li>
+  <li><a href="#sec-examples-with-finite-outcome-space" id="toc-sec-examples-with-finite-outcome-space" class="nav-link" data-scroll-target="#sec-examples-with-finite-outcome-space"><span class="header-section-number">19.3</span> Examples with finite outcome space</a>
+  <ul class="collapse">
+  <li><a href="#throwing-one-die" id="toc-throwing-one-die" class="nav-link" data-scroll-target="#throwing-one-die">Throwing one die</a></li>
+  <li><a href="#simultaneous-throwing-of-a-blue-and-a-red-die" id="toc-simultaneous-throwing-of-a-blue-and-a-red-die" class="nav-link" data-scroll-target="#simultaneous-throwing-of-a-blue-and-a-red-die">Simultaneous throwing of a blue and a red die</a></li>
+  <li><a href="#tossing-a-coin" id="toc-tossing-a-coin" class="nav-link" data-scroll-target="#tossing-a-coin">Tossing a coin</a></li>
+  <li><a href="#tossing-a-coin-twice" id="toc-tossing-a-coin-twice" class="nav-link" data-scroll-target="#tossing-a-coin-twice">Tossing a coin twice</a></li>
+  <li><a href="#value-of-a-bdi-ii-item" id="toc-value-of-a-bdi-ii-item" class="nav-link" data-scroll-target="#value-of-a-bdi-ii-item">Value of a BDI-II item</a></li>
+  </ul></li>
+  <li><a href="#bibliographic-remarks" id="toc-bibliographic-remarks" class="nav-link" data-scroll-target="#bibliographic-remarks"><span class="header-section-number">19.4</span> Bibliographic remarks</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/_part_3/301-Probability-Spaces.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../_part_3/300-Probability-Theory.html">Probability theory</a></li><li class="breadcrumb-item"><a href="../_part_3/301-Probability-Spaces.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Probability spaces</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-probability-spaces" class="quarto-section-identifier"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Probability spaces</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>A <em>probability space</em> is a very general formal-mathematical model of a random process. The central importance of this model for probability theory and probabilistic inference follows from the fact that the probability space model provides guidance for translating arbitrary random processes about which one wants to reason quantitatively into the formal-mathematical system of probability theory. At the same time, the probability space model and the concepts built on it guarantee that the mechanics of probability calculus lead to logically meaningful quantitative conclusions about random processes. In this chapter, we introduce the concept of a probability space (<a href="#sec-definition-and-first-properties" class="quarto-xref"><span>Section 19.1</span></a>) and then use probability functions (<a href="#sec-probability-functions" class="quarto-xref"><span>Section 19.2</span></a>) to give first examples of modeling random processes (<a href="#sec-examples-with-finite-outcome-space" class="quarto-xref"><span>Section 19.3</span></a>).</p>
+<section id="sec-definition-and-first-properties" class="level2" data-number="19.1">
+<h2 data-number="19.1" class="anchored" data-anchor-id="sec-definition-and-first-properties"><span class="header-section-number">19.1</span> Definition and first properties</h2>
+<p>We begin with the definition of the probability space model after <span class="citation" data-cites="kolmogoroff1933">Kolmogoroff (<a href="#ref-kolmogoroff1933" role="doc-biblioref">1933</a>)</span>, which we then explain in its individual parts from a frequentist perspective.</p>
+<div id="def-probability-space" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 19.1 (Probability space)</strong></span> A <em>probability space</em> is a triple <span class="math inline">\((\Omega, \mathcal{A}, \mathbb{P})\)</span>, where</p>
+<ul>
+<li><p><span class="math inline">\(\Omega\)</span> is an arbitrary nonempty set of <em>outcomes</em> <span class="math inline">\(\omega\)</span> and is called the <em>outcome set</em>,</p></li>
+<li><p><span class="math inline">\(\mathcal{A}\)</span> is a set of subsets of <span class="math inline">\(\Omega\)</span> with the properties</p>
+<ul>
+<li><span class="math inline">\(\Omega \in \mathcal{A}\)</span>,</li>
+<li>for all <span class="math inline">\(A\in \mathcal{A}\)</span>, also <span class="math inline">\(A^c := \Omega \setminus A \in \mathcal{A}\)</span>,</li>
+<li>from <span class="math inline">\(A_1,A_2,... \in \mathcal{A}\)</span> it follows that also <span class="math inline">\(\cup_{i=1}^\infty A_i \in \mathcal{A}\)</span></li>
+</ul>
+<p>holds, is called a <em><span class="math inline">\(\sigma\)</span>-algebra on <span class="math inline">\(\Omega\)</span></em>, and is called the <em>event system</em>,</p></li>
+<li><p><span class="math inline">\(\mathbb{P}\)</span> is a mapping of the form <span class="math inline">\(\mathbb{P}:\mathcal{A} \to [0,1]\)</span> with the properties</p>
+<ul>
+<li><span class="math inline">\(\mathbb{P}(A) \ge 0\)</span> for all <span class="math inline">\(A \in \mathcal{A}\)</span> (<em>non-negativity</em>),</li>
+<li><span class="math inline">\(\mathbb{P}(\Omega) = 1\)</span> (<em>normalization</em>),</li>
+<li><span class="math inline">\(\mathbb{P}(\cup_{i=1}^\infty A_i) = \sum\limits_{i=1}^\infty \mathbb{P}(A_i)\)</span> for pairwise disjoint <span class="math inline">\(A_i \in \mathcal{A}\)</span> (<em><span class="math inline">\(\sigma\)</span>-additivity</em>)</li>
+</ul>
+<p>holds and is called a <em>probability measure</em>.</p></li>
+</ul>
+</div>
+<section id="outcome-set-and-mechanics" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="outcome-set-and-mechanics">Outcome set and mechanics</h3>
+<p>We begin with explanations of the concept of the <em>outcome set <span class="math inline">\(\Omega\)</span></em> and the implicit mechanics of the probability space model. To make the introduction easier, in what follows we first primarily consider <em>finite probability spaces</em>, in which the cardinality of <span class="math inline">\(\Omega\)</span> is not infinitely large. Thus let <span class="math inline">\(|\Omega|&lt;\infty\)</span>, so that <span class="math inline">\(\Omega\)</span> has only finitely many elements. For modeling the throw of a die, for example, one could define <span class="math inline">\(\Omega := \{1,2,3,4,5,6\}\)</span>.</p>
+<p>Behind the formal definition of the probability space model are the following frequentist-influenced assumptions about its mechanics as a model of a random process. We first imagine sequential runs of a random process, for example the repeated throwing of a die. According to the assumptions of the probability space model, in each of these runs exactly one <span class="math inline">\(\omega\)</span> from <span class="math inline">\(\Omega\)</span> is <em>realized</em>, that is, selected as actually occurring. For example, if one throws a die and a two appears, one says that a two was realized. The probability with which an <span class="math inline">\(\omega\)</span> from <span class="math inline">\(\Omega\)</span> is realized in a run is described by the value <span class="math inline">\(\mathbb{P}(\{\omega\}) \in [0,1]\)</span>. If, for example, <span class="math inline">\(\mathbb{P}(\{\omega\}) = 1\)</span>, then this <span class="math inline">\(\omega\)</span> is realized in every run of the random process; if <span class="math inline">\(\mathbb{P}(\{\omega\}) = 0\)</span>, then this <span class="math inline">\(\omega\)</span> is realized in no run of the random process; and if <span class="math inline">\(\mathbb{P}(\{\omega\}) = 1/2\)</span>, then <span class="math inline">\(\omega\)</span> is realized in about half of the runs of the random process. In the model of throwing a fair die, one usually assumes <span class="math inline">\(\mathbb{P}(\{\omega\}) = 1/6\)</span> for all <span class="math inline">\(\omega \in \Omega\)</span>. Here, for example, a four could be realized in the first run, a one in the second run, a five in the third run, then perhaps a four again, and so on.</p>
+</section>
+<section id="events-and-event-system" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="events-and-event-system">Events and event system</h3>
+<p>The concept of an <em>event</em> <span class="math inline">\(A \in \mathcal{A}\)</span> is best imagined as a conceptual summary of one or more outcomes. When throwing a die, possible events are, for example, “An even number of pips appears”, that is, <span class="math inline">\(\omega \in \{2,4,6\}\)</span>, “A number of pips greater than two appears”, that is, <span class="math inline">\(\omega \in \{3,4,5,6\}\)</span>, or “A one or a five appears”, that is, <span class="math inline">\(\omega \in \{1,5\}\)</span>. Note that, against the background of the mechanics of the probability space, the event “An even number of pips appears” occurs exactly when, in a run of the random process <em>throwing a die</em>, the realized <span class="math inline">\(\omega\)</span> is an element of the set <span class="math inline">\(\{2,4,6\}\)</span>, for example when a four appears. The occurrence of the event “A number of pips greater than two appears” may also be read as “In a run of the random process <em>throwing a die</em>, an element of <span class="math inline">\(\{3,4,5,6\}\)</span> is realized”, that is, concretely, either a three, a four, a five, or a six appears. Of course, the outcomes <span class="math inline">\(\omega \in \Omega\)</span> themselves are also possible events, so that, for example, the following interpretations hold: the event “A one appears” corresponds to the realization <span class="math inline">\(\omega \in \{1\}\)</span>, and the event “A six appears” corresponds to the realization <span class="math inline">\(\omega \in \{6\}\)</span>. If one considers an outcome <span class="math inline">\(\omega \in \Omega\)</span> as an event in this context, it is called an <em>elementary event</em> and is written as the one-element set <span class="math inline">\(\{\omega\}\)</span>.</p>
+<p>Overall, this procedure for describing random events corresponds to the inherent goal of the definition of the probability space. <span class="citation" data-cites="kolmogoroff1933">Kolmogoroff (<a href="#ref-kolmogoroff1933" role="doc-biblioref">1933</a>)</span> writes that the actual objects of the subsequent considerations, the random events, have been defined as sets. This has the advantage that sets are mathematical objects with which one can work mathematically, so that an aspect of reality, a “random event”, has been translated into the model domain of mathematics.</p>
+<p>The sole purpose of the <em>event system <span class="math inline">\(\mathcal{A}\)</span></em> is now to mathematically represent all events that can arise, based on a given outcome set, when an <span class="math inline">\(\omega \in \Omega\)</span> is selected. Thus there should be no events in reality that were not considered in advance in the probability space model of the random process. If this were the case, the model would be deficient, since it could not assign probabilities to certain events occurring in reality. The event system <span class="math inline">\(\mathcal{A}\)</span> should therefore be the complete set of all possible events for a given <span class="math inline">\(\Omega\)</span>. The requirement that <span class="math inline">\(\mathcal{A}\)</span> should satisfy the so-called <span class="math inline">\(\sigma\)</span>-algebra criteria for this purpose is intuitively motivated as follows.</p>
+<ul>
+<li>It should first be ensured that <span class="math inline">\(\omega \in \Omega\)</span> for an arbitrary <span class="math inline">\(\omega\)</span>, that is, that some outcome is realized, is one of the possible events. This corresponds to the property <span class="math inline">\(\Omega \in \mathcal{A}\)</span>.</li>
+<li>For every event it should also be possible that this event does not occur. This corresponds to the property that from <span class="math inline">\(A \in \mathcal{A}\)</span> it should follow that <span class="math inline">\(A^c := \Omega \setminus A\)</span> is also in <span class="math inline">\(\mathcal{A}\)</span>. This also implies in particular that <span class="math inline">\(\emptyset = \Omega \setminus \Omega \in \mathcal{A}\)</span>. Thus one event is that no elementary event occurs, although this happens only with probability zero, <span class="math inline">\(\mathbb{P}(\emptyset) = 0\)</span>. Thus at least one elementary event always occurs with certainty.</li>
+<li>Finally, the combination of events should always also be an event. In modeling the throw of a die, for example, in addition to the events “An even number appears” and “A number greater than two appears”, the event “An even number appears and/or this number is greater than two” should also be an event. In its most general form, this corresponds to the requirement that from <span class="math inline">\(A_1,A_2,... \in \mathcal{A}\)</span> it should follow that also <span class="math inline">\(\cup_{i=1}^\infty A_i \in \mathcal{A}\)</span>.</li>
+</ul>
+<p>Even if the concepts of the event system and the <span class="math inline">\(\sigma\)</span>-algebra may seem somewhat abstract, their definition in the practical modeling of random processes is usually not a major challenge, since suitable event systems have long been known both for finite outcome sets and for infinite countable and uncountable outcome sets. Thus, for outcome sets with finite cardinality, the power set of the outcome set always satisfies the requirements of an event system and can always be used to formulate a model of a random process with a finite outcome set. This is the statement of the following theorem.</p>
+<div id="thm-event-system-for-finite-outcome-set" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 19.1 (Event system for finite outcome set)</strong></span> Let <span class="math inline">\(\Omega := \{\omega_1,\omega_2,...,\omega_n\}\)</span> with <span class="math inline">\(n \in \mathbb{N}\)</span> be a finite set. Then the power set <span class="math inline">\(\mathcal{P}(\Omega)\)</span> of <span class="math inline">\(\Omega\)</span> is a <span class="math inline">\(\sigma\)</span>-algebra on <span class="math inline">\(\Omega\)</span> and thus a suitable event system in the probability space model.</p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>The power set of <span class="math inline">\(\Omega\)</span> is the set of all subsets of <span class="math inline">\(\Omega\)</span>. We check the <span class="math inline">\(\sigma\)</span>-algebra properties. First, <span class="math inline">\(\Omega\)</span> itself is one of the subsets of <span class="math inline">\(\Omega\)</span>, so the first <span class="math inline">\(\sigma\)</span>-algebra property is satisfied. Now let <span class="math inline">\(A\)</span> be a subset of <span class="math inline">\(\Omega\)</span>. Then <span class="math inline">\(A^c = \Omega \setminus A\)</span> is also a subset of <span class="math inline">\(\Omega\)</span>, and hence the second <span class="math inline">\(\sigma\)</span>-algebra property is also satisfied. Finally, consider the union of <span class="math inline">\(k\)</span> subsets <span class="math inline">\(A_1, A_2, ...,A_k \subseteq \Omega\)</span>. Then <span class="math inline">\(\cup_{i=1}^k A_i\)</span> is the set of <span class="math inline">\(\omega \in \Omega\)</span> for which <span class="math inline">\(\omega \in A_1\)</span> and/or <span class="math inline">\(\omega \in A_2\)</span> … and/or <span class="math inline">\(\omega \in A_k\)</span>. Since for all these <span class="math inline">\(\omega\)</span> it holds that <span class="math inline">\(\omega \in \Omega\)</span>, also <span class="math inline">\(\cup_{i=1}^k A_i\)</span> is a subset of <span class="math inline">\(\Omega\)</span>, and therefore the third <span class="math inline">\(\sigma\)</span>-algebra property is also satisfied. The power set thus satisfies the required properties of an event system.</p>
+</div>
+<p>For uncountable outcome sets such as the real numbers <span class="math inline">\(\mathbb{R}\)</span> or the <span class="math inline">\(n\)</span>-dimensional real space <span class="math inline">\(\mathbb{R}^n\)</span>, the construction of a suitable event system is more complex, so in this respect we refer to the advanced literature for formal developments (cf. <span class="citation" data-cites="meintrup2005">Meintrup &amp; Schäffler (<a href="#ref-meintrup2005" role="doc-biblioref">2005</a>)</span>, <span class="citation" data-cites="schmidt2009">Schmidt (<a href="#ref-schmidt2009" role="doc-biblioref">2009</a>)</span>). However, with the so-called <em>Borel <span class="math inline">\(\sigma\)</span>-algebra</em>, which goes back to <span class="citation" data-cites="borel1898">Borel (<a href="#ref-borel1898" role="doc-biblioref">1898</a>)</span>, a set system is known that satisfies the requirements of a <span class="math inline">\(\sigma\)</span>-algebra on uncountable outcome sets. We denote the Borel <span class="math inline">\(\sigma\)</span>-algebra on <span class="math inline">\(\mathbb{R}\)</span> by <span class="math inline">\(\mathcal{B}(\mathbb{R})\)</span> and the Borel <span class="math inline">\(\sigma\)</span>-algebra on <span class="math inline">\(\mathbb{R}^n\)</span> by <span class="math inline">\(\mathcal{B}(\mathbb{R}^n)\)</span>. As sets of subsets of <span class="math inline">\(\mathbb{R}\)</span> and <span class="math inline">\(\mathbb{R}^n\)</span>, respectively, <span class="math inline">\(\mathcal{B}(\mathbb{R})\)</span> and <span class="math inline">\(\mathcal{B}(\mathbb{R}^n)\)</span> contain all sets whose probability assigned by <span class="math inline">\(\mathbb{P}\)</span> one may be interested in. Intuitively, one may therefore think of the Borel <span class="math inline">\(\sigma\)</span>-algebras <span class="math inline">\(\mathcal{B}(\mathbb{R})\)</span> and <span class="math inline">\(\mathcal{B}(\mathbb{R}^n)\)</span> as the power sets of <span class="math inline">\(\mathbb{R}\)</span> and <span class="math inline">\(\mathbb{R}^n\)</span>, respectively, even though this is formally incorrect. In fact, the Borel <span class="math inline">\(\sigma\)</span>-algebra contains only subsets generated by countable set operations, not by uncountable ones.</p>
+<p>Overall, this leads to the following procedure for selecting event systems depending on the outcome set <span class="math inline">\(\Omega\)</span>. If <span class="math inline">\(\Omega\)</span> is finite, one chooses as event system <span class="math inline">\(\mathcal{A}\)</span> the power set <span class="math inline">\(\mathcal{P}(\Omega)\)</span> of <span class="math inline">\(\Omega\)</span>. If <span class="math inline">\(\Omega\)</span> is given by <span class="math inline">\(\mathbb{R}\)</span>, one chooses as event system <span class="math inline">\(\mathcal{A}\)</span> the Borel <span class="math inline">\(\sigma\)</span>-algebra <span class="math inline">\(\mathcal{B}(\mathbb{R})\)</span>. Finally, if <span class="math inline">\(\Omega\)</span> is given by <span class="math inline">\(\mathbb{R}^n\)</span>, one chooses for <span class="math inline">\(\mathcal{A}\)</span> the Borel <span class="math inline">\(\sigma\)</span>-algebra <span class="math inline">\(\mathcal{B}(\mathbb{R}^n)\)</span>. In special cases and for very special outcome sets <span class="math inline">\(\Omega\)</span>, one may want to deviate from this procedure, but in general the three cases considered cover most applications.</p>
+</section>
+<section id="probability-measure-mathbbp" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="probability-measure-mathbbp">Probability measure <span class="math inline">\(\mathbb{P}\)</span></h3>
+<p>With <span class="math inline">\(\Omega\)</span> and <span class="math inline">\(\mathcal{A}\)</span>, which in tuple form <span class="math inline">\((\Omega,\mathcal{A})\)</span> are also called a <em>measurable space</em>, we have so far examined more closely the <em>structural basis</em> of a probability space model. Many probability spaces, for example for random processes concerning real numbers, are identical with respect to their measurable space. The <em>probability measure</em> <span class="math inline">\(\mathbb{P}\)</span> now represents the probabilistic characteristics of a probability space model and thus forms the <em>functional basis</em> of such a model. In what follows, especially after introducing the concepts of random variables and random vectors, we will encounter many different probability measures. At this point, we first want to consider only general properties of probability measures.</p>
+<p>With the definition <span class="math display">\[\begin{equation}
+\mathbb{P}: \mathcal{A} \to [0,1], A \mapsto \mathbb{P}(A)
+\end{equation}\]</span> it first follows that a probability measure is defined on a set of sets and assigns probabilities, that is, values in the interval <span class="math inline">\([0,1]\)</span>, to the elements of this set, namely to the sets <span class="math inline">\(A \in \mathcal{A}\)</span>. Of course, with <span class="math inline">\(\{\omega\} \in \mathcal{A}\)</span> for all <span class="math inline">\(\omega \in \Omega\)</span>, <span class="math inline">\(\mathbb{P}\)</span> also assigns probabilities to the elementary events, but not only to them. We also emphasize that, by definition, the probability <span class="math inline">\(\mathbb{P}(A)\)</span> of an event <span class="math inline">\(A \in \mathcal{A}\)</span> is a number in the interval <span class="math inline">\([0,1]\)</span> and not, for example, a percentage or a ratio. In what follows, we will examine more closely the defining properties of <em>non-negativity</em>, <em>normalization</em>, and <em><span class="math inline">\(\sigma\)</span>-additivity</em> of <span class="math inline">\(\mathbb{P}\)</span>.</p>
+<p>The <em>non-negativity</em> <span class="math inline">\(\mathbb{P}(A) \ge 0\)</span> for all <span class="math inline">\(A \in \mathcal{A}\)</span> is of course implicit in the definition <span class="math inline">\([0,1]\)</span> of the target set of <span class="math inline">\(\mathbb{P}\)</span>. In fact, the mapping form of <span class="math inline">\(\mathbb{P}\)</span> is an addition we have made to the formulation of <span class="citation" data-cites="kolmogoroff1933">Kolmogoroff (<a href="#ref-kolmogoroff1933" role="doc-biblioref">1933</a>)</span> in the interest of clarity. Formally, the form of the target set of <span class="math inline">\(\mathbb{P}\)</span> actually follows from the defining properties of non-negativity, normalization, and <span class="math inline">\(\sigma\)</span>-additivity of <span class="math inline">\(\mathbb{P}\)</span>.</p>
+<p>The <em>normalization</em> <span class="math inline">\(\mathbb{P}(\Omega) = 1\)</span> corresponds to the fact that, in every run of a random process, the realized <span class="math inline">\(\omega\)</span> is certainly an element of <span class="math inline">\(\Omega\)</span>. Thus in every run of a random process an elementary event occurs and, depending on the nature of the measurable space, many others as well. In the model of throwing a die, for example, the outcome/elementary event realized in a run of the random process is an element of <span class="math inline">\(\Omega := \{1,2,3,4,5,6\}\)</span> with probability <span class="math inline">\(1\)</span>. If the realized outcome is, for example, a one, then in addition to the event “A one appears”, the events “An odd number appears”, “A number less than three appears”, “An odd number less than three appears”, and many others also occur.</p>
+<p>The <em><span class="math inline">\(\sigma\)</span>-additivity of the probability measure <span class="math inline">\(\mathbb{P}\)</span></em>, finally, forms the foundation of <em>probability calculus</em>, that is, the basis for calculating with probabilities. The <span class="math inline">\(\sigma\)</span>-additivity of <span class="math inline">\(\mathbb{P}\)</span> makes it possible to calculate the probabilities of other events from already known event probabilities. Based on a definition of <span class="math inline">\(\Omega, \mathcal{A}\)</span>, and <span class="math inline">\(\mathbb{P}\)</span>, one can therefore calculate probabilities for all possible events of a probability space model. Whether these probabilities actually have anything to do with real events concerning a random process in reality depends on whether the modeling is reasonably successful or not. However, the calculated probabilities are at least determined rationally, that is, according to the rules of reason, namely logic and mathematics. Overall, the probability model thus allows inferential thinking about random processes, that is, about phenomena subject to uncertainty.</p>
+<p>Finally, we want to illustrate probability calculations based on the <span class="math inline">\(\sigma\)</span>-additivity of <span class="math inline">\(\mathbb{P}\)</span> with two basic examples. The first example states that the probability that the <span class="math inline">\(\omega\)</span> realized in a run of a random process is not an element of the outcome set is equal to zero.</p>
+<div id="thm-probability-of-the-impossible-event" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 19.2 (Probability of the impossible event)</strong></span> Let <span class="math inline">\((\Omega, \mathcal{A}, \mathbb{P})\)</span> be a probability space. Then <span class="math display">\[\begin{equation}
+\mathbb{P}(\emptyset) = 0.
+\end{equation}\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>For <span class="math inline">\(i = 1,2,...\)</span>, let <span class="math inline">\(A_i := \emptyset\)</span>. Then <span class="math inline">\(A_1,A_2,...\)</span> is a sequence of disjoint events because <span class="math inline">\(\emptyset \cap \emptyset = \emptyset\)</span>, and <span class="math inline">\(\cup_{i=1}^\infty A_i = \emptyset\)</span>. With the <span class="math inline">\(\sigma\)</span>-additivity of <span class="math inline">\(\mathbb{P}\)</span> it then follows that <span class="math display">\[\begin{equation}
+\mathbb{P}(\emptyset)
+= \mathbb{P}\left(\cup_{i=1}^\infty A_i\right)
+= \sum_{i=1}^\infty \mathbb{P}\left(A_i\right)
+= \sum_{i=1}^\infty \mathbb{P}\left(\emptyset\right).
+\end{equation}\]</span> Thus the infinite addition of the number <span class="math inline">\(\mathbb{P}(\emptyset) \in [0,1]\)</span> should again yield <span class="math inline">\(\mathbb{P}(\emptyset)\)</span>. This is only possible if <span class="math inline">\(\mathbb{P}(\emptyset) = 0\)</span>.</p>
+</div>
+<p>Note that, intuitively, a possible inadequacy of the probability space as a model for random processes in reality can arise here: if, when playing dice, the die falls out of reach under the sofa, then an elementary event <span class="math inline">\(\omega \notin \Omega\)</span> has occurred, even though its modeled probability is equal to zero.</p>
+<p>As a second example, we want to show that <span class="math inline">\(\sigma\)</span>-additivity, which in the definition of the probability space is defined only for the union of infinitely many disjoint events, implies the <span class="math inline">\(\sigma\)</span>-additivity of finitely many disjoint events as they often occur in applications.</p>
+<div id="thm-sigma-additivity-for-finite-sequences-of-disjoint-events" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 19.3 (<span class="math inline">\(\sigma\)</span>-additivity for finite sequences of disjoint events)</strong></span> Let <span class="math inline">\((\Omega, \mathcal{A}, \mathbb{P})\)</span> be a probability space and let <span class="math inline">\(A_1,...,A_n\)</span> be a finite sequence of pairwise disjoint events. Then <span class="math display">\[\begin{equation}
+\mathbb{P}(\cup_{i=1}^n A_i) = \sum_{i=1}^n \mathbb{P}(A_i).
+\end{equation}\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>We consider an infinite sequence of pairwise disjoint events <span class="math inline">\(A_1, A_2, ...\)</span>, where for an <span class="math inline">\(n\in \mathbb{N}\)</span> it is to hold that <span class="math inline">\(A_i := \emptyset\)</span> for <span class="math inline">\(i&gt;n\)</span>. Then, with the <span class="math inline">\(\sigma\)</span>-additivity of <span class="math inline">\(\mathbb{P}\)</span>, it first follows that <span class="math display">\[\begin{equation}
+\mathbb{P}\left(\cup_{i=1}^n A_i\right)
+= \mathbb{P}\left(\cup_{i=1}^\infty A_i\right)
+= \sum_{i=1}^\infty \mathbb{P}\left(A_i\right)
+= \sum_{i=1}^n \mathbb{P}\left(A_i\right) + \sum_{i=n+1}^\infty \mathbb{P}\left(A_i\right).
+\end{equation}\]</span> With <span class="math inline">\(\mathbb{P}\left(A_i\right) = \mathbb{P}(\emptyset) = 0\)</span> for <span class="math inline">\(i = n+1, n+2,...\)</span>, it follows directly that <span class="math display">\[\begin{equation}
+\mathbb{P}\left(\cup_{i=1}^n A_i\right)
+= \sum_{i=1}^n \mathbb{P}\left(A_i\right) + 0
+= \sum_{i=1}^n \mathbb{P}\left(A_i\right).
+\end{equation}\]</span></p>
+</div>
+<p>To prepare the concept of the joint probability of events, we finally consider one further important property of <span class="math inline">\(\sigma\)</span>-algebras: in addition to being closed under countable unions, <span class="math inline">\(\mathcal{A}\)</span> is also closed under countable intersections. This is a direct consequence of the closure of <span class="math inline">\(\mathcal{A}\)</span> under complements and countable unions and is recorded in the following theorem.</p>
+<div id="thm-closure-of-sigma-algebras-under-intersections" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 19.4 (Closure of <span class="math inline">\(\sigma\)</span>-algebras under intersections)</strong></span> Let <span class="math inline">\(\mathcal{A}\)</span> be a <span class="math inline">\(\sigma\)</span>-algebra on a set <span class="math inline">\(\Omega\)</span>. Then from <span class="math inline">\(A,B \in \mathcal{A}\)</span> it follows that also <span class="math inline">\(A \cap B \in \mathcal{A}\)</span>. More generally, for <span class="math inline">\(A_1,A_2,... \in \mathcal{A}\)</span>, also <span class="math inline">\(\cap_{i=1}^\infty A_i \in \mathcal{A}\)</span>.</p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>We show the first statement by way of example. To this end, first note that by the first De Morgan rule and the properties of complements, <span class="math display">\[\begin{equation}
+(A \cap B)^c = A^c \cup B^c
+\Leftrightarrow
+\left((A \cap B)^c \right)^c = \left(A^c \cup B^c \right)^c
+\Leftrightarrow A \cap B = \left(A^c \cup B^c \right)^c.
+\end{equation}\]</span> Furthermore, with the defining properties of <span class="math inline">\(\sigma\)</span>-algebras, for <span class="math inline">\(A,B \in \mathcal{A}\)</span> it holds that also <span class="math inline">\(\left(A^c \cup B^c\right)^c \in \mathcal{A}\)</span>. For from the closure of <span class="math inline">\(\mathcal{A}\)</span> under complements it first follows that also <span class="math inline">\(A^c \in \mathcal{A}\)</span> and <span class="math inline">\(B^c \in \mathcal{A}\)</span>. Further, from the closure of <span class="math inline">\(\mathcal{A}\)</span> under countable unions it also follows that <span class="math inline">\(A^c \cup B^c \in \mathcal{A}\)</span>. Finally, with the closure of <span class="math inline">\(\mathcal{A}\)</span> under complements, <span class="math inline">\(\left(A^c \cup B^c\right)^c \in \mathcal{A}\)</span>. Overall, then, from <span class="math inline">\(A,B \in \mathcal{A}\)</span> it follows that <span class="math inline">\(A \cap B \in \mathcal{A}\)</span>. The generalization to countable intersections <span class="math inline">\(A_1,A_2,... \in \mathcal{A}\)</span> follows analogously.</p>
+</div>
+<p>According to <a href="#thm-closure-of-sigma-algebras-under-intersections" class="quarto-xref">Theorem&nbsp;<span>19.4</span></a>, in addition to the probabilities <span class="math inline">\(\mathbb{P}(A), \mathbb{P}(B)\)</span> and <span class="math inline">\(\mathbb{P}(A \cup B)\)</span> with <span class="math inline">\(A,B \in \mathcal{A}\)</span>, the probability <span class="math inline">\(\mathbb{P}(A \cap B)\)</span> is therefore also well-defined.</p>
+</section>
+</section>
+<section id="sec-probability-functions" class="level2" data-number="19.2">
+<h2 data-number="19.2" class="anchored" data-anchor-id="sec-probability-functions"><span class="header-section-number">19.2</span> Probability functions</h2>
+<p>In this section, with <em>probability functions</em>, we want to learn about a way of specifying probability measures for probability spaces with finite outcome sets. In the sections on random variables and random vectors, we will encounter probability functions again under the name <em>probability mass functions</em>. We first define the concept of a probability function as follows.</p>
+<div id="def-probability-function" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 19.2 (Probability function)</strong></span> Let <span class="math inline">\(\Omega\)</span> be a finite set. Then a function <span class="math inline">\(\pi:\Omega \to [0,1]\)</span> is called a <em>probability function</em> if <span class="math display">\[\begin{equation}
+\sum_{\omega \in \Omega} \pi(\omega) = 1.
+\end{equation}\]</span> Furthermore, let <span class="math inline">\(\mathbb{P}\)</span> be a probability measure. Then the function defined by <span class="math display">\[\begin{equation}
+\pi: \Omega \to [0,1], \omega \mapsto \pi(\omega) := \mathbb{P}(\{\omega\})
+\end{equation}\]</span> is called the <em>probability function of <span class="math inline">\(\mathbb{P}\)</span> on <span class="math inline">\(\Omega\)</span></em>.</p>
+</div>
+<p>We note that because <span class="math inline">\(\mathbb{P}\)</span> is <span class="math inline">\(\sigma\)</span>-additive by definition, in particular <span class="math display">\[\begin{equation}
+\mathbb{P}(\Omega)
+= \mathbb{P}(\cup_{\omega \in \Omega}\{\omega\})
+= \sum_{\omega \in \Omega}\mathbb{P}(\{\omega\})
+= \sum_{\omega \in \Omega}\pi(\omega)
+= 1.
+\end{equation}\]</span> The following theorem provides the formal basis for constructing probability measures through probability functions. In particular, it states that for finite <span class="math inline">\(\Omega\)</span>, the probabilities of <em>all</em> possible events can be calculated from the probabilities of the elementary events <span class="math inline">\(\pi(\omega)\)</span>.</p>
+<div id="thm-definition-of-a-probability-measure-by-a-probability-function" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 19.5</strong></span> Let <span class="math inline">\((\Omega, \mathcal{A}, \mathbb{P})\)</span> be a probability space with finite outcome set, and let <span class="math inline">\(\pi: \Omega \to [0,1]\)</span> be a probability function. Then there exists a probability measure <span class="math inline">\(\mathbb{P}\)</span> on <span class="math inline">\(\Omega\)</span> with <span class="math inline">\(\pi\)</span> as the probability function of <span class="math inline">\(\mathbb{P}\)</span>. This probability measure is defined as <span class="math display">\[\begin{equation}
+\mathbb{P} : \mathcal{A} \to [0,1], A \mapsto \mathbb{P}(A) := \sum_{\omega \in A} \pi(\omega).
+\end{equation}\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>We first check the probability measure properties of <span class="math inline">\(\mathbb{P}\)</span>. Because <span class="math inline">\(\pi(\omega) \in [0,1]\)</span> for all <span class="math inline">\(\omega \in \Omega\)</span>, it is always true that <span class="math inline">\(\sum_{\omega \in A} \pi(\omega) \ge 0\)</span>, and hence non-negativity of <span class="math inline">\(\mathbb{P}\)</span> holds. Furthermore, as seen above, normalization of <span class="math inline">\(\mathbb{P}\)</span> follows directly from normalization of <span class="math inline">\(\pi\)</span>. Now let <span class="math inline">\(A_1, A_2,... \in \mathcal{A}\)</span>. Then <span class="math display">\[\begin{equation}
+\mathbb{P}\left(\cup_{i=1}^\infty A_i \right)
+= \sum_{\omega \in \cup_{i=1}^\infty A_i} \pi(\omega)
+= \sum_{i = 1}^\infty \sum_{\omega \in A_i} \pi(\omega)
+= \sum_{i = 1}^\infty \mathbb{P}(A_i)
+\end{equation}\]</span> and hence <span class="math inline">\(\sigma\)</span>-additivity of <span class="math inline">\(\mathbb{P}\)</span>.</p>
+</div>
+<p>Thus, if for a given outcome set <span class="math inline">\(\Omega\)</span> one defines a function <span class="math inline">\(\pi : \Omega \to [0,1]\)</span>, ensures that its function values <span class="math inline">\(\pi(\omega)\)</span> sum to 1 over all <span class="math inline">\(\omega \in \Omega\)</span>, and then interprets the individual function value <span class="math inline">\(\pi(\omega)\)</span> as the probability <span class="math inline">\(\mathbb{P}(\{\omega\})\)</span> of the elementary event <span class="math inline">\(\{\omega\} \in \mathcal{A}\)</span>, one has constructed a probability measure. Conversely, if for a finite outcome set <span class="math inline">\(\Omega\)</span> one defines a probability <span class="math inline">\(\mathbb{P}\left(\{\omega\}\right) \in [0,1]\)</span> for all elementary events <span class="math inline">\(\{\omega\} \in \mathcal{A}\)</span> and ensures that <span class="math inline">\(\mathbb{P}(\Omega) = 1\)</span>, then one has of course implicitly also satisfied the requirements of a probability function. In this case, the <span class="math inline">\(\sigma\)</span>-additivity of <span class="math inline">\(\mathbb{P}\)</span> can be used directly for the pairwise disjoint elementary events to calculate compound events. We illustrate this and the procedure using a probability function in <a href="#sec-examples-with-finite-outcome-space" class="quarto-xref"><span>Section 19.3</span></a> by means of examples.</p>
+</section>
+<section id="sec-examples-with-finite-outcome-space" class="level2" data-number="19.3">
+<h2 data-number="19.3" class="anchored" data-anchor-id="sec-examples-with-finite-outcome-space"><span class="header-section-number">19.3</span> Examples with finite outcome space</h2>
+<p>From what has been said so far, the following procedure for modeling a random process using a probability space <span class="math inline">\((\Omega, \mathcal{A}, \mathbb{P})\)</span> can be summarized:</p>
+<ol type="1">
+<li><p>In a first step, one considers a sensible definition of the outcome set <span class="math inline">\(\Omega\)</span>, that is, of the outcomes or elementary events that are to be realized in each run of the random process.</p></li>
+<li><p>In a second step, one then chooses a suitable event system. In the case of a finite outcome set, the power set <span class="math inline">\(\mathcal{P}(\Omega)\)</span> is suitable; in the case of the uncountable outcome set <span class="math inline">\(\Omega := \mathbb{R}\)</span>, the Borel <span class="math inline">\(\sigma\)</span>-algebra <span class="math inline">\(\mathcal{B}(\mathbb{R})\)</span> is suitable.</p></li>
+<li><p>Finally, one defines a probability measure <span class="math inline">\(\mathbb{P}\)</span> that represents the probabilities of the occurrence of all possible events. In the case of a finite outcome set, this is accomplished in particular by defining the probabilities of the elementary events. In what follows, we illustrate this procedure with examples. For the uncountable outcome set <span class="math inline">\(\Omega := \mathbb{R}\)</span>, defining <span class="math inline">\(\mathbb{P}\)</span> with the help of <em>probability density functions</em> is suitable, as we will see later.</p></li>
+</ol>
+<section id="throwing-one-die" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="throwing-one-die">Throwing one die</h3>
+<p>We model throwing one die. It is certainly sensible to define the outcome set as <span class="math inline">\(\Omega := \{1,2,3,4,5,6\}\)</span>. However, the definition <span class="math display">\[\begin{equation}
+\Omega := \{
+\cdot,
+\cdot\cdot,
+\cdot\cdot\cdot,
+\cdot\cdot\cdot\cdot,
+\cdot\cdot\cdot\cdot\cdot,
+\cdot\cdot\cdot\cdot\cdot\cdot
+\}
+\end{equation}\]</span> would also be possible in an equivalent way.</p>
+<p>Because this is a finite outcome set, we choose the power set <span class="math inline">\(\mathcal{P}(\Omega)\)</span> as the <span class="math inline">\(\sigma\)</span>-algebra <span class="math inline">\(\mathcal{A}\)</span>. Then <span class="math inline">\(\mathcal{A}\)</span> automatically contains all possible events. The cardinality of <span class="math inline">\(\mathcal{A} := \mathcal{P}(\Omega)\)</span> is <span class="math inline">\(|\mathcal{P}(\Omega)| = 2^{|\Omega|} = 2^6 = 64\)</span>. In <a href="#tbl-die" class="quarto-xref">Table&nbsp;<span>19.1</span></a> we list six of these 64 events in their verbal description and as a subset <span class="math inline">\(A\)</span> of <span class="math inline">\(\Omega\)</span>.</p>
+<div id="tbl-die" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-die-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;19.1: Selected events in the model of throwing a die.
+</figcaption>
+<div aria-describedby="tbl-die-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 57%">
+<col style="width: 42%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">Set form</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Any number of pips appears</td>
+<td style="text-align: left;"><span class="math inline">\(\omega \in A = \Omega\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">No number of pips appears</td>
+<td style="text-align: left;"><span class="math inline">\(\omega \in A = \emptyset\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">A number of pips greater than 4 appears</td>
+<td style="text-align: left;"><span class="math inline">\(\omega \in A = \{5,6\}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">An even number of pips appears</td>
+<td style="text-align: left;"><span class="math inline">\(\omega \in A = \{2,4,6\}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">A six appears</td>
+<td style="text-align: left;"><span class="math inline">\(\omega \in A = \{6\}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">A one, a three, or a six appears</td>
+<td style="text-align: left;"><span class="math inline">\(\omega \in A = \{1,3,6\}\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>This completes the definition of the measurable space <span class="math inline">\((\Omega, \mathcal{A})\)</span> in the modeling of throwing a die.</p>
+<p>As described in <a href="#sec-probability-functions" class="quarto-xref"><span>Section 19.2</span></a>, a probability measure <span class="math inline">\(\mathbb{P}\)</span> can be defined by specifying <span class="math inline">\(\mathbb{P}(\{\omega\})\)</span> for all <span class="math inline">\(\omega \in \Omega\)</span>. For the model of a fair die, one would choose <span class="math display">\[\begin{equation}
+\mathbb{P}(\{\omega\}) := \frac{1}{|\Omega|} := 1/6 \mbox{ for all } \omega \in \Omega.
+\end{equation}\]</span> For a model of a biased die that favors throwing a six, one could, for example, define <span class="math display">\[\begin{equation}
+\mathbb{P}(\{\omega\}) := \frac{1}{8} \mbox{ for } \omega \in \{1,2,3,4,5\}
+\mbox{ and }
+\mathbb{P}(\{6\}) := \frac{3}{8}.
+\end{equation}\]</span> In the case of the fair die, for example, the probability of the event “An even number of pips appears” is then obtained with the <span class="math inline">\(\sigma\)</span>-additivity of <span class="math inline">\(\mathbb{P}\)</span> as <span class="math display">\[\begin{equation}
+\mathbb{P}(\{2,4,6\})
+= \mathbb{P}(\{2\} \cup \{4\} \cup \{6\})
+= \mathbb{P}(\{2\}) + \mathbb{P}(\{4\}) + \mathbb{P}(\{6\})
+= \frac{1}{6} + \frac{1}{6} + \frac{1}{6}
+= \frac{3}{6}.
+\end{equation}\]</span> In the case of the above model of a biased die, by contrast, the probability of the same event is <span class="math display">\[\begin{equation}
+\mathbb{P}(\{2,4,6\})
+= \mathbb{P}(\{2\} \cup \{4\} \cup \{6\})
+= \mathbb{P}(\{2\}) + \mathbb{P}(\{4\}) + \mathbb{P}(\{6\})
+= \frac{1}{8} + \frac{1}{8} + \frac{3}{8}
+= \frac{5}{8}.
+\end{equation}\]</span> The event considered has a higher probability in the model of the biased die than in the model of the fair die, which is intuitively sensible because six is an even number.</p>
+</section>
+<section id="simultaneous-throwing-of-a-blue-and-a-red-die" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="simultaneous-throwing-of-a-blue-and-a-red-die">Simultaneous throwing of a blue and a red die</h3>
+<p>We now want to model the simultaneous throwing of a blue and a red die. For this purpose it is sensible to define the outcome set as <span class="math display">\[\begin{equation}
+\Omega := \{(r,b)| r \in \{1,2,3,4,5,6\}, b \in \{1,2,3,4,5,6\}\}
+\end{equation}\]</span> with cardinality <span class="math inline">\(|\Omega| = 36\)</span>, where <span class="math inline">\(r\)</span> is to represent the number of pips on the red die and <span class="math inline">\(b\)</span> the number of pips on the blue die.</p>
+<p>Again, choosing the power set of <span class="math inline">\(\Omega\)</span> as the <span class="math inline">\(\sigma\)</span>-algebra is suitable, so we again define <span class="math inline">\(\mathcal{A} := \mathcal{P}(\Omega)\)</span>. The number of events possible in this model is <span class="math inline">\(|\mathcal{A}| = 2^{|\Omega|} = 2^{36} = 68,719,476,736\)</span>. In <a href="#tbl-two-dice" class="quarto-xref">Table&nbsp;<span>19.2</span></a> we list six of these events in their verbal description and as a subset <span class="math inline">\(A\)</span> of <span class="math inline">\(\Omega\)</span>.</p>
+<div id="tbl-two-dice" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-two-dice-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;19.2: Selected events in the model of throwing a red and a blue die.
+</figcaption>
+<div aria-describedby="tbl-two-dice-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 46%">
+<col style="width: 53%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">Set form</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">A three appears on the red die</td>
+<td style="text-align: left;"><span class="math inline">\(\omega \in A = \{(3,1),(3,2),(3,3),(3,4),(3,5),(3,6)\}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">A three appears on the blue die</td>
+<td style="text-align: left;"><span class="math inline">\(\omega \in A = \{(1,3),(2,3),(3,3),(4,3),(5,3),(6,3)\}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">A three appears on both dice</td>
+<td style="text-align: left;"><span class="math inline">\(\omega \in A = \{(3,3)\}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Doubles appear</td>
+<td style="text-align: left;"><span class="math inline">\(\omega \in A = \{(1,1),(2,2),(3,3),(4,4),(5,5),(6,6)\}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">The sum of the numbers that appear is four</td>
+<td style="text-align: left;"><span class="math inline">\(\omega \in A = \{(1,3),(3,1),(2,2)\}\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>The definition of the measurable space <span class="math inline">\((\Omega, \mathcal{A})\)</span> is therefore complete. A probability measure <span class="math inline">\(\mathbb{P}\)</span> can again be specified by defining <span class="math inline">\(\mathbb{P}(\{\omega\})\)</span> for all <span class="math inline">\(\omega \in \Omega\)</span>. For the model of two fair dice, one would choose <span class="math display">\[\begin{equation}
+\mathbb{P}(\{\omega\}) := \frac{1}{|\Omega|} = \frac{1}{36} \mbox{ for all } \omega \in \Omega.
+\end{equation}\]</span> Under this probability measure, the probability of the event “The sum of the numbers that appear is four”, for example, is obtained with the <span class="math inline">\(\sigma\)</span>-additivity of <span class="math inline">\(\mathbb{P}\)</span> as <span class="math display">\[\begin{align*}
+\begin{split}
+\mathbb{P}\left(\{(1,3),(3,1),(2,2)\}\right)
+&amp; = \mathbb{P}\left(\{(1,3)\}\cup \{(3,1)\} \cup \{(2,2)\}\right) \\
+&amp; = \mathbb{P}\left(\{(1,3)\}\right)
+  + \mathbb{P}\left(\{(3,1)\}\right)
+  + \mathbb{P}\left(\{(2,2)\}\right) \\
+&amp; = 1/36 + 1/36 + 1/36 \\
+&amp; = 1/12.
+\end{split}
+\end{align*}\]</span></p>
+</section>
+<section id="tossing-a-coin" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="tossing-a-coin">Tossing a coin</h3>
+<p>We model tossing a coin, one side of which shows heads and the other side tails. It is sensible to define the outcome set as <span class="math inline">\(\Omega := \{H,T\}\)</span>, where <span class="math inline">\(H\)</span> represents “heads” and <span class="math inline">\(T\)</span> represents “tails”. However, any other binary definition of <span class="math inline">\(\Omega\)</span> would also be possible, e.g.&nbsp;<span class="math inline">\(\Omega := \{0,1\}, \Omega := \{-1,1\}\)</span>, or <span class="math inline">\(\Omega := \{1,2\}\)</span>.</p>
+<p>The power set <span class="math inline">\(\mathcal{A} := \mathcal{P}(\Omega)\)</span> contains all possible events. In this case, we can easily list the entire set system <span class="math inline">\(\mathcal{A}\)</span>, as shown in <a href="#tbl-coin" class="quarto-xref">Table&nbsp;<span>19.3</span></a>.</p>
+<div id="tbl-coin" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-coin-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;19.3: Event system <span class="math inline">\(\mathcal{A}\)</span> in the model of tossing a coin.
+</figcaption>
+<div aria-describedby="tbl-coin-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">Set form</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Neither heads nor tails</td>
+<td style="text-align: left;"><span class="math inline">\(\omega \in A = \emptyset\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Heads appears</td>
+<td style="text-align: left;"><span class="math inline">\(\omega \in A = \{H\}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Tails appears</td>
+<td style="text-align: left;"><span class="math inline">\(\omega \in A = \{T\}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Heads or tails appears</td>
+<td style="text-align: left;"><span class="math inline">\(\omega \in A = \{H,T\}\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>The definition of the measurable space <span class="math inline">\((\Omega, \mathcal{A})\)</span> is therefore complete.</p>
+<p>A probability measure <span class="math inline">\(\mathbb{P}\)</span> can again be specified by defining <span class="math inline">\(\mathbb{P}(\{\omega\})\)</span> for all <span class="math inline">\(\omega \in \Omega\)</span>. The normalization of <span class="math inline">\(\Omega\)</span> here implies in particular that <span class="math display">\[\begin{equation}
+\mathbb{P}(\Omega) = 1
+\Leftrightarrow
+\mathbb{P}(\{H\}) + \mathbb{P}(\{T\})  = 1
+\Leftrightarrow
+\mathbb{P}(\{T\}) = 1 - \mathbb{P}(\{H\}).
+\end{equation}\]</span> Thus, when the probability of the elementary event <span class="math inline">\(\{H\}\)</span> is specified, the probability of the elementary event <span class="math inline">\(\{T\}\)</span> is immediately specified as well, and conversely, of course. For the model of a fair coin, one would choose <span class="math inline">\(\mathbb{P}(\{H\}) = \mathbb{P}(\{T\}) := 1/2\)</span>. In this case, the probabilities of all possible events are <span class="math display">\[\begin{equation}
+\mathbb{P}(\emptyset) = 0,
+\mathbb{P}(\{H\}) = 1/2,
+\mathbb{P}(\{T\}) = 1/2 \mbox{ and }
+\mathbb{P}(\{H,T\}) = 1.
+\end{equation}\]</span></p>
+</section>
+<section id="tossing-a-coin-twice" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="tossing-a-coin-twice">Tossing a coin twice</h3>
+<p>We model tossing a coin twice. Based on the model of a single coin toss, it is sensible to define the outcome set as <span class="math inline">\(\Omega := \{HH,HT,TH,TT\}\)</span>. The power set <span class="math inline">\(\mathcal{A} := \mathcal{P}(\Omega)\)</span> again contains all <span class="math inline">\(2^{|\Omega|} = 2^4 = 16\)</span> possible events. In the table below, we list four of them.</p>
+<div id="tbl-two-coins" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-two-coins-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;19.4: Selected events in the model of tossing a coin twice.
+</figcaption>
+<div aria-describedby="tbl-two-coins-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">Set form</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Heads appears on the first toss</td>
+<td style="text-align: left;"><span class="math inline">\(\omega \in A = \{HH,HT\}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Heads appears on the second toss</td>
+<td style="text-align: left;"><span class="math inline">\(\omega \in A = \{HH,TH\}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Heads does not appear</td>
+<td style="text-align: left;"><span class="math inline">\(\omega \in A = \{TT\}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Tails appears at least once</td>
+<td style="text-align: left;"><span class="math inline">\(\omega \in A = \{HT, TH, TT\}\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>The definition of the measurable space <span class="math inline">\((\Omega, \mathcal{A})\)</span> is therefore complete. A probability measure <span class="math inline">\(\mathbb{P}\)</span> can again be specified by defining <span class="math inline">\(\mathbb{P}(\{\omega\})\)</span> for all <span class="math inline">\(\omega \in \Omega\)</span>. For the model of tossing a fair coin twice, one would define <span class="math display">\[\begin{equation}
+\mathbb{P}(\{HH\}) = \mathbb{P}(\{HT\}) = \mathbb{P}(\{TH\})= \mathbb{P}(\{TT\}) := \frac{1}{4}.
+\end{equation}\]</span></p>
+</section>
+<section id="value-of-a-bdi-ii-item" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="value-of-a-bdi-ii-item">Value of a BDI-II item</h3>
+<p>We model the value of a patient for the item “Sadness” of the English version of the Beck Depression Inventory II (<span class="citation" data-cites="hautzinger2006">Hautzinger et al. (<a href="#ref-hautzinger2006" role="doc-biblioref">2006</a>)</span>),</p>
+<ol start="0" type="1">
+<li>I do not feel sad.</li>
+<li>I feel sad much of the time.</li>
+<li>I am sad all the time.</li>
+<li>I am so sad or unhappy that I can’t stand it.</li>
+</ol>
+<p>The random process under consideration is therefore a patient’s response to this item. For modeling, the outcome set <span class="math inline">\(\Omega := \{0,1,2,3\}\)</span> is then suitable. For a first patient, for example, the realization is <span class="math inline">\(3 \in \Omega\)</span>, for a second patient the realization is <span class="math inline">\(0 \in \Omega\)</span>, for a third patient <span class="math inline">\(1 \in \Omega\)</span>, and so on. As the event system <span class="math inline">\(\mathcal{A}\)</span>, the power set is again suitable. In the present case, it has cardinality <span class="math display">\[\begin{equation}
+|\mathcal{P}(\Omega)| = 2^{|\Omega|} = 2^4 = 16
+\end{equation}\]</span> and can easily be written down completely as shown in <a href="#tbl-bdi-item" class="quarto-xref">Table&nbsp;<span>19.5</span></a>.</p>
+<div id="tbl-bdi-item" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-bdi-item-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;19.5: Selected events in the model of responding to a BDI-II item.
+</figcaption>
+<div aria-describedby="tbl-bdi-item-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 83%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Given response</th>
+<th style="text-align: left;">Set form</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">None</td>
+<td style="text-align: left;"><span class="math inline">\(\emptyset\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">“I do not feel sad”</td>
+<td style="text-align: left;"><span class="math inline">\(\{0\}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">“I feel sad much of the time”</td>
+<td style="text-align: left;"><span class="math inline">\(\{1\}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">“I am sad all the time”</td>
+<td style="text-align: left;"><span class="math inline">\(\{2\}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">“I am so sad or unhappy that I can’t stand it”</td>
+<td style="text-align: left;"><span class="math inline">\(\{3\}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">“I do not feel sad” or “I feel sad much of the time”</td>
+<td style="text-align: left;"><span class="math inline">\(\{0,1\}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">“I do not feel sad” or “I am sad all the time”</td>
+<td style="text-align: left;"><span class="math inline">\(\{0,2\}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">“I do not feel sad” or “I am so sad or unhappy that I can’t stand it”</td>
+<td style="text-align: left;"><span class="math inline">\(\{0,3\}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">“I feel sad much of the time” or “I am sad all the time”</td>
+<td style="text-align: left;"><span class="math inline">\(\{1,2\}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">“I feel sad much of the time” or “I am so sad or unhappy that I can’t stand it”</td>
+<td style="text-align: left;"><span class="math inline">\(\{1,3\}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">“I am sad all the time” or “I am so sad or unhappy that I can’t stand it”</td>
+<td style="text-align: left;"><span class="math inline">\(\{2,3\}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Not “I am so sad or unhappy that I can’t stand it”</td>
+<td style="text-align: left;"><span class="math inline">\(\{0,1,2\}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Not “I am sad all the time”</td>
+<td style="text-align: left;"><span class="math inline">\(\{0,1,3\}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Not “I feel sad much of the time”</td>
+<td style="text-align: left;"><span class="math inline">\(\{0,2,3\}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Not “I do not feel sad”</td>
+<td style="text-align: left;"><span class="math inline">\(\{1,2,3\}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Any response option</td>
+<td style="text-align: left;"><span class="math inline">\(\{0,1,2,3\}\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>Now suppose that the probabilities of the item responses are known as <span class="math display">\[\begin{equation}
+\mathbb{P}(\{0\}) := \frac{2}{10},\quad
+\mathbb{P}(\{1\}) := \frac{3}{10},\quad
+\mathbb{P}(\{2\}) := \frac{4}{10},\quad
+\mathbb{P}(\{3\}) := \frac{1}{10}.
+\end{equation}\]</span> Then these probabilities define, in the sense of a probability function, <span class="math display">\[\begin{equation}
+\pi: \Omega \to [0,1], \omega \mapsto \pi(\omega) =: \mathbb{P}(\{\omega\})
+\end{equation}\]</span> a probability measure, and the definition of the probability space model <span class="math inline">\((\Omega, \mathcal{A},\mathbb{P})\)</span> for the scenario under consideration is complete. With the help of the <span class="math inline">\(\sigma\)</span>-additivity of <span class="math inline">\(\mathbb{P}\)</span>, for example, the probability of an item response greater than 1 can now be determined: <span class="math display">\[\begin{equation}
+\mathbb{P}\left(\{2,3\}\right)
+= \mathbb{P}\left(\{2\} \cup \{3\}\right)
+= \mathbb{P}\left(\{2\}\right) + \mathbb{P}\left(\{3\}\right)
+= \frac{4}{10} + \frac{1}{10}
+= \frac{5}{10}
+= \frac{1}{2}
+\end{equation}\]</span> Similarly, for example, the probability that a patient gives one of the two item responses “(0) I do not feel sad” or “(3) I am so sad or unhappy that I can’t stand it” is <span class="math display">\[\begin{equation}
+\mathbb{P}\left(\{0,3\}\right)
+= \mathbb{P}\left(\{0\} \cup \{3\}\right)
+= \mathbb{P}\left(\{0\}\right) + \mathbb{P}\left(\{3\}\right)
+= \frac{2}{10} + \frac{1}{10}
+= \frac{3}{10}.
+\end{equation}\]</span></p>
+</section>
+</section>
+<section id="bibliographic-remarks" class="level2" data-number="19.4">
+<h2 data-number="19.4" class="anchored" data-anchor-id="bibliographic-remarks"><span class="header-section-number">19.4</span> Bibliographic remarks</h2>
+<p>Andrey Kolmogorov’s monograph “Grundbegriffe der Wahrscheinlichkeitsrechnung” (<span class="citation" data-cites="kolmogoroff1933">Kolmogoroff (<a href="#ref-kolmogoroff1933" role="doc-biblioref">1933</a>)</span>) symbolizes the foundation of modern probability calculus. In addition to the axiomatic introduction of the probability space model discussed here, <span class="citation" data-cites="kolmogoroff1933">Kolmogoroff (<a href="#ref-kolmogoroff1933" role="doc-biblioref">1933</a>)</span> considers many other aspects of probability calculus and thus offers a readable introduction to the whole field of probability theory. Of course, the approach formulated by <span class="citation" data-cites="kolmogoroff1933">Kolmogoroff (<a href="#ref-kolmogoroff1933" role="doc-biblioref">1933</a>)</span> is only a provisional end product of the long historical development of probability theory. After all, the development of the mathematical modeling of random processes by no means came to an end with <span class="citation" data-cites="kolmogoroff1933">Kolmogoroff (<a href="#ref-kolmogoroff1933" role="doc-biblioref">1933</a>)</span>. Later works in the 20th century concerned in particular the interpretation of the concept of probability (cf. <span class="citation" data-cites="definetti1975">De Finetti (<a href="#ref-definetti1975" role="doc-biblioref">1975</a>)</span>) or introduced generalized quantitative measures of subjective uncertainty (cf. <span class="citation" data-cites="walley1991">Walley (<a href="#ref-walley1991" role="doc-biblioref">1991</a>)</span>). A current overview of the interpretation of the concept of probability and its formal foundations is given by <span class="citation" data-cites="hajek2019">Hájek (<a href="#ref-hajek2019" role="doc-biblioref">2019</a>)</span>.</p>
+</section>
+<section id="study-questions" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="study-questions">Study questions</h2>
+<ol type="1">
+<li>Explain the concept of a random process.</li>
+<li>State the definition of the concept of a <span class="math inline">\(\sigma\)</span>-algebra.</li>
+<li>State the definition of the concept of a probability measure.</li>
+<li>State the definition of the concept of a probability space.</li>
+<li>Explain the concept of the outcome set <span class="math inline">\(\Omega\)</span>.</li>
+<li>Explain the tacit mechanics of the probability space model.</li>
+<li>Explain the concept of an event <span class="math inline">\(A \in \mathcal{A}\)</span>.</li>
+<li>Explain the concept of the event system <span class="math inline">\(\mathcal{A}\)</span>.</li>
+<li>Which <span class="math inline">\(\sigma\)</span>-algebra is sensibly chosen for a probability space with finite outcome set?</li>
+<li>Explain the concept of the probability measure <span class="math inline">\(\mathbb{P}\)</span>.</li>
+<li>State the definition of the concept of a probability function.</li>
+<li>Why is the concept of a probability function helpful when modeling a random process by a probability space with finite outcome set?</li>
+<li>Explain the modeling of throwing a die using a probability space.</li>
+<li>Explain the modeling of the simultaneous throwing of a red and a blue die using a probability space.</li>
+</ol>
+</section>
+<section id="study-question-answers" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="study-question-answers">Study question answers</h2>
+<ol type="1">
+<li>A random process is a phenomenon of reality that cannot be predicted with absolute certainty or is associated with uncertainty for humans. See the introduction to probability theory.</li>
+<li>See <a href="#def-probability-space" class="quarto-xref">Definition&nbsp;<span>19.1</span></a> regarding <span class="math inline">\(\mathcal{A}\)</span>.</li>
+<li>See <a href="#def-probability-space" class="quarto-xref">Definition&nbsp;<span>19.1</span></a> regarding <span class="math inline">\(\mathbb{P}\)</span>.</li>
+<li>See <a href="#def-probability-space" class="quarto-xref">Definition&nbsp;<span>19.1</span></a>.</li>
+<li>The outcome set contains the elementary events possible in a run of the modeled random process; see the explanations of <strong>Outcome set and mechanics</strong>.</li>
+<li>See the explanations of <strong>Outcome set and mechanics</strong>.</li>
+<li>See the explanations of <strong>Events and event system</strong>.</li>
+<li>See the explanations of <strong>Events and event system</strong>.</li>
+<li>The power set of the outcome set; it contains all events that are possible in principle; see also <a href="#thm-event-system-for-finite-outcome-set" class="quarto-xref">Theorem&nbsp;<span>19.1</span></a>.</li>
+<li>See the explanations of <strong>Probability measure <span class="math inline">\(\mathbb{P}\)</span></strong>.</li>
+<li>See <a href="#def-probability-function" class="quarto-xref">Definition&nbsp;<span>19.2</span></a>.</li>
+<li>By defining the function values of a probability function, a probability measure can be specified; see also <a href="#sec-examples-with-finite-outcome-space" class="quarto-xref"><span>Section 19.3</span></a>.</li>
+<li>See the explanations of <strong>Throwing one die</strong>.</li>
+<li>See the explanations of <strong>Simultaneous throwing of a blue and a red die</strong>.</li>
+</ol>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-borel1898" class="csl-entry" role="listitem">
+Borel, É. (1898). <em>Leçons sur la théorie des fonctions</em>. Paris: Gauthier Villars.
+</div>
+<div id="ref-definetti1975" class="csl-entry" role="listitem">
+De Finetti, B. (1975). <em>Theory of probability</em>. John Wiley &amp; Sons.
+</div>
+<div id="ref-hajek2019" class="csl-entry" role="listitem">
+Hájek, A. (2019). Interpretations of probability. In E. N. Zalta (Ed.), <em>The <span>Stanford</span> encyclopedia of philosophy</em> (Fall 2019). Metaphysics Research Lab, Stanford University.
+</div>
+<div id="ref-hautzinger2006" class="csl-entry" role="listitem">
+Hautzinger, M., Keller, F., &amp; Kühner, C. (2006). <em><span>BDI-II Beck Depressions-Inventar</span></em>. Pearson.
+</div>
+<div id="ref-kolmogoroff1933" class="csl-entry" role="listitem">
+Kolmogoroff, A. (1933). <em><span>Grundbegriffe der Wahrscheinlichkeitsrechnung</span></em>. Springer Berlin Heidelberg. <a href="https://doi.org/10.1007/978-3-642-49888-6">https://doi.org/10.1007/978-3-642-49888-6</a>
+</div>
+<div id="ref-meintrup2005" class="csl-entry" role="listitem">
+Meintrup, D., &amp; Schäffler, S. (2005). <em><span>Stochastik: Theorie und Anwendungen</span></em>. Springer.
+</div>
+<div id="ref-schmidt2009" class="csl-entry" role="listitem">
+Schmidt, K. D. (2009). <em><span>Maß und Wahrscheinlichkeit</span></em>. Springer.
+</div>
+<div id="ref-walley1991" class="csl-entry" role="listitem">
+Walley, P. (1991). <em>Statistical reasoning with imprecise probabilities</em> (1st ed). <span>Chapman and Hall</span>.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script>
+(function () {
+  var base = "https://dirk-ostwald.github.io";
+  var pageMap = {
+    "/": "/en/",
+    "/index.html": "/en/",
+    "/Referenzen.html": "/en/References.html",
+    "/_part_1/100-Mathematische-Grundlagen.html": "/en/_part_1/100-Mathematical-Foundations.html",
+    "/_part_1/101-Sprache-und-Logik.html": "/en/_part_1/101-Language-and-Logic.html",
+    "/_part_1/102-Mengen.html": "/en/_part_1/102-Sets.html",
+    "/_part_1/103-Summen-Produkte-Potenzen.html": "/en/_part_1/103-Sums-Products-Powers.html",
+    "/_part_1/104-Funktionen.html": "/en/_part_1/104-Functions.html",
+    "/_part_1/105-Folgen-Grenzwerte-Stetigkeit.html": "/en/_part_1/105-Sequences-Limits-Continuity.html",
+    "/_part_1/106-Differenzialrechnung.html": "/en/_part_1/106-Differential-Calculus.html",
+    "/_part_1/107-Integralrechnung.html": "/en/_part_1/107-Integral-Calculus.html",
+    "/_part_1/108-Vektoren.html": "/en/_part_1/108-Vectors.html",
+    "/_part_1/109-Matrizen.html": "/en/_part_1/109-Matrices.html",
+    "/_part_1/110-Deskriptivstatistiken.html": "/en/_part_1/110-Descriptive-Statistics.html",
+    "/_part_2/200-Imperative-Programmierung.html": "/en/_part_2/200-Imperative-Programming.html",
+    "/_part_2/201-Informatische-Grundbegriffe.html": "/en/_part_2/201-Basic-Concepts-of-Computer-Science.html",
+    "/_part_2/202-Arithmetik-und-Variablen.html": "/en/_part_2/202-Arithmetic-and-Variables.html",
+    "/_part_2/203-Datenstrukturen.html": "/en/_part_2/203-Data-Structures.html",
+    "/_part_2/204-Vektoren.html": "/en/_part_2/204-Vectors.html",
+    "/_part_2/205-Matrizen-und-Arrays.html": "/en/_part_2/205-Matrices-and-Arrays.html",
+    "/_part_2/206-Listen-Dataframes-und-Tibbles.html": "/en/_part_2/206-Lists-Dataframes-and-Tibbles.html",
+    "/_part_2/207-Datenmanagement.html": "/en/_part_2/207-Data-Management.html",
+    "/_part_2/208-Kontrollstrukturen.html": "/en/_part_2/208-Control-Structures.html",
+    "/_part_3/300-Wahrscheinlichkeitstheorie.html": "/en/_part_3/300-Probability-Theory.html",
+    "/_part_3/301-Wahrscheinlichkeitsräume.html": "/en/_part_3/301-Probability-Spaces.html",
+    "/_part_3/302-Elementare-Wahrscheinlichkeiten.html": "/en/_part_3/302-Elementary-Probabilities.html",
+    "/_part_3/303-Zufallsvariablen.html": "/en/_part_3/303-Random-Variables.html",
+    "/_part_3/304-Zufallsvektoren.html": "/en/_part_3/304-Random-Vectors.html",
+    "/_part_3/305-Erwartungswerte.html": "/en/_part_3/305-Expectations.html",
+    "/_part_3/306-Varianzen.html": "/en/_part_3/306-Variances.html",
+    "/_part_3/307-Kovarianzen.html": "/en/_part_3/307-Covariances.html",
+    "/_part_3/308-Ungleichungen.html": "/en/_part_3/308-Inequalities.html",
+    "/_part_3/309-Grenzwerte.html": "/en/_part_3/309-Limits.html",
+    "/_part_3/310-Transformationen.html": "/en/_part_3/310-Transformations.html",
+    "/_part_3/311-Normalverteilungen.html": "/en/_part_3/311-Normal-Distributions.html",
+    "/_part_4/400-Inferenz.html": "/en/_part_4/400-Inference.html",
+    "/_part_4/401-Frequentistische-Inferenz.html": "/en/_part_4/401-Frequentist-Inference.html",
+    "/_part_4/402-Punktschätzung.html": "/en/_part_4/402-Point-Estimation.html",
+    "/_part_4/403-Konfidenzintervalle.html": "/en/_part_4/403-Confidence-Intervals.html",
+    "/_part_4/404-Hypothesentests.html": "/en/_part_4/404-Hypothesis-Tests.html",
+    "/_part_5/500-Allgemeines-Lineares-Modell.html": "/en/_part_5/500-General-Linear-Model.html",
+    "/_part_5/501-Regression.html": "/en/_part_5/501-Regression.html",
+    "/_part_5/502-Korrelation.html": "/en/_part_5/502-Correlation.html",
+    "/_part_5/503-Modellformulierung.html": "/en/_part_5/503-Model-Formulation.html",
+    "/_part_5/504-Parameterschätzung.html": "/en/_part_5/504-Parameter-Estimation.html",
+    "/_part_5/505-T-Statistiken.html": "/en/_part_5/505-T-Statistics.html",
+    "/_part_5/506-F-Statistiken.html": "/en/_part_5/506-F-Statistics.html",
+    "/_part_5/507-T-Tests.html": "/en/_part_5/507-T-Tests.html",
+    "/_part_5/508-Einfaktorielle-Varianzanalyse.html": "/en/_part_5/508-One-Way-Analysis-of-Variance.html",
+    "/_part_5/509-Zweifaktorielle-Varianzanalyse.html": "/en/_part_5/509-Two-Way-Analysis-of-Variance.html",
+    "/_part_5/510-Partielle-Korrelation.html": "/en/_part_5/510-Partial-Correlation.html",
+    "/_part_5/511-Multiple-Regression.html": "/en/_part_5/511-Multiple-Regression.html",
+    "/_part_7/700-Multivariate-Inferenz.html": "/en/_part_7/700-Multivariate-Inference.html",
+    "/_part_7/701-Multivariate-Deskriptivstatistiken.html": "/en/_part_7/701-Multivariate-Descriptive-Statistics.html",
+    "/_part_7/702-Einstichproben-T2-Tests.html": "/en/_part_7/702-One-Sample-T2-Tests.html",
+    "/_part_7/703-Einfaktorielle-Varianzanalyse.html": "/en/_part_7/703-One-Way-Analysis-of-Variance.html",
+    "/_part_7/704-Kanonische-Korrelationsanalyse.html": "/en/_part_7/704-Canonical-Correlation-Analysis.html",
+    "/_part_9/900-Psychometrische-Verfahren.html": "/en/_part_9/900-Psychometric-Procedures.html",
+    "/_part_9/901-Psychologische-Tests.html": "/en/_part_9/901-Psychological-Tests.html",
+    "/_part_9/903-Klassische-Testtheorie.html": "/en/_part_9/903-Classical-Test-Theory.html",
+    "/_part_9/904-Faktorenanalyse.html": "/en/_part_9/904-Factor-Analysis.html"
+  };
+  var reversePageMap = {};
+  Object.keys(pageMap).forEach(function (key) {
+    reversePageMap[pageMap[key]] = key;
+  });
+  function headings() {
+    return Array.prototype.slice.call(document.querySelectorAll("main.content h1[id], main.content h2[id], main.content h3[id], main.content h4[id]"));
+  }
+  function currentHeadingIndex() {
+    var hash = window.location.hash;
+    if (!hash) return "";
+    var id = hash.slice(1);
+    try {
+      id = decodeURIComponent(id);
+    } catch (error) {}
+    var list = headings();
+    for (var i = 0; i < list.length; i++) {
+      if (list[i].id === id) return String(i);
+    }
+    return "";
+  }
+  function scrollToHeadingIndex() {
+    var params = new URLSearchParams(window.location.search);
+    var value = params.get("h");
+    if (value === null) return;
+    var index = Number(value);
+    var list = headings();
+    if (Number.isInteger(index) && index >= 0 && index < list.length) {
+      list[index].scrollIntoView();
+      if (history.replaceState) {
+        history.replaceState(null, "", window.location.pathname + "#" + list[index].id);
+      }
+    }
+  }
+  var path = window.location.pathname;
+  var target = pageMap[path] || reversePageMap[path];
+  if (target) {
+    document.querySelectorAll("a.nav-link").forEach(function (link) {
+      var text = link.textContent.trim();
+      if (text === "English" || text === "Deutsch") {
+        var index = currentHeadingIndex();
+        link.href = base + target + (index ? "?h=" + index : "");
+      }
+    });
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", scrollToHeadingIndex);
+  } else {
+    scrollToHeadingIndex();
+  }
+}());
+</script>
+
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../_part_3/300-Probability-Theory.html" class="pagination-link" aria-label="Probability theory">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Probability theory</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../_part_3/302-Elementary-Probabilities.html" class="pagination-link" aria-label="Elementary probabilities">
+        <span class="nav-page-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Elementary probabilities</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/dirk-ostwald/dirk-ostwald.github.io/tree/gh-pages/edit/main/_part_3/301-Probability-Spaces.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></div></div></footer></body></html>
