@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,10 +12,13 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -96,10 +99,10 @@ div.csl-indent {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-6e8dda235ee8acd82fc3832029714bc4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-35fb2a33bb4c71715ffa083faf67f315.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -129,7 +132,7 @@ div.csl-indent {
 }</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -545,8 +548,8 @@ window.Quarto = {
   <ul>
   <li><a href="#sec-konditionale-kontrollstrukturen" id="toc-sec-konditionale-kontrollstrukturen" class="nav-link active" data-scroll-target="#sec-konditionale-kontrollstrukturen"><span class="header-section-number">18.1</span> Konditionale Kontrollstrukturen</a>
   <ul class="collapse">
-  <li><a href="#if-statements" id="toc-if-statements" class="nav-link" data-scroll-target="#if-statements">if-statements</a></li>
-  <li><a href="#switch-statements" id="toc-switch-statements" class="nav-link" data-scroll-target="#switch-statements">switch-statements</a></li>
+  <li><a href="#if-statements" id="toc-if-statements" class="nav-link" data-scroll-target="#if-statements">if-Statements</a></li>
+  <li><a href="#switch-statements" id="toc-switch-statements" class="nav-link" data-scroll-target="#switch-statements">switch-Statements</a></li>
   </ul></li>
   <li><a href="#sec-iterative-kontrollstrukturen" id="toc-sec-iterative-kontrollstrukturen" class="nav-link" data-scroll-target="#sec-iterative-kontrollstrukturen"><span class="header-section-number">18.2</span> Iterative Kontrollstrukturen</a></li>
   </ul>
@@ -578,44 +581,44 @@ window.Quarto = {
 </header>
 
 
-<p>Per se wird imperativer Programmiercode streng sequentiell Befehl für Befehl ausgeführt. Manchmal möchte man von dieser rein sequentiellen Befehlsreihenfolge allerdings abweichen und die Ausführungsreihenfolge von Befehlen flexibler kontrollieren. Prinzipielle Werkzeuge zu diesem Zweck sind <em>konditionale Kontrollstrukturen</em> und <em>iterative Kontrollstrukturen</em>. <em>Konditionale Kontrollstrukturen</em> steuern die Programmausführung, indem sie festlegen, dass bestimmte Befehle nur dann ausgeführt werden, wenn definierte Bedingungen erfüllt sind. <strong>R</strong> bietet zu diesem Zweck <code>if()</code>- und <code>switch()</code>-Statements. Oft möchte man bestimmte Codeabschnitte auch in Schleifen häufig wiederholen (<em>iterieren</em>). Zu diesem Zweck bietet <strong>R</strong> <code>for()</code>-, <code>while()</code>- und <code>repeat()</code>-Schleifen. In diesem Abschnitt stellen wir die grundlegenden konditionalen und iterativen Kontrollstrukturen in <strong>R</strong> vor und folgen dabei der Darstellung in <span class="citation" data-cites="cotton2013">Cotton (<a href="#ref-cotton2013" role="doc-biblioref">2013</a>)</span>, Kapitel 8 und Kapitel 9, sowie <span class="citation" data-cites="wickham2019">Wickham (<a href="#ref-wickham2019" role="doc-biblioref">2019</a>)</span>, Kapitel 5.</p>
+<p>Per se wird imperativer Programmiercode streng sequentiell Befehl für Befehl ausgeführt. Manchmal möchte man von dieser rein sequentiellen Befehlsreihenfolge allerdings abweichen und die Ausführungsreihenfolge von Befehlen flexibler kontrollieren. Prinzipielle Werkzeuge zu diesem Zweck sind <em>konditionale Kontrollstrukturen</em> und <em>iterative Kontrollstrukturen</em>. <em>Konditionale Kontrollstrukturen</em> steuern die Programmausführung, indem sie festlegen, dass bestimmte Befehle nur dann ausgeführt werden, wenn definierte Bedingungen erfüllt sind. <strong>R</strong> bietet zu diesem Zweck <code>if()</code>- und <code>switch()</code>-Statements. Oft möchte man bestimmte Codeabschnitte auch in Schleifen häufig wiederholen (<em>iterieren</em>). Zu diesem Zweck bietet <strong>R</strong> <code>for()</code>-, <code>while()</code>- und <code>repeat()</code>-Schleifen. In diesem Abschnitt stellen wir die grundlegenden konditionalen und iterativen Kontrollstrukturen in <strong>R</strong> vor und folgen dabei der Darstellung in <span class="citation" data-cites="cotton2013">Cotton (<a href="#ref-cotton2013" role="doc-biblioref">2013</a>)</span>, Kapitel 8 und Kapitel 9, sowie <span class="citation" data-cites="wickham2019">Wickham et al. (<a href="#ref-wickham2019" role="doc-biblioref">2019</a>)</span>, Kapitel 5.</p>
 <section id="sec-konditionale-kontrollstrukturen" class="level2" data-number="18.1">
 <h2 data-number="18.1" class="anchored" data-anchor-id="sec-konditionale-kontrollstrukturen"><span class="header-section-number">18.1</span> Konditionale Kontrollstrukturen</h2>
 <p>Konditionale Kontrollstrukturen erlauben die bedingungsabhängige Ausführung von Befehlen.</p>
 <section id="if-statements" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="if-statements">if-statements</h3>
-<p>Die grundlegende konditionale Kontrollstruktur ist das if-statement. Die allgemeine Syntax für ein if-statement in <strong>R</strong> hat folgende Form:</p>
+<h3 class="unnumbered anchored" data-anchor-id="if-statements">if-Statements</h3>
+<p>Die grundlegende konditionale Kontrollstruktur ist das if-Statement. Die allgemeine Syntax für ein if-Statement in <strong>R</strong> hat folgende Form:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="cf">if</span> (Bedingung){</span>
-<span id="cb1-2"><a href="#cb1-2"></a>  TrueActions</span>
-<span id="cb1-3"><a href="#cb1-3"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-label="1"></a><span class="cf">if</span> (Bedingung){</span>
+<span id="cb1-2"><a href="#cb1-2" aria-label="2"></a>  TrueActions</span>
+<span id="cb1-3"><a href="#cb1-3" aria-label="3"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Dabei gilt, dass wenn die Variable <code>Bedingung</code> den Wert <code>TRUE</code> hat, also wahr ist, die mit <code>TrueActions</code> bezeichneten Befehle ausgeführt werden. Ist der Wert der Variable <code>Bedingung</code> dagegen <code>FALSE</code>, so werden die Befehle <code>TrueActions</code> nicht ausgeführt und die Programmausführung wird in der nächsten Zeile nach dem if-statement fortgesetzt. Beispielsweise wird in folgendem Code der Befehl <code>print("x ist größer als 0")</code> ausgeführt, da <code>x</code> ja nach vorheriger Zuordnung den Wert <code>1</code> hat.</p>
+<p>Dabei gilt, dass, wenn die Variable <code>Bedingung</code> den Wert <code>TRUE</code> hat, also wahr ist, die mit <code>TrueActions</code> bezeichneten Befehle ausgeführt werden. Ist der Wert der Variablen <code>Bedingung</code> dagegen <code>FALSE</code>, so werden die Befehle <code>TrueActions</code> nicht ausgeführt und die Programmausführung wird in der nächsten Zeile nach dem if-Statement fortgesetzt. Beispielsweise wird in folgendem Code der Befehl <code>print("x ist größer als 0")</code> ausgeführt, da <code>x</code> ja nach vorheriger Zuordnung den Wert <code>1</code> hat.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>x <span class="ot">=</span> <span class="dv">1</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="cf">if</span>(x <span class="sc">&gt;</span> <span class="dv">0</span>){</span>
-<span id="cb2-3"><a href="#cb2-3"></a>  <span class="fu">print</span>(<span class="st">"x ist größer als 0"</span>)</span>
-<span id="cb2-4"><a href="#cb2-4"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-label="1"></a>x <span class="ot">=</span> <span class="dv">1</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-label="2"></a><span class="cf">if</span>(x <span class="sc">&gt;</span> <span class="dv">0</span>){</span>
+<span id="cb2-3"><a href="#cb2-3" aria-label="3"></a>  <span class="fu">print</span>(<span class="st">"x ist größer als 0"</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-label="4"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "x ist gr&lt;U+00F6&gt;&lt;U+00DF&gt;er als 0"</code></pre>
 </div>
 </div>
-<p>Das if-statement kann durch eine <code>else</code>-Bedingung erweitert werden, um zu spezifizieren, welche Befehle in dem Fall ausgeführt werden sollen, dass die Variable <code>Bedingung</code> den Wert <code>FALSE</code> hat.</p>
+<p>Das if-Statement kann durch eine <code>else</code>-Bedingung erweitert werden, um zu spezifizieren, welche Befehle in dem Fall ausgeführt werden sollen, dass die Variable <code>Bedingung</code> den Wert <code>FALSE</code> hat.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="cf">if</span> (Bedingung){</span>
-<span id="cb4-2"><a href="#cb4-2"></a>  TrueActions</span>
-<span id="cb4-3"><a href="#cb4-3"></a>} <span class="cf">else</span> {</span>
-<span id="cb4-4"><a href="#cb4-4"></a>  FalseActions</span>
-<span id="cb4-5"><a href="#cb4-5"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-label="1"></a><span class="cf">if</span> (Bedingung){</span>
+<span id="cb4-2"><a href="#cb4-2" aria-label="2"></a>  TrueActions</span>
+<span id="cb4-3"><a href="#cb4-3" aria-label="3"></a>} <span class="cf">else</span> {</span>
+<span id="cb4-4"><a href="#cb4-4" aria-label="4"></a>  FalseActions</span>
+<span id="cb4-5"><a href="#cb4-5" aria-label="5"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Hier werden die Befehle <code>TrueActions</code> ausgeführt, wenn die Variable <code>Bedingung</code> den Wert <code>TRUE</code> hat und es werden die Befehle <code>FalseActions</code> ausgeführt, wenn die Variable <code>Bedingung</code> den Wert <code>FALSE</code> hat. Beispielsweise wird in folgendem Code der Befehl <code>print("y ist nicht größer als 0")</code> ausgeführt, da die Bedingung <code>y &gt; 0</code> nicht zutrifft.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>y <span class="ot">=</span> <span class="sc">-</span><span class="dv">1</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a><span class="cf">if</span>(y <span class="sc">&gt;</span> <span class="dv">0</span>){</span>
-<span id="cb5-3"><a href="#cb5-3"></a>  <span class="fu">print</span>(<span class="st">"y ist größer als 0"</span>)</span>
-<span id="cb5-4"><a href="#cb5-4"></a>} <span class="cf">else</span>{</span>
-<span id="cb5-5"><a href="#cb5-5"></a>  <span class="fu">print</span>(<span class="st">"y ist nicht größer als 0"</span>)</span>
-<span id="cb5-6"><a href="#cb5-6"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-label="1"></a>y <span class="ot">=</span> <span class="sc">-</span><span class="dv">1</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-label="2"></a><span class="cf">if</span>(y <span class="sc">&gt;</span> <span class="dv">0</span>){</span>
+<span id="cb5-3"><a href="#cb5-3" aria-label="3"></a>  <span class="fu">print</span>(<span class="st">"y ist größer als 0"</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-label="4"></a>} <span class="cf">else</span>{</span>
+<span id="cb5-5"><a href="#cb5-5" aria-label="5"></a>  <span class="fu">print</span>(<span class="st">"y ist nicht größer als 0"</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-label="6"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "y ist nicht gr&lt;U+00F6&gt;&lt;U+00DF&gt;er als 0"</code></pre>
 </div>
@@ -645,11 +648,11 @@ Tabelle&nbsp;18.1: Relationsoperatoren in <strong>R</strong>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><code>&lt;</code>, <code>&gt;</code></td>
-<td style="text-align: left;">Kleiner, Größer</td>
+<td style="text-align: left;">Kleiner, größer</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><code>&lt;=</code>, <code>&gt;=</code></td>
-<td style="text-align: left;">Kleiner gleich, Größer gleich</td>
+<td style="text-align: left;">Kleiner oder gleich, größer oder gleich</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><code>&amp;</code></td>
@@ -664,79 +667,79 @@ Tabelle&nbsp;18.1: Relationsoperatoren in <strong>R</strong>
 </div>
 </figure>
 </div>
-<p>Dabei werden die Relationsoperatoren <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&gt;=</code> zumeist nur auf numerische Werte angewendet. Die Gleichheitsoperatoren <code>==</code>,<code>!=</code> können auf beliebige Datenstrukturen angewendet werden, um deren Gleichheit zu überprüfen. Die logischen Verknüpfungen <code>&amp;</code> und <code>|</code> werden zumeist auf logische Werte angewendet. Die Funktion <code>xor()</code> schließlich implementiert das exklusive ODER. Es können beispielsweise folgende Tests auf Gleichheit und Relation durchgeführt werden:</p>
+<p>Dabei werden die Relationsoperatoren <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&gt;=</code> zumeist nur auf numerische Werte angewendet. Die Gleichheitsoperatoren <code>==</code>, <code>!=</code> können auf beliebige Datenstrukturen angewendet werden, um deren Gleichheit zu überprüfen. Die logischen Verknüpfungen <code>&amp;</code> und <code>|</code> werden zumeist auf logische Werte angewendet. Die Funktion <code>xor()</code> schließlich implementiert das exklusive ODER. Es können beispielsweise folgende Tests auf Gleichheit und Relation durchgeführt werden:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># Variablendefinition</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a>x <span class="ot">=</span> <span class="dv">1</span></span>
-<span id="cb7-3"><a href="#cb7-3"></a>y <span class="ot">=</span> <span class="dv">2</span></span>
-<span id="cb7-4"><a href="#cb7-4"></a></span>
-<span id="cb7-5"><a href="#cb7-5"></a><span class="co"># Test auf Gleichheit</span></span>
-<span id="cb7-6"><a href="#cb7-6"></a><span class="cf">if</span>(x <span class="sc">==</span> y){</span>
-<span id="cb7-7"><a href="#cb7-7"></a>  <span class="fu">print</span>(<span class="st">"x ist gleich y"</span>)</span>
-<span id="cb7-8"><a href="#cb7-8"></a>} <span class="cf">else</span> {</span>
-<span id="cb7-9"><a href="#cb7-9"></a>  <span class="fu">print</span>(<span class="st">"x ist ungleich y"</span>)</span>
-<span id="cb7-10"><a href="#cb7-10"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-label="1"></a><span class="co"># Variablendefinition</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-label="2"></a>x <span class="ot">=</span> <span class="dv">1</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-label="3"></a>y <span class="ot">=</span> <span class="dv">2</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-label="4"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-label="5"></a><span class="co"># Test auf Gleichheit</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-label="6"></a><span class="cf">if</span>(x <span class="sc">==</span> y){</span>
+<span id="cb7-7"><a href="#cb7-7" aria-label="7"></a>  <span class="fu">print</span>(<span class="st">"x ist gleich y"</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-label="8"></a>} <span class="cf">else</span> {</span>
+<span id="cb7-9"><a href="#cb7-9" aria-label="9"></a>  <span class="fu">print</span>(<span class="st">"x ist ungleich y"</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-label="10"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "x ist ungleich y"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># Test auf Ungleichheit</span></span>
-<span id="cb9-2"><a href="#cb9-2"></a><span class="cf">if</span>(x <span class="sc">&lt;</span> y){</span>
-<span id="cb9-3"><a href="#cb9-3"></a>  <span class="fu">print</span>(<span class="st">"x ist kleiner als y"</span>)</span>
-<span id="cb9-4"><a href="#cb9-4"></a>} <span class="cf">else</span> {</span>
-<span id="cb9-5"><a href="#cb9-5"></a>  <span class="fu">print</span>(<span class="st">"x ist größer oder gleich y"</span>)</span>
-<span id="cb9-6"><a href="#cb9-6"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-label="1"></a><span class="co"># Test auf Ungleichheit</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-label="2"></a><span class="cf">if</span>(x <span class="sc">&lt;</span> y){</span>
+<span id="cb9-3"><a href="#cb9-3" aria-label="3"></a>  <span class="fu">print</span>(<span class="st">"x ist kleiner als y"</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-label="4"></a>} <span class="cf">else</span> {</span>
+<span id="cb9-5"><a href="#cb9-5" aria-label="5"></a>  <span class="fu">print</span>(<span class="st">"x ist größer oder gleich y"</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-label="6"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "x ist kleiner als y"</code></pre>
 </div>
 </div>
-<p>Die if-statement-Tests können durch logische Bedingungen erweitert werden, wie folgendes Beispiel demonstrieren soll:</p>
+<p>Die if-Statement-Tests können durch logische Bedingungen erweitert werden, wie folgendes Beispiel demonstrieren soll:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co"># Variablendefinition</span></span>
-<span id="cb11-2"><a href="#cb11-2"></a>x <span class="ot">=</span> <span class="dv">2</span></span>
-<span id="cb11-3"><a href="#cb11-3"></a>y <span class="ot">=</span> <span class="dv">2</span></span>
-<span id="cb11-4"><a href="#cb11-4"></a></span>
-<span id="cb11-5"><a href="#cb11-5"></a><span class="co"># logisches UND/ODER</span></span>
-<span id="cb11-6"><a href="#cb11-6"></a><span class="cf">if</span>(x <span class="sc">==</span> y <span class="sc">|</span> x <span class="sc">&lt;</span> y){</span>
-<span id="cb11-7"><a href="#cb11-7"></a>  <span class="fu">print</span>(<span class="st">"x ist kleiner oder gleich y"</span>)</span>
-<span id="cb11-8"><a href="#cb11-8"></a>} <span class="cf">else</span> {</span>
-<span id="cb11-9"><a href="#cb11-9"></a>  <span class="fu">print</span>(<span class="st">"x ist größer als y"</span>)</span>
-<span id="cb11-10"><a href="#cb11-10"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-label="1"></a><span class="co"># Variablendefinition</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-label="2"></a>x <span class="ot">=</span> <span class="dv">2</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-label="3"></a>y <span class="ot">=</span> <span class="dv">2</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-label="4"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-label="5"></a><span class="co"># logisches UND/ODER</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-label="6"></a><span class="cf">if</span>(x <span class="sc">==</span> y <span class="sc">|</span> x <span class="sc">&lt;</span> y){</span>
+<span id="cb11-7"><a href="#cb11-7" aria-label="7"></a>  <span class="fu">print</span>(<span class="st">"x ist kleiner oder gleich y"</span>)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-label="8"></a>} <span class="cf">else</span> {</span>
+<span id="cb11-9"><a href="#cb11-9" aria-label="9"></a>  <span class="fu">print</span>(<span class="st">"x ist größer als y"</span>)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-label="10"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "x ist kleiner oder gleich y"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="co"># logisches UND</span></span>
-<span id="cb13-2"><a href="#cb13-2"></a><span class="cf">if</span>(x <span class="sc">&gt;</span> y <span class="sc">&amp;</span> x <span class="sc">!=</span> y){</span>
-<span id="cb13-3"><a href="#cb13-3"></a>  <span class="fu">print</span>(<span class="st">"x ist größer als y"</span>)</span>
-<span id="cb13-4"><a href="#cb13-4"></a>} <span class="cf">else</span> {</span>
-<span id="cb13-5"><a href="#cb13-5"></a>  <span class="fu">print</span>(<span class="st">"x ist kleiner oder gleich y"</span>)</span>
-<span id="cb13-6"><a href="#cb13-6"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-label="1"></a><span class="co"># logisches UND</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-label="2"></a><span class="cf">if</span>(x <span class="sc">&gt;</span> y <span class="sc">&amp;</span> x <span class="sc">!=</span> y){</span>
+<span id="cb13-3"><a href="#cb13-3" aria-label="3"></a>  <span class="fu">print</span>(<span class="st">"x ist größer als y"</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-label="4"></a>} <span class="cf">else</span> {</span>
+<span id="cb13-5"><a href="#cb13-5" aria-label="5"></a>  <span class="fu">print</span>(<span class="st">"x ist kleiner oder gleich y"</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-label="6"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "x ist kleiner oder gleich y"</code></pre>
 </div>
 </div>
 <p>Bei if-Statements ist es entscheidend, dass die Bedingung einem einzigen logischen Wert entspricht. Folgende Bedingungen sind beispielsweise fehlerhaft:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="cf">if</span>(<span class="st">"x"</span>){</span>
-<span id="cb15-2"><a href="#cb15-2"></a>  <span class="fu">print</span>(<span class="dv">1</span>)</span>
-<span id="cb15-3"><a href="#cb15-3"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-label="1"></a><span class="cf">if</span>(<span class="st">"x"</span>){</span>
+<span id="cb15-2"><a href="#cb15-2" aria-label="2"></a>  <span class="fu">print</span>(<span class="dv">1</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-label="3"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-error">
 <pre><code>Error in `if ("x") ...`:
 ! argument is not interpretable as logical</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="cf">if</span>(<span class="cn">NA</span>){</span>
-<span id="cb17-2"><a href="#cb17-2"></a>  <span class="fu">print</span>(<span class="dv">1</span>)</span>
-<span id="cb17-3"><a href="#cb17-3"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-label="1"></a><span class="cf">if</span>(<span class="cn">NA</span>){</span>
+<span id="cb17-2"><a href="#cb17-2" aria-label="2"></a>  <span class="fu">print</span>(<span class="dv">1</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-label="3"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-error">
 <pre><code>Error in `if (NA) ...`:
 ! missing value where TRUE/FALSE needed</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="cf">if</span>(<span class="fu">c</span>(T,F)){</span>
-<span id="cb19-2"><a href="#cb19-2"></a>  <span class="fu">print</span>(<span class="dv">1</span>)</span>
-<span id="cb19-3"><a href="#cb19-3"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-label="1"></a><span class="cf">if</span>(<span class="fu">c</span>(T,F)){</span>
+<span id="cb19-2"><a href="#cb19-2" aria-label="2"></a>  <span class="fu">print</span>(<span class="dv">1</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-label="3"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-error">
 <pre><code>Error in `if (c(T, F)) ...`:
 ! the condition has length &gt; 1</code></pre>
@@ -744,63 +747,63 @@ Tabelle&nbsp;18.1: Relationsoperatoren in <strong>R</strong>
 </div>
 </section>
 <section id="switch-statements" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="switch-statements">switch-statements</h3>
-<p>Eine weitere konditionale Kontrollstruktur ist das switch-statement. Switch-statements sind dadurch motiviert, dass kombinierte if-else-statements leicht unübersichtlich werden können, wie folgendes Beispiel zeigt:</p>
+<h3 class="unnumbered anchored" data-anchor-id="switch-statements">switch-Statements</h3>
+<p>Eine weitere konditionale Kontrollstruktur ist das switch-Statement. Switch-Statements sind dadurch motiviert, dass kombinierte if-else-Statements leicht unübersichtlich werden können, wie folgendes Beispiel zeigt:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>x <span class="ot">=</span> <span class="dv">2</span></span>
-<span id="cb21-2"><a href="#cb21-2"></a><span class="cf">if</span> (x <span class="sc">==</span> <span class="dv">1</span>){</span>
-<span id="cb21-3"><a href="#cb21-3"></a>  <span class="fu">print</span>(<span class="st">"Aktion 1"</span>)</span>
-<span id="cb21-4"><a href="#cb21-4"></a>} <span class="cf">else</span> <span class="cf">if</span>(x <span class="sc">==</span> <span class="dv">2</span>){</span>
-<span id="cb21-5"><a href="#cb21-5"></a>  <span class="fu">print</span>(<span class="st">"Aktion 2"</span>)</span>
-<span id="cb21-6"><a href="#cb21-6"></a>} <span class="cf">else</span> <span class="cf">if</span>(x <span class="sc">==</span> <span class="dv">3</span>){</span>
-<span id="cb21-7"><a href="#cb21-7"></a>  <span class="fu">print</span>(<span class="st">"Aktion 3"</span>)</span>
-<span id="cb21-8"><a href="#cb21-8"></a>} <span class="cf">else</span> <span class="cf">if</span>(x <span class="sc">==</span> <span class="dv">4</span>){</span>
-<span id="cb21-9"><a href="#cb21-9"></a>  <span class="fu">print</span>(<span class="st">"Aktion 4"</span>)</span>
-<span id="cb21-10"><a href="#cb21-10"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-label="1"></a>x <span class="ot">=</span> <span class="dv">2</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-label="2"></a><span class="cf">if</span> (x <span class="sc">==</span> <span class="dv">1</span>){</span>
+<span id="cb21-3"><a href="#cb21-3" aria-label="3"></a>  <span class="fu">print</span>(<span class="st">"Aktion 1"</span>)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-label="4"></a>} <span class="cf">else</span> <span class="cf">if</span>(x <span class="sc">==</span> <span class="dv">2</span>){</span>
+<span id="cb21-5"><a href="#cb21-5" aria-label="5"></a>  <span class="fu">print</span>(<span class="st">"Aktion 2"</span>)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-label="6"></a>} <span class="cf">else</span> <span class="cf">if</span>(x <span class="sc">==</span> <span class="dv">3</span>){</span>
+<span id="cb21-7"><a href="#cb21-7" aria-label="7"></a>  <span class="fu">print</span>(<span class="st">"Aktion 3"</span>)</span>
+<span id="cb21-8"><a href="#cb21-8" aria-label="8"></a>} <span class="cf">else</span> <span class="cf">if</span>(x <span class="sc">==</span> <span class="dv">4</span>){</span>
+<span id="cb21-9"><a href="#cb21-9" aria-label="9"></a>  <span class="fu">print</span>(<span class="st">"Aktion 4"</span>)</span>
+<span id="cb21-10"><a href="#cb21-10" aria-label="10"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Aktion 2"</code></pre>
 </div>
 </div>
-<p>Hat man also einen Fall vorliegen, in dem in Abhängigkeit des Wertes einer Variable eine von vielen Aktionen ausgeführt werden soll, so kann sich ein switch-statement zur Verbesserung der Codelesbarkeit anbieten. <strong>R</strong> implementiert switch-statements in der <code>switch()</code> Funktion, die in Abhängigkeit vom Datentyp ihrer Variable leicht unterschiedlich funktioniert. Ist die switch Variable vom Typ Integer, so wird die <span class="math inline">\(i\)</span>te Aktion ausgeführt, wie folgendes Beispiel demonstriert:</p>
+<p>Hat man also einen Fall vorliegen, in dem in Abhängigkeit des Wertes einer Variablen eine von vielen Aktionen ausgeführt werden soll, so kann sich ein switch-Statement zur Verbesserung der Codelesbarkeit anbieten. <strong>R</strong> implementiert switch-Statements in der <code>switch()</code>-Funktion, die in Abhängigkeit vom Datentyp ihrer Variablen leicht unterschiedlich funktioniert. Ist die switch-Variable vom Typ Integer, so wird die <span class="math inline">\(i\)</span>-te Aktion ausgeführt, wie folgendes Beispiel demonstriert:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>x <span class="ot">=</span> <span class="dv">2</span>               <span class="co"># switch Variable</span></span>
-<span id="cb23-2"><a href="#cb23-2"></a><span class="cf">switch</span>(x,           <span class="co"># x = 2</span></span>
-<span id="cb23-3"><a href="#cb23-3"></a><span class="fu">print</span>(<span class="st">"Aktion 1"</span>),  <span class="co"># 1. Aktion</span></span>
-<span id="cb23-4"><a href="#cb23-4"></a><span class="fu">print</span>(<span class="st">"Aktion 2"</span>),  <span class="co"># 2. Aktion</span></span>
-<span id="cb23-5"><a href="#cb23-5"></a><span class="fu">print</span>(<span class="st">"Aktion 3"</span>),  <span class="co"># 3. Aktion</span></span>
-<span id="cb23-6"><a href="#cb23-6"></a><span class="fu">print</span>(<span class="st">"Aktion 4"</span>))  <span class="co"># 4. Aktion</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-label="1"></a>x <span class="ot">=</span> <span class="dv">2</span>                                       <span class="co"># switch-Variable</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-label="2"></a><span class="cf">switch</span>(x,                                   <span class="co"># x = 2</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-label="3"></a><span class="fu">print</span>(<span class="st">"Aktion 1"</span>),                          <span class="co"># 1. Aktion</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-label="4"></a><span class="fu">print</span>(<span class="st">"Aktion 2"</span>),                          <span class="co"># 2. Aktion</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-label="5"></a><span class="fu">print</span>(<span class="st">"Aktion 3"</span>),                          <span class="co"># 3. Aktion</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-label="6"></a><span class="fu">print</span>(<span class="st">"Aktion 4"</span>))                          <span class="co"># 4. Aktion</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Aktion 2"</code></pre>
 </div>
 </div>
 <p>Ist die switch-Variable dagegen vom Typ character, so wird die Aktion mit dem entsprechenden Namen ausgeführt:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>x <span class="ot">=</span> <span class="st">"a"</span>                 <span class="co"># switch Variable</span></span>
-<span id="cb25-2"><a href="#cb25-2"></a><span class="cf">switch</span>(x,               <span class="co"># x = "a"</span></span>
-<span id="cb25-3"><a href="#cb25-3"></a><span class="at">a =</span> <span class="fu">print</span>(<span class="st">"Aktion a"</span>),  <span class="co"># a Aktion</span></span>
-<span id="cb25-4"><a href="#cb25-4"></a><span class="at">b =</span> <span class="fu">print</span>(<span class="st">"Aktion b"</span>),  <span class="co"># b Aktion</span></span>
-<span id="cb25-5"><a href="#cb25-5"></a><span class="at">c =</span> <span class="fu">print</span>(<span class="st">"Aktion c"</span>),  <span class="co"># c Aktion</span></span>
-<span id="cb25-6"><a href="#cb25-6"></a><span class="at">d =</span> <span class="fu">print</span>(<span class="st">"Aktion d"</span>))  <span class="co"># d Aktion</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-label="1"></a>x <span class="ot">=</span> <span class="st">"a"</span>                                     <span class="co"># switch-Variable</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-label="2"></a><span class="cf">switch</span>(x,                                   <span class="co"># x = "a"</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-label="3"></a><span class="at">a =</span> <span class="fu">print</span>(<span class="st">"Aktion a"</span>),                      <span class="co"># a Aktion</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-label="4"></a><span class="at">b =</span> <span class="fu">print</span>(<span class="st">"Aktion b"</span>),                      <span class="co"># b Aktion</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-label="5"></a><span class="at">c =</span> <span class="fu">print</span>(<span class="st">"Aktion c"</span>),                      <span class="co"># c Aktion</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-label="6"></a><span class="at">d =</span> <span class="fu">print</span>(<span class="st">"Aktion d"</span>))                      <span class="co"># d Aktion</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Aktion a"</code></pre>
 </div>
 </div>
-<p>Generell lässt sich zu if- und switch-statements festhalten, dass sich jedes if-statement äquivalent als switch-statement formulieren lässt und andersherum. If-statements sind dabei in der Anwendung sicherlich häufiger anzutreffen als switch-statements. Generell macht es für das menschliche Codeverständnis Sinn, if-else-statements nicht zu komplex zu formulieren. Ist dies allerdings nötig, so können komplexe if-else-statements durch switch-statements vereinfacht werden.</p>
+<p>Generell lässt sich zu if- und switch-Statements festhalten, dass sich jedes if-Statement äquivalent als switch-Statement formulieren lässt und andersherum. If-Statements sind dabei in der Anwendung sicherlich häufiger anzutreffen als switch-Statements. Generell macht es für das menschliche Codeverständnis Sinn, if-else-Statements nicht zu komplex zu formulieren. Ist dies allerdings nötig, so können komplexe if-else-Statements durch switch-Statements vereinfacht werden.</p>
 </section>
 </section>
 <section id="sec-iterative-kontrollstrukturen" class="level2" data-number="18.2">
 <h2 data-number="18.2" class="anchored" data-anchor-id="sec-iterative-kontrollstrukturen"><span class="header-section-number">18.2</span> Iterative Kontrollstrukturen</h2>
-<p>Iterative Kontrollstrukturen dienen dazu, bestimmte Befehle wiederholt auszuführen. Die grundlegende iterative Kontrollstruktur in <strong>R</strong> ist die <code>for</code>-Schleife. Diese hat die generelle Form</p>
+<p>Iterative Kontrollstrukturen dienen dazu, bestimmte Befehle wiederholt auszuführen. Die grundlegende iterative Kontrollstruktur in <strong>R</strong> ist die <code>for</code>-Schleife. Diese hat die generelle Form:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="cf">for</span> (item <span class="cf">in</span> vector){</span>
-<span id="cb27-2"><a href="#cb27-2"></a>  perform_action</span>
-<span id="cb27-3"><a href="#cb27-3"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-label="1"></a><span class="cf">for</span> (item <span class="cf">in</span> vector){</span>
+<span id="cb27-2"><a href="#cb27-2" aria-label="2"></a>  perform_action</span>
+<span id="cb27-3"><a href="#cb27-3" aria-label="3"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Dabei wird der Befehl <code>perform_action</code> für jedes <code>item</code> in <code>vector</code> einmal ausgeführt und der Wert von <code>item</code> jeweils aktualisiert. Folgendes Beispiel soll dies verdeutlichen:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>){</span>
-<span id="cb28-2"><a href="#cb28-2"></a>  <span class="fu">print</span>(i)</span>
-<span id="cb28-3"><a href="#cb28-3"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-label="1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>){</span>
+<span id="cb28-2"><a href="#cb28-2" aria-label="2"></a>  <span class="fu">print</span>(i)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-label="3"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1
 [1] 2
@@ -809,9 +812,9 @@ Tabelle&nbsp;18.1: Relationsoperatoren in <strong>R</strong>
 </div>
 <p>Der Vektor besteht hier aus <code>1:3 = [1,2,3]</code>, der ausgeführte Befehl ist <code>print(i)</code> und die <code>items</code> sind die Einträge des Vektors. Allerdings muss der Befehl innerhalb der <code>for</code>-Schleife nicht zwangsläufig auf die <code>items</code> Bezug nehmen, wie folgendes Beispiel zeigt:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>){</span>
-<span id="cb30-2"><a href="#cb30-2"></a>  <span class="fu">print</span>(<span class="st">'a'</span>)</span>
-<span id="cb30-3"><a href="#cb30-3"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-label="1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>){</span>
+<span id="cb30-2"><a href="#cb30-2" aria-label="2"></a>  <span class="fu">print</span>(<span class="st">'a'</span>)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-label="3"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "a"
 [1] "a"
@@ -820,47 +823,47 @@ Tabelle&nbsp;18.1: Relationsoperatoren in <strong>R</strong>
 </div>
 <p>Hier wird dreimal der konstante Wert <code>a</code> ausgegeben. Typischerweise wird innerhalb einer <code>for</code>-Schleife etwas erzeugt und gespeichert. Dabei sollte generell die entsprechende Speicherstruktur vorallokiert werden, da dann der entsprechende Platz im Arbeitsspeicher schon bereitgestellt ist und nicht während der Ausführung der <code>for</code>-Schleife bereitgestellt werden muss. Der Effizienzgewinn dieser Strategie mag in den meisten Fällen vernachlässigbar sein, allerdings erlaubt dieses Vorgehen auch insbesondere, Fehler leichter zu detektieren, wenn es beispielsweise Dimensionserwartungsunterschiede oder fehlende Einträge gibt, die dann schon als <code>NaN</code> alloziert sind. Folgendes Beispiel demonstriert das iterative Auffüllen eines Vektors mit Mittelwerten.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a>ns    <span class="ot">=</span> <span class="dv">3</span>                <span class="co"># Anzahl an Simulationen</span></span>
-<span id="cb32-2"><a href="#cb32-2"></a>X_bar <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>, ns)     <span class="co"># Speicherstruktur</span></span>
-<span id="cb32-3"><a href="#cb32-3"></a></span>
-<span id="cb32-4"><a href="#cb32-4"></a><span class="co"># Simulationsiterationen</span></span>
-<span id="cb32-5"><a href="#cb32-5"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>ns){          <span class="co"># Iterationsindices sind typischerweise i,j,k</span></span>
-<span id="cb32-6"><a href="#cb32-6"></a>  X         <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">12</span>)  <span class="co"># Realisierung von 12 Z-Variablen</span></span>
-<span id="cb32-7"><a href="#cb32-7"></a>  X_bar[i]  <span class="ot">=</span> <span class="fu">mean</span>(X)    <span class="co"># Mittelwert der i-ten Realisierung</span></span>
-<span id="cb32-8"><a href="#cb32-8"></a>  <span class="fu">print</span>(X_bar)           <span class="co"># Anzeige zur Demonstration</span></span>
-<span id="cb32-9"><a href="#cb32-9"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-label="1"></a>nsim  <span class="ot">=</span> <span class="dv">3</span>                                   <span class="co"># Anzahl an Simulationen</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-label="2"></a>X_bar <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>, nsim)                      <span class="co"># Speicherstruktur</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-label="3"></a></span>
+<span id="cb32-4"><a href="#cb32-4" aria-label="4"></a><span class="co"># Simulationsiterationen</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-label="5"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nsim){                           <span class="co"># Übliche Iterationsindizes: i, j, k</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-label="6"></a>  X         <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">12</span>)                     <span class="co"># Realisierung von 12 Z-Variablen</span></span>
+<span id="cb32-7"><a href="#cb32-7" aria-label="7"></a>  X_bar[i]  <span class="ot">=</span> <span class="fu">mean</span>(X)                       <span class="co"># Mittelwert der i-ten Realisierung</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-label="8"></a>  <span class="fu">print</span>(X_bar)                              <span class="co"># Anzeige zur Demonstration</span></span>
+<span id="cb32-9"><a href="#cb32-9" aria-label="9"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] -0.3518089        NaN        NaN
-[1] -0.35180893  0.05747917         NaN
-[1] -0.35180893  0.05747917 -0.11667359</code></pre>
+<pre><code>[1] 0.2472273       NaN       NaN
+[1] 0.2472273 0.3807774       NaN
+[1]  0.2472273  0.3807774 -0.1144678</code></pre>
 </div>
 </div>
-<p>Um linear entlang eines Vektors mit variablen Einträgen zu iterieren, bietet sich die Funktion <code>seq_along()</code> an. Diese erzeugt die linearen Indizes <code>1</code>,<code>2</code>, <code>3</code>, … bis zur Länge des betreffenden Vektors, wie folgendes Beispiel demonstriert:</p>
+<p>Um linear entlang eines Vektors mit variablen Einträgen zu iterieren, bietet sich die Funktion <code>seq_along()</code> an. Diese erzeugt die linearen Indizes <code>1</code>, <code>2</code>, <code>3</code>, … bis zur Länge des betreffenden Vektors, wie folgendes Beispiel demonstriert:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a>mu    <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">5</span>,<span class="dv">50</span>)                  <span class="co"># Drei Erwartungswertparameter</span></span>
-<span id="cb34-2"><a href="#cb34-2"></a>X_bar <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>, ns)               <span class="co"># Speicherstruktur</span></span>
-<span id="cb34-3"><a href="#cb34-3"></a></span>
-<span id="cb34-4"><a href="#cb34-4"></a><span class="co"># Simulationsiterationen</span></span>
-<span id="cb34-5"><a href="#cb34-5"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq_along</span>(mu)){           <span class="co"># Iterationsindices sind typischerweise i,j,k</span></span>
-<span id="cb34-6"><a href="#cb34-6"></a>  X         <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">12</span>, mu[i], <span class="dv">1</span>)  <span class="co"># Realisierung von 12 N(\mu,1)-Variablen</span></span>
-<span id="cb34-7"><a href="#cb34-7"></a>  X_bar[i]  <span class="ot">=</span> <span class="fu">mean</span>(X)              <span class="co"># Mittelwert der i-ten Realisierung</span></span>
-<span id="cb34-8"><a href="#cb34-8"></a>  <span class="fu">print</span>(X_bar)                     <span class="co"># Anzeige zur Demonstration</span></span>
-<span id="cb34-9"><a href="#cb34-9"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-label="1"></a>mu    <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">5</span>,<span class="dv">50</span>)                           <span class="co"># Drei Erwartungswertparameter</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-label="2"></a>X_bar <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>, nsim)                      <span class="co"># Speicherstruktur</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-label="3"></a></span>
+<span id="cb34-4"><a href="#cb34-4" aria-label="4"></a><span class="co"># Simulationsiterationen</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-label="5"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq_along</span>(mu)){                    <span class="co"># Übliche Iterationsindizes: i, j, k</span></span>
+<span id="cb34-6"><a href="#cb34-6" aria-label="6"></a>  X         <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">12</span>, mu[i], <span class="dv">1</span>)           <span class="co"># 12 normalverteilte Werte: N(mu, 1)</span></span>
+<span id="cb34-7"><a href="#cb34-7" aria-label="7"></a>  X_bar[i]  <span class="ot">=</span> <span class="fu">mean</span>(X)                       <span class="co"># Mittelwert der i-ten Realisierung</span></span>
+<span id="cb34-8"><a href="#cb34-8" aria-label="8"></a>  <span class="fu">print</span>(X_bar)                              <span class="co"># Anzeige zur Demonstration</span></span>
+<span id="cb34-9"><a href="#cb34-9" aria-label="9"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] -0.3584567        NaN        NaN
-[1] -0.3584567  4.9631824        NaN
-[1] -0.3584567  4.9631824 49.9057668</code></pre>
+<pre><code>[1] -0.2331502        NaN        NaN
+[1] -0.2331502  5.0598171        NaN
+[1] -0.2331502  5.0598171 49.9575119</code></pre>
 </div>
 </div>
-<p><code>for</code>-Schleifen können auch geschachtelt werden, also innerhalb von <code>for</code>-Schleifen weitere <code>for</code>-Schleifen ausgeführt werden. Dies mag etwas gewöhnungsbedürftig sein. Entscheidend ist dabei, dass man sich klarmacht, dass für <em>jede</em> Iteration der äußeren Schleife <em>alle</em> Iterationen der inneren Schleife durchlaufen werden. Es ist oft hilfreich, sich die generelle Logik einer geschachtelten Schleifenstruktur zunächst mithilfe von <code>print()</code>-statements klarzumachen, wie folgendes Beispiel demonstriert:</p>
+<p><code>for</code>-Schleifen können auch geschachtelt werden. Das heißt, innerhalb von <code>for</code>-Schleifen können weitere <code>for</code>-Schleifen ausgeführt werden. Dies mag etwas gewöhnungsbedürftig sein. Entscheidend ist dabei, dass man sich klarmacht, dass für <em>jede</em> Iteration der äußeren Schleife <em>alle</em> Iterationen der inneren Schleife durchlaufen werden. Es ist oft hilfreich, sich die generelle Logik einer geschachtelten Schleifenstruktur zunächst mithilfe von <code>print()</code>-Statements klarzumachen, wie folgendes Beispiel demonstriert:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a>n_i <span class="ot">=</span> <span class="dv">2</span>              <span class="co"># Anzahl der Iterationen äußere Schleife</span></span>
-<span id="cb36-2"><a href="#cb36-2"></a>n_j <span class="ot">=</span> <span class="dv">3</span>              <span class="co"># Anzahl der Iterationen innere Schleife</span></span>
-<span id="cb36-3"><a href="#cb36-3"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_i){     <span class="co"># Äußere Schleife</span></span>
-<span id="cb36-4"><a href="#cb36-4"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_j){  <span class="co"># Innere Schleife</span></span>
-<span id="cb36-5"><a href="#cb36-5"></a>    <span class="fu">print</span>(<span class="fu">c</span>(i,j))    <span class="co"># Anzeigen der Iterationsindizes [i,j]</span></span>
-<span id="cb36-6"><a href="#cb36-6"></a>    }</span>
-<span id="cb36-7"><a href="#cb36-7"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-label="1"></a>n_i <span class="ot">=</span> <span class="dv">2</span>                                     <span class="co"># Iterationsanzahl der äußeren Schleife</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-label="2"></a>n_j <span class="ot">=</span> <span class="dv">3</span>                                     <span class="co"># Iterationsanzahl der inneren Schleife</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-label="3"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_i){                            <span class="co"># Äußere Schleife</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-label="4"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_j){                         <span class="co"># Innere Schleife</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-label="5"></a>    <span class="fu">print</span>(<span class="fu">c</span>(i,j))                           <span class="co"># Anzeigen der Iterationsindizes [i,j]</span></span>
+<span id="cb36-6"><a href="#cb36-6" aria-label="6"></a>    }</span>
+<span id="cb36-7"><a href="#cb36-7" aria-label="7"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1 1
 [1] 1 2
@@ -870,7 +873,7 @@ Tabelle&nbsp;18.1: Relationsoperatoren in <strong>R</strong>
 [1] 2 3</code></pre>
 </div>
 </div>
-<p>Folgendes Beispiel etwa erzeugt eine 4 x 5 Matrix, der Elemente den jeweiligen Spaltenindizes entsprechen. Dabei bedient die innere <code>for</code>-Schleife mit der Iteratorvariable <code>j</code> die Spaltenindizes und die äußere <code>for</code>-Schleife mit der Iteratorvariable <code>i</code> bedient die Zeilenindizes:</p>
+<p>Folgendes Beispiel etwa erzeugt eine 4 x 5-Matrix, deren Elemente den jeweiligen Spaltenindizes entsprechen. Dabei bedient die innere <code>for</code>-Schleife mit der Iteratorvariable <code>j</code> die Spaltenindizes und die äußere <code>for</code>-Schleife mit der Iteratorvariable <code>i</code> bedient die Zeilenindizes:</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2] [,3] [,4] [,5]
@@ -880,7 +883,7 @@ Tabelle&nbsp;18.1: Relationsoperatoren in <strong>R</strong>
 [4,]    1    2    3    4    5</code></pre>
 </div>
 </div>
-<p>Analog erzeugt folgendes Beispiel eine 4 x 5 Matrix, deren Elemente den jeweiligen Zeilenindizes entsprechen. Dabei bedient die innere <code>for</code>-Schleife mit der Iteratorvariable <code>j</code> wiederum die Spaltenindizes und die äußere <code>for</code>-Schleife mit der Iteratorvariable <code>i</code> bedient die Zeilenindizes:</p>
+<p>Analog erzeugt folgendes Beispiel eine 4 x 5-Matrix, deren Elemente den jeweiligen Zeilenindizes entsprechen. Dabei bedient die innere <code>for</code>-Schleife mit der Iteratorvariable <code>j</code> wiederum die Spaltenindizes und die äußere <code>for</code>-Schleife mit der Iteratorvariable <code>i</code> bedient die Zeilenindizes:</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2] [,3] [,4] [,5]
@@ -890,7 +893,7 @@ Tabelle&nbsp;18.1: Relationsoperatoren in <strong>R</strong>
 [4,]    4    4    4    4    4</code></pre>
 </div>
 </div>
-<p>In folgendem Beispiel schließlich wird mithilfe zweier geschachtelter <code>for</code>-Schleifen und eines <code>if</code>-statements eine 4 x 5 Matrix, deren Elemente gleich den Spaltenindizes sind, wenn der jeweilige Spaltenindex größer oder gleich dem Zeilenindex ist, und deren Elemente ansonsten Null sind erzeugt:</p>
+<p>In folgendem Beispiel schließlich wird mithilfe zweier geschachtelter <code>for</code>-Schleifen und eines <code>if</code>-Statements eine 4 x 5-Matrix, deren Elemente gleich den Spaltenindizes sind, wenn der jeweilige Spaltenindex größer oder gleich dem Zeilenindex ist, und deren Elemente ansonsten null sind, erzeugt:</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2] [,3] [,4] [,5]
@@ -907,121 +910,227 @@ Tabelle&nbsp;18.1: Relationsoperatoren in <strong>R</strong>
 Cotton, R. (2013). <em>Learning <span>R</span></em> (First Edition). O’Reilly.
 </div>
 <div id="ref-wickham2019" class="csl-entry" role="listitem">
-Wickham, H. (2019). <em>Advanced <span>R</span>, <span>Second Edition</span></em>. CRC Press.
+Wickham, H., Averick, M., Bryan, J., Chang, W., McGowan, L., François, R., Grolemund, G., Hayes, A., Henry, L., Hester, J., Kuhn, M., Pedersen, T., Miller, E., Bache, S., Müller, K., Ooms, J., Robinson, D., Seidel, D., Spinu, V., … Yutani, H. (2019). Welcome to the <span>Tidyverse</span>. <em>Journal of Open Source Software</em>, <em>4</em>(43), 1686. <a href="https://doi.org/10.21105/joss.01686">https://doi.org/10.21105/joss.01686</a>
 </div>
 </div>
 </section>
 
 </main> <!-- /main -->
 <script>
-(function () {
-  var base = "https://dirk-ostwald.github.io";
-  var pageMap = {
-    "/": "/en/",
-    "/index.html": "/en/",
-    "/Referenzen.html": "/en/References.html",
-    "/_part_1/100-Mathematische-Grundlagen.html": "/en/_part_1/100-Mathematical-Foundations.html",
-    "/_part_1/101-Sprache-und-Logik.html": "/en/_part_1/101-Language-and-Logic.html",
-    "/_part_1/102-Mengen.html": "/en/_part_1/102-Sets.html",
-    "/_part_1/103-Summen-Produkte-Potenzen.html": "/en/_part_1/103-Sums-Products-Powers.html",
-    "/_part_1/104-Funktionen.html": "/en/_part_1/104-Functions.html",
-    "/_part_1/105-Folgen-Grenzwerte-Stetigkeit.html": "/en/_part_1/105-Sequences-Limits-Continuity.html",
-    "/_part_1/106-Differenzialrechnung.html": "/en/_part_1/106-Differential-Calculus.html",
-    "/_part_1/107-Integralrechnung.html": "/en/_part_1/107-Integral-Calculus.html",
-    "/_part_1/108-Vektoren.html": "/en/_part_1/108-Vectors.html",
-    "/_part_1/109-Matrizen.html": "/en/_part_1/109-Matrices.html",
-    "/_part_1/110-Deskriptivstatistiken.html": "/en/_part_1/110-Descriptive-Statistics.html",
-    "/_part_2/200-Imperative-Programmierung.html": "/en/_part_2/200-Imperative-Programming.html",
-    "/_part_2/201-Informatische-Grundbegriffe.html": "/en/_part_2/201-Basic-Concepts-of-Computer-Science.html",
-    "/_part_2/202-Arithmetik-und-Variablen.html": "/en/_part_2/202-Arithmetic-and-Variables.html",
-    "/_part_2/203-Datenstrukturen.html": "/en/_part_2/203-Data-Structures.html",
-    "/_part_2/204-Vektoren.html": "/en/_part_2/204-Vectors.html",
-    "/_part_2/205-Matrizen-und-Arrays.html": "/en/_part_2/205-Matrices-and-Arrays.html",
-    "/_part_2/206-Listen-Dataframes-und-Tibbles.html": "/en/_part_2/206-Lists-Dataframes-and-Tibbles.html",
-    "/_part_2/207-Datenmanagement.html": "/en/_part_2/207-Data-Management.html",
-    "/_part_2/208-Kontrollstrukturen.html": "/en/_part_2/208-Control-Structures.html",
-    "/_part_3/300-Wahrscheinlichkeitstheorie.html": "/en/_part_3/300-Probability-Theory.html",
-    "/_part_3/301-Wahrscheinlichkeitsräume.html": "/en/_part_3/301-Probability-Spaces.html",
-    "/_part_3/302-Elementare-Wahrscheinlichkeiten.html": "/en/_part_3/302-Elementary-Probabilities.html",
-    "/_part_3/303-Zufallsvariablen.html": "/en/_part_3/303-Random-Variables.html",
-    "/_part_3/304-Zufallsvektoren.html": "/en/_part_3/304-Random-Vectors.html",
-    "/_part_3/305-Erwartungswerte.html": "/en/_part_3/305-Expectations.html",
-    "/_part_3/306-Varianzen.html": "/en/_part_3/306-Variances.html",
-    "/_part_3/307-Kovarianzen.html": "/en/_part_3/307-Covariances.html",
-    "/_part_3/308-Ungleichungen.html": "/en/_part_3/308-Inequalities.html",
-    "/_part_3/309-Grenzwerte.html": "/en/_part_3/309-Limits.html",
-    "/_part_3/310-Transformationen.html": "/en/_part_3/310-Transformations.html",
-    "/_part_3/311-Normalverteilungen.html": "/en/_part_3/311-Normal-Distributions.html",
-    "/_part_4/400-Inferenz.html": "/en/_part_4/400-Inference.html",
-    "/_part_4/401-Frequentistische-Inferenz.html": "/en/_part_4/401-Frequentist-Inference.html",
-    "/_part_4/402-Punktschätzung.html": "/en/_part_4/402-Point-Estimation.html",
-    "/_part_4/403-Konfidenzintervalle.html": "/en/_part_4/403-Confidence-Intervals.html",
-    "/_part_4/404-Hypothesentests.html": "/en/_part_4/404-Hypothesis-Tests.html",
-    "/_part_5/500-Allgemeines-Lineares-Modell.html": "/en/_part_5/500-General-Linear-Model.html",
-    "/_part_5/501-Regression.html": "/en/_part_5/501-Regression.html",
-    "/_part_5/502-Korrelation.html": "/en/_part_5/502-Correlation.html",
-    "/_part_5/503-Modellformulierung.html": "/en/_part_5/503-Model-Formulation.html",
-    "/_part_5/504-Parameterschätzung.html": "/en/_part_5/504-Parameter-Estimation.html",
-    "/_part_5/505-T-Statistiken.html": "/en/_part_5/505-T-Statistics.html",
-    "/_part_5/506-F-Statistiken.html": "/en/_part_5/506-F-Statistics.html",
-    "/_part_5/507-T-Tests.html": "/en/_part_5/507-T-Tests.html",
-    "/_part_5/508-Einfaktorielle-Varianzanalyse.html": "/en/_part_5/508-One-Way-Analysis-of-Variance.html",
-    "/_part_5/509-Zweifaktorielle-Varianzanalyse.html": "/en/_part_5/509-Two-Way-Analysis-of-Variance.html",
-    "/_part_5/510-Partielle-Korrelation.html": "/en/_part_5/510-Partial-Correlation.html",
-    "/_part_5/511-Multiple-Regression.html": "/en/_part_5/511-Multiple-Regression.html"
-  };
-  var reversePageMap = {};
-  Object.keys(pageMap).forEach(function (key) {
-    reversePageMap[pageMap[key]] = key;
-  });
-  function headings() {
-    return Array.prototype.slice.call(document.querySelectorAll("main.content h1[id], main.content h2[id], main.content h3[id], main.content h4[id]"));
-  }
-  function currentHeadingIndex() {
-    var hash = window.location.hash;
-    if (!hash) return "";
-    var id = hash.slice(1);
-    try {
-      id = decodeURIComponent(id);
-    } catch (error) {}
-    var list = headings();
-    for (var i = 0; i < list.length; i++) {
-      if (list[i].id === id) return String(i);
-    }
-    return "";
-  }
-  function scrollToHeadingIndex() {
-    var params = new URLSearchParams(window.location.search);
-    var value = params.get("h");
-    if (value === null) return;
-    var index = Number(value);
-    var list = headings();
-    if (Number.isInteger(index) && index >= 0 && index < list.length) {
-      list[index].scrollIntoView();
-      if (history.replaceState) {
-        history.replaceState(null, "", window.location.pathname + "#" + list[index].id);
-      }
-    }
-  }
-  var path = window.location.pathname;
-  var target = pageMap[path] || reversePageMap[path];
-  if (target) {
-    document.querySelectorAll("a.nav-link").forEach(function (link) {
-      var text = link.textContent.trim();
-      if (text === "English" || text === "Deutsch") {
-        var index = currentHeadingIndex();
-        link.href = base + target + (index ? "?h=" + index : "");
-      }
-    });
-  }
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", scrollToHeadingIndex);
-  } else {
-    scrollToHeadingIndex();
-  }
-}());
-</script>
 
+(function () {
+
+  var base = "https://dirk-ostwald.github.io";
+
+  var pageMap = {
+
+    "/": "/en/",
+
+    "/index.html": "/en/",
+
+    "/Referenzen.html": "/en/References.html",
+
+    "/_part_1/100-Mathematische-Grundlagen.html": "/en/_part_1/100-Mathematical-Foundations.html",
+
+    "/_part_1/101-Sprache-und-Logik.html": "/en/_part_1/101-Language-and-Logic.html",
+
+    "/_part_1/102-Mengen.html": "/en/_part_1/102-Sets.html",
+
+    "/_part_1/103-Summen-Produkte-Potenzen.html": "/en/_part_1/103-Sums-Products-Powers.html",
+
+    "/_part_1/104-Funktionen.html": "/en/_part_1/104-Functions.html",
+
+    "/_part_1/105-Folgen-Grenzwerte-Stetigkeit.html": "/en/_part_1/105-Sequences-Limits-Continuity.html",
+
+    "/_part_1/106-Differenzialrechnung.html": "/en/_part_1/106-Differential-Calculus.html",
+
+    "/_part_1/107-Integralrechnung.html": "/en/_part_1/107-Integral-Calculus.html",
+
+    "/_part_1/108-Vektoren.html": "/en/_part_1/108-Vectors.html",
+
+    "/_part_1/109-Matrizen.html": "/en/_part_1/109-Matrices.html",
+
+    "/_part_1/110-Deskriptivstatistiken.html": "/en/_part_1/110-Descriptive-Statistics.html",
+
+    "/_part_2/200-Imperative-Programmierung.html": "/en/_part_2/200-Imperative-Programming.html",
+
+    "/_part_2/201-Informatische-Grundbegriffe.html": "/en/_part_2/201-Basic-Concepts-of-Computer-Science.html",
+
+    "/_part_2/202-Arithmetik-und-Variablen.html": "/en/_part_2/202-Arithmetic-and-Variables.html",
+
+    "/_part_2/203-Datenstrukturen.html": "/en/_part_2/203-Data-Structures.html",
+
+    "/_part_2/204-Vektoren.html": "/en/_part_2/204-Vectors.html",
+
+    "/_part_2/205-Matrizen-und-Arrays.html": "/en/_part_2/205-Matrices-and-Arrays.html",
+
+    "/_part_2/206-Listen-Dataframes-und-Tibbles.html": "/en/_part_2/206-Lists-Dataframes-and-Tibbles.html",
+
+    "/_part_2/207-Datenmanagement.html": "/en/_part_2/207-Data-Management.html",
+
+    "/_part_2/208-Kontrollstrukturen.html": "/en/_part_2/208-Control-Structures.html",
+
+    "/_part_3/300-Wahrscheinlichkeitstheorie.html": "/en/_part_3/300-Probability-Theory.html",
+
+    "/_part_3/301-Wahrscheinlichkeitsräume.html": "/en/_part_3/301-Probability-Spaces.html",
+
+    "/_part_3/302-Elementare-Wahrscheinlichkeiten.html": "/en/_part_3/302-Elementary-Probabilities.html",
+
+    "/_part_3/303-Zufallsvariablen.html": "/en/_part_3/303-Random-Variables.html",
+
+    "/_part_3/304-Zufallsvektoren.html": "/en/_part_3/304-Random-Vectors.html",
+
+    "/_part_3/305-Erwartungswerte.html": "/en/_part_3/305-Expectations.html",
+
+    "/_part_3/306-Varianzen.html": "/en/_part_3/306-Variances.html",
+
+    "/_part_3/307-Kovarianzen.html": "/en/_part_3/307-Covariances.html",
+
+    "/_part_3/308-Ungleichungen.html": "/en/_part_3/308-Inequalities.html",
+
+    "/_part_3/309-Grenzwerte.html": "/en/_part_3/309-Limits.html",
+
+    "/_part_3/310-Transformationen.html": "/en/_part_3/310-Transformations.html",
+
+    "/_part_3/311-Normalverteilungen.html": "/en/_part_3/311-Normal-Distributions.html",
+
+    "/_part_4/400-Inferenz.html": "/en/_part_4/400-Inference.html",
+
+    "/_part_4/401-Frequentistische-Inferenz.html": "/en/_part_4/401-Frequentist-Inference.html",
+
+    "/_part_4/402-Punktschätzung.html": "/en/_part_4/402-Point-Estimation.html",
+
+    "/_part_4/403-Konfidenzintervalle.html": "/en/_part_4/403-Confidence-Intervals.html",
+
+    "/_part_4/404-Hypothesentests.html": "/en/_part_4/404-Hypothesis-Tests.html",
+
+    "/_part_5/500-Allgemeines-Lineares-Modell.html": "/en/_part_5/500-General-Linear-Model.html",
+
+    "/_part_5/501-Regression.html": "/en/_part_5/501-Regression.html",
+
+    "/_part_5/502-Korrelation.html": "/en/_part_5/502-Correlation.html",
+
+    "/_part_5/503-Modellformulierung.html": "/en/_part_5/503-Model-Formulation.html",
+
+    "/_part_5/504-Parameterschätzung.html": "/en/_part_5/504-Parameter-Estimation.html",
+
+    "/_part_5/505-T-Statistiken.html": "/en/_part_5/505-T-Statistics.html",
+
+    "/_part_5/506-F-Statistiken.html": "/en/_part_5/506-F-Statistics.html",
+
+    "/_part_5/507-T-Tests.html": "/en/_part_5/507-T-Tests.html",
+
+    "/_part_5/508-Einfaktorielle-Varianzanalyse.html": "/en/_part_5/508-One-Way-Analysis-of-Variance.html",
+
+    "/_part_5/509-Zweifaktorielle-Varianzanalyse.html": "/en/_part_5/509-Two-Way-Analysis-of-Variance.html",
+
+    "/_part_5/510-Partielle-Korrelation.html": "/en/_part_5/510-Partial-Correlation.html",
+
+    "/_part_5/511-Multiple-Regression.html": "/en/_part_5/511-Multiple-Regression.html"
+
+  };
+
+  var reversePageMap = {};
+
+  Object.keys(pageMap).forEach(function (key) {
+
+    reversePageMap[pageMap[key]] = key;
+
+  });
+
+  function headings() {
+
+    return Array.prototype.slice.call(document.querySelectorAll("main.content h1[id], main.content h2[id], main.content h3[id], main.content h4[id]"));
+
+  }
+
+  function currentHeadingIndex() {
+
+    var hash = window.location.hash;
+
+    if (!hash) return "";
+
+    var id = hash.slice(1);
+
+    try {
+
+      id = decodeURIComponent(id);
+
+    } catch (error) {}
+
+    var list = headings();
+
+    for (var i = 0; i < list.length; i++) {
+
+      if (list[i].id === id) return String(i);
+
+    }
+
+    return "";
+
+  }
+
+  function scrollToHeadingIndex() {
+
+    var params = new URLSearchParams(window.location.search);
+
+    var value = params.get("h");
+
+    if (value === null) return;
+
+    var index = Number(value);
+
+    var list = headings();
+
+    if (Number.isInteger(index) && index >= 0 && index < list.length) {
+
+      list[index].scrollIntoView();
+
+      if (history.replaceState) {
+
+        history.replaceState(null, "", window.location.pathname + "#" + list[index].id);
+
+      }
+
+    }
+
+  }
+
+  var path = window.location.pathname;
+
+  var target = pageMap[path] || reversePageMap[path];
+
+  if (target) {
+
+    document.querySelectorAll("a.nav-link").forEach(function (link) {
+
+      var text = link.textContent.trim();
+
+      if (text === "English" || text === "Deutsch") {
+
+        var index = currentHeadingIndex();
+
+        link.href = base + target + (index ? "?h=" + index : "");
+
+      }
+
+    });
+
+  }
+
+  if (document.readyState === "loading") {
+
+    document.addEventListener("DOMContentLoaded", scrollToHeadingIndex);
+
+  } else {
+
+    scrollToHeadingIndex();
+
+  }
+
+}());
+
+</script>
 
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {

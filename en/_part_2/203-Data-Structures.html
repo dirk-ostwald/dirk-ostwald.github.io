@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,10 +12,13 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -96,10 +99,10 @@ div.csl-indent {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-6e8dda235ee8acd82fc3832029714bc4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-35fb2a33bb4c71715ffa083faf67f315.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -570,110 +573,110 @@ div.csl-indent {
 <h2 data-number="13.1" class="anchored" data-anchor-id="sec-data-structures-in-r"><span class="header-section-number">13.1</span> Data structures in <strong>R</strong></h2>
 <p>As a 4GL language, <strong>R</strong> goes beyond the classical data structures of 3GL languages in its data structures. In <strong>R</strong>, first of all, everything is an <em>object</em>. Regardless of whether it is a single value, a vector, a function, or a complex data structure, everything is represented by <strong>R</strong> as an object. In general, the concept of an <em>object</em> denotes the possibility of representing both data and functionality in a single unit of meaning. Here, however, we are primarily interested only in data representation.</p>
 <p>In general, one distinguishes in <strong>R</strong> between <em>atomic</em> objects and <em>recursive</em> objects. <em>Atomic objects</em> consist of components of the same data type. Typical examples are numerical vectors, logical vectors, or character strings. <em>Recursive objects</em>, by contrast, can contain components of different types. These include especially lists and data frames, which make it possible to combine heterogeneous data.</p>
-<p>Every <strong>R</strong> object can be described uniquely by three central properties: its <em>mode</em>, its <em>length</em>, and, optionally, further <em>attributes</em>. The <em>mode</em> of an object specifies the basic data type of an object and is closely related to the <em>type</em> and <em>class</em> of an object, as explained below. In addition to the mode, every object has a <em>length</em>, which indicates how many elements it contains. For a vector, for example, the length is the number of values it contains; for a list, it is the number of its components. In addition, objects in <strong>R</strong> can be provided with additional <em>attributes</em>. Attributes are metadata that provide additional information about the object, such as the names of elements (<code>names</code>), dimensions (<code>dim</code>) for matrices and arrays, or class information (<code>class</code>), which is relevant for object-oriented programming in <strong>R</strong>.</p>
+<p>Every <strong>R</strong> object can be described uniquely by three central properties: its <em>mode</em>, its <em>length</em>, and, optionally, further <em>attributes</em>. The <em>mode</em> of an object specifies the basic data type of an object and is closely related to the <em>type</em> and <em>class</em> of an object, as explained below. In addition to the mode, every object has a <em>length</em>, which indicates how many elements it contains. For a vector, for example, the length is the number of values it contains. For a list, it is the number of its components. In addition, objects in <strong>R</strong> can be provided with additional <em>attributes</em>. Attributes are metadata that provide additional information about the object, such as the names of elements (<code>names</code>), dimensions (<code>dim</code>) for matrices and arrays, or class information (<code>class</code>), which is relevant for object-oriented programming in <strong>R</strong>.</p>
 <p><strong>Mode, type, and class</strong></p>
 <p>The classification of data structures in <strong>R</strong> is somewhat complex, because the concepts of the <em>mode</em>, the <em>type</em>, and the <em>class</em> of an object exist side by side. In practical application, the subtleties of this classification are usually not important, and the mode, type, and class of an object are also often identical.</p>
 <p>Roughly speaking, the <em>mode</em> corresponds to the basic nature of an object and is chosen especially so that there is high compatibility with the data-structure classification system of <strong>S</strong> (<span class="citation" data-cites="becker1988">Becker et al. (<a href="#ref-becker1988" role="doc-biblioref">1988</a>)</span>). Examples of modes are <code>numeric</code>, <code>character</code>, <code>logical</code>, or <code>list</code>. The mode of an object can be retrieved with the function <code>mode()</code>, as the following example shows.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">mode</span>(<span class="dv">42</span>)                            <span class="co"># numeric</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-label="1"></a><span class="fu">mode</span>(<span class="dv">42</span>)                         <span class="co"># numeric</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "numeric"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">mode</span>(<span class="dv">1</span>L)                            <span class="co"># numeric</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-label="1"></a><span class="fu">mode</span>(<span class="dv">1</span>L)                         <span class="co"># numeric</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "numeric"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">mode</span>(<span class="st">"hello"</span>)                       <span class="co"># character</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-label="1"></a><span class="fu">mode</span>(<span class="st">"hello"</span>)                    <span class="co"># character</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "character"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">mode</span>(<span class="cn">TRUE</span>)                          <span class="co"># logical</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-label="1"></a><span class="fu">mode</span>(<span class="cn">TRUE</span>)                       <span class="co"># logical</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "logical"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">mode</span>(<span class="fu">list</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>))                 <span class="co"># list</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-label="1"></a><span class="fu">mode</span>(<span class="fu">list</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>))              <span class="co"># list</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "list"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">mode</span>(<span class="fu">factor</span>(<span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>)))           <span class="co"># r factor =&gt; numeric</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-label="1"></a><span class="fu">mode</span>(<span class="fu">factor</span>(<span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>)))        <span class="co"># R factor =&gt; numeric</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "numeric"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="fu">mode</span>(<span class="fu">Sys.Date</span>())                    <span class="co"># r date =&gt; numeric</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-label="1"></a><span class="fu">mode</span>(<span class="fu">Sys.Date</span>())                 <span class="co"># R date =&gt; numeric</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "numeric"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">mode</span>(<span class="fu">lm</span>(mpg <span class="sc">~</span> wt, <span class="at">data=</span>mtcars))     <span class="co"># r linear model =&gt; list</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-label="1"></a><span class="fu">mode</span>(<span class="fu">lm</span>(mpg <span class="sc">~</span> wt, <span class="at">data=</span>mtcars))  <span class="co"># R linear model =&gt; list</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "list"</code></pre>
 </div>
 </div>
 <p>Somewhat closer to the internal representation of an object in memory, and therefore somewhat more technical in nature, is the <em>type</em> of an <strong>R</strong> object. This becomes particularly clear with respect to objects of mode <code>numeric</code>. Here, the classical 3GL type distinctions <code>integer</code> or <code>double</code> exist. Another example is the mode <em>factor</em>. As we will see later, factors in <strong>R</strong> look to the user like categorical data, often of character type. Their mode, however, is <code>numeric</code> and their type is <code>integer</code>. This is related to the fact that factors in <strong>R</strong> are often used at the user level to specify experimental conditions that usually have meaningful names such as “Treatment” or “Control”, but in data analysis are represented by mathematical matrices with integer entries. The type of an object can be retrieved with the function <code>typeof()</code>, as the following example shows. Note the similarities and differences with the modes of the same objects called above.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">typeof</span>(<span class="dv">42</span>)                          <span class="co"># double</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-label="1"></a><span class="fu">typeof</span>(<span class="dv">42</span>)                         <span class="co"># double</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "double"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="fu">typeof</span>(<span class="dv">1</span>L)                          <span class="co"># integer</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-label="1"></a><span class="fu">typeof</span>(<span class="dv">1</span>L)                         <span class="co"># integer</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "integer"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="fu">typeof</span>(<span class="st">"hello"</span>)                     <span class="co"># character</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-label="1"></a><span class="fu">typeof</span>(<span class="st">"hello"</span>)                    <span class="co"># character</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "character"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="fu">typeof</span>(<span class="cn">TRUE</span>)                        <span class="co"># logical</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-label="1"></a><span class="fu">typeof</span>(<span class="cn">TRUE</span>)                       <span class="co"># logical</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "logical"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="fu">typeof</span>(<span class="fu">list</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>))                 <span class="co"># list</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-label="1"></a><span class="fu">typeof</span>(<span class="fu">list</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>))                <span class="co"># list</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "list"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="fu">typeof</span>(<span class="fu">factor</span>(<span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>)))         <span class="co"># r factor =&gt; integer</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-label="1"></a><span class="fu">typeof</span>(<span class="fu">factor</span>(<span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>)))        <span class="co"># R factor =&gt; integer</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "integer"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="fu">typeof</span>(<span class="fu">Sys.Date</span>())                  <span class="co"># r date =&gt; double</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-label="1"></a><span class="fu">typeof</span>(<span class="fu">Sys.Date</span>())                 <span class="co"># R date =&gt; double</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "double"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a><span class="fu">typeof</span>(<span class="fu">lm</span>(mpg <span class="sc">~</span> wt, <span class="at">data=</span>mtcars))   <span class="co"># r linear model =&gt; list</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-label="1"></a><span class="fu">typeof</span>(<span class="fu">lm</span>(mpg <span class="sc">~</span> wt, <span class="at">data=</span>mtcars))  <span class="co"># R linear model = list</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "list"</code></pre>
 </div>
 </div>
 <p>Finally, the class of an object specifies the kind of object from the perspective of object-oriented programming in <strong>R</strong>. For an object, it is especially relevant how generic functions such as <code>print()</code> or <code>summary()</code> deal with it. In contrast to modes and types, programmers can specify the class of objects themselves and thus develop generic functions that are applicable to many kinds of objects and, despite having the same name, carry out different operations with different objects. The class of an object can be retrieved with the function <code>class()</code>, as the following example shows. Note the similarities and differences with the modes and types of the same objects called above.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="fu">class</span>(<span class="dv">42</span>)                           <span class="co"># numeric</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-label="1"></a><span class="fu">class</span>(<span class="dv">42</span>)                         <span class="co"># numeric</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "numeric"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a><span class="fu">class</span>(<span class="dv">1</span>L)                           <span class="co"># integer</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-label="1"></a><span class="fu">class</span>(<span class="dv">1</span>L)                         <span class="co"># integer</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "integer"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="fu">class</span>(<span class="st">"hello"</span>)                      <span class="co"># character</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-label="1"></a><span class="fu">class</span>(<span class="st">"hello"</span>)                    <span class="co"># character</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "character"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a><span class="fu">class</span>(<span class="cn">TRUE</span>)                         <span class="co"># logical</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-label="1"></a><span class="fu">class</span>(<span class="cn">TRUE</span>)                       <span class="co"># logical</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "logical"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1"></a><span class="fu">class</span>(<span class="fu">list</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>))                  <span class="co"># list</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-label="1"></a><span class="fu">class</span>(<span class="fu">list</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>))                <span class="co"># list</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "list"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1"></a><span class="fu">class</span>(<span class="fu">factor</span>(<span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>)))          <span class="co"># r factor =&gt; "factor"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-label="1"></a><span class="fu">class</span>(<span class="fu">factor</span>(<span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>)))        <span class="co"># R factor =&gt; "factor"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "factor"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1"></a><span class="fu">class</span>(<span class="fu">Sys.Date</span>())                   <span class="co"># r date =&gt; "Date"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-label="1"></a><span class="fu">class</span>(<span class="fu">Sys.Date</span>())                 <span class="co"># R date =&gt; "Date"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Date"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1"></a><span class="fu">class</span>(<span class="fu">lm</span>(mpg <span class="sc">~</span> wt, <span class="at">data=</span>mtcars))    <span class="co"># r linear model =&gt; "lm"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-label="1"></a><span class="fu">class</span>(<span class="fu">lm</span>(mpg <span class="sc">~</span> wt, <span class="at">data=</span>mtcars))  <span class="co"># R linear model =&gt; "lm"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "lm"</code></pre>
 </div>
@@ -690,114 +693,220 @@ Becker, R. A., Chambers, J. M., &amp; Wilks, A. R. (1988). <em>The new <span>S</
 
 </main> <!-- /main -->
 <script>
-(function () {
-  var base = "https://dirk-ostwald.github.io";
-  var pageMap = {
-    "/": "/en/",
-    "/index.html": "/en/",
-    "/Referenzen.html": "/en/References.html",
-    "/_part_1/100-Mathematische-Grundlagen.html": "/en/_part_1/100-Mathematical-Foundations.html",
-    "/_part_1/101-Sprache-und-Logik.html": "/en/_part_1/101-Language-and-Logic.html",
-    "/_part_1/102-Mengen.html": "/en/_part_1/102-Sets.html",
-    "/_part_1/103-Summen-Produkte-Potenzen.html": "/en/_part_1/103-Sums-Products-Powers.html",
-    "/_part_1/104-Funktionen.html": "/en/_part_1/104-Functions.html",
-    "/_part_1/105-Folgen-Grenzwerte-Stetigkeit.html": "/en/_part_1/105-Sequences-Limits-Continuity.html",
-    "/_part_1/106-Differenzialrechnung.html": "/en/_part_1/106-Differential-Calculus.html",
-    "/_part_1/107-Integralrechnung.html": "/en/_part_1/107-Integral-Calculus.html",
-    "/_part_1/108-Vektoren.html": "/en/_part_1/108-Vectors.html",
-    "/_part_1/109-Matrizen.html": "/en/_part_1/109-Matrices.html",
-    "/_part_1/110-Deskriptivstatistiken.html": "/en/_part_1/110-Descriptive-Statistics.html",
-    "/_part_2/200-Imperative-Programmierung.html": "/en/_part_2/200-Imperative-Programming.html",
-    "/_part_2/201-Informatische-Grundbegriffe.html": "/en/_part_2/201-Basic-Concepts-of-Computer-Science.html",
-    "/_part_2/202-Arithmetik-und-Variablen.html": "/en/_part_2/202-Arithmetic-and-Variables.html",
-    "/_part_2/203-Datenstrukturen.html": "/en/_part_2/203-Data-Structures.html",
-    "/_part_2/204-Vektoren.html": "/en/_part_2/204-Vectors.html",
-    "/_part_2/205-Matrizen-und-Arrays.html": "/en/_part_2/205-Matrices-and-Arrays.html",
-    "/_part_2/206-Listen-Dataframes-und-Tibbles.html": "/en/_part_2/206-Lists-Dataframes-and-Tibbles.html",
-    "/_part_2/207-Datenmanagement.html": "/en/_part_2/207-Data-Management.html",
-    "/_part_2/208-Kontrollstrukturen.html": "/en/_part_2/208-Control-Structures.html",
-    "/_part_3/300-Wahrscheinlichkeitstheorie.html": "/en/_part_3/300-Probability-Theory.html",
-    "/_part_3/301-Wahrscheinlichkeitsräume.html": "/en/_part_3/301-Probability-Spaces.html",
-    "/_part_3/302-Elementare-Wahrscheinlichkeiten.html": "/en/_part_3/302-Elementary-Probabilities.html",
-    "/_part_3/303-Zufallsvariablen.html": "/en/_part_3/303-Random-Variables.html",
-    "/_part_3/304-Zufallsvektoren.html": "/en/_part_3/304-Random-Vectors.html",
-    "/_part_3/305-Erwartungswerte.html": "/en/_part_3/305-Expectations.html",
-    "/_part_3/306-Varianzen.html": "/en/_part_3/306-Variances.html",
-    "/_part_3/307-Kovarianzen.html": "/en/_part_3/307-Covariances.html",
-    "/_part_3/308-Ungleichungen.html": "/en/_part_3/308-Inequalities.html",
-    "/_part_3/309-Grenzwerte.html": "/en/_part_3/309-Limits.html",
-    "/_part_3/310-Transformationen.html": "/en/_part_3/310-Transformations.html",
-    "/_part_3/311-Normalverteilungen.html": "/en/_part_3/311-Normal-Distributions.html",
-    "/_part_4/400-Inferenz.html": "/en/_part_4/400-Inference.html",
-    "/_part_4/401-Frequentistische-Inferenz.html": "/en/_part_4/401-Frequentist-Inference.html",
-    "/_part_4/402-Punktschätzung.html": "/en/_part_4/402-Point-Estimation.html",
-    "/_part_4/403-Konfidenzintervalle.html": "/en/_part_4/403-Confidence-Intervals.html",
-    "/_part_4/404-Hypothesentests.html": "/en/_part_4/404-Hypothesis-Tests.html",
-    "/_part_5/500-Allgemeines-Lineares-Modell.html": "/en/_part_5/500-General-Linear-Model.html",
-    "/_part_5/501-Regression.html": "/en/_part_5/501-Regression.html",
-    "/_part_5/502-Korrelation.html": "/en/_part_5/502-Correlation.html",
-    "/_part_5/503-Modellformulierung.html": "/en/_part_5/503-Model-Formulation.html",
-    "/_part_5/504-Parameterschätzung.html": "/en/_part_5/504-Parameter-Estimation.html",
-    "/_part_5/505-T-Statistiken.html": "/en/_part_5/505-T-Statistics.html",
-    "/_part_5/506-F-Statistiken.html": "/en/_part_5/506-F-Statistics.html",
-    "/_part_5/507-T-Tests.html": "/en/_part_5/507-T-Tests.html",
-    "/_part_5/508-Einfaktorielle-Varianzanalyse.html": "/en/_part_5/508-One-Way-Analysis-of-Variance.html",
-    "/_part_5/509-Zweifaktorielle-Varianzanalyse.html": "/en/_part_5/509-Two-Way-Analysis-of-Variance.html",
-    "/_part_5/510-Partielle-Korrelation.html": "/en/_part_5/510-Partial-Correlation.html",
-    "/_part_5/511-Multiple-Regression.html": "/en/_part_5/511-Multiple-Regression.html"
-  };
-  var reversePageMap = {};
-  Object.keys(pageMap).forEach(function (key) {
-    reversePageMap[pageMap[key]] = key;
-  });
-  function headings() {
-    return Array.prototype.slice.call(document.querySelectorAll("main.content h1[id], main.content h2[id], main.content h3[id], main.content h4[id]"));
-  }
-  function currentHeadingIndex() {
-    var hash = window.location.hash;
-    if (!hash) return "";
-    var id = hash.slice(1);
-    try {
-      id = decodeURIComponent(id);
-    } catch (error) {}
-    var list = headings();
-    for (var i = 0; i < list.length; i++) {
-      if (list[i].id === id) return String(i);
-    }
-    return "";
-  }
-  function scrollToHeadingIndex() {
-    var params = new URLSearchParams(window.location.search);
-    var value = params.get("h");
-    if (value === null) return;
-    var index = Number(value);
-    var list = headings();
-    if (Number.isInteger(index) && index >= 0 && index < list.length) {
-      list[index].scrollIntoView();
-      if (history.replaceState) {
-        history.replaceState(null, "", window.location.pathname + "#" + list[index].id);
-      }
-    }
-  }
-  var path = window.location.pathname;
-  var target = pageMap[path] || reversePageMap[path];
-  if (target) {
-    document.querySelectorAll("a.nav-link").forEach(function (link) {
-      var text = link.textContent.trim();
-      if (text === "English" || text === "Deutsch") {
-        var index = currentHeadingIndex();
-        link.href = base + target + (index ? "?h=" + index : "");
-      }
-    });
-  }
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", scrollToHeadingIndex);
-  } else {
-    scrollToHeadingIndex();
-  }
-}());
-</script>
 
+(function () {
+
+  var base = "https://dirk-ostwald.github.io";
+
+  var pageMap = {
+
+    "/": "/en/",
+
+    "/index.html": "/en/",
+
+    "/Referenzen.html": "/en/References.html",
+
+    "/_part_1/100-Mathematische-Grundlagen.html": "/en/_part_1/100-Mathematical-Foundations.html",
+
+    "/_part_1/101-Sprache-und-Logik.html": "/en/_part_1/101-Language-and-Logic.html",
+
+    "/_part_1/102-Mengen.html": "/en/_part_1/102-Sets.html",
+
+    "/_part_1/103-Summen-Produkte-Potenzen.html": "/en/_part_1/103-Sums-Products-Powers.html",
+
+    "/_part_1/104-Funktionen.html": "/en/_part_1/104-Functions.html",
+
+    "/_part_1/105-Folgen-Grenzwerte-Stetigkeit.html": "/en/_part_1/105-Sequences-Limits-Continuity.html",
+
+    "/_part_1/106-Differenzialrechnung.html": "/en/_part_1/106-Differential-Calculus.html",
+
+    "/_part_1/107-Integralrechnung.html": "/en/_part_1/107-Integral-Calculus.html",
+
+    "/_part_1/108-Vektoren.html": "/en/_part_1/108-Vectors.html",
+
+    "/_part_1/109-Matrizen.html": "/en/_part_1/109-Matrices.html",
+
+    "/_part_1/110-Deskriptivstatistiken.html": "/en/_part_1/110-Descriptive-Statistics.html",
+
+    "/_part_2/200-Imperative-Programmierung.html": "/en/_part_2/200-Imperative-Programming.html",
+
+    "/_part_2/201-Informatische-Grundbegriffe.html": "/en/_part_2/201-Basic-Concepts-of-Computer-Science.html",
+
+    "/_part_2/202-Arithmetik-und-Variablen.html": "/en/_part_2/202-Arithmetic-and-Variables.html",
+
+    "/_part_2/203-Datenstrukturen.html": "/en/_part_2/203-Data-Structures.html",
+
+    "/_part_2/204-Vektoren.html": "/en/_part_2/204-Vectors.html",
+
+    "/_part_2/205-Matrizen-und-Arrays.html": "/en/_part_2/205-Matrices-and-Arrays.html",
+
+    "/_part_2/206-Listen-Dataframes-und-Tibbles.html": "/en/_part_2/206-Lists-Dataframes-and-Tibbles.html",
+
+    "/_part_2/207-Datenmanagement.html": "/en/_part_2/207-Data-Management.html",
+
+    "/_part_2/208-Kontrollstrukturen.html": "/en/_part_2/208-Control-Structures.html",
+
+    "/_part_3/300-Wahrscheinlichkeitstheorie.html": "/en/_part_3/300-Probability-Theory.html",
+
+    "/_part_3/301-Wahrscheinlichkeitsräume.html": "/en/_part_3/301-Probability-Spaces.html",
+
+    "/_part_3/302-Elementare-Wahrscheinlichkeiten.html": "/en/_part_3/302-Elementary-Probabilities.html",
+
+    "/_part_3/303-Zufallsvariablen.html": "/en/_part_3/303-Random-Variables.html",
+
+    "/_part_3/304-Zufallsvektoren.html": "/en/_part_3/304-Random-Vectors.html",
+
+    "/_part_3/305-Erwartungswerte.html": "/en/_part_3/305-Expectations.html",
+
+    "/_part_3/306-Varianzen.html": "/en/_part_3/306-Variances.html",
+
+    "/_part_3/307-Kovarianzen.html": "/en/_part_3/307-Covariances.html",
+
+    "/_part_3/308-Ungleichungen.html": "/en/_part_3/308-Inequalities.html",
+
+    "/_part_3/309-Grenzwerte.html": "/en/_part_3/309-Limits.html",
+
+    "/_part_3/310-Transformationen.html": "/en/_part_3/310-Transformations.html",
+
+    "/_part_3/311-Normalverteilungen.html": "/en/_part_3/311-Normal-Distributions.html",
+
+    "/_part_4/400-Inferenz.html": "/en/_part_4/400-Inference.html",
+
+    "/_part_4/401-Frequentistische-Inferenz.html": "/en/_part_4/401-Frequentist-Inference.html",
+
+    "/_part_4/402-Punktschätzung.html": "/en/_part_4/402-Point-Estimation.html",
+
+    "/_part_4/403-Konfidenzintervalle.html": "/en/_part_4/403-Confidence-Intervals.html",
+
+    "/_part_4/404-Hypothesentests.html": "/en/_part_4/404-Hypothesis-Tests.html",
+
+    "/_part_5/500-Allgemeines-Lineares-Modell.html": "/en/_part_5/500-General-Linear-Model.html",
+
+    "/_part_5/501-Regression.html": "/en/_part_5/501-Regression.html",
+
+    "/_part_5/502-Korrelation.html": "/en/_part_5/502-Correlation.html",
+
+    "/_part_5/503-Modellformulierung.html": "/en/_part_5/503-Model-Formulation.html",
+
+    "/_part_5/504-Parameterschätzung.html": "/en/_part_5/504-Parameter-Estimation.html",
+
+    "/_part_5/505-T-Statistiken.html": "/en/_part_5/505-T-Statistics.html",
+
+    "/_part_5/506-F-Statistiken.html": "/en/_part_5/506-F-Statistics.html",
+
+    "/_part_5/507-T-Tests.html": "/en/_part_5/507-T-Tests.html",
+
+    "/_part_5/508-Einfaktorielle-Varianzanalyse.html": "/en/_part_5/508-One-Way-Analysis-of-Variance.html",
+
+    "/_part_5/509-Zweifaktorielle-Varianzanalyse.html": "/en/_part_5/509-Two-Way-Analysis-of-Variance.html",
+
+    "/_part_5/510-Partielle-Korrelation.html": "/en/_part_5/510-Partial-Correlation.html",
+
+    "/_part_5/511-Multiple-Regression.html": "/en/_part_5/511-Multiple-Regression.html"
+
+  };
+
+  var reversePageMap = {};
+
+  Object.keys(pageMap).forEach(function (key) {
+
+    reversePageMap[pageMap[key]] = key;
+
+  });
+
+  function headings() {
+
+    return Array.prototype.slice.call(document.querySelectorAll("main.content h1[id], main.content h2[id], main.content h3[id], main.content h4[id]"));
+
+  }
+
+  function currentHeadingIndex() {
+
+    var hash = window.location.hash;
+
+    if (!hash) return "";
+
+    var id = hash.slice(1);
+
+    try {
+
+      id = decodeURIComponent(id);
+
+    } catch (error) {}
+
+    var list = headings();
+
+    for (var i = 0; i < list.length; i++) {
+
+      if (list[i].id === id) return String(i);
+
+    }
+
+    return "";
+
+  }
+
+  function scrollToHeadingIndex() {
+
+    var params = new URLSearchParams(window.location.search);
+
+    var value = params.get("h");
+
+    if (value === null) return;
+
+    var index = Number(value);
+
+    var list = headings();
+
+    if (Number.isInteger(index) && index >= 0 && index < list.length) {
+
+      list[index].scrollIntoView();
+
+      if (history.replaceState) {
+
+        history.replaceState(null, "", window.location.pathname + "#" + list[index].id);
+
+      }
+
+    }
+
+  }
+
+  var path = window.location.pathname;
+
+  var target = pageMap[path] || reversePageMap[path];
+
+  if (target) {
+
+    document.querySelectorAll("a.nav-link").forEach(function (link) {
+
+      var text = link.textContent.trim();
+
+      if (text === "English" || text === "Deutsch") {
+
+        var index = currentHeadingIndex();
+
+        link.href = base + target + (index ? "?h=" + index : "");
+
+      }
+
+    });
+
+  }
+
+  if (document.readyState === "loading") {
+
+    document.addEventListener("DOMContentLoaded", scrollToHeadingIndex);
+
+  } else {
+
+    scrollToHeadingIndex();
+
+  }
+
+}());
+
+</script>
 
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {

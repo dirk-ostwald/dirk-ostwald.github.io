@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,10 +12,13 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -76,10 +79,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-6e8dda235ee8acd82fc3832029714bc4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-35fb2a33bb4c71715ffa083faf67f315.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -109,7 +112,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -581,7 +584,7 @@ m_{n_r1}  &amp; m_{n_r2}  &amp; \cdots    &amp; {m_{n_rn_c}} \\
 \end{equation}\]</span> The elements <span class="math inline">\(m_{ij}, i = 1,...,n_r, j = 1,...,n_c\)</span> of the matrix are necessarily of the same data type. In the above scheme, <span class="math inline">\(n_r\)</span> denotes the number of rows and <span class="math inline">\(n_c\)</span> denotes the number of columns of the matrix <span class="math inline">\(M\)</span>. Each element of a matrix therefore has a row index <span class="math inline">\(i\)</span> and a column index <span class="math inline">\(j\)</span>. Intuitively, <strong>R</strong> matrices are thus numerically indexed tables. Formally, matrices in <strong>R</strong> are atomic vectors interpreted two-dimensionally.</p>
 <section id="sec-r-matrices-generation" class="level3" data-number="15.1.1">
 <h3 data-number="15.1.1" class="anchored" data-anchor-id="sec-r-matrices-generation"><span class="header-section-number">15.1.1</span> Generation</h3>
-<p>The <strong>R</strong> function <code>matrix()</code> is used to generate a matrix; it fills matrices with the elements of a vector. The general syntax of this function is <code>M = matrix(v, nrow, ncol, byrow)</code>, where</p>
+<p>The <strong>R</strong> function <code>matrix()</code> is used to generate a matrix. It fills matrices with the elements of a vector. The general syntax of this function is <code>M = matrix(v, nrow, ncol, byrow)</code>, where</p>
 <ul>
 <li><code>v</code> denotes a vector of length <code>nrow</code><span class="math inline">\(\cdot\)</span> <code>ncol</code>,</li>
 <li><code>nrow</code> denotes the desired number of rows of <code>M</code>,</li>
@@ -590,21 +593,21 @@ m_{n_r1}  &amp; m_{n_r2}  &amp; \cdots    &amp; {m_{n_rn_c}} \\
 </ul>
 <p>Since, for a given length of <code>v</code> and a given number of rows or columns, the corresponding number of columns or rows of the matrix follows, it is only necessary to specify either <code>nrow</code> or <code>ncol</code>, as the following examples show.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>), <span class="at">nrow =</span> <span class="dv">3</span>)                <span class="co"># 3 x 4 matrix of the numbers 1,...,12, byrow = FALSE</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-label="1"></a><span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>), <span class="at">nrow =</span> <span class="dv">3</span>)                <span class="co"># 3 x 4 matrix of 1,...,12, by column</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2] [,3] [,4]
 [1,]    1    4    7   10
 [2,]    2    5    8   11
 [3,]    3    6    9   12</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>), <span class="at">ncol =</span> <span class="dv">4</span>)                <span class="co"># 3 x 4 matrix of the numbers 1,...,12, byrow = FALSE</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-label="1"></a><span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>), <span class="at">ncol =</span> <span class="dv">4</span>)                <span class="co"># 3 x 4 matrix of 1,...,12, by column</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2] [,3] [,4]
 [1,]    1    4    7   10
 [2,]    2    5    8   11
 [3,]    3    6    9   12</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>), <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)  <span class="co"># 3 x 4 matrix of the numbers 1,...,12, byrow = TRUE</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-label="1"></a><span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>), <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)  <span class="co"># 3 x 4 matrix of 1,...,12, by row</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2] [,3] [,4]
 [1,]    1    2    3    4
@@ -614,22 +617,22 @@ m_{n_r1}  &amp; m_{n_r2}  &amp; \cdots    &amp; {m_{n_rn_c}} \\
 </div>
 <p>Existing matrices with the same number of rows can be concatenated columnwise with the function <code>cbind()</code>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>A <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>) , <span class="at">nrow =</span> <span class="dv">2</span>)  <span class="co"># 2 x 2 matrix of the numbers 1,...,4</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a>A</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-label="1"></a>A <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>) , <span class="at">nrow =</span> <span class="dv">2</span>)  <span class="co"># 2 x 2 matrix of 1,...,4</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-label="2"></a>A</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2]
 [1,]    1    3
 [2,]    2    4</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>B <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">5</span><span class="sc">:</span><span class="dv">10</span>), <span class="at">nrow =</span> <span class="dv">2</span>)  <span class="co"># 2 x 3 matrix of the numbers 5,...,10</span></span>
-<span id="cb9-2"><a href="#cb9-2"></a>B</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-label="1"></a>B <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">5</span><span class="sc">:</span><span class="dv">10</span>), <span class="at">nrow =</span> <span class="dv">2</span>)  <span class="co"># 2 x 3 matrix of 5,...,10</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-label="2"></a>B</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2] [,3]
 [1,]    5    7    9
 [2,]    6    8   10</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>C <span class="ot">=</span> <span class="fu">cbind</span>(A,B)                 <span class="co"># columnwise concatenation of A and B</span></span>
-<span id="cb11-2"><a href="#cb11-2"></a>C</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-label="1"></a>C <span class="ot">=</span> <span class="fu">cbind</span>(A,B)                 <span class="co"># columnwise concatenation of A and B</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-label="2"></a>C</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2] [,3] [,4] [,5]
 [1,]    1    3    5    7    9
@@ -638,21 +641,21 @@ m_{n_r1}  &amp; m_{n_r2}  &amp; \cdots    &amp; {m_{n_rn_c}} \\
 </div>
 <p>Equivalently, existing matrices with the same number of columns can be concatenated rowwise with the function <code>rbind()</code>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>A <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>) , <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)  <span class="co"># 2 x 3 matrix of the numbers 1,...,6</span></span>
-<span id="cb13-2"><a href="#cb13-2"></a><span class="fu">print</span>(A)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-label="1"></a>A <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>) , <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)  <span class="co"># 2 x 3 matrix of 1,...,6</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-label="2"></a><span class="fu">print</span>(A)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2] [,3]
 [1,]    1    2    3
 [2,]    4    5    6</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>B <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">7</span><span class="sc">:</span><span class="dv">9</span>), <span class="at">nrow =</span> <span class="dv">1</span>)                 <span class="co"># 1 x 3 matrix of the numbers 7,...,9</span></span>
-<span id="cb15-2"><a href="#cb15-2"></a><span class="fu">print</span>(B)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-label="1"></a>B <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">7</span><span class="sc">:</span><span class="dv">9</span>), <span class="at">nrow =</span> <span class="dv">1</span>)                 <span class="co"># 1 x 3 matrix of 7,...,9</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-label="2"></a><span class="fu">print</span>(B)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2] [,3]
 [1,]    7    8    9</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>C <span class="ot">=</span> <span class="fu">rbind</span>(A,B)                               <span class="co"># rowwise concatenation of A and B</span></span>
-<span id="cb17-2"><a href="#cb17-2"></a><span class="fu">print</span>(C)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-label="1"></a>C <span class="ot">=</span> <span class="fu">rbind</span>(A,B)                               <span class="co"># rowwise concatenation of A and B</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-label="2"></a><span class="fu">print</span>(C)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2] [,3]
 [1,]    1    2    3
@@ -665,31 +668,31 @@ m_{n_r1}  &amp; m_{n_r2}  &amp; \cdots    &amp; {m_{n_rn_c}} \\
 <h3 data-number="15.1.2" class="anchored" data-anchor-id="sec-r-matrices-characterization"><span class="header-section-number">15.1.2</span> Characterization</h3>
 <p>The familiar function <code>typeof()</code> can be used to output the elementary data type of a matrix:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="fu">typeof</span>(<span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>)    , <span class="at">nrow =</span> <span class="dv">2</span>))  <span class="co"># 2 x 2 double matrix</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-label="1"></a><span class="fu">typeof</span>(<span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>)    , <span class="at">nrow =</span> <span class="dv">2</span>))  <span class="co"># 2 x 2 matrix of type double</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "double"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="fu">typeof</span>(<span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>L,<span class="dv">0</span>L,<span class="dv">0</span>L,<span class="dv">1</span>L), <span class="at">nrow =</span> <span class="dv">2</span>))  <span class="co"># 2 x 2 integer matrix</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-label="1"></a><span class="fu">typeof</span>(<span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>L,<span class="dv">0</span>L,<span class="dv">0</span>L,<span class="dv">1</span>L), <span class="at">nrow =</span> <span class="dv">2</span>))  <span class="co"># 2 x 2 matrix of type integer</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "integer"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="fu">typeof</span>(<span class="fu">matrix</span>(<span class="fu">c</span>(T,T,F,F)    , <span class="at">nrow =</span> <span class="dv">2</span>))  <span class="co"># 2 x 2 logical matrix</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-label="1"></a><span class="fu">typeof</span>(<span class="fu">matrix</span>(<span class="fu">c</span>(T,T,F,F)    , <span class="at">nrow =</span> <span class="dv">2</span>))  <span class="co"># 2 x 2 matrix of type logical</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "logical"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="fu">typeof</span>(<span class="fu">matrix</span>(<span class="fu">c</span>(<span class="st">"a"</span>,<span class="st">"b"</span>,<span class="st">"c"</span>), <span class="at">nrow =</span> <span class="dv">1</span>))  <span class="co"># 1 x 3 character matrix</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-label="1"></a><span class="fu">typeof</span>(<span class="fu">matrix</span>(<span class="fu">c</span>(<span class="st">"a"</span>,<span class="st">"b"</span>,<span class="st">"c"</span>), <span class="at">nrow =</span> <span class="dv">1</span>))  <span class="co"># 1 x 3 matrix of type character</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "character"</code></pre>
 </div>
 </div>
 <p>The number of rows or columns of a matrix can be output with the functions <code>nrow()</code> (number of rows) and <code>ncol()</code> (number of columns).</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a>C <span class="ot">=</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>, <span class="at">nrow =</span> <span class="dv">3</span>)  <span class="co"># 3 x 4 matrix</span></span>
-<span id="cb27-2"><a href="#cb27-2"></a><span class="fu">nrow</span>(C)                     <span class="co"># number of rows</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-label="1"></a>C <span class="ot">=</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>, <span class="at">nrow =</span> <span class="dv">3</span>)  <span class="co"># 3 x 4 matrix</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-label="2"></a><span class="fu">nrow</span>(C)                     <span class="co"># number of rows</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 3</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="fu">ncol</span>(C)                     <span class="co"># number of columns</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-label="1"></a><span class="fu">ncol</span>(C)                     <span class="co"># number of columns</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 4</code></pre>
 </div>
@@ -699,40 +702,40 @@ m_{n_r1}  &amp; m_{n_r2}  &amp; \cdots    &amp; {m_{n_rn_c}} \\
 <h3 data-number="15.1.3" class="anchored" data-anchor-id="sec-r-matrices-indexing"><span class="header-section-number">15.1.3</span> Indexing</h3>
 <p>In general, matrix elements are indexed with a row index and a column index. The first of two matrix indices always indexes the row, and the second always indexes the column. The remaining principles of matrix indexing correspond essentially to the principles of vector indexing. One special feature is that a missing row or column index indexes all elements of the corresponding dimension.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a>A <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">7</span>)<span class="sc">^</span><span class="dv">2</span>, <span class="at">nrow =</span> <span class="dv">2</span>)  <span class="co"># 2 x 3 matrix of the numbers 2^2,...,7^2</span></span>
-<span id="cb31-2"><a href="#cb31-2"></a>A</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-label="1"></a>A <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">7</span>)<span class="sc">^</span><span class="dv">2</span>, <span class="at">nrow =</span> <span class="dv">2</span>)  <span class="co"># 2 x 3 matrix of 2^2,...,7^2</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-label="2"></a>A</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2] [,3]
 [1,]    4   16   36
 [2,]    9   25   49</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a>A[<span class="dv">1</span>,<span class="dv">3</span>]                          <span class="co"># element in row 1, column 3 of A [36]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-label="1"></a>A[<span class="dv">1</span>,<span class="dv">3</span>]                          <span class="co"># element in row 1, column 3 of A [36]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 36</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a>A[<span class="dv">2</span>,<span class="dv">2</span>]                          <span class="co"># element in row 2, column 2 of A [25]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-label="1"></a>A[<span class="dv">2</span>,<span class="dv">2</span>]                          <span class="co"># element in row 2, column 2 of A [25]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 25</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a>A[<span class="dv">2</span>,]                           <span class="co"># all elements of row 2 [9,25,49]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-label="1"></a>A[<span class="dv">2</span>,]                           <span class="co"># all elements of row 2 [9,25,49]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1]  9 25 49</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a>A[,<span class="dv">3</span>]                           <span class="co"># all elements of column 3 [36,49]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-label="1"></a>A[,<span class="dv">3</span>]                           <span class="co"># all elements of column 3 [36,49]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 36 49</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1"></a>A[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]                      <span class="co"># submatrix of the first two rows and columns</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-label="1"></a>A[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]                      <span class="co"># First two rows and columns</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2]
 [1,]    4   16
 [2,]    9   25</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1"></a>A[A<span class="sc">&gt;</span><span class="dv">10</span>]                         <span class="co"># elements of A greater than 10 [16,25,36,49]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-label="1"></a>A[A<span class="sc">&gt;</span><span class="dv">10</span>]                         <span class="co"># Elements of A greater than 10: [16,25,36,49]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 16 25 36 49</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1"></a>A[<span class="dv">1</span>,<span class="fu">c</span>(F,F,T)]                   <span class="co"># element in row 1, column 3 of A [36]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-label="1"></a>A[<span class="dv">1</span>,<span class="fu">c</span>(F,F,T)]                   <span class="co"># element in row 1, column 3 of A [36]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 36</code></pre>
 </div>
@@ -742,29 +745,29 @@ m_{n_r1}  &amp; m_{n_r2}  &amp; \cdots    &amp; {m_{n_rn_c}} \\
 <h3 data-number="15.1.4" class="anchored" data-anchor-id="sec-r-matrices-arithmetic"><span class="header-section-number">15.1.4</span> Arithmetic</h3>
 <p>If one applies unary arithmetic operators and functions to matrices, these are evaluated elementwise, as with vectors.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1"></a>A <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>), <span class="at">nrow =</span> <span class="dv">2</span>)  <span class="co"># 2 x 2 matrix of the numbers 1,2,3,4</span></span>
-<span id="cb47-2"><a href="#cb47-2"></a>A</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-label="1"></a>A <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>), <span class="at">nrow =</span> <span class="dv">2</span>)  <span class="co"># 2 x 2 matrix of 1,2,3,4</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-label="2"></a>A</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2]
 [1,]    1    3
 [2,]    2    4</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1"></a>B <span class="ot">=</span> A<span class="sc">^</span><span class="dv">2</span>                       <span class="co"># result B[i,j] = A[i,j]^2, 1 &lt;= i,j &lt;= 2</span></span>
-<span id="cb49-2"><a href="#cb49-2"></a>B</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-label="1"></a>B <span class="ot">=</span> A<span class="sc">^</span><span class="dv">2</span>                       <span class="co"># B[i,j] = A[i,j]^2, 1 &lt;= i,j &lt;= 2</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-label="2"></a>B</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2]
 [1,]    1    9
 [2,]    4   16</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1"></a>C <span class="ot">=</span> <span class="fu">sqrt</span>(B)                   <span class="co"># result C[i,j] = sqrt(A[i,j]^2), 1 &lt;= i,j &lt;= 2</span></span>
-<span id="cb51-2"><a href="#cb51-2"></a>C</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-label="1"></a>C <span class="ot">=</span> <span class="fu">sqrt</span>(B)                   <span class="co"># C[i,j] = sqrt(A[i,j]^2), 1 &lt;= i,j &lt;= 2</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-label="2"></a>C</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2]
 [1,]    1    3
 [2,]    2    4</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1"></a>D <span class="ot">=</span> <span class="fu">exp</span>(A)                    <span class="co"># result D[i,j] = exp(A[i,j]), 1 &lt;= i,j &lt;= 2</span></span>
-<span id="cb53-2"><a href="#cb53-2"></a>D</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-label="1"></a>D <span class="ot">=</span> <span class="fu">exp</span>(A)                    <span class="co"># D[i,j] = exp(A[i,j]), 1 &lt;= i,j &lt;= 2</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-label="2"></a>D</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         [,1]     [,2]
 [1,] 2.718282 20.08554
@@ -773,60 +776,60 @@ m_{n_r1}  &amp; m_{n_r2}  &amp; \cdots    &amp; {m_{n_rn_c}} \\
 </div>
 <p>Like vectors, matrices with identical numbers of rows and columns can be linked elementwise with the binary arithmetic operators <code>+</code>, <code>-</code>, <code>*</code>, and <code>/</code>. The following examples illustrate this:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1"></a>A <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>), <span class="at">nrow =</span> <span class="dv">2</span>)  <span class="co"># 2 x 2 matrix of the numbers 1,2,3,4</span></span>
-<span id="cb55-2"><a href="#cb55-2"></a>A</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-label="1"></a>A <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>), <span class="at">nrow =</span> <span class="dv">2</span>)  <span class="co"># 2 x 2 matrix of 1,2,3,4</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-label="2"></a>A</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2]
 [1,]    1    3
 [2,]    2    4</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1"></a>B <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">5</span><span class="sc">:</span><span class="dv">8</span>), <span class="at">nrow =</span> <span class="dv">2</span>)  <span class="co"># 2 x 2 matrix of the numbers 5,6,7,8</span></span>
-<span id="cb57-2"><a href="#cb57-2"></a>B</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-label="1"></a>B <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">5</span><span class="sc">:</span><span class="dv">8</span>), <span class="at">nrow =</span> <span class="dv">2</span>)  <span class="co"># 2 x 2 matrix of 5,6,7,8</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-label="2"></a>B</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2]
 [1,]    5    7
 [2,]    6    8</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1"></a>C <span class="ot">=</span> A <span class="sc">+</span> B                     <span class="co"># result C[i,j] = A[i,j] + B[i,j], 1 &lt;= i,j &lt;= 2</span></span>
-<span id="cb59-2"><a href="#cb59-2"></a>C</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-label="1"></a>C <span class="ot">=</span> A <span class="sc">+</span> B                     <span class="co"># result C[i,j] = A[i,j] + B[i,j], 1 &lt;= i,j &lt;= 2</span></span>
+<span id="cb59-2"><a href="#cb59-2" aria-label="2"></a>C</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2]
 [1,]    6   10
 [2,]    8   12</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb61"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1"></a>D <span class="ot">=</span> A <span class="sc">*</span> B                     <span class="co"># result D[i,j] = A[i,j] * B[i,j], 1 &lt;= i,j &lt;= 2</span></span>
-<span id="cb61-2"><a href="#cb61-2"></a>D</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb61"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-label="1"></a>D <span class="ot">=</span> A <span class="sc">*</span> B                     <span class="co"># result D[i,j] = A[i,j] * B[i,j], 1 &lt;= i,j &lt;= 2</span></span>
+<span id="cb61-2"><a href="#cb61-2" aria-label="2"></a>D</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2]
 [1,]    5   21
 [2,]   12   32</code></pre>
 </div>
 </div>
-<p>In addition, <strong>R</strong> matrices can be used for computations in the sense of matrix calculus from linear algebra. We show only a few examples here; a detailed presentation of the mathematical principles and their <strong>R</strong> implementation can be found in <a href="../_part_1/109-Matrices.html" class="quarto-xref"><span>Chapter 9</span></a>.</p>
+<p>In addition, <strong>R</strong> matrices can be used for computations in the sense of matrix calculus from linear algebra. We show only a few examples here. A detailed presentation of the mathematical principles and their <strong>R</strong> implementation can be found in <a href="../_part_1/109-Matrices.html" class="quarto-xref"><span>Chapter 9</span></a>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1"></a>C <span class="ot">=</span> A <span class="sc">%*%</span> B       <span class="co"># 2 x 2 matrix product</span></span>
-<span id="cb63-2"><a href="#cb63-2"></a>C</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-label="1"></a>C     <span class="ot">=</span> A <span class="sc">%*%</span> B   <span class="co"># 2 x 2 matrix product</span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-label="2"></a>C</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2]
 [1,]   23   31
 [2,]   34   46</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1"></a>A_T <span class="ot">=</span> <span class="fu">t</span>(A)        <span class="co"># transposition of A</span></span>
-<span id="cb65-2"><a href="#cb65-2"></a>A_T</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-label="1"></a>A_T   <span class="ot">=</span> <span class="fu">t</span>(A)      <span class="co"># transposition of A</span></span>
+<span id="cb65-2"><a href="#cb65-2" aria-label="2"></a>A_T</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2]
 [1,]    1    2
 [2,]    3    4</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb67"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1"></a>A_inv <span class="ot">=</span> <span class="fu">solve</span>(A)  <span class="co"># inverse of A</span></span>
-<span id="cb67-2"><a href="#cb67-2"></a>A_inv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb67"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-label="1"></a>A_inv <span class="ot">=</span> <span class="fu">solve</span>(A)  <span class="co"># inverse of A</span></span>
+<span id="cb67-2"><a href="#cb67-2" aria-label="2"></a>A_inv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2]
 [1,]   -2  1.5
 [2,]    1 -0.5</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb69"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1"></a>A_det <span class="ot">=</span> <span class="fu">det</span>(A)    <span class="co"># determinant of A</span></span>
-<span id="cb69-2"><a href="#cb69-2"></a>A_det</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb69"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-label="1"></a>A_det <span class="ot">=</span> <span class="fu">det</span>(A)    <span class="co"># determinant of A</span></span>
+<span id="cb69-2"><a href="#cb69-2" aria-label="2"></a>A_det</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] -2</code></pre>
 </div>
@@ -834,10 +837,10 @@ m_{n_r1}  &amp; m_{n_r2}  &amp; \cdots    &amp; {m_{n_rn_c}} \\
 </section>
 <section id="sec-r-matrices-attributes" class="level3" data-number="15.1.5">
 <h3 data-number="15.1.5" class="anchored" data-anchor-id="sec-r-matrices-attributes"><span class="header-section-number">15.1.5</span> Attributes</h3>
-<p>Formally, matrices are atomic vectors with a <code>dim</code> attribute.</p>
+<p>Formally, matrices are atomic vectors with a <code>dim</code> attribute. </p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb71"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1"></a>A <span class="ot">=</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>, <span class="at">nrow =</span> <span class="dv">4</span> )  <span class="co"># 4 x 3 matrix</span></span>
-<span id="cb71-2"><a href="#cb71-2"></a><span class="fu">attributes</span>(A)                <span class="co"># call the attributes of A</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb71"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-label="1"></a>A <span class="ot">=</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>, <span class="at">nrow =</span> <span class="dv">4</span> )  <span class="co"># 4 x 3 matrix</span></span>
+<span id="cb71-2"><a href="#cb71-2" aria-label="2"></a><span class="fu">attributes</span>(A)                <span class="co"># call the attributes of A</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$dim
 [1] 4 3</code></pre>
@@ -845,9 +848,9 @@ m_{n_r1}  &amp; m_{n_r2}  &amp; \cdots    &amp; {m_{n_rn_c}} \\
 </div>
 <p>As with vectors, one can also give names to matrix elements, although this is rather unusual for matrices as well. Specifically, the functions <code>rownames()</code> and <code>colnames()</code> define the matrix attribute <code>dimnames</code>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb73"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1"></a><span class="fu">rownames</span>(A) <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"P1"</span>,<span class="st">"P2"</span>,<span class="st">"P3"</span>,<span class="st">"P4"</span>)  <span class="co"># naming the rows of A</span></span>
-<span id="cb73-2"><a href="#cb73-2"></a><span class="fu">colnames</span>(A) <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"Age"</span>, <span class="st">"Hgt"</span>, <span class="st">"Wgt"</span>)  <span class="co"># naming the columns of A</span></span>
-<span id="cb73-3"><a href="#cb73-3"></a>A                                     <span class="co"># matrix with attribute dimnames</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb73"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-label="1"></a><span class="fu">rownames</span>(A) <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"P1"</span>,<span class="st">"P2"</span>,<span class="st">"P3"</span>,<span class="st">"P4"</span>)  <span class="co"># naming the rows of A</span></span>
+<span id="cb73-2"><a href="#cb73-2" aria-label="2"></a><span class="fu">colnames</span>(A) <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"Age"</span>, <span class="st">"Hgt"</span>, <span class="st">"Wgt"</span>)  <span class="co"># naming the columns of A</span></span>
+<span id="cb73-3"><a href="#cb73-3" aria-label="3"></a>A                                     <span class="co"># matrix with attribute dimnames</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   Age Hgt Wgt
 P1   1   5   9
@@ -855,7 +858,7 @@ P2   2   6  10
 P3   3   7  11
 P4   4   8  12</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb75"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1"></a><span class="fu">attr</span>(A, <span class="st">"dimnames"</span>)                   <span class="co"># call the attribute dimnames</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb75"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-label="1"></a><span class="fu">attr</span>(A, <span class="st">"dimnames"</span>)                   <span class="co"># call the attribute dimnames</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
 [1] "P1" "P2" "P3" "P4"
@@ -868,13 +871,14 @@ P4   4   8  12</code></pre>
 </section>
 <section id="sec-r-arrays" class="level2" data-number="15.2">
 <h2 data-number="15.2" class="anchored" data-anchor-id="sec-r-arrays"><span class="header-section-number">15.2</span> Arrays</h2>
-<p><strong>R</strong> arrays are <span class="math inline">\(d\)</span>-dimensional, hyperrectangular data structures. Intuitively, arrays can be understood as the generalization of matrices to more than two dimensions. For <span class="math inline">\(d = 1\)</span>, an array corresponds to a vector; for <span class="math inline">\(d = 2\)</span>, an array corresponds to a matrix. As with vectors and matrices, the elements of an array must be of the same data type. Arrays are characterized by how many elements <span class="math inline">\(d_i, i = 1,...,d\)</span> the <span class="math inline">\(i\)</span>-th dimension can represent. Each element of an array is indexed by a <span class="math inline">\(d\)</span>-dimensional index <span class="math inline">\(i_1,i_2,...,i_d\)</span>.</p>
+<p><strong>R</strong> arrays are <span class="math inline">\(d\)</span>-dimensional, hyperrectangular data structures. Intuitively, arrays can be understood as the generalization of matrices to more than two dimensions. For <span class="math inline">\(d = 1\)</span>, an array corresponds to a vector. For <span class="math inline">\(d = 2\)</span>, an array corresponds to a matrix. As with vectors and matrices, the elements of an array must be of the same data type. Arrays are characterized by how many elements <span class="math inline">\(d_i, i = 1,...,d\)</span> the <span class="math inline">\(i\)</span>-th dimension can represent. Each element of an array is indexed by a <span class="math inline">\(d\)</span>-dimensional index <span class="math inline">\(i_1,i_2,...,i_d\)</span>.</p>
 <section id="sec-r-arrays-generation" class="level3" data-number="15.2.1">
 <h3 data-number="15.2.1" class="anchored" data-anchor-id="sec-r-arrays-generation"><span class="header-section-number">15.2.1</span> Generation</h3>
-<p>Analogously to the function <code>matrix()</code>, the function <code>array()</code> is used to fill an array with vector elements. The general syntax of this function is <code>A = array(v, dim)</code>, where <code>v</code> is a vector of array data and <code>dim</code> is a vector of integer values that represents the maximal indices in each of the <code>length(dim)</code> dimensions of the array. For example, the following command generates a <span class="math inline">\(2 \times 2 \times 3\)</span> array.</p>
+<p>Analogously to the function <code>matrix()</code>, the function <code>array()</code> is used to fill an array with vector elements. The general syntax of this function is <code>A = array(v, dim)</code>, where <code>v</code> is a vector of array data and <code>dim</code> is a vector of integer values that represents the maximal indices in each of the <code>length(dim)</code> dimensions of the array. For example, the following command generates a <span class="math inline">\(2
+\times 2 \times 3\)</span> array.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb77"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1"></a>A <span class="ot">=</span> <span class="fu">array</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>, <span class="at">dim =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>))  <span class="co"># 2 x 2 x 3 array of the numbers 1,...,12</span></span>
-<span id="cb77-2"><a href="#cb77-2"></a>A</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb77"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-label="1"></a>A <span class="ot">=</span> <span class="fu">array</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>, <span class="at">dim =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>))  <span class="co"># 2 x 2 x 3 array of 1,...,12</span></span>
+<span id="cb77-2"><a href="#cb77-2" aria-label="2"></a>A</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>, , 1
 
@@ -901,22 +905,22 @@ P4   4   8  12</code></pre>
 <h3 data-number="15.2.2" class="anchored" data-anchor-id="sec-r-arrays-characterization"><span class="header-section-number">15.2.2</span> Characterization</h3>
 <p>The <code>length()</code> function outputs the number of elements of an array.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb79"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1"></a>A <span class="ot">=</span> <span class="fu">array</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>, <span class="at">dim =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>))  <span class="co"># 2 x 2 x 3 array of the numbers 1,...,12</span></span>
-<span id="cb79-2"><a href="#cb79-2"></a><span class="fu">length</span>(A)                        <span class="co"># number of elements of the array</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb79"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-label="1"></a>A <span class="ot">=</span> <span class="fu">array</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>, <span class="at">dim =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>))  <span class="co"># 2 x 2 x 3 array of 1,...,12</span></span>
+<span id="cb79-2"><a href="#cb79-2" aria-label="2"></a><span class="fu">length</span>(A)                        <span class="co"># number of elements of the array</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 12</code></pre>
 </div>
 </div>
 <p>The function <code>typeof()</code> outputs the elementary data type of an array:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb81"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1"></a><span class="fu">typeof</span>(A)  <span class="co"># type of the array</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb81"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-label="1"></a><span class="fu">typeof</span>(A)  <span class="co"># type of the array</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "integer"</code></pre>
 </div>
 </div>
 <p>The function <code>dim()</code> outputs the dimensions of an array:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb83"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1"></a><span class="fu">dim</span>(A)  <span class="co"># dimension of the array</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb83"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-label="1"></a><span class="fu">dim</span>(A)  <span class="co"># dimension of the array</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2 2 3</code></pre>
 </div>
@@ -926,16 +930,16 @@ P4   4   8  12</code></pre>
 <h3 data-number="15.2.3" class="anchored" data-anchor-id="sec-r-arrays-indexing"><span class="header-section-number">15.2.3</span> Indexing</h3>
 <p>Indexing of arrays is analogous to vector and matrix indexing, with the difference that three or more indices are needed to index an array element.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb85"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1"></a>A     <span class="ot">=</span> <span class="fu">array</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>, <span class="at">dim =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>))  <span class="co"># 2 x 2 x 3 array of the numbers 1,...,12</span></span>
-<span id="cb85-2"><a href="#cb85-2"></a>a_223 <span class="ot">=</span> A[<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>]                     <span class="co"># array element with index address [2,2,3] (12)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb85"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-label="1"></a>A     <span class="ot">=</span> <span class="fu">array</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>, <span class="at">dim =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>))  <span class="co"># 2 x 2 x 3 array of 1,...,12</span></span>
+<span id="cb85-2"><a href="#cb85-2" aria-label="2"></a>a_223 <span class="ot">=</span> A[<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>]                     <span class="co"># array element with index address [2,2,3] (12)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="sec-r-arrays-arithmetic" class="level3" data-number="15.2.4">
 <h3 data-number="15.2.4" class="anchored" data-anchor-id="sec-r-arrays-arithmetic"><span class="header-section-number">15.2.4</span> Arithmetic</h3>
 <p>As with vectors and matrices, unary arithmetic operators are evaluated elementwise for arrays. Likewise, binary arithmetic operators are evaluated elementwise for arrays of identical dimensionality.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb86"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1"></a>A <span class="ot">=</span> <span class="fu">array</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="at">dim =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>))  <span class="co"># 1 x 2 x 2 array of the numbers 1,...,4</span></span>
-<span id="cb86-2"><a href="#cb86-2"></a>A</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb86"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-label="1"></a>A <span class="ot">=</span> <span class="fu">array</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="at">dim =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>))  <span class="co"># 1 x 2 x 2 array of 1,...,4</span></span>
+<span id="cb86-2"><a href="#cb86-2" aria-label="2"></a>A</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>, , 1
 
@@ -947,8 +951,8 @@ P4   4   8  12</code></pre>
      [,1] [,2]
 [1,]    3    4</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb88"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1"></a>B <span class="ot">=</span> <span class="fu">array</span>(<span class="dv">5</span><span class="sc">:</span><span class="dv">8</span>, <span class="at">dim =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>))  <span class="co"># 1 x 2 x 2 array of the numbers 5,...,8</span></span>
-<span id="cb88-2"><a href="#cb88-2"></a>B</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb88"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-label="1"></a>B <span class="ot">=</span> <span class="fu">array</span>(<span class="dv">5</span><span class="sc">:</span><span class="dv">8</span>, <span class="at">dim =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>))  <span class="co"># 1 x 2 x 2 array of 5,...,8</span></span>
+<span id="cb88-2"><a href="#cb88-2" aria-label="2"></a>B</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>, , 1
 
@@ -960,8 +964,8 @@ P4   4   8  12</code></pre>
      [,1] [,2]
 [1,]    7    8</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb90"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1"></a>C <span class="ot">=</span> A<span class="sc">^</span><span class="dv">2</span>                         <span class="co"># elementwise exponentiation</span></span>
-<span id="cb90-2"><a href="#cb90-2"></a>C</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb90"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-label="1"></a>C <span class="ot">=</span> A<span class="sc">^</span><span class="dv">2</span>                         <span class="co"># elementwise exponentiation</span></span>
+<span id="cb90-2"><a href="#cb90-2" aria-label="2"></a>C</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>, , 1
 
@@ -973,8 +977,8 @@ P4   4   8  12</code></pre>
      [,1] [,2]
 [1,]    9   16</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb92"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1"></a>D <span class="ot">=</span> A <span class="sc">+</span> B                       <span class="co"># elementwise addition</span></span>
-<span id="cb92-2"><a href="#cb92-2"></a>D</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb92"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-label="1"></a>D <span class="ot">=</span> A <span class="sc">+</span> B                       <span class="co"># elementwise addition</span></span>
+<span id="cb92-2"><a href="#cb92-2" aria-label="2"></a>D</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>, , 1
 
@@ -992,8 +996,8 @@ P4   4   8  12</code></pre>
 <h3 data-number="15.2.5" class="anchored" data-anchor-id="sec-r-arrays-attributes"><span class="header-section-number">15.2.5</span> Attributes</h3>
 <p>Formally, arrays are atomic vectors with a <code>dim</code> attribute.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb94"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1"></a>A <span class="ot">=</span> <span class="fu">array</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>, <span class="at">dim =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>))  <span class="co"># 2 x 2 x 3 array of the numbers 1,...,12</span></span>
-<span id="cb94-2"><a href="#cb94-2"></a><span class="fu">attributes</span>(A)                    <span class="co"># call the attributes of A</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb94"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-label="1"></a>A <span class="ot">=</span> <span class="fu">array</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>, <span class="at">dim =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>))  <span class="co"># 2 x 2 x 3 array of 1,...,12</span></span>
+<span id="cb94-2"><a href="#cb94-2" aria-label="2"></a><span class="fu">attributes</span>(A)                    <span class="co"># call the attributes of A</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$dim
 [1] 2 2 3</code></pre>
@@ -1007,114 +1011,220 @@ P4   4   8  12</code></pre>
 
 </main> <!-- /main -->
 <script>
-(function () {
-  var base = "https://dirk-ostwald.github.io";
-  var pageMap = {
-    "/": "/en/",
-    "/index.html": "/en/",
-    "/Referenzen.html": "/en/References.html",
-    "/_part_1/100-Mathematische-Grundlagen.html": "/en/_part_1/100-Mathematical-Foundations.html",
-    "/_part_1/101-Sprache-und-Logik.html": "/en/_part_1/101-Language-and-Logic.html",
-    "/_part_1/102-Mengen.html": "/en/_part_1/102-Sets.html",
-    "/_part_1/103-Summen-Produkte-Potenzen.html": "/en/_part_1/103-Sums-Products-Powers.html",
-    "/_part_1/104-Funktionen.html": "/en/_part_1/104-Functions.html",
-    "/_part_1/105-Folgen-Grenzwerte-Stetigkeit.html": "/en/_part_1/105-Sequences-Limits-Continuity.html",
-    "/_part_1/106-Differenzialrechnung.html": "/en/_part_1/106-Differential-Calculus.html",
-    "/_part_1/107-Integralrechnung.html": "/en/_part_1/107-Integral-Calculus.html",
-    "/_part_1/108-Vektoren.html": "/en/_part_1/108-Vectors.html",
-    "/_part_1/109-Matrizen.html": "/en/_part_1/109-Matrices.html",
-    "/_part_1/110-Deskriptivstatistiken.html": "/en/_part_1/110-Descriptive-Statistics.html",
-    "/_part_2/200-Imperative-Programmierung.html": "/en/_part_2/200-Imperative-Programming.html",
-    "/_part_2/201-Informatische-Grundbegriffe.html": "/en/_part_2/201-Basic-Concepts-of-Computer-Science.html",
-    "/_part_2/202-Arithmetik-und-Variablen.html": "/en/_part_2/202-Arithmetic-and-Variables.html",
-    "/_part_2/203-Datenstrukturen.html": "/en/_part_2/203-Data-Structures.html",
-    "/_part_2/204-Vektoren.html": "/en/_part_2/204-Vectors.html",
-    "/_part_2/205-Matrizen-und-Arrays.html": "/en/_part_2/205-Matrices-and-Arrays.html",
-    "/_part_2/206-Listen-Dataframes-und-Tibbles.html": "/en/_part_2/206-Lists-Dataframes-and-Tibbles.html",
-    "/_part_2/207-Datenmanagement.html": "/en/_part_2/207-Data-Management.html",
-    "/_part_2/208-Kontrollstrukturen.html": "/en/_part_2/208-Control-Structures.html",
-    "/_part_3/300-Wahrscheinlichkeitstheorie.html": "/en/_part_3/300-Probability-Theory.html",
-    "/_part_3/301-Wahrscheinlichkeitsräume.html": "/en/_part_3/301-Probability-Spaces.html",
-    "/_part_3/302-Elementare-Wahrscheinlichkeiten.html": "/en/_part_3/302-Elementary-Probabilities.html",
-    "/_part_3/303-Zufallsvariablen.html": "/en/_part_3/303-Random-Variables.html",
-    "/_part_3/304-Zufallsvektoren.html": "/en/_part_3/304-Random-Vectors.html",
-    "/_part_3/305-Erwartungswerte.html": "/en/_part_3/305-Expectations.html",
-    "/_part_3/306-Varianzen.html": "/en/_part_3/306-Variances.html",
-    "/_part_3/307-Kovarianzen.html": "/en/_part_3/307-Covariances.html",
-    "/_part_3/308-Ungleichungen.html": "/en/_part_3/308-Inequalities.html",
-    "/_part_3/309-Grenzwerte.html": "/en/_part_3/309-Limits.html",
-    "/_part_3/310-Transformationen.html": "/en/_part_3/310-Transformations.html",
-    "/_part_3/311-Normalverteilungen.html": "/en/_part_3/311-Normal-Distributions.html",
-    "/_part_4/400-Inferenz.html": "/en/_part_4/400-Inference.html",
-    "/_part_4/401-Frequentistische-Inferenz.html": "/en/_part_4/401-Frequentist-Inference.html",
-    "/_part_4/402-Punktschätzung.html": "/en/_part_4/402-Point-Estimation.html",
-    "/_part_4/403-Konfidenzintervalle.html": "/en/_part_4/403-Confidence-Intervals.html",
-    "/_part_4/404-Hypothesentests.html": "/en/_part_4/404-Hypothesis-Tests.html",
-    "/_part_5/500-Allgemeines-Lineares-Modell.html": "/en/_part_5/500-General-Linear-Model.html",
-    "/_part_5/501-Regression.html": "/en/_part_5/501-Regression.html",
-    "/_part_5/502-Korrelation.html": "/en/_part_5/502-Correlation.html",
-    "/_part_5/503-Modellformulierung.html": "/en/_part_5/503-Model-Formulation.html",
-    "/_part_5/504-Parameterschätzung.html": "/en/_part_5/504-Parameter-Estimation.html",
-    "/_part_5/505-T-Statistiken.html": "/en/_part_5/505-T-Statistics.html",
-    "/_part_5/506-F-Statistiken.html": "/en/_part_5/506-F-Statistics.html",
-    "/_part_5/507-T-Tests.html": "/en/_part_5/507-T-Tests.html",
-    "/_part_5/508-Einfaktorielle-Varianzanalyse.html": "/en/_part_5/508-One-Way-Analysis-of-Variance.html",
-    "/_part_5/509-Zweifaktorielle-Varianzanalyse.html": "/en/_part_5/509-Two-Way-Analysis-of-Variance.html",
-    "/_part_5/510-Partielle-Korrelation.html": "/en/_part_5/510-Partial-Correlation.html",
-    "/_part_5/511-Multiple-Regression.html": "/en/_part_5/511-Multiple-Regression.html"
-  };
-  var reversePageMap = {};
-  Object.keys(pageMap).forEach(function (key) {
-    reversePageMap[pageMap[key]] = key;
-  });
-  function headings() {
-    return Array.prototype.slice.call(document.querySelectorAll("main.content h1[id], main.content h2[id], main.content h3[id], main.content h4[id]"));
-  }
-  function currentHeadingIndex() {
-    var hash = window.location.hash;
-    if (!hash) return "";
-    var id = hash.slice(1);
-    try {
-      id = decodeURIComponent(id);
-    } catch (error) {}
-    var list = headings();
-    for (var i = 0; i < list.length; i++) {
-      if (list[i].id === id) return String(i);
-    }
-    return "";
-  }
-  function scrollToHeadingIndex() {
-    var params = new URLSearchParams(window.location.search);
-    var value = params.get("h");
-    if (value === null) return;
-    var index = Number(value);
-    var list = headings();
-    if (Number.isInteger(index) && index >= 0 && index < list.length) {
-      list[index].scrollIntoView();
-      if (history.replaceState) {
-        history.replaceState(null, "", window.location.pathname + "#" + list[index].id);
-      }
-    }
-  }
-  var path = window.location.pathname;
-  var target = pageMap[path] || reversePageMap[path];
-  if (target) {
-    document.querySelectorAll("a.nav-link").forEach(function (link) {
-      var text = link.textContent.trim();
-      if (text === "English" || text === "Deutsch") {
-        var index = currentHeadingIndex();
-        link.href = base + target + (index ? "?h=" + index : "");
-      }
-    });
-  }
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", scrollToHeadingIndex);
-  } else {
-    scrollToHeadingIndex();
-  }
-}());
-</script>
 
+(function () {
+
+  var base = "https://dirk-ostwald.github.io";
+
+  var pageMap = {
+
+    "/": "/en/",
+
+    "/index.html": "/en/",
+
+    "/Referenzen.html": "/en/References.html",
+
+    "/_part_1/100-Mathematische-Grundlagen.html": "/en/_part_1/100-Mathematical-Foundations.html",
+
+    "/_part_1/101-Sprache-und-Logik.html": "/en/_part_1/101-Language-and-Logic.html",
+
+    "/_part_1/102-Mengen.html": "/en/_part_1/102-Sets.html",
+
+    "/_part_1/103-Summen-Produkte-Potenzen.html": "/en/_part_1/103-Sums-Products-Powers.html",
+
+    "/_part_1/104-Funktionen.html": "/en/_part_1/104-Functions.html",
+
+    "/_part_1/105-Folgen-Grenzwerte-Stetigkeit.html": "/en/_part_1/105-Sequences-Limits-Continuity.html",
+
+    "/_part_1/106-Differenzialrechnung.html": "/en/_part_1/106-Differential-Calculus.html",
+
+    "/_part_1/107-Integralrechnung.html": "/en/_part_1/107-Integral-Calculus.html",
+
+    "/_part_1/108-Vektoren.html": "/en/_part_1/108-Vectors.html",
+
+    "/_part_1/109-Matrizen.html": "/en/_part_1/109-Matrices.html",
+
+    "/_part_1/110-Deskriptivstatistiken.html": "/en/_part_1/110-Descriptive-Statistics.html",
+
+    "/_part_2/200-Imperative-Programmierung.html": "/en/_part_2/200-Imperative-Programming.html",
+
+    "/_part_2/201-Informatische-Grundbegriffe.html": "/en/_part_2/201-Basic-Concepts-of-Computer-Science.html",
+
+    "/_part_2/202-Arithmetik-und-Variablen.html": "/en/_part_2/202-Arithmetic-and-Variables.html",
+
+    "/_part_2/203-Datenstrukturen.html": "/en/_part_2/203-Data-Structures.html",
+
+    "/_part_2/204-Vektoren.html": "/en/_part_2/204-Vectors.html",
+
+    "/_part_2/205-Matrizen-und-Arrays.html": "/en/_part_2/205-Matrices-and-Arrays.html",
+
+    "/_part_2/206-Listen-Dataframes-und-Tibbles.html": "/en/_part_2/206-Lists-Dataframes-and-Tibbles.html",
+
+    "/_part_2/207-Datenmanagement.html": "/en/_part_2/207-Data-Management.html",
+
+    "/_part_2/208-Kontrollstrukturen.html": "/en/_part_2/208-Control-Structures.html",
+
+    "/_part_3/300-Wahrscheinlichkeitstheorie.html": "/en/_part_3/300-Probability-Theory.html",
+
+    "/_part_3/301-Wahrscheinlichkeitsräume.html": "/en/_part_3/301-Probability-Spaces.html",
+
+    "/_part_3/302-Elementare-Wahrscheinlichkeiten.html": "/en/_part_3/302-Elementary-Probabilities.html",
+
+    "/_part_3/303-Zufallsvariablen.html": "/en/_part_3/303-Random-Variables.html",
+
+    "/_part_3/304-Zufallsvektoren.html": "/en/_part_3/304-Random-Vectors.html",
+
+    "/_part_3/305-Erwartungswerte.html": "/en/_part_3/305-Expectations.html",
+
+    "/_part_3/306-Varianzen.html": "/en/_part_3/306-Variances.html",
+
+    "/_part_3/307-Kovarianzen.html": "/en/_part_3/307-Covariances.html",
+
+    "/_part_3/308-Ungleichungen.html": "/en/_part_3/308-Inequalities.html",
+
+    "/_part_3/309-Grenzwerte.html": "/en/_part_3/309-Limits.html",
+
+    "/_part_3/310-Transformationen.html": "/en/_part_3/310-Transformations.html",
+
+    "/_part_3/311-Normalverteilungen.html": "/en/_part_3/311-Normal-Distributions.html",
+
+    "/_part_4/400-Inferenz.html": "/en/_part_4/400-Inference.html",
+
+    "/_part_4/401-Frequentistische-Inferenz.html": "/en/_part_4/401-Frequentist-Inference.html",
+
+    "/_part_4/402-Punktschätzung.html": "/en/_part_4/402-Point-Estimation.html",
+
+    "/_part_4/403-Konfidenzintervalle.html": "/en/_part_4/403-Confidence-Intervals.html",
+
+    "/_part_4/404-Hypothesentests.html": "/en/_part_4/404-Hypothesis-Tests.html",
+
+    "/_part_5/500-Allgemeines-Lineares-Modell.html": "/en/_part_5/500-General-Linear-Model.html",
+
+    "/_part_5/501-Regression.html": "/en/_part_5/501-Regression.html",
+
+    "/_part_5/502-Korrelation.html": "/en/_part_5/502-Correlation.html",
+
+    "/_part_5/503-Modellformulierung.html": "/en/_part_5/503-Model-Formulation.html",
+
+    "/_part_5/504-Parameterschätzung.html": "/en/_part_5/504-Parameter-Estimation.html",
+
+    "/_part_5/505-T-Statistiken.html": "/en/_part_5/505-T-Statistics.html",
+
+    "/_part_5/506-F-Statistiken.html": "/en/_part_5/506-F-Statistics.html",
+
+    "/_part_5/507-T-Tests.html": "/en/_part_5/507-T-Tests.html",
+
+    "/_part_5/508-Einfaktorielle-Varianzanalyse.html": "/en/_part_5/508-One-Way-Analysis-of-Variance.html",
+
+    "/_part_5/509-Zweifaktorielle-Varianzanalyse.html": "/en/_part_5/509-Two-Way-Analysis-of-Variance.html",
+
+    "/_part_5/510-Partielle-Korrelation.html": "/en/_part_5/510-Partial-Correlation.html",
+
+    "/_part_5/511-Multiple-Regression.html": "/en/_part_5/511-Multiple-Regression.html"
+
+  };
+
+  var reversePageMap = {};
+
+  Object.keys(pageMap).forEach(function (key) {
+
+    reversePageMap[pageMap[key]] = key;
+
+  });
+
+  function headings() {
+
+    return Array.prototype.slice.call(document.querySelectorAll("main.content h1[id], main.content h2[id], main.content h3[id], main.content h4[id]"));
+
+  }
+
+  function currentHeadingIndex() {
+
+    var hash = window.location.hash;
+
+    if (!hash) return "";
+
+    var id = hash.slice(1);
+
+    try {
+
+      id = decodeURIComponent(id);
+
+    } catch (error) {}
+
+    var list = headings();
+
+    for (var i = 0; i < list.length; i++) {
+
+      if (list[i].id === id) return String(i);
+
+    }
+
+    return "";
+
+  }
+
+  function scrollToHeadingIndex() {
+
+    var params = new URLSearchParams(window.location.search);
+
+    var value = params.get("h");
+
+    if (value === null) return;
+
+    var index = Number(value);
+
+    var list = headings();
+
+    if (Number.isInteger(index) && index >= 0 && index < list.length) {
+
+      list[index].scrollIntoView();
+
+      if (history.replaceState) {
+
+        history.replaceState(null, "", window.location.pathname + "#" + list[index].id);
+
+      }
+
+    }
+
+  }
+
+  var path = window.location.pathname;
+
+  var target = pageMap[path] || reversePageMap[path];
+
+  if (target) {
+
+    document.querySelectorAll("a.nav-link").forEach(function (link) {
+
+      var text = link.textContent.trim();
+
+      if (text === "English" || text === "Deutsch") {
+
+        var index = currentHeadingIndex();
+
+        link.href = base + target + (index ? "?h=" + index : "");
+
+      }
+
+    });
+
+  }
+
+  if (document.readyState === "loading") {
+
+    document.addEventListener("DOMContentLoaded", scrollToHeadingIndex);
+
+  } else {
+
+    scrollToHeadingIndex();
+
+  }
+
+}());
+
+</script>
 
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {

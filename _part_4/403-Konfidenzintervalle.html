@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,10 +12,13 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -96,10 +99,10 @@ div.csl-indent {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-6e8dda235ee8acd82fc3832029714bc4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-35fb2a33bb4c71715ffa083faf67f315.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -129,7 +132,7 @@ div.csl-indent {
 }</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -617,34 +620,34 @@ T \sim t(n-1)
 </div>
 <p>Man beachte, dass die <span class="math inline">\(T\)</span>-Konfidenzintervallstatistik nach <a href="#def-t-konfidenzintervallstatistik" class="quarto-xref">Definition&nbsp;<span>32.2</span></a> eine Funktion der Stichprobe ist, während ihre Verteilung nach <a href="#thm-verteilung-der-t-konfidenzintervallstatistik" class="quarto-xref">Theorem&nbsp;<span>32.1</span></a> unabhängig von den wahren, aber unbekannten, Parametern der Stichprobenverteilung ist. Man nennt dies auch die <em>Pivoteigenschaft</em> der <span class="math inline">\(T\)</span>-Konfidenzintervallstatistik. Für die folgenden Entwicklungen erinnern wir daran, dass wir die WDF einer <span class="math inline">\(t\)</span>-verteilten Zufallsvariable mit <span class="math inline">\(t\)</span>, die KVF einer <span class="math inline">\(t\)</span>-verteilten Zufallsvariable mit <span class="math inline">\(\Psi\)</span> und die inverse KVF einer <span class="math inline">\(t\)</span>-verteilten Zufallsvariable mit <span class="math inline">\(\Psi^{-1}\)</span> bezeichnen. Folgender <strong>R</strong> Code simuliert zunächst die Verteilung der <span class="math inline">\(T\)</span>-Konfidenzintervallstatistik.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># Modellformulierung</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a>mu       <span class="ot">=</span> <span class="dv">10</span>                                         <span class="co"># wahrer, aber unbekannter, Erwartungswertparameter</span></span>
-<span id="cb1-3"><a href="#cb1-3"></a>sigsqr   <span class="ot">=</span> <span class="dv">4</span>                                          <span class="co"># wahrer, aber unbekannter, Varianzparameter</span></span>
-<span id="cb1-4"><a href="#cb1-4"></a>n        <span class="ot">=</span> <span class="dv">12</span>                                         <span class="co"># Stichprobenumfang</span></span>
-<span id="cb1-5"><a href="#cb1-5"></a>ns       <span class="ot">=</span> <span class="fl">1e4</span>                                        <span class="co"># Anzahl Stichprobenrealisierungen</span></span>
-<span id="cb1-6"><a href="#cb1-6"></a>res      <span class="ot">=</span> <span class="fl">1e3</span>                                        <span class="co"># Ergebnisraumauflösung</span></span>
-<span id="cb1-7"><a href="#cb1-7"></a></span>
-<span id="cb1-8"><a href="#cb1-8"></a><span class="co"># analytische Definitionen und Resultate</span></span>
-<span id="cb1-9"><a href="#cb1-9"></a>yx       <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">3</span>,<span class="dv">17</span>,<span class="at">len =</span> res)                        <span class="co"># y_i Raum</span></span>
-<span id="cb1-10"><a href="#cb1-10"></a>ssqrx    <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">20</span>,<span class="at">len =</span> res)                        <span class="co"># S^2 Raum</span></span>
-<span id="cb1-11"><a href="#cb1-11"></a>tx       <span class="ot">=</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">4</span>,<span class="dv">4</span>,<span class="at">len =</span> res)                        <span class="co"># T Raum</span></span>
-<span id="cb1-12"><a href="#cb1-12"></a>p_y_i    <span class="ot">=</span> <span class="fu">dnorm</span>(yx,mu,<span class="fu">sqrt</span>(sigsqr))                  <span class="co"># y_i WDF</span></span>
-<span id="cb1-13"><a href="#cb1-13"></a>p_y_bar  <span class="ot">=</span> <span class="fu">dnorm</span>(yx,mu,<span class="fu">sqrt</span>(sigsqr<span class="sc">/</span>n))                <span class="co"># y_bar WDF</span></span>
-<span id="cb1-14"><a href="#cb1-14"></a>p_sqr    <span class="ot">=</span> <span class="fu">dchisq</span>(ssqrx,n<span class="dv">-1</span>)                          <span class="co"># S^2 WDF</span></span>
-<span id="cb1-15"><a href="#cb1-15"></a>p_t      <span class="ot">=</span> <span class="fu">dt</span>(tx,n<span class="dv">-1</span>)                                 <span class="co"># T WDF</span></span>
-<span id="cb1-16"><a href="#cb1-16"></a></span>
-<span id="cb1-17"><a href="#cb1-17"></a><span class="co"># Simulation</span></span>
-<span id="cb1-18"><a href="#cb1-18"></a>y_i      <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                                <span class="co"># y_i Array</span></span>
-<span id="cb1-19"><a href="#cb1-19"></a>y_bar    <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                                <span class="co"># \bar{y} Array</span></span>
-<span id="cb1-20"><a href="#cb1-20"></a>S        <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                                <span class="co"># S Array</span></span>
-<span id="cb1-21"><a href="#cb1-21"></a>TKS      <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                                <span class="co"># T-Konfidenzintervallstatistik Array</span></span>
-<span id="cb1-22"><a href="#cb1-22"></a><span class="cf">for</span>(s <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>ns){                                         <span class="co"># Simulationsiterationen</span></span>
-<span id="cb1-23"><a href="#cb1-23"></a>  y         <span class="ot">=</span> <span class="fu">rnorm</span>(n,mu,<span class="fu">sqrt</span>(sigsqr))                <span class="co"># Stichprobenrealisierung</span></span>
-<span id="cb1-24"><a href="#cb1-24"></a>  y_i[s]    <span class="ot">=</span> y[<span class="dv">1</span>]                                    <span class="co"># Stichprobenrealisierung y_i mit i = 1</span></span>
-<span id="cb1-25"><a href="#cb1-25"></a>  y_bar[s]  <span class="ot">=</span> <span class="fu">mean</span>(y)                                 <span class="co"># Stichprobenmittelrealisierung</span></span>
-<span id="cb1-26"><a href="#cb1-26"></a>  S[s]      <span class="ot">=</span> <span class="fu">sd</span>(y)                                   <span class="co"># Stichprobenstandardabweichungrealisierung</span></span>
-<span id="cb1-27"><a href="#cb1-27"></a>  TKS[s]    <span class="ot">=</span> <span class="fu">sqrt</span>(n)<span class="sc">*</span>((y_bar[s]<span class="sc">-</span>mu)<span class="sc">/</span>S[s])            <span class="co"># T-Konfidenzintervallstatistikrealisierung</span></span>
-<span id="cb1-28"><a href="#cb1-28"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-label="1"></a><span class="co"># Modellformulierung</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-label="2"></a>mu       <span class="ot">=</span> <span class="dv">10</span>                                         <span class="co"># wahrer, aber unbekannter, Erwartungswertparameter</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-label="3"></a>sigsqr   <span class="ot">=</span> <span class="dv">4</span>                                          <span class="co"># wahrer, aber unbekannter, Varianzparameter</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-label="4"></a>n        <span class="ot">=</span> <span class="dv">12</span>                                         <span class="co"># Stichprobenumfang</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-label="5"></a>ns       <span class="ot">=</span> <span class="fl">1e4</span>                                        <span class="co"># Anzahl Stichprobenrealisierungen</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-label="6"></a>res      <span class="ot">=</span> <span class="fl">1e3</span>                                        <span class="co"># Ergebnisraumauflösung</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-label="7"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-label="8"></a><span class="co"># analytische Definitionen und Resultate</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-label="9"></a>yx       <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">3</span>,<span class="dv">17</span>,<span class="at">len =</span> res)                        <span class="co"># y_i Raum</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-label="10"></a>ssqrx    <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">20</span>,<span class="at">len =</span> res)                        <span class="co"># S^2 Raum</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-label="11"></a>tx       <span class="ot">=</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">4</span>,<span class="dv">4</span>,<span class="at">len =</span> res)                        <span class="co"># T Raum</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-label="12"></a>p_y_i    <span class="ot">=</span> <span class="fu">dnorm</span>(yx,mu,<span class="fu">sqrt</span>(sigsqr))                  <span class="co"># y_i WDF</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-label="13"></a>p_y_bar  <span class="ot">=</span> <span class="fu">dnorm</span>(yx,mu,<span class="fu">sqrt</span>(sigsqr<span class="sc">/</span>n))                <span class="co"># y_bar WDF</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-label="14"></a>p_sqr    <span class="ot">=</span> <span class="fu">dchisq</span>(ssqrx,n<span class="dv">-1</span>)                          <span class="co"># S^2 WDF</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-label="15"></a>p_t      <span class="ot">=</span> <span class="fu">dt</span>(tx,n<span class="dv">-1</span>)                                 <span class="co"># T WDF</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-label="16"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-label="17"></a><span class="co"># Simulation</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-label="18"></a>y_i      <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                                <span class="co"># y_i Array</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-label="19"></a>y_bar    <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                                <span class="co"># \bar{y} Array</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-label="20"></a>S        <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                                <span class="co"># S Array</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-label="21"></a>TKS      <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                                <span class="co"># T-Konfidenzintervallstatistik Array</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-label="22"></a><span class="cf">for</span>(s <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>ns){                                         <span class="co"># Simulationsiterationen</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-label="23"></a>  y         <span class="ot">=</span> <span class="fu">rnorm</span>(n,mu,<span class="fu">sqrt</span>(sigsqr))                <span class="co"># Stichprobenrealisierung</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-label="24"></a>  y_i[s]    <span class="ot">=</span> y[<span class="dv">1</span>]                                    <span class="co"># Stichprobenrealisierung y_i mit i = 1</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-label="25"></a>  y_bar[s]  <span class="ot">=</span> <span class="fu">mean</span>(y)                                 <span class="co"># Stichprobenmittelrealisierung</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-label="26"></a>  S[s]      <span class="ot">=</span> <span class="fu">sd</span>(y)                                   <span class="co"># Stichprobenstandardabweichungrealisierung</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-label="27"></a>  TKS[s]    <span class="ot">=</span> <span class="fu">sqrt</span>(n)<span class="sc">*</span>((y_bar[s]<span class="sc">-</span>mu)<span class="sc">/</span>S[s])            <span class="co"># T-Konfidenzintervallstatistikrealisierung</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-label="28"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="fig-t-konfidenzintervallstatistik" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
@@ -723,27 +726,27 @@ Abbildung&nbsp;32.2: Sicherung der Überdeckungswahrscheinlichkeit des Konfidenz
 </div>
 <p>Abschließend wollen wir die Überdeckungswahrscheinlichkeit des durch <a href="#thm-konfidenzintervall-fuer-den-erwartungswertparameter-des-normalverteilungsmodells" class="quarto-xref">Theorem&nbsp;<span>32.2</span></a> gegebenen Konfidenzintervalls mithilfe einer Simulation demonstrieren. Wir betrachten dabei lediglich die erste Interpretation eines Konfidenzintervalls bei konstantem, wahrem, aber unbekanntem, Parameter. Folgender <strong>R</strong> Code bestimmt in diesem Sinne zu jeder Stichprobenrealisierung das entsprechende Konfidenzintervall.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># Modellformulierung</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)                                        <span class="co"># Zufallszahlengenerator</span></span>
-<span id="cb2-3"><a href="#cb2-3"></a>mu      <span class="ot">=</span> <span class="dv">2</span>                                        <span class="co"># wahrer, aber unbekannter, Erwartungswertparameter</span></span>
-<span id="cb2-4"><a href="#cb2-4"></a>sigsqr  <span class="ot">=</span> <span class="dv">1</span>                                        <span class="co"># wahrer, aber unbekannter, Varianzparameter</span></span>
-<span id="cb2-5"><a href="#cb2-5"></a>sigma   <span class="ot">=</span> <span class="fu">sqrt</span>(sigsqr)                             <span class="co"># wahrer, aber unbekannter, Standardabweichungsparameter</span></span>
-<span id="cb2-6"><a href="#cb2-6"></a>n       <span class="ot">=</span> <span class="dv">12</span>                                       <span class="co"># Stichprobenumfang</span></span>
-<span id="cb2-7"><a href="#cb2-7"></a>delta   <span class="ot">=</span> <span class="fl">0.95</span>                                     <span class="co"># Konfidenzbedingung</span></span>
-<span id="cb2-8"><a href="#cb2-8"></a>t_delta <span class="ot">=</span> <span class="fu">qt</span>((<span class="dv">1</span><span class="sc">+</span>delta)<span class="sc">/</span><span class="dv">2</span>,n<span class="dv">-1</span>)                      <span class="co"># \Psi^-1((\delta + 1)/2, n-1)</span></span>
-<span id="cb2-9"><a href="#cb2-9"></a></span>
-<span id="cb2-10"><a href="#cb2-10"></a><span class="co"># Stichprobenrealisierungen</span></span>
-<span id="cb2-11"><a href="#cb2-11"></a>ns      <span class="ot">=</span> <span class="fl">1e2</span>                                      <span class="co"># Anzahl Stichprobenrealisierungen</span></span>
-<span id="cb2-12"><a href="#cb2-12"></a>y_bar   <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                              <span class="co"># Stichprobenmittelarray</span></span>
-<span id="cb2-13"><a href="#cb2-13"></a>S       <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                              <span class="co"># Standardabweichungsarray</span></span>
-<span id="cb2-14"><a href="#cb2-14"></a>kappa   <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="cn">NaN</span>,<span class="dv">2</span><span class="sc">*</span>ns), <span class="at">ncol =</span> <span class="dv">2</span>)          <span class="co"># Konfidenzintervallarray</span></span>
-<span id="cb2-15"><a href="#cb2-15"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>ns){</span>
-<span id="cb2-16"><a href="#cb2-16"></a>   y          <span class="ot">=</span> <span class="fu">rnorm</span>(n,mu,sigma)                  <span class="co"># Stichprobenrealisierung</span></span>
-<span id="cb2-17"><a href="#cb2-17"></a>   y_bar[i]   <span class="ot">=</span> <span class="fu">mean</span>(y)                            <span class="co"># Stichprobenmittel</span></span>
-<span id="cb2-18"><a href="#cb2-18"></a>   S[i]       <span class="ot">=</span> <span class="fu">sd</span>(y)                              <span class="co"># Stichprobenstandardabweichung</span></span>
-<span id="cb2-19"><a href="#cb2-19"></a>   kappa[i,<span class="dv">1</span>] <span class="ot">=</span> y_bar[i] <span class="sc">-</span> (S[i]<span class="sc">/</span><span class="fu">sqrt</span>(n))<span class="sc">*</span>t_delta  <span class="co"># untere Konfidenzintervallgrenze</span></span>
-<span id="cb2-20"><a href="#cb2-20"></a>   kappa[i,<span class="dv">2</span>] <span class="ot">=</span> y_bar[i] <span class="sc">+</span> (S[i]<span class="sc">/</span><span class="fu">sqrt</span>(n))<span class="sc">*</span>t_delta  <span class="co"># obere Konfidenzintervallgrenze</span></span>
-<span id="cb2-21"><a href="#cb2-21"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-label="1"></a><span class="co"># Modellformulierung</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-label="2"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)                                        <span class="co"># Zufallszahlengenerator</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-label="3"></a>mu      <span class="ot">=</span> <span class="dv">2</span>                                        <span class="co"># wahrer, aber unbekannter, Erwartungswertparameter</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-label="4"></a>sigsqr  <span class="ot">=</span> <span class="dv">1</span>                                        <span class="co"># wahrer, aber unbekannter, Varianzparameter</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-label="5"></a>sigma   <span class="ot">=</span> <span class="fu">sqrt</span>(sigsqr)                             <span class="co"># wahrer, aber unbekannter, Standardabweichungsparameter</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-label="6"></a>n       <span class="ot">=</span> <span class="dv">12</span>                                       <span class="co"># Stichprobenumfang</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-label="7"></a>delta   <span class="ot">=</span> <span class="fl">0.95</span>                                     <span class="co"># Konfidenzbedingung</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-label="8"></a>t_delta <span class="ot">=</span> <span class="fu">qt</span>((<span class="dv">1</span><span class="sc">+</span>delta)<span class="sc">/</span><span class="dv">2</span>,n<span class="dv">-1</span>)                      <span class="co"># \Psi^-1((\delta + 1)/2, n-1)</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-label="9"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-label="10"></a><span class="co"># Stichprobenrealisierungen</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-label="11"></a>ns      <span class="ot">=</span> <span class="fl">1e2</span>                                      <span class="co"># Anzahl Stichprobenrealisierungen</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-label="12"></a>y_bar   <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                              <span class="co"># Stichprobenmittelarray</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-label="13"></a>S       <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                              <span class="co"># Standardabweichungsarray</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-label="14"></a>kappa   <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="cn">NaN</span>,<span class="dv">2</span><span class="sc">*</span>ns), <span class="at">ncol =</span> <span class="dv">2</span>)          <span class="co"># Konfidenzintervallarray</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-label="15"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>ns){</span>
+<span id="cb2-16"><a href="#cb2-16" aria-label="16"></a>   y          <span class="ot">=</span> <span class="fu">rnorm</span>(n,mu,sigma)                  <span class="co"># Stichprobenrealisierung</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-label="17"></a>   y_bar[i]   <span class="ot">=</span> <span class="fu">mean</span>(y)                            <span class="co"># Stichprobenmittel</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-label="18"></a>   S[i]       <span class="ot">=</span> <span class="fu">sd</span>(y)                              <span class="co"># Stichprobenstandardabweichung</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-label="19"></a>   kappa[i,<span class="dv">1</span>] <span class="ot">=</span> y_bar[i] <span class="sc">-</span> (S[i]<span class="sc">/</span><span class="fu">sqrt</span>(n))<span class="sc">*</span>t_delta  <span class="co"># untere Konfidenzintervallgrenze</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-label="20"></a>   kappa[i,<span class="dv">2</span>] <span class="ot">=</span> y_bar[i] <span class="sc">+</span> (S[i]<span class="sc">/</span><span class="fu">sqrt</span>(n))<span class="sc">*</span>t_delta  <span class="co"># obere Konfidenzintervallgrenze</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-label="21"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Wir visualisieren die Ergebnisse dieser Simulation in <a href="#fig-ki-erwartungswertparameter-normalverteilung-1" class="quarto-xref">Abbildung&nbsp;<span>32.3</span></a>.</p>
 <div id="fig-ki-erwartungswertparameter-normalverteilung-1" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
@@ -777,32 +780,32 @@ U \sim \chi^2(n-1)
 </div>
 <p>Für einen Beweis von <a href="#thm-verteilung-der-u-konfidenzintervallstatistik" class="quarto-xref">Theorem&nbsp;<span>32.3</span></a> verweisen wir auf <span class="citation" data-cites="casella2002">Casella &amp; Berger (<a href="#ref-casella2002" role="doc-biblioref">2002</a>)</span>. Wie die <span class="math inline">\(T\)</span>-Konfidenzintervallstatistik besitzt auch die <span class="math inline">\(U\)</span>-Konfidenzintervallstatistik die Pivoteigenschaft, da sie eine Funktion der Stichprobe ist, aber ihre Verteilung nach <a href="#thm-verteilung-der-u-konfidenzintervallstatistik" class="quarto-xref">Theorem&nbsp;<span>32.3</span></a> nicht von den wahren, aber unbekannten, Verteilungsparametern der Stichprobe abhängt. Für die folgenden Entwicklungen erinnern wir daran, dass wir die WDF einer <span class="math inline">\(\chi^2\)</span>-verteilten Zufallsvariable mit <span class="math inline">\(\chi^2\)</span>, die KVF einer <span class="math inline">\(\chi^2\)</span>-verteilten Zufallsvariable mit <span class="math inline">\(\Xi\)</span> und die inverse KVF einer <span class="math inline">\(\chi^2\)</span>-verteilten Zufallsvariable mit <span class="math inline">\(\Xi^{-1}\)</span> bezeichnen. Folgender <strong>R</strong> Code simuliert zunächst die Verteilung der <span class="math inline">\(U\)</span>-Konfidenzintervallstatistik.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># Modellformulierung</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a>mu      <span class="ot">=</span> <span class="dv">10</span>                                    <span class="co"># wahrer Erwartungswertparameter</span></span>
-<span id="cb3-3"><a href="#cb3-3"></a>sigsqr  <span class="ot">=</span> <span class="dv">4</span>                                     <span class="co"># wahrer bekannter Varianzparameter</span></span>
-<span id="cb3-4"><a href="#cb3-4"></a>n       <span class="ot">=</span> <span class="dv">12</span>                                    <span class="co"># Stichprobenumfang</span></span>
-<span id="cb3-5"><a href="#cb3-5"></a>ns      <span class="ot">=</span> <span class="fl">1e4</span>                                   <span class="co"># Anzahl Stichprobenrealisierungen</span></span>
-<span id="cb3-6"><a href="#cb3-6"></a>res     <span class="ot">=</span> <span class="fl">1e3</span>                                   <span class="co"># Ergebnisraumauflösung</span></span>
-<span id="cb3-7"><a href="#cb3-7"></a></span>
-<span id="cb3-8"><a href="#cb3-8"></a><span class="co"># analytische Definitionen und Resultate</span></span>
-<span id="cb3-9"><a href="#cb3-9"></a>yx      <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">3</span>,<span class="dv">17</span>,<span class="at">len =</span> res)                   <span class="co"># y_i Raum</span></span>
-<span id="cb3-10"><a href="#cb3-10"></a>ux      <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">30</span>,<span class="at">len =</span> res)                   <span class="co"># U Raum</span></span>
-<span id="cb3-11"><a href="#cb3-11"></a>p_y_i   <span class="ot">=</span> <span class="fu">dnorm</span>(yx,mu,<span class="fu">sqrt</span>(sigsqr))             <span class="co"># y_i WDF</span></span>
-<span id="cb3-12"><a href="#cb3-12"></a>p_y_bar <span class="ot">=</span> <span class="fu">dnorm</span>(yx,mu,<span class="fu">sqrt</span>(sigsqr<span class="sc">/</span>n))           <span class="co"># y_bar WDF</span></span>
-<span id="cb3-13"><a href="#cb3-13"></a>p_u     <span class="ot">=</span> <span class="fu">dchisq</span>(ux,n<span class="dv">-1</span>)                        <span class="co"># U WDF</span></span>
-<span id="cb3-14"><a href="#cb3-14"></a></span>
-<span id="cb3-15"><a href="#cb3-15"></a><span class="co"># Simulation</span></span>
-<span id="cb3-16"><a href="#cb3-16"></a>y_i     <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                           <span class="co"># y_i Array</span></span>
-<span id="cb3-17"><a href="#cb3-17"></a>y_bar   <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                           <span class="co"># \bar{y} Array</span></span>
-<span id="cb3-18"><a href="#cb3-18"></a>S_sqr   <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                           <span class="co"># S^2 Array</span></span>
-<span id="cb3-19"><a href="#cb3-19"></a>UKS     <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                           <span class="co"># U-Konfidenzintervallstatistik Array</span></span>
-<span id="cb3-20"><a href="#cb3-20"></a><span class="cf">for</span>(s <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>ns){                                 <span class="co"># Simulationsiterationen</span></span>
-<span id="cb3-21"><a href="#cb3-21"></a>  y         <span class="ot">=</span> <span class="fu">rnorm</span>(n,mu,<span class="fu">sqrt</span>(sigsqr))          <span class="co"># Stichprobenrealisierung</span></span>
-<span id="cb3-22"><a href="#cb3-22"></a>  y_i[s]    <span class="ot">=</span> y[<span class="dv">1</span>]                              <span class="co"># Stichprobenrealisierung y_i mit i = 1</span></span>
-<span id="cb3-23"><a href="#cb3-23"></a>  y_bar[s]  <span class="ot">=</span> <span class="fu">mean</span>(y)                           <span class="co"># Stichprobenmittelrealisierung</span></span>
-<span id="cb3-24"><a href="#cb3-24"></a>  S_sqr[s]  <span class="ot">=</span> <span class="fu">var</span>(y)                            <span class="co"># Stichprobenvarianzrealisierung</span></span>
-<span id="cb3-25"><a href="#cb3-25"></a>  UKS[s]    <span class="ot">=</span> ((n<span class="dv">-1</span>)<span class="sc">/</span>sigsqr)<span class="sc">*</span>S_sqr[s]           <span class="co"># U-Konfidenzintervallstatistikrealisierung</span></span>
-<span id="cb3-26"><a href="#cb3-26"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-label="1"></a><span class="co"># Modellformulierung</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-label="2"></a>mu      <span class="ot">=</span> <span class="dv">10</span>                                    <span class="co"># wahrer Erwartungswertparameter</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-label="3"></a>sigsqr  <span class="ot">=</span> <span class="dv">4</span>                                     <span class="co"># wahrer bekannter Varianzparameter</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-label="4"></a>n       <span class="ot">=</span> <span class="dv">12</span>                                    <span class="co"># Stichprobenumfang</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-label="5"></a>ns      <span class="ot">=</span> <span class="fl">1e4</span>                                   <span class="co"># Anzahl Stichprobenrealisierungen</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-label="6"></a>res     <span class="ot">=</span> <span class="fl">1e3</span>                                   <span class="co"># Ergebnisraumauflösung</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-label="7"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-label="8"></a><span class="co"># analytische Definitionen und Resultate</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-label="9"></a>yx      <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">3</span>,<span class="dv">17</span>,<span class="at">len =</span> res)                   <span class="co"># y_i Raum</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-label="10"></a>ux      <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">30</span>,<span class="at">len =</span> res)                   <span class="co"># U Raum</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-label="11"></a>p_y_i   <span class="ot">=</span> <span class="fu">dnorm</span>(yx,mu,<span class="fu">sqrt</span>(sigsqr))             <span class="co"># y_i WDF</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-label="12"></a>p_y_bar <span class="ot">=</span> <span class="fu">dnorm</span>(yx,mu,<span class="fu">sqrt</span>(sigsqr<span class="sc">/</span>n))           <span class="co"># y_bar WDF</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-label="13"></a>p_u     <span class="ot">=</span> <span class="fu">dchisq</span>(ux,n<span class="dv">-1</span>)                        <span class="co"># U WDF</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-label="14"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-label="15"></a><span class="co"># Simulation</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-label="16"></a>y_i     <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                           <span class="co"># y_i Array</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-label="17"></a>y_bar   <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                           <span class="co"># \bar{y} Array</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-label="18"></a>S_sqr   <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                           <span class="co"># S^2 Array</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-label="19"></a>UKS     <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                           <span class="co"># U-Konfidenzintervallstatistik Array</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-label="20"></a><span class="cf">for</span>(s <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>ns){                                 <span class="co"># Simulationsiterationen</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-label="21"></a>  y         <span class="ot">=</span> <span class="fu">rnorm</span>(n,mu,<span class="fu">sqrt</span>(sigsqr))          <span class="co"># Stichprobenrealisierung</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-label="22"></a>  y_i[s]    <span class="ot">=</span> y[<span class="dv">1</span>]                              <span class="co"># Stichprobenrealisierung y_i mit i = 1</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-label="23"></a>  y_bar[s]  <span class="ot">=</span> <span class="fu">mean</span>(y)                           <span class="co"># Stichprobenmittelrealisierung</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-label="24"></a>  S_sqr[s]  <span class="ot">=</span> <span class="fu">var</span>(y)                            <span class="co"># Stichprobenvarianzrealisierung</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-label="25"></a>  UKS[s]    <span class="ot">=</span> ((n<span class="dv">-1</span>)<span class="sc">/</span>sigsqr)<span class="sc">*</span>S_sqr[s]           <span class="co"># U-Konfidenzintervallstatistikrealisierung</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-label="26"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="fig-u-konfidenzintervallstatistik" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
@@ -865,26 +868,26 @@ Abbildung&nbsp;32.5: Sicherung der Überdeckungswahrscheinlichkeit des Konfidenz
 </div>
 <p>Abschließend wollen wir die Überdeckungswahrscheinlichkeit des durch <a href="#thm-konfidenzintervall-fuer-den-varianzparameter-des-normalverteilungsmodells" class="quarto-xref">Theorem&nbsp;<span>32.4</span></a> gegebenen Konfidenzintervalls mithilfe einer Simulation demonstrieren. Dazu betrachten wir zunächst die in <a href="#sec-konfidenzintervalle-definition" class="quarto-xref"><span>Kapitel 32.1</span></a> gegebene erste Interpretation eines Konfidenzintervalls bei immer gleichem wahrem, aber unbekanntem, Parameter. Folgender <strong>R</strong> Code bestimmt in diesem Sinne zu jeder Stichprobenrealisierung das entsprechende Konfidenzintervall.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># Modellformulierung</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)                                     <span class="co"># Zufallszahlengenerator</span></span>
-<span id="cb4-3"><a href="#cb4-3"></a>mu          <span class="ot">=</span> <span class="dv">2</span>                                 <span class="co"># wahrer, aber unbekannter,  Erwartungswertparameter</span></span>
-<span id="cb4-4"><a href="#cb4-4"></a>sigsqr      <span class="ot">=</span> <span class="dv">2</span>                                 <span class="co"># wahrer, aber unbekannter,  Varianzparameter</span></span>
-<span id="cb4-5"><a href="#cb4-5"></a>n           <span class="ot">=</span> <span class="dv">12</span>                                <span class="co"># Stichprobenumfang</span></span>
-<span id="cb4-6"><a href="#cb4-6"></a>delta       <span class="ot">=</span> <span class="fl">0.95</span>                              <span class="co"># Konfidenzbedingung</span></span>
-<span id="cb4-7"><a href="#cb4-7"></a>u_delta     <span class="ot">=</span> <span class="fu">qchisq</span>((<span class="dv">1</span><span class="sc">-</span>delta)<span class="sc">/</span><span class="dv">2</span>, n <span class="sc">-</span> <span class="dv">1</span>)        <span class="co"># \Xi^2((1-\delta)/2; n - 1)</span></span>
-<span id="cb4-8"><a href="#cb4-8"></a>u_delta_p   <span class="ot">=</span> <span class="fu">qchisq</span>((<span class="dv">1</span><span class="sc">+</span>delta)<span class="sc">/</span><span class="dv">2</span>, n <span class="sc">-</span> <span class="dv">1</span>)        <span class="co"># \Xi^2((1+\delta)/2; n - 1)</span></span>
-<span id="cb4-9"><a href="#cb4-9"></a></span>
-<span id="cb4-10"><a href="#cb4-10"></a><span class="co"># Stichprobenrealisierungen</span></span>
-<span id="cb4-11"><a href="#cb4-11"></a>ns          <span class="ot">=</span> <span class="fl">1e2</span>                               <span class="co"># Anzahl Simulationen</span></span>
-<span id="cb4-12"><a href="#cb4-12"></a>y_bar       <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                       <span class="co"># Stichprobenmittelarray</span></span>
-<span id="cb4-13"><a href="#cb4-13"></a>S2          <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                       <span class="co"># Stichprobenvarianzarray</span></span>
-<span id="cb4-14"><a href="#cb4-14"></a>kappa       <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="cn">NaN</span>,<span class="dv">2</span><span class="sc">*</span>ns), <span class="at">ncol =</span> <span class="dv">2</span>)   <span class="co"># Konfidenzintervallarray</span></span>
-<span id="cb4-15"><a href="#cb4-15"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>ns){                                 <span class="co"># Simulationsiterationen</span></span>
-<span id="cb4-16"><a href="#cb4-16"></a>   y            <span class="ot">=</span> <span class="fu">rnorm</span>(n,mu,<span class="fu">sqrt</span>(sigsqr))      <span class="co"># Stichprobenrealisierung</span></span>
-<span id="cb4-17"><a href="#cb4-17"></a>   S2[i]        <span class="ot">=</span> <span class="fu">var</span>(y)                        <span class="co"># Stichprobenvarianz</span></span>
-<span id="cb4-18"><a href="#cb4-18"></a>   kappa[i,<span class="dv">1</span>]   <span class="ot">=</span> (n<span class="dv">-1</span>)<span class="sc">*</span>S2[i]<span class="sc">/</span>u_delta_p         <span class="co"># untere Konfidenzintervallgrenze</span></span>
-<span id="cb4-19"><a href="#cb4-19"></a>   kappa[i,<span class="dv">2</span>]   <span class="ot">=</span> (n<span class="dv">-1</span>)<span class="sc">*</span>S2[i]<span class="sc">/</span>u_delta           <span class="co"># obere Konfidenzintervallgrenze</span></span>
-<span id="cb4-20"><a href="#cb4-20"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-label="1"></a><span class="co"># Modellformulierung</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-label="2"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)                                     <span class="co"># Zufallszahlengenerator</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-label="3"></a>mu          <span class="ot">=</span> <span class="dv">2</span>                                 <span class="co"># wahrer, aber unbekannter,  Erwartungswertparameter</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-label="4"></a>sigsqr      <span class="ot">=</span> <span class="dv">2</span>                                 <span class="co"># wahrer, aber unbekannter,  Varianzparameter</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-label="5"></a>n           <span class="ot">=</span> <span class="dv">12</span>                                <span class="co"># Stichprobenumfang</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-label="6"></a>delta       <span class="ot">=</span> <span class="fl">0.95</span>                              <span class="co"># Konfidenzbedingung</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-label="7"></a>u_delta     <span class="ot">=</span> <span class="fu">qchisq</span>((<span class="dv">1</span><span class="sc">-</span>delta)<span class="sc">/</span><span class="dv">2</span>, n <span class="sc">-</span> <span class="dv">1</span>)        <span class="co"># \Xi^2((1-\delta)/2; n - 1)</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-label="8"></a>u_delta_p   <span class="ot">=</span> <span class="fu">qchisq</span>((<span class="dv">1</span><span class="sc">+</span>delta)<span class="sc">/</span><span class="dv">2</span>, n <span class="sc">-</span> <span class="dv">1</span>)        <span class="co"># \Xi^2((1+\delta)/2; n - 1)</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-label="9"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-label="10"></a><span class="co"># Stichprobenrealisierungen</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-label="11"></a>ns          <span class="ot">=</span> <span class="fl">1e2</span>                               <span class="co"># Anzahl Simulationen</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-label="12"></a>y_bar       <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                       <span class="co"># Stichprobenmittelarray</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-label="13"></a>S2          <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>,ns)                       <span class="co"># Stichprobenvarianzarray</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-label="14"></a>kappa       <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="cn">NaN</span>,<span class="dv">2</span><span class="sc">*</span>ns), <span class="at">ncol =</span> <span class="dv">2</span>)   <span class="co"># Konfidenzintervallarray</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-label="15"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>ns){                                 <span class="co"># Simulationsiterationen</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-label="16"></a>   y            <span class="ot">=</span> <span class="fu">rnorm</span>(n,mu,<span class="fu">sqrt</span>(sigsqr))      <span class="co"># Stichprobenrealisierung</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-label="17"></a>   S2[i]        <span class="ot">=</span> <span class="fu">var</span>(y)                        <span class="co"># Stichprobenvarianz</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-label="18"></a>   kappa[i,<span class="dv">1</span>]   <span class="ot">=</span> (n<span class="dv">-1</span>)<span class="sc">*</span>S2[i]<span class="sc">/</span>u_delta_p         <span class="co"># untere Konfidenzintervallgrenze</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-label="19"></a>   kappa[i,<span class="dv">2</span>]   <span class="ot">=</span> (n<span class="dv">-1</span>)<span class="sc">*</span>S2[i]<span class="sc">/</span>u_delta           <span class="co"># obere Konfidenzintervallgrenze</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-label="20"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="fig-ki-varianzparameter-normalverteilung" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
@@ -899,11 +902,11 @@ Abbildung&nbsp;32.6: Simulation der Überdeckungswahrscheinlichkeit des Konfiden
 <div id="exm-anwendungsbeispiel-konfidenzintervalle" class="theorem example">
 <p><span class="theorem-title"><strong>Beispiel 32.1 (Anwendungsbeispiel)</strong></span> Zum Abschluss dieses Abschnitts wollen wir die Evaluation von Konfidenzintervallen für den Erwartungswert und den Varianzparameter bei Normalverteilung nun im Kontext von <a href="401-Frequentistische-Inferenz.html#exm-anwendungsbeispiel" class="quarto-xref">Beispiel&nbsp;<span>30.5</span></a> betrachten. Dazu werten wir zunächst einmal die unverzerrten Punktschätzer von <span class="math inline">\(\mu\)</span> und <span class="math inline">\(\sigma^2\)</span>, also das Stichprobenmittel und die Stichprobenvarianz des Datensatzes mithilfe folgenden <strong>R</strong> Codes aus.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>D           <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"./_data/bdi-ii-datensatz.csv"</span>)      <span class="co"># Datensatzeinlesen</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a>y           <span class="ot">=</span> D<span class="sc">$</span>dBDI                                        <span class="co"># Datenauswahl</span></span>
-<span id="cb5-3"><a href="#cb5-3"></a>mu_hat      <span class="ot">=</span> <span class="fu">round</span>(<span class="fu">mean</span>(y),<span class="dv">2</span>)                              <span class="co"># Stichprobenmittel</span></span>
-<span id="cb5-4"><a href="#cb5-4"></a>sigsqr_hat  <span class="ot">=</span> <span class="fu">round</span>(<span class="fu">var</span>(y),<span class="dv">2</span>)                               <span class="co"># Stichprobenvarianz</span></span>
-<span id="cb5-5"><a href="#cb5-5"></a><span class="fu">cat</span>(<span class="st">"mu_hat     :"</span>, mu_hat,<span class="st">"</span><span class="sc">\n</span><span class="st">sigsqr_hat :"</span>, sigsqr_hat)    <span class="co"># Ausgabe</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-label="1"></a>D           <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"./_data/bdi-ii-datensatz.csv"</span>)      <span class="co"># Datensatzeinlesen</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-label="2"></a>y           <span class="ot">=</span> D<span class="sc">$</span>dBDI                                        <span class="co"># Datenauswahl</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-label="3"></a>mu_hat      <span class="ot">=</span> <span class="fu">round</span>(<span class="fu">mean</span>(y),<span class="dv">2</span>)                              <span class="co"># Stichprobenmittel</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-label="4"></a>sigsqr_hat  <span class="ot">=</span> <span class="fu">round</span>(<span class="fu">var</span>(y),<span class="dv">2</span>)                               <span class="co"># Stichprobenvarianz</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-label="5"></a><span class="fu">cat</span>(<span class="st">"mu_hat     :"</span>, mu_hat,<span class="st">"</span><span class="sc">\n</span><span class="st">sigsqr_hat :"</span>, sigsqr_hat)    <span class="co"># Ausgabe</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>mu_hat     : 3.17 
 sigsqr_hat : 13.79</code></pre>
@@ -913,16 +916,16 @@ sigsqr_hat : 13.79</code></pre>
 \hat{\mu} = 3.17 \mbox{ und } \hat{\sigma}^{2} = 13.8
 \end{equation}\]</span> sinnvolle Tipps für <span class="math inline">\(\mu\)</span> und <span class="math inline">\(\sigma^2\)</span>. Neben diesen Punktschätzern, die zwar sehr genau sind, mit einer Wahrscheinlichkeit von 0 aber den wahren, aber unbekannten Parametern, entsprechen, bestimmen wir zusätzlich die 95%-Konfidenzintervallschätzungen für <span class="math inline">\(\mu\)</span> und <span class="math inline">\(\sigma^2\)</span>. Folgender <strong>R</strong> Code bestimmt das 95%-Konfidenzintervall für den Erwartungswertparameter.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># Konfidenzintervall für den Erwartungswertparameter</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a>delta    <span class="ot">=</span> <span class="fl">0.95</span>                                    <span class="co"># Konfidenzlevel</span></span>
-<span id="cb7-3"><a href="#cb7-3"></a>n        <span class="ot">=</span> <span class="fu">length</span>(y)                               <span class="co"># Anzahl Datenpunkte</span></span>
-<span id="cb7-4"><a href="#cb7-4"></a>t_delta  <span class="ot">=</span> <span class="fu">qt</span>((<span class="dv">1</span><span class="sc">+</span>delta)<span class="sc">/</span><span class="dv">2</span>,n<span class="dv">-1</span>)                     <span class="co"># \psi^-1((\delta+1)/2,n-1)</span></span>
-<span id="cb7-5"><a href="#cb7-5"></a>y_bar    <span class="ot">=</span> <span class="fu">mean</span>(y)                                 <span class="co"># Stichprobenmittel</span></span>
-<span id="cb7-6"><a href="#cb7-6"></a>s        <span class="ot">=</span> <span class="fu">sd</span>(y)                                   <span class="co"># Stichprobenstandardabweichung</span></span>
-<span id="cb7-7"><a href="#cb7-7"></a>mu_hat   <span class="ot">=</span> y_bar                                   <span class="co"># Erwartungswertparameterschätzer</span></span>
-<span id="cb7-8"><a href="#cb7-8"></a>kappa_u  <span class="ot">=</span> y_bar <span class="sc">-</span> (s<span class="sc">/</span><span class="fu">sqrt</span>(n))<span class="sc">*</span>t_delta             <span class="co"># untere Konfidenzintervallgrenze</span></span>
-<span id="cb7-9"><a href="#cb7-9"></a>kappa_o  <span class="ot">=</span> y_bar <span class="sc">+</span> (s<span class="sc">/</span><span class="fu">sqrt</span>(n))<span class="sc">*</span>t_delta             <span class="co"># obere  Konfidenzintervallgrenze</span></span>
-<span id="cb7-10"><a href="#cb7-10"></a><span class="fu">cat</span>(<span class="st">"kappa_u:"</span>, kappa_u, <span class="st">"</span><span class="sc">\n</span><span class="st">kappa_o:"</span>, kappa_o)    <span class="co"># Ausgabe</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-label="1"></a><span class="co"># Konfidenzintervall für den Erwartungswertparameter</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-label="2"></a>delta    <span class="ot">=</span> <span class="fl">0.95</span>                                    <span class="co"># Konfidenzlevel</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-label="3"></a>n        <span class="ot">=</span> <span class="fu">length</span>(y)                               <span class="co"># Anzahl Datenpunkte</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-label="4"></a>t_delta  <span class="ot">=</span> <span class="fu">qt</span>((<span class="dv">1</span><span class="sc">+</span>delta)<span class="sc">/</span><span class="dv">2</span>,n<span class="dv">-1</span>)                     <span class="co"># \psi^-1((\delta+1)/2,n-1)</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-label="5"></a>y_bar    <span class="ot">=</span> <span class="fu">mean</span>(y)                                 <span class="co"># Stichprobenmittel</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-label="6"></a>s        <span class="ot">=</span> <span class="fu">sd</span>(y)                                   <span class="co"># Stichprobenstandardabweichung</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-label="7"></a>mu_hat   <span class="ot">=</span> y_bar                                   <span class="co"># Erwartungswertparameterschätzer</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-label="8"></a>kappa_u  <span class="ot">=</span> y_bar <span class="sc">-</span> (s<span class="sc">/</span><span class="fu">sqrt</span>(n))<span class="sc">*</span>t_delta             <span class="co"># untere Konfidenzintervallgrenze</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-label="9"></a>kappa_o  <span class="ot">=</span> y_bar <span class="sc">+</span> (s<span class="sc">/</span><span class="fu">sqrt</span>(n))<span class="sc">*</span>t_delta             <span class="co"># obere  Konfidenzintervallgrenze</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-label="10"></a><span class="fu">cat</span>(<span class="st">"kappa_u:"</span>, kappa_u, <span class="st">"</span><span class="sc">\n</span><span class="st">kappa_o:"</span>, kappa_o)    <span class="co"># Ausgabe</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>kappa_u: 0.8074098 
 kappa_o: 5.525923</code></pre>
@@ -933,16 +936,16 @@ kappa_o: 5.525923</code></pre>
 \end{equation}\]</span> Im langfristigen Mittel überdeckt ein auf diese Weise berechnetes Konfidenzintervall den wahren, aber unbekannten, Erwartungswertparameter in 95 von 100 Fällen. In diesem Sinne liegt der wahre, aber unbekannte, Therapieeffekt also sehr sicher in einem Intervall zwischen 0.80 und 5.52 BDI-II Score Pre-Post-Differenzen.</p>
 <p>Folgender <strong>R</strong> Code bestimmt das 95%-Konfidenzintervall für den Varianzparameter.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># Konfidenzintervall für den Varianzparameter</span></span>
-<span id="cb9-2"><a href="#cb9-2"></a>delta       <span class="ot">=</span>  <span class="fl">0.95</span>                                <span class="co"># Konfidenzlevel</span></span>
-<span id="cb9-3"><a href="#cb9-3"></a>n           <span class="ot">=</span> <span class="fu">length</span>(y)                            <span class="co"># Anzahl Datenpunkte</span></span>
-<span id="cb9-4"><a href="#cb9-4"></a>u_delta_u   <span class="ot">=</span> <span class="fu">qchisq</span>((<span class="dv">1</span><span class="sc">-</span>delta)<span class="sc">/</span><span class="dv">2</span>, n <span class="sc">-</span> <span class="dv">1</span>)           <span class="co"># \Xi^2((1-\delta)/2; n - 1)</span></span>
-<span id="cb9-5"><a href="#cb9-5"></a>u_delta_o   <span class="ot">=</span> <span class="fu">qchisq</span>((<span class="dv">1</span><span class="sc">+</span>delta)<span class="sc">/</span><span class="dv">2</span>, n <span class="sc">-</span> <span class="dv">1</span>)           <span class="co"># \Xi^2((1+\delta)/2; n - 1)</span></span>
-<span id="cb9-6"><a href="#cb9-6"></a>s2          <span class="ot">=</span> <span class="fu">var</span>(y)                               <span class="co"># Stichprobenvarianz</span></span>
-<span id="cb9-7"><a href="#cb9-7"></a>sigsqr_hat  <span class="ot">=</span> s2                                   <span class="co"># Varianzparameterschätzer</span></span>
-<span id="cb9-8"><a href="#cb9-8"></a>kappa_u     <span class="ot">=</span> (n<span class="dv">-1</span>)<span class="sc">*</span>s2<span class="sc">/</span>u_delta_o                   <span class="co"># untere Konfidenzintervallgrenze</span></span>
-<span id="cb9-9"><a href="#cb9-9"></a>kappa_o        <span class="ot">=</span> (n<span class="dv">-1</span>)<span class="sc">*</span>s2<span class="sc">/</span>u_delta_u                <span class="co"># obere Konfidenzintervallgrenze</span></span>
-<span id="cb9-10"><a href="#cb9-10"></a><span class="fu">cat</span>(<span class="st">"kappa_u:"</span>, kappa_u, <span class="st">"</span><span class="sc">\n</span><span class="st">kappa_o:"</span>, kappa_o)    <span class="co"># Ausgabe</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-label="1"></a><span class="co"># Konfidenzintervall für den Varianzparameter</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-label="2"></a>delta       <span class="ot">=</span>  <span class="fl">0.95</span>                                <span class="co"># Konfidenzlevel</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-label="3"></a>n           <span class="ot">=</span> <span class="fu">length</span>(y)                            <span class="co"># Anzahl Datenpunkte</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-label="4"></a>u_delta_u   <span class="ot">=</span> <span class="fu">qchisq</span>((<span class="dv">1</span><span class="sc">-</span>delta)<span class="sc">/</span><span class="dv">2</span>, n <span class="sc">-</span> <span class="dv">1</span>)           <span class="co"># \Xi^2((1-\delta)/2; n - 1)</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-label="5"></a>u_delta_o   <span class="ot">=</span> <span class="fu">qchisq</span>((<span class="dv">1</span><span class="sc">+</span>delta)<span class="sc">/</span><span class="dv">2</span>, n <span class="sc">-</span> <span class="dv">1</span>)           <span class="co"># \Xi^2((1+\delta)/2; n - 1)</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-label="6"></a>s2          <span class="ot">=</span> <span class="fu">var</span>(y)                               <span class="co"># Stichprobenvarianz</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-label="7"></a>sigsqr_hat  <span class="ot">=</span> s2                                   <span class="co"># Varianzparameterschätzer</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-label="8"></a>kappa_u     <span class="ot">=</span> (n<span class="dv">-1</span>)<span class="sc">*</span>s2<span class="sc">/</span>u_delta_o                   <span class="co"># untere Konfidenzintervallgrenze</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-label="9"></a>kappa_o        <span class="ot">=</span> (n<span class="dv">-1</span>)<span class="sc">*</span>s2<span class="sc">/</span>u_delta_u                <span class="co"># obere Konfidenzintervallgrenze</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-label="10"></a><span class="fu">cat</span>(<span class="st">"kappa_u:"</span>, kappa_u, <span class="st">"</span><span class="sc">\n</span><span class="st">kappa_o:"</span>, kappa_o)    <span class="co"># Ausgabe</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>kappa_u: 6.919084 
 kappa_o: 39.74756</code></pre>
@@ -991,114 +994,220 @@ Neyman, J. (1937). Outline of a <span>Theory</span> of <span>Statistical Estimat
 
 </main> <!-- /main -->
 <script>
-(function () {
-  var base = "https://dirk-ostwald.github.io";
-  var pageMap = {
-    "/": "/en/",
-    "/index.html": "/en/",
-    "/Referenzen.html": "/en/References.html",
-    "/_part_1/100-Mathematische-Grundlagen.html": "/en/_part_1/100-Mathematical-Foundations.html",
-    "/_part_1/101-Sprache-und-Logik.html": "/en/_part_1/101-Language-and-Logic.html",
-    "/_part_1/102-Mengen.html": "/en/_part_1/102-Sets.html",
-    "/_part_1/103-Summen-Produkte-Potenzen.html": "/en/_part_1/103-Sums-Products-Powers.html",
-    "/_part_1/104-Funktionen.html": "/en/_part_1/104-Functions.html",
-    "/_part_1/105-Folgen-Grenzwerte-Stetigkeit.html": "/en/_part_1/105-Sequences-Limits-Continuity.html",
-    "/_part_1/106-Differenzialrechnung.html": "/en/_part_1/106-Differential-Calculus.html",
-    "/_part_1/107-Integralrechnung.html": "/en/_part_1/107-Integral-Calculus.html",
-    "/_part_1/108-Vektoren.html": "/en/_part_1/108-Vectors.html",
-    "/_part_1/109-Matrizen.html": "/en/_part_1/109-Matrices.html",
-    "/_part_1/110-Deskriptivstatistiken.html": "/en/_part_1/110-Descriptive-Statistics.html",
-    "/_part_2/200-Imperative-Programmierung.html": "/en/_part_2/200-Imperative-Programming.html",
-    "/_part_2/201-Informatische-Grundbegriffe.html": "/en/_part_2/201-Basic-Concepts-of-Computer-Science.html",
-    "/_part_2/202-Arithmetik-und-Variablen.html": "/en/_part_2/202-Arithmetic-and-Variables.html",
-    "/_part_2/203-Datenstrukturen.html": "/en/_part_2/203-Data-Structures.html",
-    "/_part_2/204-Vektoren.html": "/en/_part_2/204-Vectors.html",
-    "/_part_2/205-Matrizen-und-Arrays.html": "/en/_part_2/205-Matrices-and-Arrays.html",
-    "/_part_2/206-Listen-Dataframes-und-Tibbles.html": "/en/_part_2/206-Lists-Dataframes-and-Tibbles.html",
-    "/_part_2/207-Datenmanagement.html": "/en/_part_2/207-Data-Management.html",
-    "/_part_2/208-Kontrollstrukturen.html": "/en/_part_2/208-Control-Structures.html",
-    "/_part_3/300-Wahrscheinlichkeitstheorie.html": "/en/_part_3/300-Probability-Theory.html",
-    "/_part_3/301-Wahrscheinlichkeitsräume.html": "/en/_part_3/301-Probability-Spaces.html",
-    "/_part_3/302-Elementare-Wahrscheinlichkeiten.html": "/en/_part_3/302-Elementary-Probabilities.html",
-    "/_part_3/303-Zufallsvariablen.html": "/en/_part_3/303-Random-Variables.html",
-    "/_part_3/304-Zufallsvektoren.html": "/en/_part_3/304-Random-Vectors.html",
-    "/_part_3/305-Erwartungswerte.html": "/en/_part_3/305-Expectations.html",
-    "/_part_3/306-Varianzen.html": "/en/_part_3/306-Variances.html",
-    "/_part_3/307-Kovarianzen.html": "/en/_part_3/307-Covariances.html",
-    "/_part_3/308-Ungleichungen.html": "/en/_part_3/308-Inequalities.html",
-    "/_part_3/309-Grenzwerte.html": "/en/_part_3/309-Limits.html",
-    "/_part_3/310-Transformationen.html": "/en/_part_3/310-Transformations.html",
-    "/_part_3/311-Normalverteilungen.html": "/en/_part_3/311-Normal-Distributions.html",
-    "/_part_4/400-Inferenz.html": "/en/_part_4/400-Inference.html",
-    "/_part_4/401-Frequentistische-Inferenz.html": "/en/_part_4/401-Frequentist-Inference.html",
-    "/_part_4/402-Punktschätzung.html": "/en/_part_4/402-Point-Estimation.html",
-    "/_part_4/403-Konfidenzintervalle.html": "/en/_part_4/403-Confidence-Intervals.html",
-    "/_part_4/404-Hypothesentests.html": "/en/_part_4/404-Hypothesis-Tests.html",
-    "/_part_5/500-Allgemeines-Lineares-Modell.html": "/en/_part_5/500-General-Linear-Model.html",
-    "/_part_5/501-Regression.html": "/en/_part_5/501-Regression.html",
-    "/_part_5/502-Korrelation.html": "/en/_part_5/502-Correlation.html",
-    "/_part_5/503-Modellformulierung.html": "/en/_part_5/503-Model-Formulation.html",
-    "/_part_5/504-Parameterschätzung.html": "/en/_part_5/504-Parameter-Estimation.html",
-    "/_part_5/505-T-Statistiken.html": "/en/_part_5/505-T-Statistics.html",
-    "/_part_5/506-F-Statistiken.html": "/en/_part_5/506-F-Statistics.html",
-    "/_part_5/507-T-Tests.html": "/en/_part_5/507-T-Tests.html",
-    "/_part_5/508-Einfaktorielle-Varianzanalyse.html": "/en/_part_5/508-One-Way-Analysis-of-Variance.html",
-    "/_part_5/509-Zweifaktorielle-Varianzanalyse.html": "/en/_part_5/509-Two-Way-Analysis-of-Variance.html",
-    "/_part_5/510-Partielle-Korrelation.html": "/en/_part_5/510-Partial-Correlation.html",
-    "/_part_5/511-Multiple-Regression.html": "/en/_part_5/511-Multiple-Regression.html"
-  };
-  var reversePageMap = {};
-  Object.keys(pageMap).forEach(function (key) {
-    reversePageMap[pageMap[key]] = key;
-  });
-  function headings() {
-    return Array.prototype.slice.call(document.querySelectorAll("main.content h1[id], main.content h2[id], main.content h3[id], main.content h4[id]"));
-  }
-  function currentHeadingIndex() {
-    var hash = window.location.hash;
-    if (!hash) return "";
-    var id = hash.slice(1);
-    try {
-      id = decodeURIComponent(id);
-    } catch (error) {}
-    var list = headings();
-    for (var i = 0; i < list.length; i++) {
-      if (list[i].id === id) return String(i);
-    }
-    return "";
-  }
-  function scrollToHeadingIndex() {
-    var params = new URLSearchParams(window.location.search);
-    var value = params.get("h");
-    if (value === null) return;
-    var index = Number(value);
-    var list = headings();
-    if (Number.isInteger(index) && index >= 0 && index < list.length) {
-      list[index].scrollIntoView();
-      if (history.replaceState) {
-        history.replaceState(null, "", window.location.pathname + "#" + list[index].id);
-      }
-    }
-  }
-  var path = window.location.pathname;
-  var target = pageMap[path] || reversePageMap[path];
-  if (target) {
-    document.querySelectorAll("a.nav-link").forEach(function (link) {
-      var text = link.textContent.trim();
-      if (text === "English" || text === "Deutsch") {
-        var index = currentHeadingIndex();
-        link.href = base + target + (index ? "?h=" + index : "");
-      }
-    });
-  }
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", scrollToHeadingIndex);
-  } else {
-    scrollToHeadingIndex();
-  }
-}());
-</script>
 
+(function () {
+
+  var base = "https://dirk-ostwald.github.io";
+
+  var pageMap = {
+
+    "/": "/en/",
+
+    "/index.html": "/en/",
+
+    "/Referenzen.html": "/en/References.html",
+
+    "/_part_1/100-Mathematische-Grundlagen.html": "/en/_part_1/100-Mathematical-Foundations.html",
+
+    "/_part_1/101-Sprache-und-Logik.html": "/en/_part_1/101-Language-and-Logic.html",
+
+    "/_part_1/102-Mengen.html": "/en/_part_1/102-Sets.html",
+
+    "/_part_1/103-Summen-Produkte-Potenzen.html": "/en/_part_1/103-Sums-Products-Powers.html",
+
+    "/_part_1/104-Funktionen.html": "/en/_part_1/104-Functions.html",
+
+    "/_part_1/105-Folgen-Grenzwerte-Stetigkeit.html": "/en/_part_1/105-Sequences-Limits-Continuity.html",
+
+    "/_part_1/106-Differenzialrechnung.html": "/en/_part_1/106-Differential-Calculus.html",
+
+    "/_part_1/107-Integralrechnung.html": "/en/_part_1/107-Integral-Calculus.html",
+
+    "/_part_1/108-Vektoren.html": "/en/_part_1/108-Vectors.html",
+
+    "/_part_1/109-Matrizen.html": "/en/_part_1/109-Matrices.html",
+
+    "/_part_1/110-Deskriptivstatistiken.html": "/en/_part_1/110-Descriptive-Statistics.html",
+
+    "/_part_2/200-Imperative-Programmierung.html": "/en/_part_2/200-Imperative-Programming.html",
+
+    "/_part_2/201-Informatische-Grundbegriffe.html": "/en/_part_2/201-Basic-Concepts-of-Computer-Science.html",
+
+    "/_part_2/202-Arithmetik-und-Variablen.html": "/en/_part_2/202-Arithmetic-and-Variables.html",
+
+    "/_part_2/203-Datenstrukturen.html": "/en/_part_2/203-Data-Structures.html",
+
+    "/_part_2/204-Vektoren.html": "/en/_part_2/204-Vectors.html",
+
+    "/_part_2/205-Matrizen-und-Arrays.html": "/en/_part_2/205-Matrices-and-Arrays.html",
+
+    "/_part_2/206-Listen-Dataframes-und-Tibbles.html": "/en/_part_2/206-Lists-Dataframes-and-Tibbles.html",
+
+    "/_part_2/207-Datenmanagement.html": "/en/_part_2/207-Data-Management.html",
+
+    "/_part_2/208-Kontrollstrukturen.html": "/en/_part_2/208-Control-Structures.html",
+
+    "/_part_3/300-Wahrscheinlichkeitstheorie.html": "/en/_part_3/300-Probability-Theory.html",
+
+    "/_part_3/301-Wahrscheinlichkeitsräume.html": "/en/_part_3/301-Probability-Spaces.html",
+
+    "/_part_3/302-Elementare-Wahrscheinlichkeiten.html": "/en/_part_3/302-Elementary-Probabilities.html",
+
+    "/_part_3/303-Zufallsvariablen.html": "/en/_part_3/303-Random-Variables.html",
+
+    "/_part_3/304-Zufallsvektoren.html": "/en/_part_3/304-Random-Vectors.html",
+
+    "/_part_3/305-Erwartungswerte.html": "/en/_part_3/305-Expectations.html",
+
+    "/_part_3/306-Varianzen.html": "/en/_part_3/306-Variances.html",
+
+    "/_part_3/307-Kovarianzen.html": "/en/_part_3/307-Covariances.html",
+
+    "/_part_3/308-Ungleichungen.html": "/en/_part_3/308-Inequalities.html",
+
+    "/_part_3/309-Grenzwerte.html": "/en/_part_3/309-Limits.html",
+
+    "/_part_3/310-Transformationen.html": "/en/_part_3/310-Transformations.html",
+
+    "/_part_3/311-Normalverteilungen.html": "/en/_part_3/311-Normal-Distributions.html",
+
+    "/_part_4/400-Inferenz.html": "/en/_part_4/400-Inference.html",
+
+    "/_part_4/401-Frequentistische-Inferenz.html": "/en/_part_4/401-Frequentist-Inference.html",
+
+    "/_part_4/402-Punktschätzung.html": "/en/_part_4/402-Point-Estimation.html",
+
+    "/_part_4/403-Konfidenzintervalle.html": "/en/_part_4/403-Confidence-Intervals.html",
+
+    "/_part_4/404-Hypothesentests.html": "/en/_part_4/404-Hypothesis-Tests.html",
+
+    "/_part_5/500-Allgemeines-Lineares-Modell.html": "/en/_part_5/500-General-Linear-Model.html",
+
+    "/_part_5/501-Regression.html": "/en/_part_5/501-Regression.html",
+
+    "/_part_5/502-Korrelation.html": "/en/_part_5/502-Correlation.html",
+
+    "/_part_5/503-Modellformulierung.html": "/en/_part_5/503-Model-Formulation.html",
+
+    "/_part_5/504-Parameterschätzung.html": "/en/_part_5/504-Parameter-Estimation.html",
+
+    "/_part_5/505-T-Statistiken.html": "/en/_part_5/505-T-Statistics.html",
+
+    "/_part_5/506-F-Statistiken.html": "/en/_part_5/506-F-Statistics.html",
+
+    "/_part_5/507-T-Tests.html": "/en/_part_5/507-T-Tests.html",
+
+    "/_part_5/508-Einfaktorielle-Varianzanalyse.html": "/en/_part_5/508-One-Way-Analysis-of-Variance.html",
+
+    "/_part_5/509-Zweifaktorielle-Varianzanalyse.html": "/en/_part_5/509-Two-Way-Analysis-of-Variance.html",
+
+    "/_part_5/510-Partielle-Korrelation.html": "/en/_part_5/510-Partial-Correlation.html",
+
+    "/_part_5/511-Multiple-Regression.html": "/en/_part_5/511-Multiple-Regression.html"
+
+  };
+
+  var reversePageMap = {};
+
+  Object.keys(pageMap).forEach(function (key) {
+
+    reversePageMap[pageMap[key]] = key;
+
+  });
+
+  function headings() {
+
+    return Array.prototype.slice.call(document.querySelectorAll("main.content h1[id], main.content h2[id], main.content h3[id], main.content h4[id]"));
+
+  }
+
+  function currentHeadingIndex() {
+
+    var hash = window.location.hash;
+
+    if (!hash) return "";
+
+    var id = hash.slice(1);
+
+    try {
+
+      id = decodeURIComponent(id);
+
+    } catch (error) {}
+
+    var list = headings();
+
+    for (var i = 0; i < list.length; i++) {
+
+      if (list[i].id === id) return String(i);
+
+    }
+
+    return "";
+
+  }
+
+  function scrollToHeadingIndex() {
+
+    var params = new URLSearchParams(window.location.search);
+
+    var value = params.get("h");
+
+    if (value === null) return;
+
+    var index = Number(value);
+
+    var list = headings();
+
+    if (Number.isInteger(index) && index >= 0 && index < list.length) {
+
+      list[index].scrollIntoView();
+
+      if (history.replaceState) {
+
+        history.replaceState(null, "", window.location.pathname + "#" + list[index].id);
+
+      }
+
+    }
+
+  }
+
+  var path = window.location.pathname;
+
+  var target = pageMap[path] || reversePageMap[path];
+
+  if (target) {
+
+    document.querySelectorAll("a.nav-link").forEach(function (link) {
+
+      var text = link.textContent.trim();
+
+      if (text === "English" || text === "Deutsch") {
+
+        var index = currentHeadingIndex();
+
+        link.href = base + target + (index ? "?h=" + index : "");
+
+      }
+
+    });
+
+  }
+
+  if (document.readyState === "loading") {
+
+    document.addEventListener("DOMContentLoaded", scrollToHeadingIndex);
+
+  } else {
+
+    scrollToHeadingIndex();
+
+  }
+
+}());
+
+</script>
 
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,10 +12,13 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -96,10 +99,10 @@ div.csl-indent {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-6e8dda235ee8acd82fc3832029714bc4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-35fb2a33bb4c71715ffa083faf67f315.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -129,7 +132,7 @@ div.csl-indent {
 }</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -744,19 +747,19 @@ X:=\left(x_{i j}\right)_{1 \leq i \leq n, 1 \leq j \leq p} \in \mathbb{R}^{n \ti
 </div>
 <p>Folgender <strong>R</strong> Code nutzt das Modell der multiplen Regression auf Definition 13.1, um den in <a href="#tbl-mr-dbdi" class="quarto-xref">Tabelle&nbsp;<span>44.1</span></a> dargestellten Beispieldatensatz zu erzeugen.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(MASS)                                                                   <span class="co"># Multivariate Normalverteilung</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)                                                                     <span class="co"># reproduzierbare Daten</span></span>
-<span id="cb1-3"><a href="#cb1-3"></a>n             <span class="ot">=</span> <span class="dv">20</span>                                                              <span class="co"># Anzahl Datenpunkte</span></span>
-<span id="cb1-4"><a href="#cb1-4"></a>p             <span class="ot">=</span> <span class="dv">3</span>                                                               <span class="co"># Anzahl Parameter</span></span>
-<span id="cb1-5"><a href="#cb1-5"></a>x_1           <span class="ot">=</span> <span class="fu">round</span>(<span class="fu">runif</span>(n,<span class="dv">20</span>,<span class="dv">80</span>))                                           <span class="co"># Regressorwerte Alter</span></span>
-<span id="cb1-6"><a href="#cb1-6"></a>x_2           <span class="ot">=</span> <span class="fu">round</span>(<span class="fu">runif</span>(n,<span class="dv">12</span>,<span class="dv">24</span>))                                           <span class="co"># Regressorwerte Therapiedauer</span></span>
-<span id="cb1-7"><a href="#cb1-7"></a>X             <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">1</span>,n),x_1,x_2), <span class="at">nrow =</span> n)                           <span class="co"># Designmatrix</span></span>
-<span id="cb1-8"><a href="#cb1-8"></a>I_n           <span class="ot">=</span> <span class="fu">diag</span>(n)                                                         <span class="co"># Identitätsmatrix</span></span>
-<span id="cb1-9"><a href="#cb1-9"></a>beta          <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">5</span>,<span class="sc">-</span>.<span class="dv">5</span>,<span class="dv">2</span>), <span class="at">nrow =</span> p)                                    <span class="co"># Betaparametervektor</span></span>
-<span id="cb1-10"><a href="#cb1-10"></a>sigsqr        <span class="ot">=</span> <span class="dv">10</span>                                                              <span class="co"># Varianzparameter</span></span>
-<span id="cb1-11"><a href="#cb1-11"></a>y             <span class="ot">=</span> <span class="fu">mvrnorm</span>(<span class="dv">1</span>, X <span class="sc">%*%</span> beta, sigsqr<span class="sc">*</span>I_n)                              <span class="co"># eine Realisierung eines n-dimensionalen ZVs</span></span>
-<span id="cb1-12"><a href="#cb1-12"></a>D             <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">Alter =</span> x_1, <span class="at">Dauer =</span> x_2, <span class="at">dBDI  =</span> y)                 <span class="co"># Dataframeformatierung</span></span>
-<span id="cb1-13"><a href="#cb1-13"></a><span class="fu">write.csv</span>(D, <span class="st">"./_data/511-multiple-regression.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)          <span class="co"># Datenspeichern</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-label="1"></a><span class="fu">library</span>(MASS)                                                                   <span class="co"># Multivariate Normalverteilung</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-label="2"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)                                                                     <span class="co"># reproduzierbare Daten</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-label="3"></a>n             <span class="ot">=</span> <span class="dv">20</span>                                                              <span class="co"># Anzahl Datenpunkte</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-label="4"></a>p             <span class="ot">=</span> <span class="dv">3</span>                                                               <span class="co"># Anzahl Parameter</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-label="5"></a>x_1           <span class="ot">=</span> <span class="fu">round</span>(<span class="fu">runif</span>(n,<span class="dv">20</span>,<span class="dv">80</span>))                                           <span class="co"># Regressorwerte Alter</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-label="6"></a>x_2           <span class="ot">=</span> <span class="fu">round</span>(<span class="fu">runif</span>(n,<span class="dv">12</span>,<span class="dv">24</span>))                                           <span class="co"># Regressorwerte Therapiedauer</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-label="7"></a>X             <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">1</span>,n),x_1,x_2), <span class="at">nrow =</span> n)                           <span class="co"># Designmatrix</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-label="8"></a>I_n           <span class="ot">=</span> <span class="fu">diag</span>(n)                                                         <span class="co"># Identitätsmatrix</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-label="9"></a>beta          <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">5</span>,<span class="sc">-</span>.<span class="dv">5</span>,<span class="dv">2</span>), <span class="at">nrow =</span> p)                                    <span class="co"># Betaparametervektor</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-label="10"></a>sigsqr        <span class="ot">=</span> <span class="dv">10</span>                                                              <span class="co"># Varianzparameter</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-label="11"></a>y             <span class="ot">=</span> <span class="fu">mvrnorm</span>(<span class="dv">1</span>, X <span class="sc">%*%</span> beta, sigsqr<span class="sc">*</span>I_n)                              <span class="co"># eine Realisierung eines n-dimensionalen ZVs</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-label="12"></a>D             <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">Alter =</span> x_1, <span class="at">Dauer =</span> x_2, <span class="at">dBDI  =</span> y)                 <span class="co"># Dataframeformatierung</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-label="13"></a><span class="fu">write.csv</span>(D, <span class="st">"./_data/511-multiple-regression.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)          <span class="co"># Datenspeichern</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="modellschätzung" class="level2" data-number="44.3">
@@ -1104,26 +1107,26 @@ r_{y, x_{k}}=r_{x_{k}, x_{l}}=0
 \]</span> wenn also die obigen Stichprobenkorrelationen dem Betrage nach gleich sind. Dies ist in der Anwendung aber vermutlich selten der Fall.</p>
 <p>Folgender <strong>R</strong> Code demonstriert die Äquivalenz der Matrixschreibweise des Betaparameterschätzers und seiner Darstellung durch Stichprobenmittel, Stichprobenkorrelationen, Stichprobenstandardabweichungen und partielle Stichprobenkorrelationen.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>D          <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"./_data/511-multiple-regression.csv"</span>)                    <span class="co"># Dateneinlesen</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a>y          <span class="ot">=</span> D<span class="sc">$</span>dBDI                                                             <span class="co"># Abhängige Variable</span></span>
-<span id="cb2-3"><a href="#cb2-3"></a>n          <span class="ot">=</span> <span class="fu">length</span>(y)                                                          <span class="co"># Anzahl Datenpunkte</span></span>
-<span id="cb2-4"><a href="#cb2-4"></a>X          <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">1</span>,n), D<span class="sc">$</span>Alter, D<span class="sc">$</span>Dauer), <span class="at">nrow =</span> n)                    <span class="co"># Designmatrix</span></span>
-<span id="cb2-5"><a href="#cb2-5"></a>p          <span class="ot">=</span> <span class="fu">ncol</span>(X)                                                            <span class="co"># Anzahl Parameter</span></span>
-<span id="cb2-6"><a href="#cb2-6"></a>beta_hat   <span class="ot">=</span> <span class="fu">solve</span>(<span class="fu">t</span>(X) <span class="sc">%*%</span> X) <span class="sc">%*%</span> <span class="fu">t</span>(X) <span class="sc">%*%</span> y                                   <span class="co"># Betaparameterschätzer</span></span>
-<span id="cb2-7"><a href="#cb2-7"></a>eps_hat    <span class="ot">=</span> y <span class="sc">-</span> X <span class="sc">%*%</span> beta_hat                                                 <span class="co"># Residuenvektor</span></span>
-<span id="cb2-8"><a href="#cb2-8"></a>sigsqr_hat <span class="ot">=</span> (<span class="fu">t</span>(eps_hat) <span class="sc">%*%</span> eps_hat) <span class="sc">/</span>(n<span class="sc">-</span>p)                                    <span class="co"># Varianzparameterschätzer</span></span>
-<span id="cb2-9"><a href="#cb2-9"></a></span>
-<span id="cb2-10"><a href="#cb2-10"></a><span class="co"># Betaparameterschätzer aus partiellen Korrelationen und Korrelationen</span></span>
-<span id="cb2-11"><a href="#cb2-11"></a><span class="fu">library</span>(ppcor)                                                                  <span class="co"># partielle Korrelationentoolbox</span></span>
-<span id="cb2-12"><a href="#cb2-12"></a>y12        <span class="ot">=</span> <span class="fu">cbind</span>(y,X[,<span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>])                                                   <span class="co"># y,x_1,x_2 Matrix</span></span>
-<span id="cb2-13"><a href="#cb2-13"></a>bars       <span class="ot">=</span> <span class="fu">apply</span>(y12, <span class="dv">2</span>, mean)                                                <span class="co"># Stichprobenmittel</span></span>
-<span id="cb2-14"><a href="#cb2-14"></a>s          <span class="ot">=</span> <span class="fu">apply</span>(y12, <span class="dv">2</span>, sd)                                                  <span class="co"># Stichprobenstandardabweichungen</span></span>
-<span id="cb2-15"><a href="#cb2-15"></a>r          <span class="ot">=</span> <span class="fu">cor</span>(y12)                                                           <span class="co"># Stichprobenkorrelationen</span></span>
-<span id="cb2-16"><a href="#cb2-16"></a>pr         <span class="ot">=</span> <span class="fu">pcor</span>(y12)                                                          <span class="co"># partielle Stichprobenkorrelationen</span></span>
-<span id="cb2-17"><a href="#cb2-17"></a>pr         <span class="ot">=</span> pr<span class="sc">$</span>estimate                                                        <span class="co"># partielle Stichprobenkorrelationen</span></span>
-<span id="cb2-18"><a href="#cb2-18"></a>beta_hat_1 <span class="ot">=</span> pr[<span class="dv">1</span>,<span class="dv">2</span>]<span class="sc">*</span><span class="fu">sqrt</span>((<span class="dv">1</span><span class="sc">-</span>r[<span class="dv">1</span>,<span class="dv">3</span>]<span class="sc">^</span><span class="dv">2</span>)<span class="sc">/</span>(<span class="dv">1</span><span class="sc">-</span>r[<span class="dv">2</span>,<span class="dv">3</span>]<span class="sc">^</span><span class="dv">2</span>))<span class="sc">*</span>(s[<span class="dv">1</span>]<span class="sc">/</span>s[<span class="dv">2</span>])                <span class="co"># \hat{\beta}_1</span></span>
-<span id="cb2-19"><a href="#cb2-19"></a>beta_hat_2 <span class="ot">=</span> pr[<span class="dv">1</span>,<span class="dv">3</span>]<span class="sc">*</span><span class="fu">sqrt</span>((<span class="dv">1</span><span class="sc">-</span>r[<span class="dv">1</span>,<span class="dv">2</span>]<span class="sc">^</span><span class="dv">2</span>)<span class="sc">/</span>(<span class="dv">1</span><span class="sc">-</span>r[<span class="dv">3</span>,<span class="dv">2</span>]<span class="sc">^</span><span class="dv">2</span>))<span class="sc">*</span>(s[<span class="dv">1</span>]<span class="sc">/</span>s[<span class="dv">3</span>])                <span class="co"># \hat{\beta}_2</span></span>
-<span id="cb2-20"><a href="#cb2-20"></a>beta_hat_0 <span class="ot">=</span> bars[<span class="dv">1</span>] <span class="sc">-</span> beta_hat_1<span class="sc">*</span>bars[<span class="dv">2</span>] <span class="sc">-</span> beta_hat_2<span class="sc">*</span>bars[<span class="dv">3</span>]                  <span class="co"># \hat{\beta}_0</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-label="1"></a>D          <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"./_data/511-multiple-regression.csv"</span>)                    <span class="co"># Dateneinlesen</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-label="2"></a>y          <span class="ot">=</span> D<span class="sc">$</span>dBDI                                                             <span class="co"># Abhängige Variable</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-label="3"></a>n          <span class="ot">=</span> <span class="fu">length</span>(y)                                                          <span class="co"># Anzahl Datenpunkte</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-label="4"></a>X          <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">1</span>,n), D<span class="sc">$</span>Alter, D<span class="sc">$</span>Dauer), <span class="at">nrow =</span> n)                    <span class="co"># Designmatrix</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-label="5"></a>p          <span class="ot">=</span> <span class="fu">ncol</span>(X)                                                            <span class="co"># Anzahl Parameter</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-label="6"></a>beta_hat   <span class="ot">=</span> <span class="fu">solve</span>(<span class="fu">t</span>(X) <span class="sc">%*%</span> X) <span class="sc">%*%</span> <span class="fu">t</span>(X) <span class="sc">%*%</span> y                                   <span class="co"># Betaparameterschätzer</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-label="7"></a>eps_hat    <span class="ot">=</span> y <span class="sc">-</span> X <span class="sc">%*%</span> beta_hat                                                 <span class="co"># Residuenvektor</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-label="8"></a>sigsqr_hat <span class="ot">=</span> (<span class="fu">t</span>(eps_hat) <span class="sc">%*%</span> eps_hat) <span class="sc">/</span>(n<span class="sc">-</span>p)                                    <span class="co"># Varianzparameterschätzer</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-label="9"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-label="10"></a><span class="co"># Betaparameterschätzer aus partiellen Korrelationen und Korrelationen</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-label="11"></a><span class="fu">library</span>(ppcor)                                                                  <span class="co"># partielle Korrelationentoolbox</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-label="12"></a>y12        <span class="ot">=</span> <span class="fu">cbind</span>(y,X[,<span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>])                                                   <span class="co"># y,x_1,x_2 Matrix</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-label="13"></a>bars       <span class="ot">=</span> <span class="fu">apply</span>(y12, <span class="dv">2</span>, mean)                                                <span class="co"># Stichprobenmittel</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-label="14"></a>s          <span class="ot">=</span> <span class="fu">apply</span>(y12, <span class="dv">2</span>, sd)                                                  <span class="co"># Stichprobenstandardabweichungen</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-label="15"></a>r          <span class="ot">=</span> <span class="fu">cor</span>(y12)                                                           <span class="co"># Stichprobenkorrelationen</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-label="16"></a>pr         <span class="ot">=</span> <span class="fu">pcor</span>(y12)                                                          <span class="co"># partielle Stichprobenkorrelationen</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-label="17"></a>pr         <span class="ot">=</span> pr<span class="sc">$</span>estimate                                                        <span class="co"># partielle Stichprobenkorrelationen</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-label="18"></a>beta_hat_1 <span class="ot">=</span> pr[<span class="dv">1</span>,<span class="dv">2</span>]<span class="sc">*</span><span class="fu">sqrt</span>((<span class="dv">1</span><span class="sc">-</span>r[<span class="dv">1</span>,<span class="dv">3</span>]<span class="sc">^</span><span class="dv">2</span>)<span class="sc">/</span>(<span class="dv">1</span><span class="sc">-</span>r[<span class="dv">2</span>,<span class="dv">3</span>]<span class="sc">^</span><span class="dv">2</span>))<span class="sc">*</span>(s[<span class="dv">1</span>]<span class="sc">/</span>s[<span class="dv">2</span>])                <span class="co"># \hat{\beta}_1</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-label="19"></a>beta_hat_2 <span class="ot">=</span> pr[<span class="dv">1</span>,<span class="dv">3</span>]<span class="sc">*</span><span class="fu">sqrt</span>((<span class="dv">1</span><span class="sc">-</span>r[<span class="dv">1</span>,<span class="dv">2</span>]<span class="sc">^</span><span class="dv">2</span>)<span class="sc">/</span>(<span class="dv">1</span><span class="sc">-</span>r[<span class="dv">3</span>,<span class="dv">2</span>]<span class="sc">^</span><span class="dv">2</span>))<span class="sc">*</span>(s[<span class="dv">1</span>]<span class="sc">/</span>s[<span class="dv">3</span>])                <span class="co"># \hat{\beta}_2</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-label="20"></a>beta_hat_0 <span class="ot">=</span> bars[<span class="dv">1</span>] <span class="sc">-</span> beta_hat_1<span class="sc">*</span>bars[<span class="dv">2</span>] <span class="sc">-</span> beta_hat_2<span class="sc">*</span>bars[<span class="dv">3</span>]                  <span class="co"># \hat{\beta}_0</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
@@ -1182,25 +1185,25 @@ H_{0}: \beta_{2}-\beta_{3}=0, H_{A}: \beta_{2}-\beta_{3} \neq 0
 \]</span> In diesem Fall würde das Ablehnen der Nullhypothese inferenzstatistische Evidenz für einen differentiellen Einfluss von Patient:innenalter und Therapiedauer implizieren, je nach Vorzeichen der T-Statistik dabei einen stärkeren Effekt des Patient:innenalters oder der Therapiedauer.</p>
 <p>Folgender <strong>R</strong> Code evaluiert evaluiert die angesprochenen T-Tests.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>D          <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"./_data/511-multiple-regression.csv"</span>)                    <span class="co"># Datensatz</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a>y          <span class="ot">=</span> D<span class="sc">$</span>dBDI                                                             <span class="co"># Abhängige Variable</span></span>
-<span id="cb4-3"><a href="#cb4-3"></a>n          <span class="ot">=</span> <span class="fu">length</span>(y)                                                          <span class="co"># Anzahl Datenpunkte</span></span>
-<span id="cb4-4"><a href="#cb4-4"></a>X          <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">1</span>,n), D<span class="sc">$</span>Alter, D<span class="sc">$</span>Dauer), <span class="at">nrow =</span> n)                    <span class="co"># Designmatrix</span></span>
-<span id="cb4-5"><a href="#cb4-5"></a>p          <span class="ot">=</span> <span class="fu">ncol</span>(X)                                                            <span class="co"># Anzahl Parameter</span></span>
-<span id="cb4-6"><a href="#cb4-6"></a>beta_hat   <span class="ot">=</span> <span class="fu">solve</span>(<span class="fu">t</span>(X) <span class="sc">%*%</span> X) <span class="sc">%*%</span> <span class="fu">t</span>(X) <span class="sc">%*%</span> y                                   <span class="co"># Betaparameterschätzer</span></span>
-<span id="cb4-7"><a href="#cb4-7"></a>eps_hat    <span class="ot">=</span> y <span class="sc">-</span> X <span class="sc">%*%</span> beta_hat                                                 <span class="co"># Residuenvektor</span></span>
-<span id="cb4-8"><a href="#cb4-8"></a>sigsqr_hat <span class="ot">=</span> (<span class="fu">t</span>(eps_hat) <span class="sc">%*%</span> eps_hat) <span class="sc">/</span>(n<span class="sc">-</span>p)                                    <span class="co"># Varianzparameterschätzer</span></span>
-<span id="cb4-9"><a href="#cb4-9"></a>C          <span class="ot">=</span> <span class="fu">cbind</span>(<span class="fu">diag</span>(p), <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="sc">-</span><span class="dv">1</span>), <span class="at">nrow =</span> <span class="dv">3</span>))                        <span class="co"># Kontrastgewichtsvektoren</span></span>
-<span id="cb4-10"><a href="#cb4-10"></a>ste        <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>, <span class="fu">ncol</span>(C))                                                  <span class="co"># Kontraststandardfehler</span></span>
-<span id="cb4-11"><a href="#cb4-11"></a>tee        <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>, <span class="fu">ncol</span>(C))                                                  <span class="co"># T-Statistiken</span></span>
-<span id="cb4-12"><a href="#cb4-12"></a>pvals      <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>, <span class="fu">ncol</span>(C))                                                  <span class="co"># p-Werte</span></span>
-<span id="cb4-13"><a href="#cb4-13"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(C)){                                                            <span class="co"># Kontrastiterationen</span></span>
-<span id="cb4-14"><a href="#cb4-14"></a>    c        <span class="ot">=</span> C[,i]                                                            <span class="co"># Kontrastgewichtsvektor</span></span>
-<span id="cb4-15"><a href="#cb4-15"></a>    t_num    <span class="ot">=</span> <span class="fu">t</span>(c)<span class="sc">%*%</span>beta_hat                                                  <span class="co"># Zähler der T-Statistik</span></span>
-<span id="cb4-16"><a href="#cb4-16"></a>    ste[i]   <span class="ot">=</span> <span class="fu">sqrt</span>(sigsqr_hat<span class="sc">*</span><span class="fu">t</span>(c)<span class="sc">%*%</span><span class="fu">solve</span>(<span class="fu">t</span>(X)<span class="sc">%*%</span>X)<span class="sc">%*%</span>c)                      <span class="co"># Kontraststandardfehler/Nenner der T-Statistik</span></span>
-<span id="cb4-17"><a href="#cb4-17"></a>    tee[i]   <span class="ot">=</span> t_num<span class="sc">/</span>ste[i]                                                     <span class="co"># T-Statistik</span></span>
-<span id="cb4-18"><a href="#cb4-18"></a>    pvals[i] <span class="ot">=</span> <span class="dv">2</span><span class="sc">*</span>(<span class="dv">1</span> <span class="sc">-</span> <span class="fu">pt</span>(<span class="fu">abs</span>(tee[i]),n<span class="sc">-</span>p))                                      <span class="co"># p-Wert</span></span>
-<span id="cb4-19"><a href="#cb4-19"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-label="1"></a>D          <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"./_data/511-multiple-regression.csv"</span>)                    <span class="co"># Datensatz</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-label="2"></a>y          <span class="ot">=</span> D<span class="sc">$</span>dBDI                                                             <span class="co"># Abhängige Variable</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-label="3"></a>n          <span class="ot">=</span> <span class="fu">length</span>(y)                                                          <span class="co"># Anzahl Datenpunkte</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-label="4"></a>X          <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">1</span>,n), D<span class="sc">$</span>Alter, D<span class="sc">$</span>Dauer), <span class="at">nrow =</span> n)                    <span class="co"># Designmatrix</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-label="5"></a>p          <span class="ot">=</span> <span class="fu">ncol</span>(X)                                                            <span class="co"># Anzahl Parameter</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-label="6"></a>beta_hat   <span class="ot">=</span> <span class="fu">solve</span>(<span class="fu">t</span>(X) <span class="sc">%*%</span> X) <span class="sc">%*%</span> <span class="fu">t</span>(X) <span class="sc">%*%</span> y                                   <span class="co"># Betaparameterschätzer</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-label="7"></a>eps_hat    <span class="ot">=</span> y <span class="sc">-</span> X <span class="sc">%*%</span> beta_hat                                                 <span class="co"># Residuenvektor</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-label="8"></a>sigsqr_hat <span class="ot">=</span> (<span class="fu">t</span>(eps_hat) <span class="sc">%*%</span> eps_hat) <span class="sc">/</span>(n<span class="sc">-</span>p)                                    <span class="co"># Varianzparameterschätzer</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-label="9"></a>C          <span class="ot">=</span> <span class="fu">cbind</span>(<span class="fu">diag</span>(p), <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="sc">-</span><span class="dv">1</span>), <span class="at">nrow =</span> <span class="dv">3</span>))                        <span class="co"># Kontrastgewichtsvektoren</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-label="10"></a>ste        <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>, <span class="fu">ncol</span>(C))                                                  <span class="co"># Kontraststandardfehler</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-label="11"></a>tee        <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>, <span class="fu">ncol</span>(C))                                                  <span class="co"># T-Statistiken</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-label="12"></a>pvals      <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NaN</span>, <span class="fu">ncol</span>(C))                                                  <span class="co"># p-Werte</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-label="13"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(C)){                                                            <span class="co"># Kontrastiterationen</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-label="14"></a>    c        <span class="ot">=</span> C[,i]                                                            <span class="co"># Kontrastgewichtsvektor</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-label="15"></a>    t_num    <span class="ot">=</span> <span class="fu">t</span>(c)<span class="sc">%*%</span>beta_hat                                                  <span class="co"># Zähler der T-Statistik</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-label="16"></a>    ste[i]   <span class="ot">=</span> <span class="fu">sqrt</span>(sigsqr_hat<span class="sc">*</span><span class="fu">t</span>(c)<span class="sc">%*%</span><span class="fu">solve</span>(<span class="fu">t</span>(X)<span class="sc">%*%</span>X)<span class="sc">%*%</span>c)                      <span class="co"># Kontraststandardfehler/Nenner der T-Statistik</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-label="17"></a>    tee[i]   <span class="ot">=</span> t_num<span class="sc">/</span>ste[i]                                                     <span class="co"># T-Statistik</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-label="18"></a>    pvals[i] <span class="ot">=</span> <span class="dv">2</span><span class="sc">*</span>(<span class="dv">1</span> <span class="sc">-</span> <span class="fu">pt</span>(<span class="fu">abs</span>(tee[i]),n<span class="sc">-</span>p))                                      <span class="co"># p-Wert</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-label="19"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
@@ -1214,23 +1217,23 @@ Alter-Dauer    -2.42       0.18  -13.37     0.00</code></pre>
 <p>Der Beispieldatensatz liefert also inferenstatistische Inferenz für einen negativen Zusammenhang zwischen Therapieerfolg und Patient:innenalter und einen positiven Zusammenhang zwischen Therapieerfolg und Therapiedauer. Die Differenz der beiden Effekte ist dabei deutlich ausgeprägt.</p>
 <p>Etwas globaler könnte man einen F-Test basierend auf einer Modellpartition mit <span class="math inline">\(p_{0}:=\)</span> 1 nutzen, um etwa zu klären, ob die Daten die Annahme, dass Patient:innenalter und Therapie überhaupt zur Erklärung der Pre-Post-BDI-Differenzwertvariation, bestätigen. Folgender <strong>R</strong> Code evaluiert den angesprochenen F-Test.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>D          <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"./_data/511-multiple-regression.csv"</span>)                    <span class="co"># Datensatz</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a>y          <span class="ot">=</span> D<span class="sc">$</span>dBDI                                                             <span class="co"># Abhängige Variable</span></span>
-<span id="cb6-3"><a href="#cb6-3"></a>n          <span class="ot">=</span> <span class="fu">length</span>(y)                                                          <span class="co"># Anzahl Datenpunkte</span></span>
-<span id="cb6-4"><a href="#cb6-4"></a>X          <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">1</span>,n), D<span class="sc">$</span>Alter, D<span class="sc">$</span>Dauer), <span class="at">nrow =</span> n)                    <span class="co"># Desigmatrix vollständiges Modell</span></span>
-<span id="cb6-5"><a href="#cb6-5"></a>p          <span class="ot">=</span> <span class="fu">ncol</span>(X)                                                            <span class="co"># Anzahl Parameter vollständiges Modell</span></span>
-<span id="cb6-6"><a href="#cb6-6"></a>p_0        <span class="ot">=</span> <span class="dv">1</span>                                                                  <span class="co"># Anzahl Parameter reduziertes Modell</span></span>
-<span id="cb6-7"><a href="#cb6-7"></a>p_1        <span class="ot">=</span> p <span class="sc">-</span> p_0                                                            <span class="co"># Anzahl zusätzlicher Parameter im vollst. Modell</span></span>
-<span id="cb6-8"><a href="#cb6-8"></a>X_0        <span class="ot">=</span> X[,<span class="dv">1</span><span class="sc">:</span>p_0]                                                          <span class="co"># Designmatrix reduzierters Modell</span></span>
-<span id="cb6-9"><a href="#cb6-9"></a>beta_hat_0 <span class="ot">=</span> <span class="fu">solve</span>(<span class="fu">t</span>(X_0)<span class="sc">%*%</span>X_0)<span class="sc">%*%</span><span class="fu">t</span>(X_0)<span class="sc">%*%</span>y                                   <span class="co"># Betaparameterschätzer reduziertes Modell</span></span>
-<span id="cb6-10"><a href="#cb6-10"></a>beta_hat   <span class="ot">=</span> <span class="fu">solve</span>(<span class="fu">t</span>(X) <span class="sc">%*%</span>X )<span class="sc">%*%</span><span class="fu">t</span>(X) <span class="sc">%*%</span>y                                      <span class="co"># Betaparameterschätzer vollständiges Modell</span></span>
-<span id="cb6-11"><a href="#cb6-11"></a>eps_hat_0  <span class="ot">=</span> y <span class="sc">-</span> X_0 <span class="sc">%*%</span> beta_hat_0                                             <span class="co"># Residuenvektor reduziertes Modell</span></span>
-<span id="cb6-12"><a href="#cb6-12"></a>eps_hat    <span class="ot">=</span> y <span class="sc">-</span> X <span class="sc">%*%</span> beta_hat                                                 <span class="co"># Residuenvektor vollständiges Modell</span></span>
-<span id="cb6-13"><a href="#cb6-13"></a>eh0_eh0    <span class="ot">=</span> <span class="fu">t</span>(eps_hat_0) <span class="sc">%*%</span> eps_hat_0                                         <span class="co"># RQS reduziertes Modell</span></span>
-<span id="cb6-14"><a href="#cb6-14"></a>eh_eh      <span class="ot">=</span> <span class="fu">t</span>(eps_hat) <span class="sc">%*%</span> eps_hat                                             <span class="co"># RQS vollständiges Modell</span></span>
-<span id="cb6-15"><a href="#cb6-15"></a>sigsqr_hat <span class="ot">=</span> eh_eh<span class="sc">/</span>(n<span class="sc">-</span>p)                                                        <span class="co"># Varianzparameterschätzer vollst. Modell</span></span>
-<span id="cb6-16"><a href="#cb6-16"></a>f          <span class="ot">=</span> ((eh0_eh0<span class="sc">-</span>eh_eh)<span class="sc">/</span>p_1)<span class="sc">/</span>sigsqr_hat                                   <span class="co"># F-Statistik</span></span>
-<span id="cb6-17"><a href="#cb6-17"></a>pval       <span class="ot">=</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">pf</span>(f,p_1,n<span class="sc">-</span>p)                                                  <span class="co"># p-Wert</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-label="1"></a>D          <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"./_data/511-multiple-regression.csv"</span>)                    <span class="co"># Datensatz</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-label="2"></a>y          <span class="ot">=</span> D<span class="sc">$</span>dBDI                                                             <span class="co"># Abhängige Variable</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-label="3"></a>n          <span class="ot">=</span> <span class="fu">length</span>(y)                                                          <span class="co"># Anzahl Datenpunkte</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-label="4"></a>X          <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">1</span>,n), D<span class="sc">$</span>Alter, D<span class="sc">$</span>Dauer), <span class="at">nrow =</span> n)                    <span class="co"># Desigmatrix vollständiges Modell</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-label="5"></a>p          <span class="ot">=</span> <span class="fu">ncol</span>(X)                                                            <span class="co"># Anzahl Parameter vollständiges Modell</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-label="6"></a>p_0        <span class="ot">=</span> <span class="dv">1</span>                                                                  <span class="co"># Anzahl Parameter reduziertes Modell</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-label="7"></a>p_1        <span class="ot">=</span> p <span class="sc">-</span> p_0                                                            <span class="co"># Anzahl zusätzlicher Parameter im vollst. Modell</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-label="8"></a>X_0        <span class="ot">=</span> X[,<span class="dv">1</span><span class="sc">:</span>p_0]                                                          <span class="co"># Designmatrix reduzierters Modell</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-label="9"></a>beta_hat_0 <span class="ot">=</span> <span class="fu">solve</span>(<span class="fu">t</span>(X_0)<span class="sc">%*%</span>X_0)<span class="sc">%*%</span><span class="fu">t</span>(X_0)<span class="sc">%*%</span>y                                   <span class="co"># Betaparameterschätzer reduziertes Modell</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-label="10"></a>beta_hat   <span class="ot">=</span> <span class="fu">solve</span>(<span class="fu">t</span>(X) <span class="sc">%*%</span>X )<span class="sc">%*%</span><span class="fu">t</span>(X) <span class="sc">%*%</span>y                                      <span class="co"># Betaparameterschätzer vollständiges Modell</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-label="11"></a>eps_hat_0  <span class="ot">=</span> y <span class="sc">-</span> X_0 <span class="sc">%*%</span> beta_hat_0                                             <span class="co"># Residuenvektor reduziertes Modell</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-label="12"></a>eps_hat    <span class="ot">=</span> y <span class="sc">-</span> X <span class="sc">%*%</span> beta_hat                                                 <span class="co"># Residuenvektor vollständiges Modell</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-label="13"></a>eh0_eh0    <span class="ot">=</span> <span class="fu">t</span>(eps_hat_0) <span class="sc">%*%</span> eps_hat_0                                         <span class="co"># RQS reduziertes Modell</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-label="14"></a>eh_eh      <span class="ot">=</span> <span class="fu">t</span>(eps_hat) <span class="sc">%*%</span> eps_hat                                             <span class="co"># RQS vollständiges Modell</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-label="15"></a>sigsqr_hat <span class="ot">=</span> eh_eh<span class="sc">/</span>(n<span class="sc">-</span>p)                                                        <span class="co"># Varianzparameterschätzer vollst. Modell</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-label="16"></a>f          <span class="ot">=</span> ((eh0_eh0<span class="sc">-</span>eh_eh)<span class="sc">/</span>p_1)<span class="sc">/</span>sigsqr_hat                                   <span class="co"># F-Statistik</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-label="17"></a>pval       <span class="ot">=</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">pf</span>(f,p_1,n<span class="sc">-</span>p)                                                  <span class="co"># p-Wert</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
@@ -1240,9 +1243,9 @@ Alter-Dauer    -2.42       0.18  -13.37     0.00</code></pre>
 <p>Der Beispieldatenzsatz enthält also deutliche Evidenz dafür, dass sowohl Patient:innenalter als auch Therapiedauer zur Erklärung der Pre-Post-BDI-Differenzwertvariation über Patient:innen beiträgt.</p>
 <p>Eine direkte Implementation obiger Analyse erlaubt das Zusammenspiel der <strong>R</strong> Funktionen <code>lm()</code> und <code>summary()</code>, wie untenstehender <strong>R</strong> Code demonstriert.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>D     <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"./_data/511-multiple-regression.csv"</span>)                         <span class="co"># Datensatz</span></span>
-<span id="cb8-2"><a href="#cb8-2"></a>alm   <span class="ot">=</span> <span class="fu">lm</span>(dBDI <span class="sc">~</span> Alter <span class="sc">+</span> Dauer, <span class="at">data =</span> D)                                      <span class="co"># Modellformulierung und Modellschätzung</span></span>
-<span id="cb8-3"><a href="#cb8-3"></a><span class="fu">summary</span>(alm)                                                                    <span class="co"># Modellevaluation</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-label="1"></a>D     <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"./_data/511-multiple-regression.csv"</span>)                         <span class="co"># Datensatz</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-label="2"></a>alm   <span class="ot">=</span> <span class="fu">lm</span>(dBDI <span class="sc">~</span> Alter <span class="sc">+</span> Dauer, <span class="at">data =</span> D)                                      <span class="co"># Modellformulierung und Modellschätzung</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-label="3"></a><span class="fu">summary</span>(alm)                                                                    <span class="co"># Modellevaluation</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -1268,7 +1271,7 @@ F-statistic: 223.7 on 2 and 17 DF,  p-value: 6.179e-13</code></pre>
 </section>
 <section id="literaturhinweise" class="level2" data-number="44.5">
 <h2 data-number="44.5" class="anchored" data-anchor-id="literaturhinweise"><span class="header-section-number">44.5</span> Literaturhinweise</h2>
-<p>Die moderne Geschichte der multiplen Regression wird oft in den Arbeiten von <span class="citation" data-cites="legendre1805">Legendre (<a href="#ref-legendre1805" role="doc-biblioref">1805</a>)</span> und <span class="citation" data-cites="gauss1809">Gauss (<a href="#ref-gauss1809" role="doc-biblioref">1809</a>)</span> zur Berechnung von Planetenbahnen verankert. Die heutige Theorie der multiplen Regression sehr breit gefächert, so dass wir in diesem Abschnitt nur einen ersten Eindruck von ihrem Wesen vermitteln können. Weiterführende Einsichten bieten zum Beispiel <span class="citation" data-cites="draper1998">Draper &amp; Smith (<a href="#ref-draper1998" role="doc-biblioref">1998</a>)</span>, <span class="citation" data-cites="hocking2003">Hocking (<a href="#ref-hocking2003" role="doc-biblioref">2003</a>)</span> und <span class="citation" data-cites="fox2016">Fox &amp; Tishby (<a href="#ref-fox2016" role="doc-biblioref">2016</a>)</span>.</p>
+<p>Die moderne Geschichte der multiplen Regression wird oft in den Arbeiten von <span class="citation" data-cites="legendre1805">Legendre (<a href="#ref-legendre1805" role="doc-biblioref">1805</a>)</span> und <span class="citation" data-cites="gauss1809">Gauss (<a href="#ref-gauss1809" role="doc-biblioref">1809</a>)</span> zur Berechnung von Planetenbahnen verankert. Die heutige Theorie der multiplen Regression sehr breit gefächert, so dass wir in diesem Abschnitt nur einen ersten Eindruck von ihrem Wesen vermitteln können. Weiterführende Einsichten bieten zum Beispiel <span class="citation" data-cites="draper1998">Draper &amp; Smith (<a href="#ref-draper1998" role="doc-biblioref">1998</a>)</span>, <span class="citation" data-cites="hocking2003">Hocking (<a href="#ref-hocking2003" role="doc-biblioref">2003</a>)</span> und <span class="citation" data-cites="fox2016">Fox (<a href="#ref-fox2016" role="doc-biblioref">2016</a>)</span>.</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
@@ -1276,7 +1279,7 @@ F-statistic: 223.7 on 2 and 17 DF,  p-value: 6.179e-13</code></pre>
 Draper, N., &amp; Smith, H. (1998). <em>Applied <span>Regression Analysis</span></em>. Wiley-Interscience.
 </div>
 <div id="ref-fox2016" class="csl-entry" role="listitem">
-Fox, R., &amp; Tishby, N. (2016). <em>Minimum-Information <span>LQG</span> Control Part <span>I</span>: <span>Memoryless</span> Controllers</em>. 5610–5616. <a href="https://doi.org/10.1109/CDC.2016.7799131">https://doi.org/10.1109/CDC.2016.7799131</a>
+Fox, J. (2016). <em>Applied Regression Analysis and Generalized Linear Models</em> (Third Edition). SAGE.
 </div>
 <div id="ref-gauss1809" class="csl-entry" role="listitem">
 Gauss, C. F. (1809). <em>Theoria <span>Motus Corporum Coelestium</span> in <span>Sectionibus Conicis Solem Ambientium</span></em>. Cambridge University Press.
@@ -1292,114 +1295,220 @@ Legendre, A. M. (1805). <em>Nouvelles Methodes Pour La Determination Des Orbites
 
 </main> <!-- /main -->
 <script>
-(function () {
-  var base = "https://dirk-ostwald.github.io";
-  var pageMap = {
-    "/": "/en/",
-    "/index.html": "/en/",
-    "/Referenzen.html": "/en/References.html",
-    "/_part_1/100-Mathematische-Grundlagen.html": "/en/_part_1/100-Mathematical-Foundations.html",
-    "/_part_1/101-Sprache-und-Logik.html": "/en/_part_1/101-Language-and-Logic.html",
-    "/_part_1/102-Mengen.html": "/en/_part_1/102-Sets.html",
-    "/_part_1/103-Summen-Produkte-Potenzen.html": "/en/_part_1/103-Sums-Products-Powers.html",
-    "/_part_1/104-Funktionen.html": "/en/_part_1/104-Functions.html",
-    "/_part_1/105-Folgen-Grenzwerte-Stetigkeit.html": "/en/_part_1/105-Sequences-Limits-Continuity.html",
-    "/_part_1/106-Differenzialrechnung.html": "/en/_part_1/106-Differential-Calculus.html",
-    "/_part_1/107-Integralrechnung.html": "/en/_part_1/107-Integral-Calculus.html",
-    "/_part_1/108-Vektoren.html": "/en/_part_1/108-Vectors.html",
-    "/_part_1/109-Matrizen.html": "/en/_part_1/109-Matrices.html",
-    "/_part_1/110-Deskriptivstatistiken.html": "/en/_part_1/110-Descriptive-Statistics.html",
-    "/_part_2/200-Imperative-Programmierung.html": "/en/_part_2/200-Imperative-Programming.html",
-    "/_part_2/201-Informatische-Grundbegriffe.html": "/en/_part_2/201-Basic-Concepts-of-Computer-Science.html",
-    "/_part_2/202-Arithmetik-und-Variablen.html": "/en/_part_2/202-Arithmetic-and-Variables.html",
-    "/_part_2/203-Datenstrukturen.html": "/en/_part_2/203-Data-Structures.html",
-    "/_part_2/204-Vektoren.html": "/en/_part_2/204-Vectors.html",
-    "/_part_2/205-Matrizen-und-Arrays.html": "/en/_part_2/205-Matrices-and-Arrays.html",
-    "/_part_2/206-Listen-Dataframes-und-Tibbles.html": "/en/_part_2/206-Lists-Dataframes-and-Tibbles.html",
-    "/_part_2/207-Datenmanagement.html": "/en/_part_2/207-Data-Management.html",
-    "/_part_2/208-Kontrollstrukturen.html": "/en/_part_2/208-Control-Structures.html",
-    "/_part_3/300-Wahrscheinlichkeitstheorie.html": "/en/_part_3/300-Probability-Theory.html",
-    "/_part_3/301-Wahrscheinlichkeitsräume.html": "/en/_part_3/301-Probability-Spaces.html",
-    "/_part_3/302-Elementare-Wahrscheinlichkeiten.html": "/en/_part_3/302-Elementary-Probabilities.html",
-    "/_part_3/303-Zufallsvariablen.html": "/en/_part_3/303-Random-Variables.html",
-    "/_part_3/304-Zufallsvektoren.html": "/en/_part_3/304-Random-Vectors.html",
-    "/_part_3/305-Erwartungswerte.html": "/en/_part_3/305-Expectations.html",
-    "/_part_3/306-Varianzen.html": "/en/_part_3/306-Variances.html",
-    "/_part_3/307-Kovarianzen.html": "/en/_part_3/307-Covariances.html",
-    "/_part_3/308-Ungleichungen.html": "/en/_part_3/308-Inequalities.html",
-    "/_part_3/309-Grenzwerte.html": "/en/_part_3/309-Limits.html",
-    "/_part_3/310-Transformationen.html": "/en/_part_3/310-Transformations.html",
-    "/_part_3/311-Normalverteilungen.html": "/en/_part_3/311-Normal-Distributions.html",
-    "/_part_4/400-Inferenz.html": "/en/_part_4/400-Inference.html",
-    "/_part_4/401-Frequentistische-Inferenz.html": "/en/_part_4/401-Frequentist-Inference.html",
-    "/_part_4/402-Punktschätzung.html": "/en/_part_4/402-Point-Estimation.html",
-    "/_part_4/403-Konfidenzintervalle.html": "/en/_part_4/403-Confidence-Intervals.html",
-    "/_part_4/404-Hypothesentests.html": "/en/_part_4/404-Hypothesis-Tests.html",
-    "/_part_5/500-Allgemeines-Lineares-Modell.html": "/en/_part_5/500-General-Linear-Model.html",
-    "/_part_5/501-Regression.html": "/en/_part_5/501-Regression.html",
-    "/_part_5/502-Korrelation.html": "/en/_part_5/502-Correlation.html",
-    "/_part_5/503-Modellformulierung.html": "/en/_part_5/503-Model-Formulation.html",
-    "/_part_5/504-Parameterschätzung.html": "/en/_part_5/504-Parameter-Estimation.html",
-    "/_part_5/505-T-Statistiken.html": "/en/_part_5/505-T-Statistics.html",
-    "/_part_5/506-F-Statistiken.html": "/en/_part_5/506-F-Statistics.html",
-    "/_part_5/507-T-Tests.html": "/en/_part_5/507-T-Tests.html",
-    "/_part_5/508-Einfaktorielle-Varianzanalyse.html": "/en/_part_5/508-One-Way-Analysis-of-Variance.html",
-    "/_part_5/509-Zweifaktorielle-Varianzanalyse.html": "/en/_part_5/509-Two-Way-Analysis-of-Variance.html",
-    "/_part_5/510-Partielle-Korrelation.html": "/en/_part_5/510-Partial-Correlation.html",
-    "/_part_5/511-Multiple-Regression.html": "/en/_part_5/511-Multiple-Regression.html"
-  };
-  var reversePageMap = {};
-  Object.keys(pageMap).forEach(function (key) {
-    reversePageMap[pageMap[key]] = key;
-  });
-  function headings() {
-    return Array.prototype.slice.call(document.querySelectorAll("main.content h1[id], main.content h2[id], main.content h3[id], main.content h4[id]"));
-  }
-  function currentHeadingIndex() {
-    var hash = window.location.hash;
-    if (!hash) return "";
-    var id = hash.slice(1);
-    try {
-      id = decodeURIComponent(id);
-    } catch (error) {}
-    var list = headings();
-    for (var i = 0; i < list.length; i++) {
-      if (list[i].id === id) return String(i);
-    }
-    return "";
-  }
-  function scrollToHeadingIndex() {
-    var params = new URLSearchParams(window.location.search);
-    var value = params.get("h");
-    if (value === null) return;
-    var index = Number(value);
-    var list = headings();
-    if (Number.isInteger(index) && index >= 0 && index < list.length) {
-      list[index].scrollIntoView();
-      if (history.replaceState) {
-        history.replaceState(null, "", window.location.pathname + "#" + list[index].id);
-      }
-    }
-  }
-  var path = window.location.pathname;
-  var target = pageMap[path] || reversePageMap[path];
-  if (target) {
-    document.querySelectorAll("a.nav-link").forEach(function (link) {
-      var text = link.textContent.trim();
-      if (text === "English" || text === "Deutsch") {
-        var index = currentHeadingIndex();
-        link.href = base + target + (index ? "?h=" + index : "");
-      }
-    });
-  }
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", scrollToHeadingIndex);
-  } else {
-    scrollToHeadingIndex();
-  }
-}());
-</script>
 
+(function () {
+
+  var base = "https://dirk-ostwald.github.io";
+
+  var pageMap = {
+
+    "/": "/en/",
+
+    "/index.html": "/en/",
+
+    "/Referenzen.html": "/en/References.html",
+
+    "/_part_1/100-Mathematische-Grundlagen.html": "/en/_part_1/100-Mathematical-Foundations.html",
+
+    "/_part_1/101-Sprache-und-Logik.html": "/en/_part_1/101-Language-and-Logic.html",
+
+    "/_part_1/102-Mengen.html": "/en/_part_1/102-Sets.html",
+
+    "/_part_1/103-Summen-Produkte-Potenzen.html": "/en/_part_1/103-Sums-Products-Powers.html",
+
+    "/_part_1/104-Funktionen.html": "/en/_part_1/104-Functions.html",
+
+    "/_part_1/105-Folgen-Grenzwerte-Stetigkeit.html": "/en/_part_1/105-Sequences-Limits-Continuity.html",
+
+    "/_part_1/106-Differenzialrechnung.html": "/en/_part_1/106-Differential-Calculus.html",
+
+    "/_part_1/107-Integralrechnung.html": "/en/_part_1/107-Integral-Calculus.html",
+
+    "/_part_1/108-Vektoren.html": "/en/_part_1/108-Vectors.html",
+
+    "/_part_1/109-Matrizen.html": "/en/_part_1/109-Matrices.html",
+
+    "/_part_1/110-Deskriptivstatistiken.html": "/en/_part_1/110-Descriptive-Statistics.html",
+
+    "/_part_2/200-Imperative-Programmierung.html": "/en/_part_2/200-Imperative-Programming.html",
+
+    "/_part_2/201-Informatische-Grundbegriffe.html": "/en/_part_2/201-Basic-Concepts-of-Computer-Science.html",
+
+    "/_part_2/202-Arithmetik-und-Variablen.html": "/en/_part_2/202-Arithmetic-and-Variables.html",
+
+    "/_part_2/203-Datenstrukturen.html": "/en/_part_2/203-Data-Structures.html",
+
+    "/_part_2/204-Vektoren.html": "/en/_part_2/204-Vectors.html",
+
+    "/_part_2/205-Matrizen-und-Arrays.html": "/en/_part_2/205-Matrices-and-Arrays.html",
+
+    "/_part_2/206-Listen-Dataframes-und-Tibbles.html": "/en/_part_2/206-Lists-Dataframes-and-Tibbles.html",
+
+    "/_part_2/207-Datenmanagement.html": "/en/_part_2/207-Data-Management.html",
+
+    "/_part_2/208-Kontrollstrukturen.html": "/en/_part_2/208-Control-Structures.html",
+
+    "/_part_3/300-Wahrscheinlichkeitstheorie.html": "/en/_part_3/300-Probability-Theory.html",
+
+    "/_part_3/301-Wahrscheinlichkeitsräume.html": "/en/_part_3/301-Probability-Spaces.html",
+
+    "/_part_3/302-Elementare-Wahrscheinlichkeiten.html": "/en/_part_3/302-Elementary-Probabilities.html",
+
+    "/_part_3/303-Zufallsvariablen.html": "/en/_part_3/303-Random-Variables.html",
+
+    "/_part_3/304-Zufallsvektoren.html": "/en/_part_3/304-Random-Vectors.html",
+
+    "/_part_3/305-Erwartungswerte.html": "/en/_part_3/305-Expectations.html",
+
+    "/_part_3/306-Varianzen.html": "/en/_part_3/306-Variances.html",
+
+    "/_part_3/307-Kovarianzen.html": "/en/_part_3/307-Covariances.html",
+
+    "/_part_3/308-Ungleichungen.html": "/en/_part_3/308-Inequalities.html",
+
+    "/_part_3/309-Grenzwerte.html": "/en/_part_3/309-Limits.html",
+
+    "/_part_3/310-Transformationen.html": "/en/_part_3/310-Transformations.html",
+
+    "/_part_3/311-Normalverteilungen.html": "/en/_part_3/311-Normal-Distributions.html",
+
+    "/_part_4/400-Inferenz.html": "/en/_part_4/400-Inference.html",
+
+    "/_part_4/401-Frequentistische-Inferenz.html": "/en/_part_4/401-Frequentist-Inference.html",
+
+    "/_part_4/402-Punktschätzung.html": "/en/_part_4/402-Point-Estimation.html",
+
+    "/_part_4/403-Konfidenzintervalle.html": "/en/_part_4/403-Confidence-Intervals.html",
+
+    "/_part_4/404-Hypothesentests.html": "/en/_part_4/404-Hypothesis-Tests.html",
+
+    "/_part_5/500-Allgemeines-Lineares-Modell.html": "/en/_part_5/500-General-Linear-Model.html",
+
+    "/_part_5/501-Regression.html": "/en/_part_5/501-Regression.html",
+
+    "/_part_5/502-Korrelation.html": "/en/_part_5/502-Correlation.html",
+
+    "/_part_5/503-Modellformulierung.html": "/en/_part_5/503-Model-Formulation.html",
+
+    "/_part_5/504-Parameterschätzung.html": "/en/_part_5/504-Parameter-Estimation.html",
+
+    "/_part_5/505-T-Statistiken.html": "/en/_part_5/505-T-Statistics.html",
+
+    "/_part_5/506-F-Statistiken.html": "/en/_part_5/506-F-Statistics.html",
+
+    "/_part_5/507-T-Tests.html": "/en/_part_5/507-T-Tests.html",
+
+    "/_part_5/508-Einfaktorielle-Varianzanalyse.html": "/en/_part_5/508-One-Way-Analysis-of-Variance.html",
+
+    "/_part_5/509-Zweifaktorielle-Varianzanalyse.html": "/en/_part_5/509-Two-Way-Analysis-of-Variance.html",
+
+    "/_part_5/510-Partielle-Korrelation.html": "/en/_part_5/510-Partial-Correlation.html",
+
+    "/_part_5/511-Multiple-Regression.html": "/en/_part_5/511-Multiple-Regression.html"
+
+  };
+
+  var reversePageMap = {};
+
+  Object.keys(pageMap).forEach(function (key) {
+
+    reversePageMap[pageMap[key]] = key;
+
+  });
+
+  function headings() {
+
+    return Array.prototype.slice.call(document.querySelectorAll("main.content h1[id], main.content h2[id], main.content h3[id], main.content h4[id]"));
+
+  }
+
+  function currentHeadingIndex() {
+
+    var hash = window.location.hash;
+
+    if (!hash) return "";
+
+    var id = hash.slice(1);
+
+    try {
+
+      id = decodeURIComponent(id);
+
+    } catch (error) {}
+
+    var list = headings();
+
+    for (var i = 0; i < list.length; i++) {
+
+      if (list[i].id === id) return String(i);
+
+    }
+
+    return "";
+
+  }
+
+  function scrollToHeadingIndex() {
+
+    var params = new URLSearchParams(window.location.search);
+
+    var value = params.get("h");
+
+    if (value === null) return;
+
+    var index = Number(value);
+
+    var list = headings();
+
+    if (Number.isInteger(index) && index >= 0 && index < list.length) {
+
+      list[index].scrollIntoView();
+
+      if (history.replaceState) {
+
+        history.replaceState(null, "", window.location.pathname + "#" + list[index].id);
+
+      }
+
+    }
+
+  }
+
+  var path = window.location.pathname;
+
+  var target = pageMap[path] || reversePageMap[path];
+
+  if (target) {
+
+    document.querySelectorAll("a.nav-link").forEach(function (link) {
+
+      var text = link.textContent.trim();
+
+      if (text === "English" || text === "Deutsch") {
+
+        var index = currentHeadingIndex();
+
+        link.href = base + target + (index ? "?h=" + index : "");
+
+      }
+
+    });
+
+  }
+
+  if (document.readyState === "loading") {
+
+    document.addEventListener("DOMContentLoaded", scrollToHeadingIndex);
+
+  } else {
+
+    scrollToHeadingIndex();
+
+  }
+
+}());
+
+</script>
 
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {

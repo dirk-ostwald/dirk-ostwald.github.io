@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,10 +12,13 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -96,10 +99,10 @@ div.csl-indent {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-6e8dda235ee8acd82fc3832029714bc4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-35fb2a33bb4c71715ffa083faf67f315.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -129,7 +132,7 @@ div.csl-indent {
 }</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -576,7 +579,7 @@ window.Quarto = {
 </header>
 
 
-<p>The concepts of regression and correlation are closely intertwined and ultimately serve to quantify linear-affine dependencies between independent and dependent variables. A central topic of this section is therefore the equivalences between the two concepts. In contrast to regression, in correlation both the dependent and the independent variable are modeled as random variables; the probabilistic complexity of correlation is therefore somewhat higher than that of regression and of the general linear model. To approach the relationships between regression and correlation, we first recall the concept and mechanics of sample correlation in <a href="#sec-correlation-basics" class="quarto-xref"><span>Section 35.1</span></a>. In <a href="#sec-correlation-and-coefficient-of-determination" class="quarto-xref"><span>Section 35.2</span></a>, we use the <span class="math inline">\(\mathrm{R}^2\)</span> statistic to consider the relationship between sample correlation and fitting line and give a first example of the idea of a variance decomposition. Finally, in <a href="#sec-correlation-and-linear-affine-dependence" class="quarto-xref"><span>Section 35.3</span></a>, we discuss first aspects for understanding sample correlation in a probabilistic context. As an application example, we use throughout the example dataset on the relationship between psychotherapy duration and symptom reduction introduced in <a href="501-Regression.html" class="quarto-xref"><span>Chapter 34</span></a>.</p>
+<p>The concepts of regression and correlation are closely intertwined and ultimately serve to quantify linear-affine dependencies between independent and dependent variables. A central topic of this section is therefore the equivalences between the two concepts. In contrast to regression, in correlation both the dependent and the independent variable are modeled as random variables. The probabilistic complexity of correlation is therefore somewhat higher than that of regression and of the general linear model. To approach the relationships between regression and correlation, we first recall the concept and mechanics of sample correlation in <a href="#sec-correlation-basics" class="quarto-xref"><span>Section 35.1</span></a>. In <a href="#sec-correlation-and-coefficient-of-determination" class="quarto-xref"><span>Section 35.2</span></a>, we use the <span class="math inline">\(\mathrm{R}^2\)</span> statistic to consider the relationship between sample correlation and fitting line and give a first example of the idea of a variance decomposition. Finally, in <a href="#sec-correlation-and-linear-affine-dependence" class="quarto-xref"><span>Section 35.3</span></a>, we discuss first aspects for understanding sample correlation in a probabilistic context. As an application example, we use throughout the example dataset on the relationship between psychotherapy duration and symptom reduction introduced in <a href="501-Regression.html" class="quarto-xref"><span>Chapter 34</span></a>.</p>
 <section id="sec-correlation-basics" class="level2" data-number="35.1">
 <h2 data-number="35.1" class="anchored" data-anchor-id="sec-correlation-basics"><span class="header-section-number">35.1</span> Basics</h2>
 <p>We first recall the concept of the correlation of two random variables.</p>
@@ -585,10 +588,12 @@ window.Quarto = {
 \rho(\xi, \upsilon):=\frac{\mathbb{C}(\xi, \upsilon)}{\mathbb{S}(\xi) \mathbb{S}(\upsilon)}
 \end{equation}\]</span> where <span class="math inline">\(\mathbb{C}(\xi, \upsilon)\)</span> denotes the covariance of <span class="math inline">\(\xi\)</span> and <span class="math inline">\(\upsilon\)</span>, and <span class="math inline">\(\mathbb{S}(\xi)\)</span> and <span class="math inline">\(\mathbb{S}(\upsilon)\)</span> denote the standard deviations of <span class="math inline">\(\xi\)</span> and <span class="math inline">\(\upsilon\)</span>, respectively.</p>
 </div>
-<p>The number <span class="math inline">\(\rho(\xi, \upsilon)\)</span> is also called the correlation coefficient of <span class="math inline">\(\xi\)</span> and <span class="math inline">\(\upsilon\)</span>. We have already seen that <span class="math inline">\(-1 \leq \rho(\xi, \upsilon) \leq 1\)</span> holds and that <span class="math inline">\(\xi\)</span> and <span class="math inline">\(\upsilon\)</span> are called uncorrelated when <span class="math inline">\(\rho(\xi, \upsilon)=0\)</span>. Furthermore, we have already seen that independence of the random variables <span class="math inline">\(\xi\)</span> and <span class="math inline">\(\upsilon\)</span> always implies uncorrelatedness of <span class="math inline">\(\xi\)</span> and <span class="math inline">\(\upsilon\)</span>, but that, in general, uncorrelatedness of <span class="math inline">\(\xi\)</span> and <span class="math inline">\(\upsilon\)</span> does not imply independence of <span class="math inline">\(\xi\)</span> and <span class="math inline">\(\upsilon\)</span>.</p>
+<p>The number <span class="math inline">\(\rho(\xi, \upsilon)\)</span> is also called the correlation coefficient of <span class="math inline">\(\xi\)</span> and <span class="math inline">\(\upsilon\)</span>. We have already seen that <span class="math inline">\(-1 \leq \rho(\xi, \upsilon)
+\leq 1\)</span> holds and that <span class="math inline">\(\xi\)</span> and <span class="math inline">\(\upsilon\)</span> are called uncorrelated when <span class="math inline">\(\rho(\xi, \upsilon)=0\)</span>. Furthermore, we have already seen that independence of the random variables <span class="math inline">\(\xi\)</span> and <span class="math inline">\(\upsilon\)</span> always implies uncorrelatedness of <span class="math inline">\(\xi\)</span> and <span class="math inline">\(\upsilon\)</span>, but that, in general, uncorrelatedness of <span class="math inline">\(\xi\)</span> and <span class="math inline">\(\upsilon\)</span> does not imply independence of <span class="math inline">\(\xi\)</span> and <span class="math inline">\(\upsilon\)</span>.</p>
 <p>If realizations of two random variables are available as a bivariate dataset, then the realization-specific sample correlation can be determined according to the following definition.</p>
 <div id="def-sample-correlation" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 35.2 (Sample correlation)</strong></span> Let <span class="math inline">\(\left\{\left(x_{1}, y_{1}\right), \ldots,\left(x_{n}, y_{n}\right)\right\} \subset \mathbb{R}^{2}\)</span> be a dataset. Furthermore, let:</p>
+<p><span class="theorem-title"><strong>Definition 35.2 (Sample correlation)</strong></span> Let <span class="math inline">\(\left\{\left(x_{1}, y_{1}\right), \ldots,\left(x_{n}, y_{n}\right)\right\}
+\subset \mathbb{R}^{2}\)</span> be a dataset. Furthermore, let:</p>
 <ul>
 <li>The sample means of the <span class="math inline">\(x_{i}\)</span> and <span class="math inline">\(y_{i}\)</span> be defined as <span class="math display">\[\begin{equation}
 \bar{x}:=\frac{1}{n} \sum_{i=1}^{n} x_{i} \mbox{ and } \bar{y}:=\frac{1}{n} \sum_{i=1}^{n} y_{i}
@@ -596,37 +601,39 @@ window.Quarto = {
 <li>The sample standard deviations of the <span class="math inline">\(x_{i}\)</span> and <span class="math inline">\(y_{i}\)</span> be defined as <span class="math display">\[\begin{equation}
 s_{x}:=\sqrt{\frac{1}{n-1} \sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)^{2}} \mbox{ and } s_{y}:=\sqrt{\frac{1}{n-1} \sum_{i=1}^{n}\left(y_{i}-\bar{y}\right)^{2}} .
 \end{equation}\]</span></li>
-<li>The sample covariance of <span class="math inline">\(\left(x_{1}, y_{1}\right), \ldots,\left(x_{n}, y_{n}\right)\)</span> be defined as <span class="math display">\[\begin{equation}
+<li>The sample covariance of <span class="math inline">\(\left(x_{1}, y_{1}\right), \ldots,\left(x_{n},
+y_{n}\right)\)</span> be defined as <span class="math display">\[\begin{equation}
 c_{x y}:=\frac{1}{n-1} \sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)\left(y_{i}-\bar{y}\right)
 \end{equation}\]</span></li>
 </ul>
-<p>Then the <em>sample correlation</em> of <span class="math inline">\(\left(x_{1}, y_{1}\right), \ldots,\left(x_{n}, y_{n}\right)\)</span> is defined as <span class="math display">\[\begin{equation}
+<p>Then the <em>sample correlation</em> of <span class="math inline">\(\left(x_{1}, y_{1}\right), \ldots,\left(x_{n},
+y_{n}\right)\)</span> is defined as <span class="math display">\[\begin{equation}
 r_{x y}:=\frac{c_{x y}}{s_{x} s_{y}}
 \end{equation}\]</span> and is also called <em>Pearson’s sample correlation coefficient</em>.</p>
 </div>
 <p>The following <strong>R</strong> code evaluates the sample correlation of the example dataset.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># load example dataset</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a>fname <span class="ot">=</span> <span class="st">"./_data/502-correlation.csv"</span>                                           <span class="co"># file path</span></span>
-<span id="cb1-3"><a href="#cb1-3"></a>D     <span class="ot">=</span> <span class="fu">read.table</span>(fname, <span class="at">sep =</span> <span class="st">","</span>, <span class="at">header =</span> <span class="cn">TRUE</span>)                             <span class="co"># load as dataframe</span></span>
-<span id="cb1-4"><a href="#cb1-4"></a>x_i   <span class="ot">=</span> D<span class="sc">$</span>x_i                                                                   <span class="co"># x_i values</span></span>
-<span id="cb1-5"><a href="#cb1-5"></a>y_i   <span class="ot">=</span> D<span class="sc">$</span>y_i                                                                   <span class="co"># y_i values</span></span>
-<span id="cb1-6"><a href="#cb1-6"></a>n     <span class="ot">=</span> <span class="fu">length</span>(x_i)                                                             <span class="co"># n</span></span>
-<span id="cb1-7"><a href="#cb1-7"></a></span>
-<span id="cb1-8"><a href="#cb1-8"></a><span class="co"># "manual" computation of sample correlation</span></span>
-<span id="cb1-9"><a href="#cb1-9"></a>x_bar <span class="ot">=</span> (<span class="dv">1</span><span class="sc">/</span>n)<span class="sc">*</span><span class="fu">sum</span>(x_i)                                                          <span class="co"># \bar{x}</span></span>
-<span id="cb1-10"><a href="#cb1-10"></a>y_bar <span class="ot">=</span> (<span class="dv">1</span><span class="sc">/</span>n)<span class="sc">*</span><span class="fu">sum</span>(y_i)                                                          <span class="co"># \bar{y}</span></span>
-<span id="cb1-11"><a href="#cb1-11"></a>s_x   <span class="ot">=</span> <span class="fu">sqrt</span>(<span class="dv">1</span><span class="sc">/</span>(n<span class="dv">-1</span>)<span class="sc">*</span><span class="fu">sum</span>((x_i <span class="sc">-</span> x_bar)<span class="sc">^</span><span class="dv">2</span>))                                      <span class="co"># s_x</span></span>
-<span id="cb1-12"><a href="#cb1-12"></a>s_y   <span class="ot">=</span> <span class="fu">sqrt</span>(<span class="dv">1</span><span class="sc">/</span>(n<span class="dv">-1</span>)<span class="sc">*</span><span class="fu">sum</span>((y_i <span class="sc">-</span> y_bar)<span class="sc">^</span><span class="dv">2</span>))                                      <span class="co"># s_y</span></span>
-<span id="cb1-13"><a href="#cb1-13"></a>c_xy  <span class="ot">=</span> <span class="dv">1</span><span class="sc">/</span>(n<span class="dv">-1</span>) <span class="sc">*</span> <span class="fu">sum</span>((x_i <span class="sc">-</span> x_bar) <span class="sc">*</span> (y_i <span class="sc">-</span> y_bar))                            <span class="co"># c_{xy}</span></span>
-<span id="cb1-14"><a href="#cb1-14"></a>r_xy  <span class="ot">=</span> c_xy<span class="sc">/</span>(s_x <span class="sc">*</span> s_y)                                                        <span class="co"># r_{xy}</span></span>
-<span id="cb1-15"><a href="#cb1-15"></a><span class="fu">print</span>(r_xy)                                                                     <span class="co"># output</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-label="1"></a><span class="co"># load example dataset</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-label="2"></a>fname <span class="ot">=</span> <span class="st">"./_data/502-correlation.csv"</span>                 <span class="co"># file path</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-label="3"></a>D     <span class="ot">=</span> <span class="fu">read.table</span>(fname, <span class="at">sep =</span> <span class="st">","</span>, <span class="at">header =</span> <span class="cn">TRUE</span>)   <span class="co"># load as dataframe</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-label="4"></a>x_i   <span class="ot">=</span> D<span class="sc">$</span>x_i                                         <span class="co"># x_i values</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-label="5"></a>y_i   <span class="ot">=</span> D<span class="sc">$</span>y_i                                         <span class="co"># y_i values</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-label="6"></a>n     <span class="ot">=</span> <span class="fu">length</span>(x_i)                                   <span class="co"># n</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-label="7"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-label="8"></a><span class="co"># "manual" computation of sample correlation</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-label="9"></a>x_bar <span class="ot">=</span> (<span class="dv">1</span><span class="sc">/</span>n)<span class="sc">*</span><span class="fu">sum</span>(x_i)                                <span class="co"># \bar{x}</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-label="10"></a>y_bar <span class="ot">=</span> (<span class="dv">1</span><span class="sc">/</span>n)<span class="sc">*</span><span class="fu">sum</span>(y_i)                                <span class="co"># \bar{y}</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-label="11"></a>s_x   <span class="ot">=</span> <span class="fu">sqrt</span>(<span class="dv">1</span><span class="sc">/</span>(n<span class="dv">-1</span>)<span class="sc">*</span><span class="fu">sum</span>((x_i <span class="sc">-</span> x_bar)<span class="sc">^</span><span class="dv">2</span>))            <span class="co"># s_x</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-label="12"></a>s_y   <span class="ot">=</span> <span class="fu">sqrt</span>(<span class="dv">1</span><span class="sc">/</span>(n<span class="dv">-1</span>)<span class="sc">*</span><span class="fu">sum</span>((y_i <span class="sc">-</span> y_bar)<span class="sc">^</span><span class="dv">2</span>))            <span class="co"># s_y</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-label="13"></a>c_xy  <span class="ot">=</span> <span class="dv">1</span><span class="sc">/</span>(n<span class="dv">-1</span>) <span class="sc">*</span> <span class="fu">sum</span>((x_i <span class="sc">-</span> x_bar) <span class="sc">*</span> (y_i <span class="sc">-</span> y_bar))  <span class="co"># c_{xy}</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-label="14"></a>r_xy  <span class="ot">=</span> c_xy<span class="sc">/</span>(s_x <span class="sc">*</span> s_y)                              <span class="co"># r_{xy}</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-label="15"></a><span class="fu">print</span>(r_xy)                                           <span class="co"># output</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.9378162</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># automatic computation with cor()</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a>r_xy  <span class="ot">=</span> <span class="fu">cor</span>(x_i,y_i)                                                            <span class="co"># r_{xy}</span></span>
-<span id="cb3-3"><a href="#cb3-3"></a><span class="fu">print</span>(r_xy)                                                                     <span class="co"># output</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-label="1"></a><span class="co"># automatic computation with cor()</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-label="2"></a>r_xy  <span class="ot">=</span> <span class="fu">cor</span>(x_i,y_i)                                  <span class="co"># r_{xy}</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-label="3"></a><span class="fu">print</span>(r_xy)                                           <span class="co"># output</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.9378162</code></pre>
 </div>
@@ -645,7 +652,9 @@ Figure&nbsp;35.1: Mechanics of the sample-correlation sum terms.
 <p>Because the sample correlation is merely the sample covariance <span class="math inline">\(c_{x y}\)</span> normalized to the interval <span class="math inline">\([-1,1]\)</span>, the magnitude of the sample correlation and, in particular, its sign are decisively determined by the values of the sample covariance sum terms <span class="math inline">\(\left(x_{i}-\bar{x}\right)\left(y_{i}-\bar{y}\right)\)</span>. What is decisive is how often, across the data pairs <span class="math inline">\(\left(x_{i}, y_{i}\right)\)</span>, the <span class="math inline">\(x_{i}\)</span> and <span class="math inline">\(y_{i}\)</span> deviate from their respective sample means in the same or in opposite directions. This is shown schematically in <a href="#fig-correlation-terms" class="quarto-xref">Figure&nbsp;<span>35.1</span></a>. When deviations from the respective means occur frequently in the same direction, both in the positive and in the negative direction, the product <span class="math inline">\(\left(x_{i}-\bar{x}\right)\left(y_{i}-\bar{y}\right)\)</span> is positive and thus contributes to a positive sample covariance. When deviations from the respective means occur frequently in opposite directions, the product <span class="math inline">\(\left(x_{i}-\bar{x}\right)\left(y_{i}-\bar{y}\right)\)</span> is often negative and thus contributes to a negative sample covariance. If deviations of the <span class="math inline">\(x_{i}\)</span> and <span class="math inline">\(y_{i}\)</span> in the same direction and in opposite directions both occur often, positive and negative contributions to the sample covariance sum tend to cancel, and the result is a low sample covariance or a sample correlation coefficient near zero. <a href="#fig-correlation-examples" class="quarto-xref">Figure&nbsp;<span>35.2</span></a> shows bivariate datasets of <span class="math inline">\(n=30\)</span> data points each together with their respective sample correlation coefficients.</p>
 <p>The advantage of the sample correlation coefficient over the sample covariance as an association measure is that the absolute value of the sample correlation coefficient remains unchanged under linear-affine transformation of the underlying set of values, whereas the sample covariance changes its value depending on the chosen scale. One therefore also says that the sample correlation coefficient is scale-independent. This is the central statement of the following theorem.</p>
 <div id="thm-sample-correlation-under-linear-affine-transformation" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 35.1 (Sample correlation under linear-affine transformation)</strong></span> For a dataset <span class="math inline">\(\left\{\left(x_{i}, y_{i}\right)\right\}_{i=1, \ldots n} \subset \mathbb{R}^{2}\)</span>, let <span class="math inline">\(\left\{\left(\tilde{x}_{i}, \tilde{y}_{i}\right)\right\}_{i=1, \ldots n} \subset \mathbb{R}^{2}\)</span> be the linearly-affinely transformed dataset with <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Theorem 35.1 (Sample correlation under linear-affine transformation)</strong></span> For a dataset <span class="math inline">\(\left\{\left(x_{i}, y_{i}\right)\right\}_{i=1, \ldots n} \subset
+\mathbb{R}^{2}\)</span>, let <span class="math inline">\(\left\{\left(\tilde{x}_{i},
+\tilde{y}_{i}\right)\right\}_{i=1, \ldots n} \subset \mathbb{R}^{2}\)</span> be the linearly-affinely transformed dataset with <span class="math display">\[\begin{equation}
 \left(\tilde{x}_{i}, \tilde{y}_{i}\right)=\left(a_{x} x_{i}+b_{x}, a_{y} y_{i}+b_{y}\right), a_{x}, a_{y} \neq 0 .
 \end{equation}\]</span> Then <span class="math display">\[\begin{equation}
 \left|r_{\tilde{x} \tilde{y}}\right|=\left|r_{x y}\right| .
@@ -679,9 +688,12 @@ r_{\tilde{x} \tilde{y}}
 </section>
 <section id="sec-correlation-and-coefficient-of-determination" class="level2" data-number="35.2">
 <h2 data-number="35.2" class="anchored" data-anchor-id="sec-correlation-and-coefficient-of-determination"><span class="header-section-number">35.2</span> Correlation and coefficient of determination</h2>
-<p>The so-called coefficient of determination <span class="math inline">\(\mathrm{R}^{2}\)</span> is a popular, frequently reported statistic for describing the strength of association between the values of an independent and a dependent variable. Numerically, <span class="math inline">\(\mathrm{R}^{2}\)</span> is merely the squared sample correlation coefficient. If the sample correlation is, for example, <span class="math inline">\(r_{x y}=0.5\)</span>, then <span class="math inline">\(\mathrm{R}^{2}=0.5^{2}=0.25\)</span>; if, by contrast, the sample correlation is <span class="math inline">\(r_{x y}=-0.5\)</span>, then analogously <span class="math inline">\(\mathrm{R}^{2}=(-0.5)^{2}=0.25\)</span>. These examples show that <span class="math inline">\(\mathrm{R}^{2}\)</span> contains less information about the raw data than <span class="math inline">\(r_{x y}\)</span> because the sign, and hence the direction of the association, is lost. In itself, reporting <span class="math inline">\(\mathrm{R}^{2}\)</span> instead of <span class="math inline">\(r_{x y}\)</span> as a descriptive statistic for describing the strength of association between the values of an independent and a dependent variable has no advantage. Nevertheless, we want to look at <span class="math inline">\(\mathrm{R}^{2}\)</span> somewhat more closely here, because a deeper understanding of <span class="math inline">\(\mathrm{R}^{2}\)</span> allows, on the one hand, entry into the concept of variance decompositions and, on the other hand, further clarifies the relationships between the concepts of fitting line and sample correlation. To this end, we first extend the description of the fitting line from <a href="501-Regression.html#sec-method-of-least-squares" class="quarto-xref"><span>Section 34.1</span></a> by the concepts of explained values and residuals.</p>
+<p>The so-called coefficient of determination <span class="math inline">\(\mathrm{R}^{2}\)</span> is a popular, frequently reported statistic for describing the strength of association between the values of an independent and a dependent variable. Numerically, <span class="math inline">\(\mathrm{R}^{2}\)</span> is merely the squared sample correlation coefficient. If the sample correlation is, for example, <span class="math inline">\(r_{x y}=0.5\)</span>, then <span class="math inline">\(\mathrm{R}^{2}=0.5^{2}=0.25\)</span>. If, by contrast, the sample correlation is <span class="math inline">\(r_{x
+y}=-0.5\)</span>, then analogously <span class="math inline">\(\mathrm{R}^{2}=(-0.5)^{2}=0.25\)</span>. These examples show that <span class="math inline">\(\mathrm{R}^{2}\)</span> contains less information about the raw data than <span class="math inline">\(r_{x
+y}\)</span> because the sign, and hence the direction of the association, is lost. In itself, reporting <span class="math inline">\(\mathrm{R}^{2}\)</span> instead of <span class="math inline">\(r_{x y}\)</span> as a descriptive statistic for describing the strength of association between the values of an independent and a dependent variable has no advantage. Nevertheless, we want to look at <span class="math inline">\(\mathrm{R}^{2}\)</span> somewhat more closely here, because a deeper understanding of <span class="math inline">\(\mathrm{R}^{2}\)</span> allows, on the one hand, entry into the concept of variance decompositions and, on the other hand, further clarifies the relationships between the concepts of fitting line and sample correlation. To this end, we first extend the description of the fitting line from <a href="501-Regression.html#sec-method-of-least-squares" class="quarto-xref"><span>Section 34.1</span></a> by the concepts of explained values and residuals.</p>
 <div id="def-explained-values-and-residuals-of-a-fitting-line" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 35.3 (Explained values and residuals of a fitting line)</strong></span> Given a dataset <span class="math inline">\(\left\{\left(x_{1}, y_{1}\right), \ldots,\left(x_{n}, y_{n}\right)\right\} \subset \mathbb{R}^{2}\)</span> and the fitting line belonging to this dataset <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 35.3 (Explained values and residuals of a fitting line)</strong></span> Given a dataset <span class="math inline">\(\left\{\left(x_{1}, y_{1}\right), \ldots,\left(x_{n},
+y_{n}\right)\right\} \subset \mathbb{R}^{2}\)</span> and the fitting line belonging to this dataset <span class="math display">\[\begin{equation}
 f_{\hat{\beta}}: \mathbb{R} \rightarrow \mathbb{R}, x \mapsto f_{\hat{\beta}}(x):=\hat{\beta}_{0}+\hat{\beta}_{1} x
 \end{equation}\]</span> then, for <span class="math inline">\(i=1, \ldots, n\)</span>, <span class="math display">\[\begin{equation}
 \widehat{y}_{i}:=\hat{\beta}_{0}+\hat{\beta}_{1} x_{i}
@@ -702,7 +714,8 @@ Figure&nbsp;35.3: Fitting line, explained values, and residuals for the example 
 </div>
 <p>Using the concepts of explained values and residuals, the following sum-of-squares decomposition can now be stated when a fitting line of a dataset is available.</p>
 <div id="thm-sum-of-squares-decomposition-for-fitting-line" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 35.2 (Sum-of-squares decomposition for a fitting line)</strong></span> For a dataset <span class="math inline">\(\left\{\left(x_{1}, y_{1}\right), \ldots,\left(x_{n}, y_{n}\right)\right\} \subset \mathbb{R}^{2}\)</span> and its associated fitting line <span class="math inline">\(f_{\hat{\beta}}\)</span>, let, for <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Theorem 35.2 (Sum-of-squares decomposition for a fitting line)</strong></span> For a dataset <span class="math inline">\(\left\{\left(x_{1}, y_{1}\right), \ldots,\left(x_{n},
+y_{n}\right)\right\} \subset \mathbb{R}^{2}\)</span> and its associated fitting line <span class="math inline">\(f_{\hat{\beta}}\)</span>, let, for <span class="math display">\[\begin{equation}
 \bar{y}:=\frac{1}{n} \sum_{i=1}^{n} y_{i} \mbox{ and } \hat{y}_{i}:=\hat{\beta}_{0}+\hat{\beta}_{1} x_{i} \text {, for } i=1, \ldots, n
 \end{equation}\]</span> the sample mean of the <span class="math inline">\(y_{i}\)</span> values and the values explained by the fitting line be given, respectively. Furthermore, let</p>
 <ul>
@@ -758,13 +771,15 @@ Figure&nbsp;35.3: Fitting line, explained values, and residuals for the example 
 <p>Large values of SQR therefore represent large deviations of the explained from the observed <span class="math inline">\(y_{i}\)</span> values, and small values of SQR represent small deviations of the explained from the observed <span class="math inline">\(y_{i}\)</span> values. SQR is thus a measure of the quality of the description of the dataset by the fitting line.</p>
 <p>The central statement of <a href="#thm-sum-of-squares-decomposition-for-fitting-line" class="quarto-xref">Theorem&nbsp;<span>35.2</span></a> is that the total scatter of the <span class="math inline">\(y_{i}\)</span> values around their mean <span class="math inline">\(\bar{y}\)</span> is composed precisely of the sum of the strength of the linear association between the <span class="math inline">\(x_{i}\)</span> and <span class="math inline">\(y_{i}\)</span> values (that is, the “deterministic influence” of the <span class="math inline">\(x_{i}\)</span> on the <span class="math inline">\(y_{i}\)</span>) and the deviations from this linear association (that is, the “noise”). Although SQT is formally not a variance measure, in this context one often speaks of a variance decomposition into explained variance and residual variance. This motif is a central aspect of the general linear model and will be taken up again in later chapters. For the moment, <a href="#thm-sum-of-squares-decomposition-for-fitting-line" class="quarto-xref">Theorem&nbsp;<span>35.2</span></a> allows the following definition of the coefficient of determination <span class="math inline">\(\mathrm{R}^{2}\)</span>.</p>
 <div id="def-coefficient-of-determination-r2" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 35.4 (Coefficient of determination <span class="math inline">\(\mathrm{R}^{2}\)</span>)</strong></span> For a dataset <span class="math inline">\(\left\{\left(x_{1}, y_{1}\right), \ldots,\left(x_{n}, y_{n}\right)\right\} \subset \mathbb{R}^{2}\)</span> and its associated fitting line <span class="math inline">\(f_{\hat{\beta}}\)</span>, as well as the corresponding explained sum of squares SQE and total sum of squares SQT, <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Definition 35.4 (Coefficient of determination <span class="math inline">\(\mathrm{R}^{2}\)</span>)</strong></span> For a dataset <span class="math inline">\(\left\{\left(x_{1}, y_{1}\right), \ldots,\left(x_{n},
+y_{n}\right)\right\} \subset \mathbb{R}^{2}\)</span> and its associated fitting line <span class="math inline">\(f_{\hat{\beta}}\)</span>, as well as the corresponding explained sum of squares SQE and total sum of squares SQT, <span class="math display">\[\begin{equation}
 \mathrm{R}^{2}:=\frac{\mathrm{SQE}}{\mathrm{SQT}}
 \end{equation}\]</span> is called the <em>coefficient of determination</em>.</p>
 </div>
 <p>The following theorem now gives the relationship mentioned above between the coefficient of determination and the sample correlation.</p>
 <div id="thm-sample-correlation-and-coefficient-of-determination" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 35.3 (Sample correlation and coefficient of determination)</strong></span> For a dataset <span class="math inline">\(\left\{\left(x_{1}, y_{1}\right), \ldots,\left(x_{n}, y_{n}\right)\right\} \subset \mathbb{R}^{2}\)</span>, let <span class="math inline">\(\mathrm{R}^{2}\)</span> be the coefficient of determination and let <span class="math inline">\(r_{x y}\)</span> be the sample correlation. Then <span class="math display">\[\begin{equation}
+<p><span class="theorem-title"><strong>Theorem 35.3 (Sample correlation and coefficient of determination)</strong></span> For a dataset <span class="math inline">\(\left\{\left(x_{1}, y_{1}\right), \ldots,\left(x_{n},
+y_{n}\right)\right\} \subset \mathbb{R}^{2}\)</span>, let <span class="math inline">\(\mathrm{R}^{2}\)</span> be the coefficient of determination and let <span class="math inline">\(r_{x y}\)</span> be the sample correlation. Then <span class="math display">\[\begin{equation}
 \mathrm{R}^{2} = r_{x y}^{2}
 \end{equation}\]</span></p>
 </div>
@@ -813,9 +828,11 @@ Figure&nbsp;35.4: Correlation and dependence.
 </div>
 <p><a href="#fig-correlation-dependence" class="quarto-xref">Figure&nbsp;<span>35.4</span></a> A shows a realization of the model <span class="math display">\[\begin{equation}
 y_i=x_{i}+\varepsilon_{i} \mbox{ with } \varepsilon_{i} \sim N(0,1) \mbox{ for } i=1,...,n.
-\end{equation}\]</span> The sample correlation of the dataset <span class="math inline">\(\left\{\left(x_{i}, y_{i}\right)\right\}_{i=1}^{n}\)</span> is <span class="math inline">\(r_{x y}=0.90\)</span> here. There is a clear dependence of the value of the <span class="math inline">\(y_i\)</span> realization <span class="math inline">\(y_{i}\)</span> on the value <span class="math inline">\(x_{i}\)</span>: the higher the value of <span class="math inline">\(x_{i}\)</span>, the higher the expectation for the value of <span class="math inline">\(y_i\)</span>. <a href="#fig-correlation-dependence" class="quarto-xref">Figure&nbsp;<span>35.4</span></a> B shows a realization of the model <span class="math display">\[\begin{equation}
+\end{equation}\]</span> The sample correlation of the dataset <span class="math inline">\(\left\{\left(x_{i},
+y_{i}\right)\right\}_{i=1}^{n}\)</span> is <span class="math inline">\(r_{x y}=0.90\)</span> here. There is a clear dependence of the value of the <span class="math inline">\(y_i\)</span> realization <span class="math inline">\(y_{i}\)</span> on the value <span class="math inline">\(x_{i}\)</span>: the higher the value of <span class="math inline">\(x_{i}\)</span>, the higher the expectation for the value of <span class="math inline">\(y_i\)</span>. <a href="#fig-correlation-dependence" class="quarto-xref">Figure&nbsp;<span>35.4</span></a> B shows a realization of the model <span class="math display">\[\begin{equation}
 y_i=x_{i}^{2}+\varepsilon_{i} \mbox{ with } \varepsilon_{i} \sim N(0,1) \mbox{ for } i=1,...,n.
-\end{equation}\]</span> The sample correlation of the dataset <span class="math inline">\(\left\{\left(x_{i}, y_{i}\right)\right\}_{i=1}^{n}\)</span> is <span class="math inline">\(r_{x y} = -0.01\)</span> here. The sample correlation is therefore minimal. However, here too there is a clear dependence of the value of the <span class="math inline">\(y_i\)</span> realization <span class="math inline">\(y_{i}\)</span> on the value <span class="math inline">\(x_{i}\)</span>: the higher or lower the value of <span class="math inline">\(x_{i}\)</span>, the higher the expectation for the value of <span class="math inline">\(y_i\)</span>; there is a quadratic relationship. A similar picture emerges when considering <a href="#fig-correlation-dependence" class="quarto-xref">Figure&nbsp;<span>35.4</span></a> C, a realization of the model <span class="math display">\[\begin{equation}
+\end{equation}\]</span> The sample correlation of the dataset <span class="math inline">\(\left\{\left(x_{i},
+y_{i}\right)\right\}_{i=1}^{n}\)</span> is <span class="math inline">\(r_{x y} = -0.01\)</span> here. The sample correlation is therefore minimal. However, here too there is a clear dependence of the value of the <span class="math inline">\(y_i\)</span> realization <span class="math inline">\(y_{i}\)</span> on the value <span class="math inline">\(x_{i}\)</span>: the higher or lower the value of <span class="math inline">\(x_{i}\)</span>, the higher the expectation for the value of <span class="math inline">\(y_i\)</span>. There is a quadratic relationship. A similar picture emerges when considering <a href="#fig-correlation-dependence" class="quarto-xref">Figure&nbsp;<span>35.4</span></a> C, a realization of the model <span class="math display">\[\begin{equation}
 y_i
 = 8 \cos \left(2 x_{i}\right)+\varepsilon_{i} \mbox{ with } \varepsilon_{i} \sim N(0,1) \mbox{ for } i=1,...,n.
 \end{equation}\]</span> Here too, a dependence of the value of the <span class="math inline">\(y_i\)</span> realization <span class="math inline">\(y_{i}\)</span> on the value <span class="math inline">\(x_{i}\)</span> is apparent, in this case in the sense of a cyclic dependence, but the sample correlation is again minimal with <span class="math inline">\(r_{x y}=-0.01\)</span>. These simulation examples therefore intuitively demonstrate that sample correlation can be vanishingly small even when clear dependencies between two variables exist. As a general measure of the dependence of two variables, correlation is therefore unsuitable. This circumstance is based on the fact that correlation is only a measure of the linear-affine association of two random variables, but not of their stochastic dependence. We formalize and specify this statement in the following theorem.</p>
@@ -910,114 +927,220 @@ Wright, S. (1921). Correlation and causation. <em>Journal of Agriculture Researc
 
 </main> <!-- /main -->
 <script>
-(function () {
-  var base = "https://dirk-ostwald.github.io";
-  var pageMap = {
-    "/": "/en/",
-    "/index.html": "/en/",
-    "/Referenzen.html": "/en/References.html",
-    "/_part_1/100-Mathematische-Grundlagen.html": "/en/_part_1/100-Mathematical-Foundations.html",
-    "/_part_1/101-Sprache-und-Logik.html": "/en/_part_1/101-Language-and-Logic.html",
-    "/_part_1/102-Mengen.html": "/en/_part_1/102-Sets.html",
-    "/_part_1/103-Summen-Produkte-Potenzen.html": "/en/_part_1/103-Sums-Products-Powers.html",
-    "/_part_1/104-Funktionen.html": "/en/_part_1/104-Functions.html",
-    "/_part_1/105-Folgen-Grenzwerte-Stetigkeit.html": "/en/_part_1/105-Sequences-Limits-Continuity.html",
-    "/_part_1/106-Differenzialrechnung.html": "/en/_part_1/106-Differential-Calculus.html",
-    "/_part_1/107-Integralrechnung.html": "/en/_part_1/107-Integral-Calculus.html",
-    "/_part_1/108-Vektoren.html": "/en/_part_1/108-Vectors.html",
-    "/_part_1/109-Matrizen.html": "/en/_part_1/109-Matrices.html",
-    "/_part_1/110-Deskriptivstatistiken.html": "/en/_part_1/110-Descriptive-Statistics.html",
-    "/_part_2/200-Imperative-Programmierung.html": "/en/_part_2/200-Imperative-Programming.html",
-    "/_part_2/201-Informatische-Grundbegriffe.html": "/en/_part_2/201-Basic-Concepts-of-Computer-Science.html",
-    "/_part_2/202-Arithmetik-und-Variablen.html": "/en/_part_2/202-Arithmetic-and-Variables.html",
-    "/_part_2/203-Datenstrukturen.html": "/en/_part_2/203-Data-Structures.html",
-    "/_part_2/204-Vektoren.html": "/en/_part_2/204-Vectors.html",
-    "/_part_2/205-Matrizen-und-Arrays.html": "/en/_part_2/205-Matrices-and-Arrays.html",
-    "/_part_2/206-Listen-Dataframes-und-Tibbles.html": "/en/_part_2/206-Lists-Dataframes-and-Tibbles.html",
-    "/_part_2/207-Datenmanagement.html": "/en/_part_2/207-Data-Management.html",
-    "/_part_2/208-Kontrollstrukturen.html": "/en/_part_2/208-Control-Structures.html",
-    "/_part_3/300-Wahrscheinlichkeitstheorie.html": "/en/_part_3/300-Probability-Theory.html",
-    "/_part_3/301-Wahrscheinlichkeitsräume.html": "/en/_part_3/301-Probability-Spaces.html",
-    "/_part_3/302-Elementare-Wahrscheinlichkeiten.html": "/en/_part_3/302-Elementary-Probabilities.html",
-    "/_part_3/303-Zufallsvariablen.html": "/en/_part_3/303-Random-Variables.html",
-    "/_part_3/304-Zufallsvektoren.html": "/en/_part_3/304-Random-Vectors.html",
-    "/_part_3/305-Erwartungswerte.html": "/en/_part_3/305-Expectations.html",
-    "/_part_3/306-Varianzen.html": "/en/_part_3/306-Variances.html",
-    "/_part_3/307-Kovarianzen.html": "/en/_part_3/307-Covariances.html",
-    "/_part_3/308-Ungleichungen.html": "/en/_part_3/308-Inequalities.html",
-    "/_part_3/309-Grenzwerte.html": "/en/_part_3/309-Limits.html",
-    "/_part_3/310-Transformationen.html": "/en/_part_3/310-Transformations.html",
-    "/_part_3/311-Normalverteilungen.html": "/en/_part_3/311-Normal-Distributions.html",
-    "/_part_4/400-Inferenz.html": "/en/_part_4/400-Inference.html",
-    "/_part_4/401-Frequentistische-Inferenz.html": "/en/_part_4/401-Frequentist-Inference.html",
-    "/_part_4/402-Punktschätzung.html": "/en/_part_4/402-Point-Estimation.html",
-    "/_part_4/403-Konfidenzintervalle.html": "/en/_part_4/403-Confidence-Intervals.html",
-    "/_part_4/404-Hypothesentests.html": "/en/_part_4/404-Hypothesis-Tests.html",
-    "/_part_5/500-Allgemeines-Lineares-Modell.html": "/en/_part_5/500-General-Linear-Model.html",
-    "/_part_5/501-Regression.html": "/en/_part_5/501-Regression.html",
-    "/_part_5/502-Korrelation.html": "/en/_part_5/502-Correlation.html",
-    "/_part_5/503-Modellformulierung.html": "/en/_part_5/503-Model-Formulation.html",
-    "/_part_5/504-Parameterschätzung.html": "/en/_part_5/504-Parameter-Estimation.html",
-    "/_part_5/505-T-Statistiken.html": "/en/_part_5/505-T-Statistics.html",
-    "/_part_5/506-F-Statistiken.html": "/en/_part_5/506-F-Statistics.html",
-    "/_part_5/507-T-Tests.html": "/en/_part_5/507-T-Tests.html",
-    "/_part_5/508-Einfaktorielle-Varianzanalyse.html": "/en/_part_5/508-One-Way-Analysis-of-Variance.html",
-    "/_part_5/509-Zweifaktorielle-Varianzanalyse.html": "/en/_part_5/509-Two-Way-Analysis-of-Variance.html",
-    "/_part_5/510-Partielle-Korrelation.html": "/en/_part_5/510-Partial-Correlation.html",
-    "/_part_5/511-Multiple-Regression.html": "/en/_part_5/511-Multiple-Regression.html"
-  };
-  var reversePageMap = {};
-  Object.keys(pageMap).forEach(function (key) {
-    reversePageMap[pageMap[key]] = key;
-  });
-  function headings() {
-    return Array.prototype.slice.call(document.querySelectorAll("main.content h1[id], main.content h2[id], main.content h3[id], main.content h4[id]"));
-  }
-  function currentHeadingIndex() {
-    var hash = window.location.hash;
-    if (!hash) return "";
-    var id = hash.slice(1);
-    try {
-      id = decodeURIComponent(id);
-    } catch (error) {}
-    var list = headings();
-    for (var i = 0; i < list.length; i++) {
-      if (list[i].id === id) return String(i);
-    }
-    return "";
-  }
-  function scrollToHeadingIndex() {
-    var params = new URLSearchParams(window.location.search);
-    var value = params.get("h");
-    if (value === null) return;
-    var index = Number(value);
-    var list = headings();
-    if (Number.isInteger(index) && index >= 0 && index < list.length) {
-      list[index].scrollIntoView();
-      if (history.replaceState) {
-        history.replaceState(null, "", window.location.pathname + "#" + list[index].id);
-      }
-    }
-  }
-  var path = window.location.pathname;
-  var target = pageMap[path] || reversePageMap[path];
-  if (target) {
-    document.querySelectorAll("a.nav-link").forEach(function (link) {
-      var text = link.textContent.trim();
-      if (text === "English" || text === "Deutsch") {
-        var index = currentHeadingIndex();
-        link.href = base + target + (index ? "?h=" + index : "");
-      }
-    });
-  }
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", scrollToHeadingIndex);
-  } else {
-    scrollToHeadingIndex();
-  }
-}());
-</script>
 
+(function () {
+
+  var base = "https://dirk-ostwald.github.io";
+
+  var pageMap = {
+
+    "/": "/en/",
+
+    "/index.html": "/en/",
+
+    "/Referenzen.html": "/en/References.html",
+
+    "/_part_1/100-Mathematische-Grundlagen.html": "/en/_part_1/100-Mathematical-Foundations.html",
+
+    "/_part_1/101-Sprache-und-Logik.html": "/en/_part_1/101-Language-and-Logic.html",
+
+    "/_part_1/102-Mengen.html": "/en/_part_1/102-Sets.html",
+
+    "/_part_1/103-Summen-Produkte-Potenzen.html": "/en/_part_1/103-Sums-Products-Powers.html",
+
+    "/_part_1/104-Funktionen.html": "/en/_part_1/104-Functions.html",
+
+    "/_part_1/105-Folgen-Grenzwerte-Stetigkeit.html": "/en/_part_1/105-Sequences-Limits-Continuity.html",
+
+    "/_part_1/106-Differenzialrechnung.html": "/en/_part_1/106-Differential-Calculus.html",
+
+    "/_part_1/107-Integralrechnung.html": "/en/_part_1/107-Integral-Calculus.html",
+
+    "/_part_1/108-Vektoren.html": "/en/_part_1/108-Vectors.html",
+
+    "/_part_1/109-Matrizen.html": "/en/_part_1/109-Matrices.html",
+
+    "/_part_1/110-Deskriptivstatistiken.html": "/en/_part_1/110-Descriptive-Statistics.html",
+
+    "/_part_2/200-Imperative-Programmierung.html": "/en/_part_2/200-Imperative-Programming.html",
+
+    "/_part_2/201-Informatische-Grundbegriffe.html": "/en/_part_2/201-Basic-Concepts-of-Computer-Science.html",
+
+    "/_part_2/202-Arithmetik-und-Variablen.html": "/en/_part_2/202-Arithmetic-and-Variables.html",
+
+    "/_part_2/203-Datenstrukturen.html": "/en/_part_2/203-Data-Structures.html",
+
+    "/_part_2/204-Vektoren.html": "/en/_part_2/204-Vectors.html",
+
+    "/_part_2/205-Matrizen-und-Arrays.html": "/en/_part_2/205-Matrices-and-Arrays.html",
+
+    "/_part_2/206-Listen-Dataframes-und-Tibbles.html": "/en/_part_2/206-Lists-Dataframes-and-Tibbles.html",
+
+    "/_part_2/207-Datenmanagement.html": "/en/_part_2/207-Data-Management.html",
+
+    "/_part_2/208-Kontrollstrukturen.html": "/en/_part_2/208-Control-Structures.html",
+
+    "/_part_3/300-Wahrscheinlichkeitstheorie.html": "/en/_part_3/300-Probability-Theory.html",
+
+    "/_part_3/301-Wahrscheinlichkeitsräume.html": "/en/_part_3/301-Probability-Spaces.html",
+
+    "/_part_3/302-Elementare-Wahrscheinlichkeiten.html": "/en/_part_3/302-Elementary-Probabilities.html",
+
+    "/_part_3/303-Zufallsvariablen.html": "/en/_part_3/303-Random-Variables.html",
+
+    "/_part_3/304-Zufallsvektoren.html": "/en/_part_3/304-Random-Vectors.html",
+
+    "/_part_3/305-Erwartungswerte.html": "/en/_part_3/305-Expectations.html",
+
+    "/_part_3/306-Varianzen.html": "/en/_part_3/306-Variances.html",
+
+    "/_part_3/307-Kovarianzen.html": "/en/_part_3/307-Covariances.html",
+
+    "/_part_3/308-Ungleichungen.html": "/en/_part_3/308-Inequalities.html",
+
+    "/_part_3/309-Grenzwerte.html": "/en/_part_3/309-Limits.html",
+
+    "/_part_3/310-Transformationen.html": "/en/_part_3/310-Transformations.html",
+
+    "/_part_3/311-Normalverteilungen.html": "/en/_part_3/311-Normal-Distributions.html",
+
+    "/_part_4/400-Inferenz.html": "/en/_part_4/400-Inference.html",
+
+    "/_part_4/401-Frequentistische-Inferenz.html": "/en/_part_4/401-Frequentist-Inference.html",
+
+    "/_part_4/402-Punktschätzung.html": "/en/_part_4/402-Point-Estimation.html",
+
+    "/_part_4/403-Konfidenzintervalle.html": "/en/_part_4/403-Confidence-Intervals.html",
+
+    "/_part_4/404-Hypothesentests.html": "/en/_part_4/404-Hypothesis-Tests.html",
+
+    "/_part_5/500-Allgemeines-Lineares-Modell.html": "/en/_part_5/500-General-Linear-Model.html",
+
+    "/_part_5/501-Regression.html": "/en/_part_5/501-Regression.html",
+
+    "/_part_5/502-Korrelation.html": "/en/_part_5/502-Correlation.html",
+
+    "/_part_5/503-Modellformulierung.html": "/en/_part_5/503-Model-Formulation.html",
+
+    "/_part_5/504-Parameterschätzung.html": "/en/_part_5/504-Parameter-Estimation.html",
+
+    "/_part_5/505-T-Statistiken.html": "/en/_part_5/505-T-Statistics.html",
+
+    "/_part_5/506-F-Statistiken.html": "/en/_part_5/506-F-Statistics.html",
+
+    "/_part_5/507-T-Tests.html": "/en/_part_5/507-T-Tests.html",
+
+    "/_part_5/508-Einfaktorielle-Varianzanalyse.html": "/en/_part_5/508-One-Way-Analysis-of-Variance.html",
+
+    "/_part_5/509-Zweifaktorielle-Varianzanalyse.html": "/en/_part_5/509-Two-Way-Analysis-of-Variance.html",
+
+    "/_part_5/510-Partielle-Korrelation.html": "/en/_part_5/510-Partial-Correlation.html",
+
+    "/_part_5/511-Multiple-Regression.html": "/en/_part_5/511-Multiple-Regression.html"
+
+  };
+
+  var reversePageMap = {};
+
+  Object.keys(pageMap).forEach(function (key) {
+
+    reversePageMap[pageMap[key]] = key;
+
+  });
+
+  function headings() {
+
+    return Array.prototype.slice.call(document.querySelectorAll("main.content h1[id], main.content h2[id], main.content h3[id], main.content h4[id]"));
+
+  }
+
+  function currentHeadingIndex() {
+
+    var hash = window.location.hash;
+
+    if (!hash) return "";
+
+    var id = hash.slice(1);
+
+    try {
+
+      id = decodeURIComponent(id);
+
+    } catch (error) {}
+
+    var list = headings();
+
+    for (var i = 0; i < list.length; i++) {
+
+      if (list[i].id === id) return String(i);
+
+    }
+
+    return "";
+
+  }
+
+  function scrollToHeadingIndex() {
+
+    var params = new URLSearchParams(window.location.search);
+
+    var value = params.get("h");
+
+    if (value === null) return;
+
+    var index = Number(value);
+
+    var list = headings();
+
+    if (Number.isInteger(index) && index >= 0 && index < list.length) {
+
+      list[index].scrollIntoView();
+
+      if (history.replaceState) {
+
+        history.replaceState(null, "", window.location.pathname + "#" + list[index].id);
+
+      }
+
+    }
+
+  }
+
+  var path = window.location.pathname;
+
+  var target = pageMap[path] || reversePageMap[path];
+
+  if (target) {
+
+    document.querySelectorAll("a.nav-link").forEach(function (link) {
+
+      var text = link.textContent.trim();
+
+      if (text === "English" || text === "Deutsch") {
+
+        var index = currentHeadingIndex();
+
+        link.href = base + target + (index ? "?h=" + index : "");
+
+      }
+
+    });
+
+  }
+
+  if (document.readyState === "loading") {
+
+    document.addEventListener("DOMContentLoaded", scrollToHeadingIndex);
+
+  } else {
+
+    scrollToHeadingIndex();
+
+  }
+
+}());
+
+</script>
 
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {

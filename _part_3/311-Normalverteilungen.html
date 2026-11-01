@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,10 +12,13 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -96,10 +99,10 @@ div.csl-indent {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-6e8dda235ee8acd82fc3832029714bc4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-35fb2a33bb4c71715ffa083faf67f315.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -129,7 +132,7 @@ div.csl-indent {
 }</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -642,36 +645,36 @@ p : \mathbb{R}^2 \to \mathbb{R}_{&gt;0},\, x \mapsto p(x) := (2\pi)^{-\frac{n}{2
 <div id="exm-konstruktion-einer-bivariaten-normalverteilungen" class="theorem example">
 <p><span class="theorem-title"><strong>Beispiel 29.1 (Konstruktion einer bivariaten Normalverteilung)</strong></span> Folgender <strong>R</strong> Code zeichnet das obige Theorem anhand konkreter Beispielwerte für <span class="math inline">\(\mu_1,\mu_2,\sigma_1,\sigma_2\)</span> und <span class="math inline">\(\rho\)</span> nach und gibt die Parameter <span class="math inline">\(\mu\)</span> und <span class="math inline">\(\Sigma\)</span> der resultierenden bivariaten WDF aus.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># Parameterdefinitionen</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a>mu_1   <span class="ot">=</span> <span class="fl">5.0</span>                                              <span class="co"># \mu_1</span></span>
-<span id="cb1-3"><a href="#cb1-3"></a>mu_2   <span class="ot">=</span> <span class="fl">4.0</span>                                              <span class="co"># \mu_2</span></span>
-<span id="cb1-4"><a href="#cb1-4"></a>sig_1  <span class="ot">=</span> <span class="fl">1.5</span>                                              <span class="co"># \sigma_1</span></span>
-<span id="cb1-5"><a href="#cb1-5"></a>sig_2  <span class="ot">=</span> <span class="fl">1.0</span>                                              <span class="co"># \sigma_2</span></span>
-<span id="cb1-6"><a href="#cb1-6"></a>rho    <span class="ot">=</span> <span class="fl">0.9</span>                                              <span class="co"># \rho</span></span>
-<span id="cb1-7"><a href="#cb1-7"></a></span>
-<span id="cb1-8"><a href="#cb1-8"></a><span class="co"># Realisierungen der standardnormalverteilten ZVen</span></span>
-<span id="cb1-9"><a href="#cb1-9"></a>n      <span class="ot">=</span> <span class="dv">100</span>                                              <span class="co"># Anzahl Realisierungen</span></span>
-<span id="cb1-10"><a href="#cb1-10"></a>zeta_1 <span class="ot">=</span> <span class="fu">rnorm</span>(n)                                         <span class="co"># \zeta_1 \sim N(0,1)</span></span>
-<span id="cb1-11"><a href="#cb1-11"></a>zeta_2 <span class="ot">=</span> <span class="fu">rnorm</span>(n)                                         <span class="co"># \zeta_1 \sim N(0,1)</span></span>
-<span id="cb1-12"><a href="#cb1-12"></a></span>
-<span id="cb1-13"><a href="#cb1-13"></a><span class="co"># Evaluation von Realisierungen von \xi_1 und \xi_2</span></span>
-<span id="cb1-14"><a href="#cb1-14"></a>xi_1   <span class="ot">=</span> sig_1<span class="sc">*</span>zeta_1 <span class="sc">+</span> mu_1                              <span class="co"># Realsierungen von zeta_1</span></span>
-<span id="cb1-15"><a href="#cb1-15"></a>xi_2   <span class="ot">=</span> sig_2<span class="sc">*</span>(rho<span class="sc">*</span>zeta_1 <span class="sc">+</span> <span class="fu">sqrt</span>(<span class="dv">1</span><span class="sc">-</span>rho<span class="sc">^</span><span class="dv">2</span>)<span class="sc">*</span>zeta_2) <span class="sc">+</span> mu_2 <span class="co"># Realsierungen von zeta_2</span></span>
-<span id="cb1-16"><a href="#cb1-16"></a></span>
-<span id="cb1-17"><a href="#cb1-17"></a><span class="co"># Parameter der gemeinsamen Verteilung von \xi_1 und \xi_2</span></span>
-<span id="cb1-18"><a href="#cb1-18"></a>mu     <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(mu_1,                                   <span class="co"># \mu \in \mathbb{R}^2</span></span>
-<span id="cb1-19"><a href="#cb1-19"></a>                  mu_2),</span>
-<span id="cb1-20"><a href="#cb1-20"></a>                 <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1-21"><a href="#cb1-21"></a>Sigma  <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(sig_1<span class="sc">^</span><span class="dv">2</span>        , rho<span class="sc">*</span>sig_1<span class="sc">*</span>sig_2,       <span class="co"># \Sigma \in \mathbb{R}^{2 x 2}</span></span>
-<span id="cb1-22"><a href="#cb1-22"></a>                 rho<span class="sc">*</span>sig_1<span class="sc">*</span>sig_2, sig_2<span class="sc">^</span><span class="dv">2</span>),</span>
-<span id="cb1-23"><a href="#cb1-23"></a>                 <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1-24"><a href="#cb1-24"></a><span class="fu">print</span>(mu)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-label="1"></a><span class="co"># Parameterdefinitionen</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-label="2"></a>mu_1   <span class="ot">=</span> <span class="fl">5.0</span>                                              <span class="co"># \mu_1</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-label="3"></a>mu_2   <span class="ot">=</span> <span class="fl">4.0</span>                                              <span class="co"># \mu_2</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-label="4"></a>sig_1  <span class="ot">=</span> <span class="fl">1.5</span>                                              <span class="co"># \sigma_1</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-label="5"></a>sig_2  <span class="ot">=</span> <span class="fl">1.0</span>                                              <span class="co"># \sigma_2</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-label="6"></a>rho    <span class="ot">=</span> <span class="fl">0.9</span>                                              <span class="co"># \rho</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-label="7"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-label="8"></a><span class="co"># Realisierungen der standardnormalverteilten ZVen</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-label="9"></a>n      <span class="ot">=</span> <span class="dv">100</span>                                              <span class="co"># Anzahl Realisierungen</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-label="10"></a>zeta_1 <span class="ot">=</span> <span class="fu">rnorm</span>(n)                                         <span class="co"># \zeta_1 \sim N(0,1)</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-label="11"></a>zeta_2 <span class="ot">=</span> <span class="fu">rnorm</span>(n)                                         <span class="co"># \zeta_1 \sim N(0,1)</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-label="12"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-label="13"></a><span class="co"># Evaluation von Realisierungen von \xi_1 und \xi_2</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-label="14"></a>xi_1   <span class="ot">=</span> sig_1<span class="sc">*</span>zeta_1 <span class="sc">+</span> mu_1                              <span class="co"># Realsierungen von zeta_1</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-label="15"></a>xi_2   <span class="ot">=</span> sig_2<span class="sc">*</span>(rho<span class="sc">*</span>zeta_1 <span class="sc">+</span> <span class="fu">sqrt</span>(<span class="dv">1</span><span class="sc">-</span>rho<span class="sc">^</span><span class="dv">2</span>)<span class="sc">*</span>zeta_2) <span class="sc">+</span> mu_2 <span class="co"># Realsierungen von zeta_2</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-label="16"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-label="17"></a><span class="co"># Parameter der gemeinsamen Verteilung von \xi_1 und \xi_2</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-label="18"></a>mu     <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(mu_1,                                   <span class="co"># \mu \in \mathbb{R}^2</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-label="19"></a>                  mu_2),</span>
+<span id="cb1-20"><a href="#cb1-20" aria-label="20"></a>                 <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-label="21"></a>Sigma  <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(sig_1<span class="sc">^</span><span class="dv">2</span>        , rho<span class="sc">*</span>sig_1<span class="sc">*</span>sig_2,       <span class="co"># \Sigma \in \mathbb{R}^{2 x 2}</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-label="22"></a>                 rho<span class="sc">*</span>sig_1<span class="sc">*</span>sig_2, sig_2<span class="sc">^</span><span class="dv">2</span>),</span>
+<span id="cb1-23"><a href="#cb1-23" aria-label="23"></a>                 <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-label="24"></a><span class="fu">print</span>(mu)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1]
 [1,]    5
 [2,]    4</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">print</span>(Sigma)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-label="1"></a><span class="fu">print</span>(Sigma)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2]
 [1,] 2.25 1.35
@@ -778,13 +781,13 @@ N\left(x;\mu,\sigma^{2}I_{n} \right)
 \mu_\upsilon \\
 \mu_\zeta
 \end{matrix}\right) \in \mathbb{R}^n,
-\end{equation}\]</span> mit <span class="math inline">\(\mu_\upsilon \in \mathbb{R}^k\)</span> and <span class="math inline">\(\mu_\zeta \in \mathbb{R}^l\)</span> und Kovarianzmatrixparameter <span class="math display">\[\begin{equation}
+\end{equation}\]</span> mit <span class="math inline">\(\mu_\upsilon \in \mathbb{R}^k\)</span> und <span class="math inline">\(\mu_\zeta \in \mathbb{R}^l\)</span> und Kovarianzmatrixparameter <span class="math display">\[\begin{equation}
 \Sigma =
 \left(\begin{matrix}
 \Sigma_{\upsilon\upsilon}   &amp; \Sigma_{\upsilon\zeta} \\
 \Sigma_{\zeta\upsilon}  &amp; \Sigma_{\zeta\zeta}
 \end{matrix}\right) \in \mathbb{R}^{n \times n},
-\end{equation}\]</span> mit <span class="math inline">\(\Sigma_{\upsilon\upsilon}  \in \mathbb{R}^{k \times k}\)</span>, <span class="math inline">\(\Sigma_{\upsilon\zeta}     \in \mathbb{R}^{k \times l}\)</span>, <span class="math inline">\(\Sigma_{\zeta\upsilon}     \in \mathbb{R}^{l \times k}\)</span>, und <span class="math inline">\(\Sigma_{\zeta\zeta}        \in \mathbb{R}^{l \times l}\)</span>. Dann sind <span class="math inline">\(\upsilon := (\xi_1,...,\xi_k)^T\)</span> und <span class="math inline">\(\zeta := (\xi_{k+1}, ...,\xi_n)^T\)</span> <span class="math inline">\(k\)</span>- und <span class="math inline">\(l\)</span>-dimensionale normalverteilte Zufallsvektoren, respektive, und es gilt <span class="math display">\[\begin{equation}
+\end{equation}\]</span> mit <span class="math inline">\(\Sigma_{\upsilon\upsilon}  \in \mathbb{R}^{k \times k}\)</span>, <span class="math inline">\(\Sigma_{\upsilon\zeta}     \in \mathbb{R}^{k \times l}\)</span>, <span class="math inline">\(\Sigma_{\zeta\upsilon}     \in \mathbb{R}^{l \times k}\)</span>, und <span class="math inline">\(\Sigma_{\zeta\zeta}        \in \mathbb{R}^{l \times l}\)</span>. Dann sind <span class="math inline">\(\upsilon := (\xi_1,...,\xi_k)^T\)</span> und <span class="math inline">\(\zeta := (\xi_{k+1}, ...,\xi_n)^T\)</span> normalverteilte Zufallsvektoren der Dimension <span class="math inline">\(k\)</span> bzw. <span class="math inline">\(l\)</span>, und es gilt <span class="math display">\[\begin{equation}
 \upsilon \sim N(\mu_\upsilon,\Sigma_{\upsilon\upsilon}) \mbox{ und } \zeta \sim N(\mu_\zeta,\Sigma_{\zeta\zeta}).
 \end{equation}\]</span></p>
 </div>
@@ -817,13 +820,13 @@ p_\xi(x) := N(x;\mu_\xi,\Sigma_{\xi\xi}) \mbox{ mit }
 \Sigma_{\xi\xi} \in \mathbb{R}^{m\times m},
 \end{equation}\]</span> <span class="math inline">\(A\in\mathbb{R}^{n\times m}\)</span> sei eine Matrix, <span class="math inline">\(b\in\mathbb{R}^n\)</span> sei ein Vektor und <span class="math inline">\(\upsilon\)</span> sei ein <span class="math inline">\(n\)</span>-dimensionaler bedingt normalverteilter Zufallsvektor mit bedingter WDF <span class="math display">\[\begin{equation}
 p_{\upsilon|\xi}(\cdot|x) : \mathbb{R}^n \to \mathbb{R}_{&gt;0},\, y\mapsto
-p_{\upsilon|\xi}(y|x) := N(y;A\xi+b,\Sigma_{\upsilon\upsilon}) \mbox{ mit }
+p_{\upsilon|\xi}(y|x) := N(y;Ax+b,\Sigma_{\upsilon\upsilon}) \mbox{ mit }
 \Sigma_{\upsilon\upsilon} \in \mathbb{R}^{n\times n}.
-\end{equation}\]</span> Dann ist der <span class="math inline">\(m+n\)</span>-dimensionale Zufallsvektor <span class="math inline">\((\xi,\upsilon)^T\)</span> normalverteilt mit (gemeinsamer) WDF <span class="math display">\[\begin{equation}\label{eq:gauss_joint}
+\end{equation}\]</span> Die Matrizen <span class="math inline">\(\Sigma_{\xi\xi}\)</span> und <span class="math inline">\(\Sigma_{\upsilon\upsilon}\)</span> seien symmetrisch und positiv definit. Die bedingte Kovarianzmatrix <span class="math inline">\(\Sigma_{\upsilon\upsilon}\)</span> sei unabhängig von <span class="math inline">\(x\)</span>. Dann ist der <span class="math inline">\(m+n\)</span>-dimensionale Zufallsvektor <span class="math inline">\((\xi,\upsilon)^T\)</span> normalverteilt mit (gemeinsamer) WDF <span class="math display">\[\begin{equation}\label{eq:gauss_joint}
 p_{\xi,\upsilon} : \mathbb{R}^{m+n} \to \mathbb{R}_{&gt;0},\, \begin{pmatrix} x \\ y \end{pmatrix} \mapsto
 p_{\xi,\upsilon}\left(\begin{pmatrix} x \\ y \end{pmatrix}\right) = N\left(\begin{pmatrix} x \\ y \end{pmatrix};
 \mu_{\xi,\upsilon}, \Sigma_{\xi,\upsilon} \right),
-\end{equation}\]</span> mit <span class="math inline">\(\mu_{\xi,\upsilon} \in \mathbb{R}^{m+n}\)</span> und <span class="math inline">\(\Sigma_{\xi,\upsilon} \in \mathbb{R}^{m+n \times m+n}\)</span> und insbesondere <span class="math display">\[\begin{equation}
+\end{equation}\]</span> mit <span class="math inline">\(\mu_{\xi,\upsilon} \in \mathbb{R}^{m+n}\)</span> und <span class="math inline">\(\Sigma_{\xi,\upsilon} \in \mathbb{R}^{(m+n) \times (m+n)}\)</span> und insbesondere <span class="math display">\[\begin{equation}
 \mu_{\xi,\upsilon} = \left( \begin{matrix} \mu_\xi \\ A\mu_\xi + b \end{matrix} \right)
 \mbox{ und }
 \Sigma_{\xi,\upsilon} = \left(\begin{matrix} \Sigma_{\xi\xi} &amp; \Sigma_{\xi\xi}A^T \\ A\Sigma_{\xi\xi} &amp; \Sigma_{\upsilon\upsilon} + A\Sigma_{\xi\xi}A^T \end{matrix} \right).
@@ -919,14 +922,15 @@ Abbildung&nbsp;29.8: Invertierbare lineare Transformation eines normalverteilten
 <p>Die Tatsache, dass ein linear transformierter normalverteilter Zufallsvektor wiederum normalverteilt ist und dass sich die Parameter der Verteilung des transformierten Zufallsvektors aus den Parametern der Verteilung des ursprünglichen Zufallsvektors sowie den Transformationsparametern bestimmen lassen, bleibt auch im Falle einer nicht notwendigerweise invertierbaren linearen Transformation und auch im Falle einer nicht notwendigerweise invertierbaren linear-affinen Transformation wahr. Dies ist die Aussage folgenden zentralen Theorems.</p>
 <div id="thm-linear-affine-transformation" class="theorem">
 <p><span class="theorem-title"><strong>Theorem 29.8 (Linear-affine Transformation eines normalverteilten Zufallsvektors)</strong></span> <span class="math inline">\(\xi \sim N(\mu_\xi,\Sigma_\xi)\)</span> sei ein normalverteilter <span class="math inline">\(n\)</span>-dimensionaler Zufallsvektor und es sei <span class="math display">\[\begin{equation}
-\zeta := Ax + b \mbox{ mit } A \in \mathbb{R}^{m \times n} \mbox{ und } b \in \mathbb{R}^m.
+\zeta := A\xi + b \mbox{ mit } A \in \mathbb{R}^{m \times n} \mbox{ und } b \in \mathbb{R}^m.
 \end{equation}\]</span> Dann gilt <span class="math display">\[\begin{equation}
 \zeta \sim N(\mu_\zeta, \Sigma_\zeta)
 \mbox{ mit }
-\mu_\zeta    = A\mu + b \in \mathbb{R}^m \mbox{ und }
-\Sigma_\zeta = A\Sigma A^T \in \mathbb{R}^{m \times m}.
+\mu_\zeta    = A\mu_\xi + b \in \mathbb{R}^m \mbox{ und }
+\Sigma_\zeta = A\Sigma_\xi A^T \in \mathbb{R}^{m \times m}.
 \end{equation}\]</span></p>
 </div>
+<p>Die resultierende Normalverteilung kann degeneriert sein. Ist <span class="math inline">\(\Sigma_\xi\)</span> positiv definit, so ist <span class="math inline">\(A\Sigma_\xi A^T\)</span> genau dann positiv definit, wenn <span class="math inline">\(A\)</span> vollen Zeilenrang besitzt.</p>
 <p>Für einen Beweis verweisen wir auf <span class="citation" data-cites="anderson2003">Anderson (<a href="#ref-anderson2003" role="doc-biblioref">2003</a>)</span>.</p>
 </section>
 <section id="sec-normalverteilter-zufallsvariablen" class="level2" data-number="29.7">
@@ -1551,114 +1555,220 @@ Zabell, S. L. (2008). On <span>Student</span>’s 1908 <span>Article</span> <spa
 
 </main> <!-- /main -->
 <script>
-(function () {
-  var base = "https://dirk-ostwald.github.io";
-  var pageMap = {
-    "/": "/en/",
-    "/index.html": "/en/",
-    "/Referenzen.html": "/en/References.html",
-    "/_part_1/100-Mathematische-Grundlagen.html": "/en/_part_1/100-Mathematical-Foundations.html",
-    "/_part_1/101-Sprache-und-Logik.html": "/en/_part_1/101-Language-and-Logic.html",
-    "/_part_1/102-Mengen.html": "/en/_part_1/102-Sets.html",
-    "/_part_1/103-Summen-Produkte-Potenzen.html": "/en/_part_1/103-Sums-Products-Powers.html",
-    "/_part_1/104-Funktionen.html": "/en/_part_1/104-Functions.html",
-    "/_part_1/105-Folgen-Grenzwerte-Stetigkeit.html": "/en/_part_1/105-Sequences-Limits-Continuity.html",
-    "/_part_1/106-Differenzialrechnung.html": "/en/_part_1/106-Differential-Calculus.html",
-    "/_part_1/107-Integralrechnung.html": "/en/_part_1/107-Integral-Calculus.html",
-    "/_part_1/108-Vektoren.html": "/en/_part_1/108-Vectors.html",
-    "/_part_1/109-Matrizen.html": "/en/_part_1/109-Matrices.html",
-    "/_part_1/110-Deskriptivstatistiken.html": "/en/_part_1/110-Descriptive-Statistics.html",
-    "/_part_2/200-Imperative-Programmierung.html": "/en/_part_2/200-Imperative-Programming.html",
-    "/_part_2/201-Informatische-Grundbegriffe.html": "/en/_part_2/201-Basic-Concepts-of-Computer-Science.html",
-    "/_part_2/202-Arithmetik-und-Variablen.html": "/en/_part_2/202-Arithmetic-and-Variables.html",
-    "/_part_2/203-Datenstrukturen.html": "/en/_part_2/203-Data-Structures.html",
-    "/_part_2/204-Vektoren.html": "/en/_part_2/204-Vectors.html",
-    "/_part_2/205-Matrizen-und-Arrays.html": "/en/_part_2/205-Matrices-and-Arrays.html",
-    "/_part_2/206-Listen-Dataframes-und-Tibbles.html": "/en/_part_2/206-Lists-Dataframes-and-Tibbles.html",
-    "/_part_2/207-Datenmanagement.html": "/en/_part_2/207-Data-Management.html",
-    "/_part_2/208-Kontrollstrukturen.html": "/en/_part_2/208-Control-Structures.html",
-    "/_part_3/300-Wahrscheinlichkeitstheorie.html": "/en/_part_3/300-Probability-Theory.html",
-    "/_part_3/301-Wahrscheinlichkeitsräume.html": "/en/_part_3/301-Probability-Spaces.html",
-    "/_part_3/302-Elementare-Wahrscheinlichkeiten.html": "/en/_part_3/302-Elementary-Probabilities.html",
-    "/_part_3/303-Zufallsvariablen.html": "/en/_part_3/303-Random-Variables.html",
-    "/_part_3/304-Zufallsvektoren.html": "/en/_part_3/304-Random-Vectors.html",
-    "/_part_3/305-Erwartungswerte.html": "/en/_part_3/305-Expectations.html",
-    "/_part_3/306-Varianzen.html": "/en/_part_3/306-Variances.html",
-    "/_part_3/307-Kovarianzen.html": "/en/_part_3/307-Covariances.html",
-    "/_part_3/308-Ungleichungen.html": "/en/_part_3/308-Inequalities.html",
-    "/_part_3/309-Grenzwerte.html": "/en/_part_3/309-Limits.html",
-    "/_part_3/310-Transformationen.html": "/en/_part_3/310-Transformations.html",
-    "/_part_3/311-Normalverteilungen.html": "/en/_part_3/311-Normal-Distributions.html",
-    "/_part_4/400-Inferenz.html": "/en/_part_4/400-Inference.html",
-    "/_part_4/401-Frequentistische-Inferenz.html": "/en/_part_4/401-Frequentist-Inference.html",
-    "/_part_4/402-Punktschätzung.html": "/en/_part_4/402-Point-Estimation.html",
-    "/_part_4/403-Konfidenzintervalle.html": "/en/_part_4/403-Confidence-Intervals.html",
-    "/_part_4/404-Hypothesentests.html": "/en/_part_4/404-Hypothesis-Tests.html",
-    "/_part_5/500-Allgemeines-Lineares-Modell.html": "/en/_part_5/500-General-Linear-Model.html",
-    "/_part_5/501-Regression.html": "/en/_part_5/501-Regression.html",
-    "/_part_5/502-Korrelation.html": "/en/_part_5/502-Correlation.html",
-    "/_part_5/503-Modellformulierung.html": "/en/_part_5/503-Model-Formulation.html",
-    "/_part_5/504-Parameterschätzung.html": "/en/_part_5/504-Parameter-Estimation.html",
-    "/_part_5/505-T-Statistiken.html": "/en/_part_5/505-T-Statistics.html",
-    "/_part_5/506-F-Statistiken.html": "/en/_part_5/506-F-Statistics.html",
-    "/_part_5/507-T-Tests.html": "/en/_part_5/507-T-Tests.html",
-    "/_part_5/508-Einfaktorielle-Varianzanalyse.html": "/en/_part_5/508-One-Way-Analysis-of-Variance.html",
-    "/_part_5/509-Zweifaktorielle-Varianzanalyse.html": "/en/_part_5/509-Two-Way-Analysis-of-Variance.html",
-    "/_part_5/510-Partielle-Korrelation.html": "/en/_part_5/510-Partial-Correlation.html",
-    "/_part_5/511-Multiple-Regression.html": "/en/_part_5/511-Multiple-Regression.html"
-  };
-  var reversePageMap = {};
-  Object.keys(pageMap).forEach(function (key) {
-    reversePageMap[pageMap[key]] = key;
-  });
-  function headings() {
-    return Array.prototype.slice.call(document.querySelectorAll("main.content h1[id], main.content h2[id], main.content h3[id], main.content h4[id]"));
-  }
-  function currentHeadingIndex() {
-    var hash = window.location.hash;
-    if (!hash) return "";
-    var id = hash.slice(1);
-    try {
-      id = decodeURIComponent(id);
-    } catch (error) {}
-    var list = headings();
-    for (var i = 0; i < list.length; i++) {
-      if (list[i].id === id) return String(i);
-    }
-    return "";
-  }
-  function scrollToHeadingIndex() {
-    var params = new URLSearchParams(window.location.search);
-    var value = params.get("h");
-    if (value === null) return;
-    var index = Number(value);
-    var list = headings();
-    if (Number.isInteger(index) && index >= 0 && index < list.length) {
-      list[index].scrollIntoView();
-      if (history.replaceState) {
-        history.replaceState(null, "", window.location.pathname + "#" + list[index].id);
-      }
-    }
-  }
-  var path = window.location.pathname;
-  var target = pageMap[path] || reversePageMap[path];
-  if (target) {
-    document.querySelectorAll("a.nav-link").forEach(function (link) {
-      var text = link.textContent.trim();
-      if (text === "English" || text === "Deutsch") {
-        var index = currentHeadingIndex();
-        link.href = base + target + (index ? "?h=" + index : "");
-      }
-    });
-  }
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", scrollToHeadingIndex);
-  } else {
-    scrollToHeadingIndex();
-  }
-}());
-</script>
 
+(function () {
+
+  var base = "https://dirk-ostwald.github.io";
+
+  var pageMap = {
+
+    "/": "/en/",
+
+    "/index.html": "/en/",
+
+    "/Referenzen.html": "/en/References.html",
+
+    "/_part_1/100-Mathematische-Grundlagen.html": "/en/_part_1/100-Mathematical-Foundations.html",
+
+    "/_part_1/101-Sprache-und-Logik.html": "/en/_part_1/101-Language-and-Logic.html",
+
+    "/_part_1/102-Mengen.html": "/en/_part_1/102-Sets.html",
+
+    "/_part_1/103-Summen-Produkte-Potenzen.html": "/en/_part_1/103-Sums-Products-Powers.html",
+
+    "/_part_1/104-Funktionen.html": "/en/_part_1/104-Functions.html",
+
+    "/_part_1/105-Folgen-Grenzwerte-Stetigkeit.html": "/en/_part_1/105-Sequences-Limits-Continuity.html",
+
+    "/_part_1/106-Differenzialrechnung.html": "/en/_part_1/106-Differential-Calculus.html",
+
+    "/_part_1/107-Integralrechnung.html": "/en/_part_1/107-Integral-Calculus.html",
+
+    "/_part_1/108-Vektoren.html": "/en/_part_1/108-Vectors.html",
+
+    "/_part_1/109-Matrizen.html": "/en/_part_1/109-Matrices.html",
+
+    "/_part_1/110-Deskriptivstatistiken.html": "/en/_part_1/110-Descriptive-Statistics.html",
+
+    "/_part_2/200-Imperative-Programmierung.html": "/en/_part_2/200-Imperative-Programming.html",
+
+    "/_part_2/201-Informatische-Grundbegriffe.html": "/en/_part_2/201-Basic-Concepts-of-Computer-Science.html",
+
+    "/_part_2/202-Arithmetik-und-Variablen.html": "/en/_part_2/202-Arithmetic-and-Variables.html",
+
+    "/_part_2/203-Datenstrukturen.html": "/en/_part_2/203-Data-Structures.html",
+
+    "/_part_2/204-Vektoren.html": "/en/_part_2/204-Vectors.html",
+
+    "/_part_2/205-Matrizen-und-Arrays.html": "/en/_part_2/205-Matrices-and-Arrays.html",
+
+    "/_part_2/206-Listen-Dataframes-und-Tibbles.html": "/en/_part_2/206-Lists-Dataframes-and-Tibbles.html",
+
+    "/_part_2/207-Datenmanagement.html": "/en/_part_2/207-Data-Management.html",
+
+    "/_part_2/208-Kontrollstrukturen.html": "/en/_part_2/208-Control-Structures.html",
+
+    "/_part_3/300-Wahrscheinlichkeitstheorie.html": "/en/_part_3/300-Probability-Theory.html",
+
+    "/_part_3/301-Wahrscheinlichkeitsräume.html": "/en/_part_3/301-Probability-Spaces.html",
+
+    "/_part_3/302-Elementare-Wahrscheinlichkeiten.html": "/en/_part_3/302-Elementary-Probabilities.html",
+
+    "/_part_3/303-Zufallsvariablen.html": "/en/_part_3/303-Random-Variables.html",
+
+    "/_part_3/304-Zufallsvektoren.html": "/en/_part_3/304-Random-Vectors.html",
+
+    "/_part_3/305-Erwartungswerte.html": "/en/_part_3/305-Expectations.html",
+
+    "/_part_3/306-Varianzen.html": "/en/_part_3/306-Variances.html",
+
+    "/_part_3/307-Kovarianzen.html": "/en/_part_3/307-Covariances.html",
+
+    "/_part_3/308-Ungleichungen.html": "/en/_part_3/308-Inequalities.html",
+
+    "/_part_3/309-Grenzwerte.html": "/en/_part_3/309-Limits.html",
+
+    "/_part_3/310-Transformationen.html": "/en/_part_3/310-Transformations.html",
+
+    "/_part_3/311-Normalverteilungen.html": "/en/_part_3/311-Normal-Distributions.html",
+
+    "/_part_4/400-Inferenz.html": "/en/_part_4/400-Inference.html",
+
+    "/_part_4/401-Frequentistische-Inferenz.html": "/en/_part_4/401-Frequentist-Inference.html",
+
+    "/_part_4/402-Punktschätzung.html": "/en/_part_4/402-Point-Estimation.html",
+
+    "/_part_4/403-Konfidenzintervalle.html": "/en/_part_4/403-Confidence-Intervals.html",
+
+    "/_part_4/404-Hypothesentests.html": "/en/_part_4/404-Hypothesis-Tests.html",
+
+    "/_part_5/500-Allgemeines-Lineares-Modell.html": "/en/_part_5/500-General-Linear-Model.html",
+
+    "/_part_5/501-Regression.html": "/en/_part_5/501-Regression.html",
+
+    "/_part_5/502-Korrelation.html": "/en/_part_5/502-Correlation.html",
+
+    "/_part_5/503-Modellformulierung.html": "/en/_part_5/503-Model-Formulation.html",
+
+    "/_part_5/504-Parameterschätzung.html": "/en/_part_5/504-Parameter-Estimation.html",
+
+    "/_part_5/505-T-Statistiken.html": "/en/_part_5/505-T-Statistics.html",
+
+    "/_part_5/506-F-Statistiken.html": "/en/_part_5/506-F-Statistics.html",
+
+    "/_part_5/507-T-Tests.html": "/en/_part_5/507-T-Tests.html",
+
+    "/_part_5/508-Einfaktorielle-Varianzanalyse.html": "/en/_part_5/508-One-Way-Analysis-of-Variance.html",
+
+    "/_part_5/509-Zweifaktorielle-Varianzanalyse.html": "/en/_part_5/509-Two-Way-Analysis-of-Variance.html",
+
+    "/_part_5/510-Partielle-Korrelation.html": "/en/_part_5/510-Partial-Correlation.html",
+
+    "/_part_5/511-Multiple-Regression.html": "/en/_part_5/511-Multiple-Regression.html"
+
+  };
+
+  var reversePageMap = {};
+
+  Object.keys(pageMap).forEach(function (key) {
+
+    reversePageMap[pageMap[key]] = key;
+
+  });
+
+  function headings() {
+
+    return Array.prototype.slice.call(document.querySelectorAll("main.content h1[id], main.content h2[id], main.content h3[id], main.content h4[id]"));
+
+  }
+
+  function currentHeadingIndex() {
+
+    var hash = window.location.hash;
+
+    if (!hash) return "";
+
+    var id = hash.slice(1);
+
+    try {
+
+      id = decodeURIComponent(id);
+
+    } catch (error) {}
+
+    var list = headings();
+
+    for (var i = 0; i < list.length; i++) {
+
+      if (list[i].id === id) return String(i);
+
+    }
+
+    return "";
+
+  }
+
+  function scrollToHeadingIndex() {
+
+    var params = new URLSearchParams(window.location.search);
+
+    var value = params.get("h");
+
+    if (value === null) return;
+
+    var index = Number(value);
+
+    var list = headings();
+
+    if (Number.isInteger(index) && index >= 0 && index < list.length) {
+
+      list[index].scrollIntoView();
+
+      if (history.replaceState) {
+
+        history.replaceState(null, "", window.location.pathname + "#" + list[index].id);
+
+      }
+
+    }
+
+  }
+
+  var path = window.location.pathname;
+
+  var target = pageMap[path] || reversePageMap[path];
+
+  if (target) {
+
+    document.querySelectorAll("a.nav-link").forEach(function (link) {
+
+      var text = link.textContent.trim();
+
+      if (text === "English" || text === "Deutsch") {
+
+        var index = currentHeadingIndex();
+
+        link.href = base + target + (index ? "?h=" + index : "");
+
+      }
+
+    });
+
+  }
+
+  if (document.readyState === "loading") {
+
+    document.addEventListener("DOMContentLoaded", scrollToHeadingIndex);
+
+  } else {
+
+    scrollToHeadingIndex();
+
+  }
+
+}());
+
+</script>
 
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
